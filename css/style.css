@@ -1,8 +1,8 @@
 :root {
     --primary: #0a0a0a;
     --secondary: #1a1a1a;
-    --accent: #ff3e00;
-    --accent-gradient: linear-gradient(135deg, #ff3e00 0%, #ff6b00 100%);
+    --accent: #0066ff;
+    --accent-gradient: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     --text: #ffffff;
     --light-text: #a0a0a0;
     --border: #333333;
@@ -148,7 +148,7 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 62, 0, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 102, 255, 0.3);
 }
 
 .btn-secondary {
