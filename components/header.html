@@ -10,6 +10,7 @@
                 <a href="index.html" class="nav-link" data-i18n="nav.home">Home</a>
                 <a href="services.html" class="nav-link" data-i18n="nav.services">Services</a>
                 <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Work</a>
+                <a href="brandbook.html" class="nav-link">Brandbook</a>
                 <a href="about.html" class="nav-link" data-i18n="nav.about">About</a>
                 <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Contact</a>
             </nav>
@@ -57,7 +58,7 @@
 
     .lang-btn.active {
         color: var(--accent);
-        background: rgba(255, 62, 0, 0.1);
+        background: rgba(0, 102, 255, 0.1);
     }
 
     .lang-separator {
@@ -156,3 +157,78 @@
         }
     }
 </style>
+
+<script>
+function initHeader() {
+    setupMobileMenu();
+    setupLanguageSwitcher();
+    setupHeaderScroll();
+}
+
+function setupMobileMenu() {
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const nav = document.querySelector('.main-nav');
+    const overlay = document.createElement('div');
+    overlay.className = 'mobile-menu-overlay';
+    document.body.appendChild(overlay);
+
+    toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+        nav.classList.toggle('active');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
+    });
+
+    overlay.addEventListener('click', () => {
+        toggle.classList.remove('active');
+        nav.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+
+    // Close menu on nav link click
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            toggle.classList.remove('active');
+            nav.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+}
+
+function setupLanguageSwitcher() {
+    const langBtns = document.querySelectorAll('.lang-btn');
+    
+    langBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            
+            // Update active state
+            langBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Change language (this would integrate with your i18n system)
+            if (window.changeLanguage) {
+                window.changeLanguage(lang);
+            }
+        });
+    });
+}
+
+function setupHeaderScroll() {
+    const header = document.querySelector('.main-header');
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+}
+
+// Initialize header functionality
+document.addEventListener('DOMContentLoaded', initHeader);
+</script>
