@@ -332,7 +332,7 @@
 
 .typewriter {
     overflow: hidden;
-    border-right: 2px solid var(--accent); /* ИСПРАВЛЕНО: использование переменной */
+    border-right: 2px solid #0066ff;
     white-space: nowrap;
     animation: typewriter 3s steps(40) 1s both, blink 0.8s infinite;
 }
@@ -342,7 +342,7 @@
         border-color: transparent;
     }
     50% {
-        border-color: var(--accent); /* ИСПРАВЛЕНО: использование переменной */
+        border-color: #0066ff;
     }
 }
 
@@ -857,4 +857,28 @@
 
 .will-change-all {
     will-change: transform, opacity;
+}
+
+/* Marquee Animation Support */
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Reduced motion support for marquee */
+@media (prefers-reduced-motion: reduce) {
+    .marquee {
+        animation: none;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .marquee::after {
+        display: none;
+    }
 }
