@@ -351,6 +351,10 @@
   },
   "footer": {
     "description": "Full-cycle product development studio transforming ideas into market-ready products through design, engineering, and manufacturing excellence.",
+    "services": "Services",
+    "company": "Company",
+    "careers": "Careers",
+    "rights": "All rights reserved.",
     "links": {
       "services": "Services",
       "work": "Our Work",
