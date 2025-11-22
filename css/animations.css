@@ -332,7 +332,7 @@
 
 .typewriter {
     overflow: hidden;
-    border-right: 2px solid #0066ff;
+    border-right: 2px solid var(--accent); /* ИСПРАВЛЕНО: использование переменной */
     white-space: nowrap;
     animation: typewriter 3s steps(40) 1s both, blink 0.8s infinite;
 }
@@ -342,7 +342,7 @@
         border-color: transparent;
     }
     50% {
-        border-color: #0066ff;
+        border-color: var(--accent); /* ИСПРАВЛЕНО: использование переменной */
     }
 }
 
