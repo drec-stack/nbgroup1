@@ -4,6 +4,7 @@ function initContact() {
     setupContactInteractions();
     setupMapInteraction();
     setupFAQAccordion();
+    setupContactCards();
 }
 
 function setupContactForm() {
@@ -25,7 +26,7 @@ function setupContactForm() {
                 // Show success message
                 if (window.NBApp) {
                     window.NBApp.showNotification(
-                        window.i18n ? window.i18n.t('contact.form.success') : 'Message sent successfully! We\'ll get back to you soon.', 
+                        window.i18n ? window.i18n.t('contact.form.success') : 'Message sent successfully! We\'ll get back to you within 24 hours.', 
                         'success'
                     );
                 }
@@ -36,11 +37,14 @@ function setupContactForm() {
                 // Reset button state
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
+                
+                // Add celebration effect
+                celebrateSubmission();
             }, 2000);
         });
     }
     
-    // Form validation enhancements
+    // Enhanced form validation
     const formInputs = contactForm?.querySelectorAll('input, select, textarea');
     if (formInputs) {
         formInputs.forEach(input => {
@@ -55,7 +59,6 @@ function setupContactForm() {
                 validateField(input);
             });
             
-            // Real-time validation
             input.addEventListener('input', () => {
                 validateField(input);
             });
@@ -88,46 +91,68 @@ function validateField(field) {
         return;
     }
     
+    // Phone validation
+    if (field.type === 'tel') {
+        const phoneRegex = /^[\+]?[0-9\s\-\(\)]+$/;
+        if (phoneRegex.test(value)) {
+            formGroup.classList.add('valid');
+        } else {
+            formGroup.classList.add('invalid');
+        }
+        return;
+    }
+    
     // Required field validation
     if (field.hasAttribute('required') && value) {
         formGroup.classList.add('valid');
     }
 }
 
-function setupContactInteractions() {
-    const contactMethods = document.querySelectorAll('.contact-method');
-    const socialLinks = document.querySelectorAll('.social-link');
+function setupContactCards() {
+    const contactCards = document.querySelectorAll('.contact-card');
     
-    // Contact method interactions
-    contactMethods.forEach(method => {
-        method.addEventListener('mouseenter', () => {
-            const icon = method.querySelector('.method-icon');
+    contactCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            const icon = card.querySelector('.card-icon');
             if (icon) {
-                icon.style.transform = 'scale(1.1)';
+                icon.style.transform = 'scale(1.1) rotate(5deg)';
             }
         });
         
-        method.addEventListener('mouseleave', () => {
-            const icon = method.querySelector('.method-icon');
+        card.addEventListener('mouseleave', () => {
+            const icon = card.querySelector('.card-icon');
             if (icon) {
-                icon.style.transform = 'scale(1)';
+                icon.style.transform = 'scale(1) rotate(0)';
             }
         });
     });
+}
+
+function setupContactInteractions() {
+    const socialCards = document.querySelectorAll('.social-card');
     
-    // Social link interactions
-    socialLinks.forEach(link => {
-        link.addEventListener('mouseenter', () => {
-            const icon = link.querySelector('i');
+    socialCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            const icon = card.querySelector('.social-icon');
+            const arrow = card.querySelector('.social-arrow');
+            
             if (icon) {
-                icon.style.transform = 'translateY(-2px)';
+                icon.style.transform = 'scale(1.1)';
+            }
+            if (arrow) {
+                arrow.style.transform = 'translateX(5px)';
             }
         });
         
-        link.addEventListener('mouseleave', () => {
-            const icon = link.querySelector('i');
+        card.addEventListener('mouseleave', () => {
+            const icon = card.querySelector('.social-icon');
+            const arrow = card.querySelector('.social-arrow');
+            
             if (icon) {
-                icon.style.transform = 'translateY(0)';
+                icon.style.transform = 'scale(1)';
+            }
+            if (arrow) {
+                arrow.style.transform = 'translateX(0)';
             }
         });
     });
@@ -135,50 +160,70 @@ function setupContactInteractions() {
 
 function setupMapInteraction() {
     const mapBtn = document.getElementById('openMapBtn');
+    const copyBtn = document.getElementById('copyAddressBtn');
     
     if (mapBtn) {
         mapBtn.addEventListener('click', () => {
-            // Open Google Maps with studio location
-            window.open('https://maps.google.com/?q=123+Design+Street+Moscow+Russia+101000', '_blank');
+            window.open('https://maps.google.com/?q=Moscow+City+Tower+45+Presnenskaya+Naberezhnaya+123+Moscow+Russia+123112', '_blank');
+        });
+    }
+    
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            const address = 'Moscow City, Tower 45, Presnenskaya Naberezhnaya, 123, Moscow, Russia 123112';
+            navigator.clipboard.writeText(address).then(() => {
+                if (window.NBApp) {
+                    window.NBApp.showNotification(
+                        window.i18n ? window.i18n.t('contact.map.copied') : 'Address copied to clipboard!',
+                        'success'
+                    );
+                }
+            });
         });
     }
 }
 
-// FAQ accordion functionality
 function setupFAQAccordion() {
     const faqItems = document.querySelectorAll('.faq-item');
     
     faqItems.forEach(item => {
-        const question = item.querySelector('h4');
+        const question = item.querySelector('.faq-question');
         
         if (question) {
-            question.style.cursor = 'pointer';
-            
             question.addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
                 
                 // Close all items
                 faqItems.forEach(faq => {
                     faq.classList.remove('active');
-                    const answer = faq.querySelector('p');
+                    const answer = faq.querySelector('.faq-answer');
                     if (answer) {
                         answer.style.maxHeight = '0';
-                        answer.style.opacity = '0';
                     }
                 });
                 
                 // Open clicked item if it wasn't active
                 if (!isActive) {
                     item.classList.add('active');
-                    const answer = item.querySelector('p');
+                    const answer = item.querySelector('.faq-answer');
                     if (answer) {
                         answer.style.maxHeight = answer.scrollHeight + 'px';
-                        answer.style.opacity = '1';
                     }
                 }
             });
         }
     });
+}
+
+function celebrateSubmission() {
+    // Add a subtle celebration effect
+    const form = document.getElementById('contactForm');
+    if (form) {
+        form.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+            form.style.transform = 'scale(1)';
+        }, 150);
+    }
 }
 
 // Initialize when DOM is loaded
