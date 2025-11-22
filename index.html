@@ -46,13 +46,44 @@
     <section class="clients">
         <div class="container">
             <div class="clients-content">
-                <p class="clients-label" data-i18n="home.clients.label">Trusted by industry leaders</p>
-                <div class="clients-grid">
-                    <div class="client-item">SAMSUNG</div>
-                    <div class="client-item">APPLE</div>
-                    <div class="client-item">SONY</div>
-                    <div class="client-item">BOSCH</div>
-                    <div class="client-item">PHILIPS</div>
+                <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
+                <div class="marquee-wrapper">
+                    <div class="marquee-track">
+                        <div class="marquee-content">
+                            <span class="brand">dtronic</span>
+                            <span class="separator">·</span>
+                            <span class="brand">BRITA</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Roku</span>
+                            <span class="separator">·</span>
+                            <span class="brand">stryker</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Vocera V.</span>
+                            <span class="separator">·</span>
+                            <span class="brand">PayPal</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Microsoft</span>
+                            <span class="separator">·</span>
+                            <span class="brand">AC</span>
+                            
+                            <!-- Дублирование для бесшовности -->
+                            <span class="brand">dtronic</span>
+                            <span class="separator">·</span>
+                            <span class="brand">BRITA</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Roku</span>
+                            <span class="separator">·</span>
+                            <span class="brand">stryker</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Vocera V.</span>
+                            <span class="separator">·</span>
+                            <span class="brand">PayPal</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Microsoft</span>
+                            <span class="separator">·</span>
+                            <span class="brand">AC</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -176,8 +207,14 @@
     <script>
         // Загружаем компоненты и инициализируем переводы
         Promise.all([
-            fetch('components/header.html').then(r => r.text()),
-            fetch('components/footer.html').then(r => r.text())
+            fetch('components/header.html').then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status} loading header`);
+                return r.text();
+            }),
+            fetch('components/footer.html').then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status} loading footer`);
+                return r.text();
+            })
         ]).then(([headerHtml, footerHtml]) => {
             document.getElementById('header-container').innerHTML = headerHtml;
             document.getElementById('footer-container').innerHTML = footerHtml;
@@ -188,28 +225,41 @@
             
             // Принудительно применяем переводы после загрузки всего
             setTimeout(() => {
-                if (window.i18n && window.i18n.applyTranslations) {
+                if (window.i18n && typeof window.i18n.applyTranslations === 'function') {
                     window.i18n.applyTranslations();
                 }
             }, 300);
             
         }).catch(error => {
             console.error('Error loading components:', error);
+            // Fallback: показать навигацию даже если компоненты не загрузились
+            document.getElementById('header-container').innerHTML = `
+                <header class="main-header">
+                    <div class="container">
+                        <div class="header-inner">
+                            <a href="index.html" class="logo">
+                                <div class="logo-mark">N</div>
+                                <span>NBGROUP</span>
+                            </a>
+                            <nav class="main-nav">
+                                <a href="index.html" class="nav-link">Главная</a>
+                                <a href="services.html" class="nav-link">Услуги</a>
+                                <a href="portfolio.html" class="nav-link">Работы</a>
+                                <a href="about.html" class="nav-link">О нас</a>
+                                <a href="contacts.html" class="nav-link">Контакты</a>
+                            </nav>
+                        </div>
+                    </div>
+                </header>
+            `;
         });
 
-        // Дополнительная проверка перевода через 1 секунду
+        // Только один дополнительный вызов для надежности
         setTimeout(() => {
-            if (window.i18n && window.i18n.applyTranslations) {
+            if (window.i18n && typeof window.i18n.applyTranslations === 'function') {
                 window.i18n.applyTranslations();
             }
         }, 1000);
-
-        // Еще одна проверка через 2 секунды для надежности
-        setTimeout(() => {
-            if (window.i18n && window.i18n.applyTranslations) {
-                window.i18n.applyTranslations();
-            }
-        }, 2000);
     </script>
 </body>
 </html>
