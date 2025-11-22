@@ -1,0 +1,432 @@
+/* Brandbook Hero */
+.brandbook-hero {
+    padding: 160px 0 80px;
+    background: var(--secondary);
+}
+
+.brandbook-hero-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Brandbook Intro */
+.brandbook-intro {
+    padding: 100px 0;
+    background: var(--primary);
+}
+
+.intro-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.intro-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.intro-text p {
+    font-size: 1.2rem;
+    color: var(--light-text);
+    line-height: 1.6;
+}
+
+.intro-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.intro-stat {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--secondary);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+}
+
+.intro-stat .stat-number {
+    font-size: 3rem;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+
+.intro-stat .stat-label {
+    color: var(--light-text);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Brandbook Process */
+.brandbook-process {
+    padding: 120px 0;
+    background: var(--secondary);
+}
+
+.process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+}
+
+.process-step {
+    text-align: center;
+    padding: 40px 30px;
+    background: var(--primary);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.process-step:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+}
+
+.step-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}
+
+.process-step h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.process-step p {
+    color: var(--light-text);
+    line-height: 1.6;
+}
+
+/* Brandbook Cases */
+.brandbook-cases {
+    padding: 120px 0;
+    background: var(--primary);
+    border-bottom: 1px solid var(--border);
+}
+
+.brand-cases-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+.brand-case {
+    background: var(--secondary);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.brand-case:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: var(--accent-shadow);
+}
+
+.case-header {
+    padding: 40px 40px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.case-number {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(0, 102, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.case-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.case-category {
+    color: var(--light-text);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-left: auto;
+}
+
+.case-content {
+    padding: 30px 40px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: start;
+}
+
+.case-description p {
+    font-size: 1.1rem;
+    color: var(--light-text);
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.case-elements {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.brand-element h4 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.color-palette {
+    display: flex;
+    gap: 10px;
+}
+
+.color-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+}
+
+.color-item:hover {
+    transform: scale(1.1);
+    border-color: var(--accent);
+}
+
+.brand-element p {
+    color: var(--light-text);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* Brandbook Benefits */
+.brandbook-benefits {
+    padding: 120px 0;
+    background: var(--secondary);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.benefit-card {
+    background: var(--primary);
+    padding: 40px 30px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    text-align: center;
+}
+
+.benefit-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+}
+
+.benefit-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.benefit-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.benefit-card p {
+    color: var(--light-text);
+    line-height: 1.6;
+}
+
+/* Brandbook CTA */
+.brandbook-cta {
+    padding: 120px 0;
+    background: var(--primary);
+    text-align: center;
+}
+
+.brandbook-cta .cta-content h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brandbook-cta .cta-content p {
+    font-size: 1.3rem;
+    color: var(--light-text);
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Color Palettes for Brand Cases */
+
+/* OLLO HOOKAH Colors */
+.ollo-black { background: #1a1a1a; }
+.ollo-gold { background: #c8a951; }
+.ollo-gray { background: #2d2d2d; }
+
+/* NARGILA UZMANI Colors */
+.nargila-brown { background: #8B4513; }
+.nargila-gold { background: #DAA520; }
+.nargila-gray { background: #2F4F4F; }
+
+/* ISA HOOKAH Colors */
+.isa-red { background: #E74C3C; }
+.isa-blue { background: #2C3E50; }
+.isa-lightgray { background: #ECF0F1; }
+
+/* GOIMAT Colors */
+.goimat-blue { background: #0066ff; }
+.goimat-white { background: #ffffff; border: 1px solid var(--border); }
+.goimat-light { background: #f8f9fa; border: 1px solid var(--border); }
+
+/* 320 / UNIT-X Colors */
+.unitx-black { background: #000000; }
+.unitx-pink { background: #ff3366; }
+.unitx-gray { background: #666666; }
+
+/* ILLICIT HOOKAH Colors */
+.illicit-purple { background: #2c003e; }
+.illicit-gold { background: #ffd700; }
+.illicit-charcoal { background: #4a4a4a; }
+
+/* White and light colors need borders */
+.color-item[class*="white"],
+.color-item[class*="light"] {
+    border: 2px solid var(--border);
+}
+
+/* Color tooltip styles */
+.color-tooltip {
+    position: absolute;
+    background: var(--primary);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .intro-content {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+    
+    .case-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .case-header {
+        padding: 30px 30px 20px;
+    }
+    
+    .case-content {
+        padding: 20px 30px 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .process-steps {
+        grid-template-columns: 1fr;
+    }
+    
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .case-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .case-category {
+        margin-left: 0;
+    }
+    
+    .case-title {
+        font-size: 1.8rem;
+    }
+    
+    .brandbook-cta .cta-content h2 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .intro-stat .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .case-header {
+        padding: 25px 25px 15px;
+    }
+    
+    .case-content {
+        padding: 15px 25px 25px;
+    }
+    
+    .case-title {
+        font-size: 1.5rem;
+    }
+    
+    .brandbook-cta .cta-content h2 {
+        font-size: 2rem;
+    }
+    
+    .color-palette {
+        justify-content: center;
+    }
+}
