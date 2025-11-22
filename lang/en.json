@@ -13,44 +13,56 @@
     "subtitle": "From concept to production - we create products that shape the future",
     "hero": {
       "badge": "Product Development Studio",
-      "title": "We Transform Ideas Into Market-Ready Products",
-      "description": "Full-cycle product development combining design excellence, engineering innovation, and manufacturing expertise.",
-      "ctaPrimary": "Start Project",
-      "ctaSecondary": "View Work"
+      "titleLine1": "We design",
+      "titleLine2": "products that",
+      "titleLine3": "define markets",
+      "description": "From concept to production, we create industrial designs that blend aesthetics, functionality, and manufacturability for global brands.",
+      "ourServices": "Our Services",
+      "viewWork": "View Work"
     },
     "clients": {
       "label": "Trusted by industry leaders"
     },
-    "services": {
-      "title": "Our Services",
-      "subtitle": "End-to-end product development solutions",
+    "servicesPreview": {
+      "title": "Our Expertise",
+      "subtitle": "Comprehensive product development services",
+      "strategy": {
+        "title": "Product Strategy",
+        "description": "Market research and product planning for successful market entry"
+      },
       "design": {
         "title": "Industrial Design",
-        "description": "Human-centered design that balances aesthetics and functionality"
+        "description": "Human-centered design with focus on usability and aesthetics"
       },
       "engineering": {
         "title": "Engineering",
-        "description": "Technical solutions for manufacturable and scalable products"
+        "description": "Technical development and manufacturing preparation"
       },
-      "production": {
-        "title": "Production",
-        "description": "Manufacturing and supply chain management"
-      }
+      "learnMore": "Learn more"
     },
-    "work": {
-      "title": "Featured Work",
-      "subtitle": "Recent projects that demonstrate our capabilities",
-      "viewAll": "View All Projects"
+    "featuredWork": {
+      "title": "Featured Projects",
+      "subtitle": "Recent work that demonstrates our capabilities",
+      "project1": {
+        "title": "Smart Home Device",
+        "description": "Complete product development for IoT home automation system"
+      },
+      "project2": {
+        "title": "Medical Equipment",
+        "description": "Ergonomic design for portable medical diagnostic device"
+      },
+      "viewCaseStudy": "View Case Study",
+      "viewAllProjects": "View All Projects"
     },
     "stats": {
-      "projects": "Completed Projects",
-      "clients": "Happy Clients",
-      "products": "Products Launched",
-      "years": "Years Experience"
+      "projects": "Projects Delivered",
+      "years": "Years Experience",
+      "satisfaction": "Client Satisfaction",
+      "awards": "Design Awards"
     },
     "cta": {
-      "title": "Ready to Start Your Project?",
-      "description": "Let's discuss how we can bring your product idea to life",
+      "title": "Ready to start your project?",
+      "description": "Let's discuss how we can bring your product vision to life",
       "button": "Get in Touch"
     }
   },
@@ -183,12 +195,9 @@
     "title": "Brandbook Development",
     "subtitle": "Comprehensive brand identity systems that create memorable and consistent brand experiences across all touchpoints.",
     "intro": {
-      "title": "Strategic Brand Identity",
-      "description": "We develop complete brand systems that define visual language, tone of voice, and brand guidelines to ensure consistent representation across all platforms and media.",
-      "stats": {
-        "brands": "Brands Developed",
-        "consistency": "Brand Consistency"
-      }
+      "title": "Brandbook is the Foundation of Your Brand",
+      "description": "A brandbook is not just a set of rules, but the foundation on which the entire company's image rests. I approach its creation as carefully as I do any product: I study the brand's character, its audience, its purpose. On this foundation of meanings, I build a system—from color and typography to the logic of presenting materials.",
+      "description2": "We develop brandbooks for companies of any scale. Want a cohesive visual system with well-thought-out elements? We'll make sure it becomes your powerful tool, not just a pretty folder 'for show'."
     },
     "process": {
       "title": "Our Brandbook Process",
@@ -273,44 +282,71 @@
       "button": "View Careers"
     }
   },
-  "contacts": {
-    "title": "Contact Us",
-    "subtitle": "Get in touch to discuss your project or learn more about our services",
-    "form": {
-      "title": "Send Message",
-      "subtitle": "Fill out the form below and we'll get back to you within 24 hours",
-      "name": "Full Name",
-      "email": "Email Address",
-      "company": "Company",
-      "project": "Project Type",
-      "budget": "Budget Range",
-      "message": "Project Details",
-      "submit": "Send Message",
-      "success": "Thank you! Your message has been sent successfully.",
-      "error": "There was an error sending your message. Please try again."
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Ready to start your project? Let's discuss how we can help bring your product vision to life.",
+    "hero": {
+      "cta": "Start Your Project"
     },
     "info": {
-      "title": "Get in Touch",
-      "description": "Prefer other ways to reach us? Here are our contact details.",
+      "visit": "Visit Our Studio",
+      "call": "Call Us",
+      "email": "Email Us"
+    },
+    "viewMap": "View on Map",
+    "callNow": "Call Now",
+    "sendEmail": "Send Email",
+    "hours": "Mon-Fri, 9:00-18:00",
+    "response": "Response within 24 hours",
+    "form": {
+      "title": "Start Your Project",
+      "subtitle": "Fill out the form and we'll get back to you within 24 hours to discuss your project.",
+      "name": "Full Name *",
+      "email": "Email Address *",
+      "company": "Company",
       "phone": "Phone",
-      "email": "Email",
-      "address": "Address",
-      "hours": "Working Hours"
+      "projectType": "Project Type",
+      "selectProject": "Select project type",
+      "projectTypes": {
+        "new": "New Product Development",
+        "redesign": "Product Redesign",
+        "engineering": "Engineering Services",
+        "consultation": "Design Consultation",
+        "other": "Other"
+      },
+      "budget": "Project Budget",
+      "selectBudget": "Select budget range",
+      "message": "Project Details *",
+      "submit": "Send Message"
     },
     "social": {
-      "title": "Follow Us",
-      "description": "Stay updated with our latest projects and insights"
+      "title": "Follow Our Work",
+      "subtitle": "See our latest projects and behind-the-scenes",
+      "telegram": "Latest updates",
+      "instagram": "Visual portfolio",
+      "linkedin": "Business network",
+      "behance": "Design projects"
     },
     "faq": {
-      "title": "FAQ",
-      "q1": "What is your typical project timeline?",
-      "a1": "Project timelines vary based on complexity, but typically range from 3-9 months from concept to production.",
-      "q2": "Do you work with startups?",
-      "a2": "Yes, we work with startups and established companies alike, offering flexible engagement models.",
-      "q3": "What industries do you serve?",
-      "a3": "We serve various industries including consumer electronics, medical devices, IoT, and industrial products.",
-      "q4": "Can you help with manufacturing overseas?",
-      "a4": "Yes, we have established partnerships with manufacturers in Asia and Europe for cost-effective production."
+      "title": "Common Questions",
+      "timeline": {
+        "question": "What's your typical project timeline?",
+        "answer": "Most projects take 3-6 months from concept to production-ready design, depending on complexity and requirements."
+      },
+      "startups": {
+        "question": "Do you work with startups?",
+        "answer": "Yes, we offer flexible engagement models for startups and established companies, including equity-based partnerships."
+      },
+      "process": {
+        "question": "What's your design process?",
+        "answer": "We follow a user-centered design process: research, strategy, concept development, prototyping, testing, and final production."
+      }
+    },
+    "map": {
+      "title": "Visit Our Studio",
+      "description": "Located in the heart of Moscow's business district",
+      "directions": "Get Directions",
+      "copy": "Copy Address"
     }
   },
   "footer": {
