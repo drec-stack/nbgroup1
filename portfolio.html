@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - NBGROUP.TECH</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/portfolio.css">
+</head>
+<body>
+    <div id="header-container"></div>
+
+    <section class="portfolio-hero">
+        <div class="container">
+            <div class="portfolio-hero-content">
+                <h1 class="page-title" data-i18n="portfolio.title">Our Work</h1>
+                <p class="page-subtitle" data-i18n="portfolio.subtitle">
+                    Selected projects that demonstrate our design and engineering capabilities 
+                    across various industries and product categories.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-filter">
+        <div class="container">
+            <div class="filter-nav">
+                <button class="filter-btn active" data-filter="all" data-i18n="portfolio.filter.all">All Projects</button>
+                <button class="filter-btn" data-filter="consumer" data-i18n="portfolio.filter.consumer">Consumer Electronics</button>
+                <button class="filter-btn" data-filter="medical" data-i18n="portfolio.filter.medical">Medical Devices</button>
+                <button class="filter-btn" data-filter="iot" data-i18n="portfolio.filter.iot">IoT Products</button>
+                <button class="filter-btn" data-filter="industrial" data-i18n="portfolio.filter.industrial">Industrial Equipment</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-grid-section">
+        <div class="container">
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="consumer">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="image-placeholder">Smart Speaker</div>
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category" data-i18n="portfolio.filter.consumer">Consumer Electronics</span>
+                            <h3 class="project-title" data-i18n="portfolio.projects.speaker.title">Voice-Activated Smart Speaker</h3>
+                            <p class="project-description" data-i18n="portfolio.projects.speaker.description">
+                                Complete product design and engineering for AI-powered home assistant 
+                                with premium audio quality and seamless integration.
+                            </p>
+                            <div class="project-meta">
+                                <span class="meta-item">6 months</span>
+                                <span class="meta-item" data-i18n="portfolio.status.massProduction">Mass Production</span>
+                            </div>
+                            <a href="#" class="project-link" data-i18n="featuredWork.viewCaseStudy">View Case Study</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="medical">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="image-placeholder">Medical Monitor</div>
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category" data-i18n="portfolio.filter.medical">Medical Devices</span>
+                            <h3 class="project-title" data-i18n="portfolio.projects.monitor.title">Portable Patient Monitor</h3>
+                            <p class="project-description" data-i18n="portfolio.projects.monitor.description">
+                                Ergonomic design for hospital-grade vital signs monitoring device 
+                                with focus on usability and infection control.
+                            </p>
+                            <div class="project-meta">
+                                <span class="meta-item">9 months</span>
+                                <span class="meta-item" data-i18n="portfolio.status.fda">FDA Approved</span>
+                            </div>
+                            <a href="#" class="project-link" data-i18n="featuredWork.viewCaseStudy">View Case Study</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="iot">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="image-placeholder">Smart Thermostat</div>
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category" data-i18n="portfolio.filter.iot">IoT Products</span>
+                            <h3 class="project-title" data-i18n="portfolio.projects.thermostat.title">Wi-Fi Smart Thermostat</h3>
+                            <p class="project-description" data-i18n="portfolio.projects.thermostat.description">
+                                Energy-efficient home climate control system with intuitive interface 
+                                and advanced scheduling capabilities.
+                            </p>
+                            <div class="project-meta">
+                                <span class="meta-item">5 months</span>
+                                <span class="meta-item" data-i18n="portfolio.status.energyStar">Energy Star</span>
+                            </div>
+                            <a href="#" class="project-link" data-i18n="featuredWork.viewCaseStudy">View Case Study</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="industrial">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <div class="image-placeholder">3D Printer</div>
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category" data-i18n="portfolio.filter.industrial">Industrial Equipment</span>
+                            <h3 class="project-title" data-i18n="portfolio.projects.printer.title">Professional 3D Printer</h3>
+                            <p class="project-description" data-i18n="portfolio.projects.printer.description">
+                                Industrial-grade additive manufacturing system with advanced 
+                                calibration and material handling capabilities.
+                            </p>
+                            <div class="project-meta">
+                                <span class="meta-item">12 months</span>
+                                <span class="meta-item" data-i18n="portfolio.status.ce">CE Certified</span>
+                            </div>
+                            <a href="#" class="project-link" data-i18n="featuredWork.viewCaseStudy">View Case Study</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="portfolio.testimonials.title">Client Testimonials</h2>
+                <p data-i18n="portfolio.testimonials.subtitle">What our partners say about working with us</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p data-i18n="portfolio.testimonials.1">"NBGROUP.TECH transformed our concept into a market-ready product that exceeded our expectations in both design and functionality."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-name">Sarah Chen</div>
+                        <div class="author-company">Tech Innovations Inc.</div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p data-i18n="portfolio.testimonials.2">"The team's attention to detail and engineering expertise helped us achieve significant cost savings while maintaining premium quality."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-name">Michael Rodriguez</div>
+                        <div class="author-company">Global Medical Systems</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/portfolio.js"></script>
+    
+    <script>
+        fetch('components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                if (typeof initHeader === 'function') initHeader();
+            });
+
+        fetch('components/footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer-container').innerHTML = html;
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - NBGROUP.TECH</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/contact.css">
+</head>
+<body>
+    <div id="header-container"></div>
+
+    <section class="contact-hero">
+        <div class="container">
+            <div class="contact-hero-content">
+                <h1 class="page-title" data-i18n="contact.title">Get in Touch</h1>
+                <p class="page-subtitle" data-i18n="contact.subtitle">
+                    Ready to start your project? Let's discuss how we can help bring your 
+                    product vision to life.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-content">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-form-section">
+                    <h2 data-i18n="contact.form.title">Send us a Message</h2>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name" data-i18n="contact.form.name">Full Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" data-i18n="contact.form.email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company" data-i18n="contact.form.company">Company</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        <div class="form-group">
+                            <label for="project-type" data-i18n="contact.form.projectType">Project Type</label>
+                            <select id="project-type" name="project-type">
+                                <option value="" data-i18n="contact.form.selectProject">Select project type</option>
+                                <option value="new-product" data-i18n="contact.form.projectTypes.new">New Product Development</option>
+                                <option value="redesign" data-i18n="contact.form.projectTypes.redesign">Product Redesign</option>
+                                <option value="engineering" data-i18n="contact.form.projectTypes.engineering">Engineering Services</option>
+                                <option value="consultation" data-i18n="contact.form.projectTypes.consultation">Design Consultation</option>
+                                <option value="other" data-i18n="contact.form.projectTypes.other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget" data-i18n="contact.form.budget">Project Budget</label>
+                            <select id="budget" name="budget">
+                                <option value="" data-i18n="contact.form.selectBudget">Select budget range</option>
+                                <option value="10-25">$10,000 - $25,000</option>
+                                <option value="25-50">$25,000 - $50,000</option>
+                                <option value="50-100">$50,000 - $100,000</option>
+                                <option value="100+">$100,000+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" data-i18n="contact.form.message">Project Details *</label>
+                            <textarea id="message" name="message" rows="6" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large">
+                            <span data-i18n="contact.form.submit">Send Message</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="contact-info-section">
+                    <h2 data-i18n="contact.info.title">Contact Information</h2>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="method-info">
+                                <h3 data-i18n="contact.info.visit">Visit Our Studio</h3>
+                                <p>123 Design Street<br>Moscow, Russia 101000</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="method-info">
+                                <h3 data-i18n="contact.info.call">Call Us</h3>
+                                <p>+7 (495) 123-4567<br>Mon-Fri, 9:00-18:00</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="method-info">
+                                <h3 data-i18n="contact.info.email">Email Us</h3>
+                                <p>info@nbgroup.tech<br>response within 24 hours</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <h3 data-i18n="contact.social.title">Follow Us</h3>
+                        <div class="social-grid">
+                            <a href="https://t.me/NB_GROUP_TECH" class="social-link" target="_blank" rel="noopener noreferrer">
+                                <i class="fab fa-telegram"></i>
+                                <span data-i18n="contact.social.telegram">Telegram</span>
+                            </a>
+                            <a href="https://instagram.com/nb_group_tech" class="social-link" target="_blank" rel="noopener noreferrer">
+                                <i class="fab fa-instagram"></i>
+                                <span data-i18n="contact.social.instagram">Instagram</span>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-linkedin"></i>
+                                <span data-i18n="contact.social.linkedin">LinkedIn</span>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-behance"></i>
+                                <span data-i18n="contact.social.behance">Behance</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="faq-section">
+                        <h3 data-i18n="contact.faq.title">Common Questions</h3>
+                        <div class="faq-item">
+                            <h4 data-i18n="contact.faq.timeline.question">What's your typical project timeline?</h4>
+                            <p data-i18n="contact.faq.timeline.answer">Most projects take 3-6 months from concept to production-ready design.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4 data-i18n="contact.faq.startups.question">Do you work with startups?</h4>
+                            <p data-i18n="contact.faq.startups.answer">Yes, we offer flexible engagement models for startups and established companies.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="map-section">
+        <div class="container">
+            <div class="map-placeholder">
+                <div class="map-content">
+                    <i class="fas fa-map"></i>
+                    <h3 data-i18n="contact.map.title">Interactive Map</h3>
+                    <p data-i18n="contact.map.description">Our studio location in Moscow</p>
+                    <button class="btn btn-outline" id="openMapBtn">
+                        <span data-i18n="contact.map.button">Open in Maps</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/contact.js"></script>
+    
+    <script>
+        // Загружаем компоненты
+        Promise.all([
+            fetch('components/header.html').then(r => r.text()),
+            fetch('components/footer.html').then(r => r.text())
+        ]).then(([headerHtml, footerHtml]) => {
+            document.getElementById('header-container').innerHTML = headerHtml;
+            document.getElementById('footer-container').innerHTML = footerHtml;
+            
+            // Инициализируем функциональность после загрузки компонентов
+            if (typeof initHeader === 'function') initHeader();
+            
+            // Инициализируем контактную страницу
+            if (typeof initContact === 'function') initContact();
+        }).catch(error => {
+            console.error('Error loading components:', error);
+        });
+    </script>
+</body>
+</html>
