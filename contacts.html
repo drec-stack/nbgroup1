@@ -13,134 +13,249 @@
 <body>
     <div id="header-container"></div>
 
+    <!-- Hero Section -->
     <section class="contact-hero">
         <div class="container">
             <div class="contact-hero-content">
-                <h1 class="page-title" data-i18n="contact.title">Get in Touch</h1>
-                <p class="page-subtitle" data-i18n="contact.subtitle">
+                <h1 class="page-title slide-up" data-i18n="contact.title">Get in Touch</h1>
+                <p class="page-subtitle slide-up" data-delay="100" data-i18n="contact.subtitle">
                     Ready to start your project? Let's discuss how we can help bring your 
                     product vision to life.
                 </p>
+                <div class="hero-cta slide-up" data-delay="200">
+                    <a href="#contact-form" class="btn btn-primary btn-large">
+                        <span data-i18n="contact.hero.cta">Start Your Project</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="contact-content">
+    <!-- Contact Cards Section -->
+    <section class="contact-cards">
         <div class="container">
-            <div class="contact-grid">
-                <div class="contact-form-section">
-                    <h2 data-i18n="contact.form.title">Send us a Message</h2>
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-group">
-                            <label for="name" data-i18n="contact.form.name">Full Name *</label>
-                            <input type="text" id="name" name="name" required>
+            <div class="cards-grid">
+                <div class="contact-card fade-in">
+                    <div class="card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 data-i18n="contact.info.visit">Visit Our Studio</h3>
+                    <p>Moscow City, Tower 45<br>Presnenskaya Naberezhnaya, 123<br>Moscow, Russia 123112</p>
+                    <a href="#map" class="card-link">
+                        <span data-i18n="contact.viewMap">View on Map</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="contact-card fade-in" data-delay="100">
+                    <div class="card-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3 data-i18n="contact.info.call">Call Us</h3>
+                    <p>+7 (495) 123-45-67<br>+7 (999) 123-45-67</p>
+                    <p class="card-hours" data-i18n="contact.hours">Mon-Fri, 9:00-18:00</p>
+                    <a href="tel:+74951234567" class="card-link">
+                        <span data-i18n="contact.callNow">Call Now</span>
+                        <i class="fas fa-phone"></i>
+                    </a>
+                </div>
+
+                <div class="contact-card fade-in" data-delay="200">
+                    <div class="card-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 data-i18n="contact.info.email">Email Us</h3>
+                    <p>info@nbgroup.tech<br>projects@nbgroup.tech</p>
+                    <p class="card-response" data-i18n="contact.response">Response within 24 hours</p>
+                    <a href="mailto:info@nbgroup.tech" class="card-link">
+                        <span data-i18n="contact.sendEmail">Send Email</span>
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Contact Section -->
+    <section class="contact-main">
+        <div class="container">
+            <div class="contact-layout">
+                <!-- Left Column - Contact Form -->
+                <div class="contact-form-column">
+                    <div class="form-header">
+                        <h2 class="fade-in" data-i18n="contact.form.title">Start Your Project</h2>
+                        <p class="fade-in" data-delay="100" data-i18n="contact.form.subtitle">
+                            Fill out the form and we'll get back to you within 24 hours to discuss your project.
+                        </p>
+                    </div>
+                    
+                    <form class="contact-form fade-in" id="contactForm" data-delay="200">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name" data-i18n="contact.form.name">Full Name *</label>
+                                <input type="text" id="name" name="name" required>
+                                <div class="form-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" data-i18n="contact.form.email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                                <div class="form-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="email" data-i18n="contact.form.email">Email Address *</label>
-                            <input type="email" id="email" name="email" required>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="company" data-i18n="contact.form.company">Company</label>
+                                <input type="text" id="company" name="company">
+                                <div class="form-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" data-i18n="contact.form.phone">Phone</label>
+                                <input type="tel" id="phone" name="phone">
+                                <div class="form-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="company" data-i18n="contact.form.company">Company</label>
-                            <input type="text" id="company" name="company">
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="project-type" data-i18n="contact.form.projectType">Project Type</label>
+                                <select id="project-type" name="project-type">
+                                    <option value="" data-i18n="contact.form.selectProject">Select project type</option>
+                                    <option value="new-product" data-i18n="contact.form.projectTypes.new">New Product Development</option>
+                                    <option value="redesign" data-i18n="contact.form.projectTypes.redesign">Product Redesign</option>
+                                    <option value="engineering" data-i18n="contact.form.projectTypes.engineering">Engineering Services</option>
+                                    <option value="consultation" data-i18n="contact.form.projectTypes.consultation">Design Consultation</option>
+                                    <option value="other" data-i18n="contact.form.projectTypes.other">Other</option>
+                                </select>
+                                <div class="form-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="budget" data-i18n="contact.form.budget">Project Budget</label>
+                                <select id="budget" name="budget">
+                                    <option value="" data-i18n="contact.form.selectBudget">Select budget range</option>
+                                    <option value="10-25">$10,000 - $25,000</option>
+                                    <option value="25-50">$25,000 - $50,000</option>
+                                    <option value="50-100">$50,000 - $100,000</option>
+                                    <option value="100+">$100,000+</option>
+                                </select>
+                                <div class="form-icon">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="project-type" data-i18n="contact.form.projectType">Project Type</label>
-                            <select id="project-type" name="project-type">
-                                <option value="" data-i18n="contact.form.selectProject">Select project type</option>
-                                <option value="new-product" data-i18n="contact.form.projectTypes.new">New Product Development</option>
-                                <option value="redesign" data-i18n="contact.form.projectTypes.redesign">Product Redesign</option>
-                                <option value="engineering" data-i18n="contact.form.projectTypes.engineering">Engineering Services</option>
-                                <option value="consultation" data-i18n="contact.form.projectTypes.consultation">Design Consultation</option>
-                                <option value="other" data-i18n="contact.form.projectTypes.other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="budget" data-i18n="contact.form.budget">Project Budget</label>
-                            <select id="budget" name="budget">
-                                <option value="" data-i18n="contact.form.selectBudget">Select budget range</option>
-                                <option value="10-25">$10,000 - $25,000</option>
-                                <option value="25-50">$25,000 - $50,000</option>
-                                <option value="50-100">$50,000 - $100,000</option>
-                                <option value="100+">$100,000+</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
+
+                        <div class="form-group full-width">
                             <label for="message" data-i18n="contact.form.message">Project Details *</label>
-                            <textarea id="message" name="message" rows="6" required></textarea>
+                            <textarea id="message" name="message" rows="6" placeholder="Tell us about your project, goals, and any specific requirements..." required></textarea>
+                            <div class="form-icon textarea-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-large">
+
+                        <button type="submit" class="btn btn-primary btn-large btn-full">
                             <span data-i18n="contact.form.submit">Send Message</span>
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </form>
                 </div>
 
-                <div class="contact-info-section">
-                    <h2 data-i18n="contact.info.title">Contact Information</h2>
-                    
-                    <div class="contact-methods">
-                        <div class="contact-method">
-                            <div class="method-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="method-info">
-                                <h3 data-i18n="contact.info.visit">Visit Our Studio</h3>
-                                <p>123 Design Street<br>Moscow, Russia 101000</p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-method">
-                            <div class="method-icon">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div class="method-info">
-                                <h3 data-i18n="contact.info.call">Call Us</h3>
-                                <p>+7 (495) 123-4567<br>Mon-Fri, 9:00-18:00</p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-method">
-                            <div class="method-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="method-info">
-                                <h3 data-i18n="contact.info.email">Email Us</h3>
-                                <p>info@nbgroup.tech<br>response within 24 hours</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="social-links">
-                        <h3 data-i18n="contact.social.title">Follow Us</h3>
+                <!-- Right Column - Info & Social -->
+                <div class="contact-info-column">
+                    <!-- Social Media -->
+                    <div class="info-section social-section fade-in">
+                        <h3 data-i18n="contact.social.title">Follow Our Work</h3>
+                        <p data-i18n="contact.social.subtitle">See our latest projects and behind-the-scenes</p>
                         <div class="social-grid">
-                            <a href="https://t.me/NB_GROUP_TECH" class="social-link" target="_blank" rel="noopener noreferrer">
-                                <i class="fab fa-telegram"></i>
-                                <span data-i18n="contact.social.telegram">Telegram</span>
+                            <a href="https://t.me/NB_GROUP_TECH" class="social-card telegram" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Telegram for latest updates"></a>
+                                <div class="social-icon">
+                                    <i class="fab fa-telegram"></i>
+                                </div>
+                                <div class="social-info">
+                                    <h4>Telegram</h4>
+                                    <span data-i18n="contact.social.telegram">Latest updates</span>
+                                </div>
+                                <i class="fas fa-arrow-right social-arrow"></i>
                             </a>
-                            <a href="https://instagram.com/nb_group_tech" class="social-link" target="_blank" rel="noopener noreferrer">
-                                <i class="fab fa-instagram"></i>
-                                <span data-i18n="contact.social.instagram">Instagram</span>
+                            
+                            <a href="https://instagram.com/nb_group_tech" class="social-card instagram" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram for visual portfolio"></a>
+                                <div class="social-icon">
+                                    <i class="fab fa-instagram"></i>
+                                </div>
+                                <div class="social-info">
+                                    <h4>Instagram</h4>
+                                    <span data-i18n="contact.social.instagram">Visual portfolio</span>
+                                </div>
+                                <i class="fas fa-arrow-right social-arrow"></i>
                             </a>
-                            <a href="#" class="social-link">
-                                <i class="fab fa-linkedin"></i>
-                                <span data-i18n="contact.social.linkedin">LinkedIn</span>
+                            
+                            <a href="#" class="social-card linkedin">
+                                <div class="social-icon">
+                                    <i class="fab fa-linkedin"></i>
+                                </div>
+                                <div class="social-info">
+                                    <h4>LinkedIn</h4>
+                                    <span data-i18n="contact.social.linkedin">Business network</span>
+                                </div>
+                                <i class="fas fa-arrow-right social-arrow"></i>
                             </a>
-                            <a href="#" class="social-link">
-                                <i class="fab fa-behance"></i>
-                                <span data-i18n="contact.social.behance">Behance</span>
+                            
+                            <a href="#" class="social-card behance">
+                                <div class="social-icon">
+                                    <i class="fab fa-behance"></i>
+                                </div>
+                                <div class="social-info">
+                                    <h4>Behance</h4>
+                                    <span data-i18n="contact.social.behance">Design projects</span>
+                                </div>
+                                <i class="fas fa-arrow-right social-arrow"></i>
                             </a>
                         </div>
                     </div>
 
-                    <div class="faq-section">
+                    <!-- FAQ Section -->
+                    <div class="info-section faq-section fade-in" data-delay="100">
                         <h3 data-i18n="contact.faq.title">Common Questions</h3>
-                        <div class="faq-item">
-                            <h4 data-i18n="contact.faq.timeline.question">What's your typical project timeline?</h4>
-                            <p data-i18n="contact.faq.timeline.answer">Most projects take 3-6 months from concept to production-ready design.</p>
-                        </div>
-                        <div class="faq-item">
-                            <h4 data-i18n="contact.faq.startups.question">Do you work with startups?</h4>
-                            <p data-i18n="contact.faq.startups.answer">Yes, we offer flexible engagement models for startups and established companies.</p>
+                        <div class="faq-accordion">
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4 data-i18n="contact.faq.timeline.question">What's your typical project timeline?</h4>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p data-i18n="contact.faq.timeline.answer">Most projects take 3-6 months from concept to production-ready design, depending on complexity and requirements.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4 data-i18n="contact.faq.startups.question">Do you work with startups?</h4>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p data-i18n="contact.faq.startups.answer">Yes, we offer flexible engagement models for startups and established companies, including equity-based partnerships.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4 data-i18n="contact.faq.process.question">What's your design process?</h4>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p data-i18n="contact.faq.process.answer">We follow a user-centered design process: research, strategy, concept development, prototyping, testing, and final production.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -148,16 +263,38 @@
         </div>
     </section>
 
-    <section class="map-section">
+    <!-- Map Section -->
+    <section class="map-section" id="map">
         <div class="container">
-            <div class="map-placeholder">
-                <div class="map-content">
-                    <i class="fas fa-map"></i>
-                    <h3 data-i18n="contact.map.title">Interactive Map</h3>
-                    <p data-i18n="contact.map.description">Our studio location in Moscow</p>
-                    <button class="btn btn-outline" id="openMapBtn">
-                        <span data-i18n="contact.map.button">Open in Maps</span>
-                    </button>
+            <div class="section-header">
+                <h2 class="fade-in" data-i18n="contact.map.title">Visit Our Studio</h2>
+                <p class="fade-in" data-delay="100" data-i18n="contact.map.description">
+                    Located in the heart of Moscow's business district
+                </p>
+            </div>
+            
+            <div class="map-container fade-in" data-delay="200">
+                <div class="map-placeholder">
+                    <div class="map-overlay">
+                        <div class="map-info">
+                            <h3>NB Group Studio</h3>
+                            <p>Moscow City, Tower 45<br>Presnenskaya Naberezhnaya, 123</p>
+                            <p>Moscow, Russia 123112</p>
+                            <div class="map-actions">
+                                <button class="btn btn-primary" id="openMapBtn">
+                                    <span data-i18n="contact.map.directions">Get Directions</span>
+                                    <i class="fas fa-directions"></i>
+                                </button>
+                                <button class="btn btn-outline" id="copyAddressBtn">
+                                    <span data-i18n="contact.map.copy">Copy Address</span>
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-visual">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -189,5 +326,4 @@
         });
     </script>
 </body>
-
 </html>
