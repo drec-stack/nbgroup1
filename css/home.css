@@ -71,6 +71,7 @@
 .clients {
     padding: 80px 0;
     background: var(--secondary);
+    overflow: hidden;
 }
 
 .clients-content {
@@ -85,23 +86,147 @@
     margin-bottom: 40px;
 }
 
-.clients-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 40px;
+/* Marquee Animation - 100% рабочий вариант */
+.marquee-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    -webkit-mask: linear-gradient(90deg, 
+        transparent,
+        white 10%,
+        white 90%,
+        transparent
+    );
+    mask: linear-gradient(90deg, 
+        transparent,
+        white 10%,
+        white 90%,
+        transparent
+    );
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 40s linear infinite;
+    will-change: transform;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+.marquee-content {
+    display: flex;
     align-items: center;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-.client-item {
-    color: var(--light-text);
+.brand {
+    margin: 0 30px;
+    font-size: 1.3rem;
     font-weight: 600;
-    font-size: 1.1rem;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
+    color: var(--light-text);
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
-.client-item:hover {
+.brand:hover {
+    color: var(--accent);
     opacity: 1;
+    transform: translateY(-2px);
+}
+
+.separator {
+    margin: 0 10px;
+    color: var(--border);
+    font-size: 1.1rem;
+    opacity: 0.6;
+}
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-50% - 30px));
+    }
+}
+
+/* Fallback для старых браузеров */
+@-webkit-keyframes marquee-scroll {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+    100% {
+        -webkit-transform: translateX(calc(-50% - 30px));
+        transform: translateX(calc(-50% - 30px));
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .marquee-track {
+        animation-duration: 35s;
+    }
+    
+    .brand {
+        font-size: 1.1rem;
+        margin: 0 20px;
+    }
+    
+    .separator {
+        margin: 0 8px;
+        font-size: 1rem;
+    }
+    
+    .marquee-wrapper {
+        -webkit-mask: linear-gradient(90deg, 
+            transparent,
+            white 5%,
+            white 95%,
+            transparent
+        );
+        mask: linear-gradient(90deg, 
+            transparent,
+            white 5%,
+            white 95%,
+            transparent
+        );
+    }
+}
+
+@media (max-width: 480px) {
+    .marquee-track {
+        animation-duration: 30s;
+    }
+    
+    .brand {
+        font-size: 1rem;
+        margin: 0 15px;
+    }
+    
+    .separator {
+        margin: 0 6px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+        animation: none;
+        justify-content: center;
+    }
+    
+    .marquee-content {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
 }
 
 /* Services Preview */
@@ -135,8 +260,8 @@
     margin-bottom: 20px;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .service-preview-card h3 {
@@ -197,6 +322,11 @@
     width: 100%;
     height: 100%;
     font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--secondary);
+    color: var(--light-text);
 }
 
 .project-content {
@@ -252,8 +382,8 @@
     font-weight: 800;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 10px;
 }
 
@@ -277,8 +407,8 @@
     margin-bottom: 20px;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .cta-content p {
@@ -290,7 +420,7 @@
     margin-right: auto;
 }
 
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
     .hero-title {
         font-size: 2.5rem;
@@ -312,6 +442,10 @@
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+    
+    .cta-content h2 {
+        font-size: 2.5rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -330,4 +464,29 @@
     .cta-content h2 {
         font-size: 2rem;
     }
+    
+    .service-preview-card,
+    .project-card {
+        padding: 25px 20px;
+    }
+}
+
+/* Error states and fallbacks */
+.no-js .marquee-track {
+    animation: none;
+    justify-content: center;
+}
+
+/* Ensure images don't break layout */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Focus styles for accessibility */
+.brand:focus,
+.service-link:focus,
+.project-link:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
