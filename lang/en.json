@@ -5,185 +5,65 @@
     "portfolio": "Work",
     "about": "About",
     "contact": "Contact",
+    "brandbook": "Brandbook",
     "startProject": "Start Project"
   },
-  "hero": {
-    "badge": "INDUSTRIAL DESIGN STUDIO",
-    "titleLine1": "We design",
-    "titleLine2": "products that",
-    "titleLine3": "define markets",
-    "description": "From concept to production, we create industrial designs that blend aesthetics, functionality, and manufacturability for global brands.",
-    "ourServices": "Our Services",
-    "viewWork": "View Work"
-  },
-  "clients": {
-    "label": "Trusted by industry leaders"
-  },
-  "servicesPreview": {
-    "title": "Our Expertise",
-    "subtitle": "Comprehensive product development services",
-    "strategy": {
-      "title": "Product Strategy",
-      "description": "Market research and product planning for successful market entry"
+  "home": {
+    "title": "Innovative Product Development",
+    "subtitle": "From concept to production - we create products that shape the future",
+    "hero": {
+      "badge": "Product Development Studio",
+      "title": "We Transform Ideas Into Market-Ready Products",
+      "description": "Full-cycle product development combining design excellence, engineering innovation, and manufacturing expertise.",
+      "ctaPrimary": "Start Project",
+      "ctaSecondary": "View Work"
     },
-    "design": {
-      "title": "Industrial Design",
-      "description": "Human-centered design with focus on usability and aesthetics"
+    "clients": {
+      "label": "Trusted by industry leaders"
     },
-    "engineering": {
-      "title": "Engineering",
-      "description": "Technical development and manufacturing preparation"
-    },
-    "learnMore": "Learn more"
-  },
-  "featuredWork": {
-    "title": "Featured Projects",
-    "subtitle": "Recent work that demonstrates our capabilities",
-    "project1": {
-      "title": "Smart Home Device",
-      "description": "Complete product development for IoT home automation system"
-    },
-    "project2": {
-      "title": "Medical Equipment",
-      "description": "Ergonomic design for portable medical diagnostic device"
-    },
-    "viewCaseStudy": "View Case Study",
-    "viewAllProjects": "View All Projects"
-  },
-  "stats": {
-    "projects": "Projects Delivered",
-    "years": "Years Experience",
-    "satisfaction": "Client Satisfaction",
-    "awards": "Design Awards"
-  },
-  "cta": {
-    "title": "Ready to start your project?",
-    "description": "Let's discuss how we can bring your product vision to life",
-    "button": "Get in Touch"
-  },
-  "footer": {
-    "description": "Industrial design and product development studio creating meaningful products for global markets.",
-    "services": "Services",
-    "company": "Company",
-    "careers": "Careers",
-    "rights": "All rights reserved."
-  },
-  "about": {
-    "title": "About NBGROUP.TECH",
-    "subtitle": "We are a team of designers, engineers, and strategists passionate about creating products that make a difference in people's lives.",
-    "story": {
-      "title": "Our Story",
-      "p1": "Founded in 2012, NBGROUP.TECH began as a small industrial design studio with a big vision: to bridge the gap between beautiful design and practical engineering.",
-      "p2": "Over the years, we've grown into a full-service product development company, helping startups and Fortune 500 companies alike bring their ideas to life. Our approach combines creative design thinking with rigorous engineering to deliver products that succeed in the market."
-    },
-    "team": {
-      "title": "Leadership Team",
-      "subtitle": "Meet the people behind our success",
-      "members": "Team Members",
-      "ceo": "Founder & CEO",
-      "ceo.bio": "15+ years in industrial design and product development. Former lead designer at major consumer electronics company.",
-      "designDirector": "Design Director",
-      "designDirector.bio": "Specializes in human-centered design and user experience. Multiple Red Dot and iF design award winner.",
-      "engineeringLead": "Engineering Lead",
-      "engineeringLead.bio": "Mechanical engineering expert with focus on DFM and production optimization. MS in Mechanical Engineering."
-    },
-    "values": {
-      "title": "Our Values",
-      "subtitle": "Principles that guide everything we do",
-      "innovation": {
-        "title": "Innovation",
-        "description": "We embrace new technologies and approaches to solve complex design challenges."
+    "services": {
+      "title": "Our Services",
+      "subtitle": "End-to-end product development solutions",
+      "design": {
+        "title": "Industrial Design",
+        "description": "Human-centered design that balances aesthetics and functionality"
       },
-      "collaboration": {
-        "title": "Collaboration",
-        "description": "We work closely with clients as partners throughout the entire process."
+      "engineering": {
+        "title": "Engineering",
+        "description": "Technical solutions for manufacturable and scalable products"
       },
-      "excellence": {
-        "title": "Excellence",
-        "description": "We never compromise on quality and always strive for the best results."
-      },
-      "impact": {
-        "title": "Impact",
-        "description": "We focus on creating products that make a meaningful difference."
+      "production": {
+        "title": "Production",
+        "description": "Manufacturing and supply chain management"
       }
+    },
+    "work": {
+      "title": "Featured Work",
+      "subtitle": "Recent projects that demonstrate our capabilities",
+      "viewAll": "View All Projects"
+    },
+    "stats": {
+      "projects": "Completed Projects",
+      "clients": "Happy Clients",
+      "products": "Products Launched",
+      "years": "Years Experience"
     },
     "cta": {
-      "title": "Join Our Journey",
-      "description": "Interested in working together? We're always looking for new challenges.",
-      "button": "Start Conversation"
-    }
-  },
-  "portfolio": {
-    "title": "Our Work",
-    "subtitle": "Selected projects that demonstrate our design and engineering capabilities across various industries and product categories.",
-    "filter": {
-      "all": "All Projects",
-      "consumer": "Consumer Electronics",
-      "medical": "Medical Devices",
-      "iot": "IoT Products",
-      "industrial": "Industrial Equipment"
-    },
-    "projects": {
-      "speaker": {
-        "title": "Voice-Activated Smart Speaker",
-        "description": "Complete product design and engineering for AI-powered home assistant with premium audio quality and seamless integration."
-      },
-      "monitor": {
-        "title": "Portable Patient Monitor",
-        "description": "Ergonomic design for hospital-grade vital signs monitoring device with focus on usability and infection control."
-      },
-      "thermostat": {
-        "title": "Wi-Fi Smart Thermostat",
-        "description": "Energy-efficient home climate control system with intuitive interface and advanced scheduling capabilities."
-      },
-      "printer": {
-        "title": "Professional 3D Printer",
-        "description": "Industrial-grade additive manufacturing system with advanced calibration and material handling capabilities."
-      }
-    },
-    "status": {
-      "massProduction": "Mass Production",
-      "fda": "FDA Approved",
-      "energyStar": "Energy Star",
-      "ce": "CE Certified"
-    },
-    "testimonials": {
-      "title": "Client Testimonials",
-      "subtitle": "What our partners say about working with us",
-      "1": "\"NBGROUP.TECH transformed our concept into a market-ready product that exceeded our expectations in both design and functionality.\"",
-      "2": "\"The team's attention to detail and engineering expertise helped us achieve significant cost savings while maintaining premium quality.\""
+      "title": "Ready to Start Your Project?",
+      "description": "Let's discuss how we can bring your product idea to life",
+      "button": "Get in Touch"
     }
   },
   "services": {
     "title": "Our Services",
     "subtitle": "End-to-end product development from initial concept to mass production. We combine design thinking with engineering excellence.",
     "nav": {
-      "strategy": "Strategy",
       "design": "Design",
       "engineering": "Engineering",
-      "production": "Production"
-    },
-    "strategy": {
-      "title": "Product Strategy & Research",
-      "description": "We begin with deep market analysis and user research to define product vision, positioning, and business objectives that ensure market success.",
-      "features": {
-        "marketAnalysis": {
-          "title": "Market Analysis",
-          "description": "Competitive landscape and opportunity assessment"
-        },
-        "userResearch": {
-          "title": "User Research",
-          "description": "In-depth understanding of user needs and behaviors"
-        },
-        "productPlanning": {
-          "title": "Product Planning",
-          "description": "Roadmap development and feature prioritization"
-        }
-      },
-      "stats": {
-        "studies": "Market Studies",
-        "successRate": "Success Rate"
-      }
+      "production": "Production",
+      "brand": "Brand",
+      "brandbook": "Brandbook",
+      "strategy": "Strategy"
     },
     "design": {
       "title": "Industrial Design",
@@ -251,6 +131,28 @@
         "leadTime": "Avg. Lead Time"
       }
     },
+    "strategy": {
+      "title": "Product Strategy & Research",
+      "description": "We begin with deep market analysis and user research to define product vision, positioning, and business objectives that ensure market success.",
+      "features": {
+        "marketAnalysis": {
+          "title": "Market Analysis",
+          "description": "Competitive landscape and opportunity assessment"
+        },
+        "userResearch": {
+          "title": "User Research",
+          "description": "In-depth understanding of user needs and behaviors"
+        },
+        "productPlanning": {
+          "title": "Product Planning",
+          "description": "Roadmap development and feature prioritization"
+        }
+      },
+      "stats": {
+        "studies": "Market Studies",
+        "successRate": "Success Rate"
+      }
+    },
     "process": {
       "title": "Our Process",
       "subtitle": "Structured approach to product development",
@@ -277,61 +179,154 @@
       "button": "Get Quote"
     }
   },
-  "contact": {
-    "title": "Get in Touch",
-    "subtitle": "Ready to start your project? Let's discuss how we can help bring your product vision to life.",
-    "form": {
-      "title": "Send us a Message",
-      "name": "Full Name *",
-      "email": "Email Address *",
-      "company": "Company",
-      "projectType": "Project Type",
-      "selectProject": "Select project type",
-      "projectTypes": {
-        "new": "New Product Development",
-        "redesign": "Product Redesign",
-        "engineering": "Engineering Services",
-        "consultation": "Design Consultation",
-        "other": "Other"
+  "brandbook": {
+    "title": "Brandbook Development",
+    "subtitle": "Comprehensive brand identity systems that create memorable and consistent brand experiences across all touchpoints.",
+    "intro": {
+      "title": "Strategic Brand Identity",
+      "description": "We develop complete brand systems that define visual language, tone of voice, and brand guidelines to ensure consistent representation across all platforms and media.",
+      "stats": {
+        "brands": "Brands Developed",
+        "consistency": "Brand Consistency"
+      }
+    },
+    "process": {
+      "title": "Our Brandbook Process",
+      "subtitle": "Structured approach to brand identity development",
+      "research": {
+        "title": "Brand Research",
+        "description": "Market analysis and audience understanding"
       },
-      "budget": "Project Budget",
-      "selectBudget": "Select budget range",
-      "message": "Project Details *",
+      "strategy": {
+        "title": "Brand Strategy",
+        "description": "Positioning and messaging framework"
+      },
+      "identity": {
+        "title": "Visual Identity",
+        "description": "Logo, colors, typography development"
+      },
+      "guidelines": {
+        "title": "Guidelines",
+        "description": "Comprehensive usage documentation"
+      }
+    },
+    "cases": {
+      "title": "Brandbook Cases",
+      "subtitle": "Our recent brand identity projects"
+    },
+    "benefits": {
+      "title": "Why Invest in Brandbook?",
+      "subtitle": "Key benefits of comprehensive brand guidelines",
+      "consistency": {
+        "title": "Brand Consistency",
+        "description": "Maintain consistent visual identity across all platforms and touchpoints"
+      },
+      "efficiency": {
+        "title": "Team Efficiency",
+        "description": "Clear guidelines speed up design processes and decision making"
+      },
+      "recognition": {
+        "title": "Brand Recognition",
+        "description": "Strong visual identity increases brand recall and customer loyalty"
+      },
+      "scalability": {
+        "title": "Easy Scalability",
+        "description": "Simplifies brand expansion to new markets and product lines"
+      }
+    },
+    "cta": {
+      "title": "Develop Your Brand Identity",
+      "description": "Ready to create a powerful brand system that stands out? Let's discuss your brand vision.",
+      "button": "Start Brand Project"
+    }
+  },
+  "portfolio": {
+    "title": "Our Work",
+    "subtitle": "Showcasing our successful product development projects",
+    "filter": {
+      "all": "All",
+      "design": "Design",
+      "engineering": "Engineering",
+      "production": "Production"
+    },
+    "viewProject": "View Project",
+    "testimonials": {
+      "title": "Client Testimonials"
+    }
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Learn about our mission, values, and the team behind NBGROUP",
+    "story": {
+      "title": "Our Story",
+      "description": "Founded with a vision to bridge the gap between innovative ideas and market-ready products, NBGROUP brings together expertise in design, engineering, and manufacturing."
+    },
+    "values": {
+      "title": "Our Values"
+    },
+    "team": {
+      "title": "Our Team"
+    },
+    "cta": {
+      "title": "Join Our Team",
+      "description": "We're always looking for talented individuals to join our mission",
+      "button": "View Careers"
+    }
+  },
+  "contacts": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch to discuss your project or learn more about our services",
+    "form": {
+      "title": "Send Message",
+      "subtitle": "Fill out the form below and we'll get back to you within 24 hours",
+      "name": "Full Name",
+      "email": "Email Address",
+      "company": "Company",
+      "project": "Project Type",
+      "budget": "Budget Range",
+      "message": "Project Details",
       "submit": "Send Message",
-      "sending": "Sending...",
-      "success": "Message sent successfully! We'll get back to you soon.",
-      "error": "Error sending message. Please try again."
+      "success": "Thank you! Your message has been sent successfully.",
+      "error": "There was an error sending your message. Please try again."
     },
     "info": {
-      "title": "Contact Information",
-      "visit": "Visit Our Studio",
-      "call": "Call Us",
-      "hours": "Mon-Fri, 9:00-18:00",
-      "email": "Email Us",
-      "response": "response within 24 hours"
+      "title": "Get in Touch",
+      "description": "Prefer other ways to reach us? Here are our contact details.",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "hours": "Working Hours"
     },
     "social": {
       "title": "Follow Us",
-      "telegram": "Telegram",
-      "instagram": "Instagram",
-      "linkedin": "LinkedIn",
-      "behance": "Behance"
+      "description": "Stay updated with our latest projects and insights"
     },
     "faq": {
-      "title": "Common Questions",
-      "timeline": {
-        "question": "What's your typical project timeline?",
-        "answer": "Most projects take 3-6 months from concept to production-ready design."
-      },
-      "startups": {
-        "question": "Do you work with startups?",
-        "answer": "Yes, we offer flexible engagement models for startups and established companies."
-      }
-    },
-    "map": {
-      "title": "Interactive Map",
-      "description": "Our studio location in Moscow",
-      "button": "Open in Maps"
+      "title": "FAQ",
+      "q1": "What is your typical project timeline?",
+      "a1": "Project timelines vary based on complexity, but typically range from 3-9 months from concept to production.",
+      "q2": "Do you work with startups?",
+      "a2": "Yes, we work with startups and established companies alike, offering flexible engagement models.",
+      "q3": "What industries do you serve?",
+      "a3": "We serve various industries including consumer electronics, medical devices, IoT, and industrial products.",
+      "q4": "Can you help with manufacturing overseas?",
+      "a4": "Yes, we have established partnerships with manufacturers in Asia and Europe for cost-effective production."
     }
+  },
+  "footer": {
+    "description": "Full-cycle product development studio transforming ideas into market-ready products through design, engineering, and manufacturing excellence.",
+    "links": {
+      "services": "Services",
+      "work": "Our Work",
+      "about": "About",
+      "contact": "Contact"
+    },
+    "contact": "Contact",
+    "legal": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "cookies": "Cookie Policy"
+    },
+    "copyright": "All rights reserved."
   }
 }
