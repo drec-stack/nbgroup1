@@ -10,113 +10,6 @@
     margin: 0 auto;
 }
 
-/* Brandbook Intro */
-.brandbook-intro {
-    padding: 100px 0;
-    background: var(--primary);
-}
-
-.intro-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 80px;
-    align-items: center;
-}
-
-.intro-text h2 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    font-weight: 800;
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.intro-text p {
-    font-size: 1.2rem;
-    color: var(--light-text);
-    line-height: 1.6;
-}
-
-.intro-stats {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-}
-
-.intro-stat {
-    text-align: center;
-    padding: 30px 20px;
-    background: var(--secondary);
-    border-radius: 10px;
-    border: 1px solid var(--border);
-}
-
-.intro-stat .stat-number {
-    font-size: 3rem;
-    font-weight: 800;
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 10px;
-}
-
-.intro-stat .stat-label {
-    color: var(--light-text);
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Brandbook Process */
-.brandbook-process {
-    padding: 120px 0;
-    background: var(--secondary);
-}
-
-.process-steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-}
-
-.process-step {
-    text-align: center;
-    padding: 40px 30px;
-    background: var(--primary);
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    transition: var(--transition);
-}
-
-.process-step:hover {
-    transform: translateY(-10px);
-    border-color: var(--accent);
-}
-
-.step-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 20px;
-}
-
-.process-step h3 {
-    font-size: 1.3rem;
-    margin-bottom: 15px;
-    font-weight: 700;
-}
-
-.process-step p {
-    color: var(--light-text);
-    line-height: 1.6;
-}
-
 /* Brandbook Cases */
 .brandbook-cases {
     padding: 120px 0;
@@ -228,52 +121,23 @@
     border-color: var(--accent);
 }
 
+/* Placeholder colors for empty cases */
+.placeholder-color-1 {
+    background: #cccccc;
+}
+
+.placeholder-color-2 {
+    background: #999999;
+}
+
+.placeholder-color-3 {
+    background: #666666;
+}
+
 .brand-element p {
     color: var(--light-text);
     margin: 0;
     font-size: 0.95rem;
-}
-
-/* Brandbook Benefits */
-.brandbook-benefits {
-    padding: 120px 0;
-    background: var(--secondary);
-}
-
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px;
-}
-
-.benefit-card {
-    background: var(--primary);
-    padding: 40px 30px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    transition: var(--transition);
-    text-align: center;
-}
-
-.benefit-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--accent);
-}
-
-.benefit-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-}
-
-.benefit-card h3 {
-    font-size: 1.3rem;
-    margin-bottom: 15px;
-    font-weight: 700;
-}
-
-.benefit-card p {
-    color: var(--light-text);
-    line-height: 1.6;
 }
 
 /* Brandbook CTA */
@@ -302,42 +166,12 @@
     margin-right: auto;
 }
 
-/* Color Palettes for Brand Cases */
-
-/* OLLO HOOKAH Colors */
-.ollo-black { background: #1a1a1a; }
-.ollo-gold { background: #c8a951; }
-.ollo-gray { background: #2d2d2d; }
-
-/* NARGILA UZMANI Colors */
-.nargila-brown { background: #8B4513; }
-.nargila-gold { background: #DAA520; }
-.nargila-gray { background: #2F4F4F; }
-
-/* ISA HOOKAH Colors */
-.isa-red { background: #E74C3C; }
-.isa-blue { background: #2C3E50; }
-.isa-lightgray { background: #ECF0F1; }
-
-/* GOIMAT Colors */
-.goimat-blue { background: #0066ff; }
-.goimat-white { background: #ffffff; border: 1px solid var(--border); }
-.goimat-light { background: #f8f9fa; border: 1px solid var(--border); }
-
-/* 320 / UNIT-X Colors */
-.unitx-black { background: #000000; }
-.unitx-pink { background: #ff3366; }
-.unitx-gray { background: #666666; }
-
-/* ILLICIT HOOKAH Colors */
-.illicit-purple { background: #2c003e; }
-.illicit-gold { background: #ffd700; }
-.illicit-charcoal { background: #4a4a4a; }
-
-/* White and light colors need borders */
-.color-item[class*="white"],
-.color-item[class*="light"] {
-    border: 2px solid var(--border);
+/* Fallback footer styles */
+.fallback-footer {
+    padding: 2rem;
+    text-align: center;
+    background: var(--secondary);
+    color: var(--light-text);
 }
 
 /* Color tooltip styles */
@@ -358,11 +192,6 @@
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .intro-content {
-        grid-template-columns: 1fr;
-        gap: 60px;
-    }
-    
     .case-content {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -378,14 +207,6 @@
 }
 
 @media (max-width: 768px) {
-    .process-steps {
-        grid-template-columns: 1fr;
-    }
-    
-    .benefits-grid {
-        grid-template-columns: 1fr;
-    }
-    
     .case-header {
         flex-direction: column;
         align-items: flex-start;
@@ -406,10 +227,6 @@
 }
 
 @media (max-width: 480px) {
-    .intro-stat .stat-number {
-        font-size: 2.5rem;
-    }
-    
     .case-header {
         padding: 25px 25px 15px;
     }
