@@ -2,11 +2,17 @@
     --primary: #0a0a0a;
     --secondary: #1a1a1a;
     --accent: #0066ff;
+    --accent-light: #3399ff;
+    --accent-dark: #0052cc;
+    --accent-hover: #1a75ff;
     --accent-gradient: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
+    --accent-gradient-deep: linear-gradient(135deg, #0052cc 0%, #0088ff 100%);
     --text: #ffffff;
     --light-text: #a0a0a0;
     --border: #333333;
     --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --accent-shadow: 0 8px 25px rgba(0, 102, 255, 0.15);
+    --accent-glow: 0 0 20px rgba(0, 102, 255, 0.3);
 }
 
 * {
@@ -148,7 +154,7 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 102, 255, 0.3);
+    box-shadow: var(--accent-shadow);
 }
 
 .btn-secondary {
