@@ -100,7 +100,7 @@
 .project-category {
     display: inline-block;
     padding: 6px 12px;
-    background: rgba(255, 62, 0, 0.1);
+    background: rgba(0, 102, 255, 0.1); /* ИСПРАВЛЕНО: синий вместо оранжевого */
     color: var(--accent);
     font-size: 0.8rem;
     font-weight: 600;
@@ -147,6 +147,7 @@
 
 .project-link:hover {
     transform: translateX(5px);
+    color: var(--accent-hover);
 }
 
 /* Testimonials */
