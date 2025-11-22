@@ -13,7 +13,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,62,0,0.03)" points="0,1000 1000,0 1000,1000"/></svg>');
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(0,102,255,0.03)" points="0,1000 1000,0 1000,1000"/></svg>');
     background-size: cover;
 }
 
@@ -120,7 +120,7 @@
 
 .card-link:hover {
     gap: 12px;
-    color: var(--accent-dark);
+    color: #0052cc;
 }
 
 /* Main Contact Section */
@@ -211,7 +211,7 @@
 .form-group textarea:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(255, 62, 0, 0.1);
+    box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
     background: var(--primary);
 }
 
