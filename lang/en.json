@@ -1,368 +1,368 @@
 {
   "nav": {
-    "home": "Home",
-    "services": "Services",
-    "portfolio": "Work",
-    "about": "About",
-    "contact": "Contact",
-    "brandbook": "Brandbook",
-    "startProject": "Start Project"
+    "home": "Главная",
+    "services": "Услуги",
+    "portfolio": "Работы",
+    "about": "О нас",
+    "contact": "Контакты",
+    "brandbook": "Брендбук",
+    "startProject": "Начать Проект"
   },
   "home": {
-    "title": "Innovative Product Development",
-    "subtitle": "From concept to production - we create products that shape the future",
+    "title": "Инновационная Разработка Продуктов",
+    "subtitle": "От концепции до производства - мы создаем продукты, которые формируют будущее",
     "hero": {
-      "badge": "Product Development Studio",
-      "titleLine1": "We design",
-      "titleLine2": "products that",
-      "titleLine3": "define markets",
-      "description": "From concept to production, we create industrial designs that blend aesthetics, functionality, and manufacturability for global brands.",
-      "ourServices": "Our Services",
-      "viewWork": "View Work"
+      "badge": "Студия Разработки Продуктов",
+      "titleLine1": "Мы создаем",
+      "titleLine2": "продукты, которые",
+      "titleLine3": "определяют рынки",
+      "description": "От концепции до производства мы создаем промышленные дизайны, которые сочетают эстетику, функциональность и технологичность для мировых брендов.",
+      "ourServices": "Наши Услуги",
+      "viewWork": "Смотреть Работы"
     },
     "clients": {
-      "label": "Trusted by industry leaders"
+      "label": "Доверяют лидеры отрасли"
     },
     "servicesPreview": {
-      "title": "Our Expertise",
-      "subtitle": "Comprehensive product development services",
+      "title": "Наша Экспертиза",
+      "subtitle": "Комплексные услуги по разработке продуктов",
       "strategy": {
-        "title": "Product Strategy",
-        "description": "Market research and product planning for successful market entry"
+        "title": "Стратегия Продукта",
+        "description": "Исследование рынка и планирование продукта для успешного выхода на рынок"
       },
       "design": {
-        "title": "Industrial Design",
-        "description": "Human-centered design with focus on usability and aesthetics"
+        "title": "Промышленный Дизайн",
+        "description": "Ориентированный на пользователя дизайн с фокусом на удобство и эстетику"
       },
       "engineering": {
-        "title": "Engineering",
-        "description": "Technical development and manufacturing preparation"
+        "title": "Инженерия",
+        "description": "Техническая разработка и подготовка к производству"
       },
-      "learnMore": "Learn more"
+      "learnMore": "Узнать больше"
     },
     "featuredWork": {
-      "title": "Featured Projects",
-      "subtitle": "Recent work that demonstrates our capabilities",
+      "title": "Избранные Проекты",
+      "subtitle": "Недавние работы, демонстрирующие наши возможности",
       "project1": {
-        "title": "Smart Home Device",
-        "description": "Complete product development for IoT home automation system"
+        "title": "Умное Домашнее Устройство",
+        "description": "Полная разработка продукта для системы домашней автоматизации IoT"
       },
       "project2": {
-        "title": "Medical Equipment",
-        "description": "Ergonomic design for portable medical diagnostic device"
+        "title": "Медицинское Оборудование",
+        "description": "Эргономичный дизайн портативного медицинского диагностического устройства"
       },
-      "viewCaseStudy": "View Case Study",
-      "viewAllProjects": "View All Projects"
+      "viewCaseStudy": "Смотреть Кейс",
+      "viewAllProjects": "Все Проекты"
     },
     "stats": {
-      "projects": "Projects Delivered",
-      "years": "Years Experience",
-      "satisfaction": "Client Satisfaction",
-      "awards": "Design Awards"
+      "projects": "Реализованных Проектов",
+      "years": "Лет Опыта",
+      "satisfaction": "Довольных Клиентов",
+      "awards": "Дизайн-Наград"
     },
     "cta": {
-      "title": "Ready to start your project?",
-      "description": "Let's discuss how we can bring your product vision to life",
-      "button": "Get in Touch"
+      "title": "Готовы начать ваш проект?",
+      "description": "Обсудим, как мы можем воплотить вашу продуктовую идею в жизнь",
+      "button": "Связаться"
     }
   },
   "services": {
-    "title": "Our Services",
-    "subtitle": "End-to-end product development from initial concept to mass production. We combine design thinking with engineering excellence.",
+    "title": "Наши Услуги",
+    "subtitle": "Полный цикл разработки продуктов от начальной концепции до массового производства. Мы сочетаем дизайн-мышление с инженерным превосходством.",
     "nav": {
-      "design": "Design",
-      "engineering": "Engineering",
-      "production": "Production",
-      "brand": "Brand",
-      "brandbook": "Brandbook",
-      "strategy": "Strategy"
+      "design": "Дизайн",
+      "engineering": "Инженерия",
+      "production": "Производство",
+      "brand": "Бренд",
+      "brandbook": "Брендбук",
+      "strategy": "Стратегия"
     },
     "design": {
-      "title": "Industrial Design",
-      "description": "Human-centered design approach that balances aesthetics, ergonomics, and brand identity to create products people love to use.",
+      "title": "Промышленный Дизайн",
+      "description": "Ориентированный на пользователя подход к дизайну, который балансирует эстетику, эргономику и идентичность бренда для создания продуктов, которые нравятся людям.",
       "features": {
         "conceptDevelopment": {
-          "title": "Concept Development",
-          "description": "Sketching, mood boards, and concept exploration"
+          "title": "Разработка Концепции",
+          "description": "Эскизы, мудборды и исследование концепций"
         },
         "modeling": {
-          "title": "3D Modeling",
-          "description": "Detailed CAD modeling and visualization"
+          "title": "3D Моделирование",
+          "description": "Детальное CAD-моделирование и визуализация"
         },
         "prototyping": {
-          "title": "Prototyping",
-          "description": "Rapid prototyping and user testing"
+          "title": "Прототипирование",
+          "description": "Быстрое прототипирование и тестирование с пользователями"
         }
       },
       "stats": {
-        "products": "Products Designed",
-        "awards": "Design Awards"
+        "products": "Разработанных Продуктов",
+        "awards": "Дизайн-Наград"
       }
     },
     "engineering": {
-      "title": "Engineering & Development",
-      "description": "Technical engineering solutions that transform designs into manufacturable products with focus on quality, cost, and scalability.",
+      "title": "Инженерия и Разработка",
+      "description": "Технические инженерные решения, которые превращают дизайны в производимые продукты с фокусом на качестве, стоимости и масштабируемости.",
       "features": {
         "mechanical": {
-          "title": "Mechanical Engineering",
-          "description": "Structural analysis and mechanism design"
+          "title": "Машиностроение",
+          "description": "Структурный анализ и проектирование механизмов"
         },
         "dfm": {
-          "title": "DFM Optimization",
-          "description": "Design for manufacturing and assembly"
+          "title": "DFM Оптимизация",
+          "description": "Проектирование для производства и сборки"
         },
         "materials": {
-          "title": "Material Selection",
-          "description": "Optimal material choices for performance and cost"
+          "title": "Выбор Материалов",
+          "description": "Оптимальный выбор материалов для производительности и стоимости"
         }
       },
       "stats": {
-        "quality": "Quality Rate",
-        "costReduction": "Cost Reduction"
+        "quality": "Уровень Качества",
+        "costReduction": "Снижение Стоимости"
       }
     },
     "production": {
-      "title": "Manufacturing & Production",
-      "description": "Scalable manufacturing solutions with rigorous quality control and supply chain management for reliable product delivery.",
+      "title": "Производство и Изготовление",
+      "description": "Масштабируемые производственные решения с строгим контролем качества и управлением цепочками поставок для надежной доставки продуктов.",
       "features": {
         "factory": {
-          "title": "Factory Sourcing",
-          "description": "Partner selection and manufacturing setup"
+          "title": "Поиск Фабрик",
+          "description": "Выбор партнеров и настройка производства"
         },
         "quality": {
-          "title": "Quality Assurance",
-          "description": "Comprehensive QC processes and testing"
+          "title": "Контроль Качества",
+          "description": "Комплексные процессы QC и тестирование"
         },
         "supply": {
-          "title": "Supply Chain",
-          "description": "Material sourcing and logistics management"
+          "title": "Цепочка Поставок",
+          "description": "Поиск материалов и управление логистикой"
         }
       },
       "stats": {
-        "units": "Units Produced",
-        "leadTime": "Avg. Lead Time"
+        "units": "Произведено Единиц",
+        "leadTime": "Среднее Время Выполнения"
       }
     },
     "strategy": {
-      "title": "Product Strategy & Research",
-      "description": "We begin with deep market analysis and user research to define product vision, positioning, and business objectives that ensure market success.",
+      "title": "Стратегия Продукта и Исследования",
+      "description": "Мы начинаем с глубокого анализа рынка и пользовательских исследований, чтобы определить видение продукта, позиционирование и бизнес-цели, обеспечивающие успех на рынке.",
       "features": {
         "marketAnalysis": {
-          "title": "Market Analysis",
-          "description": "Competitive landscape and opportunity assessment"
+          "title": "Анализ Рынка",
+          "description": "Анализ конкурентной среды и оценка возможностей"
         },
         "userResearch": {
-          "title": "User Research",
-          "description": "In-depth understanding of user needs and behaviors"
+          "title": "Пользовательские Исследования",
+          "description": "Глубокое понимание потребностей и поведения пользователей"
         },
         "productPlanning": {
-          "title": "Product Planning",
-          "description": "Roadmap development and feature prioritization"
+          "title": "Планирование Продукта",
+          "description": "Разработка дорожной карты и приоритизация функций"
         }
       },
       "stats": {
-        "studies": "Market Studies",
-        "successRate": "Success Rate"
+        "studies": "Исследований Рынка",
+        "successRate": "Уровень Успеха"
       }
     },
     "process": {
-      "title": "Our Process",
-      "subtitle": "Structured approach to product development",
+      "title": "Наш Процесс",
+      "subtitle": "Структурированный подход к разработке продуктов",
       "discover": {
-        "title": "Discover",
-        "description": "Research and strategy definition"
+        "title": "Исследование",
+        "description": "Исследования и определение стратегии"
       },
       "design": {
-        "title": "Design",
-        "description": "Concept development and validation"
+        "title": "Дизайн",
+        "description": "Разработка и валидация концепции"
       },
       "develop": {
-        "title": "Develop",
-        "description": "Engineering and prototyping"
+        "title": "Разработка",
+        "description": "Инженерия и прототипирование"
       },
       "deliver": {
-        "title": "Deliver",
-        "description": "Production and launch"
+        "title": "Реализация",
+        "description": "Производство и запуск"
       }
     },
     "cta": {
-      "title": "Start Your Project",
-      "description": "Ready to bring your product idea to life? Let's discuss your project requirements.",
-      "button": "Get Quote"
+      "title": "Начните Ваш Проект",
+      "description": "Готовы воплотить вашу идею продукта в жизнь? Обсудим требования к вашему проекту.",
+      "button": "Получить Предложение"
     }
   },
   "brandbook": {
-    "title": "Brandbook Development",
-    "subtitle": "Comprehensive brand identity systems that create memorable and consistent brand experiences across all touchpoints.",
+    "title": "Разработка Брендбука",
+    "subtitle": "Комплексные системы айдентики бренда, создающие запоминающийся и последовательный опыт на всех точках контакта.",
     "intro": {
-      "title": "Brandbook is the Foundation of Your Brand",
-      "description": "A brandbook is not just a set of rules, but the foundation on which the entire company's image rests. I approach its creation as carefully as I do any product: I study the brand's character, its audience, its purpose. On this foundation of meanings, I build a system—from color and typography to the logic of presenting materials.",
-      "description2": "We develop brandbooks for companies of any scale. Want a cohesive visual system with well-thought-out elements? We'll make sure it becomes your powerful tool, not just a pretty folder 'for show'."
+      "title": "Брендбук — это основа бренда",
+      "description": "Брендбук — это не просто набор правил, а основа, на которой держится весь образ компании. Я подхожу к его созданию так же внимательно, как к работе над любым продуктом: изучаю характер бренда, его аудиторию, его цель. На фундаменте этих смыслов формирую систему — от цвета и шрифта до логики подачи материалов.",
+      "description2": "Мы разрабатываем брендбуки для компаний любого масштаба. Хотите стройную визуальную систему с продуманными элементами? Сделаем так, чтобы она стала вашим сильным инструментом, а не красивой папкой «для галочки»."
     },
     "process": {
-      "title": "Our Brandbook Process",
-      "subtitle": "Structured approach to brand identity development",
+      "title": "Наш Процесс Создания Брендбука",
+      "subtitle": "Структурированный подход к разработке айдентики бренда",
       "research": {
-        "title": "Brand Research",
-        "description": "Market analysis and audience understanding"
+        "title": "Исследование Бренда",
+        "description": "Анализ рынка и понимание аудитории"
       },
       "strategy": {
-        "title": "Brand Strategy",
-        "description": "Positioning and messaging framework"
+        "title": "Стратегия Бренда",
+        "description": "Позиционирование и месседжинг"
       },
       "identity": {
-        "title": "Visual Identity",
-        "description": "Logo, colors, typography development"
+        "title": "Визуальная Айдентика",
+        "description": "Разработка логотипа, цветов, типографики"
       },
       "guidelines": {
-        "title": "Guidelines",
-        "description": "Comprehensive usage documentation"
+        "title": "Гайдлайны",
+        "description": "Комплексная документация по использованию"
       }
     },
     "cases": {
-      "title": "Brandbook Cases",
-      "subtitle": "Our recent brand identity projects"
+      "title": "Кейсы Брендбуков",
+      "subtitle": "Наши последние проекты по айдентике бренда"
     },
     "benefits": {
-      "title": "Why Invest in Brandbook?",
-      "subtitle": "Key benefits of comprehensive brand guidelines",
+      "title": "Зачем Инвестировать в Брендбук?",
+      "subtitle": "Ключевые преимущества комплексных гайдлайнов бренда",
       "consistency": {
-        "title": "Brand Consistency",
-        "description": "Maintain consistent visual identity across all platforms and touchpoints"
+        "title": "Консистентность Бренда",
+        "description": "Поддержание последовательной визуальной идентичности на всех платформах"
       },
       "efficiency": {
-        "title": "Team Efficiency",
-        "description": "Clear guidelines speed up design processes and decision making"
+        "title": "Эффективность Команды",
+        "description": "Четкие гайдлайны ускоряют процессы дизайна и принятия решений"
       },
       "recognition": {
-        "title": "Brand Recognition",
-        "description": "Strong visual identity increases brand recall and customer loyalty"
+        "title": "Узнаваемость Бренда",
+        "description": "Сильная визуальная идентичность увеличивает запоминаемость и лояльность"
       },
       "scalability": {
-        "title": "Easy Scalability",
-        "description": "Simplifies brand expansion to new markets and product lines"
+        "title": "Легкая Масштабируемость",
+        "description": "Упрощает расширение бренда на новые рынки и продуктовые линейки"
       }
     },
     "cta": {
-      "title": "Develop Your Brand Identity",
-      "description": "Ready to create a powerful brand system that stands out? Let's discuss your brand vision.",
-      "button": "Start Brand Project"
+      "title": "Разработайте Айдентику Вашего Бренда",
+      "description": "Готовы создать мощную систему бренда, которая выделяется? Обсудим ваше видение бренда.",
+      "button": "Начать Проект Бренда"
     }
   },
   "portfolio": {
-    "title": "Our Work",
-    "subtitle": "Showcasing our successful product development projects",
+    "title": "Наши Работы",
+    "subtitle": "Демонстрация наших успешных проектов по разработке продуктов",
     "filter": {
-      "all": "All",
-      "design": "Design",
-      "engineering": "Engineering",
-      "production": "Production"
+      "all": "Все",
+      "design": "Дизайн",
+      "engineering": "Инженерия",
+      "production": "Производство"
     },
-    "viewProject": "View Project",
+    "viewProject": "Смотреть Проект",
     "testimonials": {
-      "title": "Client Testimonials"
+      "title": "Отзывы Клиентов"
     }
   },
   "about": {
-    "title": "About Us",
-    "subtitle": "Learn about our mission, values, and the team behind NBGROUP",
+    "title": "О Нас",
+    "subtitle": "Узнайте о нашей миссии, ценностях и команде NBGROUP",
     "story": {
-      "title": "Our Story",
-      "description": "Founded with a vision to bridge the gap between innovative ideas and market-ready products, NBGROUP brings together expertise in design, engineering, and manufacturing."
+      "title": "Наша История",
+      "description": "Основанная с видением соединить инновационные идеи и готовые к рынку продукты, NBGROUP объединяет экспертизу в дизайне, инженерии и производстве."
     },
     "values": {
-      "title": "Our Values"
+      "title": "Наши Ценности"
     },
     "team": {
-      "title": "Our Team"
+      "title": "Наша Команда"
     },
     "cta": {
-      "title": "Join Our Team",
-      "description": "We're always looking for talented individuals to join our mission",
-      "button": "View Careers"
+      "title": "Присоединяйтесь к Нашей Команде",
+      "description": "Мы всегда ищем талантливых людей для нашей миссии",
+      "button": "Смотреть Вакансии"
     }
   },
   "contact": {
-    "title": "Get in Touch",
-    "subtitle": "Ready to start your project? Let's discuss how we can help bring your product vision to life.",
+    "title": "Свяжитесь с Нами",
+    "subtitle": "Готовы начать ваш проект? Давайте обсудим, как мы можем помочь воплотить вашу продуктовую идею в жизнь.",
     "hero": {
-      "cta": "Start Your Project"
+      "cta": "Начать Ваш Проект"
     },
     "info": {
-      "visit": "Visit Our Studio",
-      "call": "Call Us",
-      "email": "Email Us"
+      "visit": "Посетите Нашу Студию",
+      "call": "Позвоните Нам",
+      "email": "Напишите Нам"
     },
-    "viewMap": "View on Map",
-    "callNow": "Call Now",
-    "sendEmail": "Send Email",
-    "hours": "Mon-Fri, 9:00-18:00",
-    "response": "Response within 24 hours",
+    "viewMap": "Посмотреть на Карте",
+    "callNow": "Позвонить Сейчас",
+    "sendEmail": "Написать Письмо",
+    "hours": "Пн-Пт, 9:00-18:00",
+    "response": "Ответ в течение 24 часов",
     "form": {
-      "title": "Start Your Project",
-      "subtitle": "Fill out the form and we'll get back to you within 24 hours to discuss your project.",
-      "name": "Full Name *",
-      "email": "Email Address *",
-      "company": "Company",
-      "phone": "Phone",
-      "projectType": "Project Type",
-      "selectProject": "Select project type",
+      "title": "Начните Ваш Проект",
+      "subtitle": "Заполните форму, и мы свяжемся с вами в течение 24 часов для обсуждения вашего проекта.",
+      "name": "Полное Имя *",
+      "email": "Email Адрес *",
+      "company": "Компания",
+      "phone": "Телефон",
+      "projectType": "Тип Проекта",
+      "selectProject": "Выберите тип проекта",
       "projectTypes": {
-        "new": "New Product Development",
-        "redesign": "Product Redesign",
-        "engineering": "Engineering Services",
-        "consultation": "Design Consultation",
-        "other": "Other"
+        "new": "Разработка Нового Продукта",
+        "redesign": "Редизайн Продукта",
+        "engineering": "Инженерные Услуги",
+        "consultation": "Дизайн Консультация",
+        "other": "Другое"
       },
-      "budget": "Project Budget",
-      "selectBudget": "Select budget range",
-      "message": "Project Details *",
-      "submit": "Send Message"
+      "budget": "Бюджет Проекта",
+      "selectBudget": "Выберите бюджет",
+      "message": "Детали Проекта *",
+      "submit": "Отправить Сообщение"
     },
     "social": {
-      "title": "Follow Our Work",
-      "subtitle": "See our latest projects and behind-the-scenes",
-      "telegram": "Latest updates",
-      "instagram": "Visual portfolio",
-      "linkedin": "Business network",
-      "behance": "Design projects"
+      "title": "Следите за Нашей Работой",
+      "subtitle": "Смотрите наши последние проекты и закулисье",
+      "telegram": "Последние обновления",
+      "instagram": "Визуальное портфолио",
+      "linkedin": "Бизнес-сеть",
+      "behance": "Дизайн проекты"
     },
     "faq": {
-      "title": "Common Questions",
+      "title": "Частые Вопросы",
       "timeline": {
-        "question": "What's your typical project timeline?",
-        "answer": "Most projects take 3-6 months from concept to production-ready design, depending on complexity and requirements."
+        "question": "Каков ваш типичный срок выполнения проекта?",
+        "answer": "Большинство проектов занимает 3-6 месяцев от концепции до готового к производству дизайна, в зависимости от сложности и требований."
       },
       "startups": {
-        "question": "Do you work with startups?",
-        "answer": "Yes, we offer flexible engagement models for startups and established companies, including equity-based partnerships."
+        "question": "Вы работаете со стартапами?",
+        "answer": "Да, мы предлагаем гибкие модели сотрудничества для стартапов и established компаний, включая партнерства на основе долевого участия."
       },
       "process": {
-        "question": "What's your design process?",
-        "answer": "We follow a user-centered design process: research, strategy, concept development, prototyping, testing, and final production."
+        "question": "Каков ваш процесс дизайна?",
+        "answer": "Мы следуем ориентированному на пользователя процессу дизайна: исследование, стратегия, разработка концепции, прототипирование, тестирование и финальное производство."
       }
     },
     "map": {
-      "title": "Visit Our Studio",
-      "description": "Located in the heart of Moscow's business district",
-      "directions": "Get Directions",
-      "copy": "Copy Address"
+      "title": "Посетите Нашу Студию",
+      "description": "Расположена в сердце делового района Москвы",
+      "directions": "Построить Маршрут",
+      "copy": "Копировать Адрес"
     }
   },
   "footer": {
-    "description": "Full-cycle product development studio transforming ideas into market-ready products through design, engineering, and manufacturing excellence.",
+    "description": "Студия полного цикла разработки продуктов, превращающая идеи в готовые к рынку продукты через превосходство в дизайне, инженерии и производстве.",
     "links": {
-      "services": "Services",
-      "work": "Our Work",
-      "about": "About",
-      "contact": "Contact"
+      "services": "Услуги",
+      "work": "Наши Работы",
+      "about": "О нас",
+      "contact": "Контакты"
     },
-    "contact": "Contact",
+    "contact": "Контакты",
     "legal": {
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service",
-      "cookies": "Cookie Policy"
+      "privacy": "Политика Конфиденциальности",
+      "terms": "Условия Использования",
+      "cookies": "Политика Cookies"
     },
-    "copyright": "All rights reserved."
+    "copyright": "Все права защищены."
   }
 }
