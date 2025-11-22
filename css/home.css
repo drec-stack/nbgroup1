@@ -24,7 +24,7 @@
 .hero-badge {
     display: inline-block;
     padding: 8px 16px;
-    background: rgba(255, 62, 0, 0.1);
+    background: rgba(0, 102, 255, 0.1);
     color: var(--accent);
     font-size: 0.9rem;
     font-weight: 600;
