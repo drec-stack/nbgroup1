@@ -1,11 +1,12 @@
-// i18n.js - Fixed and enhanced version
-console.log('🚀 i18n.js loaded');
+// i18n.js - Enhanced with smooth animations
+console.log('🚀 i18n.js loaded - SMOOTH VERSION');
 
 class I18n {
     constructor() {
         this.currentLang = localStorage.getItem('preferredLang') || 'ru';
         this.translations = {};
         this.isInitialized = false;
+        this.isAnimating = false;
         console.log('🌍 i18n initialized with language:', this.currentLang);
     }
 
@@ -13,7 +14,7 @@ class I18n {
         try {
             await this.loadTranslations(this.currentLang);
             this.applyTranslations();
-            this.setupLanguageSwitcher();
+            this.setupSmoothLanguageSwitcher();
             this.isInitialized = true;
             
             // Re-apply translations after short delay for dynamic content
@@ -28,7 +29,7 @@ class I18n {
     async loadTranslations(lang) {
         try {
             console.log('📥 Loading translations for:', lang);
-            const response = await fetch(`../lang/${lang}.json`);
+            const response = await fetch(`lang/${lang}.json`);
             if (!response.ok) throw new Error(`HTTP ${response.status} loading ${lang}.json`);
             
             this.translations = await response.json();
@@ -131,42 +132,56 @@ class I18n {
         }
     }
 
-    setupLanguageSwitcher() {
-        console.log('🔧 Setting up language switcher...');
+    setupSmoothLanguageSwitcher() {
+        console.log('🔧 Setting up smooth language switcher...');
         
-        // Remove existing event listeners by cloning buttons
-        document.querySelectorAll('[data-lang]').forEach(btn => {
+        const switcher = document.querySelector('.language-switcher');
+        const buttons = document.querySelectorAll('.lang-btn');
+
+        // Remove existing listeners
+        buttons.forEach(btn => {
             const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
         });
 
         // Add new event listeners
-        document.querySelectorAll('[data-lang]').forEach(btn => {
+        document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                
                 const lang = btn.getAttribute('data-lang');
-                console.log('🌐 Language switch to:', lang);
-                this.switchLanguage(lang);
+                if (lang !== this.currentLang && !this.isAnimating) {
+                    this.smoothSwitchLanguage(lang);
+                }
             });
         });
 
-        this.updateLanguageSwitcher();
+        this.updateSmoothSwitcher();
     }
 
-    async switchLanguage(lang) {
-        if (lang === this.currentLang) return;
+    async smoothSwitchLanguage(lang) {
+        if (this.isAnimating) return;
         
-        console.log('🔄 Switching language to:', lang);
+        this.isAnimating = true;
+        console.log('🎬 Smooth language switch to:', lang);
+        
+        // 1. Анимация переключателя
+        this.animateSwitcher(lang);
+        
+        // 2. Плавное исчезновение контента
+        await this.fadeOutContent();
+        
+        // 3. Смена языка
+        await this.loadTranslations(lang);
         this.currentLang = lang;
         localStorage.setItem('preferredLang', lang);
-        
-        await this.loadTranslations(lang);
         this.applyTranslations();
-        this.updateLanguageSwitcher();
         
-        // Force re-apply for any dynamic content
-        setTimeout(() => this.applyTranslations(), 200);
+        // 4. Плавное появление нового контента
+        await this.fadeInContent();
+        
+        this.isAnimating = false;
         
         // Notify other components
         window.dispatchEvent(new CustomEvent('languageChanged', {
@@ -174,14 +189,66 @@ class I18n {
         }));
     }
 
-    updateLanguageSwitcher() {
-        document.querySelectorAll('[data-lang]').forEach(btn => {
-            const lang = btn.getAttribute('data-lang');
-            const isActive = lang === this.currentLang;
+    animateSwitcher(lang) {
+        const switcher = document.querySelector('.language-switcher');
+        const buttons = document.querySelectorAll('.lang-btn');
+        
+        // Update active states
+        buttons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // Update slider position
+        switcher.setAttribute('data-current-lang', lang);
+        
+        // Add click animation
+        const activeBtn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+        activeBtn.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            activeBtn.style.transform = 'scale(1)';
+        }, 150);
+    }
+
+    async fadeOutContent() {
+        return new Promise((resolve) => {
+            const mainContent = document.querySelector('main') || document.body;
+            mainContent.classList.add('language-changing');
             
-            btn.classList.toggle('active', isActive);
-            btn.style.opacity = isActive ? '1' : '0.6';
-            btn.style.fontWeight = isActive ? 'bold' : 'normal';
+            setTimeout(() => {
+                resolve();
+            }, 200);
+        });
+    }
+
+    async fadeInContent() {
+        return new Promise((resolve) => {
+            const mainContent = document.querySelector('main') || document.body;
+            mainContent.classList.remove('language-changing');
+            mainContent.classList.add('language-changed');
+            
+            setTimeout(() => {
+                mainContent.classList.remove('language-changed');
+                resolve();
+            }, 300);
+        });
+    }
+
+    updateSmoothSwitcher() {
+        const switcher = document.querySelector('.language-switcher');
+        const buttons = document.querySelectorAll('.lang-btn');
+        
+        if (switcher) {
+            switcher.setAttribute('data-current-lang', this.currentLang);
+        }
+        
+        buttons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-lang') === this.currentLang) {
+                btn.classList.add('active');
+            }
         });
     }
 
@@ -193,6 +260,15 @@ class I18n {
     // Public method to manually trigger translation
     forceTranslate() {
         this.applyTranslations();
+    }
+
+    // Backward compatibility
+    async switchLanguage(lang) {
+        return this.smoothSwitchLanguage(lang);
+    }
+
+    changeLanguage(lang) {
+        return this.smoothSwitchLanguage(lang);
     }
 }
 
