@@ -1,4 +1,4 @@
-// i18n.js - Enhanced with force apply
+// i18n.js - Fixed and enhanced version
 console.log('🚀 i18n.js loaded');
 
 class I18n {
@@ -10,20 +10,26 @@ class I18n {
     }
 
     async init() {
-        await this.loadTranslations(this.currentLang);
-        this.applyTranslations(true); // Force apply
-        this.setupLanguageSwitcher();
-        this.isInitialized = true;
-        
-        // Re-apply translations after a short delay to catch dynamic content
-        setTimeout(() => this.applyTranslations(true), 500);
+        try {
+            await this.loadTranslations(this.currentLang);
+            this.applyTranslations();
+            this.setupLanguageSwitcher();
+            this.isInitialized = true;
+            
+            // Re-apply translations after short delay for dynamic content
+            setTimeout(() => this.applyTranslations(), 100);
+            
+            console.log('✅ i18n fully initialized');
+        } catch (error) {
+            console.error('❌ i18n initialization failed:', error);
+        }
     }
 
     async loadTranslations(lang) {
         try {
             console.log('📥 Loading translations for:', lang);
-            const response = await fetch(`lang/${lang}.json`);
-            if (!response.ok) throw new Error('Failed to load translations');
+            const response = await fetch(`../lang/${lang}.json`);
+            if (!response.ok) throw new Error(`HTTP ${response.status} loading ${lang}.json`);
             
             this.translations = await response.json();
             document.documentElement.lang = lang;
@@ -31,53 +37,85 @@ class I18n {
             
         } catch (error) {
             console.error('❌ Error loading translations:', error);
+            // Fallback to Russian if loading fails
+            if (lang !== 'ru') {
+                console.log('🔄 Falling back to Russian');
+                await this.loadTranslations('ru');
+            }
         }
     }
 
-    applyTranslations(force = false) {
-        console.log('🔄 Applying translations...', force ? '(FORCE)' : '');
-        const elements = document.querySelectorAll('[data-i18n]');
-        
-        console.log(`Found ${elements.length} translatable elements`);
-        
-        elements.forEach((element, index) => {
+    applyTranslations() {
+        console.log('🔄 Applying translations...');
+        let translatedCount = 0;
+
+        // Translate elements with data-i18n
+        document.querySelectorAll('[data-i18n]').forEach(element => {
             const key = element.getAttribute('data-i18n');
-            const translation = this.getTranslation(key);
+            const translation = this.getNestedTranslation(key);
             
             if (translation) {
                 if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                    if (force || element.placeholder !== translation) {
+                    if (element.placeholder !== translation) {
                         element.placeholder = translation;
+                        translatedCount++;
                     }
                 } else {
-                    if (force || element.textContent !== translation) {
+                    if (element.textContent !== translation) {
                         element.textContent = translation;
+                        translatedCount++;
                     }
                 }
-            } else {
-                console.warn('Missing translation for:', key);
+            } else if (key) {
+                console.warn('⚠️ Missing translation for key:', key);
             }
         });
 
-        // Force update page title
+        // Translate alt attributes
+        document.querySelectorAll('[data-i18n-alt]').forEach(element => {
+            const key = element.getAttribute('data-i18n-alt');
+            const translation = this.getNestedTranslation(key);
+            if (translation && element.alt !== translation) {
+                element.alt = translation;
+                translatedCount++;
+            }
+        });
+
+        // Translate title attributes
+        document.querySelectorAll('[data-i18n-title]').forEach(element => {
+            const key = element.getAttribute('data-i18n-title');
+            const translation = this.getNestedTranslation(key);
+            if (translation && element.title !== translation) {
+                element.title = translation;
+                translatedCount++;
+            }
+        });
+
+        // Update page title
         this.updatePageTitle();
-        
-        // Update any dynamic content that might be added by page scripts
-        this.updateDynamicContent();
-        
-        console.log('✅ Translations applied to', elements.length, 'elements');
+
+        console.log(`✅ Applied ${translatedCount} translations`);
     }
 
-    getTranslation(key) {
+    getNestedTranslation(key) {
         if (!key) return null;
-        const keys = key.split('.');
-        let result = this.translations;
         
-        for (const k of keys) {
-            if (!result) break;
-            result = result[k];
+        try {
+            const keys = key.split('.');
+            let result = this.translations;
+            
+            for (const k of keys) {
+                if (result && typeof result === 'object' && k in result) {
+                    result = result[k];
+                } else {
+                    return null;
+                }
+            }
+            return typeof result === 'string' ? result : null;
+        } catch (error) {
+            console.error('Error getting translation for key:', key, error);
+            return null;
         }
-        return result;
     }
 
     updatePageTitle() {
@@ -85,54 +123,19 @@ class I18n {
         if (titleElement) {
             const titleKey = titleElement.getAttribute('data-i18n');
             if (titleKey) {
-                const titleTranslation = this.getTranslation(titleKey);
+                const titleTranslation = this.getNestedTranslation(titleKey);
                 if (titleTranslation) {
                     document.title = titleTranslation;
-                }
-            } else {
-                // Fallback: try to translate common title patterns
-                const currentTitle = document.title;
-                if (currentTitle.includes('Home') || currentTitle.includes('Главная')) {
-                    document.title = this.getTranslation('nav.home') || currentTitle;
-                } else if (currentTitle.includes('Contact') || currentTitle.includes('Контакты')) {
-                    document.title = this.getTranslation('nav.contact') || currentTitle;
                 }
             }
         }
     }
 
-    updateDynamicContent() {
-        // Update any dynamically added content
-        const dynamicSelectors = [
-            '.hero-title', '.hero-subtitle', '.section-title', '.section-subtitle',
-            '.btn-text', '.card-title', '.card-description'
-        ];
-        
-        dynamicSelectors.forEach(selector => {
-            document.querySelectorAll(selector).forEach(element => {
-                if (!element.hasAttribute('data-i18n')) {
-                    const text = element.textContent.trim();
-                    // Try to find matching translation
-                    Object.keys(this.translations).forEach(category => {
-                        if (typeof this.translations[category] === 'object') {
-                            Object.keys(this.translations[category]).forEach(key => {
-                                if (this.translations[category][key] === text) {
-                                    element.setAttribute('data-i18n', `${category}.${key}`);
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        });
-    }
-
     setupLanguageSwitcher() {
         console.log('🔧 Setting up language switcher...');
         
-        // Remove all existing event listeners
-        const buttons = document.querySelectorAll('[data-lang]');
-        buttons.forEach(btn => {
+        // Remove existing event listeners by cloning buttons
+        document.querySelectorAll('[data-lang]').forEach(btn => {
             const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
         });
@@ -143,7 +146,7 @@ class I18n {
                 e.preventDefault();
                 e.stopPropagation();
                 const lang = btn.getAttribute('data-lang');
-                console.log('🔄 Language switch clicked:', lang);
+                console.log('🌐 Language switch to:', lang);
                 this.switchLanguage(lang);
             });
         });
@@ -154,20 +157,20 @@ class I18n {
     async switchLanguage(lang) {
         if (lang === this.currentLang) return;
         
-        console.log('🔄 Switching to language:', lang);
+        console.log('🔄 Switching language to:', lang);
         this.currentLang = lang;
         localStorage.setItem('preferredLang', lang);
         
         await this.loadTranslations(lang);
-        this.applyTranslations(true); // Force apply
+        this.applyTranslations();
         this.updateLanguageSwitcher();
         
-        // Force re-apply after components load
-        setTimeout(() => this.applyTranslations(true), 300);
+        // Force re-apply for any dynamic content
+        setTimeout(() => this.applyTranslations(), 200);
         
-        // Dispatch event for other components
+        // Notify other components
         window.dispatchEvent(new CustomEvent('languageChanged', {
-            detail: { lang: lang }
+            detail: { lang }
         }));
     }
 
@@ -181,22 +184,33 @@ class I18n {
             btn.style.fontWeight = isActive ? 'bold' : 'normal';
         });
     }
+
+    // Public method to get current language
+    getCurrentLang() {
+        return this.currentLang;
+    }
+
+    // Public method to manually trigger translation
+    forceTranslate() {
+        this.applyTranslations();
+    }
 }
 
-// Create and initialize i18n
-const i18n = new I18n();
+// Create global i18n instance
+window.i18n = new I18n();
 
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🏠 DOM loaded, initializing i18n...');
-    i18n.init();
-});
-
-// Also initialize if DOM is already ready
-if (document.readyState === 'interactive' || document.readyState === 'complete') {
+// Initialize based on document state
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('🏠 DOM loaded, initializing i18n...');
+        window.i18n.init();
+    });
+} else {
     console.log('⚡ DOM already ready, initializing i18n...');
-    setTimeout(() => i18n.init(), 100);
+    setTimeout(() => window.i18n.init(), 100);
 }
 
-// Make globally available
-window.i18n = i18n;
+// Export for module systems
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = I18n;
+}
