@@ -7,14 +7,39 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
-    <div id="header-container"></div>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="/" class="logo">
+                    <div class="logo-mark">NB</div>
+                    <span>NEGROUP.TECH</span>
+                </a>
+                <nav class="main-nav">
+                    <a href="/" class="nav-link" data-i18n="nav.home">Главная</a>
+                    <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                    <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Работы</a>
+                    <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                    <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                    <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
+                </nav>
+                <div class="header-actions">
+                    <div class="language-switcher">
+                        <button class="lang-btn" data-lang="ru">RU</button>
+                        <span class="lang-separator">/</span>
+                        <button class="lang-btn" data-lang="en">EN</button>
+                    </div>
+                    <a href="contacts.html" class="btn btn-primary" data-i18n="nav.startProject">Начать Проект</a>
+                </div>
+            </div>
+        </div>
+    </header>
 
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-background" data-parallax="0.5"></div>
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge" data-i18n="home.hero.badge">INDUSTRIAL DESIGN STUDIO</div>
@@ -43,11 +68,14 @@
         </div>
     </section>
 
-    <section class="clients">
+    <!-- Clients Section with WORKING MARQUEE -->
+    <section class="clients-section">
         <div class="container">
             <div class="clients-content">
                 <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
-                <div class="marquee-wrapper">
+                
+                <!-- Marquee 1 -->
+                <div class="marquee-container">
                     <div class="marquee-track">
                         <div class="marquee-content">
                             <span class="brand">dtronic</span>
@@ -66,7 +94,7 @@
                             <span class="separator">·</span>
                             <span class="brand">AC</span>
                             
-                            <!-- Дублирование для бесшовности -->
+                            <!-- Duplicate -->
                             <span class="brand">dtronic</span>
                             <span class="separator">·</span>
                             <span class="brand">BRITA</span>
@@ -85,82 +113,87 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Marquee 2 (Reverse) -->
+                <div class="marquee-container reverse">
+                    <div class="marquee-track">
+                        <div class="marquee-content reverse">
+                            <span class="brand">AC</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Microsoft</span>
+                            <span class="separator">·</span>
+                            <span class="brand">PayPal</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Vocera V.</span>
+                            <span class="separator">·</span>
+                            <span class="brand">stryker</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Roku</span>
+                            <span class="separator">·</span>
+                            <span class="brand">BRITA</span>
+                            <span class="separator">·</span>
+                            <span class="brand">dtronic</span>
+                            
+                            <!-- Duplicate -->
+                            <span class="brand">AC</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Microsoft</span>
+                            <span class="separator">·</span>
+                            <span class="brand">PayPal</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Vocera V.</span>
+                            <span class="separator">·</span>
+                            <span class="brand">stryker</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Roku</span>
+                            <span class="separator">·</span>
+                            <span class="brand">BRITA</span>
+                            <span class="separator">·</span>
+                            <span class="brand">dtronic</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Services Section -->
     <section class="services-preview">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title" data-i18n="home.servicesPreview.title">Our Expertise</h2>
-                <p class="section-subtitle" data-i18n="home.servicesPreview.subtitle">Comprehensive product development services</p>
+                <h2 class="section-title" data-i18n="home.servicesPreview.title">Наша Экспертиза</h2>
+                <p class="section-subtitle" data-i18n="home.servicesPreview.subtitle">Комплексные услуги по разработке продуктов</p>
             </div>
             <div class="services-grid">
-                <div class="service-preview-card">
+                <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-lightbulb"></i>
                     </div>
                     <h3 data-i18n="home.servicesPreview.strategy.title">Product Strategy</h3>
                     <p data-i18n="home.servicesPreview.strategy.description">Market research and product planning for successful market entry</p>
-                    <a href="services.html#strategy" class="service-link" data-i18n="home.servicesPreview.learnMore">Learn more</a>
+                    <a href="services.html" class="service-link" data-i18n="home.servicesPreview.learnMore">Learn more</a>
                 </div>
-                <div class="service-preview-card">
+                <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-pencil-ruler"></i>
                     </div>
                     <h3 data-i18n="home.servicesPreview.design.title">Industrial Design</h3>
                     <p data-i18n="home.servicesPreview.design.description">Human-centered design with focus on usability and aesthetics</p>
-                    <a href="services.html#design" class="service-link" data-i18n="home.servicesPreview.learnMore">Learn more</a>
+                    <a href="services.html" class="service-link" data-i18n="home.servicesPreview.learnMore">Learn more</a>
                 </div>
-                <div class="service-preview-card">
+                <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-industry"></i>
                     </div>
                     <h3 data-i18n="home.servicesPreview.engineering.title">Engineering</h3>
                     <p data-i18n="home.servicesPreview.engineering.description">Technical development and manufacturing preparation</p>
-                    <a href="services.html#engineering" class="service-link" data-i18n="home.servicesPreview.learnMore">Learn more</a>
+                    <a href="services.html" class="service-link" data-i18n="home.servicesPreview.learnMore">Learn more</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="featured-work">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-i18n="home.featuredWork.title">Featured Projects</h2>
-                <p class="section-subtitle" data-i18n="home.featuredWork.subtitle">Recent work that demonstrates our capabilities</p>
-            </div>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-image">
-                        <div class="image-placeholder">Project 1</div>
-                    </div>
-                    <div class="project-content">
-                        <h3 data-i18n="home.featuredWork.project1.title">Smart Home Device</h3>
-                        <p data-i18n="home.featuredWork.project1.description">Complete product development for IoT home automation system</p>
-                        <a href="portfolio.html#project1" class="project-link" data-i18n="home.featuredWork.viewCaseStudy">View Case Study</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <div class="image-placeholder">Project 2</div>
-                    </div>
-                    <div class="project-content">
-                        <h3 data-i18n="home.featuredWork.project2.title">Medical Equipment</h3>
-                        <p data-i18n="home.featuredWork.project2.description">Ergonomic design for portable medical diagnostic device</p>
-                        <a href="portfolio.html#project2" class="project-link" data-i18n="home.featuredWork.viewCaseStudy">View Case Study</a>
-                    </div>
-                </div>
-            </div>
-            <div class="section-cta">
-                <a href="portfolio.html" class="btn btn-outline">
-                    <span data-i18n="home.featuredWork.viewAllProjects">View All Projects</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
+    <!-- Stats Section -->
     <section class="stats">
         <div class="container">
             <div class="stats-grid">
@@ -184,6 +217,7 @@
         </div>
     </section>
 
+    <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
             <div class="cta-content">
@@ -197,69 +231,158 @@
         </div>
     </section>
 
-    <div id="footer-container"></div>
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-mark">NB</div>
+                        <span>NEGROUP.TECH</span>
+                    </div>
+                    <p class="footer-description" data-i18n="footer.description">
+                        Industrial design studio creating products that define markets 
+                        and drive business growth.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn" title="Follow us on LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" aria-label="Behance" title="Follow us on Behance">
+                            <i class="fab fa-behance"></i>
+                        </a>
+                        <a href="#" aria-label="Dribbble" title="Follow us on Dribbble">
+                            <i class="fab fa-dribbble"></i>
+                        </a>
+                        <a href="#" aria-label="Instagram" title="Follow us on Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3 data-i18n="footer.company">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html" data-i18n="footer.links.about">About Us</a></li>
+                        <li><a href="services.html" data-i18n="footer.links.services">Services</a></li>
+                        <li><a href="portfolio.html" data-i18n="footer.links.work">Portfolio</a></li>
+                        <li><a href="contacts.html" data-i18n="footer.links.contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 data-i18n="footer.services">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="services.html">Product Strategy</a></li>
+                        <li><a href="services.html">Industrial Design</a></li>
+                        <li><a href="services.html">Engineering</a></li>
+                        <li><a href="services.html">Manufacturing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 data-i18n="footer.contact">Contact</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope" aria-hidden="true"></i> hello@nbgroup.tech</p>
+                        <p><i class="fas fa-phone" aria-hidden="true"></i> +7 (999) 999-99-99</p>
+                        <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Moscow, Russia</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 NBGROUP.TECH. <span data-i18n="footer.copyright">All rights reserved.</span></p>
+                <div class="footer-legal">
+                    <a href="privacy.html" data-i18n="footer.legal.privacy">Privacy Policy</a>
+                    <a href="terms.html" data-i18n="footer.legal.terms">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
+    <!-- JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/home.js"></script>
-    
+
     <script>
-        // Загружаем компоненты и инициализируем переводы
-        Promise.all([
-            fetch('components/header.html').then(r => {
-                if (!r.ok) throw new Error(`HTTP ${r.status} loading header`);
-                return r.text();
-            }),
-            fetch('components/footer.html').then(r => {
-                if (!r.ok) throw new Error(`HTTP ${r.status} loading footer`);
-                return r.text();
-            })
-        ]).then(([headerHtml, footerHtml]) => {
-            document.getElementById('header-container').innerHTML = headerHtml;
-            document.getElementById('footer-container').innerHTML = footerHtml;
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Starting initialization...');
             
-            // Инициализируем функциональность после загрузки компонентов
-            if (typeof initHeader === 'function') initHeader();
-            if (typeof initHome === 'function') initHome();
-            
-            // Принудительно применяем переводы после загрузки всего
-            setTimeout(() => {
-                if (window.i18n && typeof window.i18n.applyTranslations === 'function') {
-                    window.i18n.applyTranslations();
+            // Start marquee animations
+            const marquees = document.querySelectorAll('.marquee-content');
+            marquees.forEach(marquee => {
+                marquee.style.animation = 'none';
+                void marquee.offsetWidth;
+                
+                if (marquee.classList.contains('reverse')) {
+                    marquee.style.animation = 'marquee-scroll-reverse 35s linear infinite';
+                } else {
+                    marquee.style.animation = 'marquee-scroll 35s linear infinite';
                 }
-            }, 300);
-            
-        }).catch(error => {
-            console.error('Error loading components:', error);
-            // Fallback: показать навигацию даже если компоненты не загрузились
-            document.getElementById('header-container').innerHTML = `
-                <header class="main-header">
-                    <div class="container">
-                        <div class="header-inner">
-                            <a href="index.html" class="logo">
-                                <div class="logo-mark">N</div>
-                                <span>NBGROUP</span>
-                            </a>
-                            <nav class="main-nav">
-                                <a href="index.html" class="nav-link">Главная</a>
-                                <a href="services.html" class="nav-link">Услуги</a>
-                                <a href="portfolio.html" class="nav-link">Работы</a>
-                                <a href="about.html" class="nav-link">О нас</a>
-                                <a href="contacts.html" class="nav-link">Контакты</a>
-                            </nav>
-                        </div>
-                    </div>
-                </header>
-            `;
+                
+                // Add hover effects
+                marquee.addEventListener('mouseenter', function() {
+                    this.style.animationPlayState = 'paused';
+                });
+                
+                marquee.addEventListener('mouseleave', function() {
+                    this.style.animationPlayState = 'running';
+                });
+            });
+
+            // Initialize counters
+            const statNumbers = document.querySelectorAll('.stat-number');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const statNumber = entry.target;
+                        const target = parseInt(statNumber.getAttribute('data-target')) || 0;
+                        
+                        if (target > 0) {
+                            animateNumber(statNumber, target);
+                            observer.unobserve(statNumber);
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            statNumbers.forEach(stat => {
+                if (stat.getAttribute('data-target')) {
+                    observer.observe(stat);
+                }
+            });
+
+            function animateNumber(element, target) {
+                let current = 0;
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                const startTime = Date.now();
+                
+                function updateNumber() {
+                    const elapsed = Date.now() - startTime;
+                    current = Math.min(target, (elapsed / duration) * target);
+                    
+                    element.textContent = Math.floor(current).toLocaleString();
+                    
+                    if (current < target) {
+                        requestAnimationFrame(updateNumber);
+                    } else {
+                        element.textContent = target.toLocaleString();
+                    }
+                }
+                
+                requestAnimationFrame(updateNumber);
+            }
+
+            console.log('✅ All animations initialized');
         });
 
-        // Только один дополнительный вызов для надежности
-        setTimeout(() => {
-            if (window.i18n && typeof window.i18n.applyTranslations === 'function') {
-                window.i18n.applyTranslations();
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.main-header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
-        }, 1000);
+        });
     </script>
 </body>
 </html>
