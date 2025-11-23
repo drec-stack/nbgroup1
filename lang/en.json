@@ -11,6 +11,17 @@
   "home": {
     "title": "Innovative Product Development",
     "subtitle": "From concept to production - we create products that shape the future",
+    "parallax": {
+      "section1": {
+        "title": "We Design Innovation",
+        "description": "Creating products that redefine markets and user experiences through cutting-edge industrial design and engineering."
+      },
+      "section2": {
+        "title": "Engineering Excellence",
+        "description": "From concept to manufacturing, we ensure every product meets the highest standards of quality and performance."
+      },
+      "scrollHint": "Scroll to explore"
+    },
     "hero": {
       "badge": "Product Development Studio",
       "titleLine1": "We design",
