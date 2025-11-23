@@ -183,51 +183,41 @@ class NBGroupTech {
     }
 
     setupLanguageSupport() {
-        // Update when language changes
-        window.addEventListener('languageChanged', (e) => {
-            console.log('Language changed to:', e.detail.language);
-            this.setupCurrentPage();
-            this.updateLanguageSwitcher();
-        });
-
-        // Initialize language switcher
-        this.setupLanguageSwitcher();
-    }
-
-    setupLanguageSwitcher() {
-        const langButtons = document.querySelectorAll('.lang-btn');
-        
-        langButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const lang = btn.getAttribute('data-lang');
-                if (window.i18n) {
-                    window.i18n.changeLanguage(lang);
-                    
-                    // Dispatch custom event
-                    window.dispatchEvent(new CustomEvent('languageChanged', {
-                        detail: { language: lang }
-                    }));
-                }
-            });
-        });
-
+    // Update when language changes
+    window.addEventListener('languageChanged', (e) => {
+        console.log('Language changed to:', e.detail.lang);
+        this.setupCurrentPage();
         this.updateLanguageSwitcher();
-    }
+    });
 
-    updateLanguageSwitcher() {
-        const langButtons = document.querySelectorAll('.lang-btn');
-        const currentLang = window.i18n ? window.i18n.currentLang : 'ru';
-        
-        langButtons.forEach(btn => {
-            const lang = btn.getAttribute('data-lang');
-            if (lang === currentLang) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        });
+    // Initialize language switcher
+    this.setupLanguageSwitcher();
+}
+
+setupLanguageSwitcher() {
+    // This is now handled by the enhanced i18n.js
+    // Just update the visual state
+    this.updateLanguageSwitcher();
+}
+
+updateLanguageSwitcher() {
+    const langButtons = document.querySelectorAll('.lang-btn');
+    const currentLang = window.i18n ? window.i18n.getCurrentLang() : 'ru';
+    const switcher = document.querySelector('.language-switcher');
+    
+    if (switcher) {
+        switcher.setAttribute('data-current-lang', currentLang);
     }
+    
+    langButtons.forEach(btn => {
+        const lang = btn.getAttribute('data-lang');
+        if (lang === currentLang) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+}
 
     setupAnimations() {
         // Initialize intersection observer for scroll animations
