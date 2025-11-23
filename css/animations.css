@@ -891,3 +891,64 @@
     backface-visibility: hidden;
     perspective: 1000;
 }
+
+/* ===== SMOOTH LANGUAGE TRANSITION ANIMATIONS ===== */
+.language-changing {
+    pointer-events: none;
+}
+
+.language-changing [data-i18n] {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.language-changed [data-i18n] {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+}
+
+/* Staggered animation for multiple elements */
+.language-changed [data-i18n]:nth-child(1) { transition-delay: 0.05s; }
+.language-changed [data-i18n]:nth-child(2) { transition-delay: 0.1s; }
+.language-changed [data-i18n]:nth-child(3) { transition-delay: 0.15s; }
+.language-changed [data-i18n]:nth-child(4) { transition-delay: 0.2s; }
+.language-changed [data-i18n]:nth-child(5) { transition-delay: 0.25s; }
+
+/* Page transition overlay */
+.language-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--primary);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.language-changing .language-transition-overlay {
+    opacity: 0.8;
+    pointer-events: all;
+}
+
+/* Reduced motion support for language switcher */
+@media (prefers-reduced-motion: reduce) {
+    .lang-slider {
+        transition: none;
+    }
+    
+    .language-changing [data-i18n],
+    .language-changed [data-i18n] {
+        transition: none;
+        opacity: 1;
+        transform: none;
+    }
+    
+    .lang-btn:hover .lang-flag {
+        transform: none;
+    }
+}
