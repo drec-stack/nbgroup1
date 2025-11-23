@@ -654,3 +654,150 @@ html {
         margin-bottom: 50px;
     }
 }
+
+/* ===== SMOOTH LANGUAGE SWITCHER ===== */
+.language-switcher {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    padding: 4px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* ИСПРАВЛЕНО: правильный порядок префиксов */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    min-width: 120px;
+    height: 40px;
+}
+
+.lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    color: var(--light-text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 2;
+    min-width: 56px;
+    justify-content: center;
+    flex: 1;
+}
+
+.lang-btn.active {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.lang-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: var(--accent-gradient);
+    border-radius: 20px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+/* Когда активен английский, слайдер смещается */
+.language-switcher[data-current-lang="en"] .lang-slider {
+    transform: translateX(100%);
+}
+
+.lang-flag {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.lang-btn:hover .lang-flag {
+    transform: scale(1.2);
+}
+
+.lang-btn:hover:not(.active) {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Анимация для контента при смене языка */
+.language-changing [data-i18n] {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.language-changing .content-transition {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.language-changed .content-transition {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Микро-анимации для текста */
+[data-i18n] {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Responsive для language switcher */
+@media (max-width: 768px) {
+    .language-switcher {
+        min-width: 100px;
+        height: 36px;
+    }
+    
+    .lang-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+        min-width: 48px;
+    }
+    
+    .lang-flag {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .language-switcher {
+        min-width: 90px;
+    }
+    
+    .lang-btn {
+        padding: 5px 10px;
+        font-size: 12px;
+        min-width: 44px;
+    }
+    
+    .lang-text {
+        display: none;
+    }
+    
+    .lang-btn {
+        gap: 0;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .lang-slider {
+        transition: none;
+    }
+    
+    .language-changing [data-i18n],
+    .language-changed [data-i18n] {
+        transition: none;
+    }
+    
+    .lang-btn:hover .lang-flag {
+        transform: none;
+    }
+}
