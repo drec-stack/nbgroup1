@@ -193,40 +193,64 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats">
+    <!-- IMPROVED Stats Section -->
+    <section class="stats-improved">
         <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" data-target="150">0</div>
-                    <div class="stat-label" data-i18n="home.stats.projects">Projects Delivered</div>
+            <div class="stats-grid-improved">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number-improved" data-target="150">0</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.projects">Projects Delivered</div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="12">0</div>
-                    <div class="stat-label" data-i18n="home.stats.years">Years Experience</div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number-improved" data-target="12">0</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.years">Years Experience</div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="98">0</div>
-                    <div class="stat-label" data-i18n="home.stats.satisfaction">Client Satisfaction</div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number-improved" data-target="98">0</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.satisfaction">Client Satisfaction</div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="25">0</div>
-                    <div class="stat-label" data-i18n="home.stats.awards">Design Awards</div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number-improved" data-target="25">0</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.awards">Design Awards</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
+    <!-- IMPROVED CTA Section -->
+    <section class="cta-improved">
         <div class="container">
-            <div class="cta-content">
-                <h2 data-i18n="home.cta.title">Ready to start your project?</h2>
-                <p data-i18n="home.cta.description">Let's discuss how we can bring your product vision to life</p>
-                <a href="contacts.html" class="btn btn-primary btn-large">
-                    <span data-i18n="home.cta.button">Get in Touch</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+            <div class="cta-content-improved">
+                <div class="cta-text">
+                    <h2 data-i18n="home.cta.title">Ready to start your project?</h2>
+                    <p data-i18n="home.cta.description">Let's discuss how we can bring your product vision to life</p>
+                </div>
+                <div class="cta-action">
+                    <a href="contacts.html" class="btn btn-primary btn-large btn-glow">
+                        <span data-i18n="home.cta.button">Get in Touch</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -299,6 +323,7 @@
     <!-- JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
 
     <script>
         // Initialize everything when DOM is ready
@@ -327,41 +352,48 @@
                 });
             });
 
-            // Initialize counters
-            const statNumbers = document.querySelectorAll('.stat-number');
+            // Initialize improved counters
+            const statCards = document.querySelectorAll('.stat-card');
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
+                entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
-                        const statNumber = entry.target;
+                        const statCard = entry.target;
+                        const statNumber = statCard.querySelector('.stat-number-improved');
                         const target = parseInt(statNumber.getAttribute('data-target')) || 0;
                         
                         if (target > 0) {
-                            animateNumber(statNumber, target);
-                            observer.unobserve(statNumber);
+                            // Stagger animation with delay based on index
+                            setTimeout(() => {
+                                animateEnhancedNumber(statNumber, target);
+                                statCard.classList.add('animated');
+                            }, index * 200);
+                            
+                            observer.unobserve(statCard);
                         }
                     }
                 });
-            }, { threshold: 0.5 });
+            }, { threshold: 0.3 });
 
-            statNumbers.forEach(stat => {
-                if (stat.getAttribute('data-target')) {
-                    observer.observe(stat);
-                }
+            statCards.forEach(card => {
+                observer.observe(card);
             });
 
-            function animateNumber(element, target) {
+            function animateEnhancedNumber(element, target) {
                 let current = 0;
-                const duration = 2000;
-                const increment = target / (duration / 16);
+                const duration = 2500;
                 const startTime = Date.now();
                 
                 function updateNumber() {
                     const elapsed = Date.now() - startTime;
-                    current = Math.min(target, (elapsed / duration) * target);
+                    const progress = Math.min(elapsed / duration, 1);
                     
-                    element.textContent = Math.floor(current).toLocaleString();
+                    // Easing function for smooth animation
+                    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                    current = Math.floor(easeOutQuart * target);
                     
-                    if (current < target) {
+                    element.textContent = current.toLocaleString();
+                    
+                    if (progress < 1) {
                         requestAnimationFrame(updateNumber);
                     } else {
                         element.textContent = target.toLocaleString();
