@@ -8,8 +8,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/parallax.css">
 </head>
 <body>
+    <!-- PARALLAX BACKGROUNDS -->
+    <div class="parallax-bg-container">
+        <div id="parallax-bg-1" class="parallax-bg active"></div>
+        <div id="parallax-bg-2" class="parallax-bg"></div>
+    </div>
+
+    <!-- SCROLL PROGRESS BAR -->
+    <div class="scroll-progress">
+        <div class="scroll-progress-bar"></div>
+    </div>
+
     <!-- Header -->
     <header class="main-header">
         <div class="container">
@@ -39,40 +51,34 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge" data-i18n="home.hero.badge">INDUSTRIAL DESIGN STUDIO</div>
-                <h1 class="hero-title">
-                    <span class="title-line" data-i18n="home.hero.titleLine1">We design</span>
-                    <span class="title-line" data-i18n="home.hero.titleLine2">products that</span>
-                    <span class="title-line" data-i18n="home.hero.titleLine3">define markets</span>
-                </h1>
-                <p class="hero-description" data-i18n="home.hero.description">
-                    From concept to production, we create industrial designs that blend 
-                    aesthetics, functionality, and manufacturability for global brands.
-                </p>
-                <div class="hero-actions">
-                    <a href="services.html" class="btn btn-primary">
-                        <span data-i18n="home.hero.ourServices">Our Services</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="portfolio.html" class="btn btn-secondary">
-                        <span data-i18n="home.hero.viewWork">View Work</span>
-                    </a>
-                </div>
+    <section class="hero parallax-hero">
+        <div class="parallax-content">
+            <h1>ИННОВЕЦИИ</h1>
+            <p>
+                Создаем продукты, которые переопределяют рынки и пользовательский опыт 
+                с помощью передового промышленного дизайна и инженерии.
+            </p>
+            <div class="hero-actions">
+                <a href="services.html" class="btn btn-primary">
+                    <span>Наши Услуги</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="portfolio.html" class="btn btn-secondary">
+                    <span>Смотреть Работы</span>
+                </a>
             </div>
         </div>
-        <div class="scroll-indicator">
-            <div class="scroll-line"></div>
+        <div class="parallax-scroll-indicator">
+            <div class="scroll-arrow"></div>
+            <span>Прокрутите для просмотра</span>
         </div>
     </section>
 
     <!-- Clients Section with WORKING MARQUEE -->
-    <section class="clients-section">
+    <section class="clients-section content-section" data-bg-index="0">
         <div class="container">
             <div class="clients-content">
-                <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
+                <p class="clients-label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
                 
                 <!-- Marquee 1 -->
                 <div class="marquee-container">
@@ -158,7 +164,7 @@
     </section>
 
     <!-- Services Section -->
-    <section class="services-preview">
+    <section class="services-preview content-section" data-bg-index="1">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title" data-i18n="home.servicesPreview.title">Наша Экспертиза</h2>
@@ -194,7 +200,7 @@
     </section>
 
     <!-- IMPROVED Stats Section -->
-    <section class="stats-improved">
+    <section class="stats-improved content-section" data-bg-index="0">
         <div class="container">
             <div class="stats-grid-improved">
                 <div class="stat-card">
@@ -238,7 +244,7 @@
     </section>
 
     <!-- IMPROVED CTA Section -->
-    <section class="cta-improved">
+    <section class="cta-improved content-section" data-bg-index="1">
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
@@ -324,6 +330,7 @@
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/home.js"></script>
+    <script src="js/parallax.js"></script>
 
     <script>
         // Initialize everything when DOM is ready
