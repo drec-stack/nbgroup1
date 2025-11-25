@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/parallax.css">
+    <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
     <!-- PARALLAX BACKGROUNDS -->
@@ -45,32 +46,38 @@
                         <button class="lang-btn" data-lang="en">EN</button>
                     </div>
                     <a href="contacts.html" class="btn btn-primary" data-i18n="nav.startProject">Начать Проект</a>
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                 </div>
             </div>
         </div>
     </header>
+    <div class="mobile-menu-overlay"></div>
 
     <!-- Hero Section -->
     <section class="hero parallax-hero">
         <div class="parallax-content">
-            <h1>ИННОВЕЦИИ</h1>
-            <p>
+            <h1 data-i18n="home.hero.titleLine1">ИННОВЕЦИИ</h1>
+            <p data-i18n="home.parallax.section1.description">
                 Создаем продукты, которые переопределяют рынки и пользовательский опыт 
                 с помощью передового промышленного дизайна и инженерии.
             </p>
             <div class="hero-actions">
                 <a href="services.html" class="btn btn-primary">
-                    <span>Наши Услуги</span>
+                    <span data-i18n="home.hero.ourServices">Наши Услуги</span>
                     <i class="fas fa-arrow-right"></i>
                 </a>
                 <a href="portfolio.html" class="btn btn-secondary">
-                    <span>Смотреть Работы</span>
+                    <span data-i18n="home.hero.viewWork">Смотреть Работы</span>
                 </a>
             </div>
         </div>
         <div class="parallax-scroll-indicator">
             <div class="scroll-arrow"></div>
-            <span>Прокрутите для просмотра</span>
+            <span data-i18n="home.parallax.scrollHint">Прокрутите для просмотра</span>
         </div>
     </section>
 
@@ -78,7 +85,7 @@
     <section class="clients-section content-section" data-bg-index="0">
         <div class="container">
             <div class="clients-content">
-                <p class="clients-label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
+                <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
                 
                 <!-- Marquee 1 -->
                 <div class="marquee-container">
