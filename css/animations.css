@@ -743,170 +743,51 @@
     perspective: 1000;
 }
 
-/* animations.css - WITH DUAL MARQUEE ANIMATIONS */
-
-:root {
-    --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
-    --ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-/* Base animation settings */
-* {
-    animation-duration: 0.6s;
-    animation-fill-mode: both;
-}
-
-/* Scroll reveal animations */
-.reveal-element {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s var(--ease-out-quad);
-}
-
-.reveal-element.revealed {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Fade animations */
-.fade-in {
-    opacity: 0;
-    animation: fadeIn 0.8s var(--ease-out-quad) forwards;
-}
-
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
-}
-
-.fade-in-up {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s var(--ease-out-quad) forwards;
-}
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Slide animations */
-.slide-up {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s var(--ease-out-quad);
-}
-
-.slide-up.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Dual Marquee Animations */
-@keyframes marquee-scroll-forward {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@keyframes marquee-scroll-reverse {
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
-
-/* Performance optimizations */
-.marquee-track {
-    transform: translate3d(0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    perspective: 1000;
-}
-
-/* Brand hover animations */
-@keyframes brandUnderline {
-    from {
-        transform: scaleX(0);
-    }
-    to {
-        transform: scaleX(1);
-    }
-}
-
-/* Button animations */
-.btn-hover-scale {
-    transition: all 0.3s var(--ease-out-back);
-}
-
-.btn-hover-scale:hover {
-    transform: translateY(-2px) scale(1.05);
-}
-
-/* Card animations */
-.card-reveal {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    transition: all 0.6s var(--ease-out-back);
-}
-
-.card-reveal.revealed {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-    
-    .marquee-track {
-        animation: none !important;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 30px;
-        transform: none !important;
-    }
-}
-
-/* Hardware acceleration */
-.hardware-accelerate {
-    transform: translate3d(0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    perspective: 1000;
-}
-
 /* ===== SMOOTH LANGUAGE TRANSITION ANIMATIONS ===== */
 .language-changing {
-    pointer-events: none;
+    opacity: 0.7;
+    transform: translateY(10px);
+    transition: all 0.3s ease-in-out;
+}
+
+.language-changed {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.4s ease-in-out;
+}
+
+/* Enhanced language switcher animations */
+.language-switcher {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.lang-btn {
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.lang-btn.active {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.lang-btn:hover:not(.active) {
+    transform: translateY(-1px);
+    opacity: 0.8;
+}
+
+/* Smooth fade-in for translated content */
+[data-i18n] {
+    transition: opacity 0.3s ease;
 }
 
 .language-changing [data-i18n] {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0.5;
 }
 
 .language-changed [data-i18n] {
     opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
 }
 
 /* Staggered animation for multiple elements */
