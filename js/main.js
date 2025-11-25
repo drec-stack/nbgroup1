@@ -12,6 +12,10 @@ class NBGroupTech {
         this.setupCurrentPage();
         this.setupLanguageSupport();
         this.setupAnimations();
+        this.setupMobileOptimizations();
+        this.setupFormHandling();
+        this.setupLazyLoading();
+        this.setupPerformanceOptimizations();
     }
 
     setupMobileMenu() {
@@ -183,41 +187,77 @@ class NBGroupTech {
     }
 
     setupLanguageSupport() {
-    // Update when language changes
-    window.addEventListener('languageChanged', (e) => {
-        console.log('Language changed to:', e.detail.lang);
-        this.setupCurrentPage();
-        this.updateLanguageSwitcher();
-    });
+        // Update when language changes
+        window.addEventListener('languageChanged', (e) => {
+            console.log('Language changed to:', e.detail.lang);
+            this.setupCurrentPage();
+            this.updateLanguageSwitcher();
+        });
 
-    // Initialize language switcher
-    this.setupLanguageSwitcher();
-}
-
-setupLanguageSwitcher() {
-    // This is now handled by the enhanced i18n.js
-    // Just update the visual state
-    this.updateLanguageSwitcher();
-}
-
-updateLanguageSwitcher() {
-    const langButtons = document.querySelectorAll('.lang-btn');
-    const currentLang = window.i18n ? window.i18n.getCurrentLang() : 'ru';
-    const switcher = document.querySelector('.language-switcher');
-    
-    if (switcher) {
-        switcher.setAttribute('data-current-lang', currentLang);
+        // Initialize language switcher
+        this.setupLanguageSwitcher();
     }
-    
-    langButtons.forEach(btn => {
-        const lang = btn.getAttribute('data-lang');
-        if (lang === currentLang) {
-            btn.classList.add('active');
-        } else {
+
+    setupLanguageSwitcher() {
+        const langButtons = document.querySelectorAll('.lang-btn');
+        const switcher = document.querySelector('.language-switcher');
+        
+        // Initialize switcher state
+        const currentLang = localStorage.getItem('preferredLang') || 'en';
+        this.updateSwitcherState(currentLang);
+        
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const lang = btn.getAttribute('data-lang');
+                const currentActive = document.querySelector('.lang-btn.active');
+                
+                if (currentActive && currentActive.getAttribute('data-lang') === lang) {
+                    return; // Already active
+                }
+                
+                // Visual feedback
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                }, 150);
+                
+                // Update visual state immediately
+                this.updateSwitcherState(lang);
+                
+                // Trigger language change
+                if (window.i18n && window.i18n.smoothSwitchLanguage) {
+                    window.i18n.smoothSwitchLanguage(lang);
+                } else if (window.changeLanguage) {
+                    window.changeLanguage(lang);
+                } else {
+                    console.log('Language change requested:', lang);
+                    // Fallback: just update the switcher
+                    localStorage.setItem('preferredLang', lang);
+                }
+            });
+        });
+    }
+
+    updateSwitcherState(lang) {
+        const langBtns = document.querySelectorAll('.lang-btn');
+        const switcher = document.querySelector('.language-switcher');
+        
+        // Update active buttons
+        langBtns.forEach(btn => {
             btn.classList.remove('active');
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // Update switcher attribute
+        if (switcher) {
+            switcher.setAttribute('data-current-lang', lang);
         }
-    });
-}
+    }
 
     setupAnimations() {
         // Initialize intersection observer for scroll animations
@@ -325,24 +365,63 @@ updateLanguageSwitcher() {
         }, 16);
     }
 
-    // Utility function for loading components
-    loadComponent(containerId, componentPath) {
-        return fetch(componentPath)
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                return response.text();
-            })
-            .then(html => {
-                document.getElementById(containerId).innerHTML = html;
-                // Re-initialize functionality after loading components
-                this.init();
-            })
-            .catch(error => {
-                console.error('Error loading component:', error);
-            });
+    setupMobileOptimizations() {
+        // Предотвращение zoom при фокусе на iOS
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        
+        // Улучшение производительности на мобильных
+        if ('connection' in navigator && navigator.connection.saveData === true) {
+            document.documentElement.classList.add('save-data');
+        }
+        
+        // Оптимизация для медленных сетей
+        if ('connection' in navigator && navigator.connection.effectiveType.includes('2g')) {
+            document.documentElement.classList.add('slow-connection');
+        }
+
+        // Оптимизация для мобильных устройств
+        this.optimizeForMobile();
     }
 
-    // Form handling utility
+    optimizeForMobile() {
+        // Отключаем тяжелые анимации на слабых устройствах
+        if (this.isLowPerformanceDevice()) {
+            document.documentElement.classList.add('reduced-animations');
+        }
+
+        // Оптимизация для touch устройств
+        this.enhanceTouchInteractions();
+    }
+
+    isLowPerformanceDevice() {
+        // Простая проверка на слабые устройства
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const memory = navigator.deviceMemory || 4; // GB
+        const cores = navigator.hardwareConcurrency || 4;
+        
+        return isMobile && (memory < 4 || cores < 4);
+    }
+
+    enhanceTouchInteractions() {
+        // Улучшение feedback для touch устройств
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        
+        // Предотвращение выделения текста при тапе
+        document.addEventListener('touchmove', function(e) {
+            if (e.target.tagName.match(/button|a|input|select|textarea/i)) {
+                e.preventDefault();
+            }
+        }, {passive: false});
+    }
+
+    setupFormHandling() {
+        // Initialize all forms on the page
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            this.setupForm(form.id);
+        });
+    }
+
     setupForm(formId, successCallback) {
         const form = document.getElementById(formId);
         if (form) {
@@ -538,7 +617,6 @@ updateLanguageSwitcher() {
         }, 5000);
     }
 
-    // Utility for lazy loading images
     setupLazyLoading() {
         if ('IntersectionObserver' in window) {
             const lazyImages = document.querySelectorAll('img[data-src]');
@@ -558,6 +636,88 @@ updateLanguageSwitcher() {
         }
     }
 
+    setupPerformanceOptimizations() {
+        // Debounce resize events
+        window.addEventListener('resize', this.debounce(() => {
+            this.handleResize();
+        }, 250));
+
+        // Optimize scroll performance
+        this.optimizeScrollPerformance();
+
+        // Preload critical resources
+        this.preloadCriticalResources();
+    }
+
+    handleResize() {
+        // Handle responsive behavior on resize
+        if (window.innerWidth > 768) {
+            // Close mobile menu if open
+            const mobileMenu = document.querySelector('.main-nav');
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+                mobileToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+    }
+
+    optimizeScrollPerformance() {
+        // Use passive event listeners for better scroll performance
+        document.addEventListener('scroll', () => {}, { passive: true });
+        
+        // Optimize animations during scroll
+        this.throttleScrollAnimations();
+    }
+
+    throttleScrollAnimations() {
+        let ticking = false;
+        
+        const updateOnScroll = () => {
+            // Performance optimizations during scroll
+            ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateOnScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    preloadCriticalResources() {
+        // Preload critical images and fonts
+        const criticalResources = [
+            // Add paths to critical resources here
+        ];
+
+        criticalResources.forEach(resource => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.href = resource;
+            document.head.appendChild(link);
+        });
+    }
+
+    // Utility function for loading components
+    loadComponent(containerId, componentPath) {
+        return fetch(componentPath)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById(containerId).innerHTML = html;
+                // Re-initialize functionality after loading components
+                this.init();
+            })
+            .catch(error => {
+                console.error('Error loading component:', error);
+            });
+    }
+
     // Handle page transitions
     setupPageTransitions() {
         // Add fade-in animation to main content
@@ -570,7 +730,7 @@ updateLanguageSwitcher() {
         }, 100);
     }
 
-    // Performance optimization
+    // Performance optimization utilities
     debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -595,6 +755,36 @@ updateLanguageSwitcher() {
             }
         };
     }
+
+    // Utility methods for mobile detection
+    isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    isTouchDevice() {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    }
+
+    // Error boundary and fallbacks
+    setupErrorHandling() {
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e.error);
+            this.handleError(e.error);
+        });
+
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled promise rejection:', e.reason);
+            this.handleError(e.reason);
+        });
+    }
+
+    handleError(error) {
+        // Graceful error handling
+        console.error('Application error:', error);
+        
+        // Можно добавить отправку ошибок в сервис мониторинга
+        // или показать пользовательское сообщение
+    }
 }
 
 // Initialize when DOM is loaded
@@ -606,6 +796,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize lazy loading
     window.NBApp.setupLazyLoading();
+    
+    // Setup error handling
+    window.NBApp.setupErrorHandling();
+    
+    console.log('🚀 NBGroup.Tech application initialized');
 });
 
 // Export for use in other files
@@ -625,10 +820,18 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Error handling
-window.addEventListener('error', (e) => {
-    console.error('Global error:', e.error);
-});
+// Service Worker registration for PWA (optional)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+                console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+}
 
 // Export the class for module usage
 if (typeof module !== 'undefined' && module.exports) {
