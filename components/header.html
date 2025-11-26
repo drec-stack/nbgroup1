@@ -465,21 +465,27 @@ function updateSwitcherState(lang) {
 
 function setupHeaderScroll() {
     const header = document.querySelector('.main-header');
-    
     if (!header) return;
     
     let lastScrollY = window.scrollY;
     let ticking = false;
+    const scrollThreshold = 100;
 
     const updateHeader = () => {
-        // ТОЛЬКО добавляем класс scrolled, не двигаем хедер
-        if (window.scrollY > 100) {
-            header.classList.add('scrolled');
+        const scrollY = window.scrollY;
+        
+        // Скрываем хедер при скролле вниз, показываем при скролле вверх
+        if (scrollY > lastScrollY && scrollY > scrollThreshold) {
+            // Скролл вниз - скрываем хедер
+            header.style.transform = 'translateY(-100%)';
+            header.style.opacity = '0';
         } else {
-            header.classList.remove('scrolled');
+            // Скролл вверх или в начале страницы - показываем хедер
+            header.style.transform = 'translateY(0)';
+            header.style.opacity = '1';
         }
         
-        lastScrollY = window.scrollY;
+        lastScrollY = scrollY;
         ticking = false;
     };
 
@@ -491,11 +497,6 @@ function setupHeaderScroll() {
     };
 
     window.addEventListener('scroll', requestTick, { passive: true });
-
-    // Initialize scroll state
-    if (window.scrollY > 100) {
-        header.classList.add('scrolled');
-    }
 }
 
 function setActiveNavLink() {
