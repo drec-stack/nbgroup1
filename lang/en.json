@@ -278,18 +278,53 @@
     "subtitle": "Learn about our mission, values, and the team behind NBGROUP",
     "story": {
       "title": "Our Story",
-      "description": "Founded with a vision to bridge the gap between innovative ideas and market-ready products, NBGROUP brings together expertise in design, engineering, and manufacturing."
+      "p1": "Founded in 2012, NBGROUP.TECH began as a small industrial design studio with a big vision: to bridge the gap between beautiful design and practical engineering.",
+      "p2": "Over the years, we've grown into a full-service product development company, helping startups and Fortune 500 companies alike bring their ideas to life. Our approach combines creative design thinking with rigorous engineering to deliver products that succeed in the market."
     },
     "values": {
-      "title": "Our Values"
+      "title": "Our Values",
+      "subtitle": "Principles that guide everything we do",
+      "innovation": {
+        "title": "Innovation",
+        "description": "We embrace new technologies and approaches to solve complex design challenges."
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "description": "We work closely with clients as partners throughout the entire process."
+      },
+      "excellence": {
+        "title": "Excellence",
+        "description": "We never compromise on quality and always strive for the best results."
+      },
+      "impact": {
+        "title": "Impact",
+        "description": "We focus on creating products that make a meaningful difference."
+      }
     },
     "team": {
-      "title": "Our Team"
+      "title": "Leadership Team",
+      "subtitle": "Meet the people behind our success",
+      "members": "Team Members",
+      "spartak": {
+        "name": "Spartak Nukhsan",
+        "role": "Founder, Creative Director, Brand Architect, Designer",
+        "bio": "Dozens of projects in Russia, Turkey, Dubai and Europe"
+      },
+      "urmat": {
+        "name": "Urmat Ismailov",
+        "role": "Co-founder and Operations Director",
+        "bio": "Systematic approach, organization and stable growth"
+      },
+      "elena": {
+        "name": "Elena Kiryanova",
+        "role": "Director of NB Group Company, Brand Development Strategist",
+        "bio": "Expert in brand strategy and business development"
+      }
     },
     "cta": {
-      "title": "Join Our Team",
-      "description": "We're always looking for talented individuals to join our mission",
-      "button": "View Careers"
+      "title": "Join Our Journey",
+      "description": "Interested in working together? We're always looking for new challenges.",
+      "button": "Start Conversation"
     }
   },
   "contact": {
