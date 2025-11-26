@@ -16,7 +16,7 @@
     /* ОСНОВНЫЕ ЦВЕТА */
     --primary: #0a0a0a;
     --secondary: #1a1a1a;
-    --accent: #0066ff; /* СИНИЙ ДЛЯ КОНТЕНТА */
+    --accent: #0066ff;
     --accent-gradient: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
     --text: #ffffff;
     --light-text: #a0a0a0;
@@ -59,7 +59,7 @@ main {
     padding: 0 20px;
 }
 
-/* ===== ЗАКРУГЛЕННЫЙ КРАСНЫЙ HEADER - ИСПРАВЛЕННЫЙ ===== */
+/* ===== ЗАКРУГЛЕННЫЙ КРАСНЫЙ HEADER С ПОЛНЫМ СКРЫТИЕМ ===== */
 .main-header {
     position: fixed;
     top: 20px;
@@ -71,12 +71,17 @@ main {
     padding: 20px 0;
     background: var(--red-gradient);
     z-index: 1000;
-    transition: var(--transition);
     border-radius: 20px;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 32px rgba(209, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    /* Анимация скрытия/появления */
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Убираем отступы у контейнера внутри хедера */
@@ -91,15 +96,6 @@ main {
     max-width: 100%;
     margin: 0 auto;
     width: 100%;
-}
-
-.main-header.scrolled {
-    padding: 15px 0;
-    background: rgba(209, 0, 0, 0.95);
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(209, 0, 0, 0.4);
-    top: 10px;
-    width: calc(100% - 20px);
 }
 
 .header-inner {
@@ -585,13 +581,6 @@ main {
         padding: 15px 0;
     }
     
-    .main-header.scrolled {
-        top: 5px;
-        width: calc(100% - 10px);
-        border-radius: 12px;
-        padding: 12px 0;
-    }
-    
     .main-header .header-inner {
         padding: 0 20px;
     }
@@ -721,12 +710,6 @@ main {
         padding: 12px 0;
     }
     
-    .main-header.scrolled {
-        top: 2px;
-        width: calc(100% - 4px);
-        border-radius: 10px;
-    }
-    
     .main-header .header-inner {
         padding: 0 15px;
     }
@@ -851,4 +834,31 @@ main {
     .language-switcher {
         display: none;
     }
+}
+
+/* ===== РАЗНОЕ ПОВЕДЕНИЕ ХЕДЕРА ДЛЯ ВНУТРЕННИХ СТРАНИЦ ===== */
+
+/* Для внутренних страниц хедер всегда видимый и с фоном */
+body.internal-page .main-header {
+    transform: translateY(0) !important;
+    background: var(--red-gradient) !important;
+    backdrop-filter: blur(10px) !important;
+    opacity: 1 !important;
+}
+
+/* Убираем прозрачность для внутренних страниц */
+body.internal-page .main-header.scrolled {
+    background: var(--red-gradient) !important;
+}
+
+/* Для главной страницы оставляем текущее поведение */
+body.home-page .main-header {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Гарантируем, что на внутренних страницах хедер всегда видим */
+body.internal-page .main-header {
+    position: sticky !important;
+    top: 20px !important;
 }
