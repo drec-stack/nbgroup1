@@ -1,9 +1,42 @@
 // Services page specific JavaScript
 function initServices() {
+    setupScrollHideNavigation(); // Добавляем скрытие навигации при скролле
     setupServiceNavigation();
     setupServiceAnimations();
-    setupProcessInteractions();
+    setupProcessInteractions(); // Эта функция теперь исправлена
     setupBrandbookLink();
+}
+
+// Hide/Show services navigation on scroll
+function setupScrollHideNavigation() {
+    const servicesNav = document.querySelector('.services-nav');
+    if (!servicesNav) return;
+
+    let lastScrollTop = 0;
+    const scrollThreshold = 100; // Минимальная дистанция скролла перед скрытием
+    const navHeight = servicesNav.offsetHeight;
+
+    window.addEventListener('scroll', () => {
+        if (window.innerWidth <= 768) return; // Не скрываем на мобильных
+
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Определяем направление скролла
+        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+            // Скролл вниз - скрываем
+            servicesNav.classList.add('hidden');
+            servicesNav.classList.remove('visible');
+        } else {
+            // Скролл вверх - показываем
+            servicesNav.classList.remove('hidden');
+            servicesNav.classList.add('visible');
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+
+    // Показываем навигацию при загрузке
+    servicesNav.classList.add('visible');
 }
 
 function setupServiceNavigation() {
@@ -95,25 +128,25 @@ function setupServiceAnimations() {
     }
 }
 
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ - убраны проблемные стили
 function setupProcessInteractions() {
     const processPhases = document.querySelectorAll('.process-phase');
     
     processPhases.forEach(phase => {
+        // Убраны проблемные обработчики, которые меняли стили цифр
         phase.addEventListener('mouseenter', () => {
+            // Только легкая анимация, без изменения цвета цифр
             const number = phase.querySelector('.phase-number');
             if (number) {
-                number.style.transform = 'scale(1.2)';
-                number.style.background = 'var(--accent-gradient)';
-                number.style.color = 'white';
+                number.style.transform = 'scale(1.1)';
             }
         });
         
         phase.addEventListener('mouseleave', () => {
+            // Возвращаем исходное состояние
             const number = phase.querySelector('.phase-number');
             if (number) {
                 number.style.transform = 'scale(1)';
-                number.style.background = 'transparent';
-                number.style.color = 'var(--accent)';
             }
         });
         
@@ -124,15 +157,19 @@ function setupProcessInteractions() {
             
             switch(phaseText) {
                 case 'discover':
+                case 'исследование':
                     targetSection = 'strategy';
                     break;
                 case 'design':
+                case 'дизайн':
                     targetSection = 'design';
                     break;
                 case 'develop':
+                case 'разработка':
                     targetSection = 'engineering';
                     break;
                 case 'deliver':
+                case 'реализация':
                     targetSection = 'production';
                     break;
             }
