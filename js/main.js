@@ -8,7 +8,7 @@ class NBGroupTech {
     init() {
         this.setupMobileMenu();
         this.setupSmoothScroll();
-        this.setupHeaderScroll();
+        this.setupHeaderScroll(); // ОБНОВЛЕННАЯ ФУНКЦИЯ
         this.setupCurrentPage();
         this.setupLanguageSupport();
         this.setupAnimations();
@@ -134,6 +134,10 @@ class NBGroupTech {
         const header = document.querySelector('.main-header');
         
         if (header) {
+            // Определяем тип страницы
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const isHomePage = currentPage === 'index.html' || currentPage === '' || currentPage === '/';
+            
             let lastScrollY = window.scrollY;
             let ticking = false;
 
@@ -144,11 +148,22 @@ class NBGroupTech {
                     header.classList.remove('scrolled');
                 }
                 
-                // Прячем/показываем header при скролле
-                if (window.scrollY > lastScrollY && window.scrollY > 100) {
-                    header.style.transform = 'translateY(-100%)';
+                // РАЗНОЕ ПОВЕДЕНИЕ ДЛЯ ГЛАВНОЙ И ВНУТРЕННИХ СТРАНИЦ
+                if (isHomePage) {
+                    // На главной - скрываем при скролле вниз
+                    if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                        header.style.transform = 'translateY(-100%)';
+                        header.style.opacity = '0';
+                    } else {
+                        header.style.transform = 'translateY(0)';
+                        header.style.opacity = '1';
+                    }
                 } else {
+                    // На внутренних страницах - всегда видимый
                     header.style.transform = 'translateY(0)';
+                    header.style.opacity = '1';
+                    header.style.background = 'var(--red-gradient)';
+                    header.style.backdropFilter = 'blur(10px)';
                 }
                 
                 lastScrollY = window.scrollY;
@@ -164,9 +179,13 @@ class NBGroupTech {
 
             window.addEventListener('scroll', requestTick, { passive: true });
 
-            // Initialize scroll state
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
+            // Инициализация начального состояния
+            updateHeader();
+            
+            // Для внутренних страниц сразу устанавливаем фон
+            if (!isHomePage) {
+                header.style.background = 'var(--red-gradient)';
+                header.style.backdropFilter = 'blur(10px)';
             }
         }
     }
