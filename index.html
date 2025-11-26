@@ -23,39 +23,8 @@
         <div class="scroll-progress-bar"></div>
     </div>
 
-    <!-- Header -->
-    <header class="main-header">
-        <div class="container">
-            <div class="header-inner">
-                <a href="/" class="logo">
-                    <div class="logo-mark">NB</div>
-                    <span>NEGROUP.TECH</span>
-                </a>
-                <nav class="main-nav">
-                    <a href="/" class="nav-link" data-i18n="nav.home">Главная</a>
-                    <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
-                    <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Работы</a>
-                    <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
-                    <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
-                    <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
-                </nav>
-                <div class="header-actions">
-                    <div class="language-switcher">
-                        <button class="lang-btn" data-lang="ru">RU</button>
-                        <span class="lang-separator">/</span>
-                        <button class="lang-btn" data-lang="en">EN</button>
-                    </div>
-                    <a href="contacts.html" class="btn btn-primary" data-i18n="nav.startProject">Начать Проект</a>
-                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class="mobile-menu-overlay"></div>
+    <!-- Header Component -->
+    <div id="header-container"></div>
 
     <!-- Hero Section -->
     <section class="hero parallax-hero">
@@ -83,7 +52,7 @@
         </div>
     </section>
 
-    <!-- Clients Section with WORKING MARQUEE -->
+    <!-- Clients Section -->
     <section class="clients-section content-section" data-bg-index="0">
         <div class="container">
             <div class="clients-content">
@@ -174,7 +143,7 @@
         </div>
     </section>
 
-    <!-- IMPROVED Stats Section -->
+    <!-- Stats Section -->
     <section class="stats-improved content-section" data-bg-index="0">
         <div class="container">
             <div class="stats-grid-improved">
@@ -218,7 +187,7 @@
         </div>
     </section>
 
-    <!-- IMPROVED CTA Section -->
+    <!-- CTA Section -->
     <section class="cta-improved content-section" data-bg-index="1">
         <div class="container">
             <div class="cta-content-improved">
@@ -243,25 +212,17 @@
                 <div class="footer-section">
                     <div class="footer-logo">
                         <div class="logo-mark">NB</div>
-                        <span>NEGROUP.TECH</span>
+                        <span>NBGROUP.TECH</span>
                     </div>
                     <p class="footer-description" data-i18n="footer.description">
                         Industrial design studio creating products that define markets 
                         and drive business growth.
                     </p>
                     <div class="social-links">
-                        <a href="#" aria-label="LinkedIn" title="Follow us on LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" aria-label="Behance" title="Follow us on Behance">
-                            <i class="fab fa-behance"></i>
-                        </a>
-                        <a href="#" aria-label="Dribbble" title="Follow us on Dribbble">
-                            <i class="fab fa-dribbble"></i>
-                        </a>
-                        <a href="#" aria-label="Instagram" title="Follow us on Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Behance"><i class="fab fa-behance"></i></a>
+                        <a href="#" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -285,9 +246,9 @@
                 <div class="footer-section">
                     <h3 data-i18n="footer.contact">Contact</h3>
                     <div class="contact-info">
-                        <p><i class="fas fa-envelope" aria-hidden="true"></i> hello@nbgroup.tech</p>
-                        <p><i class="fas fa-phone" aria-hidden="true"></i> +7 (999) 999-99-99</p>
-                        <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Moscow, Russia</p>
+                        <p><i class="fas fa-envelope"></i> hello@nbgroup.tech</p>
+                        <p><i class="fas fa-phone"></i> +7 (999) 999-99-99</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Moscow, Russia</p>
                     </div>
                 </div>
             </div>
@@ -308,7 +269,15 @@
     <script src="js/parallax.js"></script>
 
     <script>
-        // Simple marquee animation using requestAnimationFrame
+        // Load header component
+        fetch('components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                if (typeof initHeader === 'function') initHeader();
+            });
+
+        // Marquee animation
         class Marquee {
             constructor(elementId, speed = 1, reverse = false) {
                 this.element = document.getElementById(elementId);
@@ -326,19 +295,15 @@
             init() {
                 if (!this.element) return;
                 
-                // Clone content for seamless loop
                 const content = this.element.querySelector('.marquee-content');
                 const clone = content.cloneNode(true);
                 this.element.appendChild(clone);
                 
-                // Calculate widths
                 this.contentWidth = content.offsetWidth;
                 this.containerWidth = this.element.offsetWidth;
                 
-                // Start animation
                 this.animate();
                 
-                // Add hover events
                 this.element.addEventListener('mouseenter', () => this.pause());
                 this.element.addEventListener('mouseleave', () => this.resume());
             }
@@ -365,30 +330,18 @@
                 this.animationId = requestAnimationFrame(() => this.animate());
             }
             
-            pause() {
-                this.isPaused = true;
-            }
-            
-            resume() {
-                this.isPaused = false;
-            }
-            
-            destroy() {
-                if (this.animationId) {
-                    cancelAnimationFrame(this.animationId);
-                }
-            }
+            pause() { this.isPaused = true; }
+            resume() { this.isPaused = false; }
+            destroy() { if (this.animationId) cancelAnimationFrame(this.animationId); }
         }
 
-        // Initialize everything when DOM is ready
+        // Initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Starting initialization...');
-            
             // Initialize marquees
             const marquee1 = new Marquee('marquee1', 1, false);
             const marquee2 = new Marquee('marquee2', 1, true);
 
-            // Initialize improved counters
+            // Initialize counters
             const statCards = document.querySelectorAll('.stat-card');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry, index) => {
@@ -399,21 +352,18 @@
                         
                         if (target > 0) {
                             setTimeout(() => {
-                                animateEnhancedNumber(statNumber, target);
+                                animateNumber(statNumber, target);
                                 statCard.classList.add('animated');
                             }, index * 200);
-                            
                             observer.unobserve(statCard);
                         }
                     }
                 });
             }, { threshold: 0.3 });
 
-            statCards.forEach(card => {
-                observer.observe(card);
-            });
+            statCards.forEach(card => observer.observe(card));
 
-            function animateEnhancedNumber(element, target) {
+            function animateNumber(element, target) {
                 let current = 0;
                 const duration = 2500;
                 const startTime = Date.now();
@@ -421,7 +371,6 @@
                 function updateNumber() {
                     const elapsed = Date.now() - startTime;
                     const progress = Math.min(elapsed / duration, 1);
-                    
                     const easeOutQuart = 1 - Math.pow(1 - progress, 4);
                     current = Math.floor(easeOutQuart * target);
                     
@@ -433,20 +382,7 @@
                         element.textContent = target.toLocaleString();
                     }
                 }
-                
                 requestAnimationFrame(updateNumber);
-            }
-
-            console.log('✅ All animations initialized');
-        });
-
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('.main-header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
             }
         });
     </script>
