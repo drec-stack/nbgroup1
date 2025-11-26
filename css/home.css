@@ -8,19 +8,6 @@
     padding-top: 80px;
 }
 
-/* Легкая затемняющая маска поверх фона */
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(10, 10, 10, 0.4) 0%, rgba(10, 10, 10, 0.7) 100%);
-    z-index: 1;
-    pointer-events: none;
-}
-
 .parallax-content {
     position: relative;
     z-index: 2;
@@ -34,6 +21,7 @@
     line-height: 1.1;
     margin-bottom: 30px;
     color: var(--text);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .hero p {
@@ -41,6 +29,7 @@
     color: var(--light-text);
     margin-bottom: 40px;
     line-height: 1.6;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 }
 
 .hero-actions {
@@ -168,7 +157,7 @@
     background: linear-gradient(270deg, var(--secondary) 0%, transparent 100%);
 }
 
-/* Marquee Track - РАБОЧАЯ ВЕРСИЯ */
+/* Marquee Track */
 .marquee-track {
     display: flex;
     width: max-content;
@@ -180,63 +169,6 @@
     animation: marquee-scroll-reverse 40s linear infinite;
 }
 
-/* Marquee Content */
-.marquee-content {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-}
-
-.brand {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--light-text);
-    opacity: 0.8;
-    transition: all 0.3s ease;
-    padding: 0 30px;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.brand:hover {
-    color: var(--primary-blue);
-    opacity: 1;
-    transform: translateY(-2px);
-}
-
-.separator {
-    color: var(--border);
-    font-size: 1.5rem;
-    opacity: 0.3;
-    font-weight: 300;
-    flex-shrink: 0;
-}
-
-/* Marquee Animations - РАБОЧИЕ АНИМАЦИИ */
-@keyframes marquee-scroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@keyframes marquee-scroll-reverse {
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
-
-/* Пауза при наведении */
-.marquee-track:hover {
-    animation-play-state: paused;
-}
-
-/* Marquee Content - ИСПРАВЛЕННАЯ ВЕРСИЯ */
 .marquee-content {
     display: flex;
     align-items: center;
@@ -269,7 +201,6 @@
     flex-shrink: 0;
 }
 
-/* Marquee Animations - ИСПРАВЛЕННЫЕ */
 @keyframes marquee-scroll {
     0% {
         transform: translateX(0);
@@ -286,6 +217,10 @@
     100% {
         transform: translateX(0);
     }
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
 }
 
 /* ===== SERVICES SECTION ===== */
@@ -746,8 +681,12 @@
 
 /* ===== HIGH CONTRAST MODE ===== */
 @media (prefers-contrast: high) {
-    .hero::before {
-        background: linear-gradient(135deg, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
+    .hero h1 {
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+    
+    .hero p {
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
     }
 }
 
@@ -757,7 +696,18 @@
         display: none;
     }
     
-    .hero::before {
-        display: none;
+    .hero {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .hero h1 {
+        color: black !important;
+        text-shadow: none !important;
+    }
+    
+    .hero p {
+        color: #333 !important;
+        text-shadow: none !important;
     }
 }
