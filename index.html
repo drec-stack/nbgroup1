@@ -59,20 +59,22 @@
 
     <!-- Hero Section -->
     <section class="hero parallax-hero">
-        <div class="parallax-content">
-            <h1 data-i18n="home.hero.titleLine1">ИННОВЕЦИИ</h1>
-            <p data-i18n="home.parallax.section1.description">
-                Создаем продукты, которые переопределяют рынки и пользовательский опыт 
-                с помощью передового промышленного дизайна и инженерии.
-            </p>
-            <div class="hero-actions">
-                <a href="services.html" class="btn btn-primary">
-                    <span data-i18n="home.hero.ourServices">Наши Услуги</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                <a href="portfolio.html" class="btn btn-secondary">
-                    <span data-i18n="home.hero.viewWork">Смотреть Работы</span>
-                </a>
+        <div class="container">
+            <div class="parallax-content">
+                <h1 data-i18n="home.hero.titleLine1">ИННОВЕЦИИ</h1>
+                <p data-i18n="home.parallax.section1.description">
+                    Создаем продукты, которые переопределяют рынки и пользовательский опыт 
+                    с помощью передового промышленного дизайна и инженерии.
+                </p>
+                <div class="hero-actions">
+                    <a href="services.html" class="btn btn-primary">
+                        <span data-i18n="home.hero.ourServices">Наши Услуги</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="portfolio.html" class="btn btn-secondary">
+                        <span data-i18n="home.hero.viewWork">Смотреть Работы</span>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="parallax-scroll-indicator">
@@ -89,25 +91,8 @@
                 
                 <!-- Marquee 1 -->
                 <div class="marquee-container">
-                    <div class="marquee-track">
+                    <div class="marquee-track" id="marquee1">
                         <div class="marquee-content">
-                            <span class="brand">dtronic</span>
-                            <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Roku</span>
-                            <span class="separator">·</span>
-                            <span class="brand">stryker</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
-                            <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
-                            <span class="separator">·</span>
-                            <span class="brand">AC</span>
-                            
-                            <!-- Duplicate -->
                             <span class="brand">dtronic</span>
                             <span class="separator">·</span>
                             <span class="brand">BRITA</span>
@@ -128,26 +113,9 @@
                 </div>
 
                 <!-- Marquee 2 (Reverse) -->
-                <div class="marquee-container reverse">
-                    <div class="marquee-track">
-                        <div class="marquee-content reverse">
-                            <span class="brand">AC</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
-                            <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
-                            <span class="separator">·</span>
-                            <span class="brand">stryker</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Roku</span>
-                            <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">dtronic</span>
-                            
-                            <!-- Duplicate -->
+                <div class="marquee-container">
+                    <div class="marquee-track" id="marquee2">
+                        <div class="marquee-content">
                             <span class="brand">AC</span>
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
@@ -340,31 +308,85 @@
     <script src="js/parallax.js"></script>
 
     <script>
+        // Simple marquee animation using requestAnimationFrame
+        class Marquee {
+            constructor(elementId, speed = 1, reverse = false) {
+                this.element = document.getElementById(elementId);
+                this.speed = speed;
+                this.reverse = reverse;
+                this.position = 0;
+                this.contentWidth = 0;
+                this.containerWidth = 0;
+                this.animationId = null;
+                this.isPaused = false;
+                
+                this.init();
+            }
+            
+            init() {
+                if (!this.element) return;
+                
+                // Clone content for seamless loop
+                const content = this.element.querySelector('.marquee-content');
+                const clone = content.cloneNode(true);
+                this.element.appendChild(clone);
+                
+                // Calculate widths
+                this.contentWidth = content.offsetWidth;
+                this.containerWidth = this.element.offsetWidth;
+                
+                // Start animation
+                this.animate();
+                
+                // Add hover events
+                this.element.addEventListener('mouseenter', () => this.pause());
+                this.element.addEventListener('mouseleave', () => this.resume());
+            }
+            
+            animate() {
+                if (this.isPaused) {
+                    this.animationId = requestAnimationFrame(() => this.animate());
+                    return;
+                }
+                
+                if (this.reverse) {
+                    this.position += this.speed;
+                    if (this.position >= this.contentWidth) {
+                        this.position = 0;
+                    }
+                } else {
+                    this.position -= this.speed;
+                    if (this.position <= -this.contentWidth) {
+                        this.position = 0;
+                    }
+                }
+                
+                this.element.style.transform = `translateX(${this.position}px)`;
+                this.animationId = requestAnimationFrame(() => this.animate());
+            }
+            
+            pause() {
+                this.isPaused = true;
+            }
+            
+            resume() {
+                this.isPaused = false;
+            }
+            
+            destroy() {
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+            }
+        }
+
         // Initialize everything when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Starting initialization...');
             
-            // Start marquee animations
-            const marquees = document.querySelectorAll('.marquee-content');
-            marquees.forEach(marquee => {
-                marquee.style.animation = 'none';
-                void marquee.offsetWidth;
-                
-                if (marquee.classList.contains('reverse')) {
-                    marquee.style.animation = 'marquee-scroll-reverse 35s linear infinite';
-                } else {
-                    marquee.style.animation = 'marquee-scroll 35s linear infinite';
-                }
-                
-                // Add hover effects
-                marquee.addEventListener('mouseenter', function() {
-                    this.style.animationPlayState = 'paused';
-                });
-                
-                marquee.addEventListener('mouseleave', function() {
-                    this.style.animationPlayState = 'running';
-                });
-            });
+            // Initialize marquees
+            const marquee1 = new Marquee('marquee1', 1, false);
+            const marquee2 = new Marquee('marquee2', 1, true);
 
             // Initialize improved counters
             const statCards = document.querySelectorAll('.stat-card');
@@ -376,7 +398,6 @@
                         const target = parseInt(statNumber.getAttribute('data-target')) || 0;
                         
                         if (target > 0) {
-                            // Stagger animation with delay based on index
                             setTimeout(() => {
                                 animateEnhancedNumber(statNumber, target);
                                 statCard.classList.add('animated');
@@ -401,7 +422,6 @@
                     const elapsed = Date.now() - startTime;
                     const progress = Math.min(elapsed / duration, 1);
                     
-                    // Easing function for smooth animation
                     const easeOutQuart = 1 - Math.pow(1 - progress, 4);
                     current = Math.floor(easeOutQuart * target);
                     
@@ -431,4 +451,4 @@
         });
     </script>
 </body>
-</html>
+<!-- </html> -->
