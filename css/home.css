@@ -25,9 +25,10 @@
     position: relative;
     z-index: 2;
     max-width: 800px;
+    margin-left: 20px;
 }
 
-.hero-title {
+.hero h1 {
     font-size: 4rem;
     font-weight: 800;
     line-height: 1.1;
@@ -35,7 +36,7 @@
     color: var(--text);
 }
 
-.hero-description {
+.hero p {
     font-size: 1.3rem;
     color: var(--light-text);
     margin-bottom: 40px;
@@ -61,8 +62,8 @@
 .scroll-arrow {
     width: 20px;
     height: 20px;
-    border-right: 2px solid var(--primary-red);
-    border-bottom: 2px solid var(--primary-red);
+    border-right: 2px solid var(--primary-blue);
+    border-bottom: 2px solid var(--primary-blue);
     transform: rotate(45deg);
     margin: 0 auto 10px;
     animation: bounce 2s infinite;
@@ -167,26 +168,23 @@
     background: linear-gradient(270deg, var(--secondary) 0%, transparent 100%);
 }
 
+/* Marquee Track - РАБОЧАЯ ВЕРСИЯ */
 .marquee-track {
     display: flex;
     width: max-content;
+    animation: marquee-scroll 40s linear infinite;
+    padding: 25px 0;
+}
+
+.marquee-track.reverse {
+    animation: marquee-scroll-reverse 40s linear infinite;
 }
 
 /* Marquee Content */
 .marquee-content {
     display: flex;
     align-items: center;
-    animation: marquee-scroll 35s linear infinite;
-    padding: 25px 0;
     white-space: nowrap;
-}
-
-.marquee-content.reverse {
-    animation: marquee-scroll-reverse 35s linear infinite;
-}
-
-.marquee-content {
-    animation-play-state: running !important;
 }
 
 .brand {
@@ -201,7 +199,7 @@
 }
 
 .brand:hover {
-    color: var(--primary-red);
+    color: var(--primary-blue);
     opacity: 1;
     transform: translateY(-2px);
 }
@@ -214,7 +212,64 @@
     flex-shrink: 0;
 }
 
-/* Marquee Animations */
+/* Marquee Animations - РАБОЧИЕ АНИМАЦИИ */
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes marquee-scroll-reverse {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Пауза при наведении */
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+/* Marquee Content - ИСПРАВЛЕННАЯ ВЕРСИЯ */
+.marquee-content {
+    display: flex;
+    align-items: center;
+    padding: 25px 0;
+    white-space: nowrap;
+}
+
+.brand {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--light-text);
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    padding: 0 30px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.brand:hover {
+    color: var(--primary-blue);
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.separator {
+    color: var(--border);
+    font-size: 1.5rem;
+    opacity: 0.3;
+    font-weight: 300;
+    flex-shrink: 0;
+}
+
+/* Marquee Animations - ИСПРАВЛЕННЫЕ */
 @keyframes marquee-scroll {
     0% {
         transform: translateX(0);
@@ -258,14 +313,14 @@
 
 .service-card:hover {
     transform: translateY(-10px);
-    border-color: var(--primary-red);
-    box-shadow: 0 15px 30px rgba(209, 0, 0, 0.2);
+    border-color: var(--primary-blue);
+    box-shadow: 0 15px 30px rgba(0, 102, 255, 0.2);
 }
 
 .service-icon {
     font-size: 3rem;
     margin-bottom: 20px;
-    background: var(--red-gradient);
+    background: var(--blue-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -284,7 +339,7 @@
 }
 
 .service-link {
-    color: var(--primary-red);
+    color: var(--primary-blue);
     text-decoration: none;
     font-weight: 600;
     transition: var(--transition);
@@ -292,7 +347,7 @@
 
 .service-link:hover {
     transform: translateX(5px);
-    color: var(--light-red);
+    color: var(--light-blue);
 }
 
 /* ===== STATS SECTION ===== */
@@ -342,14 +397,14 @@
 
 .stat-card:hover {
     transform: translateY(-10px);
-    border-color: var(--primary-red);
-    box-shadow: 0 20px 40px rgba(209, 0, 0, 0.25);
+    border-color: var(--primary-blue);
+    box-shadow: 0 20px 40px rgba(0, 102, 255, 0.25);
 }
 
 .stat-icon {
     font-size: 3rem;
     margin-bottom: 20px;
-    background: var(--red-gradient);
+    background: var(--blue-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -363,7 +418,7 @@
 .stat-number-improved {
     font-size: 3.5rem;
     font-weight: 800;
-    background: var(--red-gradient);
+    background: var(--blue-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -399,7 +454,7 @@
     font-size: 3.5rem;
     font-weight: 800;
     margin-bottom: 20px;
-    background: var(--red-gradient);
+    background: var(--blue-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -433,7 +488,7 @@
 }
 
 .btn-glow:hover {
-    box-shadow: 0 10px 30px rgba(209, 0, 0, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 102, 255, 0.4);
     transform: translateY(-3px);
 }
 
@@ -447,12 +502,16 @@
         text-align: center;
     }
     
-    .hero-title {
+    .parallax-content {
+        margin-left: 0;
+    }
+    
+    .hero h1 {
         font-size: 2.5rem !important;
         line-height: 1.2;
     }
     
-    .hero-description {
+    .hero p {
         font-size: 1.1rem;
         margin-bottom: 30px;
     }
@@ -481,12 +540,11 @@
         margin-bottom: 30px;
     }
     
-    .marquee-content {
+    .marquee-track {
         animation-duration: 25s !important;
-        padding: 15px 0;
     }
     
-    .marquee-content.reverse {
+    .marquee-track.reverse {
         animation-duration: 25s !important;
     }
     
@@ -507,7 +565,6 @@
     .services-grid {
         grid-template-columns: 1fr !important;
         gap: 20px;
-        padding: 0 10px;
     }
     
     .service-card {
@@ -532,7 +589,7 @@
     
     .service-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(209, 0, 0, 0.15);
+        box-shadow: 0 10px 20px rgba(0, 102, 255, 0.15);
     }
 
     /* Stats Mobile */
@@ -563,7 +620,7 @@
     
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 25px rgba(209, 0, 0, 0.2);
+        box-shadow: 0 15px 25px rgba(0, 102, 255, 0.2);
     }
 
     /* CTA Mobile */
@@ -590,19 +647,19 @@
 }
 
 @media (max-width: 480px) {
-    .hero-title {
+    .hero h1 {
         font-size: 2rem !important;
     }
     
-    .hero-description {
+    .hero p {
         font-size: 1rem;
     }
     
-    .marquee-content {
+    .marquee-track {
         animation-duration: 20s !important;
     }
     
-    .marquee-content.reverse {
+    .marquee-track.reverse {
         animation-duration: 20s !important;
     }
     
@@ -654,12 +711,10 @@
 
 /* ===== REDUCED MOTION SUPPORT ===== */
 @media (prefers-reduced-motion: reduce) {
-    .marquee-content,
-    .marquee-content.reverse {
+    .marquee-track,
+    .marquee-track.reverse {
         animation: none;
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 20px;
     }
     
     .marquee-container::before,
