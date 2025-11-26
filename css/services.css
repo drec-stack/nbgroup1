@@ -10,7 +10,7 @@
     margin: 0 auto;
 }
 
-/* Services Navigation */
+/* Services Navigation - Hide on Scroll */
 .services-nav {
     padding: 40px 0;
     background: var(--primary);
@@ -18,6 +18,35 @@
     position: sticky;
     top: 80px;
     z-index: 100;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Состояния для скрытия/показа */
+.services-nav.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.services-nav.hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+/* Плавное появление при скролле вверх */
+.services-nav.visible {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .services-navigation {
@@ -140,10 +169,32 @@
     letter-spacing: 1px;
 }
 
-/* Process Overview */
+/* Process Overview - ИСПРАВЛЕННАЯ СЕКЦИЯ */
 .process-overview {
     padding: 120px 0;
     background: var(--secondary);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-header p {
+    font-size: 1.3rem;
+    color: var(--light-text);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .process-timeline {
@@ -159,6 +210,8 @@
     border-radius: 10px;
     border: 1px solid var(--border);
     transition: var(--transition);
+    position: relative;
+    overflow: hidden;
 }
 
 .process-phase:hover {
@@ -166,6 +219,7 @@
     border-color: var(--accent);
 }
 
+/* ИСПРАВЛЕНИЕ: Цифры теперь всегда видны */
 .phase-number {
     font-size: 2.5rem;
     font-weight: 800;
@@ -174,17 +228,31 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 20px;
+    transition: var(--transition);
+    display: block; /* Убедимся, что цифра отображается */
+}
+
+/* Убираем проблемные стили, которые скрывали цифры */
+.process-phase:hover .phase-number {
+    transform: scale(1.1); /* Только легкое увеличение */
+    background: var(--accent-gradient); /* Сохраняем градиент */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent; /* Явно указываем прозрачность текста */
 }
 
 .process-phase h3 {
     font-size: 1.3rem;
     margin-bottom: 15px;
     font-weight: 700;
+    color: var(--text);
 }
 
 .process-phase p {
     color: var(--light-text);
     line-height: 1.6;
+    margin: 0;
 }
 
 /* Services CTA */
@@ -213,7 +281,7 @@
     margin-right: auto;
 }
 
-/* Responsive */
+/* ===== МОБИЛЬНАЯ ВЕРСИЯ СТРАНИЦЫ УСЛУГ ===== */
 @media (max-width: 1024px) {
     .service-content {
         grid-template-columns: 1fr;
@@ -231,38 +299,119 @@
 }
 
 @media (max-width: 768px) {
+    .services-hero {
+        padding: 140px 0 60px !important;
+    }
+    
+    .services-nav {
+        padding: 30px 0;
+        position: static; /* На мобильных не скрываем */
+        transform: none !important;
+        opacity: 1 !important;
+    }
+    
+    .services-nav.hidden {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+    
     .services-navigation {
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 15px;
+        justify-content: center;
+    }
+    
+    .nav-item {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+    
+    .service-detail {
+        padding: 80px 0 !important;
     }
     
     .service-title {
-        font-size: 2.5rem;
+        font-size: 2.2rem !important;
+    }
+    
+    .service-content {
+        grid-template-columns: 1fr !important;
+        gap: 40px;
     }
     
     .service-stats {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-around;
     }
     
-    .process-timeline {
-        grid-template-columns: 1fr;
+    .stat {
+        flex: 1;
+        padding: 20px 15px;
     }
     
-    .services-cta .cta-content h2 {
-        font-size: 2.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .service-title {
-        font-size: 2rem;
-    }
-    
-    .services-cta .cta-content h2 {
+    .stat-value {
         font-size: 2rem;
     }
     
     .service-features {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .process-timeline {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .process-phase {
+        padding: 30px 20px;
+    }
+    
+    .section-header h2 {
+        font-size: 2.5rem !important;
+    }
+    
+    .services-cta {
+        padding: 80px 0 !important;
+    }
+    
+    .services-cta .cta-content h2 {
+        font-size: 2.2rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .services-navigation {
+        gap: 10px;
+    }
+    
+    .nav-item {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .service-title {
+        font-size: 1.8rem !important;
+    }
+    
+    .service-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .stat-value {
+        font-size: 1.8rem;
+    }
+    
+    .section-header h2 {
+        font-size: 2rem !important;
+    }
+    
+    .services-cta .cta-content h2 {
+        font-size: 2rem !important;
+    }
+    
+    .phase-number {
+        font-size: 2rem;
     }
 }
