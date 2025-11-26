@@ -3,6 +3,110 @@ function initAbout() {
     setupTeamInteractions();
     setupValueAnimations();
     setupStoryScroll();
+    removeAvatarLetters(); // НОВАЯ ФУНКЦИЯ ДЛЯ УДАЛЕНИЯ БУКВ ИЗ АВАТАРОК
+}
+
+// УДАЛЕНИЕ БУКВ ИЗ АВАТАРОК
+function removeAvatarLetters() {
+    console.log('Removing letters from avatars...');
+    
+    const memberPhotos = document.querySelectorAll('.member-photo');
+    
+    memberPhotos.forEach((photo, index) => {
+        // Удаляем все элементы кроме изображения
+        const elementsToRemove = photo.querySelectorAll('*:not(.member-avatar)');
+        elementsToRemove.forEach(el => {
+            console.log('Removing element from avatar:', el);
+            el.remove();
+        });
+        
+        // Удаляем текстовые узлы
+        const walker = document.createTreeWalker(
+            photo,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+        
+        let node;
+        while (node = walker.nextNode()) {
+            console.log('Removing text node from avatar:', node.textContent);
+            node.remove();
+        }
+        
+        // Убеждаемся, что изображение занимает всю область
+        const avatar = photo.querySelector('.member-avatar');
+        if (avatar) {
+            avatar.style.width = '100%';
+            avatar.style.height = '100%';
+            avatar.style.objectFit = 'cover';
+            avatar.style.position = 'absolute';
+            avatar.style.top = '0';
+            avatar.style.left = '0';
+        }
+    });
+    
+    // Добавляем стили для скрытия псевдо-элементов
+    const styleId = 'remove-avatar-letters-style';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+            .member-photo::before,
+            .member-photo::after,
+            .team-member::before,
+            .team-member::after,
+            .member-photo *::before,
+            .member-photo *::after {
+                content: none !important;
+                display: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+            
+            /* Скрываем любые элементы с буквами в аватарках */
+            .member-photo .letter,
+            .member-photo .badge,
+            .member-photo .initial,
+            .member-photo .marker,
+            .member-photo .text,
+            .member-photo .photo-placeholder,
+            .member-photo [class*="letter"],
+            .member-photo [class*="badge"],
+            .member-photo [class*="initial"],
+            .member-photo [class*="marker"] {
+                display: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                width: 0 !important;
+                height: 0 !important;
+                font-size: 0 !important;
+            }
+            
+            /* Гарантируем, что изображение занимает всю аватарку */
+            .member-avatar {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+                position: relative !important;
+            }
+            
+            /* Убираем все плейсхолдеры */
+            .photo-placeholder {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Дополнительная проверка через секунду
+    setTimeout(() => {
+        const remainingElements = document.querySelectorAll('.member-photo > *:not(.member-avatar)');
+        if (remainingElements.length > 0) {
+            console.log('Found remaining elements in avatars:', remainingElements);
+            remainingElements.forEach(el => el.remove());
+        }
+    }, 1000);
 }
 
 function setupTeamInteractions() {
