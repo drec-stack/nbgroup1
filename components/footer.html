@@ -11,16 +11,16 @@
                     meaningful products for global markets.
                 </p>
                 <div class="social-links">
-                    <a href="https://t.me/NB_GROUP_TECH" aria-label="Telegram">
+                    <a href="https://t.me/NB_GROUP_TECH" class="social-link telegram" aria-label="Telegram">
                         <i class="fab fa-telegram"></i>
                     </a>
-                    <a href="https://instagram.com/nb_group_tech" aria-label="Instagram">
+                    <a href="https://instagram.com/nb_group_tech" class="social-link instagram" aria-label="Instagram">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="#" aria-label="LinkedIn">
+                    <a href="#" class="social-link linkedin" aria-label="LinkedIn">
                         <i class="fab fa-linkedin"></i>
                     </a>
-                    <a href="#" aria-label="Behance">
+                    <a href="#" class="social-link behance" aria-label="Behance">
                         <i class="fab fa-behance"></i>
                     </a>
                 </div>
@@ -64,5 +64,352 @@
             </div>
         </div>
     </div>
-
 </footer>
+
+<style>
+.main-footer {
+    background: var(--blue-gradient);
+    padding: 80px 0 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px 20px 0 0;
+    margin-top: 80px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -8px 32px rgba(0, 102, 255, 0.3);
+    position: relative;
+    z-index: 100;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 50px;
+}
+
+.footer-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: white;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.footer-logo .logo-mark {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--primary-blue);
+    transition: var(--transition);
+}
+
+.footer-logo .logo-mark:hover {
+    transform: scale(1.05);
+    background: white;
+}
+
+.footer-logo .logo-text {
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.footer-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 30px;
+    font-size: 15px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    text-decoration: none;
+    transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 18px;
+}
+
+.social-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    border-radius: 15px;
+}
+
+.social-link.telegram:hover {
+    background: rgba(0, 136, 204, 0.3);
+    border-color: #0088cc;
+}
+
+.social-link.instagram:hover {
+    background: rgba(228, 64, 95, 0.3);
+    border-color: #e4405f;
+}
+
+.social-link.linkedin:hover {
+    background: rgba(0, 119, 181, 0.3);
+    border-color: #0077b5;
+}
+
+.social-link.behance:hover {
+    background: rgba(23, 105, 255, 0.3);
+    border-color: #1769ff;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s;
+    padding: 5px 0;
+    display: block;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    padding-left: 10px;
+}
+
+.contact-info p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 10px;
+    padding: 5px 0;
+    font-size: 14px;
+}
+
+.contact-info p i {
+    color: rgba(255, 255, 255, 0.8);
+    width: 20px;
+    text-align: center;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.footer-legal {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-legal a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.footer-legal a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 1024px) {
+    .footer-content {
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 40px;
+    }
+    
+    .footer-section:last-child {
+        grid-column: 1 / -1;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-footer {
+        padding: 60px 0 25px;
+        border-radius: 15px 15px 0 0;
+        margin-top: 60px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .footer-logo {
+        justify-content: center;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .contact-info p {
+        justify-content: center;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .footer-legal {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-footer {
+        padding: 40px 0 20px;
+        border-radius: 12px 12px 0 0;
+        margin-top: 40px;
+    }
+    
+    .footer-content {
+        gap: 30px;
+    }
+    
+    .footer-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    
+    .footer-logo .logo-mark {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+    
+    .footer-logo .logo-text {
+        font-size: 18px;
+    }
+    
+    .social-links {
+        gap: 10px;
+    }
+    
+    .social-link {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .footer-legal {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+    .main-footer {
+        background: var(--blue-gradient);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .social-link {
+        transition: none;
+    }
+    
+    .footer-links a {
+        transition: none;
+    }
+}
+</style>
+
+<script>
+function initFooter() {
+    console.log('Footer initialized');
+    setupFooterAnimations();
+    setupSocialLinks();
+}
+
+function setupFooterAnimations() {
+    const footerSections = document.querySelectorAll('.footer-section');
+    
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        footerSections.forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    }
+}
+
+function setupSocialLinks() {
+    const socialLinks = document.querySelectorAll('.social-link');
+    
+    socialLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            link.style.transform = 'translateY(-3px) scale(1.05)';
+        });
+        
+        link.addEventListener('mouseleave', () => {
+            link.style.transform = 'translateY(0) scale(1)';
+        });
+        
+        link.addEventListener('touchstart', () => {
+            link.style.transform = 'translateY(-2px) scale(1.02)';
+        }, { passive: true });
+        
+        link.addEventListener('touchend', () => {
+            link.style.transform = 'translateY(0) scale(1)';
+        }, { passive: true });
+    });
+}
+
+if (document.querySelector('.main-footer')) {
+    document.addEventListener('DOMContentLoaded', initFooter);
+}
+
+window.initFooter = initFooter;
+</script>
