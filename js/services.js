@@ -1,83 +1,75 @@
-// Services page specific JavaScript
+// services.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ (ПОЛНАЯ ВЕРСИЯ)
+console.log('🎯 services.js loaded - MOBILE OPTIMIZED');
+
 function initServices() {
-    setupScrollHideNavigation(); // Добавляем скрытие навигации при скролле
-    setupServiceNavigation();
+    console.log('🎯 Initializing services page with mobile optimizations...');
+    
+    // Инициализация с учетом мобильных устройств
+    setupMobileServiceNavigation();
     setupServiceAnimations();
-    setupProcessInteractions(); // Эта функция теперь исправлена
+    setupProcessInteractions();
     setupBrandbookLink();
+    setupTouchOptimizations();
+    setupPerformanceMonitoring();
+    
+    console.log('✅ Services page optimized for mobile');
 }
 
-// Hide/Show services navigation on scroll
-function setupScrollHideNavigation() {
+// ОПТИМИЗИРОВАННАЯ НАВИГАЦИЯ ДЛЯ МОБИЛЬНЫХ
+function setupMobileServiceNavigation() {
     const servicesNav = document.querySelector('.services-nav');
-    if (!servicesNav) return;
-
-    let lastScrollTop = 0;
-    const scrollThreshold = 100; // Минимальная дистанция скролла перед скрытием
-    const navHeight = servicesNav.offsetHeight;
-
-    window.addEventListener('scroll', () => {
-        if (window.innerWidth <= 768) return; // Не скрываем на мобильных
-
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Определяем направление скролла
-        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
-            // Скролл вниз - скрываем
-            servicesNav.classList.add('hidden');
-            servicesNav.classList.remove('visible');
-        } else {
-            // Скролл вверх - показываем
-            servicesNav.classList.remove('hidden');
-            servicesNav.classList.add('visible');
-        }
-        
-        lastScrollTop = scrollTop;
-    });
-
-    // Показываем навигацию при загрузке
-    servicesNav.classList.add('visible');
-}
-
-function setupServiceNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
     const serviceSections = document.querySelectorAll('.service-detail');
     
-    // Update active nav item on scroll
-    window.addEventListener('scroll', () => {
-        let current = '';
-        const scrollPosition = window.pageYOffset + 200;
-        
-        serviceSections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
+    if (!servicesNav) return;
+    
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        // На мобильных не скрываем навигацию, добавляем специальный класс
+        servicesNav.classList.add('mobile-optimized');
+        setupMobileNavBehavior();
+    } else {
+        // На десктопах оставляем оригинальную логику скрытия
+        setupScrollHideNavigation();
+    }
+    
+    // Общая логика для smooth scroll
+    setupSmoothScrollNavigation(navItems, serviceSections, isMobile);
+    
+    // Активное состояние при скролле
+    setupScrollActiveState(navItems, serviceSections, isMobile);
+}
+
+function setupMobileNavBehavior() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const servicesNav = document.querySelector('.services-nav');
+    
+    // Добавляем индикатор загрузки для мобильных
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '#brandbook') return;
             
-            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                current = section.getAttribute('id');
-            }
+            // Визуальный feedback для мобильных
+            this.style.opacity = '0.7';
+            setTimeout(() => {
+                this.style.opacity = '1';
+            }, 300);
         });
-        
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === `#${current}`) {
-                item.classList.add('active');
-            }
-        });
-        
-        // If no section is active, make first one active
-        if (!current && navItems.length > 0) {
-            navItems[0].classList.add('active');
-        }
     });
     
-    // Smooth scroll for nav items
+    // Оптимизация производительности скролла на мобильных
+    servicesNav.style.willChange = 'transform';
+}
+
+function setupSmoothScrollNavigation(navItems, serviceSections, isMobile) {
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
             
             const targetId = item.getAttribute('href');
             
-            // Handle brandbook page link
+            // Обработка ссылки на brandbook
             if (targetId === '#brandbook') {
                 window.location.href = 'brandbook.html';
                 return;
@@ -87,105 +79,209 @@ function setupServiceNavigation() {
             
             if (targetSection) {
                 const headerHeight = document.querySelector('.main-header').offsetHeight;
-                const targetPosition = targetSection.offsetTop - headerHeight - 20;
+                const navHeight = isMobile ? 0 : document.querySelector('.services-nav').offsetHeight;
+                const additionalOffset = isMobile ? 20 : 40;
+                const targetPosition = targetSection.offsetTop - headerHeight - navHeight - additionalOffset;
+                
+                // Плавный скролл с разной скоростью для мобильных
+                const scrollBehavior = isMobile ? 'smooth' : 'smooth';
                 
                 window.scrollTo({
                     top: targetPosition,
-                    behavior: 'smooth'
+                    behavior: scrollBehavior
                 });
                 
-                // Update active state
+                // Обновляем активное состояние
                 navItems.forEach(navItem => navItem.classList.remove('active'));
+                item.classList.add('active');
+                
+                // На мобильных закрываем клавиатуру если открыта
+                if (isMobile) {
+                    document.activeElement.blur();
+                }
+            }
+        });
+    });
+}
+
+function setupScrollActiveState(navItems, serviceSections, isMobile) {
+    let scrollTimeout;
+    
+    const updateActiveNav = () => {
+        let current = '';
+        const scrollPosition = window.pageYOffset + (isMobile ? 100 : 200);
+        
+        serviceSections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            const sectionBottom = sectionTop + sectionHeight;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            const href = item.getAttribute('href').replace('#', '');
+            if (href === current) {
                 item.classList.add('active');
             }
         });
-    });
+        
+        // Если нет активной секции, делаем первую активной
+        if (!current && navItems.length > 0 && window.pageYOffset < 100) {
+            navItems[0].classList.add('active');
+        }
+    };
+    
+    // Throttled scroll handler
+    const throttledScroll = throttle(updateActiveNav, isMobile ? 100 : 50);
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    
+    // Initial update
+    updateActiveNav();
 }
 
+// ОРИГИНАЛЬНАЯ ФУНКЦИЯ СКРЫТИЯ НАВИГАЦИИ (только для десктопов)
+function setupScrollHideNavigation() {
+    const servicesNav = document.querySelector('.services-nav');
+    if (!servicesNav) return;
+
+    let lastScrollTop = 0;
+    const scrollThreshold = 100;
+    let isHidden = false;
+
+    const handleScroll = () => {
+        if (window.innerWidth <= 768) return;
+
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollDelta = scrollTop - lastScrollTop;
+        
+        if (scrollDelta > 5 && scrollTop > scrollThreshold && !isHidden) {
+            servicesNav.classList.add('hidden');
+            servicesNav.classList.remove('visible');
+            isHidden = true;
+        } else if (scrollDelta < -5 && isHidden) {
+            servicesNav.classList.remove('hidden');
+            servicesNav.classList.add('visible');
+            isHidden = false;
+        }
+        
+        lastScrollTop = scrollTop;
+    };
+
+    window.addEventListener('scroll', throttle(handleScroll, 50), { passive: true });
+    servicesNav.classList.add('visible');
+}
+
+// ОПТИМИЗИРОВАННЫЕ АНИМАЦИИ ДЛЯ МОБИЛЬНЫХ
 function setupServiceAnimations() {
-    // Stagger animation for service features
     const serviceFeatures = document.querySelectorAll('.feature');
-    if (serviceFeatures.length > 0 && window.NBAnimations) {
-        window.NBAnimations.staggerAnimation(serviceFeatures, 150);
+    const serviceStats = document.querySelectorAll('.stat');
+    const isMobile = window.innerWidth <= 768;
+    
+    // Более быстрые анимации на мобильных
+    const animationDelay = isMobile ? 80 : 150;
+    
+    // Анимация features с staggered эффектом
+    if (serviceFeatures.length > 0) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * animationDelay);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { 
+            threshold: isMobile ? 0.1 : 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        serviceFeatures.forEach(feature => {
+            feature.style.opacity = '0';
+            feature.style.transform = 'translateY(20px)';
+            feature.style.transition = `all 0.6s ease ${animationDelay}ms`;
+            observer.observe(feature);
+        });
     }
     
-    // Animate stats when they come into view
-    const serviceStats = document.querySelectorAll('.stat');
+    // Анимации для статистики
     serviceStats.forEach(stat => {
-        stat.addEventListener('mouseenter', () => {
-            stat.style.transform = 'scale(1.05)';
+        const eventType = isMobile ? 'touchstart' : 'mouseenter';
+        const leaveEvent = isMobile ? 'touchend' : 'mouseleave';
+        
+        stat.addEventListener(eventType, () => {
+            if (!isMobile) {
+                stat.style.transform = 'scale(1.05)';
+                stat.style.transition = 'transform 0.3s ease';
+            }
         });
         
-        stat.addEventListener('mouseleave', () => {
-            stat.style.transform = 'scale(1)';
+        stat.addEventListener(leaveEvent, () => {
+            if (!isMobile) {
+                stat.style.transform = 'scale(1)';
+            }
         });
     });
-    
-    // Animate new service sections
-    const newServices = document.querySelectorAll('#brand, #brandbook');
-    if (newServices.length > 0 && window.NBAnimations) {
-        window.NBAnimations.staggerAnimation(newServices, 200);
-    }
 }
 
-// ИСПРАВЛЕННАЯ ФУНКЦИЯ - убраны проблемные стили
+// ОПТИМИЗИРОВАННЫЕ ВЗАИМОДЕЙСТВИЯ С ПРОЦЕССОМ
 function setupProcessInteractions() {
     const processPhases = document.querySelectorAll('.process-phase');
+    const isMobile = window.innerWidth <= 768;
     
     processPhases.forEach(phase => {
-        // Убраны проблемные обработчики, которые меняли стили цифр
-        phase.addEventListener('mouseenter', () => {
-            // Только легкая анимация, без изменения цвета цифр
-            const number = phase.querySelector('.phase-number');
-            if (number) {
-                number.style.transform = 'scale(1.1)';
-            }
-        });
+        // Упрощенные анимации для мобильных
+        if (!isMobile) {
+            phase.addEventListener('mouseenter', () => {
+                const number = phase.querySelector('.phase-number');
+                if (number) {
+                    number.style.transform = 'scale(1.1)';
+                    number.style.transition = 'transform 0.3s ease';
+                }
+            });
+            
+            phase.addEventListener('mouseleave', () => {
+                const number = phase.querySelector('.phase-number');
+                if (number) {
+                    number.style.transform = 'scale(1)';
+                }
+            });
+        }
         
-        phase.addEventListener('mouseleave', () => {
-            // Возвращаем исходное состояние
-            const number = phase.querySelector('.phase-number');
-            if (number) {
-                number.style.transform = 'scale(1)';
-            }
-        });
-        
-        // Click to navigate to corresponding service
-        phase.addEventListener('click', () => {
+        // Клик для навигации (работает на всех устройствах)
+        const handlePhaseClick = () => {
             const phaseText = phase.querySelector('h3').textContent.toLowerCase();
             let targetSection = '';
             
-            switch(phaseText) {
-                case 'discover':
-                case 'исследование':
-                    targetSection = 'strategy';
-                    break;
-                case 'design':
-                case 'дизайн':
-                    targetSection = 'design';
-                    break;
-                case 'develop':
-                case 'разработка':
-                    targetSection = 'engineering';
-                    break;
-                case 'deliver':
-                case 'реализация':
-                    targetSection = 'production';
-                    break;
+            // Определяем целевую секцию на основе текста фазы
+            if (phaseText.includes('discover') || phaseText.includes('исследование')) {
+                targetSection = 'strategy';
+            } else if (phaseText.includes('design') || phaseText.includes('дизайн')) {
+                targetSection = 'design';
+            } else if (phaseText.includes('develop') || phaseText.includes('разработка')) {
+                targetSection = 'engineering';
+            } else if (phaseText.includes('deliver') || phaseText.includes('реализация')) {
+                targetSection = 'production';
             }
             
             if (targetSection) {
                 const targetElement = document.getElementById(targetSection);
                 if (targetElement) {
                     const headerHeight = document.querySelector('.main-header').offsetHeight;
-                    const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                    const additionalOffset = isMobile ? 20 : 40;
+                    const targetPosition = targetElement.offsetTop - headerHeight - additionalOffset;
                     
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
                     });
                     
-                    // Update navigation
+                    // Обновляем навигацию
                     const navItems = document.querySelectorAll('.nav-item');
                     navItems.forEach(item => {
                         item.classList.remove('active');
@@ -195,8 +291,83 @@ function setupProcessInteractions() {
                     });
                 }
             }
+        };
+        
+        // Для мобильных используем touch, для десктопов - click
+        if (isMobile) {
+            phase.addEventListener('touchend', handlePhaseClick);
+        } else {
+            phase.addEventListener('click', handlePhaseClick);
+        }
+    });
+}
+
+// ДОПОЛНИТЕЛЬНЫЕ ОПТИМИЗАЦИИ ДЛЯ TOUCH-УСТРОЙСТВ
+function setupTouchOptimizations() {
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) return;
+    
+    // Улучшение feedback для кнопок
+    const buttons = document.querySelectorAll('.service-cta .btn, .nav-item');
+    
+    buttons.forEach(btn => {
+        btn.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+            this.style.transition = 'transform 0.1s ease';
+        });
+        
+        btn.addEventListener('touchend', function() {
+            this.style.transform = 'scale(1)';
+        });
+        
+        btn.addEventListener('touchcancel', function() {
+            this.style.transform = 'scale(1)';
         });
     });
+    
+    // Оптимизация скролла на мобильных
+    document.documentElement.style.scrollBehavior = 'smooth';
+}
+
+// МОНИТОРИНГ ПРОИЗВОДИТЕЛЬНОСТИ
+function setupPerformanceMonitoring() {
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile && 'performance' in window) {
+        // Мониторинг времени загрузки
+        const loadTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
+        console.log(`📱 Mobile page load time: ${loadTime}ms`);
+        
+        if (loadTime > 3000) {
+            console.warn('⚠️ Slow mobile load time detected, applying optimizations');
+            applyAggressiveOptimizations();
+        }
+    }
+}
+
+function applyAggressiveOptimizations() {
+    // Агрессивные оптимизации для медленных устройств
+    const heavyElements = document.querySelectorAll('.process-phase, .stat, .feature');
+    heavyElements.forEach(el => {
+        el.style.willChange = 'auto';
+    });
+    
+    // Отключаем сложные анимации
+    document.documentElement.style.scrollBehavior = 'auto';
+}
+
+// ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ THROTTLE
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
 }
 
 function setupBrandbookLink() {
@@ -208,9 +379,8 @@ function setupBrandbookLink() {
         });
     }
     
-    // Add click handler for brandbook CTA button
     const brandbookCta = document.querySelector('.service-cta .btn');
-    if (brandbookCta) {
+    if (brandbookCta && (brandbookCta.textContent.includes('Brandbook') || brandbookCta.textContent.includes('брендбук'))) {
         brandbookCta.addEventListener('click', (e) => {
             e.preventDefault();
             window.location.href = 'brandbook.html';
@@ -218,33 +388,84 @@ function setupBrandbookLink() {
     }
 }
 
-// Enhanced service section animations
+// АНИМАЦИИ СЕКЦИЙ С ОПТИМИЗАЦИЕЙ ДЛЯ МОБИЛЬНЫХ
 function animateServiceSections() {
     const serviceSections = document.querySelectorAll('.service-detail');
+    const isMobile = window.innerWidth <= 768;
     
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                const delay = index * (isMobile ? 150 : 200);
+                
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, delay);
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { 
+        threshold: isMobile ? 0.1 : 0.2,
+        rootMargin: isMobile ? '0px 0px -30px 0px' : '0px 0px -50px 0px'
+    });
+
     serviceSections.forEach((section, index) => {
         section.style.opacity = '0';
         section.style.transform = 'translateY(30px)';
-        section.style.transition = `all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${index * 0.2}s`;
         
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
+        // Разная скорость анимации для мобильных
+        const transitionDuration = isMobile ? '0.5s' : '0.8s';
+        section.style.transition = `all ${transitionDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
         
         observer.observe(section);
     });
 }
 
-// Initialize when DOM is loaded
+// ИНИЦИАЛИЗАЦИЯ И ОБРАБОТЧИКИ
 document.addEventListener('DOMContentLoaded', () => {
-    initServices();
-    animateServiceSections();
+    // Задержка для стабилизации DOM
+    setTimeout(() => {
+        initServices();
+        animateServiceSections();
+    }, 100);
 });
 
-// Export for global access
+// ОБРАБОТЧИК ИЗМЕНЕНИЯ РАЗМЕРА ОКНА
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        console.log('🔄 Reinitializing services for new screen size');
+        if (typeof initServices === 'function') {
+            initServices();
+        }
+    }, 250);
+});
+
+// ОБРАБОТКА ВИДИМОСТИ СТРАНИЦЫ
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        // Переинициализация при возвращении на страницу
+        setTimeout(() => {
+            if (typeof initServices === 'function') {
+                initServices();
+            }
+        }, 100);
+    }
+});
+
+// Экспорт для глобального доступа
 window.initServices = initServices;
+window.animateServiceSections = animateServiceSections;
+
+// Авто-инициализация если DOM уже готов
+if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    setTimeout(() => {
+        if (typeof initServices === 'function') {
+            initServices();
+            animateServiceSections();
+        }
+    }, 200);
+}
