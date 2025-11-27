@@ -16,7 +16,7 @@
             </nav>
             
             <div class="header-actions">
-                <div class="language-switcher" data-current-lang="en">
+                <div class="language-switcher" data-current-lang="ru">
                     <div class="lang-slider"></div>
                     <button class="lang-btn" data-lang="ru">
                         <span class="lang-text">RU</span>
@@ -50,22 +50,20 @@
         max-width: 1400px;
         margin: 0 auto;
         padding: 20px 0;
-        background: var(--red-gradient);
+        background: var(--blue-gradient);
         z-index: 1000;
         border-radius: 20px;
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(209, 0, 0, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 102, 255, 0.3);
         border: 1px solid rgba(255, 255, 255, 0.1);
         
-        /* Анимация скрытия/появления */
         transform: translateY(0);
         opacity: 1;
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
                     opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Убираем отступы у контейнера внутри хедера */
     .main-header .container {
         padding: 0;
         max-width: 100%;
@@ -111,7 +109,7 @@
         justify-content: center;
         font-weight: 800;
         font-size: 16px;
-        color: var(--primary-red);
+        color: var(--primary-blue);
         transition: var(--transition);
     }
 
@@ -186,13 +184,13 @@
 
     .btn-primary {
         background: rgba(255, 255, 255, 0.9);
-        color: var(--primary-red);
-        font-weight: 600;
+        color: #ff0000;
+        font-weight: 700;
     }
 
     .btn-primary:hover {
         background: white;
-        color: var(--dark-red);
+        color: #cc0000;
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
     }
@@ -203,7 +201,7 @@
         border-radius: 8px;
     }
 
-    /* Language Switcher */
+    /* Language Switcher Styles */
     .language-switcher {
         display: flex;
         align-items: center;
@@ -216,6 +214,8 @@
         backdrop-filter: blur(10px);
         min-width: 120px;
         height: 40px;
+        overflow: hidden;
+        transition: all 0.3s ease;
     }
 
     .lang-btn {
@@ -230,12 +230,13 @@
         font-weight: 500;
         cursor: pointer;
         border-radius: 20px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.3s ease;
         position: relative;
         z-index: 2;
         min-width: 56px;
         justify-content: center;
         flex: 1;
+        outline: none;
     }
 
     .lang-btn.active {
@@ -251,13 +252,17 @@
         height: calc(100% - 8px);
         background: rgba(255, 255, 255, 0.9);
         border-radius: 20px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1;
         box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
     }
 
     .language-switcher[data-current-lang="en"] .lang-slider {
         transform: translateX(100%);
+    }
+
+    .language-switcher[data-current-lang="ru"] .lang-slider {
+        transform: translateX(0);
     }
 
     .lang-flag {
@@ -324,7 +329,6 @@
         visibility: visible;
     }
 
-    /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
     @media (max-width: 768px) {
         .main-header {
             top: 10px;
@@ -349,7 +353,7 @@
             right: -100%;
             width: 300px;
             height: 100vh;
-            background: var(--red-gradient);
+            background: var(--blue-gradient);
             flex-direction: column;
             padding: 100px 30px 30px;
             border-left: 1px solid rgba(255, 255, 255, 0.2);
@@ -459,14 +463,12 @@
         }
     }
 
-    /* Fallback для браузеров без поддержки backdrop-filter */
     @supports not (backdrop-filter: blur(10px)) {
         .language-switcher {
             background: rgba(13, 17, 23, 0.95);
         }
     }
 
-    /* Reduced motion support */
     @media (prefers-reduced-motion: reduce) {
         .lang-slider {
             transition: none;
@@ -479,17 +481,19 @@
         .main-header {
             transition: none;
         }
+        
+        .nav-link::after {
+            transition: none;
+        }
     }
 
-    /* Для внутренних страниц хедер всегда видимый */
     body.internal-page .main-header {
         transform: translateY(0) !important;
-        background: var(--red-gradient) !important;
+        background: var(--blue-gradient) !important;
         backdrop-filter: blur(10px) !important;
         opacity: 1 !important;
     }
 
-    /* Для главной страницы оставляем текущее поведение */
     body.home-page .main-header {
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
                     opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -500,9 +504,9 @@
 function initHeader() {
     console.log('Header initialized');
     setupMobileMenu();
-    setupSmoothLanguageSwitcher();
     setupHeaderScroll();
     setActiveNavLink();
+    // Language switcher handled by i18n.js
 }
 
 function setupMobileMenu() {
@@ -533,7 +537,6 @@ function setupMobileMenu() {
         });
     }
 
-    // Close menu on nav link click
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
@@ -547,67 +550,6 @@ function setupMobileMenu() {
     });
 }
 
-function setupSmoothLanguageSwitcher() {
-    const langBtns = document.querySelectorAll('.lang-btn');
-    const switcher = document.querySelector('.language-switcher');
-    
-    // Initialize switcher state
-    const currentLang = localStorage.getItem('preferredLang') || 'en';
-    updateSwitcherState(currentLang);
-    
-    langBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const lang = btn.getAttribute('data-lang');
-            const currentActive = document.querySelector('.lang-btn.active');
-            
-            if (currentActive && currentActive.getAttribute('data-lang') === lang) {
-                return; // Already active
-            }
-            
-            // Visual feedback
-            btn.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                btn.style.transform = 'scale(1)';
-            }, 150);
-            
-            // Update visual state immediately
-            updateSwitcherState(lang);
-            
-            // Trigger language change
-            if (window.i18n && window.i18n.smoothSwitchLanguage) {
-                window.i18n.smoothSwitchLanguage(lang);
-            } else if (window.changeLanguage) {
-                window.changeLanguage(lang);
-            } else {
-                console.log('Language change requested:', lang);
-                // Fallback: just update the switcher
-                localStorage.setItem('preferredLang', lang);
-            }
-        });
-    });
-}
-
-function updateSwitcherState(lang) {
-    const langBtns = document.querySelectorAll('.lang-btn');
-    const switcher = document.querySelector('.language-switcher');
-    
-    // Update active buttons
-    langBtns.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-lang') === lang) {
-            btn.classList.add('active');
-        }
-    });
-    
-    // Update switcher attribute
-    if (switcher) {
-        switcher.setAttribute('data-current-lang', lang);
-    }
-}
-
 function setupHeaderScroll() {
     const header = document.querySelector('.main-header');
     if (!header) return;
@@ -619,13 +561,10 @@ function setupHeaderScroll() {
     const updateHeader = () => {
         const scrollY = window.scrollY;
         
-        // Скрываем хедер при скролле вниз, показываем при скролле вверх
         if (scrollY > lastScrollY && scrollY > scrollThreshold) {
-            // Скролл вниз - скрываем хедер
             header.style.transform = 'translateY(-100%)';
             header.style.opacity = '0';
         } else {
-            // Скролл вверх или в начале страницы - показываем хедер
             header.style.transform = 'translateY(0)';
             header.style.opacity = '1';
         }
@@ -658,21 +597,55 @@ function setActiveNavLink() {
     });
 }
 
-// Listen for language changes from i18n system
+// Function to update language switcher state (called from i18n.js)
+function updateLanguageSwitcherState(lang) {
+    const langBtns = document.querySelectorAll('.lang-btn');
+    const switcher = document.querySelector('.language-switcher');
+    const langSlider = document.querySelector('.lang-slider');
+    
+    // Update button active states
+    langBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Update switcher attribute
+    if (switcher) {
+        switcher.setAttribute('data-current-lang', lang);
+    }
+    
+    // Update slider position
+    if (langSlider) {
+        if (lang === 'en') {
+            langSlider.style.transform = 'translateX(100%)';
+        } else {
+            langSlider.style.transform = 'translateX(0)';
+        }
+    }
+    
+    console.log('🔄 Language switcher updated to:', lang);
+}
+
+// Listen for language change events
 document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('languageChanged', (e) => {
-        updateSwitcherState(e.detail.lang);
+        updateLanguageSwitcherState(e.detail.lang);
     });
+    
+    // Initialize header if it exists
+    if (document.querySelector('.main-header')) {
+        initHeader();
+    }
 });
 
-// Auto-initialize if in standalone header
+// Global functions
+window.initHeader = initHeader;
+window.updateLanguageSwitcherState = updateLanguageSwitcherState;
+
+// Auto-initialize header when loaded as component
 if (document.querySelector('.main-header') && !document.getElementById('header-container')) {
     document.addEventListener('DOMContentLoaded', initHeader);
 }
-
-// Make function globally available
-window.initHeader = initHeader;
-
-// Backward compatibility
-window.setupLanguageSwitcher = setupSmoothLanguageSwitcher;
 </script>
