@@ -6,13 +6,6 @@
     --blue-gradient: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
     --blue-glow: 0 8px 25px rgba(0, 102, 255, 0.3);
     
-    /* ОСНОВНЫЕ ЦВЕТА - КРАСНАЯ ПАЛИТРА ДЛЯ ХЕДЕРА И ФУТЕРА */
-    --primary-red: #d10000;
-    --dark-red: #b30000;
-    --light-red: #ff3333;
-    --red-gradient: linear-gradient(135deg, #d10000 0%, #b30000 100%);
-    --red-glow: 0 8px 25px rgba(209, 0, 0, 0.3);
-    
     /* ОСНОВНЫЕ ЦВЕТА */
     --primary: #0a0a0a;
     --secondary: #1a1a1a;
@@ -59,7 +52,7 @@ main {
     padding: 0 20px;
 }
 
-/* ===== ЗАКРУГЛЕННЫЙ КРАСНЫЙ HEADER ===== */
+/* ===== ЗАКРУГЛЕННЫЙ СИНИЙ HEADER ===== */
 .main-header {
     position: fixed;
     top: 20px;
@@ -69,12 +62,12 @@ main {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px 0;
-    background: var(--red-gradient);
+    background: var(--blue-gradient);
     z-index: 1000;
     border-radius: 20px;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(209, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 102, 255, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.1);
     
     /* Анимация скрытия/появления */
@@ -130,7 +123,7 @@ main {
     justify-content: center;
     font-weight: 800;
     font-size: 16px;
-    color: var(--primary-red);
+    color: var(--primary-blue);
     transition: var(--transition);
 }
 
@@ -206,13 +199,13 @@ main {
 
 .btn-primary {
     background: rgba(255, 255, 255, 0.9);
-    color: var(--primary-red);
-    font-weight: 600;
+    color: #ff0000 !important; /* КРАСНЫЙ ТЕКСТ ДЛЯ КНОПКИ */
+    font-weight: 700;
 }
 
 .btn-primary:hover {
     background: white;
-    color: var(--dark-red);
+    color: #cc0000 !important; /* ТЕМНЫЙ КРАСНЫЙ ПРИ НАВЕДЕНИИ */
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
 }
@@ -377,13 +370,16 @@ main {
     visibility: visible;
 }
 
-/* ===== КРАСНЫЙ FOOTER ===== */
+/* ===== СИНИЙ FOOTER ===== */
 .main-footer {
-    background: var(--red-gradient);
+    background: var(--blue-gradient);
     padding: 80px 0 30px;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px 20px 0 0;
     margin-top: 40px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -8px 32px rgba(0, 102, 255, 0.3);
 }
 
 .footer-content {
@@ -405,6 +401,25 @@ main {
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
+}
+
+.footer-logo .logo-mark {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--primary-blue);
+    transition: var(--transition);
+}
+
+.footer-logo .logo-mark:hover {
+    transform: scale(1.05);
+    background: white;
 }
 
 .footer-description {
@@ -429,6 +444,7 @@ main {
     color: white;
     text-decoration: none;
     transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .social-links a:hover {
@@ -2160,7 +2176,7 @@ main {
         right: -100%;
         width: 300px;
         height: 100vh;
-        background: var(--red-gradient);
+        background: var(--blue-gradient);
         flex-direction: column;
         padding: 100px 30px 30px;
         border-left: 1px solid rgba(255, 255, 255, 0.2);
@@ -2491,7 +2507,7 @@ main {
     .nav-link:hover,
     .nav-link.active {
         background: white;
-        color: var(--primary-red);
+        color: var(--primary-blue);
     }
     
     .card {
@@ -2502,11 +2518,11 @@ main {
 /* ===== DARK MODE ENHANCEMENTS ===== */
 @media (prefers-color-scheme: dark) {
     .main-header {
-        background: var(--red-gradient);
+        background: var(--blue-gradient);
     }
     
     .main-footer {
-        background: var(--red-gradient);
+        background: var(--blue-gradient);
     }
 }
 
@@ -2543,14 +2559,14 @@ main {
 /* Для внутренних страниц хедер всегда видимый и с фоном */
 body.internal-page .main-header {
     transform: translateY(0) !important;
-    background: var(--red-gradient) !important;
+    background: var(--blue-gradient) !important;
     backdrop-filter: blur(10px) !important;
     opacity: 1 !important;
 }
 
 /* Убираем прозрачность для внутренних страниц */
 body.internal-page .main-header.scrolled {
-    background: var(--red-gradient) !important;
+    background: var(--blue-gradient) !important;
 }
 
 /* Для главной страницы оставляем текущее поведение */
@@ -2577,4 +2593,16 @@ body.internal-page .main-header {
         transform: none !important;
         opacity: 1 !important;
     }
+}
+
+/* ===== КРАСНЫЙ ТЕКСТ ДЛЯ КНОПКИ "НАЧАТЬ ПРОЕКТ" И ЗАГОЛОВКА "НАШИ УСЛУГИ" ===== */
+.header-actions .btn-primary {
+    color: #ff0000 !important;
+    font-weight: 700;
+}
+
+.services-preview .section-title {
+    color: #ff0000 !important;
+    -webkit-text-fill-color: #ff0000 !important;
+    background: none !important;
 }
