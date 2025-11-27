@@ -100,7 +100,7 @@
 .project-category {
     display: inline-block;
     padding: 6px 12px;
-    background: rgba(0, 102, 255, 0.1); /* ИСПРАВЛЕНО: синий вместо оранжевого */
+    background: rgba(255, 62, 0, 0.1);
     color: var(--accent);
     font-size: 0.8rem;
     font-weight: 600;
@@ -147,7 +147,6 @@
 
 .project-link:hover {
     transform: translateX(5px);
-    color: var(--accent-hover);
 }
 
 /* Testimonials */
@@ -201,33 +200,340 @@
     font-size: 0.9rem;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ PORTFOLIO ===== */
+@media (max-width: 1024px) {
     .portfolio-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .testimonials-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .filter-nav {
-        gap: 10px;
-    }
-    
-    .filter-btn {
-        padding: 10px 16px;
-        font-size: 0.9rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
     }
 }
 
-@media (max-width: 480px) {
-    .project-meta {
-        flex-direction: column;
-        gap: 10px;
+@media (max-width: 768px) {
+    /* Hero Section Mobile */
+    .portfolio-hero {
+        padding: 140px 0 60px !important;
+    }
+    
+    .portfolio-hero-content {
+        text-align: center;
+        padding: 0 15px;
+    }
+
+    /* Filter Navigation Mobile */
+    .portfolio-filter {
+        padding: 30px 0;
+    }
+    
+    .filter-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding: 10px 0 20px;
+        gap: 12px;
+        scroll-behavior: smooth;
+    }
+    
+    /* Скрываем scrollbar для всех браузеров через стандартные методы */
+    .filter-nav::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        background: transparent;
+    }
+    
+    .filter-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        border-radius: 25px;
+        background: var(--secondary);
+        border: 1px solid var(--border);
+    }
+    
+    .filter-btn.active {
+        background: var(--accent-gradient);
+        color: white;
+        border-color: var(--accent);
+    }
+
+    /* Portfolio Grid Mobile */
+    .portfolio-grid-section {
+        padding: 60px 0 !important;
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .portfolio-item {
+        margin-bottom: 0;
+    }
+    
+    .project-card {
+        border-radius: 12px;
+        overflow: hidden;
     }
     
     .project-image {
         height: 200px;
     }
+    
+    .project-info {
+        padding: 25px 20px;
+    }
+    
+    .project-category {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        margin-bottom: 12px;
+    }
+    
+    .project-title {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+        line-height: 1.3;
+    }
+    
+    .project-description {
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+        line-height: 1.5;
+    }
+    
+    .project-meta {
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+    
+    .meta-item {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+    }
+    
+    .project-link {
+        font-size: 0.95rem;
+    }
+    
+    .project-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Testimonials Mobile */
+    .testimonials {
+        padding: 80px 0 !important;
+    }
+    
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .testimonial-card {
+        padding: 30px 25px;
+    }
+    
+    .testimonial-content p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-3px);
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+    
+    .project-image {
+        height: 180px;
+    }
+    
+    .project-info {
+        padding: 20px 15px;
+    }
+    
+    .project-title {
+        font-size: 1.2rem;
+    }
+    
+    .testimonial-card {
+        padding: 25px 20px;
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Оптимизация для touch-устройств */
+@media (hover: none) and (pointer: coarse) {
+    .project-card:hover,
+    .testimonial-card:hover {
+        transform: none;
+    }
+    
+    .filter-btn:hover {
+        background: var(--secondary);
+        color: var(--light-text);
+    }
+    
+    .filter-btn.active:hover {
+        background: var(--accent-gradient);
+        color: white;
+    }
+    
+    /* Улучшение touch-интерфейса */
+    .project-card:active {
+        transform: scale(0.98);
+    }
+    
+    .filter-btn:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Улучшение доступности для мобильных */
+@media (max-width: 768px) {
+    .filter-btn {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .project-link {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+    
+    /* Улучшение скролла для фильтров - только стандартные свойства */
+    .filter-nav {
+        overflow-x: auto;
+    }
+}
+
+/* Landscape ориентация для мобильных */
+@media (max-width: 768px) and (orientation: landscape) {
+    .portfolio-hero {
+        padding: 120px 0 40px !important;
+        min-height: auto;
+    }
+    
+    .project-image {
+        height: 150px;
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Поддержка очень маленьких экранов */
+@media (max-width: 360px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-btn {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+    
+    .project-info {
+        padding: 15px;
+    }
+}
+
+/* Улучшение производительности */
+@media (prefers-reduced-motion: reduce) {
+    .project-card,
+    .testimonial-card,
+    .filter-btn,
+    .project-link {
+        transition: none;
+    }
+    
+    .project-card:hover,
+    .testimonial-card:hover,
+    .project-link:hover {
+        transform: none;
+    }
+}
+
+/* Оптимизация для медленных устройств */
+.slow-connection .project-card,
+.slow-connection .testimonial-card {
+    transform: none !important;
+}
+
+/* Совместимость с темной темой */
+@media (prefers-color-scheme: dark) {
+    .project-card {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .testimonial-card {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .meta-item {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* Дополнительные улучшения для скролла */
+.filter-nav-container {
+    position: relative;
+}
+
+.filter-nav-container::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    background: linear-gradient(90deg, transparent, var(--primary));
+    pointer-events: none;
+}
+
+/* Безопасные CSS свойства для всех браузеров */
+.filter-nav {
+    /* Только стандартные и безопасные свойства */
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+/* Гарантированное скрытие scrollbar через стандартные методы */
+.filter-nav::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.filter-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.filter-nav::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+/* Альтернативное решение для скрытия scrollbar */
+.filter-nav-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-nav-wrapper .filter-nav {
+    padding-bottom: 20px;
+    margin-bottom: -20px;
 }
