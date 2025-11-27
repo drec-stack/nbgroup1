@@ -2,12 +2,97 @@
 .brandbook-hero {
     padding: 160px 0 80px;
     background: var(--secondary);
+    position: relative;
+    overflow: hidden;
+}
+
+.brandbook-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 102, 255, 0.03) 0%, rgba(255, 0, 0, 0.03) 100%);
+    z-index: 1;
 }
 
 .brandbook-hero-content {
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    padding: 0 20px;
+}
+
+.page-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+}
+
+.page-subtitle {
+    font-size: 1.3rem;
+    color: var(--light-text);
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.hero-cta {
+    margin-top: 40px;
+}
+
+.btn-scroll {
+    padding: 15px 30px;
+    border: 2px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    transition: all 0.3s ease;
+}
+
+.btn-scroll:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Brandbook Intro Section */
+.brandbook-intro {
+    padding: 100px 0;
+    background: var(--primary);
+    border-bottom: 1px solid var(--border);
+}
+
+.intro-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.intro-text h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.intro-text p {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--light-text);
+    margin-bottom: 25px;
+    text-align: center;
 }
 
 /* Brandbook Cases */
@@ -15,6 +100,29 @@
     padding: 120px 0;
     background: var(--primary);
     border-bottom: 1px solid var(--border);
+}
+
+.section-header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+}
+
+.section-header h2 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-header p {
+    font-size: 1.2rem;
+    color: var(--light-text);
+    line-height: 1.6;
 }
 
 .brand-cases-grid {
@@ -25,16 +133,20 @@
 
 .brand-case {
     background: var(--secondary);
-    border-radius: 16px;
+    border-radius: 20px;
     border: 1px solid var(--border);
     overflow: hidden;
-    transition: var(--transition);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
 }
 
 .brand-case:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px);
     border-color: var(--accent);
-    box-shadow: var(--accent-shadow);
+    box-shadow: 0 25px 50px rgba(0, 102, 255, 0.15);
 }
 
 .case-header {
@@ -56,13 +168,14 @@
 }
 
 .case-title {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 800;
     margin: 0;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    line-height: 1.2;
 }
 
 .case-category {
@@ -103,41 +216,44 @@
 
 .color-palette {
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .color-item {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
     border: 2px solid var(--border);
-    transition: var(--transition);
+    transition: all 0.3s ease;
     cursor: pointer;
     position: relative;
+    flex-shrink: 0;
 }
 
 .color-item:hover {
     transform: scale(1.1);
     border-color: var(--accent);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Placeholder colors for empty cases */
 .placeholder-color-1 {
-    background: #cccccc;
+    background: #0066ff;
 }
 
 .placeholder-color-2 {
-    background: #999999;
+    background: #ff3366;
 }
 
 .placeholder-color-3 {
-    background: #666666;
+    background: #00cc88;
 }
 
 .brand-element p {
     color: var(--light-text);
     margin: 0;
     font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 /* Brandbook CTA */
@@ -145,16 +261,36 @@
     padding: 120px 0;
     background: var(--primary);
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.brandbook-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 102, 255, 0.05) 0%, rgba(255, 0, 0, 0.05) 100%);
+    z-index: 1;
+}
+
+.brandbook-cta .cta-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 20px;
 }
 
 .brandbook-cta .cta-content h2 {
-    font-size: 3rem;
+    font-size: 3.2rem;
     font-weight: 800;
     margin-bottom: 20px;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    line-height: 1.1;
 }
 
 .brandbook-cta .cta-content p {
@@ -164,14 +300,13 @@
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    line-height: 1.6;
 }
 
-/* Fallback footer styles */
-.fallback-footer {
-    padding: 2rem;
-    text-align: center;
-    background: var(--secondary);
-    color: var(--light-text);
+.btn-large {
+    padding: 18px 35px;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 /* Color tooltip styles */
@@ -180,17 +315,32 @@
     background: var(--primary);
     color: var(--text);
     padding: 8px 12px;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 12px;
     font-weight: 600;
     border: 1px solid var(--border);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     z-index: 1000;
     white-space: nowrap;
     pointer-events: none;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 10px;
 }
 
-/* Responsive Design */
+.color-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--primary);
+}
+
+/* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ BRANDBOOK ===== */
+
 @media (max-width: 1024px) {
     .case-content {
         grid-template-columns: 1fr;
@@ -204,13 +354,83 @@
     .case-content {
         padding: 20px 30px 30px;
     }
+    
+    .page-title {
+        font-size: 3rem;
+    }
+    
+    .brandbook-cta .cta-content h2 {
+        font-size: 2.8rem;
+    }
 }
 
 @media (max-width: 768px) {
+    /* Hero Mobile */
+    .brandbook-hero {
+        padding: 140px 0 60px !important;
+    }
+    
+    .brandbook-hero-content {
+        padding: 0 15px;
+    }
+    
+    .page-title {
+        font-size: 2.5rem !important;
+    }
+    
+    .page-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+    
+    .hero-cta .btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+    }
+
+    /* Intro Mobile */
+    .brandbook-intro {
+        padding: 80px 0 !important;
+    }
+    
+    .intro-text h2 {
+        font-size: 2rem !important;
+        margin-bottom: 25px;
+    }
+    
+    .intro-text p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    /* Cases Mobile */
+    .brandbook-cases {
+        padding: 80px 0 !important;
+    }
+    
+    .section-header {
+        margin-bottom: 40px;
+    }
+    
+    .section-header h2 {
+        font-size: 2.2rem !important;
+    }
+    
+    .section-header p {
+        font-size: 1.1rem;
+    }
+    
+    .brand-cases-grid {
+        gap: 40px;
+    }
+    
     .case-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
+        padding: 25px 25px 15px;
     }
     
     .case-category {
@@ -221,29 +441,250 @@
         font-size: 1.8rem;
     }
     
+    .case-content {
+        padding: 20px 25px 25px;
+        gap: 25px;
+    }
+    
+    .case-description p {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    
+    .case-elements {
+        gap: 25px;
+    }
+    
+    .brand-element h4 {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+    
+    .color-palette {
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .color-item {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+    }
+
+    /* CTA Mobile */
+    .brandbook-cta {
+        padding: 80px 0 !important;
+    }
+    
     .brandbook-cta .cta-content h2 {
-        font-size: 2.5rem;
+        font-size: 2.2rem !important;
+    }
+    
+    .brandbook-cta .cta-content p {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+    
+    .brandbook-cta .btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
     .case-header {
-        padding: 25px 25px 15px;
+        padding: 20px 20px 15px;
     }
     
     .case-content {
-        padding: 15px 25px 25px;
+        padding: 15px 20px 20px;
     }
     
     .case-title {
         font-size: 1.5rem;
     }
     
+    .case-number {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+    
     .brandbook-cta .cta-content h2 {
-        font-size: 2rem;
+        font-size: 1.8rem !important;
     }
     
     .color-palette {
+        justify-content: space-around;
+    }
+    
+    .color-item {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .page-title {
+        font-size: 2rem !important;
+    }
+}
+
+/* Landscape ориентация для мобильных */
+@media (max-width: 768px) and (orientation: landscape) {
+    .brandbook-hero {
+        padding: 120px 0 40px !important;
+        min-height: auto;
+    }
+    
+    .brandbook-intro,
+    .brandbook-cases,
+    .brandbook-cta {
+        padding: 60px 0 !important;
+    }
+    
+    .case-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Оптимизация для touch-устройств */
+@media (hover: none) and (pointer: coarse) {
+    .brand-case:hover {
+        transform: none;
+    }
+    
+    .brand-case:active {
+        transform: translateY(-2px);
+        background: var(--primary);
+    }
+    
+    .color-item:hover {
+        transform: none;
+    }
+    
+    .color-item:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Улучшение доступности */
+@media (prefers-reduced-motion: reduce) {
+    .brand-case,
+    .color-item,
+    .btn-scroll {
+        transition: none !important;
+    }
+    
+    .brand-case:hover {
+        transform: none;
+    }
+}
+
+/* Высокопиксельные экраны */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .brand-case {
+        border-width: 0.5px;
+    }
+}
+
+/* Темная тема оптимизации */
+@media (prefers-color-scheme: dark) {
+    .brand-case {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .case-header {
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Оптимизация для медленных сетей */
+.save-data .brand-case,
+.slow-connection .brand-case {
+    transform: none !important;
+}
+
+.save-data .color-item,
+.slow-connection .color-item {
+    transform: none !important;
+}
+
+/* Производительность и оптимизация */
+.reduced-animations .brand-case,
+.reduced-animations .color-item {
+    transition: none !important;
+    transform: none !important;
+}
+
+.reduced-animations .brand-case:hover,
+.reduced-animations .color-item:hover {
+    transform: none !important;
+}
+
+/* Предотвращение layout shift */
+.case-content {
+    contain: layout style paint;
+}
+
+.color-palette {
+    contain: layout;
+}
+
+/* Улучшение загрузки */
+.brand-case:not(.case-visible) {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.brand-case.case-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Улучшение типографики для читаемости */
+.brand-element p {
+    text-align: left;
+}
+
+.case-description p {
+    text-align: left;
+}
+
+/* Оптимизация кнопок для мобильных */
+@media (max-width: 768px) {
+    .btn {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
         justify-content: center;
+    }
+    
+    .btn-large {
+        padding: 16px 24px;
+        font-size: 1rem;
+    }
+}
+
+/* Поддержка очень маленьких экранов */
+@media (max-width: 360px) {
+    .brandbook-hero-content,
+    .intro-content,
+    .section-header,
+    .brandbook-cta .cta-content {
+        padding: 0 15px;
+    }
+    
+    .page-title {
+        font-size: 1.8rem !important;
+    }
+    
+    .case-title {
+        font-size: 1.3rem;
+    }
+    
+    .color-item {
+        width: 40px;
+        height: 40px;
     }
 }
