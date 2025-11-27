@@ -291,10 +291,12 @@
     .service-stats {
         flex-direction: row;
         justify-content: center;
+        gap: 20px;
     }
     
     .stat {
         flex: 1;
+        min-width: 120px;
     }
 }
 
@@ -303,11 +305,18 @@
         padding: 140px 0 60px !important;
     }
     
+    .services-hero-content {
+        text-align: center;
+    }
+    
+    /* Navigation Mobile */
     .services-nav {
-        padding: 30px 0;
+        padding: 25px 0;
         position: static; /* На мобильных не скрываем */
         transform: none !important;
         opacity: 1 !important;
+        background: var(--primary);
+        border-bottom: 1px solid var(--border);
     }
     
     .services-nav.hidden {
@@ -317,21 +326,47 @@
     
     .services-navigation {
         flex-wrap: wrap;
-        gap: 15px;
+        gap: 12px;
         justify-content: center;
+        padding: 0 10px;
     }
     
     .nav-item {
         font-size: 14px;
-        padding: 8px 16px;
+        padding: 10px 16px;
+        background: var(--secondary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        transition: var(--transition);
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
     }
     
+    .nav-item:hover,
+    .nav-item.active {
+        background: var(--accent-gradient);
+        color: white;
+        border-color: var(--accent);
+    }
+    
+    .nav-item.active::after {
+        display: none; /* Убираем подчеркивание на мобильных */
+    }
+
+    /* Service Detail Mobile */
     .service-detail {
         padding: 80px 0 !important;
     }
     
+    .service-header {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    
     .service-title {
         font-size: 2.2rem !important;
+        line-height: 1.2;
     }
     
     .service-content {
@@ -339,23 +374,52 @@
         gap: 40px;
     }
     
+    .service-description {
+        font-size: 1.1rem;
+    }
+    
     .service-stats {
-        flex-direction: row;
-        justify-content: space-around;
+        flex-direction: column;
+        gap: 20px;
     }
     
     .stat {
-        flex: 1;
-        padding: 20px 15px;
+        padding: 25px 20px;
     }
     
     .stat-value {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
     .service-features {
-        grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 25px;
+    }
+    
+    .feature h4 {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+    }
+    
+    .feature p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    /* Process Overview Mobile */
+    .process-overview {
+        padding: 80px 0 !important;
+    }
+    
+    .section-header {
+        margin-bottom: 40px;
+    }
+    
+    .section-header h2 {
+        font-size: 2.2rem !important;
+    }
+    
+    .section-header p {
+        font-size: 1.1rem;
     }
     
     .process-timeline {
@@ -365,53 +429,147 @@
     
     .process-phase {
         padding: 30px 20px;
+        text-align: center;
     }
     
-    .section-header h2 {
-        font-size: 2.5rem !important;
+    .process-phase:hover {
+        transform: translateY(-5px);
     }
     
+    .phase-number {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+    }
+    
+    .process-phase h3 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+    
+    .process-phase p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    /* CTA Mobile */
     .services-cta {
         padding: 80px 0 !important;
+        text-align: center;
     }
     
     .services-cta .cta-content h2 {
         font-size: 2.2rem !important;
+        margin-bottom: 15px;
+    }
+    
+    .services-cta .cta-content p {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+    
+    .services-cta .btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
+    /* Extra Small Devices */
     .services-navigation {
-        gap: 10px;
+        gap: 8px;
     }
     
     .nav-item {
         font-size: 12px;
-        padding: 6px 12px;
+        padding: 8px 12px;
+        min-width: 100px;
     }
     
     .service-title {
         font-size: 1.8rem !important;
     }
     
-    .service-stats {
-        flex-direction: column;
-        gap: 15px;
+    .service-description {
+        font-size: 1rem;
+    }
+    
+    .stat {
+        padding: 20px 15px;
     }
     
     .stat-value {
         font-size: 1.8rem;
     }
     
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
     .section-header h2 {
-        font-size: 2rem !important;
+        font-size: 1.8rem !important;
     }
     
     .services-cta .cta-content h2 {
-        font-size: 2rem !important;
+        font-size: 1.8rem !important;
+    }
+    
+    .process-phase {
+        padding: 25px 15px;
     }
     
     .phase-number {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+}
+
+/* Оптимизация для touch-устройств */
+@media (hover: none) and (pointer: coarse) {
+    .process-phase:hover {
+        transform: none;
+    }
+    
+    .nav-item:hover {
+        background: var(--secondary);
+        color: var(--light-text);
+    }
+    
+    .nav-item.active {
+        background: var(--accent-gradient);
+        color: white;
+    }
+}
+
+/* Улучшение доступности для мобильных */
+@media (max-width: 768px) {
+    .service-cta .btn {
+        padding: 14px 24px;
+        font-size: 16px; /* Минимальный размер для удобного тапа */
+    }
+    
+    .nav-item {
+        min-height: 44px; /* Минимальная высота для touch */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Поддержка landscape ориентации */
+@media (max-width: 768px) and (orientation: landscape) {
+    .services-hero {
+        padding: 120px 0 40px !important;
+        min-height: auto;
+    }
+    
+    .services-navigation {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+    
+    .nav-item {
+        flex: 0 0 auto;
     }
 }
