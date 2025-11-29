@@ -5,7 +5,7 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding-top: 80px;
+    padding-top: 120px !important; /* Увеличен отступ для фиксированного хедера */
 }
 
 .parallax-content {
@@ -427,15 +427,40 @@
     transform: translateY(-3px);
 }
 
-/* УДАЛЕНЫ КАСТОМНЫЕ СТИЛИ ХЕДЕРА ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
+/* ===== ФИКСИРОВАННЫЙ ХЕДЕР НА ГЛАВНОЙ СТРАНИЦЕ ===== */
+.home-page .main-header {
+    position: fixed !important;
+    top: 20px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: calc(100% - 40px) !important;
+    margin: 0 auto !important;
+    z-index: 1000 !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
 
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ HOME ===== */
+/* Отключаем анимации скрытия для главной страницы */
+.home-page .main-header.header-hidden,
+.home-page .main-header.header-scrolled {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Добавляем отступ для контента под фиксированным хедером */
+.home-page .hero {
+    padding-top: 120px !important;
+}
+
+/* Мобильная версия */
 @media (max-width: 768px) {
     /* Hero Mobile */
     .hero {
         height: auto;
         min-height: 100vh;
-        padding: 120px 0 60px !important;
+        padding: 100px 0 60px !important; /* Уменьшен отступ для мобильных */
         text-align: center;
     }
     
@@ -465,6 +490,12 @@
     
     .parallax-scroll-indicator {
         display: none;
+    }
+
+    /* ФИКСИРОВАННЫЙ ХЕДЕР - МОБИЛЬНАЯ ВЕРСИЯ */
+    .home-page .main-header {
+        top: 10px !important;
+        width: calc(100% - 20px) !important;
     }
 
     /* Clients Mobile */
@@ -592,6 +623,16 @@
         font-size: 1rem;
     }
     
+    /* ФИКСИРОВАННЫЙ ХЕДЕР - МАЛЕНЬКИЕ ЭКРАНЫ */
+    .home-page .main-header {
+        top: 5px !important;
+        width: calc(100% - 10px) !important;
+    }
+    
+    .home-page .hero {
+        padding-top: 90px !important; /* Еще меньше отступ для маленьких экранов */
+    }
+    
     .marquee-track {
         animation-duration: 20s !important;
     }
@@ -681,43 +722,10 @@
     }
 }
 
-/* ===== HIGH CONTRAST MODE ===== */
-@media (prefers-contrast: high) {
-    .hero h1 {
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-    }
-    
-    .hero p {
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
-    }
-}
-
-/* ===== PRINT STYLES ===== */
-@media print {
-    .parallax-bg-container {
-        display: none;
-    }
-    
-    .hero {
-        background: white !important;
-        color: black !important;
-    }
-    
-    .hero h1 {
-        color: black !important;
-        text-shadow: none !important;
-    }
-    
-    .hero p {
-        color: #333 !important;
-        text-shadow: none !important;
-    }
-}
-
-/* ===== КРАСНЫЙ ТЕКСТ ДЛЯ ЗАГОЛОВКА "НАШИ УСЛУГИ" ===== */
+/* ===== СИНИЙ ТЕКСТ ДЛЯ ЗАГОЛОВКА "НАША ЭКСПЕРТИЗА" ===== */
 .services-preview .section-title {
-    color: #ff0000 !important;
-    -webkit-text-fill-color: #ff0000 !important;
+    color: #0066ff !important;
+    -webkit-text-fill-color: #0066ff !important;
     background: none !important;
     font-weight: 800;
 }
