@@ -1,81 +1,77 @@
-// home.js - SIMPLE AND GUARANTEED TO WORK
-console.log('🚀 home.js loaded - SIMPLE VERSION');
+// home.js - ГЛАВНАЯ СТРАНИЦА
+console.log('🚀 home.js loaded - Header will hide on scroll');
 
-// Главная функция инициализации
+// Флаг инициализации
+window.homeInitialized = false;
+
 function initHome() {
-    console.log('🎯 Initializing home page...');
-    
-    // Сначала запускаем бегущую строку - это самое важное
-    setupSimpleMarquee();
-    
-    // Потом остальные функции
-    setupStatsCounter();
-    setupScrollAnimations();
-    
-    console.log('✅ Home page initialized successfully');
-}
-
-// САМАЯ ПРОСТАЯ И РАБОЧАЯ ФУНКЦИЯ ДЛЯ БЕГУЩЕЙ СТРОКИ
-function setupSimpleMarquee() {
-    const marquee = document.querySelector('.marquee-content');
-    
-    if (!marquee) {
-        console.error('❌ Marquee element not found!');
+    if (window.homeInitialized) {
+        console.log('🚫 Home already initialized, skipping...');
         return;
     }
     
-    console.log('✅ Marquee found, starting simple animation...');
+    console.log('🎯 Initializing home page...');
+    window.homeInitialized = true;
     
-    // 1. Полностью сбрасываем анимацию
-    marquee.style.animation = 'none';
-    marquee.style.webkitAnimation = 'none';
+    // Запускаем анимации
+    setupHomeAnimations();
+    setupMobileMarquee();
+    setupStatsCounter();
+    setupScrollAnimations();
     
-    // 2. Принудительная перерисовка
-    void marquee.offsetWidth;
-    
-    // 3. Применяем анимацию с задержкой чтобы браузер успел обработать
-    setTimeout(() => {
-        marquee.style.animation = 'marquee-scroll 40s linear infinite';
-        marquee.style.webkitAnimation = 'marquee-scroll 40s linear infinite';
-        marquee.style.animationPlayState = 'running';
-        marquee.style.webkitAnimationPlayState = 'running';
-        
-        console.log('🎬 Marquee animation APPLIED:', marquee.style.animation);
-    }, 100);
-    
-    // 4. Добавляем обработчики для паузы при наведении
-    marquee.addEventListener('mouseenter', function() {
-        this.style.animationPlayState = 'paused';
-        this.style.webkitAnimationPlayState = 'paused';
-    });
-    
-    marquee.addEventListener('mouseleave', function() {
-        this.style.animationPlayState = 'running';
-        this.style.webkitAnimationPlayState = 'running';
-    });
-    
-    // 5. Фикс для Safari - перезапуск каждые 30 секунд
-    setInterval(() => {
-        if (marquee.style.animationPlayState !== 'paused') {
-            console.log('🔄 Restarting marquee animation (Safari fix)');
-            
-            const currentAnimation = marquee.style.animation;
-            marquee.style.animation = 'none';
-            marquee.style.webkitAnimation = 'none';
-            
-            void marquee.offsetWidth;
-            
-            setTimeout(() => {
-                marquee.style.animation = currentAnimation;
-                marquee.style.webkitAnimation = currentAnimation;
-            }, 50);
-        }
-    }, 30000);
+    console.log('✅ Home page initialized - Header will hide on scroll');
 }
 
-// Функция для счетчиков (оставляем как было)
+// АНИМАЦИИ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
+function setupHomeAnimations() {
+    console.log('🏠 Setting up home animations');
+    
+    // Анимация появления hero контента
+    const heroContent = document.querySelector('.parallax-content');
+    if (heroContent) {
+        setTimeout(() => {
+            heroContent.style.opacity = '1';
+            heroContent.style.transform = 'translateY(0)';
+        }, 300);
+    }
+    
+    // Скрываем индикатор прокрутки после первого скролла
+    const scrollIndicator = document.querySelector('.parallax-scroll-indicator');
+    if (scrollIndicator) {
+        let scrolled = false;
+        
+        window.addEventListener('scroll', () => {
+            if (!scrolled && window.pageYOffset > 50) {
+                scrolled = true;
+                scrollIndicator.style.opacity = '0';
+                setTimeout(() => {
+                    if (scrollIndicator && scrollIndicator.parentNode) {
+                        scrollIndicator.style.display = 'none';
+                    }
+                }, 500);
+            }
+        }, { passive: true });
+    }
+}
+
+// БЕГУЩАЯ СТРОКА
+function setupMobileMarquee() {
+    const marqueeTracks = document.querySelectorAll('.marquee-track');
+    
+    if (marqueeTracks.length === 0) return;
+    
+    marqueeTracks.forEach((track, index) => {
+        const isMobile = window.innerWidth <= 768;
+        const animationDuration = isMobile ? '25s' : '40s';
+        const animationName = index === 1 ? 'marquee-scroll-reverse' : 'marquee-scroll';
+        
+        track.style.animation = `${animationName} ${animationDuration} linear infinite`;
+    });
+}
+
+// СЧЕТЧИКИ СТАТИСТИКИ
 function setupStatsCounter() {
-    const statNumbers = document.querySelectorAll('.stat-number');
+    const statNumbers = document.querySelectorAll('.stat-number-improved');
     
     if (statNumbers.length === 0) return;
     
@@ -91,7 +87,7 @@ function setupStatsCounter() {
                 }
             }
         });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.3 });
 
     statNumbers.forEach(stat => {
         if (stat.getAttribute('data-target')) {
@@ -100,92 +96,64 @@ function setupStatsCounter() {
     });
 }
 
-function animateNumber(element, target) {
-    let current = 0;
-    const duration = 2000;
-    const increment = target / (duration / 16);
-    const startTime = Date.now();
+function animateNumber(element, target, duration = 2000) {
+    let start = null;
     
-    function updateNumber() {
-        const elapsed = Date.now() - startTime;
-        current = Math.min(target, (elapsed / duration) * target);
+    function step(timestamp) {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const percentage = Math.min(progress / duration, 1);
         
-        element.textContent = Math.floor(current).toLocaleString();
+        const easeOutQuart = 1 - Math.pow(1 - percentage, 4);
+        const currentValue = Math.floor(easeOutQuart * target);
         
-        if (current < target) {
-            requestAnimationFrame(updateNumber);
+        element.textContent = currentValue.toLocaleString();
+        
+        if (percentage < 1) {
+            requestAnimationFrame(step);
         } else {
             element.textContent = target.toLocaleString();
         }
     }
     
-    requestAnimationFrame(updateNumber);
+    requestAnimationFrame(step);
 }
 
-// Функция для анимаций при скролле
+// АНИМАЦИИ ПРИ СКРОЛЛЕ
 function setupScrollAnimations() {
-    const animatedElements = document.querySelectorAll('.slide-up, .fade-in');
+    const animatedElements = document.querySelectorAll('.service-card, .stat-card');
     
     if (animatedElements.length === 0) return;
     
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-                const delay = parseInt(entry.target.getAttribute('data-delay')) || 0;
-                
                 setTimeout(() => {
                     entry.target.classList.add('animate-in');
                     observer.unobserve(entry.target);
-                }, delay);
+                }, index * 100);
             }
         });
     }, { threshold: 0.1 });
 
     animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        if (el.classList.contains('slide-up')) {
-            el.style.transform = 'translateY(30px)';
-        }
-        
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
 }
 
-// МНОЖЕСТВЕННЫЕ СПОСОБЫ ИНИЦИАЛИЗАЦИИ - ЧТОБЫ ТОЧНО СРАБОТАЛО
-
-// Способ 1: При полной загрузке DOM
+// ИНИЦИАЛИЗАЦИЯ
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🏠 DOM fully loaded');
-    setTimeout(initHome, 200);
+    setTimeout(initHome, 100);
 });
 
-// Способ 2: Если DOM уже загружен
-if (document.readyState === 'interactive' || document.readyState === 'complete') {
-    console.log('🏠 DOM already ready');
-    setTimeout(initHome, 200);
-}
-
-// Способ 3: При полной загрузке страницы
-window.addEventListener('load', function() {
-    console.log('🏠 Window fully loaded');
-    setTimeout(initHome, 300);
-});
-
-// Способ 4: Резервная инициализация через 2 секунды
+// РЕЗЕРВНАЯ ИНИЦИАЛИЗАЦИЯ
 setTimeout(() => {
     if (!window.homeInitialized) {
-        console.log('🕒 Fallback initialization after 2s');
         initHome();
-        window.homeInitialized = true;
     }
 }, 2000);
 
-// Делаем функцию глобальной для вызова из других скриптов
+// ГЛОБАЛЬНЫЕ ФУНКЦИИ
 window.initHome = initHome;
-window.setupSimpleMarquee = setupSimpleMarquee;
 
-// Экспорт для модулей
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { initHome, setupSimpleMarquee };
-}
+console.log('✅ Home.js loaded successfully');
