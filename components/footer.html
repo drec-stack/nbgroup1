@@ -1,3 +1,4 @@
+<!-- components/footer.html -->
 <footer class="main-footer">
     <div class="container">
         <div class="footer-content">
@@ -67,15 +68,17 @@
 </footer>
 
 <style>
+/* ТЕМНЫЙ ПОДВАЛ */
 .main-footer {
-    background: var(--blue-gradient);
+    background: #000000;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
     padding: 80px 0 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid #333;
     border-radius: 20px 20px 0 0;
     margin-top: 80px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 -8px 32px rgba(0, 102, 255, 0.3);
+    border: 1px solid #333;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 100;
 }
@@ -111,8 +114,8 @@
     justify-content: center;
     font-weight: 800;
     font-size: 16px;
-    color: var(--primary-blue);
-    transition: var(--transition);
+    color: #0066ff;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .footer-logo .logo-mark:hover {
@@ -148,7 +151,7 @@
     border-radius: 12px;
     color: white;
     text-decoration: none;
-    transition: var(--transition);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: 1px solid rgba(255, 255, 255, 0.2);
     font-size: 18px;
 }
@@ -190,7 +193,7 @@
 .footer-links a {
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    transition: color 0.3s;
+    transition: all 0.3s ease;
     padding: 5px 0;
     display: block;
     border-radius: 5px;
@@ -224,7 +227,7 @@
     justify-content: space-between;
     align-items: center;
     padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.8);
     font-size: 14px;
 }
@@ -237,7 +240,7 @@
 .footer-legal a {
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    transition: color 0.3s;
+    transition: all 0.3s ease;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 14px;
@@ -341,7 +344,7 @@
 
 @supports not (backdrop-filter: blur(10px)) {
     .main-footer {
-        background: var(--blue-gradient);
+        background: #0f1419;
     }
 }
 
@@ -351,6 +354,10 @@
     }
     
     .footer-links a {
+        transition: none;
+    }
+    
+    .footer-logo .logo-mark {
         transition: none;
     }
 }
