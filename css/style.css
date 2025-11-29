@@ -370,16 +370,19 @@ main {
     visibility: visible;
 }
 
-/* ===== СИНИЙ FOOTER ===== */
+/* ===== ЧЕРНЫЙ FOOTER ===== */
 .main-footer {
-    background: var(--blue-gradient);
+    background: #000000;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
     padding: 80px 0 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid #333;
     border-radius: 20px 20px 0 0;
     margin-top: 40px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 -8px 32px rgba(0, 102, 255, 0.3);
+    border: 1px solid #333;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 100;
 }
 
 .footer-content {
@@ -422,10 +425,17 @@ main {
     background: white;
 }
 
+.footer-logo .logo-text {
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+}
+
 .footer-description {
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.6;
     margin-bottom: 30px;
+    font-size: 15px;
 }
 
 .social-links {
@@ -433,7 +443,7 @@ main {
     gap: 15px;
 }
 
-.social-links a {
+.social-link {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -445,12 +455,33 @@ main {
     text-decoration: none;
     transition: var(--transition);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 18px;
 }
 
-.social-links a:hover {
+.social-link:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-3px);
     border-radius: 15px;
+}
+
+.social-link.telegram:hover {
+    background: rgba(0, 136, 204, 0.3);
+    border-color: #0088cc;
+}
+
+.social-link.instagram:hover {
+    background: rgba(228, 64, 95, 0.3);
+    border-color: #e4405f;
+}
+
+.social-link.linkedin:hover {
+    background: rgba(0, 119, 181, 0.3);
+    border-color: #0077b5;
+}
+
+.social-link.behance:hover {
+    background: rgba(23, 105, 255, 0.3);
+    border-color: #1769ff;
 }
 
 .footer-links {
@@ -468,11 +499,13 @@ main {
     padding: 5px 0;
     display: block;
     border-radius: 5px;
+    font-size: 14px;
 }
 
 .footer-links a:hover {
     color: white;
     background: rgba(255, 255, 255, 0.05);
+    padding-left: 10px;
 }
 
 .contact-info p {
@@ -482,6 +515,13 @@ main {
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 10px;
     padding: 5px 0;
+    font-size: 14px;
+}
+
+.contact-info p i {
+    color: rgba(255, 255, 255, 0.8);
+    width: 20px;
+    text-align: center;
 }
 
 .footer-bottom {
@@ -489,7 +529,7 @@ main {
     justify-content: space-between;
     align-items: center;
     padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.8);
     font-size: 14px;
 }
@@ -505,6 +545,7 @@ main {
     transition: color 0.3s;
     padding: 5px 10px;
     border-radius: 5px;
+    font-size: 14px;
 }
 
 .footer-legal a:hover {
@@ -2522,7 +2563,7 @@ main {
     }
     
     .main-footer {
-        background: var(--blue-gradient);
+        background: #000000;
     }
 }
 
@@ -2605,4 +2646,12 @@ body.internal-page .main-header {
     color: #ff0000 !important;
     -webkit-text-fill-color: #ff0000 !important;
     background: none !important;
+}
+
+/* ===== СИНИЙ ТЕКСТ ДЛЯ ЗАГОЛОВКА "НАША ЭКСПЕРТИЗА" ===== */
+.services-preview .section-title {
+    color: #0066ff !important;
+    -webkit-text-fill-color: #0066ff !important;
+    background: none !important;
+    font-weight: 800;
 }
