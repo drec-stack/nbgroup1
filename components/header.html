@@ -1,651 +1,761 @@
-<header class="main-header">
-    <div class="container">
-        <div class="header-inner">
-            <a href="index.html" class="logo">
-                <div class="logo-mark">NB</div>
-                <span class="logo-text">NBGROUP.TECH</span>
-            </a>
-            
-            <nav class="main-nav">
-                <a href="index.html" class="nav-link" data-i18n="nav.home">Home</a>
-                <a href="services.html" class="nav-link" data-i18n="nav.services">Services</a>
-                <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Work</a>
-                <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Brandbook</a>
-                <a href="about.html" class="nav-link" data-i18n="nav.about">About</a>
-                <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Contact</a>
-            </nav>
-            
-            <div class="header-actions">
-                <div class="language-switcher" data-current-lang="ru">
-                    <div class="lang-slider"></div>
-                    <button class="lang-btn" data-lang="ru">
-                        <span class="lang-text">RU</span>
-                        <span class="lang-flag">🇷🇺</span>
-                    </button>
-                    <button class="lang-btn active" data-lang="en">
-                        <span class="lang-text">EN</span>
-                        <span class="lang-flag">🇺🇸</span>
-                    </button>
-                </div>
-                <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">Start Project</a>
-                <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-    </div>
-</header>
-
-<div class="mobile-menu-overlay"></div>
-
-<style>
-    .main-header {
-        position: fixed;
-        top: 20px;
-        left: 0;
-        right: 0;
-        width: calc(100% - 40px);
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px 0;
-        background: var(--blue-gradient);
-        z-index: 1000;
-        border-radius: 20px;
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(0, 102, 255, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        
-        transform: translateY(0);
-        opacity: 1;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .main-header .container {
-        padding: 0;
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .main-header .header-inner {
-        padding: 0 30px;
-        max-width: 100%;
-        margin: 0 auto;
-        width: 100%;
-    }
-
-    .header-inner {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
-
-    .logo {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: white;
-        font-weight: 700;
-        font-size: 20px;
-        gap: 12px;
-        transition: var(--transition);
-    }
-
-    .logo:hover {
-        transform: translateY(-2px);
-    }
-
-    .logo-mark {
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        font-size: 16px;
-        color: var(--primary-blue);
-        transition: var(--transition);
-    }
-
-    .logo-mark:hover {
-        transform: scale(1.05);
-        background: white;
-    }
-
-    .logo-text {
-        color: white;
-        font-weight: 700;
-    }
-
-    .main-nav {
-        display: flex;
-        gap: 30px;
-    }
-
-    .nav-link {
-        color: rgba(255, 255, 255, 0.9);
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 15px;
-        transition: var(--transition);
-        position: relative;
-        padding: 8px 16px;
-        border-radius: 8px;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-        color: white;
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .nav-link::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 2px;
-        background: white;
-        transition: width 0.3s ease;
-        border-radius: 1px;
-    }
-
-    .nav-link:hover::after {
-        width: 80%;
-    }
-
-    .header-actions {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        padding: 12px 24px;
-        border: none;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 14px;
-        text-decoration: none;
-        cursor: pointer;
-        transition: var(--transition);
-        gap: 8px;
-    }
-
-    .btn-primary {
-        background: rgba(255, 255, 255, 0.9);
-        color: #ff0000;
-        font-weight: 700;
-    }
-
-    .btn-primary:hover {
-        background: white;
-        color: #cc0000;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-small {
-        padding: 8px 16px;
-        font-size: 13px;
-        border-radius: 8px;
-    }
-
-    /* Language Switcher Styles */
-    .language-switcher {
-        display: flex;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 25px;
-        padding: 4px;
-        position: relative;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        min-width: 120px;
-        height: 40px;
-        overflow: hidden;
-        transition: all 0.3s ease;
-    }
-
-    .lang-btn {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 16px;
-        background: none;
-        border: none;
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        border-radius: 20px;
-        transition: all 0.3s ease;
-        position: relative;
-        z-index: 2;
-        min-width: 56px;
-        justify-content: center;
-        flex: 1;
-        outline: none;
-    }
-
-    .lang-btn.active {
-        color: white;
-        font-weight: 600;
-    }
-
-    .lang-slider {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        width: calc(50% - 4px);
-        height: calc(100% - 8px);
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 20px;
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 1;
-        box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
-    }
-
-    .language-switcher[data-current-lang="en"] .lang-slider {
-        transform: translateX(100%);
-    }
-
-    .language-switcher[data-current-lang="ru"] .lang-slider {
-        transform: translateX(0);
-    }
-
-    .lang-flag {
-        font-size: 16px;
-        transition: transform 0.3s ease;
-    }
-
-    .lang-btn:hover .lang-flag {
-        transform: scale(1.2);
-    }
-
-    .lang-btn:hover:not(.active) {
-        color: white;
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .mobile-menu-toggle {
-        display: none;
-        background: none;
-        border: none;
-        width: 30px;
-        height: 30px;
-        position: relative;
-        cursor: pointer;
-        border-radius: 6px;
-        transition: var(--transition);
-    }
-
-    .mobile-menu-toggle:hover {
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .mobile-menu-toggle span {
-        display: block;
-        width: 20px;
-        height: 2px;
-        background: white;
-        position: absolute;
-        left: 5px;
-        transition: var(--transition);
-        border-radius: 1px;
-    }
-
-    .mobile-menu-toggle span:nth-child(1) { top: 9px; }
-    .mobile-menu-toggle span:nth-child(2) { top: 14px; }
-    .mobile-menu-toggle span:nth-child(3) { top: 19px; }
-
-    .mobile-menu-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 998;
-        opacity: 0;
-        visibility: hidden;
-        transition: var(--transition);
-        border-radius: 0;
-    }
-
-    .mobile-menu-overlay.active {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    @media (max-width: 768px) {
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NB Group - Header</title>
+    <style>
+        /* ===== HEADER STYLES ===== */
         .main-header {
-            top: 10px;
-            width: calc(100% - 20px);
-            border-radius: 15px;
-            padding: 15px 0;
-        }
-        
-        .main-header .header-inner {
-            padding: 0 20px;
-        }
-        
-        .logo-mark {
-            width: 35px;
-            height: 35px;
-            border-radius: 8px;
-        }
-        
-        .main-nav {
             position: fixed;
-            top: 0;
-            right: -100%;
-            width: 300px;
-            height: 100vh;
-            background: var(--blue-gradient);
-            flex-direction: column;
-            padding: 100px 30px 30px;
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
-            transition: right 0.4s ease;
-            z-index: 999;
-            border-radius: 20px 0 0 20px;
-        }
-        
-        .main-nav.active {
+            top: 20px;
+            left: 0;
             right: 0;
+            width: calc(100% - 40px);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 25px 0;
+            background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+            z-index: 1000;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 102, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(0);
+            opacity: 1;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        
-        .main-nav .nav-link {
-            padding: 15px 20px;
-            font-size: 18px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+        /* Скрытый хедер (для главной страницы при скролле) */
+        .main-header.header-hidden {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /* Хедер при скролле для внутренних страниц */
+        .main-header.header-scrolled {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.95) 0%, rgba(0, 82, 204, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 20px rgba(0, 102, 255, 0.2);
+        }
+
+        .main-header .container {
+            padding: 0;
+            max-width: 100%;
             width: 100%;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            margin-bottom: 5px;
         }
-        
-        .main-nav .nav-link:hover {
+
+        .main-header .header-inner {
+            padding: 0 30px;
+            max-width: 100%;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Логотип */
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 24px;
+            gap: 12px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-mark {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: #0066ff;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .logo-mark:hover {
+            transform: scale(1.05);
+            background: white;
+        }
+
+        .logo-text {
+            color: white;
+            font-weight: 700;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        /* Навигация */
+        .main-nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            padding: 10px 18px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
             color: white;
             background: rgba(255, 255, 255, 0.15);
         }
-        
-        .main-nav .nav-link:last-child {
-            border-bottom: none;
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+            border-radius: 1px;
         }
-        
-        .mobile-menu-toggle {
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* Действия */
+        .header-actions {
             display: flex;
-        }
-        
-        .header-actions .btn-primary {
-            display: none;
+            align-items: center;
+            gap: 20px;
         }
 
-        .language-switcher {
-            min-width: 100px;
-            height: 36px;
-            margin-right: 10px;
-            border-radius: 12px;
-        }
-        
-        .lang-btn {
-            padding: 6px 12px;
-            font-size: 13px;
-            min-width: 48px;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            border: none;
             border-radius: 10px;
-        }
-        
-        .lang-flag {
+            font-weight: 600;
             font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            gap: 8px;
         }
-    }
 
-    @media (max-width: 480px) {
-        .main-header {
-            top: 5px;
-            width: calc(100% - 10px);
-            border-radius: 12px;
-            padding: 12px 0;
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.9);
+            color: #ff0000 !important;
+            font-weight: 700;
         }
-        
-        .main-header .header-inner {
-            padding: 0 15px;
+
+        .btn-primary:hover {
+            background: white;
+            color: #cc0000 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
         }
-        
-        .logo-text {
-            font-size: 16px;
-        }
-        
-        .logo-mark {
-            width: 30px;
-            height: 30px;
+
+        .btn-small {
+            padding: 10px 20px;
             font-size: 14px;
-            border-radius: 6px;
-        }
-        
-        .language-switcher {
-            min-width: 90px;
-            border-radius: 10px;
-        }
-        
-        .lang-btn {
-            padding: 5px 10px;
-            font-size: 12px;
-            min-width: 44px;
             border-radius: 8px;
         }
-        
-        .lang-text {
-            display: none;
-        }
-        
-        .lang-btn {
-            gap: 0;
-        }
 
-        .main-nav {
-            width: 100%;
-            right: -100%;
-            border-radius: 0;
-        }
-    }
-
-    @supports not (backdrop-filter: blur(10px)) {
+        /* Переключатель языка */
         .language-switcher {
-            background: rgba(13, 17, 23, 0.95);
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            padding: 4px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            min-width: 120px;
+            height: 40px;
+            overflow: hidden;
         }
-    }
 
-    @media (prefers-reduced-motion: reduce) {
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            min-width: 56px;
+            justify-content: center;
+            flex: 1;
+            outline: none;
+        }
+
+        .lang-btn.active {
+            color: white;
+            font-weight: 600;
+        }
+
         .lang-slider {
-            transition: none;
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
         }
-        
+
+        .language-switcher[data-current-lang="en"] .lang-slider {
+            transform: translateX(100%);
+        }
+
+        .language-switcher[data-current-lang="ru"] .lang-slider {
+            transform: translateX(0);
+        }
+
+        .lang-flag {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
         .lang-btn:hover .lang-flag {
-            transform: none;
+            transform: scale(1.2);
         }
-        
-        .main-header {
-            transition: none;
+
+        .lang-btn:hover:not(.active) {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
         }
-        
-        .nav-link::after {
-            transition: none;
+
+        /* Мобильное меню */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-    }
 
-    body.internal-page .main-header {
-        transform: translateY(0) !important;
-        background: var(--blue-gradient) !important;
-        backdrop-filter: blur(10px) !important;
-        opacity: 1 !important;
-    }
-
-    body.home-page .main-header {
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-</style>
-
-<script>
-function initHeader() {
-    console.log('Header initialized');
-    setupMobileMenu();
-    setupHeaderScroll();
-    setActiveNavLink();
-    // Language switcher handled by i18n.js
-}
-
-function setupMobileMenu() {
-    const toggle = document.querySelector('.mobile-menu-toggle');
-    const nav = document.querySelector('.main-nav');
-    const overlay = document.querySelector('.mobile-menu-overlay');
-
-    if (!toggle || !nav) {
-        console.warn('Mobile menu elements not found');
-        return;
-    }
-
-    toggle.addEventListener('click', () => {
-        toggle.classList.toggle('active');
-        nav.classList.toggle('active');
-        if (overlay) {
-            overlay.classList.toggle('active');
+        .mobile-menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
-        document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
-    });
 
-    if (overlay) {
-        overlay.addEventListener('click', () => {
-            toggle.classList.remove('active');
-            nav.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-    }
+        .mobile-menu-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: white;
+            position: absolute;
+            left: 5px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 1px;
+        }
 
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            toggle.classList.remove('active');
-            nav.classList.remove('active');
-            if (overlay) {
-                overlay.classList.remove('active');
+        .mobile-menu-toggle span:nth-child(1) { top: 9px; }
+        .mobile-menu-toggle span:nth-child(2) { top: 14px; }
+        .mobile-menu-toggle span:nth-child(3) { top: 19px; }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Мобильные стили */
+        @media (max-width: 768px) {
+            .main-header {
+                top: 10px;
+                width: calc(100% - 20px);
+                border-radius: 15px;
+                padding: 15px 0;
             }
-            document.body.style.overflow = '';
+            
+            .main-header .header-inner {
+                padding: 0 20px;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .logo-mark {
+                width: 35px;
+                height: 35px;
+                border-radius: 8px;
+                font-size: 16px;
+            }
+            
+            .main-nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+                flex-direction: column;
+                padding: 100px 30px 30px;
+                border-left: 1px solid rgba(255, 255, 255, 0.2);
+                transition: right 0.4s ease;
+                z-index: 999;
+                border-radius: 20px 0 0 20px;
+            }
+            
+            .main-nav.active {
+                right: 0;
+            }
+            
+            .main-nav .nav-link {
+                padding: 15px 20px;
+                font-size: 18px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                width: 100%;
+                text-align: center;
+                color: rgba(255, 255, 255, 0.9);
+                border-radius: 10px;
+                margin-bottom: 5px;
+            }
+            
+            .main-nav .nav-link:hover {
+                color: white;
+                background: rgba(255, 255, 255, 0.15);
+            }
+            
+            .main-nav .nav-link:last-child {
+                border-bottom: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            .header-actions .btn-primary {
+                display: none;
+            }
+
+            .language-switcher {
+                min-width: 100px;
+                height: 36px;
+                margin-right: 10px;
+                border-radius: 12px;
+            }
+            
+            .lang-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+                min-width: 48px;
+                border-radius: 10px;
+            }
+            
+            .lang-flag {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-header {
+                top: 5px;
+                width: calc(100% - 10px);
+                border-radius: 12px;
+                padding: 12px 0;
+            }
+            
+            .main-header .header-inner {
+                padding: 0 15px;
+            }
+            
+            .logo-text {
+                font-size: 18px;
+            }
+            
+            .logo-mark {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+                border-radius: 6px;
+            }
+            
+            .language-switcher {
+                min-width: 90px;
+                border-radius: 10px;
+            }
+            
+            .lang-btn {
+                padding: 5px 10px;
+                font-size: 12px;
+                min-width: 44px;
+                border-radius: 8px;
+            }
+            
+            .lang-text {
+                display: none;
+            }
+            
+            .lang-btn {
+                gap: 0;
+            }
+
+            .main-nav {
+                width: 100%;
+                right: -100%;
+                border-radius: 0;
+            }
+        }
+
+        /* Поддержка reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .main-header {
+                transition: none;
+            }
+            
+            .nav-link::after {
+                transition: none;
+            }
+            
+            .lang-slider {
+                transition: none;
+            }
+            
+            .lang-btn:hover .lang-flag {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Component -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-inner">
+                <!-- Логотип NB Group -->
+                <a href="index.html" class="logo">
+                    <div class="logo-mark">NB</div>
+                    <span class="logo-text">NB Group</span>
+                </a>
+                
+                <!-- Навигация -->
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                    <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                    <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                    <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
+                    <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                    <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
+                </nav>
+                
+                <!-- Действия -->
+                <div class="header-actions">
+                    <!-- Переключатель языка -->
+                    <div class="language-switcher" data-current-lang="ru">
+                        <div class="lang-slider"></div>
+                        <button class="lang-btn" data-lang="ru">
+                            <span class="lang-text">RU</span>
+                            <span class="lang-flag">🇷🇺</span>
+                        </button>
+                        <button class="lang-btn active" data-lang="en">
+                            <span class="lang-text">EN</span>
+                            <span class="lang-flag">🇺🇸</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Кнопка Начать проект -->
+                    <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
+                        Начать проект
+                    </a>
+                    
+                    <!-- Мобильное меню -->
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu-overlay"></div>
+
+    <script>
+    // Header specific functionality
+    let headerInitialized = false;
+
+    function initHeader() {
+        if (headerInitialized) {
+            console.log('🚫 Header already initialized, skipping...');
+            return;
+        }
+        
+        console.log('🚀 Initializing NB Group Header...');
+        headerInitialized = true;
+        
+        setupMobileMenu();
+        setActiveNavLink();
+        setupLanguageSwitcher();
+        setupHeaderScroll(); // Добавляем логику скролла
+        
+        // Логика скролла для главной страницы
+        setupHomeHeaderBehavior();
+    }
+
+    function setupHomeHeaderBehavior() {
+        const header = document.querySelector('.main-header');
+        const isHomePage = window.location.pathname.includes('index.html') || 
+                          window.location.pathname === '/' || 
+                          window.location.pathname.endsWith('/');
+        
+        if (!isHomePage || !header) return;
+        
+        console.log('🏠 Setting up home header behavior');
+        
+        let lastScrollY = window.scrollY;
+        const scrollThreshold = 100;
+        
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            
+            // В самом верху страницы - показываем хедер
+            if (currentScrollY <= 50) {
+                header.classList.remove('header-hidden');
+                return;
+            }
+            
+            // При любом скролле вниз или вверх - скрываем хедер
+            header.classList.add('header-hidden');
+            
+            lastScrollY = currentScrollY;
+        }, { passive: true });
+        
+        // Инициализация при загрузке
+        if (window.scrollY > 50) {
+            header.classList.add('header-hidden');
+        }
+    }
+
+    function setupHeaderScroll() {
+        const header = document.querySelector('.main-header');
+        const isHomePage = window.location.pathname.includes('index.html') || 
+                          window.location.pathname === '/' || 
+                          window.location.pathname.endsWith('/');
+        
+        if (isHomePage || !header) return;
+        
+        // Логика для внутренних страниц (показывать при скролле вверх)
+        let lastScrollY = window.scrollY;
+        const scrollThreshold = 100;
+        
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY <= 0) {
+                header.classList.remove('header-hidden', 'header-scrolled');
+                return;
+            }
+            
+            if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                // Scrolling down
+                header.classList.remove('header-hidden');
+                header.classList.add('header-scrolled');
+            } else if (currentScrollY < lastScrollY) {
+                // Scrolling up
+                header.classList.remove('header-hidden');
+                header.classList.remove('header-scrolled');
+            }
+            
+            lastScrollY = currentScrollY;
+        }, { passive: true });
+    }
+
+    function setupMobileMenu() {
+        const toggle = document.querySelector('.mobile-menu-toggle');
+        const nav = document.querySelector('.main-nav');
+        const overlay = document.querySelector('.mobile-menu-overlay');
+
+        if (!toggle || !nav) return;
+
+        const toggleMenu = () => {
+            const isActive = nav.classList.contains('active');
+            
+            toggle.classList.toggle('active');
+            nav.classList.toggle('active');
+            if (overlay) overlay.classList.toggle('active');
+            document.body.style.overflow = isActive ? '' : 'hidden';
+        };
+
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
         });
-    });
-}
 
-function setupHeaderScroll() {
-    const header = document.querySelector('.main-header');
-    if (!header) return;
-    
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-    const scrollThreshold = 100;
+        if (overlay) {
+            overlay.addEventListener('click', () => {
+                toggle.classList.remove('active');
+                nav.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
 
-    const updateHeader = () => {
-        const scrollY = window.scrollY;
+        const navLinks = nav.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                toggle.classList.remove('active');
+                nav.classList.remove('active');
+                if (overlay) overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && nav.classList.contains('active')) {
+                toggle.classList.remove('active');
+                nav.classList.remove('active');
+                if (overlay) overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close menu on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && nav.classList.contains('active')) {
+                toggle.classList.remove('active');
+                nav.classList.remove('active');
+                if (overlay) overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+
+    function setActiveNavLink() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('.nav-link');
         
-        if (scrollY > lastScrollY && scrollY > scrollThreshold) {
-            header.style.transform = 'translateY(-100%)';
-            header.style.opacity = '0';
-        } else {
-            header.style.transform = 'translateY(0)';
-            header.style.opacity = '1';
-        }
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    function setupLanguageSwitcher() {
+        const langButtons = document.querySelectorAll('.lang-btn');
         
-        lastScrollY = scrollY;
-        ticking = false;
-    };
-
-    const requestTick = () => {
-        if (!ticking) {
-            requestAnimationFrame(updateHeader);
-            ticking = true;
-        }
-    };
-
-    window.addEventListener('scroll', requestTick, { passive: true });
-}
-
-function setActiveNavLink() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (href === currentPage) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
-}
-
-// Function to update language switcher state (called from i18n.js)
-function updateLanguageSwitcherState(lang) {
-    const langBtns = document.querySelectorAll('.lang-btn');
-    const switcher = document.querySelector('.language-switcher');
-    const langSlider = document.querySelector('.lang-slider');
-    
-    // Update button active states
-    langBtns.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-lang') === lang) {
-            btn.classList.add('active');
-        }
-    });
-    
-    // Update switcher attribute
-    if (switcher) {
-        switcher.setAttribute('data-current-lang', lang);
+        // Set initial state
+        const currentLang = localStorage.getItem('preferredLang') || 'ru';
+        updateLanguageSwitcherState(currentLang);
+        
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const lang = btn.getAttribute('data-lang');
+                const currentActive = document.querySelector('.lang-btn.active');
+                
+                if (currentActive && currentActive.getAttribute('data-lang') === lang) {
+                    return;
+                }
+                
+                // Update switcher state
+                updateLanguageSwitcherState(lang);
+                
+                // Trigger language change
+                if (window.i18n && window.i18n.smoothSwitchLanguage) {
+                    window.i18n.smoothSwitchLanguage(lang);
+                } else {
+                    localStorage.setItem('preferredLang', lang);
+                }
+            });
+        });
     }
-    
-    // Update slider position
-    if (langSlider) {
-        if (lang === 'en') {
-            langSlider.style.transform = 'translateX(100%)';
-        } else {
-            langSlider.style.transform = 'translateX(0)';
+
+    function updateLanguageSwitcherState(lang) {
+        const langBtns = document.querySelectorAll('.lang-btn');
+        const switcher = document.querySelector('.language-switcher');
+        
+        langBtns.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('active');
+            }
+        });
+        
+        if (switcher) {
+            switcher.setAttribute('data-current-lang', lang);
         }
     }
-    
-    console.log('🔄 Language switcher updated to:', lang);
-}
 
-// Listen for language change events
-document.addEventListener('DOMContentLoaded', function() {
-    window.addEventListener('languageChanged', (e) => {
-        updateLanguageSwitcherState(e.detail.lang);
+    // Single initialization point
+    document.addEventListener('DOMContentLoaded', function() {
+        // Listen for language change events
+        window.addEventListener('languageChanged', (e) => {
+            updateLanguageSwitcherState(e.detail.lang);
+        });
+        
+        // Initialize header only once with delay
+        if (document.querySelector('.main-header')) {
+            setTimeout(() => {
+                initHeader();
+            }, 300);
+        }
     });
-    
-    // Initialize header if it exists
-    if (document.querySelector('.main-header')) {
-        initHeader();
-    }
-});
 
-// Global functions
-window.initHeader = initHeader;
-window.updateLanguageSwitcherState = updateLanguageSwitcherState;
+    // Global functions
+    window.initHeader = initHeader;
+    window.updateLanguageSwitcherState = updateLanguageSwitcherState;
 
-// Auto-initialize header when loaded as component
-if (document.querySelector('.main-header') && !document.getElementById('header-container')) {
-    document.addEventListener('DOMContentLoaded', initHeader);
-}
-</script>
+    console.log('✅ NB Group Header script loaded');
+    </script>
+</body>
+</html>
