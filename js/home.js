@@ -1,159 +1,239 @@
-// home.js - ГЛАВНАЯ СТРАНИЦА
-console.log('🚀 home.js loaded - Header will hide on scroll');
+// home.js - Vertical Speck Design blocks functionality
 
-// Флаг инициализации
-window.homeInitialized = false;
-
-function initHome() {
-    if (window.homeInitialized) {
-        console.log('🚫 Home already initialized, skipping...');
-        return;
+class HomePage {
+    constructor() {
+        this.init();
     }
-    
-    console.log('🎯 Initializing home page...');
-    window.homeInitialized = true;
-    
-    // Запускаем анимации
-    setupHomeAnimations();
-    setupMobileMarquee();
-    setupStatsCounter();
-    setupScrollAnimations();
-    
-    console.log('✅ Home page initialized - Header will hide on scroll');
-}
 
-// АНИМАЦИИ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
-function setupHomeAnimations() {
-    console.log('🏠 Setting up home animations');
-    
-    // Анимация появления hero контента
-    const heroContent = document.querySelector('.parallax-content');
-    if (heroContent) {
-        setTimeout(() => {
-            heroContent.style.opacity = '1';
-            heroContent.style.transform = 'translateY(0)';
-        }, 300);
+    init() {
+        this.initVerticalSpeckCards();
+        this.initScrollAnimations();
+        this.initStatsCounter();
+        this.initParallaxBackgrounds();
+        this.initMarqueeAnimations();
     }
-    
-    // Скрываем индикатор прокрутки после первого скролла
-    const scrollIndicator = document.querySelector('.parallax-scroll-indicator');
-    if (scrollIndicator) {
-        let scrolled = false;
+
+    // Vertical Speck Cards Initialization
+    initVerticalSpeckCards() {
+        const speckCards = document.querySelectorAll('.speck-service-card-vertical');
         
-        window.addEventListener('scroll', () => {
-            if (!scrolled && window.pageYOffset > 50) {
-                scrolled = true;
-                scrollIndicator.style.opacity = '0';
-                setTimeout(() => {
-                    if (scrollIndicator && scrollIndicator.parentNode) {
-                        scrollIndicator.style.display = 'none';
-                    }
-                }, 500);
-            }
-        }, { passive: true });
-    }
-}
+        if (!speckCards.length) return;
 
-// БЕГУЩАЯ СТРОКА
-function setupMobileMarquee() {
-    const marqueeTracks = document.querySelectorAll('.marquee-track');
-    
-    if (marqueeTracks.length === 0) return;
-    
-    marqueeTracks.forEach((track, index) => {
-        const isMobile = window.innerWidth <= 768;
-        const animationDuration = isMobile ? '25s' : '40s';
-        const animationName = index === 1 ? 'marquee-scroll-reverse' : 'marquee-scroll';
-        
-        track.style.animation = `${animationName} ${animationDuration} linear infinite`;
-    });
-}
+        // Scroll animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('animated');
+                    }, index * 200);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
 
-// СЧЕТЧИКИ СТАТИСТИКИ
-function setupStatsCounter() {
-    const statNumbers = document.querySelectorAll('.stat-number-improved');
-    
-    if (statNumbers.length === 0) return;
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const statNumber = entry.target;
-                const target = parseInt(statNumber.getAttribute('data-target')) || 0;
+        speckCards.forEach(card => {
+            observer.observe(card);
+            
+            // Hover effects
+            card.addEventListener('mouseenter', () => {
+                card.style.background = 'rgba(255, 255, 255, 0.02)';
                 
-                if (target > 0) {
-                    animateNumber(statNumber, target);
-                    observer.unobserve(statNumber);
+                const features = card.querySelectorAll('.speck-feature-vertical');
+                features.forEach((feature, idx) => {
+                    setTimeout(() => {
+                        feature.style.transform = 'translateY(-2px)';
+                    }, idx * 60);
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.background = '';
+                
+                const features = card.querySelectorAll('.speck-feature-vertical');
+                features.forEach(feature => {
+                    feature.style.transform = '';
+                });
+            });
+            
+            // Click handler
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const category = card.getAttribute('data-category');
+                window.location.href = `services-${category}.html`;
+            });
+        });
+    }
+
+    // Анимации при скролле
+    initScrollAnimations() {
+        const elementsToAnimate = document.querySelectorAll('.reveal-element, .slide-up');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed', 'animate-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        elementsToAnimate.forEach(el => observer.observe(el));
+    }
+
+    // Счетчики статистики
+    initStatsCounter() {
+        const statNumbers = document.querySelectorAll('.stat-number-improved');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumber = entry.target;
+                    const target = parseInt(statNumber.getAttribute('data-target')) || 0;
+                    
+                    if (target > 0) {
+                        this.animateNumber(statNumber, target);
+                        observer.unobserve(statNumber);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(stat => observer.observe(stat));
+    }
+
+    animateNumber(element, target) {
+        let current = 0;
+        const duration = 2000;
+        const startTime = Date.now();
+        
+        const updateNumber = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            current = Math.floor(easeOutQuart * target);
+            
+            element.textContent = current.toLocaleString();
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateNumber);
+            } else {
+                element.textContent = target.toLocaleString();
+                element.classList.add('counter-animate');
+            }
+        };
+        requestAnimationFrame(updateNumber);
+    }
+
+    // Параллакс фоны
+    initParallaxBackgrounds() {
+        const contentSections = document.querySelectorAll('.content-section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bgIndex = entry.target.getAttribute('data-bg-index');
+                    this.switchBackground(bgIndex);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        contentSections.forEach(section => observer.observe(section));
+    }
+
+    switchBackground(bgIndex) {
+        const backgrounds = document.querySelectorAll('.parallax-bg');
+        backgrounds.forEach(bg => bg.classList.remove('active'));
+        
+        const targetBg = document.getElementById(`parallax-bg-${parseInt(bgIndex) + 1}`);
+        if (targetBg) {
+            targetBg.classList.add('active');
+        }
+    }
+
+    // Marquee анимации
+    initMarqueeAnimations() {
+        const marqueeElements = document.querySelectorAll('.marquee-track');
+        
+        if (!marqueeElements.length) return;
+
+        marqueeElements.forEach((track, index) => {
+            const isReverse = index % 2 === 1;
+            this.createMarqueeAnimation(track, isReverse);
+        });
+    }
+
+    createMarqueeAnimation(track, reverse = false) {
+        const content = track.querySelector('.marquee-content');
+        const clone = content.cloneNode(true);
+        track.appendChild(clone);
+        
+        const contentWidth = content.offsetWidth;
+        let position = 0;
+        let animationId = null;
+        let isPaused = false;
+        
+        const animate = () => {
+            if (isPaused) {
+                animationId = requestAnimationFrame(animate);
+                return;
+            }
+            
+            if (reverse) {
+                position += 1;
+                if (position >= contentWidth) {
+                    position = 0;
+                }
+            } else {
+                position -= 1;
+                if (position <= -contentWidth) {
+                    position = 0;
                 }
             }
+            
+            track.style.transform = `translateX(${position}px)`;
+            animationId = requestAnimationFrame(animate);
+        };
+        
+        // Start animation
+        animate();
+        
+        // Pause on hover
+        track.addEventListener('mouseenter', () => {
+            isPaused = true;
         });
-    }, { threshold: 0.3 });
-
-    statNumbers.forEach(stat => {
-        if (stat.getAttribute('data-target')) {
-            observer.observe(stat);
-        }
-    });
-}
-
-function animateNumber(element, target, duration = 2000) {
-    let start = null;
-    
-    function step(timestamp) {
-        if (!start) start = timestamp;
-        const progress = timestamp - start;
-        const percentage = Math.min(progress / duration, 1);
         
-        const easeOutQuart = 1 - Math.pow(1 - percentage, 4);
-        const currentValue = Math.floor(easeOutQuart * target);
+        track.addEventListener('mouseleave', () => {
+            isPaused = false;
+        });
         
-        element.textContent = currentValue.toLocaleString();
-        
-        if (percentage < 1) {
-            requestAnimationFrame(step);
-        } else {
-            element.textContent = target.toLocaleString();
-        }
+        // Store animation ID for cleanup
+        track._animationId = animationId;
     }
-    
-    requestAnimationFrame(step);
-}
 
-// АНИМАЦИИ ПРИ СКРОЛЛЕ
-function setupScrollAnimations() {
-    const animatedElements = document.querySelectorAll('.service-card, .stat-card');
-    
-    if (animatedElements.length === 0) return;
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('animate-in');
-                    observer.unobserve(entry.target);
-                }, index * 100);
+    // Очистка событий
+    destroy() {
+        const marqueeTracks = document.querySelectorAll('.marquee-track');
+        marqueeTracks.forEach(track => {
+            if (track._animationId) {
+                cancelAnimationFrame(track._animationId);
             }
         });
-    }, { threshold: 0.1 });
-
-    animatedElements.forEach(el => {
-        observer.observe(el);
-    });
+    }
 }
 
-// ИНИЦИАЛИЗАЦИЯ
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(initHome, 100);
+// Инициализация при загрузке DOM
+document.addEventListener('DOMContentLoaded', () => {
+    window.homePage = new HomePage();
 });
 
-// РЕЗЕРВНАЯ ИНИЦИАЛИЗАЦИЯ
-setTimeout(() => {
-    if (!window.homeInitialized) {
-        initHome();
+// Функция для ручной инициализации (если нужно из другого скрипта)
+function initHomePage() {
+    if (!window.homePage) {
+        window.homePage = new HomePage();
     }
-}, 2000);
+}
 
-// ГЛОБАЛЬНЫЕ ФУНКЦИИ
-window.initHome = initHome;
-
-console.log('✅ Home.js loaded successfully');
+// Экспорт для использования в других модулях
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { HomePage, initHomePage };
+}
