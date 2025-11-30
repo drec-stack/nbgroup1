@@ -295,12 +295,16 @@
                 }
             });
 
-            // Load footer
+            // Load footer with auto-initialization
             loadComponent('components/footer.html', 'footer-container', `
                 <footer class="fallback-footer">
                     <p>&copy; 2024 NBGROUP.TECH - Brandbook Services</p>
                 </footer>
-            `);
+            `).then(success => {
+                if (success && typeof initFooter === 'function') {
+                    setTimeout(initFooter, 100);
+                }
+            });
 
             // Initialize brandbook functionality
             setTimeout(() => {
