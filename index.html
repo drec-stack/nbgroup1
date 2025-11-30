@@ -10,6 +10,71 @@
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
+    <style>
+        /* ГАРАНТИРОВАННЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .marquee-track {
+            display: flex !important;
+            width: max-content !important;
+            padding: 25px 0 !important;
+            white-space: nowrap !important;
+            will-change: transform !important;
+        }
+
+        .marquee-content {
+            display: flex !important;
+            align-items: center !important;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+        }
+
+        .brand {
+            font-size: 1.4rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            opacity: 0.8 !important;
+            padding: 0 30px !important;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+        }
+
+        .separator {
+            color: white !important;
+            font-size: 1.5rem !important;
+            opacity: 0.3 !important;
+            font-weight: 300 !important;
+            flex-shrink: 0 !important;
+        }
+
+        /* АНИМАЦИИ */
+        #marquee1 {
+            animation: marquee-scroll 40s linear infinite !important;
+        }
+
+        #marquee2 {
+            animation: marquee-scroll-reverse 40s linear infinite !important;
+        }
+
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0) !important; }
+            100% { transform: translateX(-33.33%) !important; }
+        }
+
+        @keyframes marquee-scroll-reverse {
+            0% { transform: translateX(-33.33%) !important; }
+            100% { transform: translateX(0) !important; }
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused !important;
+        }
+    </style>
 </head>
 <body class="home-page">
     <!-- PARALLAX BACKGROUNDS -->
@@ -52,92 +117,92 @@
         </div>
     </section>
 
-    <!-- Speck Design Style Services Section - VERTICAL LAYOUT -->
-    <section class="speck-services-vertical content-section" data-bg-index="0">
+    <!-- Speck Design Style Services Section - COMPACT VERTICAL LAYOUT -->
+    <section class="speck-services-compact content-section" data-bg-index="0">
         <div class="container">
-            <div class="speck-services-vertical-grid">
+            <div class="speck-services-compact-grid">
                 <!-- Strategy Block -->
-                <div class="speck-service-card-vertical" data-category="strategy">
-                    <div class="speck-card-header-vertical">
-                        <div class="speck-number-vertical">01</div>
-                        <div class="speck-title-content-vertical">
-                            <h3 class="speck-title-vertical">Strategy</h3>
-                            <p class="speck-subtitle-vertical">Drive Innovation And Align Goals</p>
-                            <div class="speck-features-vertical">
-                                <span class="speck-feature-vertical">Innovation Strategy</span>
-                                <span class="speck-feature-vertical">Design Strategy</span>
-                                <span class="speck-feature-vertical">User Research</span>
-                            </div>
+                <div class="speck-service-card-compact" data-category="strategy">
+                    <div class="speck-card-header-compact">
+                        <div class="speck-number-compact">01</div>
+                        <div class="speck-title-content-compact">
+                            <h3 class="speck-title-compact">Strategy</h3>
+                            <p class="speck-subtitle-compact">Drive Innovation And Align Goals</p>
                         </div>
-                        <div class="speck-hover-content-vertical">
-                            <div class="speck-arrow-vertical">
-                                <i class="fas fa-arrow-right"></i>
-                            </div>
+                    </div>
+                    <div class="speck-features-compact">
+                        <span class="speck-feature-compact">Innovation Strategy</span>
+                        <span class="speck-feature-compact">Design Strategy</span>
+                        <span class="speck-feature-compact">User Research</span>
+                    </div>
+                    <div class="speck-hover-content-compact">
+                        <div class="speck-arrow-compact">
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Design Block -->
-                <div class="speck-service-card-vertical" data-category="design">
-                    <div class="speck-card-header-vertical">
-                        <div class="speck-number-vertical">02</div>
-                        <div class="speck-title-content-vertical">
-                            <h3 class="speck-title-vertical">Design</h3>
-                            <p class="speck-subtitle-vertical">Engage Audiences With Product Design</p>
-                            <div class="speck-features-vertical">
-                                <span class="speck-feature-vertical">Industrial Design</span>
-                                <span class="speck-feature-vertical">Brand Design</span>
-                                <span class="speck-feature-vertical">Packaging Design</span>
-                                <span class="speck-feature-vertical">UI/UX Design</span>
-                            </div>
+                <div class="speck-service-card-compact" data-category="design">
+                    <div class="speck-card-header-compact">
+                        <div class="speck-number-compact">02</div>
+                        <div class="speck-title-content-compact">
+                            <h3 class="speck-title-compact">Design</h3>
+                            <p class="speck-subtitle-compact">Engage Audiences With Product Design</p>
                         </div>
-                        <div class="speck-hover-content-vertical">
-                            <div class="speck-arrow-vertical">
-                                <i class="fas fa-arrow-right"></i>
-                            </div>
+                    </div>
+                    <div class="speck-features-compact">
+                        <span class="speck-feature-compact">Industrial Design</span>
+                        <span class="speck-feature-compact">Brand Design</span>
+                        <span class="speck-feature-compact">Packaging Design</span>
+                        <span class="speck-feature-compact">UI/UX Design</span>
+                    </div>
+                    <div class="speck-hover-content-compact">
+                        <div class="speck-arrow-compact">
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Engineering Block -->
-                <div class="speck-service-card-vertical" data-category="engineering">
-                    <div class="speck-card-header-vertical">
-                        <div class="speck-number-vertical">03</div>
-                        <div class="speck-title-content-vertical">
-                            <h3 class="speck-title-vertical">Engineering</h3>
-                            <p class="speck-subtitle-vertical">Complex Technical Solutions And Architecture</p>
-                            <div class="speck-features-vertical">
-                                <span class="speck-feature-vertical">Architecture</span>
-                                <span class="speck-feature-vertical">Optimization</span>
-                                <span class="speck-feature-vertical">Scaling</span>
-                            </div>
+                <div class="speck-service-card-compact" data-category="engineering">
+                    <div class="speck-card-header-compact">
+                        <div class="speck-number-compact">03</div>
+                        <div class="speck-title-content-compact">
+                            <h3 class="speck-title-compact">Engineering</h3>
+                            <p class="speck-subtitle-compact">Complex Technical Solutions And Architecture</p>
                         </div>
-                        <div class="speck-hover-content-vertical">
-                            <div class="speck-arrow-vertical">
-                                <i class="fas fa-arrow-right"></i>
-                            </div>
+                    </div>
+                    <div class="speck-features-compact">
+                        <span class="speck-feature-compact">Architecture</span>
+                        <span class="speck-feature-compact">Optimization</span>
+                        <span class="speck-feature-compact">Scaling</span>
+                    </div>
+                    <div class="speck-hover-content-compact">
+                        <div class="speck-arrow-compact">
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Marketing Block -->
-                <div class="speck-service-card-vertical" data-category="marketing">
-                    <div class="speck-card-header-vertical">
-                        <div class="speck-number-vertical">04</div>
-                        <div class="speck-title-content-vertical">
-                            <h3 class="speck-title-vertical">Marketing</h3>
-                            <p class="speck-subtitle-vertical">Digital Strategies And Product Promotion</p>
-                            <div class="speck-features-vertical">
-                                <span class="speck-feature-vertical">SEO</span>
-                                <span class="speck-feature-vertical">SMM</span>
-                                <span class="speck-feature-vertical">Analytics</span>
-                                <span class="speck-feature-vertical">Content</span>
-                            </div>
+                <div class="speck-service-card-compact" data-category="marketing">
+                    <div class="speck-card-header-compact">
+                        <div class="speck-number-compact">04</div>
+                        <div class="speck-title-content-compact">
+                            <h3 class="speck-title-compact">Marketing</h3>
+                            <p class="speck-subtitle-compact">Digital Strategies And Product Promotion</p>
                         </div>
-                        <div class="speck-hover-content-vertical">
-                            <div class="speck-arrow-vertical">
-                                <i class="fas fa-arrow-right"></i>
-                            </div>
+                    </div>
+                    <div class="speck-features-compact">
+                        <span class="speck-feature-compact">SEO</span>
+                        <span class="speck-feature-compact">SMM</span>
+                        <span class="speck-feature-compact">Analytics</span>
+                        <span class="speck-feature-compact">Content</span>
+                    </div>
+                    <div class="speck-hover-content-compact">
+                        <div class="speck-arrow-compact">
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
@@ -171,12 +236,84 @@
                             <span class="separator">·</span>
                             <span class="brand">AC</span>
                         </div>
+                        <!-- ВТОРАЯ КОПИЯ -->
+                        <div class="marquee-content">
+                            <span class="brand">dtronic</span>
+                            <span class="separator">·</span>
+                            <span class="brand">BRITA</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Roku</span>
+                            <span class="separator">·</span>
+                            <span class="brand">stryker</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Vocera V.</span>
+                            <span class="separator">·</span>
+                            <span class="brand">PayPal</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Microsoft</span>
+                            <span class="separator">·</span>
+                            <span class="brand">AC</span>
+                        </div>
+                        <!-- ТРЕТЬЯ КОПИЯ -->
+                        <div class="marquee-content">
+                            <span class="brand">dtronic</span>
+                            <span class="separator">·</span>
+                            <span class="brand">BRITA</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Roku</span>
+                            <span class="separator">·</span>
+                            <span class="brand">stryker</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Vocera V.</span>
+                            <span class="separator">·</span>
+                            <span class="brand">PayPal</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Microsoft</span>
+                            <span class="separator">·</span>
+                            <span class="brand">AC</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Marquee 2 (Reverse) -->
                 <div class="marquee-container">
                     <div class="marquee-track" id="marquee2">
+                        <div class="marquee-content">
+                            <span class="brand">AC</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Microsoft</span>
+                            <span class="separator">·</span>
+                            <span class="brand">PayPal</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Vocera V.</span>
+                            <span class="separator">·</span>
+                            <span class="brand">stryker</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Roku</span>
+                            <span class="separator">·</span>
+                            <span class="brand">BRITA</span>
+                            <span class="separator">·</span>
+                            <span class="brand">dtronic</span>
+                        </div>
+                        <!-- ВТОРАЯ КОПИЯ -->
+                        <div class="marquee-content">
+                            <span class="brand">AC</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Microsoft</span>
+                            <span class="separator">·</span>
+                            <span class="brand">PayPal</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Vocera V.</span>
+                            <span class="separator">·</span>
+                            <span class="brand">stryker</span>
+                            <span class="separator">·</span>
+                            <span class="brand">Roku</span>
+                            <span class="separator">·</span>
+                            <span class="brand">BRITA</span>
+                            <span class="separator">·</span>
+                            <span class="brand">dtronic</span>
+                        </div>
+                        <!-- ТРЕТЬЯ КОПИЯ -->
                         <div class="marquee-content">
                             <span class="brand">AC</span>
                             <span class="separator">·</span>
@@ -373,7 +510,30 @@
             });
         }
 
-        // Резервный запуск
+        // ПРОСТАЯ ПРОВЕРКА РАБОТЫ БЕГУЩЕЙ СТРОКИ
+        function checkMarquee() {
+            console.log('🔍 Проверка бегущей строки...');
+            const track1 = document.getElementById('marquee1');
+            const track2 = document.getElementById('marquee2');
+            
+            if (track1 && track2) {
+                console.log('✅ Треки найдены');
+                console.log('Track1 transform:', track1.style.transform);
+                console.log('Track1 animation:', window.getComputedStyle(track1).animation);
+                
+                // Принудительно запускаем CSS анимации
+                track1.style.animation = 'marquee-scroll 40s linear infinite';
+                track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
+                
+                console.log('🚀 Бегущая строка запущена через CSS');
+            } else {
+                console.log('❌ Треки не найдены');
+            }
+        }
+
+        // Запускаем проверку
+        document.addEventListener('DOMContentLoaded', checkMarquee);
+        setTimeout(checkMarquee, 1000);
         setTimeout(initHomeHeader, 2000);
     </script>
 </body>
