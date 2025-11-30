@@ -1,21 +1,22 @@
-// home.js - Vertical Speck Design blocks functionality
+// home.js - Complete Home Page Functionality
 
 class HomePage {
     constructor() {
+        this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.init();
     }
 
     init() {
-        this.initVerticalSpeckCards();
+        this.initCompactSpeckCards();
         this.initScrollAnimations();
         this.initStatsCounter();
         this.initParallaxBackgrounds();
         this.initMarqueeAnimations();
     }
 
-    // Vertical Speck Cards Initialization
-    initVerticalSpeckCards() {
-        const speckCards = document.querySelectorAll('.speck-service-card-vertical');
+    // Compact Speck Cards Initialization
+    initCompactSpeckCards() {
+        const speckCards = document.querySelectorAll('.speck-service-card-compact');
         
         if (!speckCards.length) return;
 
@@ -25,7 +26,7 @@ class HomePage {
                 if (entry.isIntersecting) {
                     setTimeout(() => {
                         entry.target.classList.add('animated');
-                    }, index * 200);
+                    }, index * 150);
                     observer.unobserve(entry.target);
                 }
             });
@@ -36,20 +37,16 @@ class HomePage {
             
             // Hover effects
             card.addEventListener('mouseenter', () => {
-                card.style.background = 'rgba(255, 255, 255, 0.02)';
-                
-                const features = card.querySelectorAll('.speck-feature-vertical');
+                const features = card.querySelectorAll('.speck-feature-compact');
                 features.forEach((feature, idx) => {
                     setTimeout(() => {
-                        feature.style.transform = 'translateY(-2px)';
-                    }, idx * 60);
+                        feature.style.transform = 'translateY(-1px)';
+                    }, idx * 50);
                 });
             });
             
             card.addEventListener('mouseleave', () => {
-                card.style.background = '';
-                
-                const features = card.querySelectorAll('.speck-feature-vertical');
+                const features = card.querySelectorAll('.speck-feature-compact');
                 features.forEach(feature => {
                     feature.style.transform = '';
                 });
@@ -58,14 +55,13 @@ class HomePage {
             // Click handler
             card.addEventListener('click', (e) => {
                 e.preventDefault();
-                
                 const category = card.getAttribute('data-category');
-                window.location.href = `services-${category}.html`;
+                window.location.href = `services.html#${category}`;
             });
         });
     }
 
-    // Анимации при скролле
+    // Scroll animations
     initScrollAnimations() {
         const elementsToAnimate = document.querySelectorAll('.reveal-element, .slide-up');
         
@@ -80,7 +76,7 @@ class HomePage {
         elementsToAnimate.forEach(el => observer.observe(el));
     }
 
-    // Счетчики статистики
+    // Stats counters
     initStatsCounter() {
         const statNumbers = document.querySelectorAll('.stat-number-improved');
         
@@ -124,7 +120,7 @@ class HomePage {
         requestAnimationFrame(updateNumber);
     }
 
-    // Параллакс фоны
+    // Parallax backgrounds
     initParallaxBackgrounds() {
         const contentSections = document.querySelectorAll('.content-section');
         
@@ -150,70 +146,78 @@ class HomePage {
         }
     }
 
-    // Marquee анимации
+    // Marquee animations - ИСПРАВЛЕННАЯ ВЕРСИЯ
     initMarqueeAnimations() {
         const marqueeElements = document.querySelectorAll('.marquee-track');
         
         if (!marqueeElements.length) return;
 
-        marqueeElements.forEach((track, index) => {
-            const isReverse = index % 2 === 1;
-            this.createMarqueeAnimation(track, isReverse);
-        });
+        console.log('♿ Reduced motion detected:', this.isReducedMotion);
+
+        // ВСЕГДА используем JavaScript для лучшего контроля скорости
+        this.initMarqueeJS();
     }
 
-    createMarqueeAnimation(track, reverse = false) {
-        const content = track.querySelector('.marquee-content');
-        const clone = content.cloneNode(true);
-        track.appendChild(clone);
+    // JavaScript анимация с нормальной скоростью
+    initMarqueeJS() {
+        console.log('🚀 Запуск JavaScript бегущей строки...');
         
-        const contentWidth = content.offsetWidth;
-        let position = 0;
-        let animationId = null;
-        let isPaused = false;
+        const tracks = document.querySelectorAll('.marquee-track');
         
-        const animate = () => {
-            if (isPaused) {
-                animationId = requestAnimationFrame(animate);
-                return;
-            }
+        tracks.forEach((track, index) => {
+            const isReverse = index === 1;
             
-            if (reverse) {
-                position += 1;
-                if (position >= contentWidth) {
-                    position = 0;
+            // УБИРАЕМ CSS анимации полностью
+            track.style.animation = 'none';
+            
+            let position = 0;
+            // НОРМАЛЬНАЯ СКОРОСТЬ даже при reduced motion
+            const speed = isReverse ? 2 : -2;
+            const contentWidth = track.scrollWidth / 3;
+            let animationId = null;
+            let isPaused = false;
+            
+            function animate() {
+                if (isPaused) {
+                    animationId = requestAnimationFrame(animate);
+                    return;
                 }
-            } else {
-                position -= 1;
+                
+                position += speed;
+                
                 if (position <= -contentWidth) {
                     position = 0;
+                } else if (position >= 0) {
+                    position = -contentWidth;
                 }
+                
+                track.style.transform = `translateX(${position}px)`;
+                animationId = requestAnimationFrame(animate);
             }
             
-            track.style.transform = `translateX(${position}px)`;
-            animationId = requestAnimationFrame(animate);
-        };
-        
-        // Start animation
-        animate();
-        
-        // Pause on hover
-        track.addEventListener('mouseenter', () => {
-            isPaused = true;
+            // Запускаем анимацию
+            animate();
+            
+            // Пауза при наведении
+            track.addEventListener('mouseenter', () => {
+                isPaused = true;
+            });
+            
+            track.addEventListener('mouseleave', () => {
+                isPaused = false;
+            });
+            
+            // Сохраняем ID для очистки
+            track._animationId = animationId;
+            
+            console.log(`✅ Трек ${index + 1} запущен через JS (${isReverse ? 'обратный' : 'прямой'}) скорость: ${speed}px/frame`);
         });
-        
-        track.addEventListener('mouseleave', () => {
-            isPaused = false;
-        });
-        
-        // Store animation ID for cleanup
-        track._animationId = animationId;
     }
 
-    // Очистка событий
+    // Cleanup
     destroy() {
-        const marqueeTracks = document.querySelectorAll('.marquee-track');
-        marqueeTracks.forEach(track => {
+        const tracks = document.querySelectorAll('.marquee-track');
+        tracks.forEach(track => {
             if (track._animationId) {
                 cancelAnimationFrame(track._animationId);
             }
@@ -221,19 +225,68 @@ class HomePage {
     }
 }
 
-// Инициализация при загрузке DOM
+// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.homePage = new HomePage();
+    console.log('🏠 HomePage инициализирован');
 });
 
-// Функция для ручной инициализации (если нужно из другого скрипта)
+// Manual initialization function (if needed from another script)
 function initHomePage() {
     if (!window.homePage) {
         window.homePage = new HomePage();
     }
 }
 
-// Экспорт для использования в других модулях
+// Проверка работы бегущей строки
+function checkMarqueeWorking() {
+    setTimeout(() => {
+        const tracks = document.querySelectorAll('.marquee-track');
+        let isWorking = false;
+        
+        tracks.forEach(track => {
+            const transform = track.style.transform;
+            if (transform && transform !== 'translateX(0px)' && transform !== 'none') {
+                isWorking = true;
+                console.log(`🎯 Трек двигается: ${transform}`);
+            }
+        });
+        
+        if (!isWorking) {
+            console.warn('⚠️ Бегущая строка не работает, принудительный запуск...');
+            if (window.homePage) {
+                window.homePage.initMarqueeJS();
+            }
+        } else {
+            console.log('✅ Бегущая строка работает корректно');
+        }
+    }, 2000);
+}
+
+// Проверяем после полной загрузки
+window.addEventListener('load', () => {
+    checkMarqueeWorking();
+});
+
+// Резервный запуск через 5 секунд
+setTimeout(() => {
+    const tracks = document.querySelectorAll('.marquee-track');
+    let anyMoving = false;
+    
+    tracks.forEach(track => {
+        const transform = track.style.transform;
+        if (transform && transform !== 'translateX(0px)' && transform !== 'none') {
+            anyMoving = true;
+        }
+    });
+    
+    if (!anyMoving && window.homePage) {
+        console.log('🔄 Резервный запуск бегущей строки...');
+        window.homePage.initMarqueeJS();
+    }
+}, 5000);
+
+// Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { HomePage, initHomePage };
 }
