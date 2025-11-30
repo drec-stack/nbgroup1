@@ -308,22 +308,90 @@
     <script src="js/contacts.js"></script>
     
     <script>
-        // Загружаем компоненты
-        Promise.all([
-            fetch('components/header.html').then(r => r.text()),
-            fetch('components/footer.html').then(r => r.text())
-        ]).then(([headerHtml, footerHtml]) => {
-            document.getElementById('header-container').innerHTML = headerHtml;
-            document.getElementById('footer-container').innerHTML = footerHtml;
+        // Enhanced component loading with error handling
+        function loadComponent(url, containerId, fallbackHtml = '') {
+            return fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error(`Failed to load ${url}: ${response.status}`);
+                    return response.text();
+                })
+                .then(html => {
+                    document.getElementById(containerId).innerHTML = html;
+                    return true;
+                })
+                .catch(error => {
+                    console.error(error);
+                    if (fallbackHtml) {
+                        document.getElementById(containerId).innerHTML = fallbackHtml;
+                    }
+                    return false;
+                });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Contact page loading...');
             
-            // Инициализируем функциональность после загрузки компонентов
-            if (typeof initHeader === 'function') initHeader();
-            
-            // Инициализируем контактную страницу
-            if (typeof initContact === 'function') initContact();
-        }).catch(error => {
-            console.error('Error loading components:', error);
+            // Load header with enhanced error handling
+            loadComponent('components/header.html', 'header-container', `
+                <header class="main-header">
+                    <div class="container">
+                        <div class="header-inner">
+                            <a href="index.html" class="logo">
+                                <div class="logo-mark">NB</div>
+                                <span class="logo-text">NBGROUP.TECH</span>
+                            </a>
+                            <nav class="main-nav">
+                                <a href="index.html" class="nav-link">Home</a>
+                                <a href="services.html" class="nav-link">Services</a>
+                                <a href="portfolio.html" class="nav-link">Work</a>
+                                <a href="brandbook.html" class="nav-link">Brandbook</a>
+                                <a href="about.html" class="nav-link">About</a>
+                                <a href="contacts.html" class="nav-link active">Contact</a>
+                            </nav>
+                        </div>
+                    </div>
+                </header>
+            `).then(success => {
+                if (success && typeof initHeader === 'function') {
+                    setTimeout(initHeader, 100);
+                }
+            });
+
+            // Load footer with auto-initialization
+            loadComponent('components/footer.html', 'footer-container', `
+                <footer class="fallback-footer">
+                    <p>&copy; 2024 NBGROUP.TECH - Contact Us</p>
+                </footer>
+            `).then(success => {
+                if (success && typeof initFooter === 'function') {
+                    setTimeout(initFooter, 100);
+                }
+            });
+
+            // Initialize contact functionality
+            setTimeout(() => {
+                if (typeof initContact === 'function') {
+                    initContact();
+                } else {
+                    console.warn('initContact function not found, retrying...');
+                    setTimeout(() => {
+                        if (typeof initContact === 'function') {
+                            initContact();
+                        }
+                    }, 500);
+                }
+            }, 200);
         });
+
+        // Fallback initialization if DOMContentLoaded already fired
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+            setTimeout(() => {
+                if (typeof initContact === 'function') {
+                    initContact();
+                }
+            }, 100);
+        }
     </script>
 </body>
 </html>
