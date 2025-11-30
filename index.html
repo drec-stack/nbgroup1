@@ -3,26 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="nav.home">NBGROUP.TECH | Industrial Design & Manufacturing</title>
+    <title>NBGROUP.TECH | Industrial Design & Manufacturing</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
-    
-    <!-- Стили для скрытия хедера -->
-    <style>
-        .home-page .main-header {
-            transition: all 0.4s ease !important;
-        }
-        
-        .home-page .main-header.header-hidden {
-            transform: translateY(-100%) !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-    </style>
 </head>
 <body class="home-page">
     <!-- PARALLAX BACKGROUNDS -->
@@ -43,25 +30,118 @@
     <section class="hero parallax-hero">
         <div class="container">
             <div class="parallax-content">
-                <h1 data-i18n="home.hero.titleLine1">ИННОВАЦИИ</h1>
-                <p data-i18n="home.parallax.section1.description">
+                <h1>ИННОВАЦИИ</h1>
+                <p>
                     Создаем продукты, которые переопределяют рынки и пользовательский опыт 
                     с помощью передового промышленного дизайна и инженерии.
                 </p>
                 <div class="hero-actions">
                     <a href="services.html" class="btn btn-primary">
-                        <span data-i18n="home.hero.ourServices">Наши Услуги</span>
+                        <span>Наши Услуги</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
                     <a href="portfolio.html" class="btn btn-secondary">
-                        <span data-i18n="home.hero.viewWork">Смотреть Работы</span>
+                        <span>Смотреть Работы</span>
                     </a>
                 </div>
             </div>
         </div>
         <div class="parallax-scroll-indicator">
             <div class="scroll-arrow"></div>
-            <span data-i18n="home.parallax.scrollHint">Прокрутите для просмотра</span>
+            <span>Прокрутите для просмотра</span>
+        </div>
+    </section>
+
+    <!-- Speck Design Style Services Section - VERTICAL LAYOUT -->
+    <section class="speck-services-vertical content-section" data-bg-index="0">
+        <div class="container">
+            <div class="speck-services-vertical-grid">
+                <!-- Strategy Block -->
+                <div class="speck-service-card-vertical" data-category="strategy">
+                    <div class="speck-card-header-vertical">
+                        <div class="speck-number-vertical">01</div>
+                        <div class="speck-title-content-vertical">
+                            <h3 class="speck-title-vertical">Strategy</h3>
+                            <p class="speck-subtitle-vertical">Drive Innovation And Align Goals</p>
+                            <div class="speck-features-vertical">
+                                <span class="speck-feature-vertical">Innovation Strategy</span>
+                                <span class="speck-feature-vertical">Design Strategy</span>
+                                <span class="speck-feature-vertical">User Research</span>
+                            </div>
+                        </div>
+                        <div class="speck-hover-content-vertical">
+                            <div class="speck-arrow-vertical">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Design Block -->
+                <div class="speck-service-card-vertical" data-category="design">
+                    <div class="speck-card-header-vertical">
+                        <div class="speck-number-vertical">02</div>
+                        <div class="speck-title-content-vertical">
+                            <h3 class="speck-title-vertical">Design</h3>
+                            <p class="speck-subtitle-vertical">Engage Audiences With Product Design</p>
+                            <div class="speck-features-vertical">
+                                <span class="speck-feature-vertical">Industrial Design</span>
+                                <span class="speck-feature-vertical">Brand Design</span>
+                                <span class="speck-feature-vertical">Packaging Design</span>
+                                <span class="speck-feature-vertical">UI/UX Design</span>
+                            </div>
+                        </div>
+                        <div class="speck-hover-content-vertical">
+                            <div class="speck-arrow-vertical">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Engineering Block -->
+                <div class="speck-service-card-vertical" data-category="engineering">
+                    <div class="speck-card-header-vertical">
+                        <div class="speck-number-vertical">03</div>
+                        <div class="speck-title-content-vertical">
+                            <h3 class="speck-title-vertical">Engineering</h3>
+                            <p class="speck-subtitle-vertical">Complex Technical Solutions And Architecture</p>
+                            <div class="speck-features-vertical">
+                                <span class="speck-feature-vertical">Architecture</span>
+                                <span class="speck-feature-vertical">Optimization</span>
+                                <span class="speck-feature-vertical">Scaling</span>
+                            </div>
+                        </div>
+                        <div class="speck-hover-content-vertical">
+                            <div class="speck-arrow-vertical">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Marketing Block -->
+                <div class="speck-service-card-vertical" data-category="marketing">
+                    <div class="speck-card-header-vertical">
+                        <div class="speck-number-vertical">04</div>
+                        <div class="speck-title-content-vertical">
+                            <h3 class="speck-title-vertical">Marketing</h3>
+                            <p class="speck-subtitle-vertical">Digital Strategies And Product Promotion</p>
+                            <div class="speck-features-vertical">
+                                <span class="speck-feature-vertical">SEO</span>
+                                <span class="speck-feature-vertical">SMM</span>
+                                <span class="speck-feature-vertical">Analytics</span>
+                                <span class="speck-feature-vertical">Content</span>
+                            </div>
+                        </div>
+                        <div class="speck-hover-content-vertical">
+                            <div class="speck-arrow-vertical">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -69,7 +149,7 @@
     <section class="clients-section content-section" data-bg-index="0">
         <div class="container">
             <div class="clients-content">
-                <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
+                <p class="clients-label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
                 
                 <!-- Marquee 1 -->
                 <div class="marquee-container">
@@ -116,90 +196,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section class="services-preview content-section" data-bg-index="1">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-i18n="home.servicesPreview.title">Наша Экспертиза</h2>
-                <p class="section-subtitle" data-i18n="home.servicesPreview.subtitle">Комплексные услуги по разработке продуктов</p>
-            </div>
-            
-            <div class="services-grid-improved">
-                <!-- Инжиниринг -->
-                <a href="services-engineering.html" class="service-card-improved" data-service="engineering">
-                    <div class="service-card-inner">
-                        <div class="service-icon-wrapper">
-                            <div class="service-icon-bg"></div>
-                            <i class="fas fa-cogs service-icon-main"></i>
-                        </div>
-                        <div class="service-content">
-                            <h3>Инжиниринг</h3>
-                            <p>Комплексные технические решения и архитектура для вашего бизнеса</p>
-                            <div class="service-hover-content">
-                                <span class="service-link-text">Изучить подробнее</span>
-                                <div class="service-arrow">→</div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Разработка -->
-                <a href="services-development.html" class="service-card-improved" data-service="development">
-                    <div class="service-card-inner">
-                        <div class="service-icon-wrapper">
-                            <div class="service-icon-bg"></div>
-                            <i class="fas fa-code service-icon-main"></i>
-                        </div>
-                        <div class="service-content">
-                            <h3>Разработка</h3>
-                            <p>Создание современных веб-приложений и цифровых платформ</p>
-                            <div class="service-hover-content">
-                                <span class="service-link-text">Изучить подробнее</span>
-                                <div class="service-arrow">→</div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Дизайн -->
-                <a href="services-design.html" class="service-card-improved" data-service="design">
-                    <div class="service-card-inner">
-                        <div class="service-icon-wrapper">
-                            <div class="service-icon-bg"></div>
-                            <i class="fas fa-pencil-ruler service-icon-main"></i>
-                        </div>
-                        <div class="service-content">
-                            <h3>Дизайн</h3>
-                            <p>UI/UX дизайн, брендинг и визуальная идентификация</p>
-                            <div class="service-hover-content">
-                                <span class="service-link-text">Изучить подробнее</span>
-                                <div class="service-arrow">→</div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Маркетинг -->
-                <a href="services-marketing.html" class="service-card-improved" data-service="marketing">
-                    <div class="service-card-inner">
-                        <div class="service-icon-wrapper">
-                            <div class="service-icon-bg"></div>
-                            <i class="fas fa-bullhorn service-icon-main"></i>
-                        </div>
-                        <div class="service-content">
-                            <h3>Маркетинг</h3>
-                            <p>Digital-стратегии и комплексное продвижение продуктов</p>
-                            <div class="service-hover-content">
-                                <span class="service-link-text">Изучить подробнее</span>
-                                <div class="service-arrow">→</div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
             </div>
         </div>
     </section>
@@ -336,21 +332,16 @@
             .then(html => {
                 document.getElementById('header-container').innerHTML = html;
                 if (typeof initHeader === 'function') initHeader();
-                
-                // Запускаем скрипт скрытия хедера после загрузки
                 initHomeHeader();
             });
 
-        // СКРИПТ ДЛЯ СКРЫТИЯ ХЕДЕРА НА ГЛАВНОЙ СТРАНИЦЕ
+        // Header hide functionality
         function initHomeHeader() {
             const header = document.querySelector('.main-header');
             if (!header) {
-                console.log('⏳ Header not found, retrying...');
                 setTimeout(initHomeHeader, 100);
                 return;
             }
-
-            console.log('🎯 Home header hide script initialized');
 
             let isHidden = false;
             const hideThreshold = 100;
@@ -359,23 +350,17 @@
                 const scrollY = window.pageYOffset;
                 
                 if (scrollY > hideThreshold && !isHidden) {
-                    // Скрываем хедер
                     header.classList.add('header-hidden');
                     isHidden = true;
                 } else if (scrollY <= hideThreshold && isHidden) {
-                    // Показываем хедер
                     header.classList.remove('header-hidden');
                     isHidden = false;
                 }
             }
 
-            // Запускаем сразу
             handleScroll();
-
-            // Слушаем скролл
             window.addEventListener('scroll', handleScroll, { passive: true });
 
-            // Временно показываем хедер при наведении
             header.addEventListener('mouseenter', function() {
                 if (isHidden) {
                     header.classList.remove('header-hidden');
@@ -386,142 +371,10 @@
                     }, 2000);
                 }
             });
-
-            console.log('✅ Header hide behavior activated');
         }
 
         // Резервный запуск
         setTimeout(initHomeHeader, 2000);
-
-        // Marquee animation
-        class Marquee {
-            constructor(elementId, speed = 1, reverse = false) {
-                this.element = document.getElementById(elementId);
-                this.speed = speed;
-                this.reverse = reverse;
-                this.position = 0;
-                this.contentWidth = 0;
-                this.containerWidth = 0;
-                this.animationId = null;
-                this.isPaused = false;
-                
-                this.init();
-            }
-            
-            init() {
-                if (!this.element) return;
-                
-                const content = this.element.querySelector('.marquee-content');
-                const clone = content.cloneNode(true);
-                this.element.appendChild(clone);
-                
-                this.contentWidth = content.offsetWidth;
-                this.containerWidth = this.element.offsetWidth;
-                
-                this.animate();
-                
-                this.element.addEventListener('mouseenter', () => this.pause());
-                this.element.addEventListener('mouseleave', () => this.resume());
-            }
-            
-            animate() {
-                if (this.isPaused) {
-                    this.animationId = requestAnimationFrame(() => this.animate());
-                    return;
-                }
-                
-                if (this.reverse) {
-                    this.position += this.speed;
-                    if (this.position >= this.contentWidth) {
-                        this.position = 0;
-                    }
-                } else {
-                    this.position -= this.speed;
-                    if (this.position <= -this.contentWidth) {
-                        this.position = 0;
-                    }
-                }
-                
-                this.element.style.transform = `translateX(${this.position}px)`;
-                this.animationId = requestAnimationFrame(() => this.animate());
-            }
-            
-            pause() { this.isPaused = true; }
-            resume() { this.isPaused = false; }
-            destroy() { if (this.animationId) cancelAnimationFrame(this.animationId); }
-        }
-
-        // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize marquees
-            const marquee1 = new Marquee('marquee1', 1, false);
-            const marquee2 = new Marquee('marquee2', 1, true);
-
-            // Initialize counters
-            const statCards = document.querySelectorAll('.stat-card');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        const statCard = entry.target;
-                        const statNumber = statCard.querySelector('.stat-number-improved');
-                        const target = parseInt(statNumber.getAttribute('data-target')) || 0;
-                        
-                        if (target > 0) {
-                            setTimeout(() => {
-                                animateNumber(statNumber, target);
-                                statCard.classList.add('animated');
-                            }, index * 200);
-                            observer.unobserve(statCard);
-                        }
-                    }
-                });
-            }, { threshold: 0.3 });
-
-            statCards.forEach(card => observer.observe(card));
-
-            function animateNumber(element, target) {
-                let current = 0;
-                const duration = 2500;
-                const startTime = Date.now();
-                
-                function updateNumber() {
-                    const elapsed = Date.now() - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                    current = Math.floor(easeOutQuart * target);
-                    
-                    element.textContent = current.toLocaleString();
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(updateNumber);
-                    } else {
-                        element.textContent = target.toLocaleString();
-                    }
-                }
-                requestAnimationFrame(updateNumber);
-            }
-
-            // Initialize service cards animations
-            const serviceCards = document.querySelectorAll('.service-card-improved');
-            const serviceObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.style.opacity = '1';
-                            entry.target.style.transform = 'translateY(0)';
-                        }, index * 100);
-                        serviceObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            serviceCards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
-                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                serviceObserver.observe(card);
-            });
-        });
     </script>
 </body>
 </html>
