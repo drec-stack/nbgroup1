@@ -469,6 +469,11 @@ main {
     border-color: #0088cc;
 }
 
+.social-link.whatsapp:hover {
+    background: rgba(37, 211, 102, 0.3);
+    border-color: #25d366;
+}
+
 .social-link.instagram:hover {
     background: rgba(228, 64, 95, 0.3);
     border-color: #e4405f;
@@ -482,6 +487,19 @@ main {
 .social-link.behance:hover {
     background: rgba(23, 105, 255, 0.3);
     border-color: #1769ff;
+}
+
+/* Стили для кастомных иконок мессенджеров */
+.social-link.telegram svg,
+.social-link.whatsapp svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.social-link.telegram:hover svg,
+.social-link.whatsapp:hover svg {
+    transform: scale(1.1);
 }
 
 .footer-links {
@@ -522,6 +540,48 @@ main {
     color: rgba(255, 255, 255, 0.8);
     width: 20px;
     text-align: center;
+}
+
+/* Стили для мессенджеров в контактах */
+.messenger-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.messenger-contact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.messenger-contact:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.messenger-contact.telegram:hover {
+    border-color: #0088cc;
+    background: rgba(0, 136, 204, 0.1);
+}
+
+.messenger-contact.whatsapp:hover {
+    border-color: #25d366;
+    background: rgba(37, 211, 102, 0.1);
+}
+
+.messenger-contact svg {
+    flex-shrink: 0;
 }
 
 .footer-bottom {
@@ -2291,10 +2351,30 @@ main {
         justify-content: center;
     }
     
+    .messenger-contacts {
+        align-items: center;
+    }
+    
+    .messenger-contact {
+        justify-content: center;
+        min-width: 140px;
+    }
+    
     .footer-bottom {
         flex-direction: column;
         gap: 20px;
         text-align: center;
+    }
+
+    /* Адаптивность для мессенджеров в контактах */
+    .messenger-contacts {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .messenger-contact {
+        flex: 0 0 auto;
     }
 
     /* Сетки для мобильных */
@@ -2504,6 +2584,15 @@ main {
 
     .parallax-content h1 {
         font-size: 2.5rem;
+    }
+
+    .messenger-contacts {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .messenger-contact {
+        width: 160px;
     }
 }
 
