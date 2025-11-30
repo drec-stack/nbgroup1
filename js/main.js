@@ -1,6 +1,6 @@
 // Main JavaScript file - Common functionality across all pages
 
-class NBGroupTech {
+class DaehaaApp {
     constructor() {
         this.init();
     }
@@ -8,7 +8,6 @@ class NBGroupTech {
     init() {
         this.setupMobileMenu();
         this.setupSmoothScroll();
-        this.setupHeaderScroll();
         this.setupCurrentPage();
         this.setupLanguageSupport();
         this.setupAnimations();
@@ -16,7 +15,144 @@ class NBGroupTech {
         this.setupFormHandling();
         this.setupLazyLoading();
         this.setupPerformanceOptimizations();
-        this.setupBrandbookOptimizations();
+        this.setupHeaderSupport();
+        this.setupFooterSupport();
+        
+        // Принудительная инициализация подвала при загрузке
+        this.initializeExistingFooter();
+    }
+
+    initializeExistingFooter() {
+        // Немедленная инициализация подвала если он уже есть в DOM
+        const existingFooter = document.querySelector('.main-footer');
+        if (existingFooter && typeof window.initFooter === 'function') {
+            console.log('🦶 Found existing footer, initializing...');
+            window.initFooter();
+        }
+    }
+
+    setupFooterSupport() {
+        console.log('🦶 Setting up footer support...');
+        
+        // Автоматическая инициализация подвала при его загрузке
+        if ('MutationObserver' in window) {
+            const footerObserver = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === 1) {
+                            // Проверяем сам элемент или его детей
+                            if (node.classList && node.classList.contains('main-footer')) {
+                                console.log('🦶 Footer added to DOM, initializing...');
+                                this.initializeFooter(node);
+                            } else if (node.querySelector) {
+                                const footer = node.querySelector('.main-footer');
+                                if (footer) {
+                                    console.log('🦶 Footer found in added node, initializing...');
+                                    this.initializeFooter(footer);
+                                }
+                            }
+                        }
+                    });
+                });
+            });
+
+            footerObserver.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        // Также проверяем при полной загрузке DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const footer = document.querySelector('.main-footer');
+                if (footer && typeof window.initFooter === 'function') {
+                    console.log('🦶 DOM loaded, initializing footer...');
+                    window.initFooter();
+                }
+            }, 500);
+        });
+    }
+
+    initializeFooter(footerElement) {
+        if (typeof window.initFooter === 'function') {
+            setTimeout(() => {
+                window.initFooter();
+            }, 100);
+        }
+    }
+
+    setupHeaderSupport() {
+        // Для главной страницы - специальная логика скрытия/показа
+        const isHomePage = document.body.classList.contains('home-page');
+        if (isHomePage) {
+            console.log('🏠 Home page - enabling header hide on scroll');
+            this.setupHomeHeaderAnimation();
+            return;
+        }
+        
+        // Для остальных страниц используем базовую логику
+        if (document.querySelector('.main-header')) {
+            this.setupBasicHeaderAnimation();
+        }
+    }
+
+    setupHomeHeaderAnimation() {
+        const header = document.querySelector('.main-header');
+        if (!header) return;
+
+        const scrollThreshold = 50;
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= scrollThreshold) {
+                header.classList.remove('header-hidden');
+                header.style.opacity = '1';
+                header.style.transform = 'translateY(0)';
+                header.style.pointerEvents = 'auto';
+            } else {
+                header.classList.add('header-hidden');
+                header.style.opacity = '0';
+                header.style.transform = 'translateY(-100%)';
+                header.style.pointerEvents = 'none';
+            }
+        }, { passive: true });
+
+        if (window.pageYOffset > scrollThreshold) {
+            header.classList.add('header-hidden');
+            header.style.opacity = '0';
+            header.style.transform = 'translateY(-100%)';
+            header.style.pointerEvents = 'none';
+        }
+    }
+
+    setupBasicHeaderAnimation() {
+        const header = document.querySelector('.main-header');
+        if (!header) return;
+
+        let lastScroll = 0;
+        const scrollThreshold = 100;
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                header.style.transform = 'translateY(0px)';
+                header.classList.remove('header-hidden', 'header-scrolled');
+                return;
+            }
+            
+            if (currentScroll > lastScroll && currentScroll > scrollThreshold) {
+                header.classList.remove('header-hidden');
+                header.classList.add('header-scrolled');
+            } else if (currentScroll < lastScroll) {
+                header.classList.remove('header-hidden');
+                header.classList.remove('header-scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        }, { passive: true });
     }
 
     setupMobileMenu() {
@@ -123,59 +259,6 @@ class NBGroupTech {
         });
     }
 
-    setupHeaderScroll() {
-        const header = document.querySelector('.main-header');
-        
-        if (header) {
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const isHomePage = currentPage === 'index.html' || currentPage === '' || currentPage === '/';
-            
-            let lastScrollY = window.scrollY;
-            let ticking = false;
-
-            const updateHeader = () => {
-                if (window.scrollY > 100) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-                
-                if (isHomePage) {
-                    if (window.scrollY > lastScrollY && window.scrollY > 100) {
-                        header.style.transform = 'translateY(-100%)';
-                        header.style.opacity = '0';
-                    } else {
-                        header.style.transform = 'translateY(0)';
-                        header.style.opacity = '1';
-                    }
-                } else {
-                    header.style.transform = 'translateY(0)';
-                    header.style.opacity = '1';
-                    header.style.background = 'var(--red-gradient)';
-                    header.style.backdropFilter = 'blur(10px)';
-                }
-                
-                lastScrollY = window.scrollY;
-                ticking = false;
-            };
-
-            const requestTick = () => {
-                if (!ticking) {
-                    requestAnimationFrame(updateHeader);
-                    ticking = true;
-                }
-            };
-
-            window.addEventListener('scroll', requestTick, { passive: true });
-            updateHeader();
-            
-            if (!isHomePage) {
-                header.style.background = 'var(--red-gradient)';
-                header.style.backdropFilter = 'blur(10px)';
-            }
-        }
-    }
-
     setupCurrentPage() {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         const navLinks = document.querySelectorAll('.nav-link');
@@ -204,7 +287,7 @@ class NBGroupTech {
         const langButtons = document.querySelectorAll('.lang-btn');
         const switcher = document.querySelector('.language-switcher');
         
-        const currentLang = localStorage.getItem('preferredLang') || 'en';
+        const currentLang = localStorage.getItem('preferredLang') || 'ru';
         this.updateSwitcherState(currentLang);
         
         langButtons.forEach(btn => {
@@ -349,6 +432,7 @@ class NBGroupTech {
             if (current >= target) {
                 current = target;
                 clearInterval(timer);
+                counter.classList.add('counter-animate');
             }
             counter.textContent = Math.floor(current).toLocaleString();
         }, 16);
@@ -652,119 +736,6 @@ class NBGroupTech {
         });
     }
 
-    setupBrandbookOptimizations() {
-        this.optimizeBrandbookCases();
-        this.setupColorTooltips();
-        this.enhanceBrandbookAnimations();
-    }
-
-    optimizeBrandbookCases() {
-        const cases = document.querySelectorAll('.brand-case');
-        
-        cases.forEach(brandCase => {
-            brandCase.addEventListener('touchstart', () => {
-                brandCase.style.transform = 'translateY(-2px)';
-            }, { passive: true });
-            
-            brandCase.addEventListener('touchend', () => {
-                brandCase.style.transform = '';
-            }, { passive: true });
-            
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('case-visible');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.1 });
-                
-                observer.observe(brandCase);
-            }
-        });
-    }
-
-    setupColorTooltips() {
-        const colorItems = document.querySelectorAll('.color-item');
-        
-        colorItems.forEach(colorItem => {
-            let tooltip = null;
-            let hideTimeout = null;
-            
-            const showTooltip = (e) => {
-                if (tooltip) return;
-                
-                const color = getComputedStyle(colorItem).backgroundColor;
-                const rgb = color.match(/\d+/g);
-                const hex = rgb ? `#${((1 << 24) + (parseInt(rgb[0]) << 16) + (parseInt(rgb[1]) << 8) + parseInt(rgb[2])).toString(16).slice(1)}` : color;
-                
-                tooltip = document.createElement('div');
-                tooltip.className = 'color-tooltip';
-                tooltip.textContent = hex.toUpperCase();
-                document.body.appendChild(tooltip);
-                
-                const rect = colorItem.getBoundingClientRect();
-                tooltip.style.left = `${rect.left + rect.width / 2}px`;
-                tooltip.style.top = `${rect.top - tooltip.offsetHeight - 8}px`;
-                tooltip.style.transform = 'translateX(-50%)';
-            };
-            
-            const hideTooltip = () => {
-                if (hideTimeout) clearTimeout(hideTimeout);
-                hideTimeout = setTimeout(() => {
-                    if (tooltip && tooltip.parentNode) {
-                        tooltip.parentNode.removeChild(tooltip);
-                        tooltip = null;
-                    }
-                }, 150);
-            };
-            
-            colorItem.addEventListener('mouseenter', showTooltip);
-            colorItem.addEventListener('mouseleave', hideTooltip);
-            
-            colorItem.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                showTooltip();
-            }, { passive: false });
-            
-            colorItem.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                hideTooltip();
-            }, { passive: false });
-            
-            colorItem.addEventListener('touchcancel', hideTooltip);
-        });
-    }
-
-    enhanceBrandbookAnimations() {
-        const animatedElements = document.querySelectorAll('.case-title, .case-description, .brand-element');
-        
-        if ('IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const delay = Array.from(animatedElements).indexOf(entry.target) * 100;
-                        
-                        setTimeout(() => {
-                            entry.target.style.opacity = '1';
-                            entry.target.style.transform = 'translateY(0)';
-                        }, delay);
-                        
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.2 });
-            
-            animatedElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-        }
-    }
-
     loadComponent(containerId, componentPath) {
         return fetch(componentPath)
             .then(response => {
@@ -840,29 +811,135 @@ class NBGroupTech {
     }
 }
 
+// Global footer initialization function
+window.initFooter = function() {
+    console.log('🦶 Footer component initialized');
+    
+    // Check if footer exists and initialize its functionality
+    const footer = document.querySelector('.main-footer');
+    if (footer) {
+        console.log('🦶 Found footer element, setting up functionality...');
+        
+        // Re-initialize footer animations and interactions
+        if (typeof setupFooterAnimations === 'function') {
+            setupFooterAnimations();
+        }
+        if (typeof setupSocialLinks === 'function') {
+            setupSocialLinks();
+        }
+        if (typeof setupMessengerContacts === 'function') {
+            setupMessengerContacts();
+        }
+        
+        // Setup Intersection Observer for footer animations
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            const footerSections = footer.querySelectorAll('.footer-section');
+            footerSections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+        }
+        
+        // Setup social links hover effects
+        const socialLinks = footer.querySelectorAll('.social-link');
+        socialLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                link.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Setup messenger contacts hover effects
+        const messengerContacts = footer.querySelectorAll('.messenger-contact');
+        messengerContacts.forEach(contact => {
+            contact.addEventListener('mouseenter', () => {
+                contact.style.transform = 'translateX(5px)';
+            });
+            
+            contact.addEventListener('mouseleave', () => {
+                contact.style.transform = 'translateX(0)';
+            });
+        });
+        
+        console.log('🦶 Footer functionality initialized successfully');
+    } else {
+        console.warn('🦶 No footer element found for initialization');
+    }
+};
+
+// Enhanced component loading with auto-initialization
+window.loadComponentWithInit = function(url, containerId, fallbackHtml = '', initFunctionName = null) {
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error(`Failed to load ${url}: ${response.status}`);
+            return response.text();
+        })
+        .then(html => {
+            document.getElementById(containerId).innerHTML = html;
+            
+            // Auto-initialize footer if it's a footer component
+            if (containerId === 'footer-container' && typeof window.initFooter === 'function') {
+                setTimeout(window.initFooter, 50);
+            }
+            
+            // Auto-initialize header if it's a header component
+            if (containerId === 'header-container' && typeof window.initHeader === 'function') {
+                setTimeout(window.initHeader, 50);
+            }
+            
+            // Call specific init function if provided
+            if (initFunctionName && typeof window[initFunctionName] === 'function') {
+                setTimeout(window[initFunctionName], 100);
+            }
+            
+            return true;
+        })
+        .catch(error => {
+            console.error('Component loading error:', error);
+            if (fallbackHtml) {
+                document.getElementById(containerId).innerHTML = fallbackHtml;
+            }
+            return false;
+        });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    window.NBApp = new NBGroupTech();
+    window.DaehaaApp = new DaehaaApp();
     
-    window.NBApp.setupPageTransitions();
+    window.DaehaaApp.setupPageTransitions();
     
-    window.NBApp.setupLazyLoading();
+    window.DaehaaApp.setupLazyLoading();
     
-    window.NBApp.setupErrorHandling();
+    window.DaehaaApp.setupErrorHandling();
     
-    console.log('🚀 NBGroup.Tech application initialized');
+    console.log('🚀 Daehaa application initialized');
 });
 
 window.initHeader = function() {
-    if (window.NBApp) {
-        window.NBApp.setupMobileMenu();
-        window.NBApp.setupCurrentPage();
-        window.NBApp.setupLanguageSupport();
+    if (window.DaehaaApp) {
+        window.DaehaaApp.setupMobileMenu();
+        window.DaehaaApp.setupCurrentPage();
+        window.DaehaaApp.setupLanguageSupport();
     }
 };
 
 document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && window.NBApp) {
-        window.NBApp.setupCurrentPage();
+    if (!document.hidden && window.DaehaaApp) {
+        window.DaehaaApp.setupCurrentPage();
     }
 });
 
@@ -879,5 +956,5 @@ if ('serviceWorker' in navigator) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = NBGroupTech;
+    module.exports = DaehaaApp;
 }
