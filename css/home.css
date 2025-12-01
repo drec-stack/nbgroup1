@@ -749,3 +749,61 @@
         display: none;
     }
 }
+
+/* ===== SPECK DESIGN STYLE CLIENTS MARQUEE ===== */
+
+.clients-section {
+    position: relative;
+    padding: 100px 0;
+    overflow: hidden;
+    background: transparent !important;
+}
+
+.clients-content {
+    width: 100%;
+    position: relative;
+}
+
+.clients-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8a8a8a;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 50px;
+    display: block;
+    text-align: center;
+    opacity: 0.8;
+}
+
+/* Marquee container fixes */
+.marquee-container {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    overflow: hidden;
+    padding: 25px 0;
+}
+
+/* Ensure proper stacking */
+.content-section {
+    position: relative;
+    z-index: 1;
+}
+
+/* Mobile fixes for marquee */
+@media (max-width: 768px) {
+    .clients-section {
+        padding: 60px 0;
+    }
+    
+    .clients-label {
+        font-size: 12px;
+        margin-bottom: 30px;
+    }
+    
+    .marquee-container {
+        padding: 15px 0;
+    }
+}
