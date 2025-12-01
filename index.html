@@ -11,68 +11,146 @@
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
     <style>
-        /* ГАРАНТИРОВАННЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ */
+        /* ПОЛНОСТЬЮ РАБОЧАЯ БЕГУЩАЯ СТРОКА */
+        .clients-section {
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .clients-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .clients-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-align: center;
+            display: block;
+        }
+        
         .marquee-container {
             width: 100%;
             overflow: hidden;
             position: relative;
-            margin-bottom: 10px;
+            padding: 20px 0;
+            margin: 10px 0;
         }
-
+        
         .marquee-track {
-            display: flex !important;
-            width: max-content !important;
-            padding: 25px 0 !important;
-            white-space: nowrap !important;
-            will-change: transform !important;
+            display: flex;
+            width: max-content;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            will-change: transform;
         }
-
+        
         .marquee-content {
-            display: flex !important;
-            align-items: center !important;
-            white-space: nowrap !important;
-            flex-shrink: 0 !important;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
         }
-
+        
         .brand {
-            font-size: 1.4rem !important;
-            font-weight: 700 !important;
-            color: white !important;
-            opacity: 0.8 !important;
-            padding: 0 30px !important;
-            white-space: nowrap !important;
-            flex-shrink: 0 !important;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            opacity: 0.9;
+            padding: 0 30px;
+            white-space: nowrap;
+            transition: opacity 0.3s ease;
         }
-
+        
+        .brand:hover {
+            opacity: 1;
+        }
+        
         .separator {
-            color: white !important;
-            font-size: 1.5rem !important;
-            opacity: 0.3 !important;
-            font-weight: 300 !important;
-            flex-shrink: 0 !important;
+            color: #666666;
+            font-size: 1.5rem;
+            opacity: 0.5;
+            font-weight: 300;
         }
-
+        
         /* АНИМАЦИИ */
         #marquee1 {
-            animation: marquee-scroll 40s linear infinite !important;
+            animation: marquee-scroll 40s linear infinite;
         }
-
+        
         #marquee2 {
-            animation: marquee-scroll-reverse 40s linear infinite !important;
+            animation: marquee-scroll-reverse 40s linear infinite;
         }
-
+        
         @keyframes marquee-scroll {
-            0% { transform: translateX(0) !important; }
-            100% { transform: translateX(-33.33%) !important; }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-33.33%); }
         }
-
+        
         @keyframes marquee-scroll-reverse {
-            0% { transform: translateX(-33.33%) !important; }
-            100% { transform: translateX(0) !important; }
+            0% { transform: translateX(-33.33%); }
+            100% { transform: translateX(0); }
         }
-
+        
         .marquee-track:hover {
-            animation-play-state: paused !important;
+            animation-play-state: paused;
+        }
+        
+        /* МОБИЛЬНАЯ АДАПТИВНОСТЬ */
+        @media (max-width: 768px) {
+            .clients-section {
+                padding: 60px 0;
+            }
+            
+            .brand {
+                font-size: 1.4rem;
+                padding: 0 20px;
+            }
+            
+            .separator {
+                font-size: 1.2rem;
+            }
+            
+            #marquee1 {
+                animation: marquee-scroll 30s linear infinite;
+            }
+            
+            #marquee2 {
+                animation: marquee-scroll-reverse 30s linear infinite;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .brand {
+                font-size: 1.2rem;
+                padding: 0 15px;
+            }
+            
+            #marquee1 {
+                animation: marquee-scroll 25s linear infinite;
+            }
+            
+            #marquee2 {
+                animation: marquee-scroll-reverse 25s linear infinite;
+            }
+        }
+        
+        /* ДЛЯ REDUCED MOTION */
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-track {
+                animation: none !important;
+                justify-content: center;
+            }
+            
+            .marquee-content {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+            }
         }
     </style>
 </head>
@@ -234,7 +312,7 @@
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
-                            <span class="brand">AC</span>
+                            <span class="brand">ACCURA</span>
                         </div>
                         <!-- ВТОРАЯ КОПИЯ -->
                         <div class="marquee-content">
@@ -252,7 +330,7 @@
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
-                            <span class="brand">AC</span>
+                            <span class="brand">ACCURA</span>
                         </div>
                         <!-- ТРЕТЬЯ КОПИЯ -->
                         <div class="marquee-content">
@@ -270,7 +348,7 @@
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
-                            <span class="brand">AC</span>
+                            <span class="brand">ACCURA</span>
                         </div>
                     </div>
                 </div>
@@ -279,7 +357,7 @@
                 <div class="marquee-container">
                     <div class="marquee-track" id="marquee2">
                         <div class="marquee-content">
-                            <span class="brand">AC</span>
+                            <span class="brand">ACCURA</span>
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
@@ -297,7 +375,7 @@
                         </div>
                         <!-- ВТОРАЯ КОПИЯ -->
                         <div class="marquee-content">
-                            <span class="brand">AC</span>
+                            <span class="brand">ACCURA</span>
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
@@ -315,7 +393,7 @@
                         </div>
                         <!-- ТРЕТЬЯ КОПИЯ -->
                         <div class="marquee-content">
-                            <span class="brand">AC</span>
+                            <span class="brand">ACCURA</span>
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
@@ -542,14 +620,12 @@
             
             if (track1 && track2) {
                 console.log('✅ Треки найдены');
-                console.log('Track1 transform:', track1.style.transform);
-                console.log('Track1 animation:', window.getComputedStyle(track1).animation);
                 
-                // Принудительно запускаем CSS анимации
+                // Принудительно запускаем анимации
                 track1.style.animation = 'marquee-scroll 40s linear infinite';
                 track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
                 
-                console.log('🚀 Бегущая строка запущена через CSS');
+                console.log('🚀 Бегущая строка запущена');
             } else {
                 console.log('❌ Треки не найдены');
             }
