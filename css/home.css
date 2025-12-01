@@ -390,124 +390,6 @@
     }
 }
 
-/* ===== ИСПРАВЛЕННАЯ CLIENTS SECTION ===== */
-.clients-section {
-    padding: 100px 0;
-    background: var(--secondary);
-    overflow: hidden;
-    position: relative;
-    z-index: 2;
-}
-
-.clients-content {
-    text-align: center;
-}
-
-.clients-label {
-    color: white;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 60px;
-    font-weight: 600;
-    opacity: 0.9;
-}
-
-.marquee-container {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    margin-bottom: 10px;
-}
-
-.marquee-container::before,
-.marquee-container::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100px;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.marquee-container::before {
-    left: 0;
-    background: linear-gradient(90deg, var(--secondary) 0%, transparent 100%);
-}
-
-.marquee-container::after {
-    right: 0;
-    background: linear-gradient(270deg, var(--secondary) 0%, transparent 100%);
-}
-
-.marquee-track {
-    display: flex;
-    width: max-content;
-    padding: 25px 0;
-    white-space: nowrap;
-    will-change: transform;
-    animation: marquee-scroll 30s linear infinite !important;
-}
-
-#marquee2 {
-    animation: marquee-scroll-reverse 30s linear infinite !important;
-}
-
-.marquee-content {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-@keyframes marquee-scroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@keyframes marquee-scroll-reverse {
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
-
-.brand {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: white;
-    opacity: 0.8;
-    transition: all 0.3s ease;
-    padding: 0 30px;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.brand:hover {
-    color: white;
-    opacity: 1;
-    transform: translateY(-2px);
-}
-
-.separator {
-    color: white;
-    font-size: 1.5rem;
-    opacity: 0.3;
-    font-weight: 300;
-    flex-shrink: 0;
-}
-
-.marquee-track:hover {
-    animation-play-state: paused !important;
-}
-
 /* ===== STATS SECTION ===== */
 .stats-improved {
     padding: 120px 0;
@@ -676,9 +558,7 @@
 }
 
 /* ===== REDUCED MOTION SUPPORT ===== */
-/* УБИРАЕМ ОТКЛЮЧЕНИЕ АНИМАЦИЙ ДЛЯ БЕГУЩЕЙ СТРОКИ */
 @media (prefers-reduced-motion: reduce) {
-    /* Оставляем отключение только для второстепенных анимаций */
     .stat-card:hover {
         transform: none;
     }
@@ -703,49 +583,5 @@
     .stat-card {
         -webkit-backdrop-filter: none;
         backdrop-filter: none;
-    }
-    
-    /* БЕГУЩАЯ СТРОКА ВСЕГДА РАБОТАЕТ */
-    /* .marquee-track {
-        animation: none !important;
-    } */
-}
-
-/* ===== GARANTEED MARQUEE ANIMATIONS ===== */
-.marquee-guaranteed {
-    animation: marquee-scroll 30s linear infinite !important;
-}
-
-.marquee-guaranteed.reverse {
-    animation: marquee-scroll-reverse 30s linear infinite !important;
-}
-
-/* Принудительные стили для гарантированной работы */
-.marquee-force-animation {
-    display: flex !important;
-    width: max-content !important;
-    padding: 25px 0 !important;
-    white-space: nowrap !important;
-    will-change: transform !important;
-    animation: marquee-scroll 30s linear infinite !important;
-}
-
-/* ===== REDUCED MOTION FALLBACK ===== */
-@media (prefers-reduced-motion: reduce) {
-    /* Альтернативное решение для reduced motion */
-    .marquee-container.reduced-motion-fallback {
-        overflow-x: auto;
-        scroll-behavior: smooth;
-    }
-    
-    .marquee-container.reduced-motion-fallback .marquee-track {
-        justify-content: center;
-        animation: none;
-        transform: none !important;
-    }
-    
-    .marquee-container.reduced-motion-fallback::before,
-    .marquee-container.reduced-motion-fallback::after {
-        display: none;
     }
 }
