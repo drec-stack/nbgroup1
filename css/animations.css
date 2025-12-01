@@ -724,3 +724,78 @@
         transform: none;
     }
 }
+
+/* CSS для плавной смены языка */
+.language-changing main,
+.language-changing body > *:not(.parallax-bg-container):not(.scroll-progress) {
+    opacity: 0.4;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.language-changed main,
+.language-changed body > *:not(.parallax-bg-container):not(.scroll-progress) {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Анимация для переключателя языка */
+.language-switcher {
+    position: relative;
+    display: inline-flex;
+    padding: 4px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.language-switcher:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.lang-btn {
+    position: relative;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1;
+    min-width: 60px;
+    text-align: center;
+}
+
+.lang-btn.active {
+    color: white;
+    font-weight: 600;
+}
+
+.lang-btn:not(.active):hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.language-switcher::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.3), rgba(0, 200, 255, 0.3));
+    border-radius: 20px;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 0;
+}
+
+.language-switcher[data-current-lang="en"]::before {
+    transform: translateX(100%);
+}
