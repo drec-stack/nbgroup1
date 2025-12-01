@@ -833,3 +833,86 @@
         transform: none;
     }
 }
+
+/* ===== SPECK DESIGN MARQUEE ANIMATIONS ===== */
+
+/* Ensure marquee animations have highest priority */
+#marquee1 {
+    animation: speckMarqueeScroll 60s linear infinite !important;
+}
+
+#marquee2 {
+    animation: speckMarqueeScrollReverse 60s linear infinite !important;
+    animation-delay: -30s !important;
+}
+
+/* Keyframes for smooth marquee */
+@keyframes speckMarqueeScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-33.333%);
+    }
+}
+
+@keyframes speckMarqueeScrollReverse {
+    0% {
+        transform: translateX(-33.333%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Pause on hover */
+.marquee-track:hover {
+    animation-play-state: paused !important;
+}
+
+/* Performance optimizations */
+.marquee-track {
+    will-change: transform !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    transform: translate3d(0, 0, 0) !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    #marquee1 {
+        animation: speckMarqueeScroll 40s linear infinite !important;
+    }
+    
+    #marquee2 {
+        animation: speckMarqueeScrollReverse 40s linear infinite !important;
+        animation-delay: -20s !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #marquee1 {
+        animation: speckMarqueeScroll 35s linear infinite !important;
+    }
+    
+    #marquee2 {
+        animation: speckMarqueeScrollReverse 35s linear infinite !important;
+        animation-delay: -17.5s !important;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+        animation: none !important;
+        justify-content: center !important;
+        width: 100% !important;
+        flex-wrap: wrap !important;
+    }
+    
+    .marquee-content {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+}
