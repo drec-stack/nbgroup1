@@ -74,6 +74,46 @@
       "title": "Ready to start your project?",
       "description": "Let's discuss how we can bring your product vision to life",
       "button": "Get in Touch"
+    },
+    "speckServices": {
+      "strategy": {
+        "title": "Strategy",
+        "subtitle": "Drive Innovation And Align Goals",
+        "features": {
+          "innovation": "Innovation Strategy",
+          "design": "Design Strategy",
+          "research": "User Research"
+        }
+      },
+      "design": {
+        "title": "Design",
+        "subtitle": "Engage Audiences With Product Design",
+        "features": {
+          "industrial": "Industrial Design",
+          "brand": "Brand Design",
+          "packaging": "Packaging Design",
+          "uiux": "UI/UX Design"
+        }
+      },
+      "engineering": {
+        "title": "Engineering",
+        "subtitle": "Complex Technical Solutions And Architecture",
+        "features": {
+          "architecture": "Architecture",
+          "optimization": "Optimization",
+          "scaling": "Scaling"
+        }
+      },
+      "marketing": {
+        "title": "Marketing",
+        "subtitle": "Digital Strategies And Product Promotion",
+        "features": {
+          "seo": "SEO",
+          "smm": "SMM",
+          "analytics": "Analytics",
+          "content": "Content"
+        }
+      }
     }
   },
   "services": {
@@ -85,7 +125,8 @@
       "production": "Production",
       "brand": "Brand",
       "brandbook": "Brandbook",
-      "strategy": "Strategy"
+      "strategy": "Strategy",
+      "marketing": "Marketing"
     },
     "design": {
       "title": "Industrial Design",
@@ -173,6 +214,24 @@
       "stats": {
         "studies": "Market Studies",
         "successRate": "Success Rate"
+      }
+    },
+    "marketing": {
+      "title": "Marketing & Promotion",
+      "description": "Digital strategies and product promotion to ensure market success and customer engagement.",
+      "features": {
+        "digital": {
+          "title": "Digital Marketing",
+          "description": "Online presence and customer acquisition"
+        },
+        "brand": {
+          "title": "Brand Promotion",
+          "description": "Building brand awareness and loyalty"
+        },
+        "analytics": {
+          "title": "Analytics & Insights",
+          "description": "Data-driven decision making"
+        }
       }
     },
     "process": {
