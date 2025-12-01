@@ -2744,3 +2744,98 @@ body.internal-page .main-header {
     background: none !important;
     font-weight: 800;
 }
+
+/* ===== ОБЩИЕ ФИКСЫ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ ===== */
+
+/* 1. Убираем горизонтальный скролл */
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* 2. Фиксируем ширину для всех элементов */
+@media (max-width: 768px) {
+    * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Контейнеры */
+    .container {
+        width: 100% !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
+    /* Фикс для бегущей строки */
+    .marquee-container {
+        width: 100vw;
+        margin-left: -20px;
+        padding: 0 20px;
+    }
+    
+    .marquee-track {
+        width: max-content;
+    }
+    
+    /* Фикс для кнопок */
+    .btn {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Улучшаем скролл */
+    body {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Скрываем скроллбар на iOS */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* 3. Для очень маленьких экранов */
+@media (max-width: 375px) {
+    .container {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    
+    h1, h2, h3 {
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+}
+
+/* 4. Фикс для iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    .parallax-bg-container {
+        height: -webkit-fill-available;
+    }
+    
+    .hero {
+        height: -webkit-fill-available;
+        min-height: 100vh;
+    }
+}
+
+/* 5. Предотвращаем увеличение текста на iOS */
+html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+/* 6. Улучшаем производительность */
+@media (max-width: 768px) {
+    .content-section {
+        will-change: transform;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+}
