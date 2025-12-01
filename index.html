@@ -11,11 +11,12 @@
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
     <style>
-        /* ПОЛНОСТЬЮ РАБОЧАЯ БЕГУЩАЯ СТРОКА */
+        /* БЕГУЩАЯ СТРОКА */
         .clients-section {
             padding: 100px 0;
             position: relative;
             overflow: hidden;
+            margin: 60px 0;
         }
         
         .clients-content {
@@ -29,7 +30,7 @@
             color: #a0a0a0;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             text-align: center;
             display: block;
         }
@@ -38,118 +39,114 @@
             width: 100%;
             overflow: hidden;
             position: relative;
-            padding: 20px 0;
-            margin: 10px 0;
+            padding: 25px 0;
         }
         
         .marquee-track {
-            display: flex;
-            width: max-content;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-            will-change: transform;
+            display: flex !important;
+            width: max-content !important;
+            will-change: transform !important;
         }
         
         .marquee-content {
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
+            display: flex !important;
+            align-items: center !important;
+            flex-shrink: 0 !important;
         }
         
         .brand {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #ffffff;
-            opacity: 0.9;
-            padding: 0 30px;
-            white-space: nowrap;
-            transition: opacity 0.3s ease;
+            font-size: 1.8rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            opacity: 0.9 !important;
+            padding: 0 30px !important;
+            white-space: nowrap !important;
+            transition: opacity 0.3s ease !important;
         }
         
         .brand:hover {
-            opacity: 1;
+            opacity: 1 !important;
         }
         
         .separator {
-            color: #666666;
-            font-size: 1.5rem;
-            opacity: 0.5;
-            font-weight: 300;
+            color: #666666 !important;
+            font-size: 1.5rem !important;
+            opacity: 0.5 !important;
+            font-weight: 300 !important;
         }
         
         /* АНИМАЦИИ */
         #marquee1 {
-            animation: marquee-scroll 40s linear infinite;
+            animation: marquee-scroll 40s linear infinite !important;
         }
         
         #marquee2 {
-            animation: marquee-scroll-reverse 40s linear infinite;
+            animation: marquee-scroll-reverse 40s linear infinite !important;
         }
         
         @keyframes marquee-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-33.33%); }
+            0% { transform: translateX(0) !important; }
+            100% { transform: translateX(-33.33%) !important; }
         }
         
         @keyframes marquee-scroll-reverse {
-            0% { transform: translateX(-33.33%); }
-            100% { transform: translateX(0); }
+            0% { transform: translateX(-33.33%) !important; }
+            100% { transform: translateX(0) !important; }
         }
         
         .marquee-track:hover {
-            animation-play-state: paused;
+            animation-play-state: paused !important;
         }
         
-        /* МОБИЛЬНАЯ АДАПТИВНОСТЬ */
+        /* МОБИЛЬНАЯ ВЕРСИЯ */
         @media (max-width: 768px) {
             .clients-section {
                 padding: 60px 0;
+                margin: 40px 0;
+            }
+            
+            .clients-label {
+                margin-bottom: 30px;
+                font-size: 12px;
             }
             
             .brand {
-                font-size: 1.4rem;
-                padding: 0 20px;
+                font-size: 1.4rem !important;
+                padding: 0 20px !important;
             }
             
             .separator {
-                font-size: 1.2rem;
+                font-size: 1.2rem !important;
             }
             
-            #marquee1 {
-                animation: marquee-scroll 30s linear infinite;
-            }
-            
-            #marquee2 {
-                animation: marquee-scroll-reverse 30s linear infinite;
+            #marquee1, #marquee2 {
+                animation-duration: 30s !important;
             }
         }
         
         @media (max-width: 480px) {
             .brand {
-                font-size: 1.2rem;
-                padding: 0 15px;
+                font-size: 1.2rem !important;
+                padding: 0 15px !important;
             }
             
-            #marquee1 {
-                animation: marquee-scroll 25s linear infinite;
-            }
-            
-            #marquee2 {
-                animation: marquee-scroll-reverse 25s linear infinite;
+            #marquee1, #marquee2 {
+                animation-duration: 25s !important;
             }
         }
         
-        /* ДЛЯ REDUCED MOTION */
+        /* REDUCED MOTION */
         @media (prefers-reduced-motion: reduce) {
             .marquee-track {
                 animation: none !important;
-                justify-content: center;
+                justify-content: center !important;
+                width: 100% !important;
             }
             
             .marquee-content {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 20px;
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                gap: 20px !important;
             }
         }
     </style>
@@ -195,7 +192,7 @@
         </div>
     </section>
 
-    <!-- Speck Design Style Services Section - COMPACT VERTICAL LAYOUT -->
+    <!-- Speck Design Style Services Section -->
     <section class="speck-services-compact content-section" data-bg-index="0">
         <div class="container">
             <div class="speck-services-compact-grid">
@@ -288,7 +285,7 @@
         </div>
     </section>
 
-    <!-- Clients Section -->
+    <!-- Clients Section with Marquee -->
     <section class="clients-section content-section" data-bg-index="0">
         <div class="container">
             <div class="clients-content">
@@ -612,29 +609,42 @@
             });
         }
 
-        // ПРОСТАЯ ПРОВЕРКА РАБОТЫ БЕГУЩЕЙ СТРОКИ
-        function checkMarquee() {
-            console.log('🔍 Проверка бегущей строки...');
+        // Проверка и запуск бегущей строки
+        function initMarquee() {
+            console.log('🚀 Инициализация бегущей строки...');
+            
             const track1 = document.getElementById('marquee1');
             const track2 = document.getElementById('marquee2');
             
             if (track1 && track2) {
-                console.log('✅ Треки найдены');
+                // Принудительный перезапуск анимации
+                track1.style.animation = 'none';
+                track2.style.animation = 'none';
                 
-                // Принудительно запускаем анимации
-                track1.style.animation = 'marquee-scroll 40s linear infinite';
-                track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
-                
-                console.log('🚀 Бегущая строка запущена');
+                setTimeout(() => {
+                    track1.style.animation = 'marquee-scroll 40s linear infinite';
+                    track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
+                    console.log('✅ Бегущая строка запущена!');
+                }, 10);
             } else {
-                console.log('❌ Треки не найдены');
+                console.log('❌ Элементы бегущей строки не найдены');
             }
         }
 
-        // Запускаем проверку
-        document.addEventListener('DOMContentLoaded', checkMarquee);
-        setTimeout(checkMarquee, 1000);
-        setTimeout(initHomeHeader, 2000);
+        // Запускаем всё
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initHomeHeader, 500);
+            setTimeout(initMarquee, 1000);
+            
+            // Дополнительная проверка через 3 секунды
+            setTimeout(() => {
+                const tracks = document.querySelectorAll('.marquee-track');
+                tracks.forEach(track => {
+                    const style = window.getComputedStyle(track);
+                    console.log('🎬 Анимация работает:', style.animationName !== 'none');
+                });
+            }, 3000);
+        });
     </script>
 </body>
 </html>
