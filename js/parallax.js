@@ -1,4 +1,4 @@
-// parallax.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ (ПОЛНАЯ ВЕРСИЯ)
+// parallax.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ (ПОЛНАЯ ВЕРСИЯ С ФИКСОМ)
 console.log('🎯 parallax.js loaded - MOBILE OPTIMIZED');
 
 class ScrollBackgroundChanger {
@@ -9,11 +9,45 @@ class ScrollBackgroundChanger {
         
         this.currentBgIndex = 0;
         this.isAnimating = false;
-        this.isMobile = window.innerWidth <= 768;
+        this.isMobile = this.checkIsMobile();
         this.lastScrollY = window.scrollY;
         this.scrollThreshold = 100;
         
+        // Фикс для мобильных
+        this.fixMobileIssues();
         this.init();
+    }
+    
+    checkIsMobile() {
+        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+    
+    fixMobileIssues() {
+        if (this.isMobile) {
+            console.log('📱 Mobile device detected, applying fixes...');
+            
+            // 1. Убираем горизонтальный скролл
+            document.documentElement.style.overflowX = 'hidden';
+            document.body.style.overflowX = 'hidden';
+            
+            // 2. Фиксируем фон
+            this.backgrounds.forEach(bg => {
+                bg.style.backgroundAttachment = 'scroll';
+                bg.style.backgroundPosition = 'center center';
+                bg.style.backgroundSize = 'cover';
+                bg.style.left = '0';
+                bg.style.width = '100%';
+            });
+            
+            // 3. Добавляем fallback фон для контентных секций
+            this.sections.forEach(section => {
+                if (section.classList.contains('content-section')) {
+                    section.style.backgroundColor = 'var(--secondary)';
+                    section.style.position = 'relative';
+                    section.style.zIndex = '2';
+                }
+            });
+        }
     }
     
     init() {
@@ -40,6 +74,13 @@ class ScrollBackgroundChanger {
         // Оптимизированный скролл для мобильных
         this.throttledScroll = this.throttle(this.handleMobileScroll.bind(this), 50);
         window.addEventListener('scroll', this.throttledScroll, { passive: true });
+        
+        // Добавляем обработчик изменения ориентации
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                this.handleResize();
+            }, 300);
+        });
     }
     
     setupDesktopBackgrounds() {
@@ -55,7 +96,6 @@ class ScrollBackgroundChanger {
         
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
-        const scrollDirection = scrollY > this.lastScrollY ? 'down' : 'up';
         
         // Определяем новый индекс фона на основе позиции скролла
         let newBgIndex = 0;
@@ -198,6 +238,21 @@ class ScrollBackgroundChanger {
         }, this.isMobile ? 800 : 1200);
     }
     
+    handleResize() {
+        // Обновляем определение мобильного устройства
+        this.isMobile = this.checkIsMobile();
+        
+        // Применяем фиксы снова
+        this.fixMobileIssues();
+        
+        // Перезапускаем логику фонов
+        if (this.isMobile) {
+            this.setupMobileBackgrounds();
+        } else {
+            this.setupDesktopBackgrounds();
+        }
+    }
+    
     // Вспомогательная функция для throttle
     throttle(func, limit) {
         let inThrottle;
@@ -227,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (parallaxBackgrounds.length > 0) {
         try {
-            new ScrollBackgroundChanger();
+            window.parallaxInstance = new ScrollBackgroundChanger();
         } catch (error) {
             console.error('❌ Error initializing parallax:', error);
             // Fallback: показываем только первый фон
@@ -246,9 +301,8 @@ window.addEventListener('resize', function() {
     resizeTimeout = setTimeout(() => {
         const currentInstance = window.parallaxInstance;
         if (currentInstance) {
-            currentInstance.destroy();
+            currentInstance.handleResize();
         }
-        window.parallaxInstance = new ScrollBackgroundChanger();
     }, 250);
 });
 
