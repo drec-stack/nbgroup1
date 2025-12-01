@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
     <style>
-        /* БЕГУЩАЯ СТРОКА */
+        /* БЕГУЩАЯ СТРОКА С ПЛАВНОЙ НЕПРЕРЫВНОЙ АНИМАЦИЕЙ */
         .clients-section {
             padding: 100px 0;
             position: relative;
@@ -21,7 +21,8 @@
         
         .clients-content {
             position: relative;
-            z-index: 1;
+            width: 100%;
+            overflow: hidden;
         }
         
         .clients-label {
@@ -39,19 +40,53 @@
             width: 100%;
             overflow: hidden;
             position: relative;
-            padding: 25px 0;
+            padding: 30px 0;
+            margin: 20px 0;
         }
         
+        /* Градиентные маски для плавного края */
+        .marquee-container::before,
+        .marquee-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .marquee-container::before {
+            left: 0;
+            background: linear-gradient(to right, var(--primary) 0%, transparent 100%);
+        }
+        
+        .marquee-container::after {
+            right: 0;
+            background: linear-gradient(to left, var(--primary) 0%, transparent 100%);
+        }
+        
+        /* Контейнер для бесконечной прокрутки */
+        .marquee-infinite-wrapper {
+            display: flex;
+            width: fit-content;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-play-state: running;
+        }
+        
+        /* Трек с дублированным контентом для бесшовности */
         .marquee-track {
-            display: flex !important;
-            width: max-content !important;
-            will-change: transform !important;
+            display: flex;
+            flex-shrink: 0;
+            will-change: transform;
         }
         
+        /* Контент внутри трека */
         .marquee-content {
-            display: flex !important;
-            align-items: center !important;
-            flex-shrink: 0 !important;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
         }
         
         .brand {
@@ -59,43 +94,60 @@
             font-weight: 700 !important;
             color: white !important;
             opacity: 0.9 !important;
-            padding: 0 30px !important;
+            padding: 0 40px !important;
             white-space: nowrap !important;
-            transition: opacity 0.3s ease !important;
+            flex-shrink: 0 !important;
+            transition: all 0.3s ease !important;
+            font-family: 'Inter', sans-serif;
         }
         
         .brand:hover {
             opacity: 1 !important;
+            transform: translateY(-2px) !important;
         }
         
         .separator {
             color: #666666 !important;
-            font-size: 1.5rem !important;
-            opacity: 0.5 !important;
+            font-size: 1.8rem !important;
+            opacity: 0.4 !important;
             font-weight: 300 !important;
+            flex-shrink: 0 !important;
         }
         
-        /* АНИМАЦИИ */
-        #marquee1 {
-            animation: marquee-scroll 40s linear infinite !important;
+        /* АНИМАЦИИ ДЛЯ НЕПРЕРЫВНОЙ ПРОКРУТКИ */
+        /* Первая строка - слева направо */
+        #marquee1 .marquee-infinite-wrapper {
+            animation: marquee-scroll-left 40s linear infinite;
         }
         
-        #marquee2 {
-            animation: marquee-scroll-reverse 40s linear infinite !important;
+        /* Вторая строка - справа налево */
+        #marquee2 .marquee-infinite-wrapper {
+            animation: marquee-scroll-right 40s linear infinite;
         }
         
-        @keyframes marquee-scroll {
-            0% { transform: translateX(0) !important; }
-            100% { transform: translateX(-33.33%) !important; }
+        /* Анимация для движения влево */
+        @keyframes marquee-scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
         }
         
-        @keyframes marquee-scroll-reverse {
-            0% { transform: translateX(-33.33%) !important; }
-            100% { transform: translateX(0) !important; }
+        /* Анимация для движения вправо */
+        @keyframes marquee-scroll-right {
+            0% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(0);
+            }
         }
         
-        .marquee-track:hover {
-            animation-play-state: paused !important;
+        /* Пауза при наведении */
+        .marquee-container:hover .marquee-infinite-wrapper {
+            animation-play-state: paused;
         }
         
         /* МОБИЛЬНАЯ ВЕРСИЯ */
@@ -110,8 +162,36 @@
                 font-size: 12px;
             }
             
+            .marquee-container {
+                padding: 20px 0;
+            }
+            
             .brand {
                 font-size: 1.4rem !important;
+                padding: 0 25px !important;
+            }
+            
+            .separator {
+                font-size: 1.4rem !important;
+            }
+            
+            .marquee-container::before,
+            .marquee-container::after {
+                width: 50px;
+            }
+            
+            #marquee1 .marquee-infinite-wrapper {
+                animation: marquee-scroll-left 30s linear infinite;
+            }
+            
+            #marquee2 .marquee-infinite-wrapper {
+                animation: marquee-scroll-right 30s linear infinite;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .brand {
+                font-size: 1.2rem !important;
                 padding: 0 20px !important;
             }
             
@@ -119,34 +199,27 @@
                 font-size: 1.2rem !important;
             }
             
-            #marquee1, #marquee2 {
-                animation-duration: 30s !important;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .brand {
-                font-size: 1.2rem !important;
-                padding: 0 15px !important;
+            .marquee-container::before,
+            .marquee-container::after {
+                width: 30px;
             }
             
-            #marquee1, #marquee2 {
-                animation-duration: 25s !important;
+            #marquee1 .marquee-infinite-wrapper,
+            #marquee2 .marquee-infinite-wrapper {
+                animation-duration: 25s;
             }
         }
         
         /* REDUCED MOTION */
         @media (prefers-reduced-motion: reduce) {
-            .marquee-track {
+            .marquee-infinite-wrapper {
                 animation: none !important;
-                justify-content: center !important;
-                width: 100% !important;
+                justify-content: center;
             }
             
-            .marquee-content {
-                flex-wrap: wrap !important;
-                justify-content: center !important;
-                gap: 20px !important;
+            .marquee-container::before,
+            .marquee-container::after {
+                display: none;
             }
         }
     </style>
@@ -291,120 +364,94 @@
             <div class="clients-content">
                 <p class="clients-label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
                 
-                <!-- Marquee 1 -->
+                <!-- Marquee 1 (Left to Right) -->
                 <div class="marquee-container">
-                    <div class="marquee-track" id="marquee1">
-                        <div class="marquee-content">
-                            <span class="brand">dtronic</span>
-                            <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Roku</span>
-                            <span class="separator">·</span>
-                            <span class="brand">stryker</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
-                            <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
-                            <span class="separator">·</span>
-                            <span class="brand">ACCURA</span>
+                    <div class="marquee-infinite-wrapper" id="marquee1">
+                        <!-- Первый набор -->
+                        <div class="marquee-track">
+                            <div class="marquee-content">
+                                <span class="brand">dtronic</span>
+                                <span class="separator">·</span>
+                                <span class="brand">BRITA</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Roku</span>
+                                <span class="separator">·</span>
+                                <span class="brand">stryker</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Vocera V.</span>
+                                <span class="separator">·</span>
+                                <span class="brand">PayPal</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Microsoft</span>
+                                <span class="separator">·</span>
+                                <span class="brand">ACCURA</span>
+                            </div>
                         </div>
-                        <!-- ВТОРАЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <span class="brand">dtronic</span>
-                            <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Roku</span>
-                            <span class="separator">·</span>
-                            <span class="brand">stryker</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
-                            <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
-                            <span class="separator">·</span>
-                            <span class="brand">ACCURA</span>
-                        </div>
-                        <!-- ТРЕТЬЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <span class="brand">dtronic</span>
-                            <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Roku</span>
-                            <span class="separator">·</span>
-                            <span class="brand">stryker</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
-                            <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
-                            <span class="separator">·</span>
-                            <span class="brand">ACCURA</span>
+                        <!-- Дублированный набор для бесшовности -->
+                        <div class="marquee-track">
+                            <div class="marquee-content">
+                                <span class="brand">dtronic</span>
+                                <span class="separator">·</span>
+                                <span class="brand">BRITA</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Roku</span>
+                                <span class="separator">·</span>
+                                <span class="brand">stryker</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Vocera V.</span>
+                                <span class="separator">·</span>
+                                <span class="brand">PayPal</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Microsoft</span>
+                                <span class="separator">·</span>
+                                <span class="brand">ACCURA</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Marquee 2 (Reverse) -->
+                <!-- Marquee 2 (Right to Left) -->
                 <div class="marquee-container">
-                    <div class="marquee-track" id="marquee2">
-                        <div class="marquee-content">
-                            <span class="brand">ACCURA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
-                            <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
-                            <span class="separator">·</span>
-                            <span class="brand">stryker</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Roku</span>
-                            <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">dtronic</span>
+                    <div class="marquee-infinite-wrapper" id="marquee2">
+                        <!-- Первый набор -->
+                        <div class="marquee-track">
+                            <div class="marquee-content">
+                                <span class="brand">ACCURA</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Microsoft</span>
+                                <span class="separator">·</span>
+                                <span class="brand">PayPal</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Vocera V.</span>
+                                <span class="separator">·</span>
+                                <span class="brand">stryker</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Roku</span>
+                                <span class="separator">·</span>
+                                <span class="brand">BRITA</span>
+                                <span class="separator">·</span>
+                                <span class="brand">dtronic</span>
+                            </div>
                         </div>
-                        <!-- ВТОРАЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <span class="brand">ACCURA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
-                            <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
-                            <span class="separator">·</span>
-                            <span class="brand">stryker</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Roku</span>
-                            <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">dtronic</span>
-                        </div>
-                        <!-- ТРЕТЬЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <span class="brand">ACCURA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
-                            <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
-                            <span class="separator">·</span>
-                            <span class="brand">stryker</span>
-                            <span class="separator">·</span>
-                            <span class="brand">Roku</span>
-                            <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
-                            <span class="separator">·</span>
-                            <span class="brand">dtronic</span>
+                        <!-- Дублированный набор для бесшовности -->
+                        <div class="marquee-track">
+                            <div class="marquee-content">
+                                <span class="brand">ACCURA</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Microsoft</span>
+                                <span class="separator">·</span>
+                                <span class="brand">PayPal</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Vocera V.</span>
+                                <span class="separator">·</span>
+                                <span class="brand">stryker</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Roku</span>
+                                <span class="separator">·</span>
+                                <span class="brand">BRITA</span>
+                                <span class="separator">·</span>
+                                <span class="brand">dtronic</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -609,41 +656,47 @@
             });
         }
 
-        // Проверка и запуск бегущей строки
-        function initMarquee() {
-            console.log('🚀 Инициализация бегущей строки...');
+        // Оптимизация бегущей строки для плавности
+        function optimizeMarquee() {
+            console.log('🚀 Оптимизация бегущей строки...');
             
-            const track1 = document.getElementById('marquee1');
-            const track2 = document.getElementById('marquee2');
+            const marquees = document.querySelectorAll('.marquee-infinite-wrapper');
             
-            if (track1 && track2) {
-                // Принудительный перезапуск анимации
-                track1.style.animation = 'none';
-                track2.style.animation = 'none';
+            marquees.forEach(marquee => {
+                // Принудительно запускаем анимацию
+                marquee.style.animationPlayState = 'running';
                 
-                setTimeout(() => {
-                    track1.style.animation = 'marquee-scroll 40s linear infinite';
-                    track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
-                    console.log('✅ Бегущая строка запущена!');
-                }, 10);
-            } else {
-                console.log('❌ Элементы бегущей строки не найдены');
-            }
+                // Гарантируем, что будет smooth animation
+                marquee.style.willChange = 'transform';
+                marquee.style.backfaceVisibility = 'hidden';
+                marquee.style.transform = 'translate3d(0, 0, 0)';
+                
+                console.log(`✅ ${marquee.id} оптимизирован`);
+            });
+            
+            // Проверяем, что анимации работают
+            setTimeout(() => {
+                marquees.forEach(marquee => {
+                    const style = window.getComputedStyle(marquee);
+                    console.log(`${marquee.id}:`, {
+                        animationName: style.animationName,
+                        animationPlayState: style.animationPlayState,
+                        isAnimating: style.animationName !== 'none'
+                    });
+                });
+            }, 100);
         }
 
         // Запускаем всё
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(initHomeHeader, 500);
-            setTimeout(initMarquee, 1000);
-            
-            // Дополнительная проверка через 3 секунды
-            setTimeout(() => {
-                const tracks = document.querySelectorAll('.marquee-track');
-                tracks.forEach(track => {
-                    const style = window.getComputedStyle(track);
-                    console.log('🎬 Анимация работает:', style.animationName !== 'none');
-                });
-            }, 3000);
+            setTimeout(optimizeMarquee, 1000);
+        });
+
+        // Дополнительная проверка
+        window.addEventListener('load', function() {
+            console.log('🎬 Проверка плавности анимаций...');
+            optimizeMarquee();
         });
     </script>
 </body>
