@@ -11,347 +11,68 @@
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
     <style>
-        /* ===== БЕГУЩАЯ СТРОКА ТОЧЬ-В-ТОЧЬ КАК SPECK DESIGN ===== */
-        
-        /* Контейнер для всей секции клиентов */
-        .clients-section {
-            padding: 100px 0;
-            background: transparent !important;
-            position: relative;
-            overflow: hidden;
-            margin: 80px 0;
-        }
-
-        .clients-content {
-            width: 100%;
-            position: relative;
-        }
-
-        .clients-label {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: #8a8a8a !important;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 50px;
-            display: block;
-            text-align: center;
-            opacity: 0.8;
-        }
-
-        /* Основной контейнер для бегущей строки */
+        /* ГАРАНТИРОВАННЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ */
         .marquee-container {
-            position: relative;
-            width: 100vw;
-            margin-left: calc(-50vw + 50%);
+            width: 100%;
             overflow: hidden;
-            padding: 25px 0;
-            background: transparent;
-            -webkit-mask-image: linear-gradient(
-                to right,
-                transparent,
-                black 15%,
-                black 85%,
-                transparent
-            );
-            mask-image: linear-gradient(
-                to right,
-                transparent,
-                black 15%,
-                black 85%,
-                transparent
-            );
+            position: relative;
+            margin-bottom: 10px;
         }
 
-        /* Трек бегущей строки */
         .marquee-track {
             display: flex !important;
-            align-items: center !important;
             width: max-content !important;
+            padding: 25px 0 !important;
+            white-space: nowrap !important;
             will-change: transform !important;
-            animation-timing-function: linear !important;
-            animation-iteration-count: infinite !important;
-            padding: 10px 0 !important;
         }
 
-        /* Контент внутри трека */
         .marquee-content {
             display: flex !important;
             align-items: center !important;
             white-space: nowrap !important;
             flex-shrink: 0 !important;
-            height: 100% !important;
         }
 
-        /* Стили брендов */
         .brand {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 28px !important;
+            font-size: 1.4rem !important;
             font-weight: 700 !important;
-            color: #ffffff !important;
-            padding: 0 40px !important;
+            color: white !important;
+            opacity: 0.8 !important;
+            padding: 0 30px !important;
             white-space: nowrap !important;
             flex-shrink: 0 !important;
-            opacity: 0.95 !important;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-            letter-spacing: -0.5px !important;
-            text-transform: uppercase !important;
-            position: relative !important;
-            display: inline-block !important;
-            line-height: 1.2 !important;
         }
 
-        /* Эффект при наведении */
-        .brand:hover {
-            opacity: 1 !important;
-            transform: translateY(-2px) !important;
-            color: #ffffff !important;
-        }
-
-        /* Эффект подсветки при наведении */
-        .brand::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%) scaleX(0);
-            width: 60%;
-            height: 2px;
-            background: #ffffff;
-            border-radius: 1px;
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .brand:hover::after {
-            transform: translateX(-50%) scaleX(1);
-            opacity: 0.8;
-        }
-
-        /* Сепараторы (точки) */
         .separator {
-            font-family: 'Inter', sans-serif;
-            color: #666666 !important;
-            font-size: 24px !important;
+            color: white !important;
+            font-size: 1.5rem !important;
+            opacity: 0.3 !important;
             font-weight: 300 !important;
-            opacity: 0.4 !important;
             flex-shrink: 0 !important;
-            padding: 0 5px !important;
-            line-height: 1 !important;
-            user-select: none !important;
         }
 
-        /* ===== АНИМАЦИИ ===== */
-
-        /* Первая строка - слева направо */
+        /* АНИМАЦИИ */
         #marquee1 {
-            animation: speckMarqueeScroll 60s linear infinite !important;
+            animation: marquee-scroll 40s linear infinite !important;
         }
 
-        /* Вторая строка - справа налево */
         #marquee2 {
-            animation: speckMarqueeScrollReverse 60s linear infinite !important;
-            animation-delay: -30s !important;
+            animation: marquee-scroll-reverse 40s linear infinite !important;
         }
 
-        /* Более плавная анимация */
-        @keyframes speckMarqueeScroll {
-            0% {
-                transform: translateX(0) !important;
-            }
-            100% {
-                transform: translateX(-33.333%) !important;
-            }
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0) !important; }
+            100% { transform: translateX(-33.33%) !important; }
         }
 
-        @keyframes speckMarqueeScrollReverse {
-            0% {
-                transform: translateX(-33.333%) !important;
-            }
-            100% {
-                transform: translateX(0) !important;
-            }
+        @keyframes marquee-scroll-reverse {
+            0% { transform: translateX(-33.33%) !important; }
+            100% { transform: translateX(0) !important; }
         }
 
-        /* Эффект паузы при наведении */
         .marquee-track:hover {
             animation-play-state: paused !important;
-        }
-
-        /* Эффект плавного появления/скрытия по краям */
-        .marquee-container::before,
-        .marquee-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            height: 100%;
-            width: 150px;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .marquee-container::before {
-            left: 0;
-            background: linear-gradient(to right, var(--primary) 0%, transparent 100%);
-        }
-
-        .marquee-container::after {
-            right: 0;
-            background: linear-gradient(to left, var(--primary) 0%, transparent 100%);
-        }
-
-        /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
-        @media (max-width: 768px) {
-            .clients-section {
-                padding: 60px 0;
-                margin: 40px 0;
-            }
-            
-            .clients-label {
-                font-size: 12px;
-                margin-bottom: 30px;
-                letter-spacing: 1px;
-            }
-            
-            .marquee-container {
-                padding: 15px 0;
-                -webkit-mask-image: linear-gradient(
-                    to right,
-                    transparent,
-                    black 10%,
-                    black 90%,
-                    transparent
-                );
-                mask-image: linear-gradient(
-                    to right,
-                    transparent,
-                    black 10%,
-                    black 90%,
-                    transparent
-                );
-            }
-            
-            .brand {
-                font-size: 22px !important;
-                padding: 0 25px !important;
-                letter-spacing: -0.3px !important;
-            }
-            
-            .separator {
-                font-size: 20px !important;
-                padding: 0 3px !important;
-            }
-            
-            /* Ускоряем анимацию на мобильных */
-            #marquee1 {
-                animation: speckMarqueeScroll 40s linear infinite !important;
-            }
-            
-            #marquee2 {
-                animation: speckMarqueeScrollReverse 40s linear infinite !important;
-                animation-delay: -20s !important;
-            }
-            
-            .marquee-container::before,
-            .marquee-container::after {
-                width: 80px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .brand {
-                font-size: 18px !important;
-                padding: 0 20px !important;
-            }
-            
-            .separator {
-                font-size: 18px !important;
-            }
-            
-            #marquee1 {
-                animation: speckMarqueeScroll 35s linear infinite !important;
-            }
-            
-            #marquee2 {
-                animation: speckMarqueeScrollReverse 35s linear infinite !important;
-                animation-delay: -17.5s !important;
-            }
-        }
-
-        /* ===== ПОДДЕРЖКА REDUCED MOTION ===== */
-        @media (prefers-reduced-motion: reduce) {
-            .marquee-track {
-                animation: none !important;
-                justify-content: center !important;
-                width: 100% !important;
-                flex-wrap: wrap !important;
-                gap: 20px !important;
-            }
-            
-            .marquee-content {
-                flex-wrap: wrap !important;
-                justify-content: center !important;
-                width: 100% !important;
-            }
-            
-            .marquee-container {
-                overflow: visible !important;
-                -webkit-mask-image: none !important;
-                mask-image: none !important;
-            }
-            
-            .marquee-container::before,
-            .marquee-container::after {
-                display: none !important;
-            }
-        }
-
-        /* ===== ТЕМНАЯ ТЕМА УСИЛЕНИЯ ===== */
-        @media (prefers-color-scheme: dark) {
-            .brand {
-                color: #ffffff !important;
-                opacity: 0.9 !important;
-            }
-            
-            .brand:hover {
-                opacity: 1 !important;
-                text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-            }
-            
-            .separator {
-                color: #888888 !important;
-                opacity: 0.3 !important;
-            }
-            
-            .marquee-container::before,
-            .marquee-container::after {
-                background: linear-gradient(to right, rgba(10, 10, 10, 0.95) 0%, transparent 100%);
-            }
-            
-            .marquee-container::after {
-                background: linear-gradient(to left, rgba(10, 10, 10, 0.95) 0%, transparent 100%);
-            }
-        }
-
-        /* ===== ПЕЧАТЬ ===== */
-        @media print {
-            .marquee-track {
-                animation: none !important;
-                justify-content: center !important;
-                flex-wrap: wrap !important;
-            }
-            
-            .marquee-container {
-                overflow: visible !important;
-                -webkit-mask-image: none !important;
-                mask-image: none !important;
-            }
-            
-            .brand {
-                color: #000000 !important;
-                opacity: 1 !important;
-            }
         }
     </style>
 </head>
@@ -489,13 +210,13 @@
         </div>
     </section>
 
-    <!-- Clients Section with Speck Design Style Marquee -->
+    <!-- Clients Section -->
     <section class="clients-section content-section" data-bg-index="0">
         <div class="container">
             <div class="clients-content">
                 <p class="clients-label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
                 
-                <!-- Marquee 1 (Left to Right) -->
+                <!-- Marquee 1 -->
                 <div class="marquee-container">
                     <div class="marquee-track" id="marquee1">
                         <div class="marquee-content">
@@ -513,7 +234,7 @@
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
-                            <span class="brand">ACCURA</span>
+                            <span class="brand">AC</span>
                         </div>
                         <!-- ВТОРАЯ КОПИЯ -->
                         <div class="marquee-content">
@@ -531,7 +252,7 @@
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
-                            <span class="brand">ACCURA</span>
+                            <span class="brand">AC</span>
                         </div>
                         <!-- ТРЕТЬЯ КОПИЯ -->
                         <div class="marquee-content">
@@ -549,16 +270,16 @@
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
-                            <span class="brand">ACCURA</span>
+                            <span class="brand">AC</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Marquee 2 (Right to Left) -->
+                <!-- Marquee 2 (Reverse) -->
                 <div class="marquee-container">
                     <div class="marquee-track" id="marquee2">
                         <div class="marquee-content">
-                            <span class="brand">ACCURA</span>
+                            <span class="brand">AC</span>
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
@@ -576,7 +297,7 @@
                         </div>
                         <!-- ВТОРАЯ КОПИЯ -->
                         <div class="marquee-content">
-                            <span class="brand">ACCURA</span>
+                            <span class="brand">AC</span>
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
@@ -594,7 +315,7 @@
                         </div>
                         <!-- ТРЕТЬЯ КОПИЯ -->
                         <div class="marquee-content">
-                            <span class="brand">ACCURA</span>
+                            <span class="brand">AC</span>
                             <span class="separator">·</span>
                             <span class="brand">Microsoft</span>
                             <span class="separator">·</span>
@@ -813,50 +534,31 @@
             });
         }
 
-        // Оптимизация бегущей строки
-        function optimizeMarquee() {
-            const marqueeContainers = document.querySelectorAll('.marquee-container');
-            const tracks = document.querySelectorAll('.marquee-track');
+        // ПРОСТАЯ ПРОВЕРКА РАБОТЫ БЕГУЩЕЙ СТРОКИ
+        function checkMarquee() {
+            console.log('🔍 Проверка бегущей строки...');
+            const track1 = document.getElementById('marquee1');
+            const track2 = document.getElementById('marquee2');
             
-            // Гарантируем, что анимации работают
-            tracks.forEach(track => {
-                track.style.animation = 'none';
-                setTimeout(() => {
-                    track.style.animation = '';
-                }, 10);
+            if (track1 && track2) {
+                console.log('✅ Треки найдены');
+                console.log('Track1 transform:', track1.style.transform);
+                console.log('Track1 animation:', window.getComputedStyle(track1).animation);
                 
-                // Добавляем класс loaded
-                setTimeout(() => {
-                    track.classList.add('loaded');
-                }, 100);
-            });
-            
-            console.log('✅ Бегущая строка оптимизирована');
-            
-            // Проверка работы
-            const isAnimating = window.getComputedStyle(tracks[0]).animationName !== 'none';
-            console.log('🎬 Анимация работает:', isAnimating);
+                // Принудительно запускаем CSS анимации
+                track1.style.animation = 'marquee-scroll 40s linear infinite';
+                track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
+                
+                console.log('🚀 Бегущая строка запущена через CSS');
+            } else {
+                console.log('❌ Треки не найдены');
+            }
         }
 
-        // Запускаем все
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initHomeHeader, 500);
-            setTimeout(optimizeMarquee, 1000);
-        });
-
-        // Повторная проверка через 3 секунды
-        setTimeout(function() {
-            console.log('🔄 Проверка бегущей строки...');
-            const tracks = document.querySelectorAll('.marquee-track');
-            tracks.forEach(track => {
-                const style = window.getComputedStyle(track);
-                console.log(`Трек ${track.id}:`, {
-                    animation: style.animation,
-                    transform: style.transform,
-                    opacity: style.opacity
-                });
-            });
-        }, 3000);
+        // Запускаем проверку
+        document.addEventListener('DOMContentLoaded', checkMarquee);
+        setTimeout(checkMarquee, 1000);
+        setTimeout(initHomeHeader, 2000);
     </script>
 </body>
 </html>
