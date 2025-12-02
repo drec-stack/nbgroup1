@@ -1,4 +1,4 @@
-home.js: // home.js - Simplified Home Page Functions
+// home.js - Simplified Home Page Functions
 // Бегущая строка теперь управляется напрямую из index.html
 
 class HomePage {
@@ -151,3 +151,4 @@ if (typeof window !== 'undefined') {
             switcher.setAttribute('data-current-lang', lang);
         }
     };
+}
