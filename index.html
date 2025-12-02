@@ -10,215 +10,6 @@
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
-    <style>
-        /* ===== БЕГУЩАЯ СТРОКА - ГАРАНТИРОВАННАЯ РАБОТА ===== */
-        .clients-section {
-            padding: 100px 0;
-            position: relative;
-            overflow: hidden;
-            margin: 60px 0;
-        }
-        
-        .clients-content {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-        }
-        
-        .clients-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #a0a0a0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 50px;
-            text-align: center;
-            display: block;
-        }
-        
-        .marquee-container {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            padding: 30px 0;
-            margin: 20px 0;
-            user-select: none;
-        }
-        
-        /* Градиентные маски для плавного края */
-        .marquee-container::before,
-        .marquee-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            height: 100%;
-            width: 100px;
-            z-index: 3;
-            pointer-events: none;
-        }
-        
-        .marquee-container::before {
-            left: 0;
-            background: linear-gradient(to right, var(--primary) 0%, transparent 100%);
-        }
-        
-        .marquee-container::after {
-            right: 0;
-            background: linear-gradient(to left, var(--primary) 0%, transparent 100%);
-        }
-        
-        /* Контейнер для бесконечной прокрутки */
-        .marquee-infinite-wrapper {
-            display: flex;
-            width: max-content;
-            will-change: transform;
-            transform: translate3d(0, 0, 0);
-            animation-play-state: running !important;
-        }
-        
-        /* Трек с дублированным контентом для бесшовности */
-        .marquee-track {
-            display: flex;
-            flex-shrink: 0;
-        }
-        
-        /* Контент внутри трека */
-        .marquee-content {
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-        }
-        
-        .brand {
-            font-size: 1.8rem !important;
-            font-weight: 700 !important;
-            color: white !important;
-            opacity: 0.9 !important;
-            padding: 0 40px !important;
-            white-space: nowrap !important;
-            flex-shrink: 0 !important;
-            transition: all 0.3s ease !important;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .brand:hover {
-            opacity: 1 !important;
-            transform: translateY(-2px) !important;
-        }
-        
-        .separator {
-            color: #666666 !important;
-            font-size: 1.8rem !important;
-            opacity: 0.4 !important;
-            font-weight: 300 !important;
-            flex-shrink: 0 !important;
-        }
-        
-        /* ===== ГАРАНТИРОВАННЫЕ CSS АНИМАЦИИ ===== */
-        /* !important чтобы перебить все другие стили */
-        #marquee1 .marquee-infinite-wrapper {
-            animation: marqueeLeft 40s linear infinite !important;
-            animation-play-state: running !important;
-        }
-        
-        #marquee2 .marquee-infinite-wrapper {
-            animation: marqueeRight 40s linear infinite !important;
-            animation-play-state: running !important;
-        }
-        
-        @keyframes marqueeLeft {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-        
-        @keyframes marqueeRight {
-            0% {
-                transform: translateX(-50%);
-            }
-            100% {
-                transform: translateX(0);
-            }
-        }
-        
-        /* Пауза при наведении */
-        .marquee-container:hover .marquee-infinite-wrapper {
-            animation-play-state: paused !important;
-        }
-        
-        /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
-        @media (max-width: 768px) {
-            .clients-section {
-                padding: 60px 0;
-                margin: 40px 0;
-            }
-            
-            .clients-label {
-                margin-bottom: 30px;
-                font-size: 12px;
-            }
-            
-            .marquee-container {
-                padding: 20px 0;
-            }
-            
-            .brand {
-                font-size: 1.4rem !important;
-                padding: 0 25px !important;
-            }
-            
-            .separator {
-                font-size: 1.4rem !important;
-            }
-            
-            .marquee-container::before,
-            .marquee-container::after {
-                width: 50px;
-            }
-            
-            #marquee1 .marquee-infinite-wrapper {
-                animation-duration: 30s !important;
-            }
-            
-            #marquee2 .marquee-infinite-wrapper {
-                animation-duration: 30s !important;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .brand {
-                font-size: 1.2rem !important;
-                padding: 0 20px !important;
-            }
-            
-            .separator {
-                font-size: 1.2rem !important;
-            }
-            
-            .marquee-container::before,
-            .marquee-container::after {
-                width: 30px;
-            }
-            
-            #marquee1 .marquee-infinite-wrapper,
-            #marquee2 .marquee-infinite-wrapper {
-                animation-duration: 25s !important;
-            }
-        }
-        
-        /* ===== ИГНОРИРУЕМ REDUCED MOTION ===== */
-        /* Гарантируем работу даже при reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            #marquee1 .marquee-infinite-wrapper,
-            #marquee2 .marquee-infinite-wrapper {
-                animation: marqueeLeft 40s linear infinite !important;
-                animation-play-state: running !important;
-            }
-        }
-    </style>
 </head>
 <body class="home-page">
     <!-- PARALLAX BACKGROUNDS -->
@@ -232,7 +23,7 @@
         <div class="scroll-progress-bar"></div>
     </div>
 
-    <!-- Header Component -->
+    <!-- Header Container (БУДЕТ ЗАГРУЖЕН ЧЕРЕЗ JS) -->
     <div id="header-container"></div>
 
     <!-- Hero Section -->
@@ -599,110 +390,152 @@
     </footer>
 
     <!-- JavaScript -->
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/home.js"></script>
-    <script src="js/parallax.js"></script>
-
-    <!-- ГАРАНТИРОВАННЫЙ ЗАПУСК БЕГУЩЕЙ СТРОКИ -->
     <script>
-        // ===== ПЕРЕХВАТ И ОТКЛЮЧЕНИЕ REDUCED MOTION =====
-        (function() {
-            'use strict';
+        // ГАРАНТИРОВАННАЯ ЗАГРУЗКА ХЕДЕРА
+        console.log('🚀 Запуск страницы NBGROUP...');
+        
+        function loadHeader() {
+            console.log('📥 Загрузка заголовка...');
             
-            console.log('🚀 Инициализация гарантированной бегущей строки');
-            
-            // 1. ГЛОБАЛЬНО ОТКЛЮЧАЕМ REDUCED MOTION
-            const originalMatchMedia = window.matchMedia;
-            window.matchMedia = function(query) {
-                if (query === '(prefers-reduced-motion: reduce)') {
-                    console.log('🔧 Отключена глобальная проверка reduced motion');
-                    return {
-                        matches: false,
-                        media: query,
-                        addListener: function() {},
-                        removeListener: function() {},
-                        addEventListener: function() {},
-                        removeEventListener: function() {},
-                        dispatchEvent: function() { return true; }
-                    };
-                }
-                return originalMatchMedia.call(this, query);
-            };
-            
-            // 2. ФУНКЦИЯ ГАРАНТИРОВАННОГО ЗАПУСКА
-            function guaranteeMarqueeStart() {
-                console.log('💪 Гарантированный запуск бегущей строки...');
-                
-                const marquee1 = document.getElementById('marquee1');
-                const marquee2 = document.getElementById('marquee2');
-                
-                if (!marquee1 || !marquee2) {
-                    console.error('❌ Элементы бегущей строки не найдены');
-                    return false;
-                }
-                
-                // 3. ПРИНУДИТЕЛЬНО УСТАНАВЛИВАЕМ CSS АНИМАЦИИ
-                marquee1.style.animation = 'marqueeLeft 40s linear infinite';
-                marquee2.style.animation = 'marqueeRight 40s linear infinite';
-                marquee1.style.animationPlayState = 'running';
-                marquee2.style.animationPlayState = 'running';
-                
-                // 4. СБРАСЫВАЕМ ПРЕДЫДУЩИЕ ТРАНСФОРМАЦИИ
-                marquee1.style.transform = 'translate3d(0, 0, 0)';
-                marquee2.style.transform = 'translate3d(0, 0, 0)';
-                
-                // 5. ОПТИМИЗАЦИЯ ДЛЯ ПЛАВНОСТИ
-                marquee1.style.willChange = 'transform';
-                marquee2.style.willChange = 'transform';
-                
-                console.log('✅ CSS анимации установлены');
-                
-                // 6. ПАУЗА ПРИ НАВЕДЕНИИ
-                document.querySelectorAll('.marquee-container').forEach(container => {
-                    container.addEventListener('mouseenter', () => {
-                        marquee1.style.animationPlayState = 'paused';
-                        marquee2.style.animationPlayState = 'paused';
-                    });
-                    
-                    container.addEventListener('mouseleave', () => {
-                        marquee1.style.animationPlayState = 'running';
-                        marquee2.style.animationPlayState = 'running';
-                    });
-                });
-                
-                // 7. ПРОВЕРЯЕМ ЧЕРЕЗ 500МС
-                setTimeout(() => {
-                    const style1 = window.getComputedStyle(marquee1);
-                    console.log('🔍 Проверка через 500мс:', {
-                        animationName: style1.animationName,
-                        animationPlayState: style1.animationPlayState,
-                        transform: style1.transform
-                    });
-                    
-                    // Если CSS не работает, запускаем JS fallback
-                    if (style1.animationName === 'none') {
-                        console.log('🔄 CSS не работает, запускаем JS fallback...');
-                        startJSMarqueeFallback();
+            fetch('components/header.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
+                    return response.text();
+                })
+                .then(html => {
+                    const container = document.getElementById('header-container');
+                    if (container) {
+                        container.innerHTML = html;
+                        console.log('✅ Header загружен в DOM');
+                        
+                        // Добавляем отступ для hero
+                        const hero = document.querySelector('.hero');
+                        if (hero) {
+                            hero.style.paddingTop = '120px';
+                        }
+                        
+                        console.log('✅ Отступ для hero добавлен');
                     }
-                }, 500);
-                
-                return true;
+                })
+                .catch(error => {
+                    console.error('❌ Ошибка загрузки header:', error);
+                    
+                    // ПРОСТОЙ FALLBACK HEADER
+                    const fallbackHeader = `
+                        <header style="
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            background: rgba(0,0,0,0.95);
+                            padding: 20px 0;
+                            z-index: 1000;
+                            border-bottom: 1px solid rgba(255,255,255,0.2);
+                            backdrop-filter: blur(10px);
+                        ">
+                            <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+                                <a href="index.html" style="color: white; font-weight: bold; font-size: 24px; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #0066ff, #00aaff); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800;">NB</div>
+                                    <span>NBGROUP.TECH</span>
+                                </a>
+                                <nav style="display: flex; gap: 25px;">
+                                    <a href="index.html" style="color: white; text-decoration: none; font-weight: 500; opacity: 0.8;">Главная</a>
+                                    <a href="about.html" style="color: white; text-decoration: none; font-weight: 500; opacity: 0.8;">О нас</a>
+                                    <a href="services.html" style="color: white; text-decoration: none; font-weight: 500; opacity: 0.8;">Услуги</a>
+                                    <a href="portfolio.html" style="color: white; text-decoration: none; font-weight: 500; opacity: 0.8;">Портфолио</a>
+                                    <a href="contacts.html" style="color: white; text-decoration: none; font-weight: 500; opacity: 0.8;">Контакты</a>
+                                </nav>
+                            </div>
+                        </header>
+                    `;
+                    
+                    const container = document.getElementById('header-container');
+                    if (container) {
+                        container.innerHTML = fallbackHeader;
+                        console.log('🔄 Установлен fallback header');
+                    }
+                });
+        }
+        
+        // ФУНКЦИЯ БЕГУЩЕЙ СТРОКИ
+        function initMarquee() {
+            console.log('🎬 Инициализация бегущей строки...');
+            
+            const marquee1 = document.getElementById('marquee1');
+            const marquee2 = document.getElementById('marquee2');
+            
+            if (!marquee1 || !marquee2) {
+                console.error('❌ Элементы бегущей строки не найдены!');
+                return;
             }
             
-            // 8. JS FALLBACK АНИМАЦИЯ
-            function startJSMarqueeFallback() {
-                console.log('🎬 Запуск JS fallback анимации...');
+            console.log('✅ Найдены элементы:', marquee1.id, marquee2.id);
+            
+            // 1. ПРИНУДИТЕЛЬНО ЗАПУСКАЕМ CSS АНИМАЦИИ
+            marquee1.style.animation = 'marqueeLeft 40s linear infinite';
+            marquee2.style.animation = 'marqueeRight 40s linear infinite';
+            marquee1.style.animationPlayState = 'running';
+            marquee2.style.animationPlayState = 'running';
+            
+            // 2. НАСТРАИВАЕМ CSS ДЛЯ ГАРАНТИРОВАННОЙ РАБОТЫ
+            const style = document.createElement('style');
+            style.textContent = `
+                #marquee1, #marquee2 {
+                    will-change: transform;
+                    backface-visibility: hidden;
+                    perspective: 1000px;
+                }
                 
-                const marquee1 = document.getElementById('marquee1');
-                const marquee2 = document.getElementById('marquee2');
+                @keyframes marqueeLeft {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
                 
-                if (!marquee1 || !marquee2) return;
+                @keyframes marqueeRight {
+                    0% { transform: translateX(-50%); }
+                    100% { transform: translateX(0); }
+                }
                 
+                /* Пауза при наведении */
+                .marquee-container:hover #marquee1,
+                .marquee-container:hover #marquee2 {
+                    animation-play-state: paused !important;
+                }
+                
+                /* Отключаем reduced motion для бегущей строки */
+                @media (prefers-reduced-motion: reduce) {
+                    #marquee1, #marquee2 {
+                        animation: marqueeLeft 40s linear infinite !important;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            console.log('✅ CSS анимации установлены');
+            
+            // 3. ПРОВЕРКА ЧЕРЕЗ 1 СЕКУНДУ
+            setTimeout(() => {
+                const computedStyle = window.getComputedStyle(marquee1);
+                console.log('🔍 Проверка анимации:', {
+                    animationName: computedStyle.animationName,
+                    playState: computedStyle.animationPlayState,
+                    transform: computedStyle.transform
+                });
+                
+                // Если CSS не работает, запускаем JS fallback
+                if (computedStyle.animationName === 'none') {
+                    console.log('🔄 CSS не работает, запускаем JS fallback...');
+                    startJSMarquee();
+                } else {
+                    console.log('🎉 Бегущая строка работает через CSS!');
+                }
+            }, 1000);
+            
+            // 4. JS FALLBACK АНИМАЦИЯ
+            function startJSMarquee() {
                 let pos1 = 0;
                 let pos2 = 0;
-                const speed = 1.2; // px per frame
-                let animationId = null;
+                const speed = 1;
                 
                 function animate() {
                     // Первая строка - влево
@@ -723,82 +556,58 @@
                         marquee2.style.transform = `translateX(${pos2}px)`;
                     }
                     
-                    animationId = requestAnimationFrame(animate);
+                    requestAnimationFrame(animate);
                 }
                 
-                // Запускаем
                 animate();
-                
-                // Сохраняем ID для остановки
-                window._marqueeJSFallback = animationId;
-                
                 console.log('✅ JS fallback анимация запущена');
             }
             
-            // 9. ЗАПУСКАЕМ СРАЗУ
-            document.addEventListener('DOMContentLoaded', () => {
-                console.log('📄 DOM загружен, запускаем бегущую строку...');
-                guaranteeMarqueeStart();
-            });
-            
-            // 10. РЕЗЕРВНЫЙ ЗАПУСК ПОСЛЕ ПОЛНОЙ ЗАГРУЗКИ
-            window.addEventListener('load', () => {
-                console.log('🌐 Страница полностью загружена, проверяем бегущую строку...');
-                
-                setTimeout(() => {
-                    const marquee1 = document.getElementById('marquee1');
-                    if (marquee1) {
-                        const style = window.getComputedStyle(marquee1);
-                        if (style.animationName === 'none') {
-                            console.log('🔄 Резервный запуск после load...');
-                            guaranteeMarqueeStart();
-                        }
-                    }
-                }, 1000);
-            });
-            
-            // 11. УТИЛИТЫ ДЛЯ ОТЛАДКИ
-            window.guaranteeMarqueeStart = guaranteeMarqueeStart;
-            window.checkMarqueeStatus = function() {
-                const marquee1 = document.getElementById('marquee1');
-                const marquee2 = document.getElementById('marquee2');
-                
-                if (!marquee1 || !marquee2) {
-                    console.log('❌ Элементы не найдены');
-                    return;
-                }
-                
-                const style1 = window.getComputedStyle(marquee1);
-                const style2 = window.getComputedStyle(marquee2);
-                
-                console.log('📊 Статус бегущей строки:');
-                console.log('Marquee 1 (влево):', {
-                    animation: style1.animationName,
-                    playState: style1.animationPlayState,
-                    transform: style1.transform
+            // 5. ПАУЗА ПРИ НАВЕДЕНИИ
+            document.querySelectorAll('.marquee-container').forEach(container => {
+                container.addEventListener('mouseenter', () => {
+                    marquee1.style.animationPlayState = 'paused';
+                    marquee2.style.animationPlayState = 'paused';
                 });
-                console.log('Marquee 2 (вправо):', {
-                    animation: style2.animationName,
-                    playState: style2.animationPlayState,
-                    transform: style2.transform
+                
+                container.addEventListener('mouseleave', () => {
+                    marquee1.style.animationPlayState = 'running';
+                    marquee2.style.animationPlayState = 'running';
                 });
-            };
+            });
+        }
+        
+        // ЗАПУСКАЕМ ВСЁ ПРИ ЗАГРУЗКЕ ДОКУМЕНТА
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('📄 DOM полностью загружен');
             
-            window.restartMarquee = function() {
-                console.log('🔁 Перезапуск бегущей строки...');
-                
-                // Останавливаем JS fallback если он работает
-                if (window._marqueeJSFallback) {
-                    cancelAnimationFrame(window._marqueeJSFallback);
-                    window._marqueeJSFallback = null;
-                }
-                
-                // Запускаем заново
-                guaranteeMarqueeStart();
-            };
+            // Загружаем header
+            loadHeader();
             
-            console.log('✅ Система гарантированной бегущей строки инициализирована');
-        })();
+            // Запускаем бегущую строку
+            initMarquee();
+            
+            // Запускаем остальные скрипты с задержкой
+            setTimeout(() => {
+                // Подключаем внешние JS файлы если они есть
+                const scripts = ['js/i18n.js', 'js/main.js', 'js/home.js', 'js/parallax.js'];
+                
+                scripts.forEach(src => {
+                    const script = document.createElement('script');
+                    script.src = src;
+                    script.async = true;
+                    document.body.appendChild(script);
+                    console.log(`📦 Загружаем: ${src}`);
+                });
+            }, 500);
+        });
+        
+        // РЕЗЕРВНЫЙ ЗАПУСК ЕСЛИ DOM УЖЕ ЗАГРУЖЕН
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+            console.log('⚡ DOM уже готов, запускаем немедленно');
+            loadHeader();
+            initMarquee();
+        }
     </script>
 </body>
 </html>
