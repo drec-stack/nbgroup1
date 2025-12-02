@@ -11,7 +11,7 @@ class HomePage {
         this.initScrollAnimations();
         this.initStatsCounter();
         this.initParallaxBackgrounds();
-        this.initMarqueeAnimations();
+        this.initMarqueeCSSAnimations(); // Исправленный метод
     }
 
     // Compact Speck Cards Initialization
@@ -146,82 +146,47 @@ class HomePage {
         }
     }
 
-    // Marquee animations - ИСПРАВЛЕННАЯ ВЕРСИЯ
-    initMarqueeAnimations() {
-        const marqueeElements = document.querySelectorAll('.marquee-track');
+    // Бегущая строка через CSS анимации (исправленная версия)
+    initMarqueeCSSAnimations() {
+        console.log('♿ Reduced motion:', this.isReducedMotion);
+        console.log('✅ Бегущая строка работает через CSS анимации');
         
-        if (!marqueeElements.length) return;
-
-        console.log('♿ Reduced motion detected:', this.isReducedMotion);
-
-        // ВСЕГДА используем JavaScript для лучшего контроля скорости
-        this.initMarqueeJS();
-    }
-
-    // JavaScript анимация с нормальной скоростью
-    initMarqueeJS() {
-        console.log('🚀 Запуск JavaScript бегущей строки...');
+        if (this.isReducedMotion) {
+            console.log('⏸️ Reduced motion включен - показываем статичную бегущую строку');
+            return;
+        }
         
-        const tracks = document.querySelectorAll('.marquee-track');
+        // Просто гарантируем, что CSS анимации активны
+        const marquees = document.querySelectorAll('.marquee-infinite-wrapper');
         
-        tracks.forEach((track, index) => {
-            const isReverse = index === 1;
+        marquees.forEach((marquee, index) => {
+            // Проверяем, есть ли CSS анимация
+            const style = window.getComputedStyle(marquee);
+            const animationName = style.animationName;
             
-            // УБИРАЕМ CSS анимации полностью
-            track.style.animation = 'none';
-            
-            let position = 0;
-            // НОРМАЛЬНАЯ СКОРОСТЬ даже при reduced motion
-            const speed = isReverse ? 2 : -2;
-            const contentWidth = track.scrollWidth / 3;
-            let animationId = null;
-            let isPaused = false;
-            
-            function animate() {
-                if (isPaused) {
-                    animationId = requestAnimationFrame(animate);
-                    return;
+            if (animationName && animationName !== 'none') {
+                console.log(`✅ Marquee ${index + 1}: CSS анимация "${animationName}" активна`);
+                marquee.style.animationPlayState = 'running';
+            } else {
+                console.warn(`⚠️ Marquee ${index + 1}: CSS анимация не найдена, принудительный запуск`);
+                
+                // Резервная CSS анимация через style
+                if (index === 0) {
+                    marquee.style.animation = 'marqueeLeft 40s linear infinite';
+                } else {
+                    marquee.style.animation = 'marqueeRight 40s linear infinite';
                 }
-                
-                position += speed;
-                
-                if (position <= -contentWidth) {
-                    position = 0;
-                } else if (position >= 0) {
-                    position = -contentWidth;
-                }
-                
-                track.style.transform = `translateX(${position}px)`;
-                animationId = requestAnimationFrame(animate);
             }
             
-            // Запускаем анимацию
-            animate();
-            
-            // Пауза при наведении
-            track.addEventListener('mouseenter', () => {
-                isPaused = true;
-            });
-            
-            track.addEventListener('mouseleave', () => {
-                isPaused = false;
-            });
-            
-            // Сохраняем ID для очистки
-            track._animationId = animationId;
-            
-            console.log(`✅ Трек ${index + 1} запущен через JS (${isReverse ? 'обратный' : 'прямой'}) скорость: ${speed}px/frame`);
+            // Оптимизация для плавности
+            marquee.style.willChange = 'transform';
+            marquee.style.transform = 'translate3d(0, 0, 0)';
         });
     }
 
     // Cleanup
     destroy() {
-        const tracks = document.querySelectorAll('.marquee-track');
-        tracks.forEach(track => {
-            if (track._animationId) {
-                cancelAnimationFrame(track._animationId);
-            }
-        });
+        // Ничего не делаем, так как используем только CSS анимации
     }
 }
 
@@ -231,60 +196,69 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('🏠 HomePage инициализирован');
 });
 
-// Manual initialization function (if needed from another script)
+// Manual initialization function
 function initHomePage() {
     if (!window.homePage) {
         window.homePage = new HomePage();
     }
 }
 
-// Проверка работы бегущей строки
+// Проверка работы бегущей строки через CSS
 function checkMarqueeWorking() {
     setTimeout(() => {
-        const tracks = document.querySelectorAll('.marquee-track');
-        let isWorking = false;
+        const marquees = document.querySelectorAll('.marquee-infinite-wrapper');
+        let workingCount = 0;
         
-        tracks.forEach(track => {
-            const transform = track.style.transform;
-            if (transform && transform !== 'translateX(0px)' && transform !== 'none') {
-                isWorking = true;
-                console.log(`🎯 Трек двигается: ${transform}`);
+        marquees.forEach((marquee, index) => {
+            const style = window.getComputedStyle(marquee);
+            const isAnimating = style.animationName !== 'none' && 
+                               style.animationPlayState === 'running';
+            
+            if (isAnimating) {
+                workingCount++;
+                console.log(`✅ Marquee ${index + 1}: работает (${style.animationName})`);
+            } else {
+                console.warn(`⚠️ Marquee ${index + 1}: не работает`);
             }
         });
         
-        if (!isWorking) {
-            console.warn('⚠️ Бегущая строка не работает, принудительный запуск...');
-            if (window.homePage) {
-                window.homePage.initMarqueeJS();
-            }
+        if (workingCount === marquees.length) {
+            console.log('🎉 Все бегущие строки работают корректно!');
+        } else if (workingCount > 0) {
+            console.log(`⚠️ Работает ${workingCount} из ${marquees.length} строк`);
         } else {
-            console.log('✅ Бегущая строка работает корректно');
+            console.error('❌ Бегущие строки не работают!');
+            // Принудительный запуск
+            if (window.homePage) {
+                window.homePage.initMarqueeCSSAnimations();
+            }
         }
-    }, 2000);
+    }, 1000);
 }
 
 // Проверяем после полной загрузки
 window.addEventListener('load', () => {
-    checkMarqueeWorking();
+    setTimeout(checkMarqueeWorking, 500);
 });
 
-// Резервный запуск через 5 секунд
+// Резервный запуск через 3 секунды
 setTimeout(() => {
-    const tracks = document.querySelectorAll('.marquee-track');
-    let anyMoving = false;
+    const marquees = document.querySelectorAll('.marquee-infinite-wrapper');
+    let anyWorking = false;
     
-    tracks.forEach(track => {
-        const transform = track.style.transform;
-        if (transform && transform !== 'translateX(0px)' && transform !== 'none') {
-            anyMoving = true;
+    marquees.forEach(marquee => {
+        const style = window.getComputedStyle(marquee);
+        if (style.animationName !== 'none') {
+            anyWorking = true;
         }
     });
     
-    if (!anyMoving && window.homePage) {
-        console.log('🔄 Резервный запуск бегущей строки...');
-        window.homePage.initMarqueeJS();
+    if (!anyWorking && window.homePage) {
+        console.log('🔄 Резервный запуск CSS анимаций...');
+        window.homePage.initMarqueeCSSAnimations();
+        checkMarqueeWorking();
     }
-}, 5000);
+}, 3000);
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
