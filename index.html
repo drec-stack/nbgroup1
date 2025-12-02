@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBGROUP.TECH | Industrial Design & Manufacturing</title>
+    <title data-i18n="home.title">NBGROUP.TECH | Industrial Design & Manufacturing</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -75,6 +75,21 @@
         .marquee-track:hover {
             animation-play-state: paused !important;
         }
+
+        /* Стили для плавной смены языка */
+        .language-changing {
+            opacity: 0.5 !important;
+            transition: opacity 0.2s ease !important;
+        }
+
+        .language-changed {
+            animation: fadeInLanguage 0.3s ease forwards !important;
+        }
+
+        @keyframes fadeInLanguage {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body class="home-page">
@@ -96,25 +111,25 @@
     <section class="hero parallax-hero">
         <div class="container">
             <div class="parallax-content">
-                <h1>ИННОВАЦИИ</h1>
-                <p>
+                <h1 data-i18n="home.hero.titleLine1">ИННОВАЦИИ</h1>
+                <p data-i18n="home.hero.description">
                     Создаем продукты, которые переопределяют рынки и пользовательский опыт 
                     с помощью передового промышленного дизайна и инженерии.
                 </p>
                 <div class="hero-actions">
                     <a href="services.html" class="btn btn-primary">
-                        <span>Наши Услуги</span>
+                        <span data-i18n="home.hero.ourServices">Наши Услуги</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
                     <a href="portfolio.html" class="btn btn-secondary">
-                        <span>Смотреть Работы</span>
+                        <span data-i18n="home.hero.viewWork">Смотреть Работы</span>
                     </a>
                 </div>
             </div>
         </div>
         <div class="parallax-scroll-indicator">
             <div class="scroll-arrow"></div>
-            <span>Прокрутите для просмотра</span>
+            <span data-i18n="home.parallax.scrollHint">Прокрутите для просмотра</span>
         </div>
     </section>
 
@@ -127,8 +142,8 @@
                     <div class="speck-card-header-enhanced">
                         <div class="speck-number-enhanced">01</div>
                         <div class="speck-title-content-enhanced">
-                            <h2 class="speck-title-enhanced">Strategy</h2>
-                            <p class="speck-subtitle-enhanced">DRIVE INNOVATION AND ALIGN GOALS</p>
+                            <h2 class="speck-title-enhanced" data-i18n="home.speckServices.strategy.title">Strategy</h2>
+                            <p class="speck-subtitle-enhanced" data-i18n="home.speckServices.strategy.subtitle">DRIVE INNOVATION AND ALIGN GOALS</p>
                         </div>
                     </div>
                     <div class="speck-description-enhanced">
@@ -136,15 +151,15 @@
                     </div>
                     <div class="speck-features-enhanced">
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">Innovation Strategy</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.strategy.features.innovation">Innovation Strategy</span>
                             <p class="speck-feature-desc">Developing long-term innovation roadmaps and growth strategies</p>
                         </div>
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">Design Strategy</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.strategy.features.design">Design Strategy</span>
                             <p class="speck-feature-desc">Creating design systems and frameworks for consistent brand experience</p>
                         </div>
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">User Research</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.strategy.features.research">User Research</span>
                             <p class="speck-feature-desc">In-depth user studies and market analysis to inform product decisions</p>
                         </div>
                     </div>
@@ -161,8 +176,8 @@
                     <div class="speck-card-header-enhanced">
                         <div class="speck-number-enhanced">02</div>
                         <div class="speck-title-content-enhanced">
-                            <h2 class="speck-title-enhanced">Design</h2>
-                            <p class="speck-subtitle-enhanced">ENGAGE AUDIENCES WITH PRODUCT DESIGN</p>
+                            <h2 class="speck-title-enhanced" data-i18n="home.speckServices.design.title">Design</h2>
+                            <p class="speck-subtitle-enhanced" data-i18n="home.speckServices.design.subtitle">ENGAGE AUDIENCES WITH PRODUCT DESIGN</p>
                         </div>
                     </div>
                     <div class="speck-description-enhanced">
@@ -170,19 +185,19 @@
                     </div>
                     <div class="speck-features-enhanced">
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">Industrial Design</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.design.features.industrial">Industrial Design</span>
                             <p class="speck-feature-desc">Physical product design, ergonomics, and manufacturing optimization</p>
                         </div>
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">Brand Design</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.design.features.brand">Brand Design</span>
                             <p class="speck-feature-desc">Complete visual identity systems and brand guideline development</p>
                         </div>
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">Packaging Design</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.design.features.packaging">Packaging Design</span>
                             <p class="speck-feature-desc">Sustainable and impactful packaging solutions for retail success</p>
                         </div>
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">UI/UX Design</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.design.features.uiux">UI/UX Design</span>
                             <p class="speck-feature-desc">Digital interfaces and user experiences for web and mobile applications</p>
                         </div>
                     </div>
@@ -199,8 +214,8 @@
                     <div class="speck-card-header-enhanced">
                         <div class="speck-number-enhanced">03</div>
                         <div class="speck-title-content-enhanced">
-                            <h2 class="speck-title-enhanced">Engineering</h2>
-                            <p class="speck-subtitle-enhanced">COMPLEX TECHNICAL SOLUTIONS AND ARCHITECTURE</p>
+                            <h2 class="speck-title-enhanced" data-i18n="home.speckServices.engineering.title">Engineering</h2>
+                            <p class="speck-subtitle-enhanced" data-i18n="home.speckServices.engineering.subtitle">COMPLEX TECHNICAL SOLUTIONS AND ARCHITECTURE</p>
                         </div>
                     </div>
                     <div class="speck-description-enhanced">
@@ -208,15 +223,15 @@
                     </div>
                     <div class="speck-features-enhanced">
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">Architecture</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.engineering.features.architecture">Architecture</span>
                             <p class="speck-feature-desc">System design, technical architecture, and infrastructure planning</p>
                         </div>
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">Optimization</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.engineering.features.optimization">Optimization</span>
                             <p class="speck-feature-desc">Performance tuning, efficiency improvements, and cost optimization</p>
                         </div>
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">Scaling</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.engineering.features.scaling">Scaling</span>
                             <p class="speck-feature-desc">Scalability solutions for high-growth products and enterprise systems</p>
                         </div>
                     </div>
@@ -233,8 +248,8 @@
                     <div class="speck-card-header-enhanced">
                         <div class="speck-number-enhanced">04</div>
                         <div class="speck-title-content-enhanced">
-                            <h2 class="speck-title-enhanced">Marketing</h2>
-                            <p class="speck-subtitle-enhanced">DIGITAL STRATEGIES AND PRODUCT PROMOTION</p>
+                            <h2 class="speck-title-enhanced" data-i18n="home.speckServices.marketing.title">Marketing</h2>
+                            <p class="speck-subtitle-enhanced" data-i18n="home.speckServices.marketing.subtitle">DIGITAL STRATEGIES AND PRODUCT PROMOTION</p>
                         </div>
                     </div>
                     <div class="speck-description-enhanced">
@@ -242,19 +257,19 @@
                     </div>
                     <div class="speck-features-enhanced">
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">SEO</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.marketing.features.seo">SEO</span>
                             <p class="speck-feature-desc">Search engine optimization and organic growth strategies</p>
                         </div>
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">SMM</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.marketing.features.smm">SMM</span>
                             <p class="speck-feature-desc">Social media marketing and community engagement</p>
                         </div>
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">Analytics</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.marketing.features.analytics">Analytics</span>
                             <p class="speck-feature-desc">Data analysis, KPI tracking, and performance measurement</p>
                         </div>
                         <div class="speck-feature-item-enhanced">
-                            <span class="speck-feature-badge">Content</span>
+                            <span class="speck-feature-badge" data-i18n="home.speckServices.marketing.features.content">Content</span>
                             <p class="speck-feature-desc">Content strategy, creation, and distribution across channels</p>
                         </div>
                     </div>
@@ -273,7 +288,7 @@
     <section class="clients-section content-section" data-bg-index="0">
         <div class="container">
             <div class="clients-content">
-                <p class="clients-label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
+                <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
                 
                 <!-- Marquee 1 -->
                 <div class="marquee-container">
@@ -406,7 +421,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-number-improved" data-target="150">0</div>
-                        <div class="stat-label-improved">Проектов завершено</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.projects">Проектов завершено</div>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -415,7 +430,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-number-improved" data-target="12">0</div>
-                        <div class="stat-label-improved">Лет опыта</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.years">Лет опыта</div>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -424,7 +439,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-number-improved" data-target="98">0</div>
-                        <div class="stat-label-improved">Довольных клиентов</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.satisfaction">Довольных клиентов</div>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -433,7 +448,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-number-improved" data-target="25">0</div>
-                        <div class="stat-label-improved">Наград</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.awards">Наград</div>
                     </div>
                 </div>
             </div>
@@ -445,12 +460,12 @@
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
-                    <h2>Готовы начать проект?</h2>
-                    <p>Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
+                    <h2 data-i18n="home.cta.title">Готовы начать проект?</h2>
+                    <p data-i18n="home.cta.description">Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
                 </div>
                 <div class="cta-action">
                     <a href="contacts.html" class="btn btn-primary btn-large btn-glow">
-                        <span>Связаться с нами</span>
+                        <span data-i18n="home.cta.button">Связаться с нами</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -587,9 +602,44 @@
             }
         }
 
-        // Запускаем проверку
-        document.addEventListener('DOMContentLoaded', checkMarquee);
-        setTimeout(checkMarquee, 1000);
+        // Отладочный код для проверки i18n
+        function debugI18n() {
+            setTimeout(() => {
+                console.log('🌍 i18n loaded:', !!window.i18n);
+                console.log('🌍 Current language:', window.i18n?.currentLang);
+                console.log('🌍 Translations loaded:', Object.keys(window.i18n?.translations || {}).length);
+                console.log('🌍 Elements with data-i18n:', document.querySelectorAll('[data-i18n]').length);
+                
+                // Проверка конкретных элементов
+                const elementsToCheck = [
+                    { selector: 'h1', key: 'home.hero.titleLine1' },
+                    { selector: '.clients-label', key: 'home.clients.label' },
+                    { selector: '.stat-label-improved', key: 'home.stats.projects' }
+                ];
+                
+                elementsToCheck.forEach(item => {
+                    const el = document.querySelector(item.selector);
+                    if (el) {
+                        console.log(`✅ ${item.selector}:`, el.getAttribute('data-i18n'), '=', el.textContent);
+                    }
+                });
+            }, 1000);
+        }
+
+        // Запускаем проверки
+        document.addEventListener('DOMContentLoaded', function() {
+            checkMarquee();
+            debugI18n();
+            
+            // Принудительно запускаем i18n если он не инициализировался
+            setTimeout(() => {
+                if (window.i18n && window.i18n.applyTranslations) {
+                    console.log('🔄 Принудительно применяем переводы...');
+                    window.i18n.applyTranslations();
+                }
+            }, 1500);
+        });
+        
         setTimeout(initHomeHeader, 2000);
     </script>
 </body>
