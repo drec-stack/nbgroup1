@@ -1,9 +1,8 @@
-// home.js - Simplified Home Page Functions
-// Бегущая строка теперь управляется напрямую из index.html
+// home.js - Complete Home Page Functionality
 
 class HomePage {
     constructor() {
-        console.log('🏠 HomePage инициализация...');
+        this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.init();
     }
 
@@ -12,8 +11,8 @@ class HomePage {
         this.initScrollAnimations();
         this.initStatsCounter();
         this.initParallaxBackgrounds();
-        
-        console.log('✅ HomePage инициализирован (бегущая строка управляется отдельно)');
+        this.initMarqueeAnimations();
+        console.log('🏠 HomePage инициализирован');
     }
 
     // Compact Speck Cards Initialization
@@ -22,6 +21,7 @@ class HomePage {
         
         if (!speckCards.length) return;
 
+        // Scroll animation
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
@@ -36,6 +36,7 @@ class HomePage {
         speckCards.forEach(card => {
             observer.observe(card);
             
+            // Click handler
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 const category = card.getAttribute('data-category');
@@ -128,27 +129,129 @@ class HomePage {
             targetBg.classList.add('active');
         }
     }
+
+    // Marquee animations
+    initMarqueeAnimations() {
+        const marqueeTracks = document.querySelectorAll('.marquee-track');
+        
+        if (!marqueeTracks.length) return;
+
+        // Проверяем, есть ли уже анимация через CSS
+        setTimeout(() => {
+            const isWorking = Array.from(marqueeTracks).some(track => {
+                const transform = window.getComputedStyle(track).transform;
+                return transform !== 'none' && transform !== 'matrix(1, 0, 0, 1, 0, 0)';
+            });
+            
+            if (!isWorking) {
+                console.log('🎯 Бегущая строка не работает через CSS, запускаем JS...');
+                this.initMarqueeJS();
+            } else {
+                console.log('✅ Бегущая строка работает через CSS');
+            }
+        }, 1000);
+    }
+
+    // JavaScript анимация как fallback
+    initMarqueeJS() {
+        console.log('🚀 Запуск JavaScript бегущей строки...');
+        
+        const tracks = document.querySelectorAll('.marquee-track');
+        
+        tracks.forEach((track, index) => {
+            const isReverse = index === 1;
+            
+            // Убираем CSS анимации
+            track.style.animation = 'none';
+            
+            let position = 0;
+            const speed = isReverse ? 2 : -2;
+            const contentWidth = track.scrollWidth / 3;
+            let animationId = null;
+            let isPaused = false;
+            
+            function animate() {
+                if (isPaused) {
+                    animationId = requestAnimationFrame(animate);
+                    return;
+                }
+                
+                position += speed;
+                
+                if (position <= -contentWidth) {
+                    position = 0;
+                } else if (position >= 0) {
+                    position = -contentWidth;
+                }
+                
+                track.style.transform = `translateX(${position}px)`;
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            // Запускаем анимацию
+            animate();
+            
+            // Пауза при наведении
+            track.addEventListener('mouseenter', () => {
+                isPaused = true;
+            });
+            
+            track.addEventListener('mouseleave', () => {
+                isPaused = false;
+            });
+            
+            // Сохраняем ID для очистки
+            track._animationId = animationId;
+            
+            console.log(`✅ Трек ${index + 1} запущен через JS`);
+        });
+    }
+
+    // Cleanup
+    destroy() {
+        const tracks = document.querySelectorAll('.marquee-track');
+        tracks.forEach(track => {
+            if (track._animationId) {
+                cancelAnimationFrame(track._animationId);
+            }
+        });
+    }
 }
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Небольшая задержка чтобы все загрузилось
-    setTimeout(() => {
-        try {
-            window.homePage = new HomePage();
-        } catch (error) {
-            console.error('Ошибка инициализации HomePage:', error);
-        }
-    }, 300);
+    window.homePage = new HomePage();
 });
 
-// Fix для ошибки в main.js
-if (typeof window !== 'undefined') {
-    window.updateLanguageSwitcher = function(lang) {
-        // Минимальная реализация чтобы избежать ошибки
-        const switcher = document.querySelector('.language-switcher');
-        if (switcher) {
-            switcher.setAttribute('data-current-lang', lang);
+// Проверка работы бегущей строки
+function checkMarqueeWorking() {
+    setTimeout(() => {
+        const tracks = document.querySelectorAll('.marquee-track');
+        let isWorking = false;
+        
+        tracks.forEach(track => {
+            const transform = window.getComputedStyle(track).transform;
+            if (transform !== 'none' && transform !== 'matrix(1, 0, 0, 1, 0, 0)') {
+                isWorking = true;
+            }
+        });
+        
+        if (!isWorking && window.homePage) {
+            console.warn('⚠️ Бегущая строка не работает, принудительный запуск...');
+            window.homePage.initMarqueeJS();
         }
-    };
+    }, 2000);
 }
+
+// Проверяем после полной загрузки
+window.addEventListener('load', checkMarqueeWorking);
+
+// Резервный запуск через 5 секунд
+setTimeout(checkMarqueeWorking, 5000);
+
+// Export для глобального доступа
+window.initHomePage = function() {
+    if (!window.homePage) {
+        window.homePage = new HomePage();
+    }
+};
