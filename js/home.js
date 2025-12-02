@@ -7,7 +7,7 @@ class HomePage {
     }
 
     init() {
-        this.initCompactSpeckCards();
+        this.initEnhancedSpeckCards();
         this.initScrollAnimations();
         this.initStatsCounter();
         this.initParallaxBackgrounds();
@@ -15,32 +15,60 @@ class HomePage {
         console.log('🏠 HomePage инициализирован');
     }
 
-    // Compact Speck Cards Initialization
-    initCompactSpeckCards() {
-        const speckCards = document.querySelectorAll('.speck-service-card-compact');
+    // Enhanced Speck Cards Initialization
+    initEnhancedSpeckCards() {
+        const speckCards = document.querySelectorAll('.speck-service-card-enhanced');
         
         if (!speckCards.length) return;
 
-        // Scroll animation
+        // Scroll animation with staggered delay
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
                     setTimeout(() => {
                         entry.target.classList.add('animated');
-                    }, index * 150);
+                    }, index * 200); // Increased delay for better visual effect
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1 });
+        }, { 
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
 
         speckCards.forEach(card => {
             observer.observe(card);
             
-            // Click handler
+            // Enhanced click handler with animation
             card.addEventListener('click', (e) => {
                 e.preventDefault();
+                
+                // Add click animation
+                card.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 200);
+                
                 const category = card.getAttribute('data-category');
-                window.location.href = `services.html#${category}`;
+                setTimeout(() => {
+                    window.location.href = `services.html#${category}`;
+                }, 300);
+            });
+            
+            // Add hover effects for feature items
+            const featureItems = card.querySelectorAll('.speck-feature-item-enhanced');
+            featureItems.forEach(feature => {
+                feature.addEventListener('mouseenter', () => {
+                    if (!this.isReducedMotion) {
+                        feature.style.transform = 'translateY(-8px)';
+                    }
+                });
+                
+                feature.addEventListener('mouseleave', () => {
+                    if (!this.isReducedMotion) {
+                        feature.style.transform = '';
+                    }
+                });
             });
         });
     }
@@ -214,6 +242,12 @@ class HomePage {
             if (track._animationId) {
                 cancelAnimationFrame(track._animationId);
             }
+        });
+        
+        // Cleanup speck cards
+        const speckCards = document.querySelectorAll('.speck-service-card-enhanced');
+        speckCards.forEach(card => {
+            card.removeEventListener('click', () => {});
         });
     }
 }
