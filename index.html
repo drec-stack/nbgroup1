@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBGROUP.TECH | Industrial Design & Manufacturing</title>
+    <title data-i18n="nav.home">NBGROUP.TECH | Industrial Design & Manufacturing</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -11,14 +11,212 @@
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
     <style>
-        /* Временные стили для видимости */
-        body {
-            opacity: 1 !important;
-            visibility: visible !important;
+        /* ===== БЕГУЩАЯ СТРОКА - ГАРАНТИРОВАННАЯ РАБОТА ===== */
+        .clients-section {
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+            margin: 60px 0;
         }
-        section {
+        
+        .clients-content {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .clients-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 50px;
+            text-align: center;
+            display: block;
+        }
+        
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 30px 0;
+            margin: 20px 0;
+            user-select: none;
+        }
+        
+        /* Градиентные маски для плавного края */
+        .marquee-container::before,
+        .marquee-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100px;
+            z-index: 3;
+            pointer-events: none;
+        }
+        
+        .marquee-container::before {
+            left: 0;
+            background: linear-gradient(to right, var(--primary) 0%, transparent 100%);
+        }
+        
+        .marquee-container::after {
+            right: 0;
+            background: linear-gradient(to left, var(--primary) 0%, transparent 100%);
+        }
+        
+        /* Контейнер для бесконечной прокрутки */
+        .marquee-infinite-wrapper {
+            display: flex;
+            width: max-content;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+            animation-play-state: running !important;
+        }
+        
+        /* Трек с дублированным контентом для бесшовности */
+        .marquee-track {
+            display: flex;
+            flex-shrink: 0;
+        }
+        
+        /* Контент внутри трека */
+        .marquee-content {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        
+        .brand {
+            font-size: 1.8rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            opacity: 0.9 !important;
+            padding: 0 40px !important;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+            transition: all 0.3s ease !important;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .brand:hover {
             opacity: 1 !important;
-            visibility: visible !important;
+            transform: translateY(-2px) !important;
+        }
+        
+        .separator {
+            color: #666666 !important;
+            font-size: 1.8rem !important;
+            opacity: 0.4 !important;
+            font-weight: 300 !important;
+            flex-shrink: 0 !important;
+        }
+        
+        /* ===== ГАРАНТИРОВАННЫЕ CSS АНИМАЦИИ ===== */
+        /* !important чтобы перебить все другие стили */
+        #marquee1 .marquee-infinite-wrapper {
+            animation: marqueeLeft 40s linear infinite !important;
+            animation-play-state: running !important;
+        }
+        
+        #marquee2 .marquee-infinite-wrapper {
+            animation: marqueeRight 40s linear infinite !important;
+            animation-play-state: running !important;
+        }
+        
+        @keyframes marqueeLeft {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        @keyframes marqueeRight {
+            0% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+        
+        /* Пауза при наведении */
+        .marquee-container:hover .marquee-infinite-wrapper {
+            animation-play-state: paused !important;
+        }
+        
+        /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+        @media (max-width: 768px) {
+            .clients-section {
+                padding: 60px 0;
+                margin: 40px 0;
+            }
+            
+            .clients-label {
+                margin-bottom: 30px;
+                font-size: 12px;
+            }
+            
+            .marquee-container {
+                padding: 20px 0;
+            }
+            
+            .brand {
+                font-size: 1.4rem !important;
+                padding: 0 25px !important;
+            }
+            
+            .separator {
+                font-size: 1.4rem !important;
+            }
+            
+            .marquee-container::before,
+            .marquee-container::after {
+                width: 50px;
+            }
+            
+            #marquee1 .marquee-infinite-wrapper {
+                animation-duration: 30s !important;
+            }
+            
+            #marquee2 .marquee-infinite-wrapper {
+                animation-duration: 30s !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .brand {
+                font-size: 1.2rem !important;
+                padding: 0 20px !important;
+            }
+            
+            .separator {
+                font-size: 1.2rem !important;
+            }
+            
+            .marquee-container::before,
+            .marquee-container::after {
+                width: 30px;
+            }
+            
+            #marquee1 .marquee-infinite-wrapper,
+            #marquee2 .marquee-infinite-wrapper {
+                animation-duration: 25s !important;
+            }
+        }
+        
+        /* ===== ИГНОРИРУЕМ REDUCED MOTION ===== */
+        /* Гарантируем работу даже при reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            #marquee1 .marquee-infinite-wrapper,
+            #marquee2 .marquee-infinite-wrapper {
+                animation: marqueeLeft 40s linear infinite !important;
+                animation-play-state: running !important;
+            }
         }
     </style>
 </head>
@@ -34,33 +232,32 @@
         <div class="scroll-progress-bar"></div>
     </div>
 
-    <!-- Header Container -->
+    <!-- Header Component -->
     <div id="header-container"></div>
 
     <!-- Hero Section -->
     <section class="hero parallax-hero">
         <div class="container">
             <div class="parallax-content">
-                <h1>ИННОВАЦИИ</h1>
-                <p>
-                    От концепции до производства мы создаем промышленные<br>
-                    дизайны, которые сочетают эстетику, функциональность и<br>
-                    технологичность для мировых брендов.
+                <h1 data-i18n="home.hero.titleLine1">ИННОВАЦИИ</h1>
+                <p data-i18n="home.hero.description">
+                    Создаем продукты, которые переопределяют рынки и пользовательский опыт 
+                    с помощью передового промышленного дизайна и инженерии.
                 </p>
                 <div class="hero-actions">
                     <a href="services.html" class="btn btn-primary">
-                        <span>Наши Услуги</span>
+                        <span data-i18n="home.hero.ourServices">Наши Услуги</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
                     <a href="portfolio.html" class="btn btn-secondary">
-                        <span>Смотреть Работы</span>
+                        <span data-i18n="home.hero.viewWork">Смотреть Работы</span>
                     </a>
                 </div>
             </div>
         </div>
         <div class="parallax-scroll-indicator">
             <div class="scroll-arrow"></div>
-            <span>Прокрутите для просмотра</span>
+            <span data-i18n="home.parallax.scrollHint">Прокрутите для просмотра</span>
         </div>
     </section>
 
@@ -73,14 +270,14 @@
                     <div class="speck-card-header-compact">
                         <div class="speck-number-compact">01</div>
                         <div class="speck-title-content-compact">
-                            <h3 class="speck-title-compact">Strategy</h3>
-                            <p class="speck-subtitle-compact">Drive Innovation And Align Goals</p>
+                            <h3 class="speck-title-compact" data-i18n="home.speckServices.strategy.title">Strategy</h3>
+                            <p class="speck-subtitle-compact" data-i18n="home.speckServices.strategy.subtitle">Drive Innovation And Align Goals</p>
                         </div>
                     </div>
                     <div class="speck-features-compact">
-                        <span class="speck-feature-compact">Innovation Strategy</span>
-                        <span class="speck-feature-compact">Design Strategy</span>
-                        <span class="speck-feature-compact">User Research</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.strategy.features.innovation">Innovation Strategy</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.strategy.features.design">Design Strategy</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.strategy.features.research">User Research</span>
                     </div>
                     <div class="speck-hover-content-compact">
                         <div class="speck-arrow-compact">
@@ -94,15 +291,15 @@
                     <div class="speck-card-header-compact">
                         <div class="speck-number-compact">02</div>
                         <div class="speck-title-content-compact">
-                            <h3 class="speck-title-compact">Design</h3>
-                            <p class="speck-subtitle-compact">Engage Audiences With Product Design</p>
+                            <h3 class="speck-title-compact" data-i18n="home.speckServices.design.title">Design</h3>
+                            <p class="speck-subtitle-compact" data-i18n="home.speckServices.design.subtitle">Engage Audiences With Product Design</p>
                         </div>
                     </div>
                     <div class="speck-features-compact">
-                        <span class="speck-feature-compact">Industrial Design</span>
-                        <span class="speck-feature-compact">Brand Design</span>
-                        <span class="speck-feature-compact">Packaging Design</span>
-                        <span class="speck-feature-compact">UI/UX Design</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.design.features.industrial">Industrial Design</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.design.features.brand">Brand Design</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.design.features.packaging">Packaging Design</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.design.features.uiux">UI/UX Design</span>
                     </div>
                     <div class="speck-hover-content-compact">
                         <div class="speck-arrow-compact">
@@ -116,14 +313,14 @@
                     <div class="speck-card-header-compact">
                         <div class="speck-number-compact">03</div>
                         <div class="speck-title-content-compact">
-                            <h3 class="speck-title-compact">Engineering</h3>
-                            <p class="speck-subtitle-compact">Complex Technical Solutions And Architecture</p>
+                            <h3 class="speck-title-compact" data-i18n="home.speckServices.engineering.title">Engineering</h3>
+                            <p class="speck-subtitle-compact" data-i18n="home.speckServices.engineering.subtitle">Complex Technical Solutions And Architecture</p>
                         </div>
                     </div>
                     <div class="speck-features-compact">
-                        <span class="speck-feature-compact">Architecture</span>
-                        <span class="speck-feature-compact">Optimization</span>
-                        <span class="speck-feature-compact">Scaling</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.engineering.features.architecture">Architecture</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.engineering.features.optimization">Optimization</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.engineering.features.scaling">Scaling</span>
                     </div>
                     <div class="speck-hover-content-compact">
                         <div class="speck-arrow-compact">
@@ -137,15 +334,15 @@
                     <div class="speck-card-header-compact">
                         <div class="speck-number-compact">04</div>
                         <div class="speck-title-content-compact">
-                            <h3 class="speck-title-compact">Marketing</h3>
-                            <p class="speck-subtitle-compact">Digital Strategies And Product Promotion</p>
+                            <h3 class="speck-title-compact" data-i18n="home.speckServices.marketing.title">Marketing</h3>
+                            <p class="speck-subtitle-compact" data-i18n="home.speckServices.marketing.subtitle">Digital Strategies And Product Promotion</p>
                         </div>
                     </div>
                     <div class="speck-features-compact">
-                        <span class="speck-feature-compact">SEO</span>
-                        <span class="speck-feature-compact">SMM</span>
-                        <span class="speck-feature-compact">Analytics</span>
-                        <span class="speck-feature-compact">Content</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.marketing.features.seo">SEO</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.marketing.features.smm">SMM</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.marketing.features.analytics">Analytics</span>
+                        <span class="speck-feature-compact" data-i18n="home.speckServices.marketing.features.content">Content</span>
                     </div>
                     <div class="speck-hover-content-compact">
                         <div class="speck-arrow-compact">
@@ -161,7 +358,7 @@
     <section class="clients-section content-section" data-bg-index="0">
         <div class="container">
             <div class="clients-content">
-                <p class="clients-label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
+                <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
                 
                 <!-- Marquee 1 (ВЛЕВО ←) -->
                 <div class="marquee-container">
@@ -268,7 +465,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-number-improved" data-target="150">0</div>
-                        <div class="stat-label-improved">Проектов завершено</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.projects">Проектов завершено</div>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -277,7 +474,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-number-improved" data-target="12">0</div>
-                        <div class="stat-label-improved">Лет опыта</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.years">Лет опыта</div>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -286,7 +483,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-number-improved" data-target="98">0</div>
-                        <div class="stat-label-improved">Довольных клиентов</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.satisfaction">Довольных клиентов</div>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -295,7 +492,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-number-improved" data-target="25">0</div>
-                        <div class="stat-label-improved">Наград</div>
+                        <div class="stat-label-improved" data-i18n="home.stats.awards">Наград</div>
                     </div>
                 </div>
             </div>
@@ -307,12 +504,12 @@
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
-                    <h2>Готовы начать проект?</h2>
-                    <p>Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
+                    <h2 data-i18n="home.cta.title">Готовы начать проект?</h2>
+                    <p data-i18n="home.cta.description">Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
                 </div>
                 <div class="cta-action">
                     <a href="contacts.html" class="btn btn-primary btn-large btn-glow">
-                        <span>Связаться с нами</span>
+                        <span data-i18n="home.cta.button">Связаться с нами</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -329,7 +526,7 @@
                         <div class="logo-mark">NB</div>
                         <span>NBGROUP.TECH</span>
                     </div>
-                    <p class="footer-description">
+                    <p class="footer-description" data-i18n="footer.description">
                         Студия промышленного дизайна, создающая продукты, которые определяют рынки 
                         и стимулируют рост бизнеса.
                     </p>
@@ -353,25 +550,25 @@
                     </div>
                 </div>
                 <div class="footer-section">
-                    <h3>Компания</h3>
+                    <h3 data-i18n="footer.company">Компания</h3>
                     <ul class="footer-links">
-                        <li><a href="about.html">О нас</a></li>
-                        <li><a href="services.html">Услуги</a></li>
-                        <li><a href="portfolio.html">Портфолио</a></li>
-                        <li><a href="contacts.html">Контакты</a></li>
+                        <li><a href="about.html" data-i18n="nav.about">О нас</a></li>
+                        <li><a href="services.html" data-i18n="nav.services">Услуги</a></li>
+                        <li><a href="portfolio.html" data-i18n="nav.portfolio">Портфолио</a></li>
+                        <li><a href="contacts.html" data-i18n="nav.contact">Контакты</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Услуги</h3>
+                    <h3 data-i18n="footer.services">Услуги</h3>
                     <ul class="footer-links">
-                        <li><a href="services-engineering.html">Инжиниринг</a></li>
+                        <li><a href="services-engineering.html" data-i18n="services.nav.engineering">Инжиниринг</a></li>
                         <li><a href="services-development.html">Разработка</a></li>
-                        <li><a href="services-design.html">Дизайн</a></li>
-                        <li><a href="services-marketing.html">Маркетинг</a></li>
+                        <li><a href="services-design.html" data-i18n="services.nav.design">Дизайн</a></li>
+                        <li><a href="services-marketing.html" data-i18n="services.nav.marketing">Маркетинг</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Контакты</h3>
+                    <h3 data-i18n="footer.contact">Контакты</h3>
                     <div class="contact-info">
                         <p><i class="fas fa-map-marker-alt"></i> Москва, Россия</p>
                         <div class="messenger-contacts">
@@ -392,196 +589,216 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 NBGROUP.TECH. <span>Все права защищены.</span></p>
+                <p>&copy; 2024 NBGROUP.TECH. <span data-i18n="footer.copyright">Все права защищены.</span></p>
                 <div class="footer-legal">
-                    <a href="privacy.html">Политика конфиденциальности</a>
-                    <a href="terms.html">Условия использования</a>
+                    <a href="privacy.html" data-i18n="footer.legal.privacy">Политика конфиденциальности</a>
+                    <a href="terms.html" data-i18n="footer.legal.terms">Условия использования</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- ВСЕ В ОДНОМ СКРИПТЕ -->
+    <!-- JavaScript -->
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/parallax.js"></script>
+
+    <!-- ГАРАНТИРОВАННЫЙ ЗАПУСК БЕГУЩЕЙ СТРОКИ -->
     <script>
-        console.log('🚀 Запуск сайта NBGROUP...');
-        
-        // 1. ЗАГРУЗКА ХЕДЕРА
-        function loadHeader() {
-            console.log('📥 Загрузка хедера...');
+        // ===== ПЕРЕХВАТ И ОТКЛЮЧЕНИЕ REDUCED MOTION =====
+        (function() {
+            'use strict';
             
-            fetch('components/header.html')
-                .then(response => {
-                    if (!response.ok) throw new Error('HTTP ' + response.status);
-                    return response.text();
-                })
-                .then(html => {
-                    const container = document.getElementById('header-container');
-                    if (container) {
-                        container.innerHTML = html;
-                        console.log('✅ Хедер загружен');
-                        
-                        // Добавляем отступ для hero
-                        const hero = document.querySelector('.hero');
-                        if (hero) {
-                            hero.style.paddingTop = '140px';
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('❌ Ошибка загрузки хедера:', error);
-                    document.getElementById('header-container').innerHTML = `
-                        <header style="
-                            position: fixed;
-                            top: 0;
-                            left: 0;
-                            right: 0;
-                            background: #0066ff;
-                            padding: 20px 0;
-                            z-index: 1000;
-                            color: white;
-                            text-align: center;
-                        ">
-                            <div style="padding: 0 20px;">
-                                <a href="index.html" style="color: white; font-size: 24px; font-weight: bold; text-decoration: none;">
-                                    NBGROUP.TECH
-                                </a>
-                            </div>
-                        </header>
-                    `;
-                });
-        }
-        
-        // 2. БЕГУЩАЯ СТРОКА
-        function initMarquee() {
-            console.log('🎬 Инициализация бегущей строки...');
+            console.log('🚀 Инициализация гарантированной бегущей строки');
             
-            const marquee1 = document.getElementById('marquee1');
-            const marquee2 = document.getElementById('marquee2');
-            
-            if (!marquee1 || !marquee2) {
-                console.error('❌ Элементы не найдены');
-                return;
-            }
-            
-            // Принудительно запускаем анимации
-            marquee1.style.animation = 'marqueeLeft 40s linear infinite';
-            marquee2.style.animation = 'marqueeRight 40s linear infinite';
-            marquee1.style.animationPlayState = 'running';
-            marquee2.style.animationPlayState = 'running';
-            
-            console.log('✅ Бегущая строка запущена');
-            
-            // Пауза при наведении
-            document.querySelectorAll('.marquee-container').forEach(container => {
-                container.addEventListener('mouseenter', () => {
-                    marquee1.style.animationPlayState = 'paused';
-                    marquee2.style.animationPlayState = 'paused';
-                });
-                
-                container.addEventListener('mouseleave', () => {
-                    marquee1.style.animationPlayState = 'running';
-                    marquee2.style.animationPlayState = 'running';
-                });
-            });
-            
-            // CSS для бегущей строки
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes marqueeLeft {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
+            // 1. ГЛОБАЛЬНО ОТКЛЮЧАЕМ REDUCED MOTION
+            const originalMatchMedia = window.matchMedia;
+            window.matchMedia = function(query) {
+                if (query === '(prefers-reduced-motion: reduce)') {
+                    console.log('🔧 Отключена глобальная проверка reduced motion');
+                    return {
+                        matches: false,
+                        media: query,
+                        addListener: function() {},
+                        removeListener: function() {},
+                        addEventListener: function() {},
+                        removeEventListener: function() {},
+                        dispatchEvent: function() { return true; }
+                    };
                 }
-                @keyframes marqueeRight {
-                    0% { transform: translateX(-50%); }
-                    100% { transform: translateX(0); }
-                }
-                #marquee1, #marquee2 {
-                    will-change: transform;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        // 3. ЗАПУСК ВСЕГО
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 DOM загружен');
-            
-            // Загружаем хедер сразу
-            loadHeader();
-            
-            // Запускаем бегущую строку с задержкой
-            setTimeout(initMarquee, 500);
-            
-            // Запускаем счетчики статистики
-            initStatsCounter();
-        });
-        
-        // 4. СЧЕТЧИКИ СТАТИСТИКИ
-        function initStatsCounter() {
-            const statNumbers = document.querySelectorAll('.stat-number-improved');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const statNumber = entry.target;
-                        const target = parseInt(statNumber.getAttribute('data-target')) || 0;
-                        
-                        if (target > 0) {
-                            animateNumber(statNumber, target);
-                            observer.unobserve(statNumber);
-                        }
-                    }
-                });
-            }, { threshold: 0.5 });
-            
-            statNumbers.forEach(stat => observer.observe(stat));
-        }
-        
-        function animateNumber(element, target) {
-            let current = 0;
-            const duration = 2000;
-            const startTime = Date.now();
-            
-            const updateNumber = () => {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                current = Math.floor(easeOutQuart * target);
-                
-                element.textContent = current.toLocaleString();
-                
-                if (progress < 1) {
-                    requestAnimationFrame(updateNumber);
-                } else {
-                    element.textContent = target.toLocaleString();
-                }
+                return originalMatchMedia.call(this, query);
             };
             
-            requestAnimationFrame(updateNumber);
-        }
-        
-        // 5. ПРОКРУТКА ДЛЯ HERO
-        function initScrollIndicator() {
-            const scrollIndicator = document.querySelector('.parallax-scroll-indicator');
-            if (!scrollIndicator) return;
-            
-            let isVisible = true;
-            
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100 && isVisible) {
-                    scrollIndicator.style.opacity = '0';
-                    scrollIndicator.style.visibility = 'hidden';
-                    isVisible = false;
-                } else if (window.scrollY <= 100 && !isVisible) {
-                    scrollIndicator.style.opacity = '1';
-                    scrollIndicator.style.visibility = 'visible';
-                    isVisible = true;
+            // 2. ФУНКЦИЯ ГАРАНТИРОВАННОГО ЗАПУСКА
+            function guaranteeMarqueeStart() {
+                console.log('💪 Гарантированный запуск бегущей строки...');
+                
+                const marquee1 = document.getElementById('marquee1');
+                const marquee2 = document.getElementById('marquee2');
+                
+                if (!marquee1 || !marquee2) {
+                    console.error('❌ Элементы бегущей строки не найдены');
+                    return false;
                 }
+                
+                // 3. ПРИНУДИТЕЛЬНО УСТАНАВЛИВАЕМ CSS АНИМАЦИИ
+                marquee1.style.animation = 'marqueeLeft 40s linear infinite';
+                marquee2.style.animation = 'marqueeRight 40s linear infinite';
+                marquee1.style.animationPlayState = 'running';
+                marquee2.style.animationPlayState = 'running';
+                
+                // 4. СБРАСЫВАЕМ ПРЕДЫДУЩИЕ ТРАНСФОРМАЦИИ
+                marquee1.style.transform = 'translate3d(0, 0, 0)';
+                marquee2.style.transform = 'translate3d(0, 0, 0)';
+                
+                // 5. ОПТИМИЗАЦИЯ ДЛЯ ПЛАВНОСТИ
+                marquee1.style.willChange = 'transform';
+                marquee2.style.willChange = 'transform';
+                
+                console.log('✅ CSS анимации установлены');
+                
+                // 6. ПАУЗА ПРИ НАВЕДЕНИИ
+                document.querySelectorAll('.marquee-container').forEach(container => {
+                    container.addEventListener('mouseenter', () => {
+                        marquee1.style.animationPlayState = 'paused';
+                        marquee2.style.animationPlayState = 'paused';
+                    });
+                    
+                    container.addEventListener('mouseleave', () => {
+                        marquee1.style.animationPlayState = 'running';
+                        marquee2.style.animationPlayState = 'running';
+                    });
+                });
+                
+                // 7. ПРОВЕРЯЕМ ЧЕРЕЗ 500МС
+                setTimeout(() => {
+                    const style1 = window.getComputedStyle(marquee1);
+                    console.log('🔍 Проверка через 500мс:', {
+                        animationName: style1.animationName,
+                        animationPlayState: style1.animationPlayState,
+                        transform: style1.transform
+                    });
+                    
+                    // Если CSS не работает, запускаем JS fallback
+                    if (style1.animationName === 'none') {
+                        console.log('🔄 CSS не работает, запускаем JS fallback...');
+                        startJSMarqueeFallback();
+                    }
+                }, 500);
+                
+                return true;
+            }
+            
+            // 8. JS FALLBACK АНИМАЦИЯ
+            function startJSMarqueeFallback() {
+                console.log('🎬 Запуск JS fallback анимации...');
+                
+                const marquee1 = document.getElementById('marquee1');
+                const marquee2 = document.getElementById('marquee2');
+                
+                if (!marquee1 || !marquee2) return;
+                
+                let pos1 = 0;
+                let pos2 = 0;
+                const speed = 1.2; // px per frame
+                let animationId = null;
+                
+                function animate() {
+                    // Первая строка - влево
+                    pos1 -= speed;
+                    const track1 = marquee1.querySelector('.marquee-track');
+                    if (track1) {
+                        const width1 = track1.offsetWidth;
+                        if (pos1 <= -width1) pos1 = 0;
+                        marquee1.style.transform = `translateX(${pos1}px)`;
+                    }
+                    
+                    // Вторая строка - вправо
+                    pos2 += speed;
+                    const track2 = marquee2.querySelector('.marquee-track');
+                    if (track2) {
+                        const width2 = track2.offsetWidth;
+                        if (pos2 >= 0) pos2 = -width2;
+                        marquee2.style.transform = `translateX(${pos2}px)`;
+                    }
+                    
+                    animationId = requestAnimationFrame(animate);
+                }
+                
+                // Запускаем
+                animate();
+                
+                // Сохраняем ID для остановки
+                window._marqueeJSFallback = animationId;
+                
+                console.log('✅ JS fallback анимация запущена');
+            }
+            
+            // 9. ЗАПУСКАЕМ СРАЗУ
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('📄 DOM загружен, запускаем бегущую строку...');
+                guaranteeMarqueeStart();
             });
-        }
-        
-        // Запускаем индикатор прокрутки
-        document.addEventListener('DOMContentLoaded', initScrollIndicator);
+            
+            // 10. РЕЗЕРВНЫЙ ЗАПУСК ПОСЛЕ ПОЛНОЙ ЗАГРУЗКИ
+            window.addEventListener('load', () => {
+                console.log('🌐 Страница полностью загружена, проверяем бегущую строку...');
+                
+                setTimeout(() => {
+                    const marquee1 = document.getElementById('marquee1');
+                    if (marquee1) {
+                        const style = window.getComputedStyle(marquee1);
+                        if (style.animationName === 'none') {
+                            console.log('🔄 Резервный запуск после load...');
+                            guaranteeMarqueeStart();
+                        }
+                    }
+                }, 1000);
+            });
+            
+            // 11. УТИЛИТЫ ДЛЯ ОТЛАДКИ
+            window.guaranteeMarqueeStart = guaranteeMarqueeStart;
+            window.checkMarqueeStatus = function() {
+                const marquee1 = document.getElementById('marquee1');
+                const marquee2 = document.getElementById('marquee2');
+                
+                if (!marquee1 || !marquee2) {
+                    console.log('❌ Элементы не найдены');
+                    return;
+                }
+                
+                const style1 = window.getComputedStyle(marquee1);
+                const style2 = window.getComputedStyle(marquee2);
+                
+                console.log('📊 Статус бегущей строки:');
+                console.log('Marquee 1 (влево):', {
+                    animation: style1.animationName,
+                    playState: style1.animationPlayState,
+                    transform: style1.transform
+                });
+                console.log('Marquee 2 (вправо):', {
+                    animation: style2.animationName,
+                    playState: style2.animationPlayState,
+                    transform: style2.transform
+                });
+            };
+            
+            window.restartMarquee = function() {
+                console.log('🔁 Перезапуск бегущей строки...');
+                
+                // Останавливаем JS fallback если он работает
+                if (window._marqueeJSFallback) {
+                    cancelAnimationFrame(window._marqueeJSFallback);
+                    window._marqueeJSFallback = null;
+                }
+                
+                // Запускаем заново
+                guaranteeMarqueeStart();
+            };
+            
+            console.log('✅ Система гарантированной бегущей строки инициализирована');
+        })();
     </script>
 </body>
 </html>
