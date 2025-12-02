@@ -799,3 +799,38 @@
 .language-switcher[data-current-lang="en"]::before {
     transform: translateX(100%);
 }
+
+/* ===== CSS АНИМАЦИИ ДЛЯ БЕГУЩЕЙ СТРОКИ ===== */
+/* Эти анимации дублируют те, что в inline стилях index.html */
+/* для гарантии работы */
+
+@keyframes marqueeLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes marqueeRight {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Оптимизация для плавности анимаций */
+.marquee-optimized {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform;
+}
+
+/* Пауза анимации при наведении */
+.pause-on-hover:hover {
+    animation-play-state: paused !important;
+}
