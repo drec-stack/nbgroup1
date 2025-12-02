@@ -579,6 +579,65 @@
     75% { transform: rotate(5deg); }
 }
 
+/* ===== БЕГУЩАЯ СТРОКА CSS АНИМАЦИИ ===== */
+.marquee-animate-left {
+    animation: marqueeLeft 40s linear infinite;
+}
+
+.marquee-animate-right {
+    animation: marqueeRight 40s linear infinite;
+}
+
+@keyframes marqueeLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes marqueeRight {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Пауза при наведении */
+.marquee-container:hover .marquee-animate-left,
+.marquee-container:hover .marquee-animate-right {
+    animation-play-state: paused;
+}
+
+/* Оптимизация для плавности */
+.marquee-infinite-wrapper {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform;
+}
+
+/* Мобильная версия для бегущей строки */
+@media (max-width: 768px) {
+    .marquee-animate-left {
+        animation: marqueeLeft 30s linear infinite;
+    }
+    
+    .marquee-animate-right {
+        animation: marqueeRight 30s linear infinite;
+    }
+}
+
+@media (max-width: 480px) {
+    .marquee-animate-left,
+    .marquee-animate-right {
+        animation-duration: 25s;
+    }
+}
+
 /* ===== ACCESSIBILITY & PERFORMANCE ===== */
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -587,6 +646,19 @@
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+    
+    .marquee-animate-left,
+    .marquee-animate-right {
+        animation: none !important;
+    }
+    
+    .pulse, .pulse-glow, .glow, .spin-slow, .spin-medium, .spin-fast {
+        animation: none !important;
+    }
+    
+    .loading-spinner, .loading-dots span {
+        animation: none !important;
     }
 }
 
@@ -707,24 +779,6 @@
     pointer-events: all;
 }
 
-/* Reduced motion support for language switcher */
-@media (prefers-reduced-motion: reduce) {
-    .lang-slider {
-        transition: none;
-    }
-    
-    .language-changing [data-i18n],
-    .language-changed [data-i18n] {
-        transition: none;
-        opacity: 1;
-        transform: none;
-    }
-    
-    .lang-btn:hover .lang-flag {
-        transform: none;
-    }
-}
-
 /* CSS для плавной смены языка */
 .language-changing main,
 .language-changing body > *:not(.parallax-bg-container):not(.scroll-progress) {
@@ -798,39 +852,4 @@
 
 .language-switcher[data-current-lang="en"]::before {
     transform: translateX(100%);
-}
-
-/* ===== CSS АНИМАЦИИ ДЛЯ БЕГУЩЕЙ СТРОКИ ===== */
-/* Эти анимации дублируют те, что в inline стилях index.html */
-/* для гарантии работы */
-
-@keyframes marqueeLeft {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@keyframes marqueeRight {
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
-
-/* Оптимизация для плавности анимаций */
-.marquee-optimized {
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-    will-change: transform;
-}
-
-/* Пауза анимации при наведении */
-.pause-on-hover:hover {
-    animation-play-state: paused !important;
 }
