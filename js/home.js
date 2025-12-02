@@ -1,30 +1,30 @@
-// home.js - Complete Home Page Functionality with WORKING MARQUEE
+// home.js - Simple and Reliable Home Page Functionality
 
 class HomePage {
     constructor() {
-        this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        this.marqueeAnimations = [];
+        console.log('🏠 HomePage инициализация...');
+        this.marqueeAnimation = null;
         this.init();
     }
 
     init() {
-        console.log('🏠 HomePage инициализация...');
         this.initCompactSpeckCards();
         this.initScrollAnimations();
         this.initStatsCounter();
         this.initParallaxBackgrounds();
         
-        // Запускаем бегущую строку с небольшой задержкой
-        setTimeout(() => {
-            this.initMarquee();
-        }, 500);
+        // Не инициализируем бегущую строку здесь - она запускается из index.html
+        console.log('✅ HomePage инициализирован');
     }
 
     // Compact Speck Cards Initialization
     initCompactSpeckCards() {
         const speckCards = document.querySelectorAll('.speck-service-card-compact');
         
-        if (!speckCards.length) return;
+        if (!speckCards.length) {
+            console.log('ℹ️ Compact speck cards не найдены');
+            return;
+        }
 
         // Scroll animation
         const observer = new IntersectionObserver((entries) => {
@@ -65,12 +65,19 @@ class HomePage {
                 window.location.href = `services.html#${category}`;
             });
         });
+        
+        console.log(`✅ ${speckCards.length} compact speck cards инициализированы`);
     }
 
     // Scroll animations
     initScrollAnimations() {
         const elementsToAnimate = document.querySelectorAll('.reveal-element, .slide-up');
         
+        if (!elementsToAnimate.length) {
+            console.log('ℹ️ Нет элементов для scroll анимаций');
+            return;
+        }
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -80,12 +87,19 @@ class HomePage {
         }, { threshold: 0.1 });
 
         elementsToAnimate.forEach(el => observer.observe(el));
+        
+        console.log(`✅ ${elementsToAnimate.length} scroll элементов отслеживаются`);
     }
 
     // Stats counters
     initStatsCounter() {
         const statNumbers = document.querySelectorAll('.stat-number-improved');
         
+        if (!statNumbers.length) {
+            console.log('ℹ️ Статистические счетчики не найдены');
+            return;
+        }
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -101,6 +115,8 @@ class HomePage {
         }, { threshold: 0.5 });
 
         statNumbers.forEach(stat => observer.observe(stat));
+        
+        console.log(`✅ ${statNumbers.length} статистических счетчиков отслеживаются`);
     }
 
     animateNumber(element, target) {
@@ -130,6 +146,11 @@ class HomePage {
     initParallaxBackgrounds() {
         const contentSections = document.querySelectorAll('.content-section');
         
+        if (!contentSections.length) {
+            console.log('ℹ️ Секции для параллакса не найдены');
+            return;
+        }
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -140,6 +161,8 @@ class HomePage {
         }, { threshold: 0.3 });
 
         contentSections.forEach(section => observer.observe(section));
+        
+        console.log(`✅ ${contentSections.length} параллакс секций отслеживаются`);
     }
 
     switchBackground(bgIndex) {
@@ -152,230 +175,73 @@ class HomePage {
         }
     }
 
-    // ===== РАБОЧАЯ БЕГУЩАЯ СТРОКА =====
+    // Метод для ручного запуска бегущей строки (если нужно)
     initMarquee() {
-        console.log('🎬 Инициализация бегущей строки...');
-        
-        // Останавливаем предыдущие анимации
-        this.stopMarquee();
+        console.log('🎬 HomePage: инициализация бегущей строки...');
         
         const marquee1 = document.getElementById('marquee1');
         const marquee2 = document.getElementById('marquee2');
         
         if (!marquee1 || !marquee2) {
-            console.error('❌ Не найдены элементы бегущей строки');
+            console.error('❌ Элементы бегущей строки не найдены');
             return;
         }
-
-        // Для reduced motion показываем статично
-        if (this.isReducedMotion) {
-            console.log('♿ Reduced motion: статичная бегущая строка');
-            this.setupStaticMarquee(marquee1, marquee2);
-            return;
+        
+        // Простая JS анимация как резерв
+        if (this.marqueeAnimation) {
+            cancelAnimationFrame(this.marqueeAnimation);
         }
-
-        // Пробуем сначала CSS анимации (они более плавные)
-        this.tryCSSAnimations(marquee1, marquee2);
         
-        // Резервная проверка через 2 секунды
-        setTimeout(() => {
-            this.verifyMarqueeRunning(marquee1, marquee2);
-        }, 2000);
-    }
-
-    // Пробуем CSS анимации
-    tryCSSAnimations(marquee1, marquee2) {
-        console.log('🎨 Пробуем CSS анимации...');
+        let pos1 = 0;
+        let pos2 = 0;
+        const speed = 1;
         
-        // Добавляем CSS классы
-        marquee1.classList.add('marquee-animate-left');
-        marquee2.classList.add('marquee-animate-right');
-        
-        // Принудительно запускаем
-        marquee1.style.animationPlayState = 'running';
-        marquee2.style.animationPlayState = 'running';
-        
-        // Оптимизации для плавности
-        this.optimizeForPerformance(marquee1);
-        this.optimizeForPerformance(marquee2);
-        
-        // Добавляем паузу при наведении
-        this.addMarqueeHoverHandlers(marquee1, marquee2);
-        
-        this.marqueeAnimations = [marquee1, marquee2];
-        
-        console.log('✅ CSS анимации запущены');
-    }
-
-    // Проверяем работает ли анимация
-    verifyMarqueeRunning(marquee1, marquee2) {
-        const style1 = window.getComputedStyle(marquee1);
-        const style2 = window.getComputedStyle(marquee2);
-        
-        const isCSSWorking = style1.animationName !== 'none' && style2.animationName !== 'none';
-        
-        if (!isCSSWorking) {
-            console.log('⚠️ CSS анимации не работают, переключаемся на JS...');
-            this.startJSAnimations(marquee1, marquee2);
-        } else {
-            console.log('✅ CSS анимации работают корректно');
-        }
-    }
-
-    // Запуск JS анимаций (резервный метод)
-    startJSAnimations(marquee1, marquee2) {
-        // Убираем CSS классы
-        marquee1.classList.remove('marquee-animate-left');
-        marquee2.classList.remove('marquee-animate-right');
-        
-        // Останавливаем любые существующие анимации
-        this.stopMarquee();
-        
-        console.log('🔄 Запуск JS анимаций...');
-        
-        // Запускаем через requestAnimationFrame
-        this.startMarqueeAnimation(marquee1, false); // Влево
-        this.startMarqueeAnimation(marquee2, true);  // Вправо
-    }
-
-    // JS анимация через requestAnimationFrame
-    startMarqueeAnimation(marqueeElement, reverse = false) {
-        const tracks = marqueeElement.querySelectorAll('.marquee-track');
-        if (!tracks.length) return;
-        
-        const track = tracks[0];
-        const trackWidth = track.offsetWidth;
-        let position = 0;
-        const speed = reverse ? 1 : -1; // Скорость в пикселях за кадр
-        let isPaused = false;
-        let animationId = null;
-        
-        console.log(`▶️ JS анимация: ${reverse ? 'вправо' : 'влево'}`);
-        
-        function animate() {
-            if (isPaused) {
-                animationId = requestAnimationFrame(animate);
-                return;
+        const animate = () => {
+            // Первая строка - влево
+            pos1 -= speed;
+            const track1 = marquee1.querySelector('.marquee-track');
+            if (track1) {
+                const width1 = track1.offsetWidth;
+                if (pos1 <= -width1) pos1 = 0;
+                marquee1.style.transform = `translateX(${pos1}px)`;
             }
             
-            position += speed;
-            
-            // Сброс для бесконечной прокрутки
-            if (position <= -trackWidth) {
-                position = 0;
-            } else if (position >= 0) {
-                position = -trackWidth;
+            // Вторая строка - вправо
+            pos2 += speed;
+            const track2 = marquee2.querySelector('.marquee-track');
+            if (track2) {
+                const width2 = track2.offsetWidth;
+                if (pos2 >= 0) pos2 = -width2;
+                marquee2.style.transform = `translateX(${pos2}px)`;
             }
             
-            marqueeElement.style.transform = `translateX(${position}px)`;
-            animationId = requestAnimationFrame(animate);
-        }
+            this.marqueeAnimation = requestAnimationFrame(animate);
+        };
         
-        // Начальная позиция для второй строки
-        if (reverse) {
-            position = -trackWidth / 2;
-            marqueeElement.style.transform = `translateX(${position}px)`;
-        }
-        
-        // Запускаем
         animate();
         
-        // Сохраняем данные
-        marqueeElement._marqueeData = {
-            animationId,
-            isPaused,
-            position,
-            speed
-        };
-        
-        this.marqueeAnimations.push(marqueeElement);
-    }
-
-    // Добавление обработчиков для паузы при наведении
-    addMarqueeHoverHandlers(marquee1, marquee2) {
-        const addHoverToMarquee = (marquee) => {
-            const container = marquee.closest('.marquee-container');
-            if (!container) return;
-            
-            container.addEventListener('mouseenter', () => {
-                if (marquee._marqueeData) {
-                    marquee._marqueeData.isPaused = true;
-                } else {
-                    marquee.style.animationPlayState = 'paused';
-                }
-            });
-            
-            container.addEventListener('mouseleave', () => {
-                if (marquee._marqueeData) {
-                    marquee._marqueeData.isPaused = false;
-                } else {
-                    marquee.style.animationPlayState = 'running';
-                }
-            });
-        };
-        
-        addHoverToMarquee(marquee1);
-        addHoverToMarquee(marquee2);
-    }
-
-    // Оптимизация для производительности
-    optimizeForPerformance(element) {
-        element.style.willChange = 'transform';
-        element.style.transform = 'translate3d(0, 0, 0)';
-        element.style.backfaceVisibility = 'hidden';
-    }
-
-    // Статичная версия для reduced motion
-    setupStaticMarquee(marquee1, marquee2) {
-        // Центрируем содержимое
-        marquee1.style.justifyContent = 'center';
-        marquee2.style.justifyContent = 'center';
-        
-        // Показываем только один трек
-        const tracks1 = marquee1.querySelectorAll('.marquee-track');
-        const tracks2 = marquee2.querySelectorAll('.marquee-track');
-        
-        if (tracks1.length > 1) tracks1[1].style.display = 'none';
-        if (tracks2.length > 1) tracks2[1].style.display = 'none';
-    }
-
-    // Остановка всех анимаций
-    stopMarquee() {
-        this.marqueeAnimations.forEach(marquee => {
-            // Останавливаем JS анимации
-            if (marquee._marqueeData && marquee._marqueeData.animationId) {
-                cancelAnimationFrame(marquee._marqueeData.animationId);
-                delete marquee._marqueeData;
-            }
-            
-            // Останавливаем CSS анимации
-            marquee.classList.remove('marquee-animate-left', 'marquee-animate-right');
-            marquee.style.animation = '';
-            marquee.style.transform = '';
-        });
-        
-        this.marqueeAnimations = [];
-    }
-
-    // Перезапуск анимаций
-    restartMarquee() {
-        console.log('🔄 Перезапуск бегущей строки...');
-        this.stopMarquee();
-        this.initMarquee();
+        console.log('✅ HomePage: JS бегущая строка запущена');
     }
 
     // Cleanup
     destroy() {
-        this.stopMarquee();
+        if (this.marqueeAnimation) {
+            cancelAnimationFrame(this.marqueeAnimation);
+            this.marqueeAnimation = null;
+        }
     }
 }
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Небольшая задержка для гарантии загрузки всех ресурсов
+    // Небольшая задержка чтобы все загрузилось
     setTimeout(() => {
-        window.homePage = new HomePage();
-        console.log('✅ HomePage инициализирован');
+        try {
+            window.homePage = new HomePage();
+            console.log('✅ HomePage успешно создан');
+        } catch (error) {
+            console.error('❌ Ошибка создания HomePage:', error);
+        }
     }, 100);
 });
 
@@ -386,97 +252,36 @@ function initHomePage() {
     }
 }
 
-// Проверка работы бегущей строки
-function checkMarqueeWorking() {
-    setTimeout(() => {
-        const marquee1 = document.getElementById('marquee1');
-        const marquee2 = document.getElementById('marquee2');
-        
-        if (!marquee1 || !marquee2) return;
-        
-        const style1 = window.getComputedStyle(marquee1);
-        const style2 = window.getComputedStyle(marquee2);
-        
-        const isWorking = 
-            (style1.transform !== 'none' && style1.transform !== 'matrix(1, 0, 0, 1, 0, 0)') ||
-            (style2.transform !== 'none' && style2.transform !== 'matrix(1, 0, 0, 1, 0, 0)') ||
-            style1.animationName !== 'none' ||
-            style2.animationName !== 'none';
-        
-        if (!isWorking) {
-            console.warn('⚠️ Бегущая строка не работает, перезапуск...');
-            if (window.homePage) {
-                window.homePage.restartMarquee();
-            }
-            
-            // Пробуем fallback
-            if (typeof window.startMarqueeFallback === 'function') {
-                window.startMarqueeFallback();
-            }
-        }
-    }, 3000);
-}
-
-// Проверяем после полной загрузки
-window.addEventListener('load', () => {
-    setTimeout(checkMarqueeWorking, 1000);
-});
-
-// Резервный запуск через 5 секунд
+// Проверка через 3 секунды
 setTimeout(() => {
     const marquee1 = document.getElementById('marquee1');
     if (marquee1) {
         const style = window.getComputedStyle(marquee1);
-        if (style.transform === 'none' && style.animationName === 'none') {
-            console.log('🔄 Резервный запуск через 5 секунд...');
-            if (window.homePage) {
-                window.homePage.restartMarquee();
-            }
+        console.log('🎯 Через 3 секунды:');
+        console.log('  Анимация:', style.animationName);
+        console.log('  Transform:', style.transform);
+        
+        // Если не двигается, попробуем запустить
+        if (style.animationName === 'none' && style.transform === 'none') {
+            console.log('⚠️ Бегущая строка не работает через 3 секунды');
+            // Можно вызвать window.forceMarquee() из консоли
         }
     }
-}, 5000);
-
-// Обновляем при изменении размера окна
-let resizeTimeout;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-        console.log('🔄 Обновление анимаций после ресайза...');
-        if (window.homePage) {
-            window.homePage.restartMarquee();
-        }
-    }, 250);
-});
-
-// Глобальные функции для отладки
-window.debugMarquee = function() {
-    const marquee1 = document.getElementById('marquee1');
-    const marquee2 = document.getElementById('marquee2');
-    
-    if (!marquee1 || !marquee2) {
-        console.error('❌ Элементы не найдены');
-        return;
-    }
-    
-    const style1 = window.getComputedStyle(marquee1);
-    const style2 = window.getComputedStyle(marquee2);
-    
-    console.log('🔍 Отладка бегущей строки:');
-    console.log('Marquee 1:', {
-        transform: style1.transform,
-        animationName: style1.animationName,
-        animationPlayState: style1.animationPlayState,
-        hasData: !!marquee1._marqueeData
-    });
-    console.log('Marquee 2:', {
-        transform: style2.transform,
-        animationName: style2.animationName,
-        animationPlayState: style2.animationPlayState,
-        hasData: !!marquee2._marqueeData
-    });
-};
+}, 3000);
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { HomePage, initHomePage };
+}
+
+// Fix для ошибки в main.js
+if (typeof window !== 'undefined') {
+    window.updateLanguageSwitcher = function(lang) {
+        console.log('🌍 updateLanguageSwitcher called with:', lang);
+        // Минимальная реализация чтобы избежать ошибки
+        const switcher = document.querySelector('.language-switcher');
+        if (switcher) {
+            switcher.setAttribute('data-current-lang', lang);
+        }
+    };
 }
