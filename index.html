@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
     <style>
-        /* БЕГУЩАЯ СТРОКА С ПЛАВНОЙ НЕПРЕРЫВНОЙ АНИМАЦИЕЙ */
+        /* ===== ИСПРАВЛЕННАЯ БЕГУЩАЯ СТРОКА - ПЛАВНАЯ И БЕЗ ДЕРГАНИЙ ===== */
         .clients-section {
             padding: 100px 0;
             position: relative;
@@ -42,6 +42,7 @@
             position: relative;
             padding: 30px 0;
             margin: 20px 0;
+            user-select: none;
         }
         
         /* Градиентные маски для плавного края */
@@ -52,7 +53,7 @@
             top: 0;
             height: 100%;
             width: 100px;
-            z-index: 2;
+            z-index: 3;
             pointer-events: none;
         }
         
@@ -70,9 +71,9 @@
         .marquee-infinite-wrapper {
             display: flex;
             width: fit-content;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-            animation-play-state: running;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
         }
         
         /* Трек с дублированным контентом для бесшовности */
@@ -114,19 +115,19 @@
             flex-shrink: 0 !important;
         }
         
-        /* АНИМАЦИИ ДЛЯ НЕПРЕРЫВНОЙ ПРОКРУТКИ */
-        /* Первая строка - слева направо */
+        /* ===== ИСПРАВЛЕННЫЕ CSS АНИМАЦИИ - ТОЛЬКО CSS ===== */
+        /* Верхняя строка: движется ВЛЕВО (←) */
         #marquee1 .marquee-infinite-wrapper {
-            animation: marquee-scroll-left 40s linear infinite;
+            animation: marqueeLeft 40s linear infinite;
         }
         
-        /* Вторая строка - справа налево */
+        /* Нижняя строка: движется ВПРАВО (→) */
         #marquee2 .marquee-infinite-wrapper {
-            animation: marquee-scroll-right 40s linear infinite;
+            animation: marqueeRight 40s linear infinite;
         }
         
-        /* Анимация для движения влево */
-        @keyframes marquee-scroll-left {
+        /* Анимация движения ВЛЕВО */
+        @keyframes marqueeLeft {
             0% {
                 transform: translateX(0);
             }
@@ -135,8 +136,8 @@
             }
         }
         
-        /* Анимация для движения вправо */
-        @keyframes marquee-scroll-right {
+        /* Анимация движения ВПРАВО */
+        @keyframes marqueeRight {
             0% {
                 transform: translateX(-50%);
             }
@@ -150,7 +151,15 @@
             animation-play-state: paused;
         }
         
-        /* МОБИЛЬНАЯ ВЕРСИЯ */
+        /* Оптимизация для плавности */
+        .marquee-infinite-wrapper,
+        .marquee-track {
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+        
+        /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
         @media (max-width: 768px) {
             .clients-section {
                 padding: 60px 0;
@@ -181,11 +190,11 @@
             }
             
             #marquee1 .marquee-infinite-wrapper {
-                animation: marquee-scroll-left 30s linear infinite;
+                animation: marqueeLeft 30s linear infinite;
             }
             
             #marquee2 .marquee-infinite-wrapper {
-                animation: marquee-scroll-right 30s linear infinite;
+                animation: marqueeRight 30s linear infinite;
             }
         }
         
@@ -204,13 +213,16 @@
                 width: 30px;
             }
             
-            #marquee1 .marquee-infinite-wrapper,
+            #marquee1 .marquee-infinite-wrapper {
+                animation-duration: 25s;
+            }
+            
             #marquee2 .marquee-infinite-wrapper {
                 animation-duration: 25s;
             }
         }
         
-        /* REDUCED MOTION */
+        /* ===== REDUCED MOTION ===== */
         @media (prefers-reduced-motion: reduce) {
             .marquee-infinite-wrapper {
                 animation: none !important;
@@ -219,6 +231,11 @@
             
             .marquee-container::before,
             .marquee-container::after {
+                display: none;
+            }
+            
+            /* Показываем только один набор брендов */
+            .marquee-track:nth-child(2) {
                 display: none;
             }
         }
@@ -364,7 +381,7 @@
             <div class="clients-content">
                 <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
                 
-                <!-- Marquee 1 (Left to Right) -->
+                <!-- Marquee 1 (ВЛЕВО ←) -->
                 <div class="marquee-container">
                     <div class="marquee-infinite-wrapper" id="marquee1">
                         <!-- Первый набор -->
@@ -410,47 +427,47 @@
                     </div>
                 </div>
 
-                <!-- Marquee 2 (Right to Left) -->
+                <!-- Marquee 2 (ВПРАВО →) -->
                 <div class="marquee-container">
                     <div class="marquee-infinite-wrapper" id="marquee2">
                         <!-- Первый набор -->
                         <div class="marquee-track">
                             <div class="marquee-content">
-                                <span class="brand">ACCURA</span>
-                                <span class="separator">·</span>
-                                <span class="brand">Microsoft</span>
-                                <span class="separator">·</span>
-                                <span class="brand">PayPal</span>
-                                <span class="separator">·</span>
-                                <span class="brand">Vocera V.</span>
-                                <span class="separator">·</span>
-                                <span class="brand">stryker</span>
-                                <span class="separator">·</span>
-                                <span class="brand">Roku</span>
+                                <span class="brand">dtronic</span>
                                 <span class="separator">·</span>
                                 <span class="brand">BRITA</span>
                                 <span class="separator">·</span>
-                                <span class="brand">dtronic</span>
+                                <span class="brand">Roku</span>
+                                <span class="separator">·</span>
+                                <span class="brand">stryker</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Vocera V.</span>
+                                <span class="separator">·</span>
+                                <span class="brand">PayPal</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Microsoft</span>
+                                <span class="separator">·</span>
+                                <span class="brand">ACCURA</span>
                             </div>
                         </div>
                         <!-- Дублированный набор для бесшовности -->
                         <div class="marquee-track">
                             <div class="marquee-content">
-                                <span class="brand">ACCURA</span>
-                                <span class="separator">·</span>
-                                <span class="brand">Microsoft</span>
-                                <span class="separator">·</span>
-                                <span class="brand">PayPal</span>
-                                <span class="separator">·</span>
-                                <span class="brand">Vocera V.</span>
-                                <span class="separator">·</span>
-                                <span class="brand">stryker</span>
-                                <span class="separator">·</span>
-                                <span class="brand">Roku</span>
+                                <span class="brand">dtronic</span>
                                 <span class="separator">·</span>
                                 <span class="brand">BRITA</span>
                                 <span class="separator">·</span>
-                                <span class="brand">dtronic</span>
+                                <span class="brand">Roku</span>
+                                <span class="separator">·</span>
+                                <span class="brand">stryker</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Vocera V.</span>
+                                <span class="separator">·</span>
+                                <span class="brand">PayPal</span>
+                                <span class="separator">·</span>
+                                <span class="brand">Microsoft</span>
+                                <span class="separator">·</span>
+                                <span class="brand">ACCURA</span>
                             </div>
                         </div>
                     </div>
@@ -656,47 +673,37 @@
             });
         }
 
-        // Оптимизация бегущей строки для плавности
-        function optimizeMarquee() {
-            console.log('🚀 Оптимизация бегущей строки...');
+        // Гарантируем запуск CSS анимаций бегущей строки
+        function ensureMarqueeAnimations() {
+            console.log('🚀 Запуск плавной бегущей строки через CSS...');
             
             const marquees = document.querySelectorAll('.marquee-infinite-wrapper');
             
             marquees.forEach(marquee => {
-                // Принудительно запускаем анимацию
+                // Принудительно запускаем CSS анимацию
                 marquee.style.animationPlayState = 'running';
                 
-                // Гарантируем, что будет smooth animation
-                marquee.style.willChange = 'transform';
-                marquee.style.backfaceVisibility = 'hidden';
+                // Убираем любые JS трансформации
                 marquee.style.transform = 'translate3d(0, 0, 0)';
                 
-                console.log(`✅ ${marquee.id} оптимизирован`);
+                // Добавляем оптимизации для плавности
+                marquee.style.willChange = 'transform';
+                marquee.style.backfaceVisibility = 'hidden';
+                
+                console.log(`✅ ${marquee.id} запущен через CSS анимацию`);
             });
-            
-            // Проверяем, что анимации работают
-            setTimeout(() => {
-                marquees.forEach(marquee => {
-                    const style = window.getComputedStyle(marquee);
-                    console.log(`${marquee.id}:`, {
-                        animationName: style.animationName,
-                        animationPlayState: style.animationPlayState,
-                        isAnimating: style.animationName !== 'none'
-                    });
-                });
-            }, 100);
         }
 
         // Запускаем всё
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(initHomeHeader, 500);
-            setTimeout(optimizeMarquee, 1000);
+            setTimeout(ensureMarqueeAnimations, 1000);
         });
 
-        // Дополнительная проверка
+        // Дополнительная проверка после загрузки
         window.addEventListener('load', function() {
-            console.log('🎬 Проверка плавности анимаций...');
-            optimizeMarquee();
+            console.log('🎬 Проверка плавности бегущей строки...');
+            ensureMarqueeAnimations();
         });
     </script>
 </body>
