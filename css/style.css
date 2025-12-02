@@ -2839,3 +2839,46 @@ html {
         -webkit-backface-visibility: hidden;
     }
 }
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ ===== */
+
+/* Улучшенные стили для бегущей строки */
+.marquee-container {
+    position: relative;
+    isolation: isolate;
+}
+
+/* Фикс для мобильных устройств */
+@media (max-width: 768px) {
+    .marquee-content {
+        gap: 20px !important;
+    }
+    
+    .brand {
+        font-size: 1.2rem !important;
+        padding: 0 15px !important;
+    }
+}
+
+/* Поддержка темной темы для бегущей строки */
+@media (prefers-color-scheme: dark) {
+    .marquee-container::before {
+        background: linear-gradient(to right, #0a0a0a 0%, transparent 100%);
+    }
+    
+    .marquee-container::after {
+        background: linear-gradient(to left, #0a0a0a 0%, transparent 100%);
+    }
+}
+
+/* Высокая контрастность */
+@media (prefers-contrast: high) {
+    .brand {
+        opacity: 1 !important;
+        font-weight: 900 !important;
+    }
+    
+    .separator {
+        opacity: 0.7 !important;
+    }
+}
