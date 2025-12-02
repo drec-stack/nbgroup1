@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
     <style>
-        /* ===== БЕГУЩАЯ СТРОКА - РАБОЧАЯ ВЕРСИЯ ===== */
+        /* ===== БЕГУЩАЯ СТРОКА - ГАРАНТИРОВАННАЯ РАБОТА ===== */
         .clients-section {
             padding: 100px 0;
             position: relative;
@@ -114,8 +114,8 @@
             flex-shrink: 0 !important;
         }
         
-        /* ===== ПРОСТЫЕ CSS АНИМАЦИИ - НЕПОСРЕДСТВЕННО В ЭЛЕМЕНТАХ ===== */
-        /* Это заставит работать в 100% случаев */
+        /* ===== ГАРАНТИРОВАННЫЕ CSS АНИМАЦИИ ===== */
+        /* !important чтобы перебить все другие стили */
         #marquee1 .marquee-infinite-wrapper {
             animation: marqueeLeft 40s linear infinite !important;
             animation-play-state: running !important;
@@ -210,33 +210,13 @@
         }
         
         /* ===== ИГНОРИРУЕМ REDUCED MOTION ===== */
-        /* Убираем проверку на reduced motion для бегущей строки */
-        /* Она должна работать всегда */
-        
-        /* Убираем стили для reduced motion */
+        /* Гарантируем работу даже при reduced motion */
         @media (prefers-reduced-motion: reduce) {
             #marquee1 .marquee-infinite-wrapper,
             #marquee2 .marquee-infinite-wrapper {
-                animation: none !important;
-                justify-content: center;
+                animation: marqueeLeft 40s linear infinite !important;
+                animation-play-state: running !important;
             }
-            
-            .marquee-container::before,
-            .marquee-container::after {
-                display: none;
-            }
-        }
-        
-        /* ===== ГАРАНТИРОВАННЫЙ ЗАПУСК ===== */
-        /* Эти стили применяются через JS чтобы гарантировать работу */
-        .marquee-force-animate {
-            animation: marqueeLeft 40s linear infinite !important;
-            animation-play-state: running !important;
-        }
-        
-        .marquee-force-animate-reverse {
-            animation: marqueeRight 40s linear infinite !important;
-            animation-play-state: running !important;
         }
     </style>
 </head>
@@ -624,90 +604,105 @@
     <script src="js/home.js"></script>
     <script src="js/parallax.js"></script>
 
+    <!-- ГАРАНТИРОВАННЫЙ ЗАПУСК БЕГУЩЕЙ СТРОКИ -->
     <script>
-        // Load header component
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-container').innerHTML = html;
-                if (typeof initHeader === 'function') initHeader();
-                initHomeHeader();
-            });
-
-        // Header hide functionality
-        function initHomeHeader() {
-            const header = document.querySelector('.main-header');
-            if (!header) {
-                setTimeout(initHomeHeader, 100);
-                return;
-            }
-
-            let isHidden = false;
-            const hideThreshold = 100;
-
-            function handleScroll() {
-                const scrollY = window.pageYOffset;
+        // ===== ПЕРЕХВАТ И ОТКЛЮЧЕНИЕ REDUCED MOTION =====
+        (function() {
+            'use strict';
+            
+            console.log('🚀 Инициализация гарантированной бегущей строки');
+            
+            // 1. ГЛОБАЛЬНО ОТКЛЮЧАЕМ REDUCED MOTION
+            const originalMatchMedia = window.matchMedia;
+            window.matchMedia = function(query) {
+                if (query === '(prefers-reduced-motion: reduce)') {
+                    console.log('🔧 Отключена глобальная проверка reduced motion');
+                    return {
+                        matches: false,
+                        media: query,
+                        addListener: function() {},
+                        removeListener: function() {},
+                        addEventListener: function() {},
+                        removeEventListener: function() {},
+                        dispatchEvent: function() { return true; }
+                    };
+                }
+                return originalMatchMedia.call(this, query);
+            };
+            
+            // 2. ФУНКЦИЯ ГАРАНТИРОВАННОГО ЗАПУСКА
+            function guaranteeMarqueeStart() {
+                console.log('💪 Гарантированный запуск бегущей строки...');
                 
-                if (scrollY > hideThreshold && !isHidden) {
-                    header.classList.add('header-hidden');
-                    isHidden = true;
-                } else if (scrollY <= hideThreshold && isHidden) {
-                    header.classList.remove('header-hidden');
-                    isHidden = false;
+                const marquee1 = document.getElementById('marquee1');
+                const marquee2 = document.getElementById('marquee2');
+                
+                if (!marquee1 || !marquee2) {
+                    console.error('❌ Элементы бегущей строки не найдены');
+                    return false;
                 }
+                
+                // 3. ПРИНУДИТЕЛЬНО УСТАНАВЛИВАЕМ CSS АНИМАЦИИ
+                marquee1.style.animation = 'marqueeLeft 40s linear infinite';
+                marquee2.style.animation = 'marqueeRight 40s linear infinite';
+                marquee1.style.animationPlayState = 'running';
+                marquee2.style.animationPlayState = 'running';
+                
+                // 4. СБРАСЫВАЕМ ПРЕДЫДУЩИЕ ТРАНСФОРМАЦИИ
+                marquee1.style.transform = 'translate3d(0, 0, 0)';
+                marquee2.style.transform = 'translate3d(0, 0, 0)';
+                
+                // 5. ОПТИМИЗАЦИЯ ДЛЯ ПЛАВНОСТИ
+                marquee1.style.willChange = 'transform';
+                marquee2.style.willChange = 'transform';
+                
+                console.log('✅ CSS анимации установлены');
+                
+                // 6. ПАУЗА ПРИ НАВЕДЕНИИ
+                document.querySelectorAll('.marquee-container').forEach(container => {
+                    container.addEventListener('mouseenter', () => {
+                        marquee1.style.animationPlayState = 'paused';
+                        marquee2.style.animationPlayState = 'paused';
+                    });
+                    
+                    container.addEventListener('mouseleave', () => {
+                        marquee1.style.animationPlayState = 'running';
+                        marquee2.style.animationPlayState = 'running';
+                    });
+                });
+                
+                // 7. ПРОВЕРЯЕМ ЧЕРЕЗ 500МС
+                setTimeout(() => {
+                    const style1 = window.getComputedStyle(marquee1);
+                    console.log('🔍 Проверка через 500мс:', {
+                        animationName: style1.animationName,
+                        animationPlayState: style1.animationPlayState,
+                        transform: style1.transform
+                    });
+                    
+                    // Если CSS не работает, запускаем JS fallback
+                    if (style1.animationName === 'none') {
+                        console.log('🔄 CSS не работает, запускаем JS fallback...');
+                        startJSMarqueeFallback();
+                    }
+                }, 500);
+                
+                return true;
             }
-
-            handleScroll();
-            window.addEventListener('scroll', handleScroll, { passive: true });
-
-            header.addEventListener('mouseenter', function() {
-                if (isHidden) {
-                    header.classList.remove('header-hidden');
-                    setTimeout(function() {
-                        if (isHidden && window.pageYOffset > hideThreshold) {
-                            header.classList.add('header-hidden');
-                        }
-                    }, 2000);
-                }
-            });
-        }
-
-        // ===== ПРОСТАЯ И НАДЕЖНАЯ БЕГУЩАЯ СТРОКА =====
-        function initMarquee() {
-            console.log('🚀 Запуск бегущей строки...');
             
-            const marquee1 = document.getElementById('marquee1');
-            const marquee2 = document.getElementById('marquee2');
-            
-            if (!marquee1 || !marquee2) {
-                console.error('❌ Элементы не найдены');
-                return;
-            }
-            
-            // 1. Пробуем CSS анимации
-            marquee1.style.animation = 'marqueeLeft 40s linear infinite';
-            marquee2.style.animation = 'marqueeRight 40s linear infinite';
-            marquee1.style.animationPlayState = 'running';
-            marquee2.style.animationPlayState = 'running';
-            
-            // 2. Проверяем через 500мс
-            setTimeout(() => {
-                const style1 = window.getComputedStyle(marquee1);
-                if (style1.animationName === 'none') {
-                    console.log('⚠️ CSS не работает, пробуем JS...');
-                    startJSMarquee();
-                } else {
-                    console.log('✅ CSS анимации работают');
-                }
-            }, 500);
-            
-            // 3. JS fallback
-            function startJSMarquee() {
-                console.log('🔄 Запуск JS анимации...');
+            // 8. JS FALLBACK АНИМАЦИЯ
+            function startJSMarqueeFallback() {
+                console.log('🎬 Запуск JS fallback анимации...');
+                
+                const marquee1 = document.getElementById('marquee1');
+                const marquee2 = document.getElementById('marquee2');
+                
+                if (!marquee1 || !marquee2) return;
                 
                 let pos1 = 0;
                 let pos2 = 0;
-                const speed = 1.5;
+                const speed = 1.2; // px per frame
+                let animationId = null;
                 
                 function animate() {
                     // Первая строка - влево
@@ -728,94 +723,82 @@
                         marquee2.style.transform = `translateX(${pos2}px)`;
                     }
                     
-                    requestAnimationFrame(animate);
+                    animationId = requestAnimationFrame(animate);
                 }
                 
+                // Запускаем
                 animate();
+                
+                // Сохраняем ID для остановки
+                window._marqueeJSFallback = animationId;
+                
+                console.log('✅ JS fallback анимация запущена');
             }
             
-            // 4. Пауза при наведении
-            document.querySelectorAll('.marquee-container').forEach(container => {
-                container.addEventListener('mouseenter', () => {
-                    marquee1.style.animationPlayState = 'paused';
-                    marquee2.style.animationPlayState = 'paused';
-                });
+            // 9. ЗАПУСКАЕМ СРАЗУ
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('📄 DOM загружен, запускаем бегущую строку...');
+                guaranteeMarqueeStart();
+            });
+            
+            // 10. РЕЗЕРВНЫЙ ЗАПУСК ПОСЛЕ ПОЛНОЙ ЗАГРУЗКИ
+            window.addEventListener('load', () => {
+                console.log('🌐 Страница полностью загружена, проверяем бегущую строку...');
                 
-                container.addEventListener('mouseleave', () => {
-                    marquee1.style.animationPlayState = 'running';
-                    marquee2.style.animationPlayState = 'running';
-                });
-            });
-            
-            console.log('✅ Бегущая строка инициализирована');
-        }
-
-        // Запускаем всё
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initHomeHeader, 500);
-            
-            // Запускаем бегущую строку через 1 секунду
-            setTimeout(initMarquee, 1000);
-        });
-
-        // Запускаем еще раз после полной загрузки
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                const marquee1 = document.getElementById('marquee1');
-                if (marquee1) {
-                    const style = window.getComputedStyle(marquee1);
-                    if (style.animationName === 'none' && style.transform === 'none') {
-                        console.log('🔄 Повторный запуск бегущей строки...');
-                        initMarquee();
+                setTimeout(() => {
+                    const marquee1 = document.getElementById('marquee1');
+                    if (marquee1) {
+                        const style = window.getComputedStyle(marquee1);
+                        if (style.animationName === 'none') {
+                            console.log('🔄 Резервный запуск после load...');
+                            guaranteeMarqueeStart();
+                        }
                     }
+                }, 1000);
+            });
+            
+            // 11. УТИЛИТЫ ДЛЯ ОТЛАДКИ
+            window.guaranteeMarqueeStart = guaranteeMarqueeStart;
+            window.checkMarqueeStatus = function() {
+                const marquee1 = document.getElementById('marquee1');
+                const marquee2 = document.getElementById('marquee2');
+                
+                if (!marquee1 || !marquee2) {
+                    console.log('❌ Элементы не найдены');
+                    return;
                 }
-            }, 2000);
-        });
-
-        // Глобальные функции для отладки
-        window.startMarquee = initMarquee;
-        
-        window.checkMarqueeStatus = function() {
-            const marquee1 = document.getElementById('marquee1');
-            const marquee2 = document.getElementById('marquee2');
+                
+                const style1 = window.getComputedStyle(marquee1);
+                const style2 = window.getComputedStyle(marquee2);
+                
+                console.log('📊 Статус бегущей строки:');
+                console.log('Marquee 1 (влево):', {
+                    animation: style1.animationName,
+                    playState: style1.animationPlayState,
+                    transform: style1.transform
+                });
+                console.log('Marquee 2 (вправо):', {
+                    animation: style2.animationName,
+                    playState: style2.animationPlayState,
+                    transform: style2.transform
+                });
+            };
             
-            if (!marquee1 || !marquee2) return;
+            window.restartMarquee = function() {
+                console.log('🔁 Перезапуск бегущей строки...');
+                
+                // Останавливаем JS fallback если он работает
+                if (window._marqueeJSFallback) {
+                    cancelAnimationFrame(window._marqueeJSFallback);
+                    window._marqueeJSFallback = null;
+                }
+                
+                // Запускаем заново
+                guaranteeMarqueeStart();
+            };
             
-            const style1 = window.getComputedStyle(marquee1);
-            const style2 = window.getComputedStyle(marquee2);
-            
-            console.log('🔍 Статус бегущей строки:');
-            console.log('  Marquee 1:', {
-                animation: style1.animationName,
-                transform: style1.transform,
-                playState: style1.animationPlayState
-            });
-            console.log('  Marquee 2:', {
-                animation: style2.animationName,
-                transform: style2.transform,
-                playState: style2.animationPlayState
-            });
-        };
-        
-        // Функция для принудительного запуска
-        window.forceMarquee = function() {
-            console.log('💪 Принудительный запуск бегущей строки');
-            
-            const marquee1 = document.getElementById('marquee1');
-            const marquee2 = document.getElementById('marquee2');
-            
-            if (!marquee1 || !marquee2) return;
-            
-            // Полностью сбрасываем и запускаем заново
-            marquee1.style.animation = 'marqueeLeft 40s linear infinite';
-            marquee2.style.animation = 'marqueeRight 40s linear infinite';
-            marquee1.style.animationPlayState = 'running';
-            marquee2.style.animationPlayState = 'running';
-            marquee1.style.transform = 'translate3d(0, 0, 0)';
-            marquee2.style.transform = 'translate3d(0, 0, 0)';
-            
-            console.log('✅ Принудительно запущено');
-        };
+            console.log('✅ Система гарантированной бегущей строки инициализирована');
+        })();
     </script>
 </body>
 </html>
