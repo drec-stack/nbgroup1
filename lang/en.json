@@ -370,17 +370,51 @@
   },
   "portfolio": {
     "title": "Our Work",
-    "subtitle": "Showcasing our successful product development projects",
+    "subtitle": "Selected projects that demonstrate our design and engineering capabilities across various industries and product categories.",
     "filter": {
-      "all": "All",
-      "design": "Design",
-      "engineering": "Engineering",
-      "production": "Production"
+      "all": "All Projects",
+      "consumer": "Consumer Electronics",
+      "medical": "Medical Devices",
+      "iot": "IoT Products",
+      "industrial": "Industrial Equipment"
+    },
+    "projects": {
+      "speaker": {
+        "title": "Voice-Activated Smart Speaker",
+        "description": "Complete product design and engineering for AI-powered home assistant with premium audio quality and seamless integration."
+      },
+      "monitor": {
+        "title": "Portable Patient Monitor",
+        "description": "Ergonomic design for hospital-grade vital signs monitoring device with focus on usability and infection control."
+      },
+      "thermostat": {
+        "title": "Wi-Fi Smart Thermostat",
+        "description": "Energy-efficient home climate control system with intuitive interface and advanced scheduling capabilities."
+      },
+      "printer": {
+        "title": "Professional 3D Printer",
+        "description": "Industrial-grade additive manufacturing system with advanced calibration and material handling capabilities."
+      }
+    },
+    "status": {
+      "massProduction": "Mass Production",
+      "fda": "FDA Approved",
+      "energyStar": "Energy Star",
+      "ce": "CE Certified"
+    },
+    "highlights": {
+      "title": "Project Highlights",
+      "subtitle": "Key achievements and measurable results"
+    },
+    "testimonials": {
+      "title": "Client Testimonials",
+      "subtitle": "What our partners say about working with us",
+      "1": "\"NBGROUP.TECH transformed our concept into a market-ready product that exceeded our expectations in both design and functionality.\"",
+      "2": "\"The team's attention to detail and engineering expertise helped us achieve significant cost savings while maintaining premium quality.\""
     },
     "viewProject": "View Project",
-    "testimonials": {
-      "title": "Client Testimonials"
-    }
+    "viewCaseStudy": "View Case Study",
+    "viewAllProjects": "View All Projects"
   },
   "about": {
     "title": "About Us",
