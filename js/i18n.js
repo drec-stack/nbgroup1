@@ -1,28 +1,13 @@
-// i18n.js - Enhanced with better error handling and debugging
-console.log('🚀 i18n.js loaded - ENHANCED VERSION');
+// i18n.js - Fixed timing and dynamic content handling
+console.log('🚀 i18n.js loaded');
 
 class I18n {
     constructor() {
-        this.currentLang = this.detectLanguage();
+        this.currentLang = localStorage.getItem('preferredLang') || 'ru';
         this.translations = {};
         this.isInitialized = false;
-        this.isAnimating = false;
-        this.fallbackLang = 'ru';
+        this.isSwitching = false;
         console.log('🌍 i18n initialized with language:', this.currentLang);
-    }
-
-    detectLanguage() {
-        // 1. Check localStorage
-        const savedLang = localStorage.getItem('preferredLang');
-        if (savedLang && ['ru', 'en'].includes(savedLang)) return savedLang;
-        
-        // 2. Check browser language
-        const browserLang = navigator.language || navigator.userLanguage;
-        if (browserLang.startsWith('ru')) return 'ru';
-        if (browserLang.startsWith('en')) return 'en';
-        
-        // 3. Default to Russian
-        return 'ru';
     }
 
     async init() {
@@ -32,40 +17,60 @@ class I18n {
             // Load translations
             await this.loadTranslations(this.currentLang);
             
-            // Apply translations with retry for dynamic content
-            let appliedCount = this.applyTranslations();
+            // Wait a bit for dynamic content to load
+            await this.waitForDynamicContent();
             
-            // Retry for dynamically loaded content
-            if (appliedCount === 0) {
-                console.log('🔄 No translations applied, retrying...');
-                setTimeout(() => this.applyTranslations(), 500);
-            }
+            // Apply translations
+            this.applyTranslations();
             
+            // Setup language switcher
             this.setupLanguageSwitcher();
-            this.setupObservers();
+            
+            // Setup mutation observer for dynamic content
+            this.setupMutationObserver();
+            
             this.isInitialized = true;
-            
-            // Notify other components
-            window.dispatchEvent(new CustomEvent('i18nReady', {
-                detail: { 
-                    lang: this.currentLang,
-                    translations: this.translations 
-                }
-            }));
-            
             console.log('✅ i18n fully initialized');
+            
+            // Dispatch ready event
+            window.dispatchEvent(new CustomEvent('i18nReady', {
+                detail: { lang: this.currentLang }
+            }));
             
         } catch (error) {
             console.error('❌ i18n initialization failed:', error);
-            this.showErrorNotification();
+            // Retry after delay
+            setTimeout(() => this.init(), 1000);
         }
+    }
+
+    async waitForDynamicContent() {
+        return new Promise(resolve => {
+            const checkInterval = setInterval(() => {
+                // Check if header and footer are loaded
+                const headerLoaded = document.getElementById('header-container')?.innerHTML?.length > 100;
+                const footerLoaded = document.getElementById('footer-container')?.innerHTML?.length > 100;
+                const heroSection = document.querySelector('.hero');
+                
+                if ((headerLoaded && footerLoaded) || heroSection) {
+                    clearInterval(checkInterval);
+                    console.log('✅ Dynamic content detected');
+                    resolve();
+                }
+            }, 100);
+            
+            // Timeout after 5 seconds
+            setTimeout(() => {
+                clearInterval(checkInterval);
+                console.log('⚠️ Timeout waiting for dynamic content');
+                resolve();
+            }, 5000);
+        });
     }
 
     async loadTranslations(lang) {
         try {
             console.log(`📥 Loading translations for: ${lang}`);
-            
-            // Try to load from network first
             const response = await fetch(`lang/${lang}.json`);
             
             if (!response.ok) {
@@ -74,25 +79,24 @@ class I18n {
             
             this.translations = await response.json();
             document.documentElement.lang = lang;
-            document.documentElement.setAttribute('data-lang', lang);
             
-            console.log(`✅ ${lang}.json loaded successfully`);
+            console.log(`✅ ${lang}.json loaded, keys:`, Object.keys(this.translations).length);
             
             // Cache in localStorage
             try {
                 localStorage.setItem(`translations_${lang}`, JSON.stringify(this.translations));
-                localStorage.setItem('translations_version', '1.0');
+                localStorage.setItem('preferredLang', lang);
             } catch (e) {
                 console.warn('⚠️ Could not cache translations:', e);
             }
             
         } catch (error) {
             console.error(`❌ Error loading ${lang}.json:`, error);
-            await this.handleTranslationError(lang, error);
+            await this.handleTranslationError(lang);
         }
     }
 
-    async handleTranslationError(lang, error) {
+    async handleTranslationError(lang) {
         // Try to load from cache
         try {
             const cached = localStorage.getItem(`translations_${lang}`);
@@ -106,28 +110,18 @@ class I18n {
         }
         
         // Fallback to Russian if different language
-        if (lang !== this.fallbackLang) {
-            console.log(`🔄 Falling back to ${this.fallbackLang}`);
-            await this.loadTranslations(this.fallbackLang);
-            this.currentLang = this.fallbackLang;
+        if (lang !== 'ru') {
+            console.log('🔄 Falling back to Russian');
+            await this.loadTranslations('ru');
+            this.currentLang = 'ru';
         } else {
-            // Last resort - empty translations
+            // Last resort
             console.warn('⚠️ Using empty translations');
-            this.translations = this.createFallbackTranslations();
+            this.translations = { 
+                nav: { home: 'Home', services: 'Services' },
+                home: { hero: { titleLine1: 'NB GROUP TECH' } }
+            };
         }
-    }
-
-    createFallbackTranslations() {
-        // Basic fallback translations to prevent complete UI breakdown
-        return {
-            nav: {
-                home: 'Home',
-                services: 'Services',
-                portfolio: 'Portfolio',
-                about: 'About',
-                contact: 'Contact'
-            }
-        };
     }
 
     applyTranslations() {
@@ -138,79 +132,25 @@ class I18n {
 
         console.log('🔄 Applying translations...');
         let translatedCount = 0;
-        let missingKeys = [];
 
-        // Translate elements with data-i18n
+        // Translate all elements with data-i18n
         document.querySelectorAll('[data-i18n]').forEach(element => {
             const key = element.getAttribute('data-i18n');
             const translation = this.getNestedTranslation(key);
             
             if (translation) {
-                try {
-                    this.updateElement(element, translation);
-                    translatedCount++;
-                } catch (e) {
-                    console.warn('⚠️ Error updating element:', key, e);
-                }
-            } else if (key) {
-                missingKeys.push(key);
-            }
-        });
-
-        // Update attributes with data-i18n-attr
-        document.querySelectorAll('[data-i18n-attr]').forEach(element => {
-            const config = element.getAttribute('data-i18n-attr');
-            const [key, attr] = config.split(':');
-            const translation = this.getNestedTranslation(key);
-            
-            if (translation && attr) {
-                element.setAttribute(attr, translation);
+                this.updateElement(element, translation);
                 translatedCount++;
+            } else {
+                console.warn('⚠️ Missing translation for key:', key);
             }
         });
 
-        // Update page title and metadata
-        this.updatePageMetadata();
-
-        // Log missing keys only in development
-        if (missingKeys.length > 0 && window.location.hostname === 'localhost') {
-            console.warn('⚠️ Missing translations:', [...new Set(missingKeys)].slice(0, 10));
-        }
+        // Update page title
+        this.updatePageTitle();
 
         console.log(`✅ Applied ${translatedCount} translations`);
         return translatedCount;
-    }
-
-    updateElement(element, translation) {
-        const tag = element.tagName;
-        
-        if (tag === 'INPUT' || tag === 'TEXTAREA') {
-            const placeholder = element.getAttribute('data-i18n-placeholder');
-            if (placeholder === 'true' || !element.getAttribute('placeholder')) {
-                element.placeholder = translation;
-            } else {
-                element.value = translation;
-            }
-        } else if (tag === 'IMG') {
-            element.alt = translation;
-        } else if (tag === 'META') {
-            element.content = translation;
-        } else {
-            // Check if we should preserve HTML
-            const preserveHtml = element.getAttribute('data-i18n-html') === 'true';
-            if (preserveHtml && this.safeHtml(translation)) {
-                element.innerHTML = translation;
-            } else {
-                element.textContent = translation;
-            }
-        }
-    }
-
-    safeHtml(html) {
-        // Basic HTML sanitization
-        const div = document.createElement('div');
-        div.innerHTML = html;
-        return div.innerHTML === html;
     }
 
     getNestedTranslation(key) {
@@ -224,8 +164,19 @@ class I18n {
         }
     }
 
-    updatePageMetadata() {
-        // Update page title
+    updateElement(element, translation) {
+        const tag = element.tagName;
+        
+        if (tag === 'INPUT' || tag === 'TEXTAREA') {
+            element.placeholder = translation;
+        } else if (tag === 'IMG') {
+            element.alt = translation;
+        } else {
+            element.textContent = translation;
+        }
+    }
+
+    updatePageTitle() {
         const titleElement = document.querySelector('title[data-i18n]');
         if (titleElement) {
             const titleKey = titleElement.getAttribute('data-i18n');
@@ -233,15 +184,11 @@ class I18n {
             if (titleTranslation) {
                 document.title = titleTranslation;
             }
-        }
-
-        // Update meta description
-        const metaDesc = document.querySelector('meta[name="description"][data-i18n]');
-        if (metaDesc) {
-            const descKey = metaDesc.getAttribute('data-i18n');
-            const descTranslation = this.getNestedTranslation(descKey);
-            if (descTranslation) {
-                metaDesc.content = descTranslation;
+        } else {
+            // Fallback to home.title
+            const titleTranslation = this.getNestedTranslation('home.title');
+            if (titleTranslation) {
+                document.title = titleTranslation;
             }
         }
     }
@@ -249,7 +196,7 @@ class I18n {
     setupLanguageSwitcher() {
         console.log('🔧 Setting up language switcher...');
         
-        // Use event delegation for better performance
+        // Event delegation for language buttons
         document.addEventListener('click', (e) => {
             const langBtn = e.target.closest('.lang-btn');
             if (langBtn) {
@@ -264,26 +211,29 @@ class I18n {
         this.updateLanguageSwitcher();
     }
 
-    setupObservers() {
-        // Observe DOM changes for dynamically added content
+    setupMutationObserver() {
+        // Observe for dynamically added content
         const observer = new MutationObserver((mutations) => {
-            let shouldTranslate = false;
+            let needsTranslation = false;
             
-            mutations.forEach((mutation) => {
+            for (const mutation of mutations) {
                 if (mutation.type === 'childList') {
-                    mutation.addedNodes.forEach((node) => {
-                        if (node.nodeType === 1 && (
-                            node.hasAttribute('data-i18n') || 
-                            node.querySelector('[data-i18n]')
-                        )) {
-                            shouldTranslate = true;
+                    for (const node of mutation.addedNodes) {
+                        if (node.nodeType === 1) {
+                            if (node.hasAttribute('data-i18n') || 
+                                node.querySelector('[data-i18n]')) {
+                                needsTranslation = true;
+                                break;
+                            }
                         }
-                    });
+                    }
                 }
-            });
+                if (needsTranslation) break;
+            }
             
-            if (shouldTranslate) {
-                setTimeout(() => this.applyTranslations(), 50);
+            if (needsTranslation) {
+                console.log('👀 New content detected, applying translations...');
+                setTimeout(() => this.applyTranslations(), 100);
             }
         });
 
@@ -294,65 +244,56 @@ class I18n {
     }
 
     async switchLanguage(lang) {
-        if (this.isAnimating || lang === this.currentLang) return;
+        if (this.isSwitching || lang === this.currentLang) {
+            console.log('ℹ️ Already switching or same language');
+            return;
+        }
         
-        this.isAnimating = true;
-        console.log('🎬 Switching language to:', lang);
+        this.isSwitching = true;
+        console.log(`🎬 Switching language to: ${lang}`);
         
         try {
-            // 1. Update UI immediately
+            // 1. Update UI
             this.updateLanguageSwitcherUI(lang);
             
-            // 2. Fade out
+            // 2. Fade out content
             await this.fadeOut();
             
-            // 3. Load and apply new language
+            // 3. Load new language
             await this.loadTranslations(lang);
             this.currentLang = lang;
-            localStorage.setItem('preferredLang', lang);
             
+            // 4. Apply new translations
             this.applyTranslations();
             
-            // 4. Fade in
+            // 5. Fade in content
             await this.fadeIn();
             
             console.log(`✅ Language switched to: ${lang}`);
             
-            // Dispatch event for other components
+            // Notify other components
             window.dispatchEvent(new CustomEvent('languageChanged', {
-                detail: { 
-                    lang,
-                    previousLang: this.currentLang 
-                }
+                detail: { lang: this.currentLang }
             }));
             
         } catch (error) {
             console.error('❌ Language switch failed:', error);
         } finally {
-            this.isAnimating = false;
+            this.isSwitching = false;
         }
     }
 
     updateLanguageSwitcherUI(lang) {
         document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            const btnLang = btn.getAttribute('data-lang');
+            btn.classList.toggle('active', btnLang === lang);
         });
-        
-        // Animate active button
-        const activeBtn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
-        if (activeBtn) {
-            activeBtn.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                activeBtn.style.transform = '';
-            }, 200);
-        }
     }
 
     updateLanguageSwitcher() {
         document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.classList.toggle('active', 
-                btn.getAttribute('data-lang') === this.currentLang
-            );
+            const btnLang = btn.getAttribute('data-lang');
+            btn.classList.toggle('active', btnLang === this.currentLang);
         });
     }
 
@@ -360,8 +301,8 @@ class I18n {
         return new Promise(resolve => {
             const main = document.querySelector('main') || document.body;
             if (main) {
-                main.style.opacity = '0.5';
                 main.style.transition = 'opacity 0.2s ease';
+                main.style.opacity = '0.7';
             }
             setTimeout(resolve, 200);
         });
@@ -377,14 +318,7 @@ class I18n {
         });
     }
 
-    showErrorNotification() {
-        // Could show a subtle notification to user
-        if (window.console && console.error) {
-            console.error('i18n system failed to initialize');
-        }
-    }
-
-    // Public API
+    // Public methods
     getCurrentLang() {
         return this.currentLang;
     }
@@ -393,44 +327,48 @@ class I18n {
         return this.getNestedTranslation(key);
     }
 
-    reload() {
-        return this.loadTranslations(this.currentLang).then(() => {
-            this.applyTranslations();
-        });
+    refresh() {
+        console.log('🔄 Refreshing translations...');
+        return this.applyTranslations();
     }
 }
 
-// Create and initialize i18n
+// Create global instance
 window.i18n = new I18n();
 
-// Initialize when DOM is ready
-function initializeI18n() {
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => window.i18n.init(), 100);
-        });
-    } else {
-        setTimeout(() => window.i18n.init(), 100);
-    }
-}
-
-initializeI18n();
-
-// Debug utilities
-if (window.location.hostname === 'localhost') {
-    window.debugI18n = function() {
-        console.group('🌍 i18n Debug Info');
-        console.log('Current lang:', window.i18n.currentLang);
-        console.log('Translations:', Object.keys(window.i18n.translations));
-        console.log('Elements with data-i18n:', 
-            document.querySelectorAll('[data-i18n]').length);
-        console.groupEnd();
-    };
+// Wait for everything to be ready before initializing
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('📄 DOM fully loaded, starting i18n...');
     
-    // Auto-debug on errors
-    window.addEventListener('error', (e) => {
-        if (e.message.includes('i18n') || e.filename.includes('i18n')) {
-            window.debugI18n();
-        }
-    });
+    // Wait a bit more for dynamic components
+    setTimeout(() => {
+        window.i18n.init();
+    }, 300);
+});
+
+// Also initialize if DOM is already loaded
+if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    console.log('⚡ DOM already ready, starting i18n...');
+    setTimeout(() => {
+        window.i18n.init();
+    }, 300);
 }
+
+// Debug helper
+window.debugI18n = function() {
+    console.group('🌍 i18n Debug Info');
+    console.log('Initialized:', window.i18n.isInitialized);
+    console.log('Current language:', window.i18n.currentLang);
+    console.log('Translations loaded:', Object.keys(window.i18n.translations).length > 0);
+    console.log('Elements with data-i18n:', document.querySelectorAll('[data-i18n]').length);
+    
+    // Check hero section
+    const heroTitle = document.querySelector('.hero h1 [data-i18n]');
+    if (heroTitle) {
+        const key = heroTitle.getAttribute('data-i18n');
+        const translation = window.i18n.getTranslation(key);
+        console.log('Hero title check:', key, '=>', translation);
+    }
+    
+    console.groupEnd();
+};
