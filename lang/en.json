@@ -396,8 +396,23 @@
       }
     },
     "services": {
-      "title": "Our Services",
-      "subtitle": "Comprehensive services from design to production",
+      "title": "What We Do",
+      "subtitle": "Systematic approach to product development",
+      "systemApproach": {
+        "title": "Systematic Approach",
+        "description": "We build the process so that each stage — from idea to serial product — is logical, controllable, and predictable.",
+        "benefits": "This reduces production risks, shortens product time-to-market, and ensures stable results."
+      },
+      "deepAnalysis": {
+        "title": "Deep Analysis Before Start",
+        "description": "Before development, we study the niche, audience, and production capabilities.",
+        "benefits": "This helps avoid mistakes, optimize costs, and create a product that will find its audience."
+      },
+      "honestExpertise": {
+        "title": "Honest Expertise",
+        "description": "We speak directly: what works, what doesn't, and where the solution will bring benefits.",
+        "benefits": "This approach saves months of work and budget, directing the project in the right direction from the first step."
+      },
       "industrialDesign": {
         "title": "Industrial Design",
         "description": "We develop product designs of any complexity - from idea to production launch.",
@@ -424,16 +439,16 @@
         "description": "We create visual systems that increase brand recognition and strengthen its reputation.",
         "details": "Identity works equally accurately on packaging, website, social media and the product itself."
       },
-      "keyAreas": "Key areas",
+      "keyAreas": "Key areas:",
       "hookahs": "Premium hookahs",
       "accessories": "Accessories",
       "packaging": "Packaging and cases",
-      "itAllows": "It allows us to",
+      "itAllows": "It allows us to:",
       "prototypes": "Produce prototypes on time",
       "quality": "Control quality at every stage",
       "massProduction": "Launch mass production of any volume",
       "turnkey": "Create 'turnkey' products",
-      "includes": "The brandbook includes",
+      "includes": "The brandbook includes:",
       "visualIdentity": "Visual identity",
       "colorTypography": "Color and typography system",
       "brandedElements": "Branded elements and media",
