@@ -1,4 +1,4 @@
-// i18n.js - Fixed and enhanced version
+// i18n.js - Fixed version with working language switching
 console.log('🚀 i18n.js loaded - FIXED VERSION');
 
 class I18n {
@@ -109,15 +109,6 @@ class I18n {
             console.log(`✅ ${lang}.json loaded successfully`);
             console.log(`   Total keys:`, Object.keys(this.translations).length);
             
-            // Check if we have home translations
-            if (this.translations.home) {
-                console.log(`   Home keys:`, Object.keys(this.translations.home));
-            } else {
-                console.warn('⚠️ No home translations found in file');
-                await this.loadFromCache(lang);
-                return;
-            }
-            
             // Cache in localStorage
             try {
                 localStorage.setItem(`translations_${lang}`, rawText);
@@ -139,58 +130,11 @@ class I18n {
             return false;
         }
         
-        // Check for common JSON issues
-        const issues = [];
-        
-        // Check if it starts and ends correctly
-        const trimmed = text.trim();
-        if (!trimmed.startsWith('{') || !trimmed.endsWith('}')) {
-            issues.push('Not a valid JSON object');
-        }
-        
-        // Check for unclosed braces
-        const openBraces = (text.match(/{/g) || []).length;
-        const closeBraces = (text.match(/}/g) || []).length;
-        if (openBraces !== closeBraces) {
-            issues.push(`Unbalanced braces: ${openBraces} vs ${closeBraces}`);
-        }
-        
-        // Check for unclosed quotes
-        const doubleQuotes = (text.match(/"/g) || []).length;
-        if (doubleQuotes % 2 !== 0) {
-            issues.push(`Unclosed quotes: ${doubleQuotes} quotes found`);
-        }
-        
-        if (issues.length > 0) {
-            console.error('❌ JSON validation issues:', issues);
-            
-            // Try to show problematic area
-            const errorIndex = text.indexOf('"', 0);
-            if (errorIndex > 0) {
-                const context = text.substring(Math.max(0, errorIndex - 100), 
-                                             Math.min(text.length, errorIndex + 100));
-                console.error('Context:', context);
-            }
-            
-            return false;
-        }
-        
-        // Try to parse
         try {
             JSON.parse(text);
             return true;
         } catch (e) {
             console.error('❌ JSON parse error:', e.message);
-            
-            // Find approximate position
-            const match = e.message.match(/position (\d+)/);
-            if (match) {
-                const pos = parseInt(match[1]);
-                const context = text.substring(Math.max(0, pos - 100), 
-                                             Math.min(text.length, pos + 100));
-                console.error('Error context:', context);
-            }
-            
             return false;
         }
     }
@@ -243,7 +187,7 @@ class I18n {
         console.log('🔄 Applying translations...');
         let translatedCount = 0;
 
-        // First pass: translate all visible elements
+        // Translate all elements with data-i18n
         document.querySelectorAll('[data-i18n]').forEach(element => {
             if (this.translateElement(element)) {
                 translatedCount++;
@@ -265,7 +209,10 @@ class I18n {
             this.updateElement(element, translation);
             return true;
         } else {
-            console.warn('⚠️ Missing translation for key:', key);
+            // Don't warn about missing keys that start with servicesPreview
+            if (!key.startsWith('servicesPreview')) {
+                console.warn('⚠️ Missing translation for key:', key);
+            }
             return false;
         }
     }
@@ -402,6 +349,11 @@ class I18n {
             
             console.log(`✅ Language switched to: ${lang}`);
             
+            // Remove loading animation
+            setTimeout(() => {
+                document.body.classList.remove('language-changing');
+            }, 300);
+            
             // Notify other components
             window.dispatchEvent(new CustomEvent('languageChanged', {
                 detail: { lang: this.currentLang }
@@ -409,11 +361,9 @@ class I18n {
             
         } catch (error) {
             console.error('❌ Language switch failed:', error);
+            document.body.classList.remove('language-changing');
         } finally {
             this.isSwitching = false;
-            setTimeout(() => {
-                document.body.classList.remove('language-changing');
-            }, 300);
         }
     }
 
