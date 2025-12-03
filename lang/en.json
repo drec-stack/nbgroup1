@@ -384,36 +384,36 @@
   },
   "about": {
     "title": "About Us",
-    "subtitle": "Learn about our mission, values, and the team behind NBGROUP",
+    "subtitle": "Full-cycle industrial design, engineering and manufacturing",
     "story": {
-      "title": "Our Story",
-      "p1": "Founded in 2012, NBGROUP.TECH began as a small industrial design studio with a big vision: to bridge the gap between beautiful design and practical engineering.",
-      "p2": "Over the years, we've grown into a full-service product development company, helping startups and Fortune 500 companies alike bring their ideas to life. Our approach combines creative design thinking with rigorous engineering to deliver products that succeed in the market."
+      "title": "Our Services",
+      "p1": "Industrial Design",
+      "p2": "We develop product designs of any complexity - from idea to production launch.<br><br>Key areas:<br>— premium hookahs<br>— accessories<br>— packaging and cases<br><br>Every element is developed considering aesthetics, ergonomics and real production processes.<br><br>Engineering<br>We transform design into fully functional construction.<br>We create precise 3D models, technical documentation, select materials and processing methods.<br>NB GROUP TECH engineers are practitioners with real production experience.<br><br>Production<br>Our own production base is the key advantage of the studio.<br><br>It allows us to:<br>— produce prototypes on time,<br>— control quality at every stage,<br>— launch mass production of any volume,<br>— create 'turnkey' products.<br><br>We work with metal, plastic, composites and other industrial materials.<br><br>Brandbook<br>We develop brand systems for companies that need to look cohesive and competitive at the international level.<br><br>The brandbook includes:<br>— visual identity,<br>— color and typography system,<br>— branded elements and media,<br>— brand application rules.<br><br>The NB GROUP TECH brandbook enhances the product and forms a unified visual language for the company.<br><br>Identity Development<br>We create visual systems that increase brand recognition and strengthen its reputation.<br>Identity works equally accurately on packaging, website, social media and the product itself."
     },
     "values": {
-      "title": "Our Values",
-      "subtitle": "Principles that guide everything we do",
+      "title": "Our Approach",
+      "subtitle": "Principles that guide our work",
       "innovation": {
-        "title": "Innovation",
-        "description": "We embrace new technologies and approaches to solve complex design challenges."
+        "title": "Full Cycle",
+        "description": "Design → engineering → prototype → production → packaging → brand system"
       },
       "collaboration": {
-        "title": "Collaboration",
-        "description": "We work closely with clients as partners throughout the entire process."
+        "title": "Systematic Approach",
+        "description": "We work comprehensively, ensuring product integrity at all stages"
       },
       "excellence": {
-        "title": "Excellence",
-        "description": "We never compromise on quality and always strive for the best results."
+        "title": "Responsibility",
+        "description": "We take responsibility for every stage - from concept to production launch"
       },
       "impact": {
-        "title": "Impact",
-        "description": "We focus on creating products that make a meaningful difference."
+        "title": "Transparency",
+        "description": "Clear deadlines, understandable processes and open communication"
       }
     },
     "team": {
-      "title": "Leadership Team",
-      "subtitle": "Meet the people behind our success",
-      "members": "Team Members",
+      "title": "Team",
+      "subtitle": "Professionals with real project experience",
+      "members": "Specialists",
       "spartak": {
         "name": "Spartak Nukhsan",
         "role": "Founder, Creative Director, Brand Architect, Designer",
@@ -431,9 +431,9 @@
       }
     },
     "cta": {
-      "title": "Join Our Journey",
-      "description": "Interested in working together? We're always looking for new challenges.",
-      "button": "Start Conversation"
+      "title": "Ready to collaborate?",
+      "description": "Let's discuss your project and offer the optimal solution",
+      "button": "Discuss Project"
     }
   },
   "contact": {
