@@ -81,10 +81,6 @@
             transition: opacity 0.3s ease;
         }
 
-        .language-switched [data-i18n] {
-            animation: fadeInLanguage 0.5s ease forwards;
-        }
-
         @keyframes fadeInLanguage {
             from {
                 opacity: 0.7;
@@ -543,16 +539,6 @@
                 if (window.i18n && window.i18n.refresh) {
                     const count = window.i18n.refresh();
                     console.log(`✅ Force applied ${count} translations`);
-                    
-                    // Обновить кнопки языка
-                    const langBtns = document.querySelectorAll('.lang-btn');
-                    const currentLang = window.i18n.getCurrentLang();
-                    langBtns.forEach(btn => {
-                        btn.classList.remove('active');
-                        if (btn.getAttribute('data-lang') === currentLang) {
-                            btn.classList.add('active');
-                        }
-                    });
                 }
             }, 1000);
             
@@ -579,35 +565,6 @@
                 
                 console.log('🚀 Бегущая строка запущена через CSS');
             }
-        }
-        
-        // Проверка i18n
-        function checkI18nStatus() {
-            setTimeout(() => {
-                if (window.i18n) {
-                    console.log('🌍 i18n Status:');
-                    console.log('   Initialized:', window.i18n.isInitialized);
-                    console.log('   Current language:', window.i18n.getCurrentLang());
-                    console.log('   Translations loaded:', Object.keys(window.i18n.translations).length);
-                    
-                    // Проверить ключи героя
-                    const heroKeys = [
-                        'home.hero.titleLine1',
-                        'home.hero.titleLine2', 
-                        'home.hero.titleLine3',
-                        'home.subtitle'
-                    ];
-                    
-                    heroKeys.forEach(key => {
-                        const translation = window.i18n.getTranslation(key);
-                        console.log(`   ${key}:`, translation ? '✅' : '❌');
-                    });
-                    
-                    // Проверить элементы
-                    const elements = document.querySelectorAll('[data-i18n]');
-                    console.log(`   Elements with data-i18n: ${elements.length}`);
-                }
-            }, 2000);
         }
         
         // Load header component
@@ -755,7 +712,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 DOM fully loaded');
             checkMarquee();
-            checkI18nStatus();
             applyTranslationsForce();
             
             // Резервная проверка через 5 секунд
