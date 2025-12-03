@@ -8,6 +8,7 @@ function initAbout() {
     setupTeamInteractions();
     setupValueAnimations();
     setupStoryScroll();
+    setupServicesAnimations();
     removeAvatarLetters();
     setupMobileOptimizations();
     setupImageLoading();
@@ -91,6 +92,37 @@ function setupValueAnimations() {
     });
 }
 
+// АНИМАЦИИ ДЛЯ СЕКЦИИ УСЛУГ
+function setupServicesAnimations() {
+    const serviceCategories = document.querySelectorAll('.service-category');
+    const isMobile = window.innerWidth <= 768;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                const delay = index * (isMobile ? 100 : 200);
+                
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, delay);
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { 
+        threshold: isMobile ? 0.1 : 0.15,
+        rootMargin: '0px 0px -30px 0px'
+    });
+
+    serviceCategories.forEach((category) => {
+        category.style.opacity = '0';
+        category.style.transform = 'translateY(30px)';
+        category.style.transition = 'all 0.7s ease';
+        observer.observe(category);
+    });
+}
+
 // ОПТИМИЗИРОВАННЫЙ СКРОЛЛ ДЛЯ ИСТОРИИ
 function setupStoryScroll() {
     const storySection = document.querySelector('.our-story');
@@ -155,6 +187,19 @@ function setupMobileOptimizations() {
                 this.style.transform = 'scale(1)';
             });
         });
+        
+        // Оптимизация прокрутки
+        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // Предотвращение двойного тапа для зумирования
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     }
 }
 
@@ -182,7 +227,7 @@ function setupPerformanceMonitoring() {
 }
 
 function applyPerformanceOptimizations() {
-    const heavyElements = document.querySelectorAll('.value-card, .team-member');
+    const heavyElements = document.querySelectorAll('.value-card, .team-member, .service-category');
     heavyElements.forEach(el => {
         el.style.willChange = 'auto';
     });
