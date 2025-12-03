@@ -12,6 +12,8 @@ class HomePage {
         this.initStatsCounter();
         this.initParallaxBackgrounds();
         this.initMarqueeAnimations();
+        this.initClickableStats(); // <-- ДОБАВЛЕНО
+        this.initCTAClickable();   // <-- ДОБАВЛЕНО
         console.log('🏠 HomePage инициализирован');
     }
 
@@ -27,7 +29,7 @@ class HomePage {
                 if (entry.isIntersecting) {
                     setTimeout(() => {
                         entry.target.classList.add('animated');
-                    }, index * 200); // Increased delay for better visual effect
+                    }, index * 200);
                     observer.unobserve(entry.target);
                 }
             });
@@ -39,23 +41,12 @@ class HomePage {
         speckCards.forEach(card => {
             observer.observe(card);
             
-            // Enhanced click handler with animation
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // Add click animation
-                card.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    card.style.transform = '';
-                }, 200);
-                
-                const category = card.getAttribute('data-category');
-                setTimeout(() => {
-                    window.location.href = `services.html#${category}`;
-                }, 300);
-            });
+            // Добавляем класс clickable-element для глобальной обработки
+            if (!card.classList.contains('clickable-element')) {
+                card.classList.add('clickable-element');
+            }
             
-            // Add hover effects for feature items
+            // Enhanced hover effects for feature items
             const featureItems = card.querySelectorAll('.speck-feature-item-enhanced');
             featureItems.forEach(feature => {
                 feature.addEventListener('mouseenter', () => {
@@ -70,6 +61,75 @@ class HomePage {
                     }
                 });
             });
+        });
+    }
+
+    // Clickable stats cards
+    initClickableStats() {
+        const statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
+        
+        statCards.forEach(card => {
+            // Добавляем класс для глобальной обработки
+            if (!card.classList.contains('clickable-element')) {
+                card.classList.add('clickable-element');
+            }
+            
+            // Enhanced hover effects
+            card.addEventListener('mouseenter', () => {
+                if (!this.isReducedMotion) {
+                    card.style.transform = 'translateY(-10px)';
+                    const icon = card.querySelector('.stat-icon');
+                    if (icon) {
+                        icon.style.transform = 'scale(1.1)';
+                        icon.style.color = '#3399ff';
+                    }
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                if (!this.isReducedMotion) {
+                    card.style.transform = '';
+                    const icon = card.querySelector('.stat-icon');
+                    if (icon) {
+                        icon.style.transform = '';
+                        icon.style.color = '';
+                    }
+                }
+            });
+        });
+    }
+
+    // Clickable CTA section
+    initCTAClickable() {
+        const ctaSection = document.querySelector('.cta-improved.clickable-cta');
+        if (!ctaSection) return;
+        
+        // Добавляем класс для глобальной обработки
+        if (!ctaSection.classList.contains('clickable-element')) {
+            ctaSection.classList.add('clickable-element');
+        }
+        
+        // Enhanced hover effects
+        ctaSection.addEventListener('mouseenter', () => {
+            if (!this.isReducedMotion) {
+                ctaSection.style.transform = 'translateY(-5px)';
+                const button = ctaSection.querySelector('.btn-glow');
+                if (button) {
+                    button.style.boxShadow = '0 12px 35px rgba(0, 102, 255, 0.4)';
+                    button.style.transform = 'translateY(-3px)';
+                }
+            }
+        });
+        
+        ctaSection.addEventListener('mouseleave', () => {
+            if (!this.isReducedMotion) {
+                ctaSection.style.transform = '';
+                const button = ctaSection.querySelector('.btn-glow');
+                if (button) {
+                    button.style.boxShadow = '';
+                    button.style.transform = '';
+                }
+            }
         });
     }
 
@@ -242,12 +302,6 @@ class HomePage {
             if (track._animationId) {
                 cancelAnimationFrame(track._animationId);
             }
-        });
-        
-        // Cleanup speck cards
-        const speckCards = document.querySelectorAll('.speck-service-card-enhanced');
-        speckCards.forEach(card => {
-            card.removeEventListener('click', () => {});
         });
     }
 }
