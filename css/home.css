@@ -1,3 +1,41 @@
+/* Новые стили для обновленного hero */
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    opacity: 0.9;
+    text-align: center;
+}
+
+.hero-description {
+    margin-bottom: 3rem;
+}
+
+.hero-description p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-description p:last-child {
+    font-weight: 600;
+    color: var(--accent-light-blue);
+    margin-top: 1.5rem;
+    font-style: italic;
+}
+
+/* Стили для стрелок в описании */
+.hero-description p:nth-child(2) {
+    font-weight: 500;
+    color: white;
+}
+
 .marquee-container::before {
     left: 0;
     background: linear-gradient(90deg, var(--secondary) 0%, transparent 100%);
@@ -430,8 +468,28 @@
     padding-top: 120px !important;
 }
 
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+/* Для мобильной версии */
 @media (max-width: 768px) {
+    .hero-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-description {
+        margin-bottom: 2rem;
+    }
+    
+    .hero-description p {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 0.8rem;
+    }
+    
+    .hero-description p:last-child {
+        margin-top: 1rem;
+        font-size: 0.95rem;
+    }
+    
     .hero h1 {
         font-size: 2.5rem;
     }
@@ -518,6 +576,14 @@
 }
 
 @media (max-width: 480px) {
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-description p {
+        font-size: 0.95rem;
+    }
+    
     .hero h1 {
         font-size: 2rem;
     }
