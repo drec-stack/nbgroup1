@@ -10,11 +10,43 @@
     margin: 0 auto;
 }
 
+.about-hero .page-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.about-hero .page-subtitle {
+    font-size: 1.3rem;
+    color: var(--light-text);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 /* Our Story */
 .our-story {
     padding: 120px 0;
     background: var(--primary);
     border-bottom: 1px solid var(--border);
+}
+
+.our-story .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.our-story .section-header h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .story-content {
@@ -24,50 +56,52 @@
     align-items: center;
 }
 
-.story-text h2 {
-    font-size: 3rem;
-    margin-bottom: 30px;
-    font-weight: 800;
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+.story-text {
+    max-width: 600px;
 }
 
-.story-text p {
-    font-size: 1.2rem;
+.story-paragraph {
+    font-size: 1.3rem;
     color: var(--light-text);
     line-height: 1.6;
     margin-bottom: 30px;
 }
 
+.story-divider {
+    height: 2px;
+    background: var(--border);
+    margin: 40px 0;
+    width: 100px;
+}
+
 .story-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    gap: 40px;
     margin-top: 40px;
 }
 
 .story-stat {
     text-align: center;
-    padding: 20px;
 }
 
 .stat-number {
-    font-size: 2.5rem;
+    font-size: 4rem;
     font-weight: 800;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 10px;
+    line-height: 1;
 }
 
 .stat-label {
     color: var(--light-text);
     font-size: 0.9rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    font-weight: 600;
 }
 
 .story-image .image-placeholder {
@@ -84,35 +118,21 @@
     color: var(--light-text);
 }
 
-/* Our Values */
-.our-values {
+/* Our Services */
+.our-services {
     padding: 120px 0;
     background: var(--secondary);
     border-bottom: 1px solid var(--border);
 }
 
-.values-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px;
-}
-
-.value-card {
-    background: var(--primary);
-    padding: 40px 30px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    transition: var(--transition);
+.our-services .section-header {
     text-align: center;
+    margin-bottom: 60px;
 }
 
-.value-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--accent);
-}
-
-.value-icon {
+.our-services .section-header h2 {
     font-size: 3rem;
+    font-weight: 800;
     margin-bottom: 20px;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
@@ -120,22 +140,11 @@
     -webkit-text-fill-color: transparent;
 }
 
-.value-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    font-weight: 700;
-}
-
-.value-card p {
+.our-services .section-header p {
+    font-size: 1.2rem;
     color: var(--light-text);
-    line-height: 1.6;
-}
-
-/* Our Services */
-.our-services {
-    padding: 120px 0;
-    background: var(--primary);
-    border-bottom: 1px solid var(--border);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .services-grid {
@@ -146,7 +155,7 @@
 }
 
 .service-category {
-    background: var(--secondary);
+    background: var(--primary);
     padding: 40px 30px;
     border-radius: 12px;
     border: 1px solid var(--border);
@@ -186,7 +195,7 @@
 .service-category .key-areas {
     margin: 25px 0;
     padding: 20px;
-    background: var(--primary);
+    background: var(--secondary);
     border-radius: 8px;
     border-left: 4px solid var(--accent);
 }
@@ -214,11 +223,33 @@
     color: var(--accent);
 }
 
-/* Our Team - УДАЛЕНЫ ВСЕ ТЕКСТОВЫЕ ЭЛЕМЕНТЫ ИЗ АВАТАРОК */
+/* Our Team */
 .our-team {
     padding: 120px 0;
-    background: var(--secondary);
+    background: var(--primary);
     border-bottom: 1px solid var(--border);
+}
+
+.our-team .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.our-team .section-header h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.our-team .section-header p {
+    font-size: 1.2rem;
+    color: var(--light-text);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .team-grid {
@@ -228,13 +259,12 @@
 }
 
 .team-member {
-    background: var(--primary);
+    background: var(--secondary);
     padding: 40px 30px;
     border-radius: 10px;
     border: 1px solid var(--border);
     transition: var(--transition);
     text-align: center;
-    position: relative;
 }
 
 .team-member:hover {
@@ -243,7 +273,6 @@
 }
 
 .member-photo {
-    position: relative;
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -251,31 +280,6 @@
     border: 3px solid var(--accent);
     overflow: hidden;
     background: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* УДАЛЕНЫ ВСЕ ТЕКСТОВЫЕ ЭЛЕМЕНТЫ В АВАТАРКАХ */
-.member-photo::before,
-.member-photo::after,
-.team-member::before,
-.team-member::after {
-    display: none !important;
-    content: none !important;
-}
-
-/* Скрываем все текстовые элементы внутри аватарок */
-.member-photo .photo-placeholder,
-.member-photo .letter,
-.member-photo .badge,
-.member-photo .initial,
-.member-photo .text,
-.member-photo span,
-.member-photo div:not(.member-avatar) {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
 }
 
 .member-avatar {
@@ -299,17 +303,19 @@
     color: var(--accent);
     font-weight: 600;
     margin-bottom: 15px;
+    font-size: 1rem;
 }
 
 .member-bio {
     color: var(--light-text);
     line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 /* About CTA */
 .about-cta {
     padding: 120px 0;
-    background: var(--primary);
+    background: var(--secondary);
     text-align: center;
 }
 
@@ -332,7 +338,7 @@
     margin-right: auto;
 }
 
-/* Responsive */
+/* Responsive Styles */
 @media (max-width: 1024px) {
     .story-content {
         grid-template-columns: 1fr;
@@ -340,12 +346,12 @@
     }
     
     .story-image {
-        order: -1; /* Изображение первым на планшетах */
+        order: -1;
     }
     
     .story-stats {
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        gap: 30px;
     }
     
     .services-grid {
@@ -360,8 +366,12 @@
         padding: 140px 0 60px !important;
     }
     
-    .about-hero-content {
-        text-align: center;
+    .about-hero .page-title {
+        font-size: 2.5rem !important;
+    }
+    
+    .about-hero .page-subtitle {
+        font-size: 1.1rem;
         padding: 0 15px;
     }
     
@@ -370,39 +380,39 @@
         padding: 80px 0 !important;
     }
     
-    .story-text h2 {
+    .our-story .section-header h2 {
         font-size: 2.2rem !important;
-        text-align: center;
-        margin-bottom: 25px;
     }
     
-    .story-text p {
+    .story-paragraph {
         font-size: 1.1rem;
-        line-height: 1.6;
         margin-bottom: 20px;
         text-align: center;
     }
     
+    .story-divider {
+        margin: 30px auto;
+    }
+    
     .story-stats {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 25px;
         margin-top: 30px;
     }
     
     .story-stat {
-        padding: 20px 15px;
+        padding: 20px;
         background: var(--secondary);
         border-radius: 12px;
         border: 1px solid var(--border);
     }
     
     .stat-number {
-        font-size: 2.2rem;
-        margin-bottom: 8px;
+        font-size: 3rem;
     }
     
     .stat-label {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
     
     .story-image .image-placeholder {
@@ -410,43 +420,13 @@
         font-size: 1.2rem;
     }
 
-    /* Our Values Mobile */
-    .our-values {
-        padding: 80px 0 !important;
-    }
-    
-    .values-grid {
-        grid-template-columns: 1fr;
-        gap: 25px;
-    }
-    
-    .value-card {
-        padding: 30px 20px;
-        text-align: center;
-    }
-    
-    .value-icon {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-    }
-    
-    .value-card h3 {
-        font-size: 1.3rem;
-        margin-bottom: 12px;
-    }
-    
-    .value-card p {
-        font-size: 1rem;
-        line-height: 1.5;
-    }
-    
-    .value-card:hover {
-        transform: translateY(-5px);
-    }
-    
     /* Our Services Mobile */
     .our-services {
         padding: 80px 0 !important;
+    }
+    
+    .our-services .section-header h2 {
+        font-size: 2.2rem !important;
     }
     
     .services-grid {
@@ -461,7 +441,6 @@
     
     .service-category h3 {
         font-size: 1.5rem;
-        margin-bottom: 15px;
     }
     
     .service-category .key-areas {
@@ -478,6 +457,10 @@
         padding: 80px 0 !important;
     }
     
+    .our-team .section-header h2 {
+        font-size: 2.2rem !important;
+    }
+    
     .team-grid {
         grid-template-columns: 1fr;
         gap: 25px;
@@ -485,28 +468,19 @@
     
     .team-member {
         padding: 30px 20px;
-        text-align: center;
     }
     
     .member-photo {
         width: 100px;
         height: 100px;
-        margin-bottom: 20px;
     }
     
     .member-name {
         font-size: 1.2rem;
-        margin-bottom: 8px;
     }
     
     .member-role {
-        font-size: 1rem;
-        margin-bottom: 12px;
-    }
-    
-    .member-bio {
         font-size: 0.95rem;
-        line-height: 1.5;
     }
     
     .team-member:hover {
@@ -516,17 +490,14 @@
     /* About CTA Mobile */
     .about-cta {
         padding: 80px 0 !important;
-        text-align: center;
     }
     
     .about-cta .cta-content h2 {
         font-size: 2.2rem !important;
-        margin-bottom: 15px;
     }
     
     .about-cta .cta-content p {
         font-size: 1.1rem;
-        margin-bottom: 30px;
     }
     
     .about-cta .btn {
@@ -537,25 +508,12 @@
 }
 
 @media (max-width: 480px) {
-    /* Extra Small Devices Optimization */
-    .story-text h2 {
-        font-size: 1.8rem !important;
-    }
-    
-    .story-text p {
-        font-size: 1rem;
-    }
-    
     .stat-number {
-        font-size: 1.8rem;
+        font-size: 2.5rem;
     }
     
-    .value-card {
-        padding: 25px 15px;
-    }
-    
-    .value-icon {
-        font-size: 2rem;
+    .story-stat {
+        padding: 15px;
     }
     
     .service-category {
@@ -586,94 +544,8 @@
 
 /* Оптимизация для touch-устройств */
 @media (hover: none) and (pointer: coarse) {
-    .value-card:hover,
     .team-member:hover,
     .service-category:hover {
         transform: none;
     }
-    
-    .story-stat:hover {
-        transform: none;
-    }
-}
-
-/* Улучшение доступности для мобильных */
-@media (max-width: 768px) {
-    .member-photo {
-        min-height: 100px; /* Минимальная высота для консистентности */
-    }
-    
-    .value-card,
-    .team-member,
-    .story-stat,
-    .service-category {
-        min-height: auto; /* Убираем фиксированную высоту */
-    }
-    
-    /* Улучшение читаемости текста */
-    .member-bio,
-    .value-card p,
-    .story-text p,
-    .service-category p {
-        line-height: 1.6;
-        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-    }
-}
-
-/* Оптимизация загрузки изображений */
-@media (max-width: 768px) {
-    .member-avatar {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
-    
-    /* Ленивая загрузка для изображений команды */
-    .member-avatar[data-src] {
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    .member-avatar.loaded {
-        opacity: 1;
-    }
-}
-
-/* Поддержка landscape ориентации */
-@media (max-width: 768px) and (orientation: landscape) {
-    .about-hero {
-        padding: 120px 0 40px !important;
-        min-height: auto;
-    }
-    
-    .hero-actions {
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    .hero-actions .btn {
-        flex: 1;
-        min-width: 150px;
-        margin: 5px;
-    }
-}
-
-/* ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ ПОЛНОГО УДАЛЕНИЯ БУКВ ИЗ АВАТАРОК */
-.team-member .letter,
-.team-member .badge,
-.team-member .initial,
-.member-photo .letter,
-.member-photo .badge,
-.member-photo .initial,
-.member-photo .photo-placeholder {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-}
-
-/* Гарантируем, что в аватарках будет ТОЛЬКО изображение */
-.member-photo > *:not(.member-avatar) {
-    display: none !important;
 }
