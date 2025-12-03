@@ -76,19 +76,59 @@
             animation-play-state: paused !important;
         }
 
-        /* Стили для плавной смены языка */
-        .language-changing {
-            opacity: 0.5 !important;
-            transition: opacity 0.2s ease !important;
+        /* Стили для переключения языка */
+        .language-changing [data-i18n] {
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
         }
 
-        .language-changed {
-            animation: fadeInLanguage 0.3s ease forwards !important;
+        .language-switched [data-i18n] {
+            animation: fadeInLanguage 0.5s ease forwards;
         }
 
         @keyframes fadeInLanguage {
-            from { opacity: 0.5; }
-            to { opacity: 1; }
+            from {
+                opacity: 0.7;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Language switcher styles */
+        .language-switcher {
+            display: flex;
+            gap: 5px;
+            margin-right: 20px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.4);
+            font-weight: 600;
         }
     </style>
 </head>
@@ -107,7 +147,7 @@
     <!-- Header Component -->
     <div id="header-container"></div>
 
-    <!-- Hero Section - ИСПРАВЛЕННАЯ ВЕРСИЯ -->
+    <!-- Hero Section -->
     <section class="hero parallax-hero">
         <div class="container">
             <div class="parallax-content">
@@ -145,7 +185,7 @@
         </div>
     </section>
 
-    <!-- Speck Design Style Services Section - ENHANCED VERTICAL LAYOUT -->
+    <!-- Speck Design Style Services Section -->
     <section class="speck-services-enhanced content-section" data-bg-index="0">
         <div class="container">
             <div class="speck-services-enhanced-grid">
@@ -494,18 +534,105 @@
     <script src="js/home.js"></script>
     <script src="js/parallax.js"></script>
     <script src="js/footer-init.js"></script>
+    <script src="js/check-i18n.js"></script>
 
     <script>
+        // Проверка состояния i18n
+        console.log('📄 Page loading, initializing...');
+        
+        // Принудительное обновление переводов после загрузки
+        function applyTranslationsForce() {
+            setTimeout(() => {
+                if (window.i18n && window.i18n.refresh) {
+                    const count = window.i18n.refresh();
+                    console.log(`✅ Force applied ${count} translations`);
+                    
+                    // Обновить кнопки языка
+                    const langBtns = document.querySelectorAll('.lang-btn');
+                    const currentLang = window.i18n.getCurrentLang();
+                    langBtns.forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.getAttribute('data-lang') === currentLang) {
+                            btn.classList.add('active');
+                        }
+                    });
+                }
+            }, 1000);
+            
+            // Еще одна попытка через 3 секунды
+            setTimeout(() => {
+                if (window.i18n && window.i18n.refresh) {
+                    window.i18n.refresh();
+                }
+            }, 3000);
+        }
+        
+        // Проверка бегущей строки
+        function checkMarquee() {
+            console.log('🔍 Проверка бегущей строки...');
+            const track1 = document.getElementById('marquee1');
+            const track2 = document.getElementById('marquee2');
+            
+            if (track1 && track2) {
+                console.log('✅ Треки найдены');
+                
+                // Принудительно запускаем CSS анимации
+                track1.style.animation = 'marquee-scroll 40s linear infinite';
+                track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
+                
+                console.log('🚀 Бегущая строка запущена через CSS');
+            }
+        }
+        
+        // Проверка i18n
+        function checkI18nStatus() {
+            setTimeout(() => {
+                if (window.i18n) {
+                    console.log('🌍 i18n Status:');
+                    console.log('   Initialized:', window.i18n.isInitialized);
+                    console.log('   Current language:', window.i18n.getCurrentLang());
+                    console.log('   Translations loaded:', Object.keys(window.i18n.translations).length);
+                    
+                    // Проверить ключи героя
+                    const heroKeys = [
+                        'home.hero.titleLine1',
+                        'home.hero.titleLine2', 
+                        'home.hero.titleLine3',
+                        'home.subtitle'
+                    ];
+                    
+                    heroKeys.forEach(key => {
+                        const translation = window.i18n.getTranslation(key);
+                        console.log(`   ${key}:`, translation ? '✅' : '❌');
+                    });
+                    
+                    // Проверить элементы
+                    const elements = document.querySelectorAll('[data-i18n]');
+                    console.log(`   Elements with data-i18n: ${elements.length}`);
+                }
+            }, 2000);
+        }
+        
         // Load header component
         fetch('components/header.html')
             .then(response => response.text())
             .then(html => {
                 document.getElementById('header-container').innerHTML = html;
+                
+                // Инициализировать хедер
                 if (typeof initHeader === 'function') initHeader();
                 initHomeHeader();
+                
+                // Применить переводы к хедеру
+                setTimeout(() => {
+                    if (window.i18n && window.i18n.refresh) {
+                        window.i18n.refresh();
+                    }
+                }, 500);
             })
             .catch(error => {
                 console.error('Error loading header:', error);
+                // Fallback header
                 document.getElementById('header-container').innerHTML = `
                     <header class="main-header">
                         <div class="container">
@@ -541,10 +668,13 @@
                         <div class="mobile-menu-overlay"></div>
                     </header>
                 `;
-                // Инициализируем i18n для fallback header
-                if (window.i18n && window.i18n.applyTranslations) {
-                    window.i18n.applyTranslations();
-                }
+                
+                // Применить переводы к fallback хедеру
+                setTimeout(() => {
+                    if (window.i18n && window.i18n.refresh) {
+                        window.i18n.refresh();
+                    }
+                }, 300);
             });
 
         // Load footer component
@@ -553,10 +683,13 @@
             .then(html => {
                 document.getElementById('footer-container').innerHTML = html;
                 console.log('✅ Footer loaded successfully');
-                // Initialize footer
-                if (typeof initMinimalFooter === 'function') {
-                    setTimeout(initMinimalFooter, 100);
-                }
+                
+                // Применить переводы к футеру
+                setTimeout(() => {
+                    if (window.i18n && window.i18n.refresh) {
+                        window.i18n.refresh();
+                    }
+                }, 500);
             })
             .catch(error => {
                 console.error('Error loading footer:', error);
@@ -574,9 +707,13 @@
                         </div>
                     </footer>
                 `;
-                if (typeof initMinimalFooter === 'function') {
-                    setTimeout(initMinimalFooter, 100);
-                }
+                
+                // Применить переводы к fallback футеру
+                setTimeout(() => {
+                    if (window.i18n && window.i18n.refresh) {
+                        window.i18n.refresh();
+                    }
+                }, 300);
             });
 
         // Header hide functionality
@@ -617,76 +754,27 @@
             });
         }
 
-        // ПРОСТАЯ ПРОВЕРКА РАБОТЫ БЕГУЩЕЙ СТРОКИ
-        function checkMarquee() {
-            console.log('🔍 Проверка бегущей строки...');
-            const track1 = document.getElementById('marquee1');
-            const track2 = document.getElementById('marquee2');
-            
-            if (track1 && track2) {
-                console.log('✅ Треки найдены');
-                
-                // Принудительно запускаем CSS анимации
-                track1.style.animation = 'marquee-scroll 40s linear infinite';
-                track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
-                
-                console.log('🚀 Бегущая строка запущена через CSS');
-            }
-        }
-
-        // Отладочный код для проверки i18n
-        function debugI18n() {
-            setTimeout(() => {
-                console.log('🌍 i18n loaded:', !!window.i18n);
-                console.log('🌍 Current language:', window.i18n?.currentLang);
-                console.log('🌍 Translations loaded:', Object.keys(window.i18n?.translations || {}).length);
-                console.log('🌍 Elements with data-i18n:', document.querySelectorAll('[data-i18n]').length);
-                
-                // Проверка конкретных элементов Hero секции
-                console.log('🔍 Проверка Hero секции:');
-                const heroElements = document.querySelectorAll('.hero [data-i18n]');
-                heroElements.forEach((el, index) => {
-                    const key = el.getAttribute('data-i18n');
-                    console.log(`  ${index + 1}. ${key}: "${el.textContent.substring(0, 50)}..."`);
-                });
-                
-                // Принудительно применяем переводы если нужно
-                if (document.querySelectorAll('[data-i18n]').length > 0) {
-                    console.log('🔄 Проверяем переводы...');
-                    if (window.i18n && window.i18n.applyTranslations) {
-                        const translatedCount = window.i18n.applyTranslations();
-                        console.log(`✅ Применено переводов: ${translatedCount}`);
-                    }
-                }
-            }, 1000);
-        }
-
-        // Запускаем проверки
+        // Запустить проверки
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 DOM fully loaded');
             checkMarquee();
-            debugI18n();
+            checkI18nStatus();
+            applyTranslationsForce();
             
-            // Принудительно запускаем i18n если он не инициализировался
+            // Резервная проверка через 5 секунд
             setTimeout(() => {
-                if (window.i18n && window.i18n.applyTranslations) {
-                    console.log('🔄 Принудительно применяем переводы...');
-                    const count = window.i18n.applyTranslations();
-                    console.log(`✅ Принудительно применено ${count} переводов`);
-                    
-                    // Обновляем кнопки переключения языка
-                    const langBtns = document.querySelectorAll('.lang-btn');
-                    const currentLang = window.i18n.getCurrentLang();
-                    langBtns.forEach(btn => {
-                        btn.classList.remove('active');
-                        if (btn.getAttribute('data-lang') === currentLang) {
-                            btn.classList.add('active');
-                        }
-                    });
+                if (window.i18n && window.i18n.refresh) {
+                    console.log('🔄 Final translation refresh...');
+                    window.i18n.refresh();
                 }
-            }, 1500);
+            }, 5000);
         });
         
-        setTimeout(initHomeHeader, 2000);
+        // Также проверять при полной загрузке страницы
+        window.addEventListener('load', function() {
+            console.log('📦 Page fully loaded');
+            applyTranslationsForce();
+        });
     </script>
 </body>
 </html>
