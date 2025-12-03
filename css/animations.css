@@ -853,3 +853,198 @@
 .language-switcher[data-current-lang="en"]::before {
     transform: translateX(100%);
 }
+
+/* ===== АНИМАЦИИ ДЛЯ КЛИКАБЕЛЬНЫХ ЭЛЕМЕНТОВ ===== */
+
+/* Анимация ripple эффекта при клике */
+.ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.6);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.ripple:focus:not(:active)::after {
+    animation: ripple-animation 0.6s ease-out;
+}
+
+@keyframes ripple-animation {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+}
+
+/* Анимация пульсации для призыва к действию */
+.pulse-attention {
+    animation: pulse-attention 2s infinite;
+}
+
+@keyframes pulse-attention {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 102, 255, 0);
+    }
+}
+
+/* Анимация поднятия при hover */
+.lift-on-hover {
+    transition: transform 0.3s var(--ease-out-back);
+}
+
+.lift-on-hover:hover {
+    transform: translateY(-5px);
+}
+
+/* Анимация нажатия */
+.press-animation {
+    transition: transform 0.1s ease;
+}
+
+.press-animation:active {
+    transform: scale(0.95);
+}
+
+/* Анимация появления ссылки */
+.link-reveal {
+    position: relative;
+    overflow: hidden;
+}
+
+.link-reveal::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.link-reveal:hover::after {
+    transform: translateX(0);
+}
+
+/* Анимация иконки стрелки */
+.arrow-animate i {
+    transition: transform 0.3s ease;
+}
+
+.arrow-animate:hover i {
+    transform: translateX(5px);
+}
+
+/* Анимация для карточек при загрузке */
+.card-stagger {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: cardStagger 0.6s var(--ease-out-back) forwards;
+}
+
+@keyframes cardStagger {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Задержки для staggered анимации */
+.card-stagger:nth-child(1) { animation-delay: 0.1s; }
+.card-stagger:nth-child(2) { animation-delay: 0.2s; }
+.card-stagger:nth-child(3) { animation-delay: 0.3s; }
+.card-stagger:nth-child(4) { animation-delay: 0.4s; }
+.card-stagger:nth-child(5) { animation-delay: 0.5s; }
+.card-stagger:nth-child(6) { animation-delay: 0.6s; }
+
+/* Анимация подсветки при переходе */
+.highlight-transition {
+    animation: highlightTransition 2s ease;
+}
+
+@keyframes highlightTransition {
+    0%, 100% {
+        background: transparent;
+    }
+    50% {
+        background: rgba(0, 102, 255, 0.1);
+    }
+}
+
+/* Анимация для бегущей строки при hover */
+.marquee-hover-pause:hover .marquee-animate-left,
+.marquee-hover-pause:hover .marquee-animate-right {
+    animation-play-state: paused;
+}
+
+/* Анимация для progress bar */
+.progress-grow {
+    animation: progressGrow 0.3s ease;
+}
+
+@keyframes progressGrow {
+    from {
+        width: 0;
+    }
+    to {
+        width: var(--progress-width);
+    }
+}
+
+/* Анимация для переключателя языка */
+.lang-slider {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Анимация для мобильного меню */
+.mobile-menu-toggle span {
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Анимация для overlay */
+.mobile-menu-overlay {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Анимация для секций при скролле */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s var(--ease-out-quad);
+}
+
+.reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
