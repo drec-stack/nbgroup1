@@ -2248,6 +2248,233 @@ main {
 }
 
 /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+/* ===== ОБЩИЕ СТИЛИ ДЛЯ КЛИКАБЕЛЬНЫХ ЭЛЕМЕНТОВ ===== */
+
+/* Базовые стили для всех кликабельных элементов */
+[role="link"],
+.clickable-element {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    outline: none;
+}
+
+/* Стили для focus состояния */
+[role="link"]:focus,
+.clickable-element:focus,
+a:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+[role="link"]:focus:not(:focus-visible),
+.clickable-element:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+    outline: none;
+}
+
+[role="link"]:focus-visible,
+.clickable-element:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* Стили для активного состояния (при нажатии) */
+[role="link"]:active,
+.clickable-element:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+/* Индикатор кликабельности для всех элементов */
+.clickable-element::after {
+    content: '↗';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateX(-5px);
+}
+
+.clickable-element:hover::after {
+    opacity: 0.7;
+    transform: translateX(0);
+}
+
+/* Стили для disabled элементов */
+[role="link"][aria-disabled="true"],
+.clickable-element[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Анимация загрузки при клике */
+.page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--primary);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.page-transition.active {
+    opacity: 0.7;
+    pointer-events: all;
+}
+
+/* Стили для улучшения визуальной обратной связи */
+.btn:active,
+.nav-link:active,
+.social-link:active,
+.card-link:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+/* Стили для hover состояния навигации */
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Стили для social links */
+.social-link:hover {
+    transform: translateY(-3px);
+}
+
+/* Стили для карточек в портфолио */
+.project-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+}
+
+/* Стили для карточек в brandbook */
+.brand-case:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+/* Стили для карточек в about */
+.value-card:hover,
+.team-member:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+/* Стили для карточек в contacts */
+.contact-card:hover,
+.social-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+/* Улучшение для мобильных устройств */
+@media (max-width: 768px) {
+    /* Увеличение touch target для мобильных */
+    .nav-link,
+    .btn,
+    .social-link,
+    .card-link {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Упрощение анимаций на мобильных */
+    .nav-link:hover,
+    .btn:hover,
+    .social-link:hover,
+    .card-link:hover,
+    .project-card:hover,
+    .brand-case:hover,
+    .value-card:hover,
+    .team-member:hover,
+    .contact-card:hover {
+        transform: none;
+    }
+    
+    /* Улучшение визуальной обратной связи на touch */
+    .nav-link:active,
+    .btn:active,
+    .social-link:active,
+    .card-link:active {
+        background: rgba(255, 255, 255, 0.15);
+        transform: scale(0.95);
+    }
+}
+
+/* Поддержка high contrast mode */
+@media (prefers-contrast: high) {
+    [role="link"]:focus,
+    .clickable-element:focus,
+    a:focus {
+        outline: 3px solid white;
+    }
+    
+    .nav-link:hover,
+    .btn:hover {
+        background: white;
+        color: var(--primary);
+    }
+}
+
+/* Поддержка reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    [role="link"],
+    .clickable-element,
+    .btn,
+    .nav-link,
+    .social-link,
+    .card-link,
+    .project-card,
+    .brand-case,
+    .value-card,
+    .team-member,
+    .contact-card {
+        transition: none;
+    }
+    
+    [role="link"]:hover,
+    .clickable-element:hover,
+    .btn:hover,
+    .nav-link:hover,
+    .social-link:hover,
+    .card-link:hover,
+    .project-card:hover,
+    .brand-case:hover,
+    .value-card:hover,
+    .team-member:hover,
+    .contact-card:hover {
+        transform: none;
+    }
+    
+    .page-transition {
+        transition: none;
+    }
+}
+
+/* Анимация ripple эффекта */
+@keyframes ripple-animation {
+    0% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20);
+        opacity: 0;
+    }
+}
+
+/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
 @media (max-width: 768px) {
     /* Уменьшаем отступ для мобильных */
     main {
@@ -2938,3 +3165,4 @@ html {
 .debug-marquee .brand {
     background: rgba(255, 0, 0, 0.1);
 }
+
