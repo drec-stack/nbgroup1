@@ -386,9 +386,53 @@
     "title": "About Us",
     "subtitle": "Full-cycle industrial design, engineering and manufacturing",
     "story": {
+      "title": "Our Story",
+      "p1": "Founded in 2012, NBGROUP.TECH began as a small industrial design studio with a big vision.",
+      "p2": "Over the years, we've grown into a full-service product development company."
+    },
+    "services": {
       "title": "Our Services",
-      "p1": "Industrial Design",
-      "p2": "We develop product designs of any complexity - from idea to production launch.Key areas: premium hookahs — accessories — packaging and cases.Every element is developed considering aesthetics, ergonomics and real production processes. Engineering We transform design into fully functional construction.We create precise 3D models, technical documentation, select materials and processing methods. NB GROUP TECH engineers are practitioners with real production experience.Production Our own production base is the key advantage of the studio. It allows us to: — produce prototypes on time — control quality at every stage — launch mass production of any volume — create 'turnkey' products We work with metal, plastic, composites and other industrial materials.Brandbook We develop brand systems for companies that need to look cohesive and competitive at the international level.The brandbook includes: — visual identity — color and typography system — branded elements and media — brand application rules. The NB GROUP TECH brandbook enhances the product and forms a unified visual language for the company. Identity Development We create visual systems that increase brand recognition and strengthen its reputation.Identity works equally accurately on packaging, website, social media and the product itself."
+      "subtitle": "Comprehensive services from design to production",
+      "industrialDesign": {
+        "title": "Industrial Design",
+        "description": "We develop product designs of any complexity - from idea to production launch.",
+        "details": "Every element is developed considering aesthetics, ergonomics and real production processes."
+      },
+      "engineering": {
+        "title": "Engineering",
+        "description": "We transform design into fully functional construction.",
+        "details1": "We create precise 3D models, technical documentation, select materials and processing methods.",
+        "details2": "NB GROUP TECH engineers are practitioners with real production experience."
+      },
+      "production": {
+        "title": "Production",
+        "description": "Our own production base is the key advantage of the studio.",
+        "materials": "We work with metal, plastic, composites and other industrial materials."
+      },
+      "brandbook": {
+        "title": "Brandbook",
+        "description": "We develop brand systems for companies that need to look cohesive and competitive at the international level.",
+        "details": "The NB GROUP TECH brandbook enhances the product and forms a unified visual language for the company."
+      },
+      "identity": {
+        "title": "Identity Development",
+        "description": "We create visual systems that increase brand recognition and strengthen its reputation.",
+        "details": "Identity works equally accurately on packaging, website, social media and the product itself."
+      },
+      "keyAreas": "Key areas",
+      "hookahs": "Premium hookahs",
+      "accessories": "Accessories",
+      "packaging": "Packaging and cases",
+      "itAllows": "It allows us to",
+      "prototypes": "Produce prototypes on time",
+      "quality": "Control quality at every stage",
+      "massProduction": "Launch mass production of any volume",
+      "turnkey": "Create 'turnkey' products",
+      "includes": "The brandbook includes",
+      "visualIdentity": "Visual identity",
+      "colorTypography": "Color and typography system",
+      "brandedElements": "Branded elements and media",
+      "brandRules": "Brand application rules"
     },
     "values": {
       "title": "Our Approach",
@@ -524,4 +568,3 @@
     "copyright": "All rights reserved."
   }
 }
-
