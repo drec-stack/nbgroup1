@@ -81,14 +81,18 @@
         "subtitle": "Drive Innovation And Align Goals",
         "description": "We develop comprehensive innovation strategies that align business objectives with user needs, creating sustainable competitive advantages through research-driven insights.",
         "features": {
-          "innovation": "Innovation Strategy",
-          "design": "Design Strategy",
-          "research": "User Research"
-        },
-        "featureDescriptions": {
-          "innovation": "Developing long-term innovation roadmaps and growth strategies",
-          "design": "Creating design systems and frameworks for consistent brand experience",
-          "research": "In-depth user studies and market analysis to inform product decisions"
+          "innovation": {
+            "title": "Innovation Strategy",
+            "description": "Developing long-term innovation roadmaps and growth strategies"
+          },
+          "design": {
+            "title": "Design Strategy",
+            "description": "Creating design systems and frameworks for consistent brand experience"
+          },
+          "research": {
+            "title": "User Research",
+            "description": "In-depth user studies and market analysis to inform product decisions"
+          }
         },
         "explore": "Explore Strategy Services →"
       },
@@ -97,16 +101,22 @@
         "subtitle": "Engage Audiences With Product Design",
         "description": "Transform concepts into compelling product experiences through industrial design, brand identity, and user-centered interfaces that resonate with target audiences.",
         "features": {
-          "industrial": "Industrial Design",
-          "uiux": "UI/UX Design",
-          "brand": "Brand Design",
-          "packaging": "Packaging Design"
-        },
-        "featureDescriptions": {
-          "industrial": "Physical product design, ergonomics, and manufacturing optimization",
-          "uiux": "Digital interfaces and user experiences for web and mobile applications",
-          "brand": "Complete visual identity systems and brand guideline development",
-          "packaging": "Sustainable and impactful packaging solutions for retail success"
+          "industrial": {
+            "title": "Industrial Design",
+            "description": "Physical product design, ergonomics, and manufacturing optimization"
+          },
+          "brand": {
+            "title": "Brand Design",
+            "description": "Complete visual identity systems and brand guideline development"
+          },
+          "packaging": {
+            "title": "Packaging Design",
+            "description": "Sustainable and impactful packaging solutions for retail success"
+          },
+          "uiux": {
+            "title": "UI/UX Design",
+            "description": "Digital interfaces and user experiences for web and mobile applications"
+          }
         },
         "explore": "Explore Design Services →"
       },
@@ -115,14 +125,18 @@
         "subtitle": "Complex Technical Solutions And Architecture",
         "description": "Build robust, scalable technical architectures and engineering solutions that power innovative products and support business growth at any scale.",
         "features": {
-          "architecture": "Architecture",
-          "optimization": "Optimization",
-          "scaling": "Scaling"
-        },
-        "featureDescriptions": {
-          "architecture": "System design, technical architecture, and infrastructure planning",
-          "optimization": "Performance tuning, efficiency improvements, and cost optimization",
-          "scaling": "Scalability solutions for high-growth products and enterprise systems"
+          "architecture": {
+            "title": "Architecture",
+            "description": "System design, technical architecture, and infrastructure planning"
+          },
+          "optimization": {
+            "title": "Optimization",
+            "description": "Performance tuning, efficiency improvements, and cost optimization"
+          },
+          "scaling": {
+            "title": "Scaling",
+            "description": "Scalability solutions for high-growth products and enterprise systems"
+          }
         },
         "explore": "Explore Engineering Services →"
       },
@@ -131,16 +145,22 @@
         "subtitle": "Digital Strategies And Product Promotion",
         "description": "Drive product success through data-driven marketing strategies, digital campaigns, and comprehensive analytics that maximize reach and conversion.",
         "features": {
-          "seo": "SEO",
-          "smm": "SMM",
-          "analytics": "Analytics",
-          "content": "Content"
-        },
-        "featureDescriptions": {
-          "seo": "Search engine optimization and organic growth strategies",
-          "smm": "Social media marketing and community engagement",
-          "analytics": "Data analysis, KPI tracking, and performance measurement",
-          "content": "Content strategy, creation, and distribution across channels"
+          "seo": {
+            "title": "SEO",
+            "description": "Search engine optimization and organic growth strategies"
+          },
+          "smm": {
+            "title": "SMM",
+            "description": "Social media marketing and community engagement"
+          },
+          "analytics": {
+            "title": "Analytics",
+            "description": "Data analysis, KPI tracking, and performance measurement"
+          },
+          "content": {
+            "title": "Content",
+            "description": "Content strategy, creation, and distribution across channels"
+          }
         },
         "explore": "Explore Marketing Services →"
       }
