@@ -2,6 +2,7 @@
 
 class DaehaaApp {
     constructor() {
+        this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.init();
     }
 
@@ -17,9 +18,245 @@ class DaehaaApp {
         this.setupPerformanceOptimizations();
         this.setupHeaderSupport();
         this.setupFooterSupport();
+        this.setupClickableElements(); // <-- ДОБАВЛЕНО
+        this.setupNavigationTracking(); // <-- ДОБАВЛЕНО
         
         // Принудительная инициализация подвала при загрузке
         this.initializeExistingFooter();
+        
+        console.log('🚀 Daehaa application initialized');
+    }
+
+    setupClickableElements() {
+        console.log('🖱️ Setting up clickable elements...');
+        
+        // 1. Добавляем класс всем ссылкам для улучшения обратной связи
+        document.querySelectorAll('a:not(.btn)').forEach(link => {
+            if (!link.classList.contains('clickable-element')) {
+                link.classList.add('clickable-element');
+            }
+        });
+        
+        // 2. Инициализируем все кликабельные элементы
+        document.querySelectorAll('[role="link"], .clickable-element').forEach(element => {
+            this.setupClickFeedback(element);
+        });
+        
+        // 3. Настройка плавных переходов между страницами
+        this.setupPageTransitions();
+        
+        // 4. Инициализация кликабельных карточек услуг на главной
+        if (document.body.classList.contains('home-page')) {
+            this.setupHomeClickableCards();
+        }
+    }
+
+    setupClickFeedback(element) {
+        // Проверяем, является ли элемент действительно кликабельным
+        if (!element.hasAttribute('href') && !element.hasAttribute('onclick')) {
+            return;
+        }
+        
+        // Добавляем keyboard navigation
+        element.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                element.click();
+            }
+        });
+        
+        // Добавляем атрибуты доступности
+        if (!element.hasAttribute('role')) {
+            element.setAttribute('role', 'link');
+        }
+        
+        if (!element.hasAttribute('tabindex')) {
+            element.setAttribute('tabindex', '0');
+        }
+        
+        // Добавляем aria-label если его нет
+        this.enhanceAccessibility(element);
+        
+        // Ripple эффект при клике (только для элементов без запрета)
+        if (!element.classList.contains('no-ripple')) {
+            element.addEventListener('click', (e) => {
+                this.createRippleEffect(element, e);
+            });
+        }
+    }
+
+    createRippleEffect(element, event) {
+        // Создаем ripple эффект
+        const ripple = document.createElement('span');
+        const rect = element.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = event.clientX - rect.left - size / 2;
+        const y = event.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s ease-out;
+            width: ${size}px;
+            height: ${size}px;
+            top: ${y}px;
+            left: ${x}px;
+            pointer-events: none;
+            z-index: 1;
+        `;
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        // Удаляем ripple после анимации
+        setTimeout(() => {
+            if (ripple.parentNode === element) {
+                element.removeChild(ripple);
+            }
+        }, 600);
+    }
+
+    enhanceAccessibility(element) {
+        if (!element.hasAttribute('aria-label') && element.hasAttribute('href')) {
+            const href = element.getAttribute('href');
+            let label = '';
+            
+            if (href === 'index.html' || href === '/' || href === '' || href === '#') {
+                label = 'Перейти на главную страницу';
+            } else if (href.includes('services.html')) {
+                if (href.includes('#')) {
+                    const section = href.split('#')[1];
+                    label = `Перейти к разделу ${section} на странице услуг`;
+                } else {
+                    label = 'Перейти на страницу услуг';
+                }
+            } else if (href.includes('portfolio.html')) {
+                label = 'Перейти в портфолио';
+            } else if (href.includes('about.html')) {
+                label = 'Перейти на страницу о нас';
+            } else if (href.includes('contacts.html')) {
+                label = 'Перейти на страницу контактов';
+            } else if (href.includes('brandbook.html')) {
+                label = 'Перейти в брендбук';
+            } else if (href.startsWith('#')) {
+                label = 'Прокрутить к разделу на этой странице';
+            } else if (href.startsWith('http')) {
+                label = 'Перейти по внешней ссылке';
+            } else {
+                label = 'Перейти по ссылке';
+            }
+            
+            element.setAttribute('aria-label', label);
+        }
+    }
+
+    setupPageTransitions() {
+        // Создаем overlay для transition между страницами
+        let transitionOverlay = document.querySelector('.page-transition');
+        
+        if (!transitionOverlay) {
+            transitionOverlay = document.createElement('div');
+            transitionOverlay.className = 'page-transition';
+            document.body.appendChild(transitionOverlay);
+        }
+        
+        // Обработка кликов на внутренние ссылки
+        document.querySelectorAll('a[href^="/"], a[href^="."]').forEach(link => {
+            if (link.href && !link.href.includes('#') && !link.target) {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    
+                    // Исключаем внешние ссылки и якоря
+                    if (href.startsWith('http') && !href.includes(window.location.hostname)) {
+                        return;
+                    }
+                    
+                    if (href.includes('#')) {
+                        return;
+                    }
+                    
+                    e.preventDefault();
+                    
+                    // Показываем overlay
+                    transitionOverlay.classList.add('active');
+                    
+                    // Переходим через 300ms
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 300);
+                });
+            }
+        });
+    }
+
+    setupHomeClickableCards() {
+        // Специальная обработка для карточек услуг на главной
+        const serviceCards = document.querySelectorAll('.speck-service-card-enhanced.clickable-service-card');
+        
+        serviceCards.forEach(card => {
+            // Добавляем улучшенную анимацию при hover
+            card.addEventListener('mouseenter', () => {
+                if (!this.isReducedMotion) {
+                    card.style.transform = 'translateY(-15px)';
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                if (!this.isReducedMotion) {
+                    card.style.transform = '';
+                }
+            });
+            
+            // Анимация при клике
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Анимация нажатия
+                card.style.transform = 'translateY(-10px) scale(0.98)';
+                
+                // Восстанавливаем через 300ms
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 300);
+                
+                // Переход через 350ms
+                setTimeout(() => {
+                    const href = card.getAttribute('href');
+                    if (href) {
+                        window.location.href = href;
+                    }
+                }, 350);
+            });
+            
+            // Keyboard support
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    card.click();
+                }
+            });
+        });
+    }
+
+    setupNavigationTracking() {
+        // Отслеживание кликов по навигации для аналитики
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                console.log(`🔗 Navigation: ${href}`);
+                
+                // Можно добавить Google Analytics здесь
+                // if (typeof gtag === 'function') {
+                //     gtag('event', 'navigation_click', {
+                //         'event_category': 'engagement',
+                //         'event_label': href
+                //     });
+                // }
+            });
+        });
     }
 
     initializeExistingFooter() {
@@ -238,6 +475,57 @@ class DaehaaApp {
     setupSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                // Обработка ссылок на services.html#section
+                const href = this.getAttribute('href');
+                
+                // Если ссылка ведет на другую страницу с якорем
+                if (href.includes('.html#')) {
+                    const [page, section] = href.split('#');
+                    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                    const targetPage = page.split('/').pop();
+                    
+                    // Если мы уже на нужной странице
+                    if (currentPage === targetPage || (currentPage === '' && targetPage === 'index.html')) {
+                        e.preventDefault();
+                        
+                        // Скроллим к секции на текущей странице
+                        setTimeout(() => {
+                            const targetElement = document.querySelector(`#${section}`);
+                            if (targetElement) {
+                                const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
+                                let additionalOffset = 20;
+                                
+                                // Для страницы услуг учитываем навигацию
+                                if (currentPage === 'services.html' || currentPage === 'services') {
+                                    const servicesNav = document.querySelector('.services-nav');
+                                    if (servicesNav) {
+                                        additionalOffset += servicesNav.offsetHeight;
+                                    }
+                                }
+                                
+                                const targetPosition = targetElement.offsetTop - headerHeight - additionalOffset;
+                                
+                                window.scrollTo({
+                                    top: targetPosition,
+                                    behavior: 'smooth'
+                                });
+                                
+                                // Подсветка секции
+                                targetElement.classList.add('highlighted');
+                                setTimeout(() => {
+                                    targetElement.classList.remove('highlighted');
+                                }, 2000);
+                                
+                                // Обновляем URL
+                                history.pushState(null, null, `#${section}`);
+                            }
+                        }, 100);
+                    }
+                    // Если это переход на другую страницу, позволить браузеру обработать
+                    return;
+                }
+                
+                // Обработка обычных якорей на текущей странице
                 e.preventDefault();
                 
                 const targetId = this.getAttribute('href');
@@ -246,13 +534,30 @@ class DaehaaApp {
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
-                    const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                    let additionalOffset = 20;
+                    
+                    // Для страницы услуг учитываем навигацию
+                    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                    if (currentPage === 'services.html' || currentPage === 'services') {
+                        const servicesNav = document.querySelector('.services-nav');
+                        if (servicesNav) {
+                            additionalOffset += servicesNav.offsetHeight;
+                        }
+                    }
+                    
+                    const targetPosition = targetElement.offsetTop - headerHeight - additionalOffset;
                     
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
                     });
 
+                    // Подсветка секции
+                    targetElement.classList.add('highlighted');
+                    setTimeout(() => {
+                        targetElement.classList.remove('highlighted');
+                    }, 2000);
+                    
                     history.pushState(null, null, targetId);
                 }
             });
@@ -845,18 +1150,13 @@ window.loadComponentWithInit = function(url, containerId, fallbackHtml = '', ini
         });
 };
 
+// Initialize application
 document.addEventListener('DOMContentLoaded', () => {
     window.DaehaaApp = new DaehaaApp();
-    
-    window.DaehaaApp.setupPageTransitions();
-    
-    window.DaehaaApp.setupLazyLoading();
-    
-    window.DaehaaApp.setupErrorHandling();
-    
     console.log('🚀 Daehaa application initialized');
 });
 
+// Global header initialization
 window.initHeader = function() {
     if (window.DaehaaApp) {
         window.DaehaaApp.setupMobileMenu();
@@ -865,12 +1165,14 @@ window.initHeader = function() {
     }
 };
 
+// Visibility change handler
 document.addEventListener('visibilitychange', () => {
     if (!document.hidden && window.DaehaaApp) {
         window.DaehaaApp.setupCurrentPage();
     }
 });
 
+// Service Worker registration
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
@@ -883,6 +1185,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// Module exports
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = DaehaaApp;
 }
