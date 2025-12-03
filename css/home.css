@@ -682,3 +682,405 @@
         transform: none;
     }
 }
+
+/* ===== СТИЛИ ДЛЯ ВСЕХ КЛИКАБЕЛЬНЫХ БЛОКОВ НА ГЛАВНОЙ ===== */
+
+/* 1. КЛИКАБЕЛЬНЫЕ КАРТОЧКИ УСЛУГ */
+.clickable-service-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    outline: none;
+}
+
+.clickable-service-card:hover {
+    transform: translateY(-15px);
+    border-color: #0066ff;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 30px 60px rgba(0, 102, 255, 0.3);
+}
+
+.clickable-service-card:active {
+    transform: translateY(-10px) scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+.clickable-service-card .speck-link-enhanced {
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.clickable-service-card:hover .speck-link-enhanced {
+    color: #3399ff;
+}
+
+.clickable-service-card:hover .speck-link-enhanced i {
+    transform: translateX(5px);
+}
+
+/* Индикатор кликабельности */
+.clickable-service-card::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.clickable-service-card:hover::after {
+    opacity: 1;
+}
+
+/* 2. КЛИКАБЕЛЬНЫЕ СТАТИСТИЧЕСКИЕ КАРТОЧКИ */
+.clickable-stat-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    outline: none;
+}
+
+.clickable-stat-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.clickable-stat-card:hover .stat-icon {
+    transform: scale(1.1);
+    color: #3399ff;
+}
+
+.clickable-stat-card:hover .stat-number-improved {
+    background: linear-gradient(135deg, #3399ff 0%, #0066ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 3. КЛИКАБЕЛЬНАЯ CTA СЕКЦИЯ */
+.clickable-cta {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+}
+
+.clickable-cta:hover {
+    transform: translateY(-5px);
+}
+
+.clickable-cta:hover .btn-glow {
+    box-shadow: 0 12px 35px rgba(0, 102, 255, 0.4);
+    transform: translateY(-3px);
+}
+
+/* Эффект свечения для CTA */
+.clickable-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: left 0.6s ease;
+}
+
+.clickable-cta:hover::before {
+    left: 100%;
+}
+
+/* 4. КЛИКАБЕЛЬНЫЕ БРЕНДЫ В БЕГУЩЕЙ СТРОКЕ */
+.clickable-brand {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    text-decoration: none;
+    color: white !important;
+    opacity: 0.8 !important;
+}
+
+.clickable-brand:hover {
+    opacity: 1 !important;
+    transform: translateY(-2px);
+}
+
+.clickable-brand::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 10%;
+    width: 80%;
+    height: 2px;
+    background: #0066ff;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.clickable-brand:hover::after {
+    transform: scaleX(1);
+}
+
+/* 5. КЛИКАБЕЛЬНЫЕ КНОПКИ ГЕРОЯ */
+.hero-actions a {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-actions a:hover {
+    transform: translateY(-3px);
+}
+
+.hero-actions .btn-primary:hover {
+    background: white;
+    color: #cc0000 !important;
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+}
+
+.hero-actions .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+}
+
+/* Эффект ripple для кнопок */
+.hero-actions a::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.hero-actions a:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+}
+
+/* 6. КЛИКАБЕЛЬНЫЙ SCROLL INDICATOR */
+.parallax-scroll-indicator {
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.parallax-scroll-indicator:hover {
+    opacity: 0.8;
+}
+
+.parallax-scroll-indicator:hover .scroll-arrow {
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: rotate(45deg) translateY(0);
+    }
+    40% {
+        transform: rotate(45deg) translateY(-10px);
+    }
+    60% {
+        transform: rotate(45deg) translateY(-5px);
+    }
+}
+
+/* 7. КЛИКАБЕЛЬНЫЙ PROGRESS BAR */
+.scroll-progress {
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-progress:hover {
+    opacity: 0.8;
+}
+
+.scroll-progress:hover .scroll-progress-bar {
+    background: linear-gradient(90deg, #0066ff 0%, #00aaff 100%);
+}
+
+/* АНИМАЦИИ ПРИ КЛИКЕ */
+.card-clicked {
+    animation: cardClick 0.3s ease;
+}
+
+@keyframes cardClick {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.98); }
+    100% { transform: scale(1); }
+}
+
+/* ДОСТУПНОСТЬ */
+.clickable-service-card:focus,
+.clickable-stat-card:focus,
+.clickable-cta:focus,
+.clickable-brand:focus {
+    outline: 2px solid #0066ff;
+    outline-offset: 2px;
+}
+
+.clickable-service-card:focus:not(:focus-visible),
+.clickable-stat-card:focus:not(:focus-visible),
+.clickable-cta:focus:not(:focus-visible),
+.clickable-brand:focus:not(:focus-visible) {
+    outline: none;
+}
+
+.clickable-service-card:focus-visible,
+.clickable-stat-card:focus-visible,
+.clickable-cta:focus-visible,
+.clickable-brand:focus-visible {
+    outline: 3px solid #0066ff;
+    outline-offset: 3px;
+}
+
+/* МОБИЛЬНАЯ ОПТИМИЗАЦИЯ */
+@media (max-width: 768px) {
+    .clickable-service-card:active {
+        transform: translateY(-5px) scale(0.97);
+    }
+    
+    .clickable-stat-card:active {
+        transform: translateY(-5px) scale(0.97);
+    }
+    
+    .clickable-cta:active {
+        transform: translateY(-2px);
+    }
+    
+    /* Увеличение touch area на мобильных */
+    .clickable-service-card::before,
+    .clickable-stat-card::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        z-index: 1;
+    }
+    
+    /* Упрощение анимаций для мобильных */
+    .clickable-service-card:hover,
+    .clickable-stat-card:hover,
+    .clickable-cta:hover {
+        transform: none;
+    }
+    
+    .clickable-brand:hover {
+        transform: none;
+    }
+    
+    .clickable-brand::after {
+        display: none;
+    }
+}
+
+/* СТИЛИ ДЛЯ ОТКЛЮЧЕННОЙ АНИМАЦИИ */
+@media (prefers-reduced-motion: reduce) {
+    .clickable-service-card,
+    .clickable-stat-card,
+    .clickable-cta,
+    .clickable-brand,
+    .hero-actions a {
+        transition: none;
+    }
+    
+    .clickable-service-card:hover,
+    .clickable-stat-card:hover,
+    .clickable-cta:hover,
+    .clickable-brand:hover,
+    .hero-actions a:hover {
+        transform: none;
+    }
+    
+    .card-clicked {
+        animation: none;
+    }
+    
+    .parallax-scroll-indicator .scroll-arrow {
+        animation: none;
+    }
+}
+
+/* АНИМАЦИЯ ЗАГРУЗКИ ДЛЯ КАРТОЧЕК */
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.speck-service-card-enhanced {
+    animation: cardFadeIn 0.6s ease forwards;
+}
+
+.stat-card {
+    animation: cardFadeIn 0.6s ease forwards;
+}
+
+/* Задержка для каждой карточки */
+.speck-service-card-enhanced:nth-child(1) { animation-delay: 0.1s; }
+.speck-service-card-enhanced:nth-child(2) { animation-delay: 0.2s; }
+.speck-service-card-enhanced:nth-child(3) { animation-delay: 0.3s; }
+.speck-service-card-enhanced:nth-child(4) { animation-delay: 0.4s; }
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* ПЛАВНАЯ АНИМАЦИЯ ДЛЯ ВСЕГО КОНТЕНТА */
+.content-section {
+    animation: contentFadeIn 0.8s ease forwards;
+}
+
+@keyframes contentFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Задержка для каждой секции */
+.hero { animation-delay: 0.1s; }
+.speck-services-enhanced { animation-delay: 0.2s; }
+.clients-section { animation-delay: 0.3s; }
+.stats-improved { animation-delay: 0.4s; }
+.cta-improved { animation-delay: 0.5s; }
