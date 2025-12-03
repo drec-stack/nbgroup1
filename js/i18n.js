@@ -61,8 +61,8 @@ class I18n {
             // Apply translations immediately (don't wait for dynamic content)
             this.applyTranslations();
             
-            // Setup language switcher
-            this.setupLanguageSwitcher();
+            // Setup language switcher with direct event handling
+            this.setupGlobalLanguageSwitcher();
             
             // Setup mutation observer for dynamic content
             this.setupMutationObserver();
@@ -81,6 +81,29 @@ class I18n {
             this.translations = this.fallbackTranslations;
             this.applyTranslations();
         }
+    }
+
+    setupGlobalLanguageSwitcher() {
+        console.log('🎯 Setting up global language switcher...');
+        
+        // Глобальный обработчик для ВСЕХ кнопок языка, включая динамически загруженные
+        document.addEventListener('click', (e) => {
+            const langBtn = e.target.closest('.lang-btn');
+            if (langBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const lang = langBtn.getAttribute('data-lang');
+                console.log(`🎯 Language button clicked: ${lang}`);
+                
+                if (lang && lang !== this.currentLang) {
+                    this.handleLanguageSwitch(lang);
+                }
+            }
+        });
+        
+        // Обновить UI переключателя
+        this.updateLanguageSwitcherUI();
     }
 
     async loadTranslations(lang) {
@@ -209,8 +232,8 @@ class I18n {
             this.updateElement(element, translation);
             return true;
         } else {
-            // Don't warn about missing keys that start with servicesPreview
-            if (!key.startsWith('servicesPreview')) {
+            // Не выводим warning для servicesPreview.* ключей
+            if (!key.startsWith('servicesPreview.')) {
                 console.warn('⚠️ Missing translation for key:', key);
             }
             return false;
@@ -266,27 +289,7 @@ class I18n {
         }
     }
 
-    setupLanguageSwitcher() {
-        console.log('🔧 Setting up language switcher...');
-        
-        // Event delegation for language buttons
-        document.addEventListener('click', (e) => {
-            const langBtn = e.target.closest('.lang-btn');
-            if (langBtn) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const lang = langBtn.getAttribute('data-lang');
-                if (lang && lang !== this.currentLang) {
-                    this.switchLanguage(lang);
-                }
-            }
-        });
-
-        this.updateLanguageSwitcher();
-    }
-
-    updateLanguageSwitcher() {
+    updateLanguageSwitcherUI() {
         document.querySelectorAll('.lang-btn').forEach(btn => {
             const btnLang = btn.getAttribute('data-lang');
             btn.classList.toggle('active', btnLang === this.currentLang);
@@ -324,7 +327,7 @@ class I18n {
         });
     }
 
-    async switchLanguage(lang) {
+    async handleLanguageSwitch(lang) {
         if (this.isSwitching || lang === this.currentLang) {
             console.log('ℹ️ Already switching or same language');
             return;
@@ -342,7 +345,7 @@ class I18n {
             this.currentLang = lang;
             
             // Update switcher UI
-            this.updateLanguageSwitcher();
+            this.updateLanguageSwitcherUI();
             
             // Apply translations
             this.applyTranslations();
@@ -423,4 +426,13 @@ window.debugI18n = function() {
     });
     
     console.groupEnd();
+};
+
+// Global function for language switching
+window.changeLanguage = function(lang) {
+    if (window.i18n && window.i18n.handleLanguageSwitch) {
+        window.i18n.handleLanguageSwitch(lang);
+    } else {
+        console.error('❌ i18n not available');
+    }
 };
