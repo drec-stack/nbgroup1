@@ -388,7 +388,12 @@
     "story": {
       "title": "Our Story",
       "p1": "Founded in 2012, NBGROUP.TECH began as a small industrial design studio with a big vision.",
-      "p2": "Over the years, we've grown into a full-service product development company."
+      "p2": "Over the years, we've grown into a full-service product development company.",
+      "stats": {
+        "years": "YEARS EXPERIENCE",
+        "projects": "PROJECTS COMPLETED",
+        "specialists": "SPECIALISTS"
+      }
     },
     "services": {
       "title": "Our Services",
@@ -434,30 +439,9 @@
       "brandedElements": "Branded elements and media",
       "brandRules": "Brand application rules"
     },
-    "values": {
-      "title": "Our Approach",
-      "subtitle": "Principles that guide our work",
-      "innovation": {
-        "title": "Full Cycle",
-        "description": "Design → engineering → prototype → production → packaging → brand system"
-      },
-      "collaboration": {
-        "title": "Systematic Approach",
-        "description": "We work comprehensively, ensuring product integrity at all stages"
-      },
-      "excellence": {
-        "title": "Responsibility",
-        "description": "We take responsibility for every stage - from concept to production launch"
-      },
-      "impact": {
-        "title": "Transparency",
-        "description": "Clear deadlines, understandable processes and open communication"
-      }
-    },
     "team": {
       "title": "Team",
       "subtitle": "Professionals with real project experience",
-      "members": "Specialists",
       "spartak": {
         "name": "Spartak Nukhsan",
         "role": "Founder, Creative Director, Brand Architect, Designer",
