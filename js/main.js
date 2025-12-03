@@ -277,51 +277,19 @@ class DaehaaApp {
         window.addEventListener('languageChanged', (e) => {
             console.log('Language changed to:', e.detail.lang);
             this.setupCurrentPage();
-            this.updateLanguageSwitcher();
+            this.updateLanguageSwitcherUI(e.detail.lang);
         });
 
-        this.setupLanguageSwitcher();
+        this.setupLanguageSwitcherUI();
     }
 
-    setupLanguageSwitcher() {
-        const langButtons = document.querySelectorAll('.lang-btn');
-        const switcher = document.querySelector('.language-switcher');
-        
+    setupLanguageSwitcherUI() {
+        // ТОЛЬКО обновление UI, переключение языка делает i18n.js
         const currentLang = localStorage.getItem('preferredLang') || 'ru';
-        this.updateSwitcherState(currentLang);
-        
-        langButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const lang = btn.getAttribute('data-lang');
-                const currentActive = document.querySelector('.lang-btn.active');
-                
-                if (currentActive && currentActive.getAttribute('data-lang') === lang) {
-                    return;
-                }
-                
-                btn.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    btn.style.transform = 'scale(1)';
-                }, 150);
-                
-                this.updateSwitcherState(lang);
-                
-                if (window.i18n && window.i18n.smoothSwitchLanguage) {
-                    window.i18n.smoothSwitchLanguage(lang);
-                } else if (window.changeLanguage) {
-                    window.changeLanguage(lang);
-                } else {
-                    console.log('Language change requested:', lang);
-                    localStorage.setItem('preferredLang', lang);
-                }
-            });
-        });
+        this.updateLanguageSwitcherUI(currentLang);
     }
 
-    updateSwitcherState(lang) {
+    updateLanguageSwitcherUI(lang) {
         const langBtns = document.querySelectorAll('.lang-btn');
         const switcher = document.querySelector('.language-switcher');
         
@@ -499,14 +467,14 @@ class DaehaaApp {
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
                 
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (window.i18n ? window.i18n.t('contact.form.sending') : 'Sending...');
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (window.i18n ? window.i18n.getTranslation('contact.form.sending') : 'Sending...');
                 submitBtn.disabled = true;
                 
                 try {
                     await new Promise(resolve => setTimeout(resolve, 2000));
                     
                     this.showNotification(
-                        window.i18n ? window.i18n.t('contact.form.success') : 'Message sent successfully! We\'ll get back to you soon.', 
+                        window.i18n ? window.i18n.getTranslation('contact.form.success') : 'Message sent successfully! We\'ll get back to you soon.', 
                         'success'
                     );
                     
@@ -518,7 +486,7 @@ class DaehaaApp {
                     
                 } catch (error) {
                     this.showNotification(
-                        window.i18n ? window.i18n.t('contact.form.error') : 'Error sending message. Please try again.', 
+                        window.i18n ? window.i18n.getTranslation('contact.form.error') : 'Error sending message. Please try again.', 
                         'error'
                     );
                 } finally {
@@ -820,17 +788,6 @@ window.initFooter = function() {
     if (footer) {
         console.log('🦶 Found footer element, setting up functionality...');
         
-        // Re-initialize footer animations and interactions
-        if (typeof setupFooterAnimations === 'function') {
-            setupFooterAnimations();
-        }
-        if (typeof setupSocialLinks === 'function') {
-            setupSocialLinks();
-        }
-        if (typeof setupMessengerContacts === 'function') {
-            setupMessengerContacts();
-        }
-        
         // Setup Intersection Observer for footer animations
         if ('IntersectionObserver' in window) {
             const observer = new IntersectionObserver((entries) => {
@@ -851,30 +808,6 @@ window.initFooter = function() {
             });
         }
         
-        // Setup social links hover effects
-        const socialLinks = footer.querySelectorAll('.social-link');
-        socialLinks.forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                link.style.transform = 'translateY(-3px) scale(1.05)';
-            });
-            
-            link.addEventListener('mouseleave', () => {
-                link.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-        
-        // Setup messenger contacts hover effects
-        const messengerContacts = footer.querySelectorAll('.messenger-contact');
-        messengerContacts.forEach(contact => {
-            contact.addEventListener('mouseenter', () => {
-                contact.style.transform = 'translateX(5px)';
-            });
-            
-            contact.addEventListener('mouseleave', () => {
-                contact.style.transform = 'translateX(0)';
-            });
-        });
-        
         console.log('🦶 Footer functionality initialized successfully');
     } else {
         console.warn('🦶 No footer element found for initialization');
@@ -894,11 +827,6 @@ window.loadComponentWithInit = function(url, containerId, fallbackHtml = '', ini
             // Auto-initialize footer if it's a footer component
             if (containerId === 'footer-container' && typeof window.initFooter === 'function') {
                 setTimeout(window.initFooter, 50);
-            }
-            
-            // Auto-initialize header if it's a header component
-            if (containerId === 'header-container' && typeof window.initHeader === 'function') {
-                setTimeout(window.initHeader, 50);
             }
             
             // Call specific init function if provided
