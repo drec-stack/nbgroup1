@@ -125,6 +125,203 @@
             border-color: rgba(255, 255, 255, 0.4);
             font-weight: 600;
         }
+
+        /* СТИЛИ ДЛЯ КЛИКАБЕЛЬНЫХ КАРТОЧЕК И БЛОКОВ (добавлено) */
+        .clickable-service-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            outline: none;
+        }
+
+        .clickable-service-card:hover {
+            transform: translateY(-15px);
+            border-color: #0066ff;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 102, 255, 0.3);
+        }
+
+        .clickable-service-card:active {
+            transform: translateY(-10px) scale(0.98);
+            transition: transform 0.1s ease;
+        }
+
+        .clickable-service-card .speck-link-enhanced {
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .clickable-service-card:hover .speck-link-enhanced {
+            color: #3399ff;
+        }
+
+        .clickable-service-card:hover .speck-link-enhanced i {
+            transform: translateX(5px);
+        }
+
+        /* Индикатор кликабельности */
+        .clickable-service-card::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .clickable-service-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Кликабельные стат-карточки */
+        .clickable-stat-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            outline: none;
+        }
+
+        .clickable-stat-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+        }
+
+        .clickable-stat-card:hover .stat-icon {
+            transform: scale(1.1);
+            color: #3399ff;
+        }
+
+        /* Кликабельная CTA секция */
+        .clickable-cta {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .clickable-cta:hover {
+            transform: translateY(-5px);
+        }
+
+        .clickable-cta:hover .btn-glow {
+            box-shadow: 0 12px 35px rgba(0, 102, 255, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Кликабельный логотип в бегущей строке */
+        .clickable-brand {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .clickable-brand:hover {
+            color: white !important;
+            opacity: 1 !important;
+            transform: translateY(-2px);
+        }
+
+        .clickable-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #0066ff;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .clickable-brand:hover::after {
+            transform: scaleX(0.8);
+        }
+
+        /* Кликабельные кнопки героя */
+        .hero-actions a {
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-actions a:hover {
+            transform: translateY(-3px);
+        }
+
+        .hero-actions .btn-primary:hover {
+            background: white;
+            color: #cc0000 !important;
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-actions .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* Мобильная оптимизация */
+        @media (max-width: 768px) {
+            .clickable-service-card:active {
+                transform: translateY(-5px) scale(0.97);
+            }
+            
+            .clickable-stat-card:active {
+                transform: translateY(-5px) scale(0.97);
+            }
+            
+            .clickable-cta:active {
+                transform: translateY(-2px);
+            }
+            
+            /* Увеличение touch area на мобильных */
+            .clickable-service-card::before,
+            .clickable-stat-card::before {
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                right: -10px;
+                bottom: -10px;
+                z-index: 1;
+            }
+        }
+
+        /* Анимация при клике */
+        .card-clicked {
+            animation: cardClick 0.3s ease;
+        }
+
+        @keyframes cardClick {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.98); }
+            100% { transform: scale(1); }
+        }
+
+        /* Доступность */
+        .clickable-service-card:focus,
+        .clickable-stat-card:focus,
+        .clickable-cta:focus {
+            outline: 2px solid #0066ff;
+            outline-offset: 2px;
+        }
+
+        .clickable-service-card:focus:not(:focus-visible),
+        .clickable-stat-card:focus:not(:focus-visible),
+        .clickable-cta:focus:not(:focus-visible) {
+            outline: none;
+        }
     </style>
 </head>
 <body class="home-page">
@@ -184,8 +381,8 @@
     <section class="speck-services-enhanced content-section" data-bg-index="0">
         <div class="container">
             <div class="speck-services-enhanced-grid">
-                <!-- Strategy Block -->
-                <div class="speck-service-card-enhanced" data-category="strategy">
+                <!-- Strategy Block - КЛИКАБЕЛЬНАЯ КАРТОЧКА -->
+                <a href="services.html#strategy" class="speck-service-card-enhanced clickable-service-card" data-category="strategy">
                     <div class="speck-card-header-enhanced">
                         <div class="speck-number-enhanced">01</div>
                         <div class="speck-title-content-enhanced">
@@ -211,15 +408,15 @@
                         </div>
                     </div>
                     <div class="speck-action-enhanced">
-                        <a href="services.html#strategy" class="speck-link-enhanced">
+                        <span class="speck-link-enhanced">
                             <span data-i18n="home.speckServices.strategy.explore">Explore Strategy Services</span>
                             <i class="fas fa-arrow-right-long"></i>
-                        </a>
+                        </span>
                     </div>
-                </div>
+                </a>
 
-                <!-- Design Block -->
-                <div class="speck-service-card-enhanced" data-category="design">
+                <!-- Design Block - КЛИКАБЕЛЬНАЯ КАРТОЧКА -->
+                <a href="services.html#design" class="speck-service-card-enhanced clickable-service-card" data-category="design">
                     <div class="speck-card-header-enhanced">
                         <div class="speck-number-enhanced">02</div>
                         <div class="speck-title-content-enhanced">
@@ -249,15 +446,15 @@
                         </div>
                     </div>
                     <div class="speck-action-enhanced">
-                        <a href="services.html#design" class="speck-link-enhanced">
+                        <span class="speck-link-enhanced">
                             <span data-i18n="home.speckServices.design.explore">Explore Design Services</span>
                             <i class="fas fa-arrow-right-long"></i>
-                        </a>
+                        </span>
                     </div>
-                </div>
+                </a>
 
-                <!-- Engineering Block -->
-                <div class="speck-service-card-enhanced" data-category="engineering">
+                <!-- Engineering Block - КЛИКАБЕЛЬНАЯ КАРТОЧКА -->
+                <a href="services.html#engineering" class="speck-service-card-enhanced clickable-service-card" data-category="engineering">
                     <div class="speck-card-header-enhanced">
                         <div class="speck-number-enhanced">03</div>
                         <div class="speck-title-content-enhanced">
@@ -283,15 +480,15 @@
                         </div>
                     </div>
                     <div class="speck-action-enhanced">
-                        <a href="services.html#engineering" class="speck-link-enhanced">
+                        <span class="speck-link-enhanced">
                             <span data-i18n="home.speckServices.engineering.explore">Explore Engineering Services</span>
                             <i class="fas fa-arrow-right-long"></i>
-                        </a>
+                        </span>
                     </div>
-                </div>
+                </a>
 
-                <!-- Marketing Block -->
-                <div class="speck-service-card-enhanced" data-category="marketing">
+                <!-- Marketing Block - КЛИКАБЕЛЬНАЯ КАРТОЧКА -->
+                <a href="services.html#marketing" class="speck-service-card-enhanced clickable-service-card" data-category="marketing">
                     <div class="speck-card-header-enhanced">
                         <div class="speck-number-enhanced">04</div>
                         <div class="speck-title-content-enhanced">
@@ -321,12 +518,12 @@
                         </div>
                     </div>
                     <div class="speck-action-enhanced">
-                        <a href="services.html#marketing" class="speck-link-enhanced">
+                        <span class="speck-link-enhanced">
                             <span data-i18n="home.speckServices.marketing.explore">Explore Marketing Services</span>
                             <i class="fas fa-arrow-right-long"></i>
-                        </a>
+                        </span>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
@@ -341,57 +538,57 @@
                 <div class="marquee-container">
                     <div class="marquee-track" id="marquee1">
                         <div class="marquee-content">
-                            <span class="brand">dtronic</span>
+                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
                             <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
+                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
                             <span class="separator">·</span>
-                            <span class="brand">Roku</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
                             <span class="separator">·</span>
-                            <span class="brand">stryker</span>
+                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
                             <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
                             <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
+                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
                             <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
                             <span class="separator">·</span>
-                            <span class="brand">AC</span>
+                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
                         </div>
                         <!-- ВТОРАЯ КОПИЯ -->
                         <div class="marquee-content">
-                            <span class="brand">dtronic</span>
+                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
                             <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
+                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
                             <span class="separator">·</span>
-                            <span class="brand">Roku</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
                             <span class="separator">·</span>
-                            <span class="brand">stryker</span>
+                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
                             <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
                             <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
+                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
                             <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
                             <span class="separator">·</span>
-                            <span class="brand">AC</span>
+                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
                         </div>
                         <!-- ТРЕТЬЯ КОПИЯ -->
                         <div class="marquee-content">
-                            <span class="brand">dtronic</span>
+                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
                             <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
+                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
                             <span class="separator">·</span>
-                            <span class="brand">Roku</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
                             <span class="separator">·</span>
-                            <span class="brand">stryker</span>
+                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
                             <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
                             <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
+                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
                             <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
                             <span class="separator">·</span>
-                            <span class="brand">AC</span>
+                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
                         </div>
                     </div>
                 </div>
@@ -400,57 +597,57 @@
                 <div class="marquee-container">
                     <div class="marquee-track" id="marquee2">
                         <div class="marquee-content">
-                            <span class="brand">AC</span>
+                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
                             <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
                             <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
+                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
                             <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
                             <span class="separator">·</span>
-                            <span class="brand">stryker</span>
+                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
                             <span class="separator">·</span>
-                            <span class="brand">Roku</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
                             <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
+                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
                             <span class="separator">·</span>
-                            <span class="brand">dtronic</span>
+                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
                         </div>
                         <!-- ВТОРАЯ КОПИЯ -->
                         <div class="marquee-content">
-                            <span class="brand">AC</span>
+                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
                             <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
                             <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
+                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
                             <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
                             <span class="separator">·</span>
-                            <span class="brand">stryker</span>
+                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
                             <span class="separator">·</span>
-                            <span class="brand">Roku</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
                             <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
+                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
                             <span class="separator">·</span>
-                            <span class="brand">dtronic</span>
+                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
                         </div>
                         <!-- ТРЕТЬЯ КОПИЯ -->
                         <div class="marquee-content">
-                            <span class="brand">AC</span>
+                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
                             <span class="separator">·</span>
-                            <span class="brand">Microsoft</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
                             <span class="separator">·</span>
-                            <span class="brand">PayPal</span>
+                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
                             <span class="separator">·</span>
-                            <span class="brand">Vocera V.</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
                             <span class="separator">·</span>
-                            <span class="brand">stryker</span>
+                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
                             <span class="separator">·</span>
-                            <span class="brand">Roku</span>
+                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
                             <span class="separator">·</span>
-                            <span class="brand">BRITA</span>
+                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
                             <span class="separator">·</span>
-                            <span class="brand">dtronic</span>
+                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
                         </div>
                     </div>
                 </div>
@@ -462,7 +659,8 @@
     <section class="stats-improved content-section" data-bg-index="0">
         <div class="container">
             <div class="stats-grid-improved">
-                <div class="stat-card">
+                <!-- Проекты завершено -->
+                <a href="portfolio.html" class="stat-card clickable-stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-rocket"></i>
                     </div>
@@ -470,8 +668,10 @@
                         <div class="stat-number-improved" data-target="150">0</div>
                         <div class="stat-label-improved" data-i18n="home.stats.projects">Проектов завершено</div>
                     </div>
-                </div>
-                <div class="stat-card">
+                </a>
+                
+                <!-- Лет опыта -->
+                <a href="about.html" class="stat-card clickable-stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-calendar-alt"></i>
                     </div>
@@ -479,8 +679,10 @@
                         <div class="stat-number-improved" data-target="12">0</div>
                         <div class="stat-label-improved" data-i18n="home.stats.years">Лет опыта</div>
                     </div>
-                </div>
-                <div class="stat-card">
+                </a>
+                
+                <!-- Довольных клиентов -->
+                <a href="about.html#clients" class="stat-card clickable-stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-heart"></i>
                     </div>
@@ -488,8 +690,10 @@
                         <div class="stat-number-improved" data-target="98">0</div>
                         <div class="stat-label-improved" data-i18n="home.stats.satisfaction">Довольных клиентов</div>
                     </div>
-                </div>
-                <div class="stat-card">
+                </a>
+                
+                <!-- Наград -->
+                <a href="about.html#awards" class="stat-card clickable-stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-trophy"></i>
                     </div>
@@ -497,13 +701,13 @@
                         <div class="stat-number-improved" data-target="25">0</div>
                         <div class="stat-label-improved" data-i18n="home.stats.awards">Наград</div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="cta-improved content-section" data-bg-index="1">
+    <a href="contacts.html" class="cta-improved content-section clickable-cta" data-bg-index="1">
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
@@ -511,14 +715,14 @@
                     <p data-i18n="home.cta.description">Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
                 </div>
                 <div class="cta-action">
-                    <a href="contacts.html" class="btn btn-primary btn-large btn-glow">
+                    <div class="btn btn-primary btn-large btn-glow">
                         <span data-i18n="home.cta.button">Связаться с нами</span>
                         <i class="fas fa-arrow-right"></i>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </a>
 
     <!-- Footer Container -->
     <div id="footer-container"></div>
@@ -708,11 +912,175 @@
             });
         }
 
-        // Запустить проверки
+        // Инициализация ВСЕХ кликабельных блоков на главной (добавлено)
+        function initAllClickableBlocks() {
+            console.log('🎴 Initializing ALL clickable blocks on home page...');
+            
+            // 1. Карточки услуг
+            const serviceCards = document.querySelectorAll('.clickable-service-card');
+            console.log(`🎴 Found ${serviceCards.length} service cards`);
+            
+            serviceCards.forEach(card => {
+                initClickableCard(card, 'service');
+            });
+            
+            // 2. Статистические карточки
+            const statCards = document.querySelectorAll('.clickable-stat-card');
+            console.log(`📊 Found ${statCards.length} stat cards`);
+            
+            statCards.forEach(card => {
+                initClickableCard(card, 'stat');
+            });
+            
+            // 3. CTA блок
+            const ctaBlocks = document.querySelectorAll('.clickable-cta');
+            console.log(`📣 Found ${ctaBlocks.length} CTA blocks`);
+            
+            ctaBlocks.forEach(block => {
+                initClickableCard(block, 'cta');
+            });
+            
+            // 4. Бренды в бегущей строке
+            const brandLinks = document.querySelectorAll('.clickable-brand');
+            console.log(`🏢 Found ${brandLinks.length} brand links`);
+            
+            brandLinks.forEach(brand => {
+                initClickableCard(brand, 'brand');
+            });
+            
+            // 5. Кнопки героя
+            const heroButtons = document.querySelectorAll('.hero-actions a');
+            console.log(`🚀 Found ${heroButtons.length} hero buttons`);
+            
+            heroButtons.forEach(button => {
+                initClickableCard(button, 'button');
+            });
+            
+            // 6. Параллакс scroll indicator
+            const scrollIndicator = document.querySelector('.parallax-scroll-indicator');
+            if (scrollIndicator) {
+                scrollIndicator.style.cursor = 'pointer';
+                scrollIndicator.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: window.innerHeight,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                scrollIndicator.addEventListener('mouseenter', function() {
+                    this.style.opacity = '0.8';
+                });
+                
+                scrollIndicator.addEventListener('mouseleave', function() {
+                    this.style.opacity = '1';
+                });
+            }
+            
+            // 7. Progress bar тоже можно сделать кликабельной
+            const progressBar = document.querySelector('.scroll-progress');
+            if (progressBar) {
+                progressBar.style.cursor = 'pointer';
+                progressBar.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                progressBar.title = 'Click to scroll to top';
+            }
+            
+            console.log('✅ All clickable blocks initialized!');
+        }
+        
+        // Общая функция инициализации кликабельного элемента
+        function initClickableCard(element, type) {
+            // Добавляем accessibility атрибуты
+            element.setAttribute('role', 'link');
+            element.setAttribute('tabindex', '0');
+            
+            // Разные описания для разных типов элементов
+            const titles = {
+                'service': 'Click to view service details',
+                'stat': 'Click to learn more',
+                'cta': 'Click to contact us',
+                'brand': 'Click to view portfolio',
+                'button': 'Click to navigate'
+            };
+            
+            if (titles[type]) {
+                element.setAttribute('title', titles[type]);
+            }
+            
+            // Keyboard navigation
+            element.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    if (href) {
+                        window.location.href = href;
+                    } else if (typeof this.click === 'function') {
+                        this.click();
+                    }
+                }
+            });
+            
+            // Анимация при клике
+            element.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    console.log(`🔄 Navigating to: ${href}`);
+                    
+                    // Добавляем класс active для анимации
+                    this.classList.add('card-clicked');
+                    setTimeout(() => {
+                        this.classList.remove('card-clicked');
+                    }, 300);
+                    
+                    // Анимация загрузки
+                    if (href.includes('.html')) {
+                        document.body.style.opacity = '0.7';
+                        document.body.style.transition = 'opacity 0.3s ease';
+                        
+                        setTimeout(() => {
+                            document.body.style.opacity = '1';
+                        }, 1000);
+                    }
+                }
+            });
+            
+            // Анимация при загрузке (только для карточек услуг и статов)
+            if (type === 'service' || type === 'stat') {
+                element.style.opacity = '0';
+                element.style.transform = type === 'service' ? 'translateY(20px)' : 'translateY(10px)';
+                
+                setTimeout(() => {
+                    element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, type === 'service' ? 300 : 100);
+            }
+            
+            // Специальные hover эффекты для разных типов
+            if (type === 'brand') {
+                element.addEventListener('mouseenter', function() {
+                    this.style.opacity = '1';
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    this.style.opacity = '0.8';
+                    this.style.transform = 'translateY(0)';
+                });
+            }
+        }
+
+        // Запустить проверки и инициализацию
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 DOM fully loaded');
             checkMarquee();
             applyTranslationsForce();
+            initAllClickableBlocks(); // <-- Инициализация ВСЕХ кликабельных блоков
             
             // Резервная проверка через 5 секунд
             setTimeout(() => {
@@ -728,6 +1096,30 @@
             console.log('📦 Page fully loaded');
             applyTranslationsForce();
         });
+        
+        // Анимация для параллакс индикатора
+        function initParallaxIndicator() {
+            const indicator = document.querySelector('.parallax-scroll-indicator');
+            if (indicator) {
+                // Мигающая анимация
+                setInterval(() => {
+                    indicator.style.opacity = indicator.style.opacity === '0.5' ? '1' : '0.5';
+                }, 1500);
+                
+                // Пульсация
+                const arrow = indicator.querySelector('.scroll-arrow');
+                if (arrow) {
+                    setInterval(() => {
+                        arrow.style.transform = arrow.style.transform === 'rotate(45deg) scale(1.1)' 
+                            ? 'rotate(45deg) scale(1)' 
+                            : 'rotate(45deg) scale(1.1)';
+                    }, 1000);
+                }
+            }
+        }
+        
+        // Инициализируем после полной загрузки
+        window.addEventListener('load', initParallaxIndicator);
     </script>
 </body>
 </html>
