@@ -136,7 +136,7 @@
     opacity: 1;
 }
 
-/* Project Images */
+/* Project Images for Hookahs, Accessories, Packaging */
 .project-image {
     height: 280px;
     position: relative;
@@ -144,8 +144,9 @@
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
 }
 
-.speaker-image::before {
-    content: '🎵';
+/* Hookah Projects */
+.hookah1-image::before {
+    content: '💨';
     font-size: 120px;
     position: absolute;
     top: 50%;
@@ -154,8 +155,8 @@
     opacity: 0.2;
 }
 
-.monitor-image::before {
-    content: '❤️';
+.hookah2-image::before {
+    content: '🔥';
     font-size: 120px;
     position: absolute;
     top: 50%;
@@ -164,8 +165,9 @@
     opacity: 0.2;
 }
 
-.thermostat-image::before {
-    content: '🌡️';
+/* Accessories Project */
+.accessory1-image::before {
+    content: '🎁';
     font-size: 120px;
     position: absolute;
     top: 50%;
@@ -174,14 +176,24 @@
     opacity: 0.2;
 }
 
+/* Packaging Project */
+.packaging1-image::before {
+    content: '📦';
+    font-size: 120px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.2;
+}
+
+/* Remove old project images */
+.speaker-image::before,
+.monitor-image::before,
+.thermostat-image::before,
 .printer-image::before {
-    content: '🖨️';
-    font-size: 120px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.2;
+    content: '';
+    display: none;
 }
 
 .project-overlay {
@@ -266,6 +278,22 @@
     letter-spacing: 0.5px;
 }
 
+/* Specific category colors */
+.portfolio-item[data-category="hookahs"] .project-category {
+    background: rgba(255, 69, 0, 0.1);
+    color: #ff8c00;
+}
+
+.portfolio-item[data-category="accessories"] .project-category {
+    background: rgba(50, 205, 50, 0.1);
+    color: #32cd32;
+}
+
+.portfolio-item[data-category="packaging"] .project-category {
+    background: rgba(255, 215, 0, 0.1);
+    color: #ffd700;
+}
+
 .project-duration {
     display: flex;
     align-items: center;
@@ -318,6 +346,25 @@
     background: rgba(0, 102, 255, 0.1);
     border-color: rgba(0, 102, 255, 0.2);
     color: #3399ff;
+}
+
+/* Colorful icons for meta items */
+.meta-item .fa-hammer { color: #ff9900; }
+.meta-item .fa-gem { color: #00ccff; }
+.meta-item .fa-snowflake { color: #00ffff; }
+.meta-item .fa-star { color: #ffcc00; }
+.meta-item .fa-leather { color: #8b4513; }
+.meta-item .fa-tools { color: #999999; }
+.meta-item .fa-crown { color: #ffd700; }
+.meta-item .fa-magnet { color: #ff3333; }
+.meta-item .fa-vector-square { color: #9966ff; }
+.meta-item .fa-puzzle-piece { color: #66cc66; }
+.meta-item .fa-cookie { color: #d2691e; }
+.meta-item .fa-filter { color: #33cccc; }
+
+.meta-item:hover i {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
 }
 
 /* Project Footer */
@@ -374,6 +421,7 @@
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: 600;
 }
 
 /* Project Highlights */
@@ -461,6 +509,11 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-top: 10px;
+    transition: transform 0.3s ease;
+}
+
+.highlight-card:hover .highlight-value {
+    transform: scale(1.1);
 }
 
 /* Testimonials Enhanced */
@@ -629,6 +682,88 @@
     background: #f8f9fa;
 }
 
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes fadeOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+}
+
+.portfolio-item {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.portfolio-item.hidden {
+    animation: fadeOutDown 0.4s ease forwards;
+}
+
+/* Animation delays */
+.portfolio-item:nth-child(1) { animation-delay: 0.1s; }
+.portfolio-item:nth-child(2) { animation-delay: 0.2s; }
+.portfolio-item:nth-child(3) { animation-delay: 0.3s; }
+.portfolio-item:nth-child(4) { animation-delay: 0.4s; }
+
+/* Filter button animation */
+@keyframes pulseActive {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.filter-btn.active {
+    animation: pulseActive 0.3s ease;
+}
+
+/* Filter navigation animation */
+@keyframes slideInFilter {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-nav {
+    animation: slideInFilter 0.5s ease-out;
+}
+
+/* Ripple animation for buttons */
+@keyframes ripple-animation {
+    0% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20);
+        opacity: 0;
+    }
+}
+
 /* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===== */
 @media (max-width: 1024px) {
     .portfolio-grid {
@@ -715,6 +850,15 @@
         justify-content: space-around;
     }
     
+    /* Project Images on Mobile */
+    .hookah1-image::before,
+    .hookah2-image::before,
+    .accessory1-image::before,
+    .packaging1-image::before {
+        font-size: 80px;
+        opacity: 0.15;
+    }
+    
     /* Project Highlights */
     .highlights-grid {
         grid-template-columns: 1fr;
@@ -784,6 +928,13 @@
         width: 50px;
         height: 50px;
         font-size: 24px;
+    }
+    
+    .hookah1-image::before,
+    .hookah2-image::before,
+    .accessory1-image::before,
+    .packaging1-image::before {
+        font-size: 60px;
     }
 }
 
@@ -888,19 +1039,27 @@
     .highlight-card,
     .filter-btn,
     .project-link,
-    .project-icon {
+    .project-icon,
+    .highlight-icon,
+    .portfolio-item {
         transition: none;
+        animation: none;
     }
     
     .project-card:hover,
     .testimonial-card:hover,
     .highlight-card:hover,
-    .project-link:hover {
+    .project-link:hover,
+    .portfolio-item.hidden {
         transform: none;
     }
     
     .project-card:hover .project-icon {
         transform: none;
+    }
+    
+    .filter-btn.active {
+        animation: none;
     }
 }
 
@@ -924,24 +1083,57 @@
     }
 }
 
-/* Анимации */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+/* Высокая контрастность */
+@media (prefers-contrast: high) {
+    .filter-btn {
+        border: 2px solid #a0a0a0;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    
+    .filter-btn.active {
+        border: 2px solid white;
+    }
+    
+    .project-card {
+        border: 2px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .project-link:focus,
+    .filter-btn:focus {
+        outline: 3px solid #0066ff;
+        outline-offset: 2px;
     }
 }
 
-.portfolio-item {
-    animation: fadeInUp 0.6s ease forwards;
+/* Поддержка печати */
+@media print {
+    .portfolio-filter,
+    .filter-nav,
+    .project-link,
+    .project-badge,
+    .portfolio-cta {
+        display: none !important;
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .project-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .project-image {
+        height: 150px;
+    }
+    
+    .hookah1-image::before,
+    .hookah2-image::before,
+    .accessory1-image::before,
+    .packaging1-image::before {
+        color: #000;
+        opacity: 0.1;
+    }
 }
-
-/* Задержки для элементов */
-.portfolio-item:nth-child(1) { animation-delay: 0.1s; }
-.portfolio-item:nth-child(2) { animation-delay: 0.2s; }
-.portfolio-item:nth-child(3) { animation-delay: 0.3s; }
-.portfolio-item:nth-child(4) { animation-delay: 0.4s; }
