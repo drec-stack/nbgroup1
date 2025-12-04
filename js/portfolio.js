@@ -1,8 +1,7 @@
-// portfolio.js - ENHANCED VERSION WITH SMOOTH ANIMATIONS
-console.log('🎯 portfolio.js loaded - ENHANCED DESIGN');
+console.log('🎯 portfolio.js loaded - CALYANS & PACKAGING PORTFOLIO');
 
 function initPortfolio() {
-    console.log('🎯 Initializing portfolio page with enhanced animations...');
+    console.log('🎯 Initializing portfolio page with new categories...');
     
     setupPortfolioFilter();
     setupProjectInteractions();
@@ -11,10 +10,10 @@ function initPortfolio() {
     setupScrollAnimations();
     setupHoverEffects();
     
-    console.log('✅ Portfolio page enhanced with animations');
+    console.log('✅ Portfolio page initialized with new hookah/accessories/packaging projects');
 }
 
-// ENHANCED FILTER WITH SMOOTH ANIMATIONS
+// UPDATED FILTER FOR NEW CATEGORIES
 function setupPortfolioFilter() {
     const filterBtns = document.querySelectorAll('.filter-btn');
     const portfolioItems = document.querySelectorAll('.portfolio-item');
@@ -28,7 +27,12 @@ function setupPortfolioFilter() {
                 b.style.transform = 'scale(1)';
             });
             this.classList.add('active');
+            
+            // Add active animation
             this.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 300);
             
             const filter = this.getAttribute('data-filter');
             
@@ -40,9 +44,12 @@ function setupPortfolioFilter() {
                 if (shouldShow) {
                     // Show animation
                     item.classList.remove('hidden');
+                    item.style.display = 'block';
+                    
+                    // Stagger animation
                     setTimeout(() => {
                         item.style.opacity = '1';
-                        item.style.transform = 'translateY(0)';
+                        item.style.transform = 'translateY(0) scale(1)';
                         item.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                     }, index * 100);
                 } else {
@@ -52,6 +59,7 @@ function setupPortfolioFilter() {
                     item.style.transition = 'all 0.4s ease';
                     setTimeout(() => {
                         item.classList.add('hidden');
+                        item.style.display = 'none';
                     }, 400);
                 }
             });
@@ -71,11 +79,31 @@ function setupPortfolioFilter() {
                     }
                 }, 600);
             }
+            
+            // Update URL hash for bookmarking
+            history.pushState(null, null, `#${filter}`);
+            
+            // Send analytics event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'portfolio_filter', {
+                    'event_category': 'engagement',
+                    'event_label': filter
+                });
+            }
         });
     });
+    
+    // Initialize from URL hash
+    const hash = window.location.hash.substring(1);
+    if (hash && ['all', 'hookahs', 'accessories', 'packaging'].includes(hash)) {
+        const btn = document.querySelector(`.filter-btn[data-filter="${hash}"]`);
+        if (btn) {
+            setTimeout(() => btn.click(), 100);
+        }
+    }
 }
 
-// ENHANCED PROJECT INTERACTIONS
+// ENHANCED PROJECT INTERACTIONS FOR HOOKAH PRODUCTS
 function setupProjectInteractions() {
     const projectCards = document.querySelectorAll('.project-card');
     const isMobile = window.innerWidth <= 768;
@@ -98,6 +126,12 @@ function setupProjectInteractions() {
                 if (badge) {
                     badge.style.transform = 'translateY(0) scale(1.05)';
                 }
+                
+                // Animate category
+                const category = card.querySelector('.project-category');
+                if (category) {
+                    category.style.transform = 'translateY(-2px)';
+                }
             });
             
             card.addEventListener('mouseleave', () => {
@@ -112,6 +146,11 @@ function setupProjectInteractions() {
                 const badge = card.querySelector('.project-badge');
                 if (badge) {
                     badge.style.transform = 'translateY(0)';
+                }
+                
+                const category = card.querySelector('.project-category');
+                if (category) {
+                    category.style.transform = 'translateY(0)';
                 }
             });
         }
@@ -131,12 +170,13 @@ function setupProjectInteractions() {
                     caseStudyLink.style.transform = 'translateX(0) scale(1)';
                 }, 300);
                 
-                // Simulate loading and navigation
-                console.log('Opening detailed case study...');
+                // Get project title for analytics
+                const projectTitle = card.querySelector('.project-title').textContent;
+                console.log(`Opening case study: ${projectTitle}`);
                 
                 // Show notification on mobile
-                if (isMobile && window.DaehaaApp) {
-                    window.DaehaaApp.showNotification('Loading case study...', 'info');
+                if (isMobile) {
+                    showMobileNotification(`Загружаем кейс: ${projectTitle}`);
                 }
             });
         }
@@ -145,10 +185,12 @@ function setupProjectInteractions() {
         if (isMobile) {
             card.addEventListener('touchstart', function() {
                 this.style.transform = 'scale(0.98)';
+                this.style.transition = 'transform 0.1s ease';
             });
             
             card.addEventListener('touchend', function() {
                 this.style.transform = 'scale(1)';
+                this.style.transition = 'transform 0.3s ease';
             });
         }
     });
@@ -194,25 +236,36 @@ function setupTestimonialCarousel() {
     
     if (testimonialCards.length > 1) {
         let currentTestimonial = 0;
+        let carouselInterval;
         
         // Function to show testimonial
         const showTestimonial = (index) => {
             testimonialCards.forEach((card, i) => {
-                card.style.opacity = i === index ? '1' : '0.4';
-                card.style.transform = i === index ? 'translateY(0)' : 'translateY(20px)';
+                if (i === index) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                    card.style.zIndex = '2';
+                } else {
+                    card.style.opacity = '0.5';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.zIndex = '1';
+                }
                 card.style.transition = 'all 0.6s ease';
             });
             currentTestimonial = index;
         };
         
         // Auto rotation
-        const rotateTestimonials = () => {
-            const nextIndex = (currentTestimonial + 1) % testimonialCards.length;
-            showTestimonial(nextIndex);
+        const startCarousel = () => {
+            const intervalTime = isMobile ? 8000 : 6000;
+            carouselInterval = setInterval(() => {
+                const nextIndex = (currentTestimonial + 1) % testimonialCards.length;
+                showTestimonial(nextIndex);
+            }, intervalTime);
         };
         
-        const intervalTime = isMobile ? 8000 : 6000;
-        let carouselInterval = setInterval(rotateTestimonials, intervalTime);
+        // Start carousel
+        startCarousel();
         
         // Pause on hover/touch
         testimonialCards.forEach(card => {
@@ -221,7 +274,7 @@ function setupTestimonialCarousel() {
             });
             
             card.addEventListener('mouseleave', () => {
-                carouselInterval = setInterval(rotateTestimonials, intervalTime);
+                startCarousel();
             });
             
             card.addEventListener('touchstart', () => {
@@ -229,9 +282,7 @@ function setupTestimonialCarousel() {
             });
             
             card.addEventListener('touchend', () => {
-                setTimeout(() => {
-                    carouselInterval = setInterval(rotateTestimonials, intervalTime);
-                }, 5000);
+                setTimeout(startCarousel, 5000);
             });
         });
         
@@ -279,8 +330,13 @@ function setupTestimonialSwipe(testimonialCards, carouselInterval) {
             
             // Animate the change
             testimonialCards.forEach((card, i) => {
-                card.style.opacity = i === currentIndex ? '1' : '0.4';
-                card.style.transform = i === currentIndex ? 'translateY(0)' : 'translateY(20px)';
+                if (i === currentIndex) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                } else {
+                    card.style.opacity = '0.5';
+                    card.style.transform = 'translateY(20px)';
+                }
                 card.style.transition = 'all 0.6s ease';
             });
         }
@@ -299,7 +355,7 @@ function setupScrollAnimations() {
                     
                     setTimeout(() => {
                         entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.style.transform = 'translateY(0) scale(1)';
                         entry.target.classList.add('animated');
                     }, parseInt(delay));
                     
@@ -313,7 +369,7 @@ function setupScrollAnimations() {
 
         animatedElements.forEach(el => {
             el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
+            el.style.transform = 'translateY(30px) scale(0.95)';
             el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
             observer.observe(el);
         });
@@ -333,6 +389,11 @@ function setupHoverEffects() {
             if (icon) {
                 icon.style.transform = 'scale(1.15) rotate(5deg)';
             }
+            
+            const value = card.querySelector('.highlight-value');
+            if (value) {
+                value.style.transform = 'scale(1.1)';
+            }
         });
         
         card.addEventListener('mouseleave', () => {
@@ -340,6 +401,11 @@ function setupHoverEffects() {
             const icon = card.querySelector('.highlight-icon');
             if (icon) {
                 icon.style.transform = 'scale(1) rotate(0)';
+            }
+            
+            const value = card.querySelector('.highlight-value');
+            if (value) {
+                value.style.transform = 'scale(1)';
             }
         });
     });
@@ -355,10 +421,12 @@ function setupMobileOptimizations() {
         filterBtns.forEach(btn => {
             btn.addEventListener('touchstart', function() {
                 this.style.transform = 'scale(0.95)';
+                this.style.transition = 'transform 0.1s ease';
             });
             
             btn.addEventListener('touchend', function() {
                 this.style.transform = 'scale(1)';
+                this.style.transition = 'transform 0.3s ease';
             });
         });
         
@@ -366,13 +434,66 @@ function setupMobileOptimizations() {
         const filterNav = document.querySelector('.filter-nav');
         if (filterNav) {
             filterNav.style.webkitOverflowScrolling = 'touch';
+            filterNav.style.scrollBehavior = 'smooth';
         }
         
         // Reduce animations for performance
-        if (window.DaehaaApp && window.DaehaaApp.isLowPerformanceDevice()) {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.documentElement.classList.add('reduced-animations');
         }
+        
+        // Handle orientation change
+        let previousOrientation = window.orientation;
+        window.addEventListener('orientationchange', () => {
+            if (window.orientation !== previousOrientation) {
+                setTimeout(() => {
+                    if (typeof initPortfolio === 'function') {
+                        initPortfolio();
+                    }
+                }, 300);
+                previousOrientation = window.orientation;
+            }
+        });
     }
+}
+
+// MOBILE NOTIFICATION FUNCTION
+function showMobileNotification(message) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-100px);
+        background: rgba(0, 102, 255, 0.95);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-weight: 600;
+        z-index: 9999;
+        transition: transform 0.3s ease;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Show notification
+    setTimeout(() => {
+        notification.style.transform = 'translateX(-50%) translateY(0)';
+    }, 10);
+    
+    // Hide and remove after 3 seconds
+    setTimeout(() => {
+        notification.style.transform = 'translateX(-50%) translateY(-100px)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
 }
 
 // RESIZE HANDLER
@@ -401,3 +522,28 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
 
 // Export function
 window.initPortfolio = initPortfolio;
+
+// Add CSS for ripple animation if not already present
+if (!document.querySelector('#ripple-styles')) {
+    const style = document.createElement('style');
+    style.id = 'ripple-styles';
+    style.textContent = `
+        @keyframes ripple-animation {
+            0% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+        
+        .reduced-animations * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    `;
+    document.head.appendChild(style);
+}
