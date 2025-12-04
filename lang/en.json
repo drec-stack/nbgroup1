@@ -54,12 +54,12 @@
       "title": "Featured Projects",
       "subtitle": "Recent work that demonstrates our capabilities",
       "project1": {
-        "title": "Smart Home Device",
-        "description": "Complete product development for IoT home automation system"
+        "title": "Premium Hookah",
+        "description": "Elite handcrafted hookah with cooling system and engraving"
       },
       "project2": {
-        "title": "Medical Equipment",
-        "description": "Ergonomic design for portable medical diagnostic device"
+        "title": "Premium Accessories",
+        "description": "Accessory set in genuine leather case"
       },
       "viewCaseStudy": "View Case Study",
       "viewAllProjects": "View All Projects"
@@ -370,37 +370,36 @@
   },
   "portfolio": {
     "title": "Our Work",
-    "subtitle": "Selected projects that demonstrate our design and engineering capabilities across various industries and product categories.",
+    "subtitle": "We implement projects with a high degree of precision and aesthetics: hookahs, accessories, premium packaging. Each project is a result of design, engineering, and production experience.",
     "filter": {
       "all": "All Projects",
-      "consumer": "Consumer Electronics",
-      "medical": "Medical Devices",
-      "iot": "IoT Products",
-      "industrial": "Industrial Equipment"
+      "hookahs": "Hookahs",
+      "accessories": "Accessories",
+      "packaging": "Premium Packaging"
     },
     "projects": {
-      "speaker": {
-        "title": "Voice-Activated Smart Speaker",
-        "description": "Complete product design and engineering for AI-powered home assistant with premium audio quality and seamless integration."
+      "hookah1": {
+        "title": "Premium Hookah Amira",
+        "description": "Elite handcrafted hookah made of stainless steel with engraving and unique smoke cooling system."
       },
-      "monitor": {
-        "title": "Portable Patient Monitor",
-        "description": "Ergonomic design for hospital-grade vital signs monitoring device with focus on usability and infection control."
+      "accessory1": {
+        "title": "Hookah Accessories",
+        "description": "Premium accessory set: tongs, brushes, cleaning tools in a genuine leather case."
       },
-      "thermostat": {
-        "title": "Wi-Fi Smart Thermostat",
-        "description": "Energy-efficient home climate control system with intuitive interface and advanced scheduling capabilities."
+      "packaging1": {
+        "title": "Luxury Collection Packaging",
+        "description": "Premium packaging for gift sets with magnetic lock, velvet finish, and metal elements."
       },
-      "printer": {
-        "title": "Professional 3D Printer",
-        "description": "Industrial-grade additive manufacturing system with advanced calibration and material handling capabilities."
+      "hookah2": {
+        "title": "Hookah Alpha Pro",
+        "description": "Innovative hookah with modular system, ceramic bowl, and enhanced filtration technology."
       }
     },
     "status": {
       "massProduction": "Mass Production",
-      "fda": "FDA Approved",
-      "energyStar": "Energy Star",
-      "ce": "CE Certified"
+      "handmade": "Handmade",
+      "premium": "Premium Class",
+      "limited": "Limited Edition"
     },
     "highlights": {
       "title": "Project Highlights",
@@ -409,8 +408,8 @@
     "testimonials": {
       "title": "Client Testimonials",
       "subtitle": "What our partners say about working with us",
-      "1": "\"NBGROUP.TECH transformed our concept into a market-ready product that exceeded our expectations in both design and functionality.\"",
-      "2": "\"The team's attention to detail and engineering expertise helped us achieve significant cost savings while maintaining premium quality.\""
+      "1": "\"NBGROUP.TECH created a hookah that has become the industry standard. Design and execution quality are top-notch.\"",
+      "2": "\"Premium packaging from NBGROUP.TECH increased our product's perceived value by 40%. Excellent work!\""
     },
     "viewProject": "View Project",
     "viewCaseStudy": "View Case Study",
