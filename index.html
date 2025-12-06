@@ -126,7 +126,7 @@
             font-weight: 600;
         }
 
-        /* СТИЛИ ДЛЯ КЛИКАБЕЛЬНЫХ КАРТОЧЕК И БЛОКОВ (добавлено) */
+        /* СТИЛИ ДЛЯ КЛИКАБЕЛЬНЫХ КАРТОЧЕК И БЛОКОВ */
         .clickable-service-card {
             display: block;
             text-decoration: none;
@@ -271,7 +271,7 @@
             border-color: white;
         }
 
-        /* Мобильная оптимизация */
+        /* Мобильная оптимизация для бегущей строки - ФИКС НАЛОЖЕНИЯ */
         @media (max-width: 768px) {
             .clickable-service-card:active {
                 transform: translateY(-5px) scale(0.97);
@@ -295,6 +295,71 @@
                 right: -10px;
                 bottom: -10px;
                 z-index: 1;
+            }
+            
+            /* ФИКС БЕГУЩЕЙ СТРОКИ */
+            .marquee-track {
+                padding: 15px 0 !important;
+            }
+            
+            .brand {
+                font-size: 1rem !important;
+                padding: 0 20px !important;
+            }
+            
+            .separator {
+                font-size: 1.2rem !important;
+            }
+            
+            #marquee1 {
+                animation: marquee-scroll-mobile 50s linear infinite !important;
+            }
+            
+            #marquee2 {
+                animation: marquee-scroll-reverse-mobile 50s linear infinite !important;
+            }
+            
+            @keyframes marquee-scroll-mobile {
+                0% { transform: translateX(0) !important; }
+                100% { transform: translateX(-33.33%) !important; }
+            }
+            
+            @keyframes marquee-scroll-reverse-mobile {
+                0% { transform: translateX(-33.33%) !important; }
+                100% { transform: translateX(0) !important; }
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .brand {
+                font-size: 0.9rem !important;
+                padding: 0 15px !important;
+            }
+            
+            .separator {
+                font-size: 1.1rem !important;
+            }
+            
+            .marquee-track {
+                padding: 10px 0 !important;
+            }
+            
+            #marquee1 {
+                animation: marquee-scroll-mobile-480 60s linear infinite !important;
+            }
+            
+            #marquee2 {
+                animation: marquee-scroll-reverse-mobile-480 60s linear infinite !important;
+            }
+            
+            @keyframes marquee-scroll-mobile-480 {
+                0% { transform: translateX(0) !important; }
+                100% { transform: translateX(-33.33%) !important; }
+            }
+            
+            @keyframes marquee-scroll-reverse-mobile-480 {
+                0% { transform: translateX(-33.33%) !important; }
+                100% { transform: translateX(0) !important; }
             }
         }
 
@@ -912,7 +977,7 @@
             });
         }
 
-        // Инициализация ВСЕХ кликабельных блоков на главной (добавлено)
+        // Инициализация ВСЕХ кликабельных блоков на главной
         function initAllClickableBlocks() {
             console.log('🎴 Initializing ALL clickable blocks on home page...');
             
