@@ -1187,3 +1187,262 @@
 .clients-section { animation-delay: 0.3s; }
 .stats-improved { animation-delay: 0.4s; }
 .cta-improved { animation-delay: 0.5s; }
+
+/* ===== МОБИЛЬНЫЙ СТЕКЛЯННЫЙ ЭФФЕКТ ДЛЯ КАРТОЧЕК ===== */
+@media (max-width: 768px) {
+    /* Улучшаем прозрачность для карточек услуг */
+    .speck-service-card-enhanced {
+        background: rgba(40, 40, 50, 0.75) !important;
+        backdrop-filter: blur(20px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.4),
+            0 5px 15px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* Эффект при наведении на карточки */
+    .clickable-service-card:hover {
+        transform: translateY(-10px) !important;
+        background: rgba(50, 50, 65, 0.85) !important;
+        border-color: rgba(0, 102, 255, 0.5) !important;
+        box-shadow: 
+            0 25px 50px rgba(0, 102, 255, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    /* Улучшаем видимость номеров карточек */
+    .speck-number-enhanced {
+        color: rgba(255, 255, 255, 0.25) !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    /* Улучшаем заголовки */
+    .speck-title-enhanced {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    /* Улучшаем подзаголовки */
+    .speck-subtitle-enhanced {
+        color: rgba(255, 255, 255, 0.8) !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    /* Улучшаем описание */
+    .speck-description-enhanced p {
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* Улучшаем фичи-карточки */
+    .speck-feature-item-enhanced {
+        background: rgba(0, 102, 255, 0.1) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(0, 102, 255, 0.2) !important;
+    }
+    
+    .speck-feature-badge {
+        background: rgba(0, 102, 255, 0.25) !important;
+        border: 1px solid rgba(0, 102, 255, 0.4) !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .speck-feature-desc {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    /* Улучшаем ссылки */
+    .speck-link-enhanced {
+        background: rgba(0, 102, 255, 0.15) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(0, 102, 255, 0.3) !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+    }
+    
+    /* Статистические карточки */
+    .stat-card {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(15px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    .stat-icon {
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(0, 170, 255, 0.2)) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .stat-number-improved {
+        color: white !important;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    .stat-label-improved {
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* CTA секция */
+    .cta-improved {
+        background: linear-gradient(135deg, 
+            rgba(0, 102, 255, 0.25), 
+            rgba(0, 170, 255, 0.25)
+        ) !important;
+        backdrop-filter: blur(25px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    }
+    
+    .cta-text h2 {
+        color: white !important;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    .cta-text p {
+        color: rgba(255, 255, 255, 0.95) !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* Кнопка в CTA */
+    .btn-glow {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        color: #ff0000 !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Секция клиентов */
+    .clients-section {
+        background: rgba(20, 20, 30, 0.8) !important;
+        backdrop-filter: blur(20px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    .clients-label {
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* Бегущая строка */
+    .marquee-container {
+        background: rgba(0, 0, 0, 0.5) !important;
+        backdrop-filter: blur(15px) !important;
+        -webkit-backdrop-filter: blur(15px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        border-radius: 15px !important;
+        padding: 12px 5px !important;
+        margin: 15px 0 !important;
+    }
+    
+    .brand {
+        color: rgba(255, 255, 255, 0.95) !important;
+        opacity: 0.95 !important;
+        font-weight: 700 !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    .separator {
+        color: rgba(255, 255, 255, 0.4) !important;
+    }
+    
+    /* Герой секция - улучшенная прозрачность */
+    .hero-subtitle {
+        color: rgba(255, 255, 255, 0.95) !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    .hero-description p {
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* Кнопки в герое */
+    .hero-actions .btn-primary {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    .hero-actions .btn-secondary {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Дополнительные улучшения для очень маленьких экранов */
+    .speck-service-card-enhanced {
+        padding: 20px 15px !important;
+        background: rgba(40, 40, 50, 0.85) !important;
+    }
+    
+    .stat-card {
+        padding: 20px 15px !important;
+        background: rgba(255, 255, 255, 0.12) !important;
+    }
+    
+    .cta-improved {
+        padding: 40px 20px !important;
+    }
+    
+    /* Усиливаем тени для лучшей читаемости */
+    .parallax-content h1,
+    .speck-title-enhanced,
+    .cta-text h2 {
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6) !important;
+    }
+    
+    p, 
+    .hero-description p, 
+    .speck-description-enhanced p,
+    .cta-text p,
+    .stat-label-improved {
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+    }
+}
+
+/* Поддержка устройств без backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+    @media (max-width: 768px) {
+        .speck-service-card-enhanced {
+            background: rgba(40, 40, 50, 0.95) !important;
+        }
+        
+        .stat-card {
+            background: rgba(30, 30, 40, 0.95) !important;
+        }
+        
+        .cta-improved {
+            background: rgba(0, 102, 255, 0.35) !important;
+        }
+        
+        .clients-section {
+            background: rgba(20, 20, 30, 0.95) !important;
+        }
+    }
+}
+
+/* Отключение анимаций для reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    @media (max-width: 768px) {
+        .clickable-service-card:hover {
+            transform: none !important;
+            transition: none !important;
+        }
+    }
+}
