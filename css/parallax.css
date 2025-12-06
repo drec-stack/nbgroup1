@@ -1,4 +1,4 @@
-/* parallax.css - FULLSCREEN BACKGROUND CHANGES - MOBILE OPTIMIZED */
+/* parallax.css - FULLSCREEN BACKGROUND CHANGES - MOBILE OPTIMIZED WITH TRANSPARENCY */
 
 .parallax-bg-container {
     position: fixed;
@@ -162,7 +162,7 @@
     z-index: 1000;
 }
 
-/* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===== */
+/* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ С ПРОЗРАЧНОСТЬЮ ===== */
 @media (max-width: 1024px) {
     .parallax-bg-container {
         width: 100vw !important;
@@ -206,25 +206,36 @@
         position: absolute !important;
     }
     
-    /* Улучшаем читаемость текста */
+    /* Усиливаем затемнение фона для лучшей читаемости */
+    .parallax-bg::after {
+        background: rgba(0, 0, 0, 0.6) !important;
+        backdrop-filter: blur(5px) !important;
+        -webkit-backdrop-filter: blur(5px) !important;
+    }
+    
+    /* Улучшаем читаемость текста с прозрачным фоном */
     .parallax-content {
         text-align: center !important;
-        padding: 20px !important;
+        padding: 25px 20px !important;
         margin: 0 15px !important;
-        backdrop-filter: blur(5px);
-        background: rgba(0, 0, 0, 0.4);
-        border-radius: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
     
     .parallax-content h1 {
         font-size: 2.5rem !important;
         line-height: 1.2;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
     }
     
     .parallax-content p {
         font-size: 1.1rem !important;
         margin-bottom: 30px;
+        color: rgba(255, 255, 255, 0.95);
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     }
     
     .hero-actions {
@@ -237,12 +248,15 @@
         width: 100%;
         max-width: 280px;
         justify-content: center;
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
     }
     
-    /* Фикс для других секций */
+    /* Прозрачный фон для других секций */
     .content-section {
         padding: 60px 0 !important;
-        background-color: var(--secondary) !important;
+        background-color: transparent !important;
         position: relative;
         z-index: 2;
     }
@@ -257,6 +271,26 @@
     /* Скрываем скролл индикатор на мобильных */
     .parallax-scroll-indicator {
         bottom: 20px;
+        backdrop-filter: blur(10px);
+        background: rgba(0, 0, 0, 0.4);
+        padding: 10px 20px;
+        border-radius: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .scroll-arrow {
+        border-right-color: rgba(255, 255, 255, 0.9);
+        border-bottom-color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Progress bar с прозрачностью */
+    .scroll-progress {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(5px);
+    }
+    
+    .scroll-progress-bar {
+        background: linear-gradient(90deg, #0066ff, #00aaff);
     }
 }
 
@@ -270,12 +304,19 @@
     }
     
     .parallax-content {
-        padding: 15px !important;
+        padding: 20px 15px !important;
         margin: 0 10px !important;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(20px);
     }
     
     .hero-actions .btn {
         max-width: 100%;
+    }
+    
+    /* Усиливаем прозрачность параллакс фона для маленьких экранов */
+    .parallax-bg::after {
+        background: rgba(0, 0, 0, 0.7) !important;
     }
 }
 
@@ -287,6 +328,11 @@
     
     .parallax-content p {
         font-size: 0.95rem !important;
+    }
+    
+    .parallax-content {
+        padding: 15px 10px !important;
+        margin: 0 8px !important;
     }
 }
 
@@ -310,5 +356,22 @@
     
     .parallax-bg-container {
         height: -webkit-fill-available;
+    }
+}
+
+/* Поддержка устройств без backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+    @media (max-width: 768px) {
+        .parallax-content {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+        
+        .parallax-bg::after {
+            background: rgba(0, 0, 0, 0.8) !important;
+        }
+        
+        .parallax-scroll-indicator {
+            background: rgba(0, 0, 0, 0.6) !important;
+        }
     }
 }
