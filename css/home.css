@@ -469,7 +469,7 @@
     padding-top: 120px !important;
 }
 
-/* Для мобильной версии */
+/* ===== ФИКС ДЛЯ БЕГУЩЕЙ СТРОКИ НА МОБИЛЬНЫХ ===== */
 @media (max-width: 768px) {
     .home-page .main-header {
         top: 0 !important;
@@ -582,11 +582,50 @@
         font-size: 1.1rem;
     }
     
-    /* Фикс для бегущей строки на мобильных */
+    /* ФИКС ДЛЯ БЕГУЩЕЙ СТРОКИ НА МОБИЛЬНЫХ */
     .marquee-container {
         width: 100vw;
         margin-left: -20px;
         padding: 0 20px;
+    }
+    
+    .marquee-track {
+        padding: 15px 0 !important;
+    }
+    
+    .brand {
+        font-size: 1rem !important;
+        padding: 0 20px !important;
+    }
+    
+    .separator {
+        font-size: 1.2rem !important;
+    }
+    
+    #marquee1 {
+        animation: marquee-scroll-mobile 50s linear infinite !important;
+    }
+    
+    #marquee2 {
+        animation: marquee-scroll-reverse-mobile 50s linear infinite !important;
+    }
+    
+    @keyframes marquee-scroll-mobile {
+        0% {
+            transform: translateX(0) !important;
+        }
+        100% {
+            transform: translateX(-33.33%) !important;
+        }
+    }
+    
+    @keyframes marquee-scroll-reverse-mobile {
+        0% {
+            transform: translateX(-33.33%) !important;
+        }
+        100% {
+            transform: translateX(0) !important;
+        }
     }
 }
 
@@ -655,6 +694,46 @@
     .stats-grid-improved {
         grid-template-columns: 1fr;
     }
+    
+    /* ФИКС ДЛЯ БЕГУЩЕЙ СТРОКИ НА МАЛЕНЬКИХ ЭКРАНАХ */
+    .brand {
+        font-size: 0.9rem !important;
+        padding: 0 15px !important;
+    }
+    
+    .separator {
+        font-size: 1.1rem !important;
+    }
+    
+    .marquee-track {
+        padding: 10px 0 !important;
+    }
+    
+    #marquee1 {
+        animation: marquee-scroll-mobile-480 60s linear infinite !important;
+    }
+    
+    #marquee2 {
+        animation: marquee-scroll-reverse-mobile-480 60s linear infinite !important;
+    }
+    
+    @keyframes marquee-scroll-mobile-480 {
+        0% {
+            transform: translateX(0) !important;
+        }
+        100% {
+            transform: translateX(-33.33%) !important;
+        }
+    }
+    
+    @keyframes marquee-scroll-reverse-mobile-480 {
+        0% {
+            transform: translateX(-33.33%) !important;
+        }
+        100% {
+            transform: translateX(0) !important;
+        }
+    }
 }
 
 /* ===== REDUCED MOTION SUPPORT ===== */
@@ -695,6 +774,15 @@
     
     .speck-link-enhanced:hover i {
         transform: none;
+    }
+    
+    /* Отключаем анимации бегущей строки */
+    .marquee-track {
+        animation: none !important;
+    }
+    
+    #marquee1, #marquee2 {
+        animation: none !important;
     }
 }
 
