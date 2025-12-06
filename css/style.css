@@ -3062,3 +3062,253 @@ html {
 .debug-marquee .brand {
     background: rgba(255, 0, 0, 0.1);
 }
+
+/* ===== МОБИЛЬНЫЙ ПРОЗРАЧНЫЙ ФОН (GLASS EFFECT) ===== */
+@media (max-width: 768px) {
+    /* Фон для всего body с затемнением и размытием */
+    body {
+        background: linear-gradient(
+            rgba(10, 10, 20, 0.92),
+            rgba(15, 15, 25, 0.88)
+        ) !important;
+        position: relative;
+    }
+    
+    /* Эффект стекла для всех секций с контентом */
+    .content-section {
+        background: rgba(30, 30, 40, 0.65) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+        border-radius: 24px !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        margin: 20px 15px !important;
+        padding: 30px 25px !important;
+        box-shadow: 
+            0 8px 32px 0 rgba(0, 0, 0, 0.36),
+            inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+        position: relative !important;
+        z-index: 2 !important;
+    }
+    
+    /* Контейнеры внутри секций */
+    .content-section .container {
+        background: transparent !important;
+    }
+    
+    /* Герой-секция с усиленной прозрачностью */
+    .hero.parallax-hero {
+        background: rgba(0, 0, 0, 0.7) !important;
+        backdrop-filter: blur(25px) !important;
+        -webkit-backdrop-filter: blur(25px) !important;
+        margin: 15px 10px 30px !important;
+        border-radius: 30px !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        padding: 40px 25px !important;
+    }
+    
+    /* Контент внутри героя */
+    .parallax-content {
+        background: rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border-radius: 20px !important;
+        padding: 30px 20px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* Карточки услуг - эффект стекла */
+    .speck-service-card-enhanced {
+        background: rgba(40, 40, 50, 0.7) !important;
+        backdrop-filter: blur(15px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(15px) saturate(160%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        box-shadow: 
+            0 15px 35px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* Карточки статистики */
+    .stat-card {
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(15px) !important;
+        -webkit-backdrop-filter: blur(15px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    /* CTA секция */
+    .cta-improved {
+        background: rgba(0, 102, 255, 0.2) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(0, 102, 255, 0.3) !important;
+    }
+    
+    /* Секция клиентов (бегущая строка) */
+    .clients-section {
+        background: rgba(20, 20, 30, 0.75) !important;
+        backdrop-filter: blur(15px) !important;
+        -webkit-backdrop-filter: blur(15px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    /* Улучшение читаемости текста */
+    .parallax-content h1,
+    .speck-title-enhanced,
+    .cta-text h2,
+    .stat-number-improved {
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    p, 
+    .hero-description p, 
+    .speck-description-enhanced p,
+    .cta-text p,
+    .stat-label-improved {
+        color: rgba(255, 255, 255, 0.95) !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    /* Параллакс фон - затемняем для мобильных */
+    .parallax-bg::after {
+        background: rgba(0, 0, 0, 0.6) !important;
+    }
+    
+    /* Хедер - делаем полностью прозрачным стекло */
+    .main-header {
+        background: rgba(0, 102, 255, 0.85) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* Футер - добавляем прозрачность */
+    .main-footer {
+        background: rgba(0, 0, 0, 0.9) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* Бегущая строка - улучшаем видимость */
+    .marquee-container {
+        background: rgba(0, 0, 0, 0.4) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border-radius: 15px !important;
+        padding: 10px 5px !important;
+        margin: 10px 0 !important;
+    }
+    
+    .brand {
+        opacity: 0.9 !important;
+        font-weight: 700 !important;
+    }
+}
+
+/* Для очень маленьких экранов (до 480px) */
+@media (max-width: 480px) {
+    .content-section {
+        margin: 15px 10px !important;
+        padding: 25px 20px !important;
+        background: rgba(30, 30, 40, 0.75) !important;
+    }
+    
+    .hero.parallax-hero {
+        margin: 10px 8px 25px !important;
+        padding: 30px 20px !important;
+    }
+    
+    .speck-service-card-enhanced {
+        background: rgba(40, 40, 50, 0.8) !important;
+        padding: 25px 20px !important;
+    }
+    
+    .stat-card {
+        padding: 25px 15px !important;
+    }
+    
+    /* Усиливаем прозрачность для маленьких экранов */
+    .parallax-content {
+        padding: 20px 15px !important;
+    }
+}
+
+/* Поддержка устройств без backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+    @media (max-width: 768px) {
+        .content-section {
+            background: rgba(30, 30, 40, 0.9) !important;
+        }
+        
+        .hero.parallax-hero {
+            background: rgba(0, 0, 0, 0.85) !important;
+        }
+        
+        .speck-service-card-enhanced {
+            background: rgba(40, 40, 50, 0.9) !important;
+        }
+        
+        .main-header {
+            background: rgba(0, 102, 255, 0.95) !important;
+        }
+        
+        .main-footer {
+            background: rgba(0, 0, 0, 0.95) !important;
+        }
+    }
+}
+
+/* Отключение размытия для слабых устройств */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+    .content-section,
+    .hero.parallax-hero,
+    .speck-service-card-enhanced,
+    .stat-card,
+    .cta-improved,
+    .clients-section,
+    .main-header,
+    .main-footer {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+}
+
+/* Темная тема по умолчанию - усиливаем контраст */
+@media (prefers-color-scheme: dark) {
+    @media (max-width: 768px) {
+        .content-section {
+            background: rgba(25, 25, 35, 0.7) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+        
+        .speck-service-card-enhanced {
+            background: rgba(35, 35, 45, 0.75) !important;
+        }
+    }
+}
+
+/* Высокая контрастность */
+@media (prefers-contrast: high) {
+    @media (max-width: 768px) {
+        .content-section {
+            background: rgba(20, 20, 30, 0.95) !important;
+            border: 2px solid white !important;
+        }
+        
+        .speck-service-card-enhanced {
+            background: rgba(30, 30, 40, 0.98) !important;
+            border: 2px solid white !important;
+        }
+        
+        p, .hero-description p {
+            color: white !important;
+        }
+        
+        .main-header {
+            border: 2px solid white !important;
+        }
+    }
+}
