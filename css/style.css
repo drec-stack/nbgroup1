@@ -22,10 +22,18 @@
     --blue-border: rgba(0, 102, 255, 0.3);
 }
 
+/* ГЛОБАЛЬНЫЙ ФИКС ДЛЯ ГОРИЗОНТАЛЬНОГО СКРОЛЛА */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
 }
 
 html {
@@ -36,7 +44,6 @@ body {
     background-color: var(--primary);
     color: var(--text);
     line-height: 1.6;
-    overflow-x: hidden;
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
 }
@@ -2000,8 +2007,8 @@ main {
 .hero-actions {
     display: flex;
     gap: 20px;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .parallax-scroll-indicator {
@@ -2377,6 +2384,41 @@ a:focus-visible {
 
 /* Улучшение для мобильных устройств */
 @media (max-width: 768px) {
+    /* Убираем горизонтальный скролл */
+    html, body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    /* Хедер на всю ширину */
+    .main-header {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* Контейнер хедера без отступов */
+    .main-header .header-inner {
+        padding: 0 15px !important;
+        max-width: 100% !important;
+    }
+    
+    /* Фикс для мобильного меню */
+    .main-nav {
+        width: 100% !important;
+        border-radius: 0 !important;
+        right: -100% !important;
+    }
+    
+    .main-nav.active {
+        right: 0 !important;
+    }
+    
     /* Увеличение touch target для мобильных */
     .nav-link,
     .btn,
@@ -2410,155 +2452,7 @@ a:focus-visible {
         background: rgba(255, 255, 255, 0.15);
         transform: scale(0.95);
     }
-}
-
-/* Поддержка high contrast mode */
-@media (prefers-contrast: high) {
-    [role="link"]:focus,
-    .clickable-element:focus,
-    a:focus {
-        outline: 3px solid white;
-    }
     
-    .nav-link:hover,
-    .btn:hover {
-        background: white;
-        color: var(--primary);
-    }
-}
-
-/* Поддержка reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    [role="link"],
-    .clickable-element,
-    .btn,
-    .nav-link,
-    .social-link,
-    .card-link,
-    .project-card,
-    .brand-case,
-    .value-card,
-    .team-member,
-    .contact-card {
-        transition: none;
-    }
-    
-    [role="link"]:hover,
-    .clickable-element:hover,
-    .btn:hover,
-    .nav-link:hover,
-    .social-link:hover,
-    .card-link:hover,
-    .project-card:hover,
-    .brand-case:hover,
-    .value-card:hover,
-    .team-member:hover,
-    .contact-card:hover {
-        transform: none;
-    }
-    
-    .page-transition {
-        transition: none;
-    }
-}
-
-/* Анимация ripple эффекта */
-@keyframes ripple-animation {
-    0% {
-        transform: scale(0);
-        opacity: 0.5;
-    }
-    100% {
-        transform: scale(20);
-        opacity: 0;
-    }
-}
-
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
-@media (max-width: 768px) {
-    /* Уменьшаем отступ для мобильных */
-    main {
-        margin-top: 100px;
-    }
-    
-    .main-header {
-        top: 10px;
-        width: calc(100% - 20px);
-        border-radius: 15px;
-        padding: 15px 0;
-    }
-    
-    .main-header .header-inner {
-        padding: 0 20px;
-    }
-    
-    .logo-mark {
-        width: 35px;
-        height: 35px;
-        border-radius: 8px;
-    }
-    
-    .main-nav {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 300px;
-        height: 100vh;
-        background: var(--blue-gradient);
-        flex-direction: column;
-        padding: 100px 30px 30px;
-        border-left: 1px solid rgba(255, 255, 255, 0.2);
-        transition: right 0.4s ease;
-        z-index: 999;
-        border-radius: 20px 0 0 20px;
-    }
-    
-    .main-nav.active {
-        right: 0;
-    }
-    
-    .main-nav .nav-link {
-        padding: 15px 20px;
-        font-size: 18px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        width: 100%;
-        text-align: center;
-        color: rgba(255, 255, 255, 0.9);
-        border-radius: 10px;
-        margin-bottom: 5px;
-    }
-    
-    .main-nav .nav-link:hover {
-        color: white;
-        background: rgba(255, 255, 255, 0.15);
-    }
-    
-    .main-nav .nav-link:last-child {
-        border-bottom: none;
-    }
-    
-    .mobile-menu-toggle {
-        display: flex;
-    }
-    
-    .header-actions .btn-primary {
-        display: none;
-    }
-
-    .language-switcher {
-        min-width: 100px;
-        height: 36px;
-        margin-right: 10px;
-        border-radius: 12px;
-    }
-    
-    .lang-btn {
-        padding: 6px 12px;
-        font-size: 13px;
-        min-width: 48px;
-        border-radius: 10px;
-    }
-
     /* Footer Mobile */
     .footer-content {
         grid-template-columns: 1fr;
@@ -2738,14 +2632,11 @@ a:focus-visible {
     }
     
     .main-header {
-        top: 5px;
-        width: calc(100% - 10px);
-        border-radius: 12px;
         padding: 12px 0;
     }
     
     .main-header .header-inner {
-        padding: 0 15px;
+        padding: 0 10px !important;
     }
     
     .logo-text {
@@ -2849,6 +2740,43 @@ a:focus-visible {
     .marquee-track {
         animation: none;
     }
+    
+    [role="link"],
+    .clickable-element,
+    .btn,
+    .nav-link,
+    .social-link,
+    .card-link,
+    .project-card,
+    .brand-case,
+    .value-card,
+    .team-member,
+    .contact-card {
+        transition: none;
+    }
+    
+    [role="link"]:hover,
+    .clickable-element:hover,
+    .btn:hover,
+    .nav-link:hover,
+    .social-link:hover,
+    .card-link:hover,
+    .project-card:hover,
+    .brand-case:hover,
+    .value-card:hover,
+    .team-member:hover,
+    .contact-card:hover {
+        transform: none;
+    }
+    
+    .page-transition {
+        transition: none;
+    }
+    
+    .parallax-bg {
+        transition: none;
+        background-attachment: scroll;
+    }
 }
 
 /* ===== HIGH CONTRAST MODE ===== */
@@ -2869,6 +2797,18 @@ a:focus-visible {
     
     .card {
         border: 2px solid var(--border);
+    }
+    
+    [role="link"]:focus,
+    .clickable-element:focus,
+    a:focus {
+        outline: 3px solid white;
+    }
+    
+    .nav-link:hover,
+    .btn:hover {
+        background: white;
+        color: var(--primary);
     }
 }
 
@@ -3110,49 +3050,6 @@ html {
     }
 }
 
-/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ ===== */
-
-/* Улучшенные стили для бегущей строки */
-.marquee-container {
-    position: relative;
-    isolation: isolate;
-}
-
-/* Фикс для мобильных устройств */
-@media (max-width: 768px) {
-    .marquee-content {
-        gap: 20px !important;
-    }
-    
-    .brand {
-        font-size: 1.2rem !important;
-        padding: 0 15px !important;
-    }
-}
-
-/* Поддержка темной темы для бегущей строки */
-@media (prefers-color-scheme: dark) {
-    .marquee-container::before {
-        background: linear-gradient(to right, #0a0a0a 0%, transparent 100%);
-    }
-    
-    .marquee-container::after {
-        background: linear-gradient(to left, #0a0a0a 0%, transparent 100%);
-    }
-}
-
-/* Высокая контрастность */
-@media (prefers-contrast: high) {
-    .brand {
-        opacity: 1 !important;
-        font-weight: 900 !important;
-    }
-    
-    .separator {
-        opacity: 0.7 !important;
-    }
-}
-
 /* Отладка */
 .debug-marquee .marquee-infinite-wrapper {
     outline: 2px solid red;
@@ -3165,4 +3062,3 @@ html {
 .debug-marquee .brand {
     background: rgba(255, 0, 0, 0.1);
 }
-
