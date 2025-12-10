@@ -138,11 +138,11 @@
         }
 
         .clickable-service-block:hover {
-            transform: translateY(-15px);
+            transform: translateY(-5px);
         }
 
         .clickable-service-block:active {
-            transform: translateY(-10px) scale(0.98);
+            transform: translateY(-3px) scale(0.98);
             transition: transform 0.1s ease;
         }
 
@@ -150,10 +150,10 @@
         .clickable-service-block::after {
             content: '';
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 8px;
-            height: 8px;
+            top: 15px;
+            right: 15px;
+            width: 6px;
+            height: 6px;
             background: rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             opacity: 0;
@@ -246,7 +246,7 @@
         /* Мобильная оптимизация для бегущей строки - ФИКС НАЛОЖЕНИЯ */
         @media (max-width: 768px) {
             .clickable-service-block:active {
-                transform: translateY(-5px) scale(0.97);
+                transform: translateY(-3px) scale(0.97);
             }
             
             .clickable-stat-card:active {
@@ -414,206 +414,146 @@
         </div>
     </section>
 
-    <!-- Speck Design Style Services Section - UPDATED -->
-    <section class="speck-services-full content-section" data-bg-index="0">
+    <!-- Speck Design Style Services Section - COMPACT VERTICAL -->
+    <section class="speck-services-compact content-section" data-bg-index="0">
         <div class="container">
-            <div class="speck-services-header">
-                <h2 class="speck-main-title" data-i18n="home.speckServices.title">Our Expertise</h2>
-                <p class="speck-main-description" data-i18n="home.speckServices.subtitle">End-to-end product development from strategy to market</p>
+            <div class="speck-compact-header">
+                <h2 class="speck-compact-title" data-i18n="home.speckServices.title">Our Expertise</h2>
+                <p class="speck-compact-subtitle" data-i18n="home.speckServices.subtitle">End-to-end product development from strategy to market</p>
             </div>
             
-            <div class="speck-services-grid-full">
+            <div class="speck-compact-grid">
                 <!-- Strategy Block -->
-                <a href="services.html#strategy" class="speck-service-block-full clickable-service-block" data-category="strategy">
-                    <div class="speck-block-inner">
-                        <div class="speck-block-header">
-                            <span class="speck-block-number">01</span>
-                            <div class="speck-block-titles">
-                                <h3 class="speck-block-title" data-i18n="home.speckServices.strategy.title">Strategy</h3>
-                                <p class="speck-block-subtitle" data-i18n="home.speckServices.strategy.subtitle">Drive Innovation And Align Goals</p>
+                <a href="services.html#strategy" class="speck-compact-block clickable-service-block" data-category="strategy">
+                    <div class="speck-compact-inner">
+                        <div class="speck-compact-top">
+                            <span class="speck-compact-number">01</span>
+                            <div class="speck-compact-titles">
+                                <h3 class="speck-compact-block-title" data-i18n="home.speckServices.strategy.title">Strategy</h3>
+                                <p class="speck-compact-block-subtitle" data-i18n="home.speckServices.strategy.subtitle">Drive Innovation And Align Goals</p>
                             </div>
                         </div>
                         
-                        <div class="speck-block-content">
-                            <p class="speck-block-description" data-i18n="home.speckServices.strategy.description">
-                                We develop comprehensive innovation strategies that align business objectives with user needs, creating sustainable competitive advantages.
-                            </p>
-                            
-                            <ul class="speck-block-list">
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.strategy.features.innovation.title">Innovation Strategy</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.strategy.features.innovation.description">Developing long-term innovation roadmaps</span>
-                                </li>
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.strategy.features.design.title">Design Strategy</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.strategy.features.design.description">Creating design systems and frameworks</span>
-                                </li>
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.strategy.features.research.title">User Research</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.strategy.features.research.description">In-depth user studies and market analysis</span>
-                                </li>
-                            </ul>
+                        <div class="speck-compact-description">
+                            <p data-i18n="home.speckServices.strategy.description">We develop comprehensive innovation strategies that align business objectives with user needs.</p>
                         </div>
                         
-                        <div class="speck-block-action">
-                            <span class="speck-action-text" data-i18n="home.speckServices.strategy.explore">Explore Strategy</span>
-                            <div class="speck-action-arrow">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <div class="speck-compact-features">
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.strategy.features.innovation.title">Innovation Strategy</span>
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.strategy.features.design.title">Design Strategy</span>
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.strategy.features.research.title">User Research</span>
+                        </div>
+                        
+                        <div class="speck-compact-action">
+                            <span class="speck-compact-action-text" data-i18n="home.speckServices.strategy.explore">Explore</span>
+                            <div class="speck-compact-arrow">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </div>
                         </div>
-                        
-                        <div class="speck-block-overlay"></div>
                     </div>
                 </a>
 
                 <!-- Design Block -->
-                <a href="services.html#design" class="speck-service-block-full clickable-service-block" data-category="design">
-                    <div class="speck-block-inner">
-                        <div class="speck-block-header">
-                            <span class="speck-block-number">02</span>
-                            <div class="speck-block-titles">
-                                <h3 class="speck-block-title" data-i18n="home.speckServices.design.title">Design</h3>
-                                <p class="speck-block-subtitle" data-i18n="home.speckServices.design.subtitle">Engage Audiences With Product Design</p>
+                <a href="services.html#design" class="speck-compact-block clickable-service-block" data-category="design">
+                    <div class="speck-compact-inner">
+                        <div class="speck-compact-top">
+                            <span class="speck-compact-number">02</span>
+                            <div class="speck-compact-titles">
+                                <h3 class="speck-compact-block-title" data-i18n="home.speckServices.design.title">Design</h3>
+                                <p class="speck-compact-block-subtitle" data-i18n="home.speckServices.design.subtitle">Engage Audiences With Product Design</p>
                             </div>
                         </div>
                         
-                        <div class="speck-block-content">
-                            <p class="speck-block-description" data-i18n="home.speckServices.design.description">
-                                Transform concepts into compelling product experiences through industrial design, brand identity, and user-centered interfaces.
-                            </p>
-                            
-                            <ul class="speck-block-list">
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.design.features.industrial.title">Industrial Design</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.design.features.industrial.description">Physical product design and ergonomics</span>
-                                </li>
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.design.features.brand.title">Brand Design</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.design.features.brand.description">Complete visual identity systems</span>
-                                </li>
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.design.features.packaging.title">Packaging Design</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.design.features.packaging.description">Sustainable packaging solutions</span>
-                                </li>
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.design.features.uiux.title">UI/UX Design</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.design.features.uiux.description">Digital interfaces and user experiences</span>
-                                </li>
-                            </ul>
+                        <div class="speck-compact-description">
+                            <p data-i18n="home.speckServices.design.description">Transform concepts into compelling product experiences through design and interfaces.</p>
                         </div>
                         
-                        <div class="speck-block-action">
-                            <span class="speck-action-text" data-i18n="home.speckServices.design.explore">Explore Design</span>
-                            <div class="speck-action-arrow">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <div class="speck-compact-features">
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.design.features.industrial.title">Industrial Design</span>
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.design.features.brand.title">Brand Design</span>
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.design.features.uiux.title">UI/UX Design</span>
+                        </div>
+                        
+                        <div class="speck-compact-action">
+                            <span class="speck-compact-action-text" data-i18n="home.speckServices.design.explore">Explore</span>
+                            <div class="speck-compact-arrow">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </div>
                         </div>
-                        
-                        <div class="speck-block-overlay"></div>
                     </div>
                 </a>
 
                 <!-- Engineering Block -->
-                <a href="services.html#engineering" class="speck-service-block-full clickable-service-block" data-category="engineering">
-                    <div class="speck-block-inner">
-                        <div class="speck-block-header">
-                            <span class="speck-block-number">03</span>
-                            <div class="speck-block-titles">
-                                <h3 class="speck-block-title" data-i18n="home.speckServices.engineering.title">Engineering</h3>
-                                <p class="speck-block-subtitle" data-i18n="home.speckServices.engineering.subtitle">Complex Technical Solutions And Architecture</p>
+                <a href="services.html#engineering" class="speck-compact-block clickable-service-block" data-category="engineering">
+                    <div class="speck-compact-inner">
+                        <div class="speck-compact-top">
+                            <span class="speck-compact-number">03</span>
+                            <div class="speck-compact-titles">
+                                <h3 class="speck-compact-block-title" data-i18n="home.speckServices.engineering.title">Engineering</h3>
+                                <p class="speck-compact-block-subtitle" data-i18n="home.speckServices.engineering.subtitle">Complex Technical Solutions</p>
                             </div>
                         </div>
                         
-                        <div class="speck-block-content">
-                            <p class="speck-block-description" data-i18n="home.speckServices.engineering.description">
-                                Build robust, scalable technical architectures and engineering solutions that power innovative products.
-                            </p>
-                            
-                            <ul class="speck-block-list">
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.engineering.features.architecture.title">Architecture</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.engineering.features.architecture.description">System design and technical architecture</span>
-                                </li>
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.engineering.features.optimization.title">Optimization</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.engineering.features.optimization.description">Performance tuning and efficiency</span>
-                                </li>
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.engineering.features.scaling.title">Scaling</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.engineering.features.scaling.description">Scalability solutions for growth</span>
-                                </li>
-                            </ul>
+                        <div class="speck-compact-description">
+                            <p data-i18n="home.speckServices.engineering.description">Build robust, scalable technical architectures for innovative products.</p>
                         </div>
                         
-                        <div class="speck-block-action">
-                            <span class="speck-action-text" data-i18n="home.speckServices.engineering.explore">Explore Engineering</span>
-                            <div class="speck-action-arrow">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <div class="speck-compact-features">
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.engineering.features.architecture.title">Architecture</span>
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.engineering.features.optimization.title">Optimization</span>
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.engineering.features.scaling.title">Scaling</span>
+                        </div>
+                        
+                        <div class="speck-compact-action">
+                            <span class="speck-compact-action-text" data-i18n="home.speckServices.engineering.explore">Explore</span>
+                            <div class="speck-compact-arrow">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </div>
                         </div>
-                        
-                        <div class="speck-block-overlay"></div>
                     </div>
                 </a>
 
                 <!-- Marketing Block -->
-                <a href="services.html#marketing" class="speck-service-block-full clickable-service-block" data-category="marketing">
-                    <div class="speck-block-inner">
-                        <div class="speck-block-header">
-                            <span class="speck-block-number">04</span>
-                            <div class="speck-block-titles">
-                                <h3 class="speck-block-title" data-i18n="home.speckServices.marketing.title">Marketing</h3>
-                                <p class="speck-block-subtitle" data-i18n="home.speckServices.marketing.subtitle">Digital Strategies And Product Promotion</p>
+                <a href="services.html#marketing" class="speck-compact-block clickable-service-block" data-category="marketing">
+                    <div class="speck-compact-inner">
+                        <div class="speck-compact-top">
+                            <span class="speck-compact-number">04</span>
+                            <div class="speck-compact-titles">
+                                <h3 class="speck-compact-block-title" data-i18n="home.speckServices.marketing.title">Marketing</h3>
+                                <p class="speck-compact-block-subtitle" data-i18n="home.speckServices.marketing.subtitle">Digital Strategies & Promotion</p>
                             </div>
                         </div>
                         
-                        <div class="speck-block-content">
-                            <p class="speck-block-description" data-i18n="home.speckServices.marketing.description">
-                                Drive product success through data-driven marketing strategies, digital campaigns, and comprehensive analytics.
-                            </p>
-                            
-                            <ul class="speck-block-list">
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.marketing.features.seo.title">SEO</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.marketing.features.seo.description">Search engine optimization</span>
-                                </li>
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.marketing.features.smm.title">SMM</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.marketing.features.smm.description">Social media marketing</span>
-                                </li>
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.marketing.features.analytics.title">Analytics</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.marketing.features.analytics.description">Data analysis and KPI tracking</span>
-                                </li>
-                                <li>
-                                    <span class="speck-list-title" data-i18n="home.speckServices.marketing.features.content.title">Content</span>
-                                    <span class="speck-list-desc" data-i18n="home.speckServices.marketing.features.content.description">Content strategy and creation</span>
-                                </li>
-                            </ul>
+                        <div class="speck-compact-description">
+                            <p data-i18n="home.speckServices.marketing.description">Drive product success through data-driven marketing strategies and analytics.</p>
                         </div>
                         
-                        <div class="speck-block-action">
-                            <span class="speck-action-text" data-i18n="home.speckServices.marketing.explore">Explore Marketing</span>
-                            <div class="speck-action-arrow">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <div class="speck-compact-features">
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.marketing.features.seo.title">SEO</span>
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.marketing.features.smm.title">SMM</span>
+                            <span class="speck-compact-feature" data-i18n="home.speckServices.marketing.features.analytics.title">Analytics</span>
+                        </div>
+                        
+                        <div class="speck-compact-action">
+                            <span class="speck-compact-action-text" data-i18n="home.speckServices.marketing.explore">Explore</span>
+                            <div class="speck-compact-arrow">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </div>
                         </div>
-                        
-                        <div class="speck-block-overlay"></div>
                     </div>
                 </a>
             </div>
             
-            <div class="speck-services-footer">
-                <p class="speck-footer-text" data-i18n="home.speckServices.footer">From initial concept to market launch and beyond</p>
+            <div class="speck-compact-footer">
+                <p class="speck-compact-footer-text" data-i18n="home.speckServices.footer">From initial concept to market launch and beyond</p>
             </div>
         </div>
     </section>
