@@ -1206,46 +1206,76 @@
     transform: translateY(-3px);
 }
 
-/* ===== ФИКСИРОВАННЫЙ ХЕДЕР НА ГЛАВНОЙ СТРАНИЦЕ ===== */
+/* ===== GLASS HEADER FOR HOME PAGE ===== */
 .home-page .main-header {
     position: fixed !important;
-    top: 0 !important;
+    top: 20px !important;
     left: 0 !important;
     right: 0 !important;
-    width: 100% !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
     margin: 0 auto !important;
     z-index: 1000 !important;
     transform: translateY(0) !important;
     opacity: 1 !important;
     pointer-events: auto !important;
     transition: all 0.4s ease !important;
-    border-radius: 0 !important;
-}
-
-.home-page .main-header.header-hidden,
-.home-page .main-header.header-scrolled {
-    transform: translateY(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    border-radius: 20px !important;
+    background: rgba(0, 102, 255, 0.12) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
 }
 
 .home-page .main-header.header-hidden {
     transform: translateY(-100%) !important;
     opacity: 0 !important;
     pointer-events: none !important;
+    transition: all 0.4s ease !important;
+}
+
+.home-page .main-header.header-scrolled {
+    background: rgba(0, 102, 255, 0.2) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
 }
 
 .home-page .hero {
-    padding-top: 120px !important;
+    padding-top: 100px !important;
 }
 
-/* ===== ФИКС ДЛЯ БЕГУЩЕЙ СТРОКИ НА МОБИЛЬНЫХ ===== */
+/* ===== GLASS EFFECTS FOR HOME PAGE ELEMENTS ===== */
+.home-page .speck-service-block-full,
+.home-page .stat-card,
+.home-page .cta-improved {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.home-page .speck-service-block-full:hover,
+.home-page .stat-card:hover {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Mobile adjustments for home page header */
 @media (max-width: 768px) {
     .home-page .main-header {
         top: 0 !important;
         width: 100% !important;
+        max-width: 100% !important;
         border-radius: 0 !important;
         margin: 0 !important;
+        padding: 14px 0 !important;
+        background: rgba(0, 102, 255, 0.22) !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .home-page .hero {
+        padding-top: 80px !important;
     }
     
     .hero-subtitle {
@@ -1418,6 +1448,8 @@
     position: relative;
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     outline: none;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .clickable-service-block:hover {
@@ -1425,6 +1457,8 @@
     border-color: #0066ff;
     background: rgba(255, 255, 255, 0.08);
     box-shadow: 0 30px 60px rgba(0, 102, 255, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .clickable-service-block:active {
@@ -1444,6 +1478,7 @@
     border-radius: 50%;
     opacity: 0;
     transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
 .clickable-service-block:hover::after {
@@ -1923,4 +1958,65 @@
             background: rgba(0, 102, 255, 0.35) !important;
         }
     }
+}
+
+/* ===== GLASS HEADER SPECIFIC ANIMATIONS ===== */
+@keyframes headerGlassEnter {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+        backdrop-filter: blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        backdrop-filter: blur(16px);
+    }
+}
+
+@keyframes headerGlassExit {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+        backdrop-filter: blur(16px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-30px);
+        backdrop-filter: blur(0);
+    }
+}
+
+.header-glass-enter {
+    animation: headerGlassEnter 0.6s ease forwards;
+}
+
+.header-glass-exit {
+    animation: headerGlassExit 0.4s ease forwards;
+}
+
+/* Glass morphism эффект для хедера */
+.glass-morph {
+    animation: glassMorph 6s ease-in-out infinite;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.1)
+    );
+    background-size: 400% 400%;
+}
+
+@keyframes glassMorph {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Добавляем эффект морфинга к хедеру при наведении */
+.main-header:hover {
+    animation: glassMorph 3s ease-in-out infinite;
 }
