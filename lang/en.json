@@ -76,93 +76,96 @@
       "button": "Get in Touch"
     },
     "speckServices": {
+      "title": "Our Expertise",
+      "subtitle": "End-to-end product development from strategy to market",
+      "footer": "From initial concept to market launch and beyond",
       "strategy": {
         "title": "Strategy",
         "subtitle": "Drive Innovation And Align Goals",
-        "description": "We develop comprehensive innovation strategies that align business objectives with user needs, creating sustainable competitive advantages through research-driven insights.",
+        "description": "We develop comprehensive innovation strategies that align business objectives with user needs, creating sustainable competitive advantages.",
+        "explore": "Explore Strategy",
         "features": {
           "innovation": {
             "title": "Innovation Strategy",
-            "description": "Developing long-term innovation roadmaps and growth strategies"
+            "description": "Developing long-term innovation roadmaps"
           },
           "design": {
             "title": "Design Strategy",
-            "description": "Creating design systems and frameworks for consistent brand experience"
+            "description": "Creating design systems and frameworks"
           },
           "research": {
             "title": "User Research",
-            "description": "In-depth user studies and market analysis to inform product decisions"
+            "description": "In-depth user studies and market analysis"
           }
-        },
-        "explore": "Explore Strategy Services →"
+        }
       },
       "design": {
         "title": "Design",
         "subtitle": "Engage Audiences With Product Design",
-        "description": "Transform concepts into compelling product experiences through industrial design, brand identity, and user-centered interfaces that resonate with target audiences.",
+        "description": "Transform concepts into compelling product experiences through industrial design, brand identity, and user-centered interfaces.",
+        "explore": "Explore Design",
         "features": {
           "industrial": {
             "title": "Industrial Design",
-            "description": "Physical product design, ergonomics, and manufacturing optimization"
+            "description": "Physical product design and ergonomics"
           },
           "brand": {
             "title": "Brand Design",
-            "description": "Complete visual identity systems and brand guideline development"
+            "description": "Complete visual identity systems"
           },
           "packaging": {
             "title": "Packaging Design",
-            "description": "Sustainable and impactful packaging solutions for retail success"
+            "description": "Sustainable packaging solutions"
           },
           "uiux": {
             "title": "UI/UX Design",
-            "description": "Digital interfaces and user experiences for web and mobile applications"
+            "description": "Digital interfaces and user experiences"
           }
-        },
-        "explore": "Explore Design Services →"
+        }
       },
       "engineering": {
         "title": "Engineering",
         "subtitle": "Complex Technical Solutions And Architecture",
-        "description": "Build robust, scalable technical architectures and engineering solutions that power innovative products and support business growth at any scale.",
+        "description": "Build robust, scalable technical architectures and engineering solutions that power innovative products.",
+        "explore": "Explore Engineering",
         "features": {
           "architecture": {
             "title": "Architecture",
-            "description": "System design, technical architecture, and infrastructure planning"
+            "description": "System design and technical architecture"
           },
           "optimization": {
             "title": "Optimization",
-            "description": "Performance tuning, efficiency improvements, and cost optimization"
+            "description": "Performance tuning and efficiency"
           },
           "scaling": {
             "title": "Scaling",
-            "description": "Scalability solutions for high-growth products and enterprise systems"
+            "description": "Scalability solutions for growth"
           }
-        },
-        "explore": "Explore Engineering Services →"
+        }
       },
       "marketing": {
         "title": "Marketing",
         "subtitle": "Digital Strategies And Product Promotion",
-        "description": "Drive product success through data-driven marketing strategies, digital campaigns, and comprehensive analytics that maximize reach and conversion.",
+        "description": "Drive product success through data-driven marketing strategies, digital campaigns, and comprehensive analytics.",
+        "explore": "Explore Marketing",
         "features": {
           "seo": {
             "title": "SEO",
-            "description": "Search engine optimization and organic growth strategies"
+            "description": "Search engine optimization"
           },
           "smm": {
             "title": "SMM",
-            "description": "Social media marketing and community engagement"
+            "description": "Social media marketing"
           },
           "analytics": {
             "title": "Analytics",
-            "description": "Data analysis, KPI tracking, and performance measurement"
+            "description": "Data analysis and KPI tracking"
           },
           "content": {
             "title": "Content",
-            "description": "Content strategy, creation, and distribution across channels"
+            "description": "Content strategy and creation"
           }
-        },
-        "explore": "Explore Marketing Services →"
+        }
       }
     }
   },
