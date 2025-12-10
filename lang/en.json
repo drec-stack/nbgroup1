@@ -2,14 +2,14 @@
   "nav": {
     "home": "Home",
     "services": "Services",
-    "portfolio": "Work",
+    "portfolio": "Portfolio",
+    "brandbook": "Brandbook",
     "about": "About",
     "contact": "Contact",
-    "brandbook": "Brandbook",
     "startProject": "Start Project"
   },
   "home": {
-    "title": "Innovative Product Development",
+    "title": "Innovative Product Development | NBGROUP.TECH",
     "subtitle": "From concept to production - we create products that shape the future",
     "parallax": {
       "section1": {
@@ -28,7 +28,7 @@
       "titleLine3": "define markets",
       "description": "Full-cycle industrial design studio. We create products that combine aesthetics, engineering precision, and manufacturable implementation. We work systematically: design → engineering → prototype → production → packaging → brand system. Our approach is based on transparency, accuracy, and responsibility for the result.",
       "ourServices": "Our Services",
-      "viewWork": "View Work"
+      "viewWork": "View Portfolio"
     },
     "clients": {
       "label": "Trusted by industry leaders"
@@ -167,10 +167,79 @@
           }
         }
       }
+    },
+    "speckImageBlocks": {
+      "title": "Our Expertise",
+      "subtitle": "End-to-end product development from strategy to market",
+      "strategy": {
+        "title": "Strategy",
+        "subtitle": "Drive Innovation And Align Goals",
+        "features": {
+          "innovation": {
+            "title": "Innovation Strategy"
+          },
+          "design": {
+            "title": "Design Strategy"
+          },
+          "research": {
+            "title": "User Research"
+          }
+        },
+        "explore": "Explore"
+      },
+      "design": {
+        "title": "Design",
+        "subtitle": "Engage Audiences With Product Design",
+        "features": {
+          "industrial": {
+            "title": "Industrial Design"
+          },
+          "brand": {
+            "title": "Brand Design"
+          },
+          "uiux": {
+            "title": "UI/UX Design"
+          }
+        },
+        "explore": "Explore"
+      },
+      "engineering": {
+        "title": "Engineering",
+        "subtitle": "Complex Technical Solutions",
+        "features": {
+          "architecture": {
+            "title": "Architecture"
+          },
+          "optimization": {
+            "title": "Optimization"
+          },
+          "scaling": {
+            "title": "Scaling"
+          }
+        },
+        "explore": "Explore"
+      },
+      "marketing": {
+        "title": "Marketing",
+        "subtitle": "Digital Strategies & Promotion",
+        "features": {
+          "seo": {
+            "title": "SEO"
+          },
+          "smm": {
+            "title": "SMM"
+          },
+          "analytics": {
+            "title": "Analytics"
+          }
+        },
+        "explore": "Explore"
+      },
+      "footer": "From initial concept to market launch and beyond"
     }
   },
   "services": {
-    "title": "Our Services",
+    "title": "Our Services | NBGROUP.TECH",
     "subtitle": "End-to-end product development from initial concept to mass production. We combine design thinking with engineering excellence.",
     "nav": {
       "design": "Design",
@@ -314,7 +383,7 @@
     }
   },
   "brandbook": {
-    "title": "Brandbook Development",
+    "title": "Brandbook Development | NBGROUP.TECH",
     "subtitle": "Comprehensive brand identity systems that create memorable and consistent brand experiences across all touchpoints.",
     "intro": {
       "title": "Brandbook is the Foundation of Your Brand",
@@ -372,7 +441,7 @@
     }
   },
   "portfolio": {
-    "title": "Our Work",
+    "title": "Our Portfolio | NBGROUP.TECH",
     "subtitle": "We implement projects with a high degree of precision and aesthetics: hookahs, accessories, premium packaging. Each project is a result of design, engineering, and production experience.",
     "filter": {
       "all": "All Projects",
@@ -419,7 +488,7 @@
     "viewAllProjects": "View All Projects"
   },
   "about": {
-    "title": "About Us",
+    "title": "About Us | NBGROUP.TECH",
     "subtitle": "Full-cycle industrial design, engineering and manufacturing",
     "story": {
       "title": "Our Story",
@@ -516,7 +585,7 @@
     }
   },
   "contact": {
-    "title": "Get in Touch",
+    "title": "Contact Us | NBGROUP.TECH",
     "subtitle": "Ready to start your project? Let's discuss how we can help bring your product vision to life.",
     "hero": {
       "cta": "Start Your Project"
@@ -600,6 +669,29 @@
       "terms": "Terms of Service",
       "cookies": "Cookie Policy"
     },
-    "copyright": "All rights reserved."
+    "copyright": "© 2024 NBGROUP.TECH. All rights reserved."
+  },
+  "buttons": {
+    "learnMore": "Learn More",
+    "viewAll": "View All",
+    "download": "Download",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "cancel": "Cancel"
+  },
+  "labels": {
+    "loading": "Loading...",
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email",
+    "phone": "Please enter a valid phone number",
+    "minLength": "Minimum {length} characters required",
+    "maxLength": "Maximum {length} characters allowed"
   }
 }
