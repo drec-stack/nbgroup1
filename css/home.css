@@ -113,193 +113,487 @@
     animation-play-state: paused !important;
 }
 
-/* ===== ENHANCED SPECK SERVICES ===== */
-.speck-services-enhanced {
-    padding: 160px 0;
-    background: var(--secondary);
+/* ===== SPECK DESIGN FULL SERVICE BLOCKS ===== */
+.speck-services-full {
+    padding: 120px 0 80px;
+    background: linear-gradient(135deg, #0a0a0f 0%, #15151e 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.speck-services-full::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 50%, rgba(0, 102, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.speck-services-header {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 0 20px;
+}
+
+.speck-main-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+}
+
+.speck-main-description {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.speck-services-grid-full {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.speck-service-block-full {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px 35px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    height: 100%;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.speck-service-block-full:hover {
+    transform: translateY(-15px);
+    border-color: rgba(0, 122, 255, 0.5);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 
+        0 20px 40px rgba(0, 122, 255, 0.2),
+        0 0 60px rgba(0, 122, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.speck-block-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     position: relative;
     z-index: 2;
 }
 
-.speck-services-enhanced-grid {
-    display: grid;
-    gap: 60px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.speck-service-card-enhanced {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    padding: 50px 60px;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(15px);
-    min-height: 500px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.speck-service-card-enhanced:hover {
-    transform: translateY(-15px);
-    border-color: var(--accent);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 30px 60px rgba(0, 102, 255, 0.3);
-}
-
-.speck-card-header-enhanced {
+.speck-block-header {
     display: flex;
     align-items: center;
-    gap: 30px;
-    margin-bottom: 35px;
+    gap: 20px;
+    margin-bottom: 30px;
+    position: relative;
 }
 
-.speck-number-enhanced {
+.speck-block-number {
     font-size: 4rem;
     font-weight: 900;
-    color: rgba(255, 255, 255, 0.15);
-    line-height: 1;
-    min-width: 80px;
+    color: rgba(255, 255, 255, 0.08);
+    line-height: 0.8;
     font-family: 'Inter', sans-serif;
+    min-width: 80px;
 }
 
-.speck-title-content-enhanced {
+.speck-block-titles {
     flex: 1;
 }
 
-.speck-title-enhanced {
-    font-size: 2.5rem;
+.speck-block-title {
+    font-size: 2.2rem;
     font-weight: 800;
     color: white;
-    margin-bottom: 10px;
+    margin: 0 0 8px 0;
     line-height: 1.1;
-    background: linear-gradient(135deg, white 0%, var(--accent-light-blue) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    letter-spacing: -0.01em;
 }
 
-.speck-subtitle-enhanced {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.4;
+.speck-block-subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.6);
     margin: 0;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
 }
 
-.speck-description-enhanced {
+.speck-block-content {
+    flex: 1;
     margin-bottom: 40px;
 }
 
-.speck-description-enhanced p {
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1.8;
-    margin: 0;
+.speck-block-description {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.7;
+    margin-bottom: 35px;
     font-weight: 400;
 }
 
-.speck-features-enhanced {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
-}
-
-.speck-feature-item-enhanced {
-    background: rgba(0, 102, 255, 0.05);
-    border: 1px solid rgba(0, 102, 255, 0.1);
-    border-radius: 15px;
-    padding: 20px;
-    transition: all 0.3s ease;
-}
-
-.speck-service-card-enhanced:hover .speck-feature-item-enhanced {
-    background: rgba(0, 102, 255, 0.1);
-    border-color: rgba(0, 102, 255, 0.3);
-    transform: translateY(-5px);
-}
-
-.speck-feature-badge {
-    display: inline-block;
-    padding: 8px 20px;
-    background: rgba(0, 102, 255, 0.2);
-    color: var(--accent);
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    margin-bottom: 12px;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(0, 102, 255, 0.3);
-}
-
-.speck-service-card-enhanced:hover .speck-feature-badge {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-}
-
-.speck-feature-desc {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.5;
+.speck-block-list {
+    list-style: none;
+    padding: 0;
     margin: 0;
-}
-
-.speck-action-enhanced {
-    margin-top: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 30px;
-}
-
-.speck-link-enhanced {
-    display: inline-flex;
-    align-items: center;
-    gap: 15px;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: all 0.4s ease;
-    padding: 12px 25px;
-    background: rgba(0, 102, 255, 0.1);
-    border-radius: 12px;
-    border: 1px solid rgba(0, 102, 255, 0.3);
-}
-
-.speck-link-enhanced:hover {
+    display: flex;
+    flex-direction: column;
     gap: 20px;
-    background: var(--accent);
-    border-color: var(--accent);
-    transform: translateX(10px);
-    box-shadow: 0 10px 25px rgba(0, 102, 255, 0.3);
 }
 
-.speck-link-enhanced i {
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
+.speck-block-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    position: relative;
 }
 
-.speck-link-enhanced:hover i {
+.speck-block-list li::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: rgba(0, 122, 255, 0.8);
+    transition: width 0.4s ease;
+}
+
+.speck-service-block-full:hover .speck-block-list li::before {
+    width: 100%;
+}
+
+.speck-list-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.speck-list-desc {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    display: block;
+    line-height: 1.5;
+}
+
+.speck-service-block-full:hover .speck-list-title {
+    color: #66b5ff;
+}
+
+.speck-block-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: auto;
+}
+
+.speck-action-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    transition: all 0.3s ease;
+    letter-spacing: -0.01em;
+}
+
+.speck-action-arrow {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 122, 255, 0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.speck-action-arrow svg {
+    width: 24px;
+    height: 24px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+.speck-service-block-full:hover .speck-action-arrow {
+    background: rgba(0, 122, 255, 0.3);
     transform: translateX(5px);
 }
 
-/* Анимация появления */
-.speck-service-card-enhanced {
-    opacity: 0;
-    transform: translateY(40px);
+.speck-service-block-full:hover .speck-action-arrow svg {
+    color: white;
+    transform: translateX(3px);
 }
 
-.speck-service-card-enhanced.animated {
+.speck-block-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.03) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.speck-service-block-full:hover .speck-block-overlay {
     opacity: 1;
-    transform: translateY(0);
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Category-specific hover effects */
+.speck-service-block-full[data-category="strategy"]:hover {
+    border-color: rgba(0, 200, 255, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 200, 255, 0.2), 0 0 60px rgba(0, 200, 255, 0.1);
+}
+
+.speck-service-block-full[data-category="design"]:hover {
+    border-color: rgba(255, 100, 100, 0.5);
+    box-shadow: 0 20px 40px rgba(255, 100, 100, 0.2), 0 0 60px rgba(255, 100, 100, 0.1);
+}
+
+.speck-service-block-full[data-category="engineering"]:hover {
+    border-color: rgba(100, 255, 100, 0.5);
+    box-shadow: 0 20px 40px rgba(100, 255, 100, 0.2), 0 0 60px rgba(100, 255, 100, 0.1);
+}
+
+.speck-service-block-full[data-category="marketing"]:hover {
+    border-color: rgba(255, 200, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(255, 200, 0, 0.2), 0 0 60px rgba(255, 200, 0, 0.1);
+}
+
+.speck-services-footer {
+    text-align: center;
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.speck-footer-text {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Анимация появления блоков */
+.speck-service-block-full {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: speckBlockFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.speck-service-block-full:nth-child(1) { animation-delay: 0.1s; }
+.speck-service-block-full:nth-child(2) { animation-delay: 0.2s; }
+.speck-service-block-full:nth-child(3) { animation-delay: 0.3s; }
+.speck-service-block-full:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes speckBlockFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .speck-services-grid-full {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 900px;
+    }
+}
+
+@media (max-width: 768px) {
+    .speck-services-full {
+        padding: 80px 0 40px;
+    }
+    
+    .speck-main-title {
+        font-size: 2.5rem;
+    }
+    
+    .speck-main-description {
+        font-size: 1.1rem;
+    }
+    
+    .speck-services-grid-full {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        gap: 30px;
+    }
+    
+    .speck-service-block-full {
+        padding: 30px 25px;
+        min-height: 450px;
+    }
+    
+    .speck-block-header {
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+    
+    .speck-block-number {
+        font-size: 3rem;
+        min-width: 60px;
+    }
+    
+    .speck-block-title {
+        font-size: 1.8rem;
+    }
+    
+    .speck-block-subtitle {
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+    
+    .speck-block-description {
+        font-size: 1rem;
+        margin-bottom: 25px;
+    }
+    
+    .speck-block-list {
+        gap: 15px;
+    }
+    
+    .speck-block-list li {
+        padding-bottom: 12px;
+    }
+    
+    .speck-list-title {
+        font-size: 1rem;
+    }
+    
+    .speck-list-desc {
+        font-size: 0.9rem;
+    }
+    
+    .speck-block-action {
+        padding-top: 20px;
+    }
+    
+    .speck-services-footer {
+        margin-top: 50px;
+        padding-top: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .speck-services-header {
+        margin-bottom: 40px;
+    }
+    
+    .speck-main-title {
+        font-size: 2rem;
+    }
+    
+    .speck-main-description {
+        font-size: 1rem;
+    }
+    
+    .speck-service-block-full {
+        padding: 25px 20px;
+        min-height: 400px;
+    }
+    
+    .speck-block-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .speck-block-number {
+        align-self: flex-start;
+    }
+    
+    .speck-block-title {
+        font-size: 1.6rem;
+    }
+    
+    .speck-block-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .speck-block-description {
+        font-size: 0.95rem;
+    }
+    
+    .speck-action-text {
+        font-size: 1rem;
+    }
+    
+    .speck-action-arrow {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .speck-service-block-full {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    
+    .speck-service-block-full:hover {
+        transform: none;
+    }
+    
+    .speck-block-list li::before {
+        transition: none;
+    }
+    
+    .speck-service-block-full:hover .speck-action-arrow {
+        transform: none;
+    }
+    
+    .speck-service-block-full:hover .speck-action-arrow svg {
+        transform: none;
+    }
+}
+
+/* Hover effects for touch devices */
+@media (hover: none) {
+    .speck-service-block-full:hover {
+        transform: none;
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: none;
+    }
+    
+    .speck-service-block-full:active {
+        transform: scale(0.98);
+        background: rgba(255, 255, 255, 0.06);
+    }
+    
+    .speck-block-list li::before {
+        display: none;
+    }
 }
 
 /* ===== STATS SECTION ===== */
@@ -506,61 +800,6 @@
         font-size: 1.1rem;
     }
     
-    .speck-services-enhanced {
-        padding: 80px 0;
-    }
-    
-    .speck-services-enhanced-grid {
-        gap: 40px;
-    }
-    
-    .speck-service-card-enhanced {
-        padding: 30px 25px;
-        min-height: auto;
-    }
-    
-    .speck-card-header-enhanced {
-        gap: 20px;
-        margin-bottom: 25px;
-    }
-    
-    .speck-number-enhanced {
-        font-size: 2.5rem;
-        min-width: 50px;
-    }
-    
-    .speck-title-enhanced {
-        font-size: 1.8rem;
-    }
-    
-    .speck-subtitle-enhanced {
-        font-size: 0.9rem;
-        letter-spacing: 1px;
-    }
-    
-    .speck-description-enhanced p {
-        font-size: 1.1rem;
-    }
-    
-    .speck-features-enhanced {
-        grid-template-columns: 1fr;
-        gap: 15px;
-        margin-bottom: 30px;
-    }
-    
-    .speck-feature-item-enhanced {
-        padding: 15px;
-    }
-    
-    .speck-action-enhanced {
-        padding-top: 20px;
-    }
-    
-    .speck-link-enhanced {
-        padding: 10px 20px;
-        font-size: 1rem;
-    }
-    
     .stats-grid-improved {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
@@ -647,50 +886,6 @@
         align-items: center;
     }
     
-    .speck-services-enhanced-grid {
-        gap: 30px;
-    }
-    
-    .speck-service-card-enhanced {
-        padding: 25px 20px;
-    }
-    
-    .speck-card-header-enhanced {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-    
-    .speck-number-enhanced {
-        align-self: flex-start;
-    }
-    
-    .speck-title-enhanced {
-        font-size: 1.6rem;
-    }
-    
-    .speck-subtitle-enhanced {
-        font-size: 0.85rem;
-    }
-    
-    .speck-description-enhanced p {
-        font-size: 1rem;
-    }
-    
-    .speck-feature-badge {
-        padding: 6px 15px;
-        font-size: 0.85rem;
-    }
-    
-    .speck-feature-desc {
-        font-size: 0.9rem;
-    }
-    
-    .speck-link-enhanced {
-        width: 100%;
-        justify-content: center;
-    }
-    
     .stats-grid-improved {
         grid-template-columns: 1fr;
     }
@@ -736,60 +931,10 @@
     }
 }
 
-/* ===== REDUCED MOTION SUPPORT ===== */
-@media (prefers-reduced-motion: reduce) {
-    .stat-card:hover {
-        transform: none;
-    }
-    
-    .btn-glow:hover {
-        transform: none;
-    }
-    
-    .speck-service-card-enhanced:hover {
-        transform: none;
-    }
-    
-    .speck-service-card-enhanced {
-        opacity: 1;
-        transform: none;
-    }
-    
-    .scroll-arrow {
-        animation: none;
-    }
-    
-    .stat-card {
-        backdrop-filter: none;
-    }
-    
-    .speck-service-card-enhanced:hover .speck-feature-item-enhanced {
-        transform: none;
-    }
-    
-    .speck-link-enhanced:hover {
-        transform: none;
-        gap: 15px;
-    }
-    
-    .speck-link-enhanced:hover i {
-        transform: none;
-    }
-    
-    /* Отключаем анимации бегущей строки */
-    .marquee-track {
-        animation: none !important;
-    }
-    
-    #marquee1, #marquee2 {
-        animation: none !important;
-    }
-}
-
 /* ===== СТИЛИ ДЛЯ ВСЕХ КЛИКАБЕЛЬНЫХ БЛОКОВ НА ГЛАВНОЙ ===== */
 
-/* 1. КЛИКАБЕЛЬНЫЕ КАРТОЧКИ УСЛУГ */
-.clickable-service-card {
+/* 1. КЛИКАБЕЛЬНЫЕ БЛОКИ УСЛУГ */
+.clickable-service-block {
     display: block;
     text-decoration: none;
     color: inherit;
@@ -799,33 +944,20 @@
     outline: none;
 }
 
-.clickable-service-card:hover {
+.clickable-service-block:hover {
     transform: translateY(-15px);
     border-color: #0066ff;
     background: rgba(255, 255, 255, 0.08);
     box-shadow: 0 30px 60px rgba(0, 102, 255, 0.3);
 }
 
-.clickable-service-card:active {
+.clickable-service-block:active {
     transform: translateY(-10px) scale(0.98);
     transition: transform 0.1s ease;
 }
 
-.clickable-service-card .speck-link-enhanced {
-    color: white;
-    transition: all 0.3s ease;
-}
-
-.clickable-service-card:hover .speck-link-enhanced {
-    color: #3399ff;
-}
-
-.clickable-service-card:hover .speck-link-enhanced i {
-    transform: translateX(5px);
-}
-
 /* Индикатор кликабельности */
-.clickable-service-card::after {
+.clickable-service-block::after {
     content: '';
     position: absolute;
     top: 20px;
@@ -838,7 +970,7 @@
     transition: opacity 0.3s ease;
 }
 
-.clickable-service-card:hover::after {
+.clickable-service-block:hover::after {
     opacity: 1;
 }
 
@@ -1042,7 +1174,7 @@
 }
 
 /* ДОСТУПНОСТЬ */
-.clickable-service-card:focus,
+.clickable-service-block:focus,
 .clickable-stat-card:focus,
 .clickable-cta:focus,
 .clickable-brand:focus {
@@ -1050,14 +1182,14 @@
     outline-offset: 2px;
 }
 
-.clickable-service-card:focus:not(:focus-visible),
+.clickable-service-block:focus:not(:focus-visible),
 .clickable-stat-card:focus:not(:focus-visible),
 .clickable-cta:focus:not(:focus-visible),
 .clickable-brand:focus:not(:focus-visible) {
     outline: none;
 }
 
-.clickable-service-card:focus-visible,
+.clickable-service-block:focus-visible,
 .clickable-stat-card:focus-visible,
 .clickable-cta:focus-visible,
 .clickable-brand:focus-visible {
@@ -1067,7 +1199,7 @@
 
 /* МОБИЛЬНАЯ ОПТИМИЗАЦИЯ */
 @media (max-width: 768px) {
-    .clickable-service-card:active {
+    .clickable-service-block:active {
         transform: translateY(-5px) scale(0.97);
     }
     
@@ -1080,7 +1212,7 @@
     }
     
     /* Увеличение touch area на мобильных */
-    .clickable-service-card::before,
+    .clickable-service-block::before,
     .clickable-stat-card::before {
         content: '';
         position: absolute;
@@ -1092,7 +1224,7 @@
     }
     
     /* Упрощение анимаций для мобильных */
-    .clickable-service-card:hover,
+    .clickable-service-block:hover,
     .clickable-stat-card:hover,
     .clickable-cta:hover {
         transform: none;
@@ -1109,7 +1241,7 @@
 
 /* СТИЛИ ДЛЯ ОТКЛЮЧЕННОЙ АНИМАЦИИ */
 @media (prefers-reduced-motion: reduce) {
-    .clickable-service-card,
+    .clickable-service-block,
     .clickable-stat-card,
     .clickable-cta,
     .clickable-brand,
@@ -1117,7 +1249,7 @@
         transition: none;
     }
     
-    .clickable-service-card:hover,
+    .clickable-service-block:hover,
     .clickable-stat-card:hover,
     .clickable-cta:hover,
     .clickable-brand:hover,
@@ -1134,8 +1266,8 @@
     }
 }
 
-/* АНИМАЦИЯ ЗАГРУЗКИ ДЛЯ КАРТОЧЕК */
-@keyframes cardFadeIn {
+/* АНИМАЦИЯ ЗАГРУЗКИ ДЛЯ БЛОКОВ */
+@keyframes blockFadeIn {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -1146,19 +1278,19 @@
     }
 }
 
-.speck-service-card-enhanced {
-    animation: cardFadeIn 0.6s ease forwards;
+.speck-service-block-full {
+    animation: blockFadeIn 0.6s ease forwards;
 }
 
 .stat-card {
-    animation: cardFadeIn 0.6s ease forwards;
+    animation: blockFadeIn 0.6s ease forwards;
 }
 
-/* Задержка для каждой карточки */
-.speck-service-card-enhanced:nth-child(1) { animation-delay: 0.1s; }
-.speck-service-card-enhanced:nth-child(2) { animation-delay: 0.2s; }
-.speck-service-card-enhanced:nth-child(3) { animation-delay: 0.3s; }
-.speck-service-card-enhanced:nth-child(4) { animation-delay: 0.4s; }
+/* Задержка для каждого блока */
+.speck-service-block-full:nth-child(1) { animation-delay: 0.1s; }
+.speck-service-block-full:nth-child(2) { animation-delay: 0.2s; }
+.speck-service-block-full:nth-child(3) { animation-delay: 0.3s; }
+.speck-service-block-full:nth-child(4) { animation-delay: 0.4s; }
 
 .stat-card:nth-child(1) { animation-delay: 0.1s; }
 .stat-card:nth-child(2) { animation-delay: 0.2s; }
@@ -1183,15 +1315,15 @@
 
 /* Задержка для каждой секции */
 .hero { animation-delay: 0.1s; }
-.speck-services-enhanced { animation-delay: 0.2s; }
+.speck-services-full { animation-delay: 0.2s; }
 .clients-section { animation-delay: 0.3s; }
 .stats-improved { animation-delay: 0.4s; }
 .cta-improved { animation-delay: 0.5s; }
 
-/* ===== МОБИЛЬНЫЙ СТЕКЛЯННЫЙ ЭФФЕКТ ДЛЯ КАРТОЧЕК ===== */
+/* МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ДЛЯ БЛОКОВ */
 @media (max-width: 768px) {
-    /* Улучшаем прозрачность для карточек услуг */
-    .speck-service-card-enhanced {
+    /* Улучшаем прозрачность для блоков */
+    .speck-service-block-full {
         background: rgba(40, 40, 50, 0.75) !important;
         backdrop-filter: blur(20px) saturate(160%) !important;
         -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
@@ -1202,8 +1334,8 @@
             inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     }
     
-    /* Эффект при наведении на карточки */
-    .clickable-service-card:hover {
+    /* Эффект при наведении на блоки */
+    .clickable-service-block:hover {
         transform: translateY(-10px) !important;
         background: rgba(50, 50, 65, 0.85) !important;
         border-color: rgba(0, 102, 255, 0.5) !important;
@@ -1212,14 +1344,14 @@
             inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
     }
     
-    /* Улучшаем видимость номеров карточек */
-    .speck-number-enhanced {
+    /* Улучшаем видимость номеров блоков */
+    .speck-block-number {
         color: rgba(255, 255, 255, 0.25) !important;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
     }
     
     /* Улучшаем заголовки */
-    .speck-title-enhanced {
+    .speck-block-title {
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%) !important;
         -webkit-background-clip: text !important;
         background-clip: text !important;
@@ -1227,43 +1359,15 @@
     }
     
     /* Улучшаем подзаголовки */
-    .speck-subtitle-enhanced {
+    .speck-block-subtitle {
         color: rgba(255, 255, 255, 0.8) !important;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
     }
     
     /* Улучшаем описание */
-    .speck-description-enhanced p {
+    .speck-block-description {
         color: rgba(255, 255, 255, 0.9) !important;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    /* Улучшаем фичи-карточки */
-    .speck-feature-item-enhanced {
-        background: rgba(0, 102, 255, 0.1) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        border: 1px solid rgba(0, 102, 255, 0.2) !important;
-    }
-    
-    .speck-feature-badge {
-        background: rgba(0, 102, 255, 0.25) !important;
-        border: 1px solid rgba(0, 102, 255, 0.4) !important;
-        color: rgba(255, 255, 255, 0.95) !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    .speck-feature-desc {
-        color: rgba(255, 255, 255, 0.8) !important;
-    }
-    
-    /* Улучшаем ссылки */
-    .speck-link-enhanced {
-        background: rgba(0, 102, 255, 0.15) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        border: 1px solid rgba(0, 102, 255, 0.3) !important;
-        color: rgba(255, 255, 255, 0.95) !important;
     }
     
     /* Статистические карточки */
@@ -1272,23 +1376,6 @@
         backdrop-filter: blur(15px) saturate(180%) !important;
         -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
-    
-    .stat-icon {
-        background: linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(0, 170, 255, 0.2)) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    .stat-number-improved {
-        color: white !important;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
-    }
-    
-    .stat-label-improved {
-        color: rgba(255, 255, 255, 0.9) !important;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
     }
     
     /* CTA секция */
@@ -1311,82 +1398,11 @@
         color: rgba(255, 255, 255, 0.95) !important;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
     }
-    
-    /* Кнопка в CTA */
-    .btn-glow {
-        background: rgba(255, 255, 255, 0.95) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        color: #ff0000 !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
-    }
-    
-    /* Секция клиентов */
-    .clients-section {
-        background: rgba(20, 20, 30, 0.8) !important;
-        backdrop-filter: blur(20px) saturate(160%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
-    
-    .clients-label {
-        color: rgba(255, 255, 255, 0.9) !important;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    /* Бегущая строка */
-    .marquee-container {
-        background: rgba(0, 0, 0, 0.5) !important;
-        backdrop-filter: blur(15px) !important;
-        -webkit-backdrop-filter: blur(15px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        border-radius: 15px !important;
-        padding: 12px 5px !important;
-        margin: 15px 0 !important;
-    }
-    
-    .brand {
-        color: rgba(255, 255, 255, 0.95) !important;
-        opacity: 0.95 !important;
-        font-weight: 700 !important;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
-    }
-    
-    .separator {
-        color: rgba(255, 255, 255, 0.4) !important;
-    }
-    
-    /* Герой секция - улучшенная прозрачность */
-    .hero-subtitle {
-        color: rgba(255, 255, 255, 0.95) !important;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
-    }
-    
-    .hero-description p {
-        color: rgba(255, 255, 255, 0.9) !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    /* Кнопки в герое */
-    .hero-actions .btn-primary {
-        background: rgba(255, 255, 255, 0.95) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    }
-    
-    .hero-actions .btn-secondary {
-        background: rgba(255, 255, 255, 0.1) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
 }
 
 @media (max-width: 480px) {
     /* Дополнительные улучшения для очень маленьких экранов */
-    .speck-service-card-enhanced {
+    .speck-service-block-full {
         padding: 20px 15px !important;
         background: rgba(40, 40, 50, 0.85) !important;
     }
@@ -1402,14 +1418,14 @@
     
     /* Усиливаем тени для лучшей читаемости */
     .parallax-content h1,
-    .speck-title-enhanced,
+    .speck-block-title,
     .cta-text h2 {
         text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6) !important;
     }
     
     p, 
     .hero-description p, 
-    .speck-description-enhanced p,
+    .speck-block-description p,
     .cta-text p,
     .stat-label-improved {
         text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
@@ -1419,7 +1435,7 @@
 /* Поддержка устройств без backdrop-filter */
 @supports not (backdrop-filter: blur(10px)) {
     @media (max-width: 768px) {
-        .speck-service-card-enhanced {
+        .speck-service-block-full {
             background: rgba(40, 40, 50, 0.95) !important;
         }
         
@@ -1429,20 +1445,6 @@
         
         .cta-improved {
             background: rgba(0, 102, 255, 0.35) !important;
-        }
-        
-        .clients-section {
-            background: rgba(20, 20, 30, 0.95) !important;
-        }
-    }
-}
-
-/* Отключение анимаций для reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    @media (max-width: 768px) {
-        .clickable-service-card:hover {
-            transform: none !important;
-            transition: none !important;
         }
     }
 }
