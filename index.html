@@ -359,6 +359,18 @@
         .clickable-cta:focus:not(:focus-visible) {
             outline: none;
         }
+
+        /* Ripple effect animation */
+        @keyframes ripple-animation {
+            0% {
+                transform: scale(0);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body class="home-page">
@@ -414,146 +426,130 @@
         </div>
     </section>
 
-    <!-- Speck Design Style Services Section - COMPACT VERTICAL -->
-    <section class="speck-services-compact content-section" data-bg-index="0">
+    <!-- Speck Design Style Services Section - IMAGE BACKGROUNDS LIKE SPECKDESIGN.COM -->
+    <section class="speck-services-image-background content-section" data-bg-index="0">
         <div class="container">
-            <div class="speck-compact-header">
-                <h2 class="speck-compact-title" data-i18n="home.speckServices.title">Our Expertise</h2>
-                <p class="speck-compact-subtitle" data-i18n="home.speckServices.subtitle">End-to-end product development from strategy to market</p>
+            <div class="speck-header-minimal">
+                <h2 class="speck-minimal-title" data-i18n="home.speckServices.title">Our Expertise</h2>
+                <p class="speck-minimal-subtitle" data-i18n="home.speckServices.subtitle">End-to-end product development from strategy to market</p>
             </div>
-            
-            <div class="speck-compact-grid">
-                <!-- Strategy Block -->
-                <a href="services.html#strategy" class="speck-compact-block clickable-service-block" data-category="strategy">
-                    <div class="speck-compact-inner">
-                        <div class="speck-compact-top">
-                            <span class="speck-compact-number">01</span>
-                            <div class="speck-compact-titles">
-                                <h3 class="speck-compact-block-title" data-i18n="home.speckServices.strategy.title">Strategy</h3>
-                                <p class="speck-compact-block-subtitle" data-i18n="home.speckServices.strategy.subtitle">Drive Innovation And Align Goals</p>
-                            </div>
-                        </div>
-                        
-                        <div class="speck-compact-description">
-                            <p data-i18n="home.speckServices.strategy.description">We develop comprehensive innovation strategies that align business objectives with user needs.</p>
-                        </div>
-                        
-                        <div class="speck-compact-features">
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.strategy.features.innovation.title">Innovation Strategy</span>
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.strategy.features.design.title">Design Strategy</span>
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.strategy.features.research.title">User Research</span>
-                        </div>
-                        
-                        <div class="speck-compact-action">
-                            <span class="speck-compact-action-text" data-i18n="home.speckServices.strategy.explore">Explore</span>
-                            <div class="speck-compact-arrow">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
+        </div>
+        
+        <!-- Strategy Block -->
+        <a href="services.html#strategy" class="speck-image-block clickable-service-block" data-category="strategy">
+            <div class="speck-image-block-bg" style="background-image: url('assets/images/strategy-bg.jpg');"></div>
+            <div class="speck-image-overlay"></div>
+            <div class="container">
+                <div class="speck-image-content">
+                    <span class="speck-image-number">01</span>
+                    <div class="speck-image-titles">
+                        <h3 class="speck-image-title" data-i18n="home.speckServices.strategy.title">Strategy</h3>
+                        <p class="speck-image-subtitle" data-i18n="home.speckServices.strategy.subtitle">Drive Innovation And Align Goals</p>
+                    </div>
+                    <div class="speck-image-tags">
+                        <span class="speck-image-tag" data-i18n="home.speckServices.strategy.features.innovation.title">Innovation Strategy</span>
+                        <span class="speck-image-tag" data-i18n="home.speckServices.strategy.features.design.title">Design Strategy</span>
+                        <span class="speck-image-tag" data-i18n="home.speckServices.strategy.features.research.title">User Research</span>
+                    </div>
+                    <div class="speck-image-action">
+                        <span class="speck-image-action-text" data-i18n="home.speckServices.strategy.explore">Explore</span>
+                        <div class="speck-image-arrow">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
                         </div>
                     </div>
-                </a>
-
-                <!-- Design Block -->
-                <a href="services.html#design" class="speck-compact-block clickable-service-block" data-category="design">
-                    <div class="speck-compact-inner">
-                        <div class="speck-compact-top">
-                            <span class="speck-compact-number">02</span>
-                            <div class="speck-compact-titles">
-                                <h3 class="speck-compact-block-title" data-i18n="home.speckServices.design.title">Design</h3>
-                                <p class="speck-compact-block-subtitle" data-i18n="home.speckServices.design.subtitle">Engage Audiences With Product Design</p>
-                            </div>
-                        </div>
-                        
-                        <div class="speck-compact-description">
-                            <p data-i18n="home.speckServices.design.description">Transform concepts into compelling product experiences through design and interfaces.</p>
-                        </div>
-                        
-                        <div class="speck-compact-features">
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.design.features.industrial.title">Industrial Design</span>
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.design.features.brand.title">Brand Design</span>
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.design.features.uiux.title">UI/UX Design</span>
-                        </div>
-                        
-                        <div class="speck-compact-action">
-                            <span class="speck-compact-action-text" data-i18n="home.speckServices.design.explore">Explore</span>
-                            <div class="speck-compact-arrow">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Engineering Block -->
-                <a href="services.html#engineering" class="speck-compact-block clickable-service-block" data-category="engineering">
-                    <div class="speck-compact-inner">
-                        <div class="speck-compact-top">
-                            <span class="speck-compact-number">03</span>
-                            <div class="speck-compact-titles">
-                                <h3 class="speck-compact-block-title" data-i18n="home.speckServices.engineering.title">Engineering</h3>
-                                <p class="speck-compact-block-subtitle" data-i18n="home.speckServices.engineering.subtitle">Complex Technical Solutions</p>
-                            </div>
-                        </div>
-                        
-                        <div class="speck-compact-description">
-                            <p data-i18n="home.speckServices.engineering.description">Build robust, scalable technical architectures for innovative products.</p>
-                        </div>
-                        
-                        <div class="speck-compact-features">
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.engineering.features.architecture.title">Architecture</span>
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.engineering.features.optimization.title">Optimization</span>
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.engineering.features.scaling.title">Scaling</span>
-                        </div>
-                        
-                        <div class="speck-compact-action">
-                            <span class="speck-compact-action-text" data-i18n="home.speckServices.engineering.explore">Explore</span>
-                            <div class="speck-compact-arrow">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Marketing Block -->
-                <a href="services.html#marketing" class="speck-compact-block clickable-service-block" data-category="marketing">
-                    <div class="speck-compact-inner">
-                        <div class="speck-compact-top">
-                            <span class="speck-compact-number">04</span>
-                            <div class="speck-compact-titles">
-                                <h3 class="speck-compact-block-title" data-i18n="home.speckServices.marketing.title">Marketing</h3>
-                                <p class="speck-compact-block-subtitle" data-i18n="home.speckServices.marketing.subtitle">Digital Strategies & Promotion</p>
-                            </div>
-                        </div>
-                        
-                        <div class="speck-compact-description">
-                            <p data-i18n="home.speckServices.marketing.description">Drive product success through data-driven marketing strategies and analytics.</p>
-                        </div>
-                        
-                        <div class="speck-compact-features">
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.marketing.features.seo.title">SEO</span>
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.marketing.features.smm.title">SMM</span>
-                            <span class="speck-compact-feature" data-i18n="home.speckServices.marketing.features.analytics.title">Analytics</span>
-                        </div>
-                        
-                        <div class="speck-compact-action">
-                            <span class="speck-compact-action-text" data-i18n="home.speckServices.marketing.explore">Explore</span>
-                            <div class="speck-compact-arrow">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+                </div>
             </div>
-            
-            <div class="speck-compact-footer">
-                <p class="speck-compact-footer-text" data-i18n="home.speckServices.footer">From initial concept to market launch and beyond</p>
+        </a>
+
+        <!-- Design Block -->
+        <a href="services.html#design" class="speck-image-block clickable-service-block" data-category="design">
+            <div class="speck-image-block-bg" style="background-image: url('assets/images/design-bg.jpg');"></div>
+            <div class="speck-image-overlay"></div>
+            <div class="container">
+                <div class="speck-image-content">
+                    <span class="speck-image-number">02</span>
+                    <div class="speck-image-titles">
+                        <h3 class="speck-image-title" data-i18n="home.speckServices.design.title">Design</h3>
+                        <p class="speck-image-subtitle" data-i18n="home.speckServices.design.subtitle">Engage Audiences With Product Design</p>
+                    </div>
+                    <div class="speck-image-tags">
+                        <span class="speck-image-tag" data-i18n="home.speckServices.design.features.industrial.title">Industrial Design</span>
+                        <span class="speck-image-tag" data-i18n="home.speckServices.design.features.brand.title">Brand Design</span>
+                        <span class="speck-image-tag" data-i18n="home.speckServices.design.features.uiux.title">UI/UX Design</span>
+                    </div>
+                    <div class="speck-image-action">
+                        <span class="speck-image-action-text" data-i18n="home.speckServices.design.explore">Explore</span>
+                        <div class="speck-image-arrow">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <!-- Engineering Block -->
+        <a href="services.html#engineering" class="speck-image-block clickable-service-block" data-category="engineering">
+            <div class="speck-image-block-bg" style="background-image: url('assets/images/engineering-bg.jpg');"></div>
+            <div class="speck-image-overlay"></div>
+            <div class="container">
+                <div class="speck-image-content">
+                    <span class="speck-image-number">03</span>
+                    <div class="speck-image-titles">
+                        <h3 class="speck-image-title" data-i18n="home.speckServices.engineering.title">Engineering</h3>
+                        <p class="speck-image-subtitle" data-i18n="home.speckServices.engineering.subtitle">Complex Technical Solutions</p>
+                    </div>
+                    <div class="speck-image-tags">
+                        <span class="speck-image-tag" data-i18n="home.speckServices.engineering.features.architecture.title">Architecture</span>
+                        <span class="speck-image-tag" data-i18n="home.speckServices.engineering.features.optimization.title">Optimization</span>
+                        <span class="speck-image-tag" data-i18n="home.speckServices.engineering.features.scaling.title">Scaling</span>
+                    </div>
+                    <div class="speck-image-action">
+                        <span class="speck-image-action-text" data-i18n="home.speckServices.engineering.explore">Explore</span>
+                        <div class="speck-image-arrow">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <!-- Marketing Block -->
+        <a href="services.html#marketing" class="speck-image-block clickable-service-block" data-category="marketing">
+            <div class="speck-image-block-bg" style="background-image: url('assets/images/marketing-bg.jpg');"></div>
+            <div class="speck-image-overlay"></div>
+            <div class="container">
+                <div class="speck-image-content">
+                    <span class="speck-image-number">04</span>
+                    <div class="speck-image-titles">
+                        <h3 class="speck-image-title" data-i18n="home.speckServices.marketing.title">Marketing</h3>
+                        <p class="speck-image-subtitle" data-i18n="home.speckServices.marketing.subtitle">Digital Strategies & Promotion</p>
+                    </div>
+                    <div class="speck-image-tags">
+                        <span class="speck-image-tag" data-i18n="home.speckServices.marketing.features.seo.title">SEO</span>
+                        <span class="speck-image-tag" data-i18n="home.speckServices.marketing.features.smm.title">SMM</span>
+                        <span class="speck-image-tag" data-i18n="home.speckServices.marketing.features.analytics.title">Analytics</span>
+                    </div>
+                    <div class="speck-image-action">
+                        <span class="speck-image-action-text" data-i18n="home.speckServices.marketing.explore">Explore</span>
+                        <div class="speck-image-arrow">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <div class="container">
+            <div class="speck-footer-minimal">
+                <p class="speck-minimal-footer-text" data-i18n="home.speckServices.footer">From initial concept to market launch and beyond</p>
             </div>
         </div>
     </section>
