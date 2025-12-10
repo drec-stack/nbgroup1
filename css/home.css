@@ -596,6 +596,482 @@
     }
 }
 
+/* ===== SPECK DESIGN IMAGE BACKGROUND BLOCKS ===== */
+.speck-services-image-background {
+    padding: 80px 0 40px;
+    background: var(--secondary);
+    position: relative;
+    overflow: hidden;
+}
+
+.speck-header-minimal {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 0 20px;
+}
+
+.speck-minimal-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 15px;
+    letter-spacing: -0.02em;
+}
+
+.speck-minimal-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Image Block Styling */
+.speck-image-block {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    height: 500px;
+    margin: 0 0 2px 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.speck-image-block:hover {
+    height: 520px;
+}
+
+.speck-image-block-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s ease;
+    z-index: 1;
+}
+
+.speck-image-block:hover .speck-image-block-bg {
+    transform: scale(1.05);
+}
+
+.speck-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.85) 0%,
+        rgba(0, 0, 0, 0.7) 50%,
+        rgba(0, 0, 0, 0.5) 100%
+    );
+    z-index: 2;
+}
+
+.speck-image-content {
+    position: relative;
+    z-index: 3;
+    color: white;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 0;
+    max-width: 800px;
+}
+
+.speck-image-number {
+    font-size: 8rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.15);
+    line-height: 0.8;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.4s ease;
+}
+
+.speck-image-block:hover .speck-image-number {
+    color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.speck-image-titles {
+    margin-left: 120px;
+    margin-bottom: 30px;
+}
+
+.speck-image-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    margin: 0 0 10px 0;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}
+
+.speck-image-subtitle {
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-weight: 500;
+    max-width: 500px;
+    line-height: 1.4;
+}
+
+.speck-image-tags {
+    display: flex;
+    gap: 20px;
+    margin-left: 120px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.speck-image-tag {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.speck-image-block:hover .speck-image-tag {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.speck-image-action {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 120px;
+}
+
+.speck-image-action-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+    transition: all 0.3s ease;
+    letter-spacing: -0.01em;
+}
+
+.speck-image-arrow {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.speck-image-arrow svg {
+    width: 20px;
+    height: 20px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.speck-image-block:hover .speck-image-arrow {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(10px) scale(1.1);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.speck-image-block:hover .speck-image-arrow svg {
+    transform: translateX(3px);
+}
+
+/* Category-specific colors */
+.speck-image-block[data-category="strategy"] .speck-image-number {
+    color: rgba(0, 200, 255, 0.15);
+}
+
+.speck-image-block[data-category="design"] .speck-image-number {
+    color: rgba(255, 100, 100, 0.15);
+}
+
+.speck-image-block[data-category="engineering"] .speck-image-number {
+    color: rgba(100, 255, 100, 0.15);
+}
+
+.speck-image-block[data-category="marketing"] .speck-image-number {
+    color: rgba(255, 200, 0, 0.15);
+}
+
+.speck-image-block:hover[data-category="strategy"] .speck-image-number {
+    color: rgba(0, 200, 255, 0.25);
+}
+
+.speck-image-block:hover[data-category="design"] .speck-image-number {
+    color: rgba(255, 100, 100, 0.25);
+}
+
+.speck-image-block:hover[data-category="engineering"] .speck-image-number {
+    color: rgba(100, 255, 100, 0.25);
+}
+
+.speck-image-block:hover[data-category="marketing"] .speck-image-number {
+    color: rgba(255, 200, 0, 0.25);
+}
+
+/* Footer */
+.speck-footer-minimal {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.speck-minimal-footer-text {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive Design for Image Blocks */
+@media (max-width: 992px) {
+    .speck-image-block {
+        height: 450px;
+    }
+    
+    .speck-image-block:hover {
+        height: 470px;
+    }
+    
+    .speck-image-number {
+        font-size: 6rem;
+        left: 20px;
+    }
+    
+    .speck-image-titles {
+        margin-left: 100px;
+    }
+    
+    .speck-image-title {
+        font-size: 2.8rem;
+    }
+    
+    .speck-image-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .speck-image-tags {
+        margin-left: 100px;
+    }
+    
+    .speck-image-action {
+        margin-left: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .speck-services-image-background {
+        padding: 60px 0 30px;
+    }
+    
+    .speck-minimal-title {
+        font-size: 2rem;
+    }
+    
+    .speck-minimal-subtitle {
+        font-size: 1rem;
+    }
+    
+    .speck-image-block {
+        height: 400px;
+        margin: 0 0 1px 0;
+    }
+    
+    .speck-image-block:hover {
+        height: 420px;
+    }
+    
+    .speck-image-number {
+        font-size: 5rem;
+        left: 20px;
+    }
+    
+    .speck-image-titles {
+        margin-left: 80px;
+        margin-bottom: 25px;
+    }
+    
+    .speck-image-title {
+        font-size: 2.2rem;
+    }
+    
+    .speck-image-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .speck-image-tags {
+        margin-left: 80px;
+        margin-bottom: 30px;
+        gap: 15px;
+    }
+    
+    .speck-image-tag {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+    
+    .speck-image-action {
+        margin-left: 80px;
+    }
+    
+    .speck-image-action-text {
+        font-size: 1.1rem;
+    }
+    
+    .speck-image-arrow {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .speck-footer-minimal {
+        margin-top: 40px;
+        padding-top: 30px;
+    }
+    
+    .speck-minimal-footer-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .speck-image-block {
+        height: 350px;
+    }
+    
+    .speck-image-block:hover {
+        height: 370px;
+    }
+    
+    .speck-image-number {
+        font-size: 4rem;
+        left: 15px;
+    }
+    
+    .speck-image-titles {
+        margin-left: 70px;
+        margin-bottom: 20px;
+    }
+    
+    .speck-image-title {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+    }
+    
+    .speck-image-subtitle {
+        font-size: 1rem;
+    }
+    
+    .speck-image-tags {
+        margin-left: 70px;
+        margin-bottom: 25px;
+        gap: 10px;
+    }
+    
+    .speck-image-tag {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+    }
+    
+    .speck-image-action {
+        margin-left: 70px;
+        gap: 12px;
+    }
+    
+    .speck-image-action-text {
+        font-size: 1rem;
+    }
+    
+    .speck-image-arrow {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .speck-image-arrow svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* Mobile touch optimization */
+@media (hover: none) {
+    .speck-image-block:hover {
+        height: inherit;
+    }
+    
+    .speck-image-block:hover .speck-image-block-bg {
+        transform: none;
+    }
+    
+    .speck-image-block:active {
+        opacity: 0.9;
+    }
+    
+    .speck-image-block:active .speck-image-tag {
+        transform: none;
+    }
+    
+    .speck-image-block:active .speck-image-arrow {
+        transform: none;
+        background: rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Reduced motion support for Image Blocks */
+@media (prefers-reduced-motion: reduce) {
+    .speck-image-block {
+        transition: none;
+    }
+    
+    .speck-image-block:hover {
+        height: inherit;
+    }
+    
+    .speck-image-block-bg {
+        transition: none;
+    }
+    
+    .speck-image-block:hover .speck-image-block-bg {
+        transform: none;
+    }
+    
+    .speck-image-block:hover .speck-image-number {
+        transform: translateY(-50%);
+    }
+    
+    .speck-image-tag,
+    .speck-image-arrow {
+        transition: none;
+    }
+    
+    .speck-image-block:hover .speck-image-tag,
+    .speck-image-block:hover .speck-image-arrow {
+        transform: none;
+    }
+}
+
 /* ===== STATS SECTION ===== */
 .stats-improved {
     padding: 120px 0;
@@ -1315,7 +1791,7 @@
 
 /* Задержка для каждой секции */
 .hero { animation-delay: 0.1s; }
-.speck-services-full { animation-delay: 0.2s; }
+.speck-services-image-background { animation-delay: 0.2s; }
 .clients-section { animation-delay: 0.3s; }
 .stats-improved { animation-delay: 0.4s; }
 .cta-improved { animation-delay: 0.5s; }
