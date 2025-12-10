@@ -14,6 +14,48 @@ class NBAnimations {
         this.setupScrollAnimations();
         this.setupCounterAnimation();
         this.setupParallax();
+        this.setupGlassAnimations();
+    }
+
+    setupGlassAnimations() {
+        // Add glass animations to header on page load
+        const header = document.querySelector('.main-header');
+        if (header) {
+            // Add animation on load
+            header.style.animation = 'headerGlassEnter 0.6s ease forwards';
+            
+            // Remove animation after it completes
+            setTimeout(() => {
+                header.style.animation = '';
+            }, 600);
+            
+            // Add hover animation
+            header.addEventListener('mouseenter', () => {
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    header.classList.add('glass-morph');
+                }
+            });
+            
+            header.addEventListener('mouseleave', () => {
+                header.classList.remove('glass-morph');
+            });
+        }
+        
+        // Setup glass animations for other elements
+        const glassElements = document.querySelectorAll('.glass-effect');
+        glassElements.forEach(element => {
+            element.classList.add('glass-fade-in');
+            
+            element.addEventListener('mouseenter', () => {
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    element.style.transform = 'translateY(-5px)';
+                }
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                element.style.transform = '';
+            });
+        });
     }
 
     setupScrollAnimations() {
@@ -31,13 +73,18 @@ class NBAnimations {
                     if (entry.target.classList.contains('title-animate')) {
                         this.animateTitleWords(entry.target);
                     }
+                    
+                    // Special handling for glass elements
+                    if (entry.target.classList.contains('glass-effect')) {
+                        entry.target.classList.add('glass-fade-in');
+                    }
                 }
             });
         }, this.observerOptions);
 
         // Observe all reveal elements
         const revealElements = document.querySelectorAll(
-            '.reveal-element, .text-reveal, .title-reveal, .card-reveal, .counter, .stat-number, .title-animate'
+            '.reveal-element, .text-reveal, .title-reveal, .card-reveal, .counter, .stat-number, .title-animate, .glass-effect'
         );
         
         revealElements.forEach(el => {
