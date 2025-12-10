@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NB Group - Header</title>
     <style>
-        /* ===== HEADER STYLES ===== */
+        /* ===== GLASS HEADER STYLES ===== */
         .main-header {
             position: fixed;
             top: 20px;
@@ -14,16 +14,50 @@
             width: calc(100% - 40px);
             max-width: 1400px;
             margin: 0 auto;
-            padding: 25px 0;
-            background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+            padding: 18px 0;
+            background: rgba(0, 102, 255, 0.12);
             z-index: 1000;
             border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 102, 255, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            box-shadow: 
+                0 8px 32px rgba(0, 102, 255, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.22);
             transform: translateY(0);
             opacity: 1;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Стеклянный слой */
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.04) 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            border-radius: 20px;
+            opacity: 0.5;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Эффект при наведении */
+        .main-header:hover {
+            background: rgba(0, 102, 255, 0.15);
+            box-shadow: 
+                0 12px 40px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                0 0 30px rgba(0, 102, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.28);
         }
 
         /* Скрытый хедер (для главной страницы при скролле) */
@@ -35,9 +69,14 @@
 
         /* Хедер при скролле для внутренних страниц */
         .main-header.header-scrolled {
-            background: linear-gradient(135deg, rgba(0, 102, 255, 0.95) 0%, rgba(0, 82, 204, 0.95) 100%);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 4px 20px rgba(0, 102, 255, 0.2);
+            background: rgba(0, 102, 255, 0.2);
+            backdrop-filter: blur(20px) saturate(200%);
+            -webkit-backdrop-filter: blur(20px) saturate(200%);
+            box-shadow: 
+                0 4px 20px rgba(0, 102, 255, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            padding: 15px 0;
+            border-color: rgba(255, 255, 255, 0.25);
         }
 
         .main-header .container {
@@ -60,7 +99,7 @@
             width: 100%;
         }
 
-        /* Логотип */
+        /* ===== ЛОГОТИП ===== */
         .logo {
             display: flex;
             align-items: center;
@@ -77,53 +116,79 @@
         }
 
         .logo-mark {
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.9);
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 18px;
+            font-size: 17px;
             color: #0066ff;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 
+                0 4px 12px rgba(0, 102, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
 
         .logo-mark:hover {
-            transform: scale(1.05);
+            transform: scale(1.08);
             background: white;
+            box-shadow: 
+                0 6px 20px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         .logo-text {
             color: white;
             font-weight: 700;
-            font-size: 24px;
+            font-size: 23px;
             letter-spacing: -0.5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
-        /* Навигация */
+        /* ===== НАВИГАЦИЯ ===== */
         .main-nav {
             display: flex;
-            gap: 25px;
+            gap: 22px;
         }
 
         .nav-link {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.95);
             text-decoration: none;
             font-weight: 500;
-            font-size: 16px;
+            font-size: 15.5px;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
-            padding: 10px 18px;
+            padding: 10px 17px;
             border-radius: 10px;
             white-space: nowrap;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid transparent;
         }
 
-        .nav-link:hover,
+        .nav-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
         .nav-link.active {
             color: white;
             background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-color: rgba(255, 255, 255, 0.12);
+            font-weight: 600;
         }
 
         .nav-link::after {
@@ -134,16 +199,16 @@
             transform: translateX(-50%);
             width: 0;
             height: 2px;
-            background: white;
+            background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8));
             transition: width 0.3s ease;
             border-radius: 1px;
         }
 
         .nav-link:hover::after {
-            width: 80%;
+            width: 70%;
         }
 
-        /* Действия */
+        /* ===== ДЕЙСТВИЯ ===== */
         .header-actions {
             display: flex;
             align-items: center;
@@ -153,7 +218,7 @@
         .btn {
             display: inline-flex;
             align-items: center;
-            padding: 12px 24px;
+            padding: 11px 23px;
             border: none;
             border-radius: 10px;
             font-weight: 600;
@@ -162,61 +227,75 @@
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             gap: 8px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .btn-primary {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
             color: #ff0000 !important;
             font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 
+                0 4px 15px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
         }
 
         .btn-primary:hover {
             background: white;
             color: #cc0000 !important;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 8px 25px rgba(255, 255, 255, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.6);
         }
 
         .btn-small {
-            padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 8px;
+            padding: 9px 19px;
+            font-size: 13.5px;
+            border-radius: 9px;
         }
 
-        /* Переключатель языка */
+        /* ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
         .language-switcher {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
             padding: 4px;
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            min-width: 120px;
-            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            min-width: 118px;
+            height: 38px;
             overflow: hidden;
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .lang-btn {
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 16px;
+            padding: 7px 15px;
             background: none;
             border: none;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13.5px;
             font-weight: 500;
             cursor: pointer;
             border-radius: 20px;
             transition: all 0.3s ease;
             position: relative;
             z-index: 2;
-            min-width: 56px;
+            min-width: 54px;
             justify-content: center;
             flex: 1;
             outline: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .lang-btn.active {
@@ -230,11 +309,16 @@
             left: 4px;
             width: calc(50% - 4px);
             height: calc(100% - 8px);
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-radius: 20px;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 1;
-            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+            box-shadow: 
+                0 4px 12px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
         }
 
         .language-switcher[data-current-lang="en"] .lang-slider {
@@ -246,50 +330,55 @@
         }
 
         .lang-flag {
-            font-size: 16px;
+            font-size: 15px;
             transition: transform 0.3s ease;
         }
 
         .lang-btn:hover .lang-flag {
-            transform: scale(1.2);
+            transform: scale(1.15);
         }
 
         .lang-btn:hover:not(.active) {
             color: white;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
         }
 
-        /* Мобильное меню */
+        /* ===== МОБИЛЬНОЕ МЕНЮ ===== */
         .mobile-menu-toggle {
             display: none;
             background: none;
             border: none;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             position: relative;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 8px;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .mobile-menu-toggle:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .mobile-menu-toggle span {
             display: block;
-            width: 20px;
+            width: 18px;
             height: 2px;
             background: white;
             position: absolute;
-            left: 5px;
+            left: 7px;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             border-radius: 1px;
         }
 
-        .mobile-menu-toggle span:nth-child(1) { top: 9px; }
-        .mobile-menu-toggle span:nth-child(2) { top: 14px; }
-        .mobile-menu-toggle span:nth-child(3) { top: 19px; }
+        .mobile-menu-toggle span:nth-child(1) { top: 10px; }
+        .mobile-menu-toggle span:nth-child(2) { top: 15px; }
+        .mobile-menu-toggle span:nth-child(3) { top: 20px; }
 
         .mobile-menu-overlay {
             position: fixed;
@@ -298,6 +387,8 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             z-index: 998;
             opacity: 0;
             visibility: hidden;
@@ -309,17 +400,22 @@
             visibility: visible;
         }
 
-        /* Мобильные стили */
+        /* ===== МОБИЛЬНЫЕ СТИЛИ ===== */
         @media (max-width: 768px) {
             .main-header {
                 top: 0;
                 width: 100% !important;
                 max-width: 100% !important;
                 border-radius: 0;
-                padding: 15px 0;
+                padding: 14px 0;
                 margin: 0 !important;
                 left: 0 !important;
                 right: 0 !important;
+                background: rgba(0, 102, 255, 0.22);
+                backdrop-filter: blur(20px) saturate(200%);
+                -webkit-backdrop-filter: blur(20px) saturate(200%);
+                border: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             }
             
             .main-header .header-inner {
@@ -327,14 +423,14 @@
             }
             
             .logo {
-                font-size: 20px;
+                font-size: 19px;
             }
             
             .logo-mark {
-                width: 35px;
-                height: 35px;
-                border-radius: 8px;
-                font-size: 16px;
+                width: 34px;
+                height: 34px;
+                border-radius: 9px;
+                font-size: 15px;
             }
             
             .main-nav {
@@ -343,7 +439,9 @@
                 right: -100%;
                 width: 100%;
                 height: 100vh;
-                background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+                background: rgba(0, 102, 255, 0.95);
+                backdrop-filter: blur(25px) saturate(200%);
+                -webkit-backdrop-filter: blur(25px) saturate(200%);
                 flex-direction: column;
                 padding: 100px 30px 30px;
                 border-left: 1px solid rgba(255, 255, 255, 0.2);
@@ -358,18 +456,20 @@
             
             .main-nav .nav-link {
                 padding: 15px 20px;
-                font-size: 18px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                font-size: 17px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.18);
                 width: 100%;
                 text-align: center;
-                color: rgba(255, 255, 255, 0.9);
+                color: rgba(255, 255, 255, 0.95);
                 border-radius: 10px;
                 margin-bottom: 5px;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
             }
             
             .main-nav .nav-link:hover {
                 color: white;
-                background: rgba(255, 255, 255, 0.15);
+                background: rgba(255, 255, 255, 0.2);
             }
             
             .main-nav .nav-link:last-child {
@@ -386,20 +486,20 @@
 
             .language-switcher {
                 min-width: 100px;
-                height: 36px;
+                height: 34px;
                 margin-right: 10px;
                 border-radius: 12px;
             }
             
             .lang-btn {
                 padding: 6px 12px;
-                font-size: 13px;
-                min-width: 48px;
+                font-size: 12.5px;
+                min-width: 46px;
                 border-radius: 10px;
             }
             
             .lang-flag {
-                font-size: 14px;
+                font-size: 13px;
             }
         }
 
@@ -413,14 +513,14 @@
             }
             
             .logo-text {
-                font-size: 18px;
+                font-size: 17px;
             }
             
             .logo-mark {
                 width: 30px;
                 height: 30px;
-                font-size: 14px;
-                border-radius: 6px;
+                font-size: 13px;
+                border-radius: 7px;
             }
             
             .language-switcher {
@@ -430,8 +530,8 @@
             
             .lang-btn {
                 padding: 5px 10px;
-                font-size: 12px;
-                min-width: 44px;
+                font-size: 11.5px;
+                min-width: 42px;
                 border-radius: 8px;
             }
             
@@ -448,7 +548,7 @@
             }
         }
 
-        /* Поддержка reduced motion */
+        /* ===== ПОДДЕРЖКА REDUCED MOTION ===== */
         @media (prefers-reduced-motion: reduce) {
             .main-header {
                 transition: none;
@@ -464,6 +564,26 @@
             
             .lang-btn:hover .lang-flag {
                 transform: none;
+            }
+        }
+
+        /* ===== ПОДДЕРЖКА БЕЗ BACKDROP-FILTER ===== */
+        @supports not (backdrop-filter: blur(16px)) {
+            .main-header {
+                background: rgba(0, 102, 255, 0.25);
+            }
+            
+            .language-switcher {
+                background: rgba(255, 255, 255, 0.15);
+            }
+            
+            .nav-link:hover,
+            .nav-link.active {
+                background: rgba(255, 255, 255, 0.18);
+            }
+            
+            .logo-mark {
+                background: rgba(255, 255, 255, 0.95);
             }
         }
     </style>
@@ -542,6 +662,12 @@
         
         // Логика скролла для главной страницы
         setupHomeHeaderBehavior();
+        
+        // Добавляем анимацию появления
+        const header = document.querySelector('.main-header');
+        if (header) {
+            header.style.animation = 'headerGlassEnter 0.6s ease forwards';
+        }
     }
 
     function setupHomeHeaderBehavior() {
@@ -562,19 +688,31 @@
             
             // В самом верху страницы - показываем хедер
             if (currentScrollY <= 50) {
+                header.style.opacity = '1';
+                header.style.transform = 'translateY(0)';
                 header.classList.remove('header-hidden');
                 return;
             }
             
-            // При любом скролле вниз или вверх - скрываем хедер
-            header.classList.add('header-hidden');
+            // Плавное изменение прозрачности
+            if (currentScrollY <= 150) {
+                const opacity = 1 - (currentScrollY - 50) / 100;
+                header.style.opacity = opacity.toString();
+            } else {
+                header.style.opacity = '0';
+                header.classList.add('header-hidden');
+            }
             
             lastScrollY = currentScrollY;
         }, { passive: true });
         
         // Инициализация при загрузке
         if (window.scrollY > 50) {
-            header.classList.add('header-hidden');
+            const opacity = Math.max(0, 1 - (window.scrollY - 50) / 100);
+            header.style.opacity = opacity.toString();
+            if (window.scrollY > 150) {
+                header.classList.add('header-hidden');
+            }
         }
     }
 
@@ -595,6 +733,7 @@
             
             if (currentScrollY <= 0) {
                 header.classList.remove('header-hidden', 'header-scrolled');
+                header.style.opacity = '1';
                 return;
             }
             
@@ -602,10 +741,12 @@
                 // Scrolling down
                 header.classList.remove('header-hidden');
                 header.classList.add('header-scrolled');
+                header.style.opacity = '1';
             } else if (currentScrollY < lastScrollY) {
                 // Scrolling up
                 header.classList.remove('header-hidden');
                 header.classList.remove('header-scrolled');
+                header.style.opacity = '1';
             }
             
             lastScrollY = currentScrollY;
