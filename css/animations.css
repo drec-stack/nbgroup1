@@ -17,6 +17,123 @@
     animation-fill-mode: both;
 }
 
+/* ===== GLASS EFFECT ANIMATIONS ===== */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    transition: all 0.4s ease;
+}
+
+.glass-effect:hover {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 102, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-fade-in {
+    animation: glassFadeIn 0.6s ease forwards;
+}
+
+@keyframes glassFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+        backdrop-filter: blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        backdrop-filter: blur(10px);
+    }
+}
+
+/* Header glass animations */
+.header-glass-enter {
+    animation: headerGlassEnter 0.6s ease forwards;
+}
+
+@keyframes headerGlassEnter {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+        backdrop-filter: blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        backdrop-filter: blur(16px);
+    }
+}
+
+.header-glass-exit {
+    animation: headerGlassExit 0.4s ease forwards;
+}
+
+@keyframes headerGlassExit {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+        backdrop-filter: blur(16px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-30px);
+        backdrop-filter: blur(0);
+    }
+}
+
+/* Frost effect */
+.frost-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.frost-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+    border-radius: inherit;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Glass morphism animation */
+.glass-morph {
+    animation: glassMorph 6s ease-in-out infinite;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.1)
+    );
+    background-size: 400% 400%;
+}
+
+@keyframes glassMorph {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
 /* ===== SCROLL REVEAL ANIMATIONS ===== */
 .reveal-element {
     opacity: 0;
