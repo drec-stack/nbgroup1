@@ -18,13 +18,63 @@ class DaehaaApp {
         this.setupPerformanceOptimizations();
         this.setupHeaderSupport();
         this.setupFooterSupport();
-        this.setupClickableElements(); // <-- ДОБАВЛЕНО
-        this.setupNavigationTracking(); // <-- ДОБАВЛЕНО
+        this.setupGlassHeaderEffects();
+        this.setupClickableElements();
+        this.setupNavigationTracking();
         
         // Принудительная инициализация подвала при загрузке
         this.initializeExistingFooter();
         
         console.log('🚀 Daehaa application initialized');
+    }
+
+    setupGlassHeaderEffects() {
+        const header = document.querySelector('.main-header');
+        if (!header) return;
+
+        // Add glass animation on load
+        setTimeout(() => {
+            header.classList.add('header-glass-enter');
+            
+            // Remove animation class after it completes
+            setTimeout(() => {
+                header.classList.remove('header-glass-enter');
+            }, 600);
+        }, 100);
+
+        // Add hover effect for glass morphism
+        header.addEventListener('mouseenter', () => {
+            if (!this.isReducedMotion) {
+                header.classList.add('glass-morph');
+            }
+        });
+
+        header.addEventListener('mouseleave', () => {
+            header.classList.remove('glass-morph');
+        });
+
+        // Smooth scroll behavior for home page
+        const isHomePage = document.body.classList.contains('home-page');
+        if (isHomePage) {
+            let lastScroll = 0;
+            const scrollThreshold = 50;
+            
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const opacity = Math.max(0, Math.min(1, 1 - (currentScroll - scrollThreshold) / 100));
+                
+                header.style.opacity = opacity.toString();
+                
+                if (currentScroll > 150 && currentScroll > lastScroll) {
+                    header.classList.add('header-glass-exit');
+                } else if (currentScroll < lastScroll || currentScroll <= scrollThreshold) {
+                    header.classList.remove('header-glass-exit');
+                    header.classList.add('header-glass-enter');
+                }
+                
+                lastScroll = currentScroll;
+            }, { passive: true });
+        }
     }
 
     setupClickableElements() {
@@ -278,7 +328,7 @@ class DaehaaApp {
                     mutation.addedNodes.forEach((node) => {
                         if (node.nodeType === 1) {
                             // Проверяем сам элемент или его детей
-                            if (node.classList && node.classList.contains('main-footer')) {
+                            if (node.classList && node.classList.contains('.main-footer')) {
                                 console.log('🦶 Footer added to DOM, initializing...');
                                 this.initializeFooter(node);
                             } else if (node.querySelector) {
@@ -323,7 +373,7 @@ class DaehaaApp {
         // Для главной страницы - специальная логика скрытия/показа
         const isHomePage = document.body.classList.contains('home-page');
         if (isHomePage) {
-            console.log('🏠 Home page - enabling header hide on scroll');
+            console.log('🏠 Home page - enabling glass header hide on scroll');
             this.setupHomeHeaderAnimation();
             return;
         }
@@ -344,23 +394,33 @@ class DaehaaApp {
             const currentScroll = window.pageYOffset;
             
             if (currentScroll <= scrollThreshold) {
-                header.classList.remove('header-hidden');
                 header.style.opacity = '1';
                 header.style.transform = 'translateY(0)';
-                header.style.pointerEvents = 'auto';
+                header.classList.remove('header-hidden', 'header-glass-exit');
+                header.classList.add('header-glass-enter');
             } else {
-                header.classList.add('header-hidden');
-                header.style.opacity = '0';
-                header.style.transform = 'translateY(-100%)';
-                header.style.pointerEvents = 'none';
+                const opacity = Math.max(0, Math.min(1, 1 - (currentScroll - scrollThreshold) / 100));
+                header.style.opacity = opacity.toString();
+                
+                if (opacity <= 0.1) {
+                    header.classList.add('header-hidden');
+                    header.classList.add('header-glass-exit');
+                    header.classList.remove('header-glass-enter');
+                } else {
+                    header.classList.remove('header-hidden');
+                }
             }
         }, { passive: true });
 
         if (window.pageYOffset > scrollThreshold) {
-            header.classList.add('header-hidden');
-            header.style.opacity = '0';
-            header.style.transform = 'translateY(-100%)';
-            header.style.pointerEvents = 'none';
+            const opacity = Math.max(0, Math.min(1, 1 - (window.pageYOffset - scrollThreshold) / 100));
+            header.style.opacity = opacity.toString();
+            
+            if (opacity <= 0.1) {
+                header.classList.add('header-hidden');
+                header.classList.add('header-glass-exit');
+                header.classList.remove('header-glass-enter');
+            }
         }
     }
 
@@ -1022,16 +1082,6 @@ class DaehaaApp {
             .catch(error => {
                 console.error('Error loading component:', error);
             });
-    }
-
-    setupPageTransitions() {
-        const mainContent = document.querySelector('main') || document.body;
-        mainContent.style.opacity = '0';
-        mainContent.style.transition = 'opacity 0.3s ease';
-        
-        setTimeout(() => {
-            mainContent.style.opacity = '1';
-        }, 100);
     }
 
     debounce(func, wait) {
