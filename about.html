@@ -14,6 +14,7 @@
         body {
             padding-top: 80px;
             background: var(--secondary);
+            overflow-x: hidden;
         }
         @media (max-width: 768px) {
             body {
@@ -67,6 +68,60 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
             }
         }
+        
+        /* Custom styles for team photos */
+        .member-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .team-member:hover .member-photo img {
+            transform: scale(1.1);
+        }
+        
+        /* Ensure images have fallback */
+        .member-photo {
+            position: relative;
+        }
+        
+        .member-photo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 10px;
+            background: radial-gradient(ellipse at center, 
+                rgba(0, 102, 255, 0.4) 0%, 
+                transparent 70%);
+            filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+        
+        .team-member:hover .member-photo::after {
+            opacity: 1;
+        }
+        
+        /* Loading animation for images */
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        .loading-photo {
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.05) 25%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                rgba(255, 255, 255, 0.05) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
     </style>
 </head>
 <body class="about-page">
@@ -84,18 +139,38 @@
     </section>
     
     <!-- Mission Section -->
-    <section class="about-content">
+    <section class="about-mission">
         <div class="container">
-            <div class="about-grid">
-                <div class="about-text">
+            <div class="mission-grid">
+                <div class="mission-text">
                     <h2 data-i18n="about.mission.title">Наша миссия</h2>
                     <p data-i18n="about.mission.text">Создавать инновационные продукты, которые определяют рынки и улучшают жизнь людей через сочетание эстетики, инженерной точности и производственной реализации.</p>
-                </div>
-                <div class="about-image">
-                    <div class="image-placeholder">
-                        <i class="fas fa-lightbulb" style="font-size: 4rem; color: var(--accent);"></i>
-                        <p style="margin-top: 20px; color: var(--light-text);">Инновации и превосходство</p>
+                    
+                    <div class="mission-features">
+                        <div class="mission-feature">
+                            <div class="mission-icon">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <span>Эстетика</span>
+                        </div>
+                        <div class="mission-feature">
+                            <div class="mission-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <span>Инженерия</span>
+                        </div>
+                        <div class="mission-feature">
+                            <div class="mission-icon">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <span>Производство</span>
+                        </div>
                     </div>
+                </div>
+                <div class="mission-visual">
+                    <i class="fas fa-lightbulb"></i>
+                    <p>Инновации и превосходство</p>
+                    <span class="subtitle">Качество в каждой детали</span>
                 </div>
             </div>
         </div>
@@ -133,8 +208,8 @@
                 </div>
                 <div class="story-image">
                     <div class="image-placeholder">
-                        <i class="fas fa-history" style="font-size: 4rem; color: var(--accent);"></i>
-                        <p style="margin-top: 20px; color: var(--light-text);">2012 - настоящее время</p>
+                        <i class="fas fa-history"></i>
+                        <p style="margin-top: 20px; color: var(--light-text); font-size: 1.2rem;">2012 - настоящее время</p>
                     </div>
                 </div>
             </div>
@@ -265,41 +340,93 @@
             </div>
             
             <div class="team-grid">
-                <!-- Member 1 -->
+                <!-- Member 1: Spartak Nukhsan -->
                 <div class="team-member">
                     <div class="member-photo">
-                        <div class="member-avatar-placeholder">
-                            <i class="fas fa-user-tie" style="font-size: 3rem; color: var(--accent);"></i>
-                        </div>
+                        <img 
+                            src="images/team/spartak.jpg" 
+                            alt="Спартак Нухсан"
+                            loading="lazy"
+                            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\"><rect width=\"200\" height=\"200\" fill=\"%230066ff\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"50\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">SN</text></svg>';"
+                        >
                     </div>
                     <h3 class="member-name" data-i18n="about.team.spartak.name">Спартак Нухсан</h3>
-                    <p class="member-role" data-i18n="about.team.spartak.role">Основатель, креативный директор</p>
-                    <p class="member-bio" data-i18n="about.team.spartak.bio">Десятки проектов в России, Турции, Дубае и Европе</p>
+                    <div class="member-role" data-i18n="about.team.spartak.role">Основатель, креативный директор, Архитектор брендов, дизайнер</div>
+                    <p class="member-bio" data-i18n="about.team.spartak.bio">Десятки проектов в России, Турции, Дубае и Европе. Эксперт в области промышленного дизайна и брендинга с более чем 12-летним опытом.</p>
+                    <div class="member-social">
+                        <a href="https://linkedin.com/in/spartak" target="_blank" aria-label="LinkedIn" rel="noopener noreferrer">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://t.me/spartak" target="_blank" aria-label="Telegram" rel="noopener noreferrer">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="mailto:spartak@nbgroup.tech" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
                 </div>
                 
-                <!-- Member 2 -->
+                <!-- Member 2: Urmat Ismailov -->
                 <div class="team-member">
                     <div class="member-photo">
-                        <div class="member-avatar-placeholder">
-                            <i class="fas fa-user-cog" style="font-size: 3rem; color: var(--accent);"></i>
-                        </div>
+                        <img 
+                            src="images/team/urmat.jpg" 
+                            alt="Исмаилов Урмат"
+                            loading="lazy"
+                            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\"><rect width=\"200\" height=\"200\" fill=\"%2300aaff\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"50\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">UI</text></svg>';"
+                        >
                     </div>
                     <h3 class="member-name" data-i18n="about.team.urmat.name">Исмаилов Урмат</h3>
-                    <p class="member-role" data-i18n="about.team.urmat.role">Сооснователь и операционный директор</p>
-                    <p class="member-bio" data-i18n="about.team.urmat.bio">Системность, организация и стабильный рост</p>
+                    <div class="member-role" data-i18n="about.team.urmat.role">Сооснователь и операционный директор</div>
+                    <p class="member-bio" data-i18n="about.team.urmat.bio">Системность, организация и стабильный рост. Специалист по производственным процессам и управлению проектами.</p>
+                    <div class="member-social">
+                        <a href="https://linkedin.com/in/urmat" target="_blank" aria-label="LinkedIn" rel="noopener noreferrer">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://t.me/urmat" target="_blank" aria-label="Telegram" rel="noopener noreferrer">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="mailto:urmat@nbgroup.tech" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
                 </div>
                 
-                <!-- Member 3 -->
+                <!-- Member 3: Elena Kiryanova -->
                 <div class="team-member">
                     <div class="member-photo">
-                        <div class="member-avatar-placeholder">
-                            <i class="fas fa-user-graduate" style="font-size: 3rem; color: var(--accent);"></i>
-                        </div>
+                        <img 
+                            src="images/team/elena.jpg" 
+                            alt="Елена Кирьянова"
+                            loading="lazy"
+                            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\"><rect width=\"200\" height=\"200\" fill=\"%2300ffaa\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"50\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">EK</text></svg>';"
+                        >
                     </div>
                     <h3 class="member-name" data-i18n="about.team.elena.name">Елена Кирьянова</h3>
-                    <p class="member-role" data-i18n="about.team.elena.role">Директор NB Group Company</p>
-                    <p class="member-bio" data-i18n="about.team.elena.bio">Эксперт в области бренд-стратегии и развития бизнеса</p>
+                    <div class="member-role" data-i18n="about.team.elena.role">Директор NB Group Company, стратег по развитию брендов</div>
+                    <p class="member-bio" data-i18n="about.team.elena.bio">Эксперт в области бренд-стратегии и развития бизнеса. Помогает компаниям выстраивать эффективные маркетинговые стратегии.</p>
+                    <div class="member-social">
+                        <a href="https://linkedin.com/in/elena" target="_blank" aria-label="LinkedIn" rel="noopener noreferrer">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://t.me/elena" target="_blank" aria-label="Telegram" rel="noopener noreferrer">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="mailto:elena@nbgroup.tech" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
                 </div>
+            </div>
+            
+            <!-- Additional Team Info -->
+            <div class="team-info" style="text-align: center; margin-top: 80px; padding: 40px; background: rgba(255, 255, 255, 0.02); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <h3 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--white);">Наша философия</h3>
+                <p style="font-size: 1.2rem; color: var(--light-text); max-width: 800px; margin: 0 auto; line-height: 1.8;">
+                    Мы верим, что успех проекта зависит от синергии дизайна, инженерии и производства. 
+                    Наша команда объединяет экспертов из разных областей для создания продуктов, 
+                    которые не только красивы, но и функциональны, надежны и готовы к массовому производству.
+                </p>
             </div>
         </div>
     </section>
@@ -597,6 +724,72 @@
                 window.initAbout();
             }
         }, 1500);
+        
+        // Image loading optimization
+        document.addEventListener('DOMContentLoaded', function() {
+            const teamImages = document.querySelectorAll('.member-photo img');
+            
+            teamImages.forEach(img => {
+                // Add loading animation
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.5s ease';
+                
+                // When image loads
+                img.onload = function() {
+                    this.style.opacity = '1';
+                };
+                
+                // If image fails to load
+                img.onerror = function() {
+                    console.warn('Failed to load image:', this.src);
+                    // Keep opacity for SVG fallback
+                    setTimeout(() => {
+                        this.style.opacity = '1';
+                    }, 100);
+                };
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('a[href^="#"]')) {
+                e.preventDefault();
+                const id = e.target.getAttribute('href');
+                if (id === '#') return;
+                
+                const element = document.querySelector(id);
+                if (element) {
+                    window.scrollTo({
+                        top: element.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+        
+        // Lazy load images with Intersection Observer
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '100px',
+                threshold: 0.1
+            });
+            
+            // Observe all team images
+            document.querySelectorAll('.member-photo img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
     </script>
 </body>
 </html>
