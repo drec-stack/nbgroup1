@@ -9,8 +9,66 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/services.css">
+    <style>
+        /* Glass header styling for internal pages */
+        .internal-page .main-header {
+            position: fixed !important;
+            top: 20px !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: calc(100% - 40px) !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            z-index: 1000 !important;
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transition: all 0.4s ease !important;
+            border-radius: 20px !important;
+            background: rgba(0, 102, 255, 0.12) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        }
+
+        .internal-page .main-header.header-hidden {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        .internal-page .main-header.header-scrolled {
+            background: rgba(0, 102, 255, 0.2) !important;
+            backdrop-filter: blur(20px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+        }
+
+        .services-hero {
+            padding-top: 140px !important;
+        }
+
+        /* Mobile adjustments for internal pages */
+        @media (max-width: 768px) {
+            .internal-page .main-header {
+                top: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 14px 0 !important;
+                background: rgba(0, 102, 255, 0.22) !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            .services-hero {
+                padding-top: 100px !important;
+            }
+        }
+    </style>
 </head>
 <body class="internal-page">
+    <!-- Glass Header Container -->
     <div id="header-container"></div>
 
     <section class="services-hero">
@@ -334,98 +392,218 @@
         </div>
     </section>
 
+    <!-- Footer Container -->
     <div id="footer-container"></div>
 
+    <!-- JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/services.js"></script>
     
     <script>
-        // Enhanced component loading with error handling
-        function loadComponent(url, containerId, fallbackHtml = '') {
-            return fetch(url)
-                .then(response => {
-                    if (!response.ok) throw new Error(`Failed to load ${url}: ${response.status}`);
-                    return response.text();
-                })
+        // Load header component with glass effect
+        function loadGlassHeader() {
+            console.log('🔵 Loading glass header for services page...');
+            
+            fetch('components/header.html')
+                .then(response => response.text())
                 .then(html => {
-                    document.getElementById(containerId).innerHTML = html;
-                    return true;
+                    document.getElementById('header-container').innerHTML = html;
+                    
+                    // Инициализировать хедер
+                    if (typeof initHeader === 'function') {
+                        setTimeout(() => {
+                            initHeader();
+                            
+                            // Добавляем класс для внутренних страниц
+                            const header = document.querySelector('.main-header');
+                            if (header) {
+                                header.classList.add('internal-page-header');
+                                
+                                // Анимация появления
+                                setTimeout(() => {
+                                    header.style.opacity = '1';
+                                    header.style.transform = 'translateY(0)';
+                                }, 100);
+                            }
+                        }, 100);
+                    }
+                    
+                    // Применить переводы к хедеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 200);
+                    
+                    console.log('✅ Glass header loaded successfully');
                 })
                 .catch(error => {
-                    console.error(error);
-                    if (fallbackHtml) {
-                        document.getElementById(containerId).innerHTML = fallbackHtml;
-                    }
-                    return false;
+                    console.error('❌ Error loading glass header:', error);
+                    // Fallback header
+                    document.getElementById('header-container').innerHTML = `
+                        <header class="main-header">
+                            <div class="container">
+                                <div class="header-inner">
+                                    <a href="index.html" class="logo">
+                                        <div class="logo-mark">NB</div>
+                                        <span class="logo-text">NBGROUP.TECH</span>
+                                    </a>
+                                    <nav class="main-nav">
+                                        <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                                        <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                                        <a href="services.html" class="nav-link active" data-i18n="nav.services">Услуги</a>
+                                        <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
+                                        <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                                        <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
+                                    </nav>
+                                    <div class="header-actions">
+                                        <div class="language-switcher" data-current-lang="ru">
+                                            <button class="lang-btn" data-lang="ru">RU</button>
+                                            <button class="lang-btn active" data-lang="en">EN</button>
+                                        </div>
+                                        <a href="contacts.html" class="btn btn-small btn-primary" data-i18n="nav.startProject">
+                                            Начать проект
+                                        </a>
+                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mobile-menu-overlay"></div>
+                        </header>
+                    `;
+                    
+                    // Применить переводы к fallback хедеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 300);
                 });
         }
 
-        // Initialize the page
+        // Load footer component
+        function loadFooter() {
+            fetch('components/footer.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('footer-container').innerHTML = html;
+                    console.log('✅ Footer loaded successfully');
+                    
+                    // Применить переводы к футеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 200);
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = `
+                        <footer class="minimal-footer">
+                            <div class="footer-container">
+                                <div class="footer-content">
+                                    <div class="footer-bottom">
+                                        <div class="copyright" data-i18n="footer.copyright">
+                                            © 2024 NBGROUP.TECH Все права защищены.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    `;
+                });
+        }
+
+        // Инициализация страницы услуг
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Services page loading...');
+            console.log('🚀 Services page initializing...');
             
-            // Load header with enhanced error handling
-            loadComponent('components/header.html', 'header-container', `
-                <header class="main-header">
-                    <div class="container">
-                        <div class="header-inner">
-                            <a href="index.html" class="logo">
-                                <div class="logo-mark">NB</div>
-                                <span class="logo-text">NBGROUP.TECH</span>
-                            </a>
-                            <nav class="main-nav">
-                                <a href="index.html" class="nav-link">Home</a>
-                                <a href="services.html" class="nav-link active">Services</a>
-                                <a href="portfolio.html" class="nav-link">Work</a>
-                                <a href="brandbook.html" class="nav-link">Brandbook</a>
-                                <a href="about.html" class="nav-link">About</a>
-                                <a href="contacts.html" class="nav-link">Contact</a>
-                            </nav>
-                        </div>
-                    </div>
-                </header>
-            `).then(success => {
-                if (success && typeof initHeader === 'function') {
-                    setTimeout(initHeader, 100);
-                }
-            });
-
-            // Load footer with auto-initialization
-            loadComponent('components/footer.html', 'footer-container', `
-                <footer class="fallback-footer">
-                    <p>&copy; 2024 NBGROUP.TECH - Our Services</p>
-                </footer>
-            `).then(success => {
-                if (success && typeof initFooter === 'function') {
-                    setTimeout(initFooter, 100);
-                }
-            });
-
-            // Initialize services functionality
+            // Загружаем стеклянный хедер
+            loadGlassHeader();
+            
+            // Загружаем футер
+            loadFooter();
+            
+            // Инициализируем навигацию по услугам
+            setTimeout(() => {
+                // Навигация по якорям
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        navItems.forEach(nav => nav.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        const targetId = this.getAttribute('href');
+                        const targetSection = document.querySelector(targetId);
+                        
+                        if (targetSection) {
+                            const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
+                            const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
+                            const offset = headerHeight + navHeight + 20;
+                            
+                            window.scrollTo({
+                                top: targetSection.offsetTop - offset,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+                
+                // Активный элемент навигации при скролле
+                window.addEventListener('scroll', () => {
+                    const sections = document.querySelectorAll('.service-detail');
+                    const scrollPosition = window.scrollY + 100;
+                    
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        const sectionBottom = sectionTop + section.offsetHeight;
+                        const sectionId = section.getAttribute('id');
+                        
+                        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                            navItems.forEach(item => {
+                                item.classList.remove('active');
+                                if (item.getAttribute('href') === `#${sectionId}`) {
+                                    item.classList.add('active');
+                                }
+                            });
+                        }
+                    });
+                });
+            }, 500);
+            
+            // Инициализация функциональности услуг
             setTimeout(() => {
                 if (typeof initServices === 'function') {
                     initServices();
                 } else {
-                    console.warn('initServices function not found, retrying...');
-                    setTimeout(() => {
-                        if (typeof initServices === 'function') {
-                            initServices();
-                        }
-                    }, 500);
+                    console.warn('initServices function not found');
                 }
-            }, 200);
+            }, 300);
         });
 
-        // Fallback initialization if DOMContentLoaded already fired
-        if (document.readyState === 'interactive' || document.readyState === 'complete') {
-            setTimeout(() => {
-                if (typeof initServices === 'function') {
-                    initServices();
-                }
-            }, 100);
-        }
+        // Добавляем padding-top для body чтобы контент не скрывался под фиксированным хедером
+        window.addEventListener('load', function() {
+            const header = document.querySelector('.main-header');
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                document.querySelector('.services-hero').style.paddingTop = (headerHeight + 40) + 'px';
+            }
+        });
+
+        // Адаптация для мобильных
+        window.addEventListener('resize', function() {
+            const header = document.querySelector('.main-header');
+            if (header && window.innerWidth <= 768) {
+                document.querySelector('.services-hero').style.paddingTop = '100px';
+            }
+        });
     </script>
 </body>
 </html>
