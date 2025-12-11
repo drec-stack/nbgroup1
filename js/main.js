@@ -1239,3 +1239,201 @@ if ('serviceWorker' in navigator) {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = DaehaaApp;
 }
+
+// Дополнительные функции для стеклянного хедера
+
+function initGlassHeader() {
+    console.log('🔵 Initializing glass header...');
+    
+    const header = document.querySelector('.main-header');
+    if (!header) {
+        console.warn('⚠️ No glass header found');
+        return;
+    }
+    
+    const isHomePage = document.body.classList.contains('home-page');
+    
+    if (isHomePage) {
+        // Логика для главной страницы
+        initHomeHeaderLogic(header);
+    } else {
+        // Логика для внутренних страниц
+        initInternalHeaderLogic(header);
+    }
+    
+    // Добавляем анимацию появления
+    setTimeout(() => {
+        header.classList.add('header-glass-enter');
+        
+        // Убираем класс после завершения анимации
+        setTimeout(() => {
+            header.classList.remove('header-glass-enter');
+        }, 600);
+    }, 100);
+    
+    // Эффект морфинга при наведении
+    header.addEventListener('mouseenter', () => {
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            header.classList.add('glass-morph');
+        }
+    });
+    
+    header.addEventListener('mouseleave', () => {
+        header.classList.remove('glass-morph');
+    });
+    
+    console.log('✅ Glass header initialized');
+}
+
+function initHomeHeaderLogic(header) {
+    console.log('🏠 Home page header logic');
+    
+    let lastScrollY = window.scrollY;
+    const scrollThreshold = 50;
+    
+    function handleScroll() {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY <= scrollThreshold) {
+            header.style.opacity = '1';
+            header.style.transform = 'translateY(0)';
+            header.classList.remove('header-hidden', 'header-glass-exit');
+            header.classList.add('header-glass-enter');
+        } else {
+            const opacity = Math.max(0, Math.min(1, 1 - (currentScrollY - scrollThreshold) / 100));
+            header.style.opacity = opacity.toString();
+            
+            if (opacity <= 0.1) {
+                header.classList.add('header-hidden');
+                header.classList.add('header-glass-exit');
+                header.classList.remove('header-glass-enter');
+            } else {
+                header.classList.remove('header-hidden');
+            }
+        }
+        
+        lastScrollY = currentScrollY;
+    }
+    
+    // Применяем начальное состояние
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Показываем хедер при наведении
+    header.addEventListener('mouseenter', () => {
+        if (header.classList.contains('header-hidden')) {
+            header.classList.remove('header-hidden', 'header-glass-exit');
+            header.classList.add('header-glass-enter');
+            header.style.opacity = '1';
+        }
+    });
+    
+    // Скрываем через 2 секунды если мы все еще скроллим вниз
+    header.addEventListener('mouseleave', () => {
+        if (window.scrollY > 150) {
+            setTimeout(() => {
+                if (window.scrollY > 150) {
+                    header.classList.add('header-hidden');
+                    header.classList.add('header-glass-exit');
+                    header.classList.remove('header-glass-enter');
+                }
+            }, 2000);
+        }
+    });
+}
+
+function initInternalHeaderLogic(header) {
+    console.log('📄 Internal page header logic');
+    
+    let lastScrollY = window.scrollY;
+    const scrollThreshold = 100;
+    
+    function handleScroll() {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY <= 0) {
+            header.style.transform = 'translateY(0px)';
+            header.classList.remove('header-hidden', 'header-scrolled');
+            return;
+        }
+        
+        if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+            // Scrolling down
+            header.classList.remove('header-hidden');
+            header.classList.add('header-scrolled');
+        } else if (currentScrollY < lastScrollY) {
+            // Scrolling up
+            header.classList.remove('header-hidden');
+            header.classList.remove('header-scrolled');
+        }
+        
+        lastScrollY = currentScrollY;
+    }
+    
+    // Применяем начальное состояние
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Добавляем padding для body чтобы контент не скрывался под хедером
+    const updateContentPadding = () => {
+        const headerHeight = header.offsetHeight;
+        const heroSection = document.querySelector('.hero-section, .page-hero, .services-hero, .portfolio-hero, .brandbook-hero, .about-hero, .contact-hero');
+        
+        if (heroSection) {
+            if (window.innerWidth > 768) {
+                heroSection.style.paddingTop = (headerHeight + 40) + 'px';
+            } else {
+                heroSection.style.paddingTop = '100px';
+            }
+        }
+    };
+    
+    updateContentPadding();
+    window.addEventListener('resize', updateContentPadding);
+}
+
+// Функция для обновления активного состояния навигации
+function updateActiveNav() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (linkHref === currentPage || 
+            (currentPage === '' && linkHref === 'index.html') ||
+            (currentPage === 'index.html' && linkHref === 'index.html')) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+// Автоматическая инициализация стеклянного хедера при загрузке компонента
+document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем наличие хедера и инициализируем
+    const checkHeaderInterval = setInterval(() => {
+        const header = document.querySelector('.main-header');
+        if (header) {
+            clearInterval(checkHeaderInterval);
+            initGlassHeader();
+            updateActiveNav();
+        }
+    }, 100);
+    
+    // Также проверяем через 2 секунды на всякий случай
+    setTimeout(() => {
+        const header = document.querySelector('.main-header');
+        if (header && !header.classList.contains('header-initialized')) {
+            initGlassHeader();
+            updateActiveNav();
+            header.classList.add('header-initialized');
+        }
+    }, 2000);
+});
+
+// Экспортируем функции для глобального использования
+window.initGlassHeader = initGlassHeader;
+window.updateActiveNav = updateActiveNav;
