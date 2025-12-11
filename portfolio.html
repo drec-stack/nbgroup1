@@ -9,8 +9,66 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/portfolio.css">
+    <style>
+        /* Glass header styling for internal pages */
+        .internal-page .main-header {
+            position: fixed !important;
+            top: 20px !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: calc(100% - 40px) !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            z-index: 1000 !important;
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transition: all 0.4s ease !important;
+            border-radius: 20px !important;
+            background: rgba(0, 102, 255, 0.12) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        }
+
+        .internal-page .main-header.header-hidden {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        .internal-page .main-header.header-scrolled {
+            background: rgba(0, 102, 255, 0.2) !important;
+            backdrop-filter: blur(20px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+        }
+
+        .portfolio-hero {
+            padding-top: 140px !important;
+        }
+
+        /* Mobile adjustments for internal pages */
+        @media (max-width: 768px) {
+            .internal-page .main-header {
+                top: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 14px 0 !important;
+                background: rgba(0, 102, 255, 0.22) !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            .portfolio-hero {
+                padding-top: 100px !important;
+            }
+        }
+    </style>
 </head>
 <body class="internal-page">
+    <!-- Glass Header Container -->
     <div id="header-container"></div>
 
     <section class="portfolio-hero">
@@ -373,51 +431,298 @@
         </div>
     </section>
 
+    <!-- Footer Container -->
     <div id="footer-container"></div>
 
+    <!-- JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/portfolio.js"></script>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Portfolio page loading...');
+        // Load glass header component
+        function loadGlassHeader() {
+            console.log('🔵 Loading glass header for portfolio page...');
             
-            // Load header and footer
-            window.loadComponentWithInit('components/header.html', 'header-container', `
-                <header class="main-header">
-                    <div class="container">
-                        <div class="header-inner">
-                            <a href="index.html" class="logo">
-                                <div class="logo-mark">NB</div>
-                                <span class="logo-text">NBGROUP.TECH</span>
-                            </a>
-                            <nav class="main-nav">
-                                <a href="index.html" class="nav-link">Главная</a>
-                                <a href="services.html" class="nav-link">Услуги</a>
-                                <a href="portfolio.html" class="nav-link active">Работы</a>
-                                <a href="brandbook.html" class="nav-link">Брендбук</a>
-                                <a href="about.html" class="nav-link">О нас</a>
-                                <a href="contacts.html" class="nav-link">Контакты</a>
-                            </nav>
-                        </div>
-                    </div>
-                </header>
-            `, 'initHeader');
+            fetch('components/header.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('header-container').innerHTML = html;
+                    
+                    // Инициализировать хедер
+                    if (typeof initHeader === 'function') {
+                        setTimeout(() => {
+                            initHeader();
+                            
+                            // Добавляем класс для внутренних страниц
+                            const header = document.querySelector('.main-header');
+                            if (header) {
+                                header.classList.add('internal-page-header');
+                                
+                                // Анимация появления
+                                setTimeout(() => {
+                                    header.style.opacity = '1';
+                                    header.style.transform = 'translateY(0)';
+                                }, 100);
+                            }
+                        }, 100);
+                    }
+                    
+                    // Применить переводы к хедеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 200);
+                    
+                    console.log('✅ Glass header loaded successfully');
+                })
+                .catch(error => {
+                    console.error('❌ Error loading glass header:', error);
+                    // Fallback header
+                    document.getElementById('header-container').innerHTML = `
+                        <header class="main-header">
+                            <div class="container">
+                                <div class="header-inner">
+                                    <a href="index.html" class="logo">
+                                        <div class="logo-mark">NB</div>
+                                        <span class="logo-text">NBGROUP.TECH</span>
+                                    </a>
+                                    <nav class="main-nav">
+                                        <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                                        <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                                        <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                                        <a href="portfolio.html" class="nav-link active" data-i18n="nav.portfolio">Портфолио</a>
+                                        <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                                        <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
+                                    </nav>
+                                    <div class="header-actions">
+                                        <div class="language-switcher" data-current-lang="ru">
+                                            <button class="lang-btn" data-lang="ru">RU</button>
+                                            <button class="lang-btn active" data-lang="en">EN</button>
+                                        </div>
+                                        <a href="contacts.html" class="btn btn-small btn-primary" data-i18n="nav.startProject">
+                                            Начать проект
+                                        </a>
+                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mobile-menu-overlay"></div>
+                        </header>
+                    `;
+                    
+                    // Применить переводы к fallback хедеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 300);
+                });
+        }
 
-            window.loadComponentWithInit('components/footer.html', 'footer-container', `
-                <footer class="fallback-footer">
-                    <p>&copy; 2024 NBGROUP.TECH - Наши Работы</p>
-                </footer>
-            `);
+        // Load footer component
+        function loadFooter() {
+            fetch('components/footer.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('footer-container').innerHTML = html;
+                    console.log('✅ Footer loaded successfully');
+                    
+                    // Применить переводы к футеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 200);
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = `
+                        <footer class="minimal-footer">
+                            <div class="footer-container">
+                                <div class="footer-content">
+                                    <div class="footer-bottom">
+                                        <div class="copyright" data-i18n="footer.copyright">
+                                            © 2024 NBGROUP.TECH Все права защищены.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    `;
+                });
+        }
 
-            // Initialize portfolio functionality
+        // Инициализация страницы портфолио
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Portfolio page initializing...');
+            
+            // Загружаем стеклянный хедер
+            loadGlassHeader();
+            
+            // Загружаем футер
+            loadFooter();
+            
+            // Инициализация фильтра портфолио
+            setTimeout(() => {
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                const portfolioItems = document.querySelectorAll('.portfolio-item');
+                
+                // Фильтрация проектов
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Убираем активный класс у всех кнопок
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        // Добавляем активный класс текущей кнопке
+                        button.classList.add('active');
+                        
+                        const filterValue = button.getAttribute('data-filter');
+                        
+                        // Показываем/скрываем проекты
+                        portfolioItems.forEach(item => {
+                            if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                                item.style.display = 'block';
+                                // Анимация появления
+                                setTimeout(() => {
+                                    item.style.opacity = '1';
+                                    item.style.transform = 'translateY(0)';
+                                }, 100);
+                            } else {
+                                item.style.opacity = '0';
+                                item.style.transform = 'translateY(20px)';
+                                setTimeout(() => {
+                                    item.style.display = 'none';
+                                }, 300);
+                            }
+                        });
+                    });
+                });
+                
+                // Анимация загрузки проектов
+                portfolioItems.forEach((item, index) => {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(30px)';
+                    item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, 150 * index);
+                });
+                
+                // Интерактивность карточек проектов
+                portfolioItems.forEach(item => {
+                    const projectCard = item.querySelector('.project-card');
+                    
+                    projectCard.addEventListener('mouseenter', () => {
+                        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                            projectCard.style.transform = 'translateY(-15px)';
+                            projectCard.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.25)';
+                        }
+                    });
+                    
+                    projectCard.addEventListener('mouseleave', () => {
+                        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                            projectCard.style.transform = 'translateY(0)';
+                            projectCard.style.boxShadow = '';
+                        }
+                    });
+                    
+                    // Клик по проекту
+                    const projectLink = projectCard.querySelector('.project-link');
+                    if (projectLink) {
+                        projectLink.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            // Здесь можно добавить логику открытия модального окна с деталями проекта
+                            console.log('Opening project details...');
+                        });
+                    }
+                });
+                
+                // Анимация highlight карточек
+                const highlightCards = document.querySelectorAll('.highlight-card');
+                highlightCards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 200 * index);
+                });
+                
+                // Интерактивность highlight карточек
+                highlightCards.forEach(card => {
+                    card.addEventListener('mouseenter', () => {
+                        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                            card.style.transform = 'translateY(-10px)';
+                            const icon = card.querySelector('.highlight-icon');
+                            if (icon) {
+                                icon.style.transform = 'scale(1.2)';
+                                icon.style.color = '#0066ff';
+                            }
+                        }
+                    });
+                    
+                    card.addEventListener('mouseleave', () => {
+                        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                            card.style.transform = 'translateY(0)';
+                            const icon = card.querySelector('.highlight-icon');
+                            if (icon) {
+                                icon.style.transform = '';
+                                icon.style.color = '';
+                            }
+                        }
+                    });
+                });
+                
+                // Анимация отзывов
+                const testimonialCards = document.querySelectorAll('.testimonial-card');
+                testimonialCards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateX(' + (index % 2 === 0 ? '-30px' : '30px') + ')';
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateX(0)';
+                    }, 300 * index);
+                });
+                
+            }, 500);
+            
+            // Инициализация функциональности портфолио
             setTimeout(() => {
                 if (typeof initPortfolio === 'function') {
                     initPortfolio();
+                } else {
+                    console.warn('initPortfolio function not found');
                 }
-            }, 200);
+            }, 300);
+        });
+
+        // Добавляем padding-top для body чтобы контент не скрывался под фиксированным хедером
+        window.addEventListener('load', function() {
+            const header = document.querySelector('.main-header');
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                document.querySelector('.portfolio-hero').style.paddingTop = (headerHeight + 40) + 'px';
+            }
+        });
+
+        // Адаптация для мобильных
+        window.addEventListener('resize', function() {
+            const header = document.querySelector('.main-header');
+            if (header && window.innerWidth <= 768) {
+                document.querySelector('.portfolio-hero').style.paddingTop = '100px';
+            }
         });
     </script>
 </body>
