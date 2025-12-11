@@ -11,6 +11,7 @@ function initAbout() {
     setupMobileOptimizations();
     setupImageLoading();
     setupCTAAnimations();
+    setupScrollAnimations();
     
     console.log('✅ About page with Speck Design fully optimized');
 }
@@ -25,26 +26,18 @@ function setupTeamInteractions() {
         if (!isMobile) {
             member.addEventListener('mouseenter', () => {
                 const photo = member.querySelector('.member-photo');
-                const avatar = member.querySelector('.member-avatar');
                 if (photo) {
                     photo.style.transform = 'translateY(-5px)';
                     photo.style.boxShadow = '0 20px 40px rgba(0, 102, 255, 0.3)';
                     photo.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 }
-                if (avatar) {
-                    avatar.style.transform = 'scale(1.1)';
-                }
             });
             
             member.addEventListener('mouseleave', () => {
                 const photo = member.querySelector('.member-photo');
-                const avatar = member.querySelector('.member-avatar');
                 if (photo) {
                     photo.style.transform = 'translateY(0)';
                     photo.style.boxShadow = '0 10px 30px rgba(0, 102, 255, 0.3)';
-                }
-                if (avatar) {
-                    avatar.style.transform = 'scale(1)';
                 }
             });
         }
@@ -171,7 +164,8 @@ function setupStoryStats() {
 
 // ФУНКЦИЯ АНИМАЦИИ СЧЕТЧИКОВ
 function animateCounter(element) {
-    const finalValue = parseInt(element.textContent);
+    const text = element.textContent;
+    const finalValue = parseInt(text.replace('+', ''));
     const duration = 2000;
     const increment = finalValue / (duration / 16);
     let currentValue = 0;
@@ -179,7 +173,7 @@ function animateCounter(element) {
     const timer = setInterval(() => {
         currentValue += increment;
         if (currentValue >= finalValue) {
-            element.textContent = finalValue;
+            element.textContent = text;
             clearInterval(timer);
             
             // Добавляем небольшой bounce эффект
@@ -188,9 +182,30 @@ function animateCounter(element) {
                 element.style.transform = 'scale(1)';
             }, 200);
         } else {
-            element.textContent = Math.floor(currentValue);
+            element.textContent = Math.floor(currentValue) + (text.includes('+') ? '+' : '');
         }
     }, 16);
+}
+
+// АНИМАЦИИ ПРИ СКРОЛЛЕ
+function setupScrollAnimations() {
+    const sections = document.querySelectorAll('section');
+    const isMobile = window.innerWidth <= 768;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+            }
+        });
+    }, { 
+        threshold: isMobile ? 0.1 : 0.2,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
 }
 
 // ДОПОЛНИТЕЛЬНЫЕ МОБИЛЬНЫЕ ОПТИМИЗАЦИИ
@@ -199,7 +214,7 @@ function setupMobileOptimizations() {
     
     if (isMobile) {
         // Оптимизация для touch устройств
-        const interactiveElements = document.querySelectorAll('.btn, .speck-service-card, .team-member');
+        const interactiveElements = document.querySelectorAll('.btn, .speck-service-card, .team-member, .story-stat');
         
         interactiveElements.forEach(el => {
             // Увеличиваем область касания для кнопок
@@ -404,6 +419,21 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
                 color: white !important;
                 font-weight: 700 !important;
                 font-size: 1.5rem !important;
+            }
+            
+            section.animated {
+                animation: fadeInUp 0.8s ease forwards;
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
         `;
         document.head.appendChild(style);
