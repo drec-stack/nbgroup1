@@ -9,8 +9,66 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/contacts.css">
+    <style>
+        /* Glass header styling for internal pages */
+        .internal-page .main-header {
+            position: fixed !important;
+            top: 20px !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: calc(100% - 40px) !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            z-index: 1000 !important;
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transition: all 0.4s ease !important;
+            border-radius: 20px !important;
+            background: rgba(0, 102, 255, 0.12) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        }
+
+        .internal-page .main-header.header-hidden {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        .internal-page .main-header.header-scrolled {
+            background: rgba(0, 102, 255, 0.2) !important;
+            backdrop-filter: blur(20px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+        }
+
+        .contact-hero {
+            padding-top: 140px !important;
+        }
+
+        /* Mobile adjustments for internal pages */
+        @media (max-width: 768px) {
+            .internal-page .main-header {
+                top: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 14px 0 !important;
+                background: rgba(0, 102, 255, 0.22) !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            .contact-hero {
+                padding-top: 100px !important;
+            }
+        }
+    </style>
 </head>
 <body class="internal-page">
+    <!-- Glass Header Container -->
     <div id="header-container"></div>
 
     <!-- Hero Section -->
@@ -300,98 +358,333 @@
         </div>
     </section>
 
+    <!-- Footer Container -->
     <div id="footer-container"></div>
 
+    <!-- JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/contacts.js"></script>
     
     <script>
-        // Enhanced component loading with error handling
-        function loadComponent(url, containerId, fallbackHtml = '') {
-            return fetch(url)
-                .then(response => {
-                    if (!response.ok) throw new Error(`Failed to load ${url}: ${response.status}`);
-                    return response.text();
-                })
+        // Load glass header component
+        function loadGlassHeader() {
+            console.log('🔵 Loading glass header for contacts page...');
+            
+            fetch('components/header.html')
+                .then(response => response.text())
                 .then(html => {
-                    document.getElementById(containerId).innerHTML = html;
-                    return true;
+                    document.getElementById('header-container').innerHTML = html;
+                    
+                    // Инициализировать хедер
+                    if (typeof initHeader === 'function') {
+                        setTimeout(() => {
+                            initHeader();
+                            
+                            // Добавляем класс для внутренних страниц
+                            const header = document.querySelector('.main-header');
+                            if (header) {
+                                header.classList.add('internal-page-header');
+                                
+                                // Анимация появления
+                                setTimeout(() => {
+                                    header.style.opacity = '1';
+                                    header.style.transform = 'translateY(0)';
+                                }, 100);
+                            }
+                        }, 100);
+                    }
+                    
+                    // Применить переводы к хедеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 200);
+                    
+                    console.log('✅ Glass header loaded successfully');
                 })
                 .catch(error => {
-                    console.error(error);
-                    if (fallbackHtml) {
-                        document.getElementById(containerId).innerHTML = fallbackHtml;
-                    }
-                    return false;
+                    console.error('❌ Error loading glass header:', error);
+                    // Fallback header
+                    document.getElementById('header-container').innerHTML = `
+                        <header class="main-header">
+                            <div class="container">
+                                <div class="header-inner">
+                                    <a href="index.html" class="logo">
+                                        <div class="logo-mark">NB</div>
+                                        <span class="logo-text">NBGROUP.TECH</span>
+                                    </a>
+                                    <nav class="main-nav">
+                                        <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                                        <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                                        <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                                        <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
+                                        <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                                        <a href="contacts.html" class="nav-link active" data-i18n="nav.contact">Контакты</a>
+                                    </nav>
+                                    <div class="header-actions">
+                                        <div class="language-switcher" data-current-lang="ru">
+                                            <button class="lang-btn" data-lang="ru">RU</button>
+                                            <button class="lang-btn active" data-lang="en">EN</button>
+                                        </div>
+                                        <a href="contacts.html" class="btn btn-small btn-primary" data-i18n="nav.startProject">
+                                            Начать проект
+                                        </a>
+                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mobile-menu-overlay"></div>
+                        </header>
+                    `;
+                    
+                    // Применить переводы к fallback хедеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 300);
                 });
         }
 
-        // Initialize the page
+        // Load footer component
+        function loadFooter() {
+            fetch('components/footer.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('footer-container').innerHTML = html;
+                    console.log('✅ Footer loaded successfully');
+                    
+                    // Применить переводы к футеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 200);
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = `
+                        <footer class="minimal-footer">
+                            <div class="footer-container">
+                                <div class="footer-content">
+                                    <div class="footer-bottom">
+                                        <div class="copyright" data-i18n="footer.copyright">
+                                            © 2024 NBGROUP.TECH Все права защищены.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    `;
+                });
+        }
+
+        // Инициализация страницы контактов
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Contact page loading...');
+            console.log('🚀 Contact page initializing...');
             
-            // Load header with enhanced error handling
-            loadComponent('components/header.html', 'header-container', `
-                <header class="main-header">
-                    <div class="container">
-                        <div class="header-inner">
-                            <a href="index.html" class="logo">
-                                <div class="logo-mark">NB</div>
-                                <span class="logo-text">NBGROUP.TECH</span>
-                            </a>
-                            <nav class="main-nav">
-                                <a href="index.html" class="nav-link">Home</a>
-                                <a href="services.html" class="nav-link">Services</a>
-                                <a href="portfolio.html" class="nav-link">Work</a>
-                                <a href="brandbook.html" class="nav-link">Brandbook</a>
-                                <a href="about.html" class="nav-link">About</a>
-                                <a href="contacts.html" class="nav-link active">Contact</a>
-                            </nav>
+            // Загружаем стеклянный хедер
+            loadGlassHeader();
+            
+            // Загружаем футер
+            loadFooter();
+            
+            // Инициализация контактной формы
+            setTimeout(() => {
+                // Обработка отправки формы
+                const contactForm = document.getElementById('contactForm');
+                if (contactForm) {
+                    contactForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        
+                        // Простая валидация
+                        const nameInput = document.getElementById('name');
+                        const emailInput = document.getElementById('email');
+                        const messageInput = document.getElementById('message');
+                        
+                        let isValid = true;
+                        
+                        if (!nameInput.value.trim()) {
+                            nameInput.parentElement.classList.add('error');
+                            isValid = false;
+                        } else {
+                            nameInput.parentElement.classList.remove('error');
+                        }
+                        
+                        if (!emailInput.value.trim() || !isValidEmail(emailInput.value)) {
+                            emailInput.parentElement.classList.add('error');
+                            isValid = false;
+                        } else {
+                            emailInput.parentElement.classList.remove('error');
+                        }
+                        
+                        if (!messageInput.value.trim()) {
+                            messageInput.parentElement.classList.add('error');
+                            isValid = false;
+                        } else {
+                            messageInput.parentElement.classList.remove('error');
+                        }
+                        
+                        if (isValid) {
+                            // Показываем сообщение об успехе
+                            const submitBtn = contactForm.querySelector('button[type="submit"]');
+                            const originalText = submitBtn.innerHTML;
+                            
+                            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+                            submitBtn.disabled = true;
+                            
+                            // Имитация отправки
+                            setTimeout(() => {
+                                submitBtn.innerHTML = '<i class="fas fa-check"></i> Отправлено!';
+                                submitBtn.style.background = '#4CAF50';
+                                
+                                // Сброс формы
+                                setTimeout(() => {
+                                    contactForm.reset();
+                                    submitBtn.innerHTML = originalText;
+                                    submitBtn.disabled = false;
+                                    submitBtn.style.background = '';
+                                    
+                                    // Показываем уведомление
+                                    showNotification('Сообщение успешно отправлено! Мы свяжемся с вами в течение 24 часов.', 'success');
+                                }, 2000);
+                            }, 1500);
+                        }
+                    });
+                    
+                    // Убираем ошибки при вводе
+                    const inputs = contactForm.querySelectorAll('input, textarea');
+                    inputs.forEach(input => {
+                        input.addEventListener('input', function() {
+                            this.parentElement.classList.remove('error');
+                        });
+                    });
+                }
+                
+                // FAQ аккордеон
+                const faqItems = document.querySelectorAll('.faq-item');
+                faqItems.forEach(item => {
+                    const question = item.querySelector('.faq-question');
+                    question.addEventListener('click', () => {
+                        // Закрываем все остальные
+                        faqItems.forEach(otherItem => {
+                            if (otherItem !== item) {
+                                otherItem.classList.remove('active');
+                            }
+                        });
+                        
+                        // Открываем/закрываем текущий
+                        item.classList.toggle('active');
+                    });
+                });
+                
+                // Копирование адреса
+                const copyAddressBtn = document.getElementById('copyAddressBtn');
+                if (copyAddressBtn) {
+                    copyAddressBtn.addEventListener('click', () => {
+                        const address = 'Moscow City, Tower 45, Presnenskaya Naberezhnaya, 123, Moscow, Russia 123112';
+                        navigator.clipboard.writeText(address).then(() => {
+                            showNotification('Адрес скопирован в буфер обмена!', 'info');
+                        });
+                    });
+                }
+                
+                // Открытие карты
+                const openMapBtn = document.getElementById('openMapBtn');
+                if (openMapBtn) {
+                    openMapBtn.addEventListener('click', () => {
+                        const address = encodeURIComponent('Moscow City, Tower 45, Presnenskaya Naberezhnaya, 123, Moscow, Russia 123112');
+                        window.open(`https://www.google.com/maps/search/?api=1&query=${address}`, '_blank');
+                    });
+                }
+                
+                // Функция проверки email
+                function isValidEmail(email) {
+                    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(email.toLowerCase());
+                }
+                
+                // Функция показа уведомления
+                function showNotification(message, type = 'info') {
+                    const notification = document.createElement('div');
+                    notification.className = `notification notification-${type}`;
+                    notification.innerHTML = `
+                        <div class="notification-content">
+                            <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                            <span>${message}</span>
                         </div>
-                    </div>
-                </header>
-            `).then(success => {
-                if (success && typeof initHeader === 'function') {
-                    setTimeout(initHeader, 100);
+                    `;
+                    
+                    notification.style.cssText = `
+                        position: fixed;
+                        top: 100px;
+                        right: 20px;
+                        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+                        color: white;
+                        padding: 15px 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                        z-index: 10000;
+                        transform: translateX(400px);
+                        transition: transform 0.3s ease;
+                        max-width: 400px;
+                        font-weight: 500;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    `;
+                    
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.style.transform = 'translateX(0)';
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        notification.style.transform = 'translateX(400px)';
+                        setTimeout(() => {
+                            if (notification.parentNode) {
+                                notification.parentNode.removeChild(notification);
+                            }
+                        }, 300);
+                    }, 5000);
                 }
-            });
-
-            // Load footer with auto-initialization
-            loadComponent('components/footer.html', 'footer-container', `
-                <footer class="fallback-footer">
-                    <p>&copy; 2024 NBGROUP.TECH - Contact Us</p>
-                </footer>
-            `).then(success => {
-                if (success && typeof initFooter === 'function') {
-                    setTimeout(initFooter, 100);
-                }
-            });
-
-            // Initialize contact functionality
+                
+            }, 500);
+            
+            // Инициализация функциональности контактов
             setTimeout(() => {
                 if (typeof initContact === 'function') {
                     initContact();
                 } else {
-                    console.warn('initContact function not found, retrying...');
-                    setTimeout(() => {
-                        if (typeof initContact === 'function') {
-                            initContact();
-                        }
-                    }, 500);
+                    console.warn('initContact function not found');
                 }
-            }, 200);
+            }, 300);
         });
 
-        // Fallback initialization if DOMContentLoaded already fired
-        if (document.readyState === 'interactive' || document.readyState === 'complete') {
-            setTimeout(() => {
-                if (typeof initContact === 'function') {
-                    initContact();
-                }
-            }, 100);
-        }
+        // Добавляем padding-top для body чтобы контент не скрывался под фиксированным хедером
+        window.addEventListener('load', function() {
+            const header = document.querySelector('.main-header');
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                document.querySelector('.contact-hero').style.paddingTop = (headerHeight + 40) + 'px';
+            }
+        });
+
+        // Адаптация для мобильных
+        window.addEventListener('resize', function() {
+            const header = document.querySelector('.main-header');
+            if (header && window.innerWidth <= 768) {
+                document.querySelector('.contact-hero').style.paddingTop = '100px';
+            }
+        });
     </script>
 </body>
 </html>
