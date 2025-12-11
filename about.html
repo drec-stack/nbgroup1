@@ -73,14 +73,17 @@
     <!-- Header Container -->
     <div id="header-container"></div>
     
-    <!-- Your existing about page content here -->
+    <!-- Hero Section -->
     <section class="about-hero">
         <div class="container">
-            <h1 data-i18n="about.hero.title">О нас</h1>
-            <p data-i18n="about.hero.subtitle">Промышленная дизайн-студия полного цикла</p>
+            <div class="about-hero-content">
+                <h1 class="page-title" data-i18n="about.title">О нас</h1>
+                <p class="page-subtitle" data-i18n="about.subtitle">Промышленный дизайн, инжиниринг и производство полного цикла</p>
+            </div>
         </div>
     </section>
     
+    <!-- Mission Section -->
     <section class="about-content">
         <div class="container">
             <div class="about-grid">
@@ -89,8 +92,228 @@
                     <p data-i18n="about.mission.text">Создавать инновационные продукты, которые определяют рынки и улучшают жизнь людей через сочетание эстетики, инженерной точности и производственной реализации.</p>
                 </div>
                 <div class="about-image">
-                    <!-- Add your image -->
+                    <div class="image-placeholder">
+                        <i class="fas fa-lightbulb" style="font-size: 4rem; color: var(--accent);"></i>
+                        <p style="margin-top: 20px; color: var(--light-text);">Инновации и превосходство</p>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Our Story Section -->
+    <section class="our-story">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="about.story.title">Наша история</h2>
+            </div>
+            <div class="story-content">
+                <div class="story-text">
+                    <p class="story-paragraph" data-i18n="about.story.p1">
+                        Основанная в 2012 году, NBGROUP.TECH начинала как небольшая студия промышленного дизайна с большой целью.
+                    </p>
+                    <p class="story-paragraph" data-i18n="about.story.p2">
+                        За годы мы выросли в полноценную компанию по разработке продуктов.
+                    </p>
+                    <div class="story-divider"></div>
+                    <div class="story-stats">
+                        <div class="story-stat">
+                            <div class="stat-number">12+</div>
+                            <div class="stat-label" data-i18n="about.story.stats.years">ЛЕТ ОПЫТА</div>
+                        </div>
+                        <div class="story-stat">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label" data-i18n="about.story.stats.projects">ЗАВЕРШЕННЫХ ПРОЕКТОВ</div>
+                        </div>
+                        <div class="story-stat">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label" data-i18n="about.story.stats.specialists">СПЕЦИАЛИСТОВ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-history" style="font-size: 4rem; color: var(--accent);"></i>
+                        <p style="margin-top: 20px; color: var(--light-text);">2012 - настоящее время</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Speck Design Services Section -->
+    <section class="speck-design-section">
+        <div class="container">
+            <h2 class="speck-title" data-i18n="about.services.title">Что мы делаем</h2>
+            <p class="speck-subtitle" data-i18n="about.services.subtitle">Системный подход к разработке продуктов</p>
+            
+            <div class="speck-services-grid">
+                <!-- Card 1: System Approach -->
+                <div class="speck-service-card reveal-left">
+                    <div class="speck-card-icon">
+                        <i class="fas fa-sitemap"></i>
+                    </div>
+                    <h3 class="speck-card-title" data-i18n="about.services.systemApproach.title">Системный подход</h3>
+                    <div class="speck-card-divider"></div>
+                    <p class="speck-card-text" data-i18n="about.services.systemApproach.description">
+                        Выстраиваем процесс так, чтобы каждый этап — от идеи до серийного продукта — был логичным, контролируемым и предсказуемым.
+                    </p>
+                    <div class="speck-card-benefit" data-i18n="about.services.systemApproach.benefits">
+                        Это снижает производственные риски, сокращает сроки вывода продукта и обеспечивает стабильный результат.
+                    </div>
+                </div>
+                
+                <!-- Card 2: Industrial Design -->
+                <div class="speck-service-card reveal-right">
+                    <div class="speck-card-icon">
+                        <i class="fas fa-pencil-ruler"></i>
+                    </div>
+                    <h3 class="speck-card-title" data-i18n="about.services.industrialDesign.title">Промышленный дизайн</h3>
+                    <div class="speck-card-divider"></div>
+                    <p class="speck-card-text" data-i18n="about.services.industrialDesign.description">
+                        Разрабатываем дизайн продуктов любой сложности — от идеи до запуска в производство.
+                    </p>
+                    <div class="speck-card-detail" data-i18n="about.services.industrialDesign.details">
+                        Каждый элемент прорабатывается с точки зрения эстетики, эргономики и реальных производственных процессов.
+                    </div>
+                </div>
+                
+                <!-- Card 3: Engineering -->
+                <div class="speck-service-card reveal-left">
+                    <div class="speck-card-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="speck-card-title" data-i18n="about.services.engineering.title">Инжиниринг</h3>
+                    <div class="speck-card-divider"></div>
+                    <p class="speck-card-text" data-i18n="about.services.engineering.description">
+                        Переводим дизайн в полностью рабочую конструкцию.
+                    </p>
+                    <div class="speck-card-list">
+                        <h4 data-i18n="about.services.keyAreas">Ключевые направления:</h4>
+                        <ul>
+                            <li data-i18n="about.services.hookahs">Премиальные кальяны</li>
+                            <li data-i18n="about.services.accessories">Аксессуары</li>
+                            <li data-i18n="about.services.packaging">Упаковка и кейсы</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Card 4: Production -->
+                <div class="speck-service-card reveal-right">
+                    <div class="speck-card-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <h3 class="speck-card-title" data-i18n="about.services.production.title">Производство</h3>
+                    <div class="speck-card-divider"></div>
+                    <p class="speck-card-text" data-i18n="about.services.production.description">
+                        Собственная производственная база — ключевое преимущество студии.
+                    </p>
+                    <div class="speck-card-benefit" data-i18n="about.services.itAllows">Она позволяет:</div>
+                    <div class="speck-card-list">
+                        <ul>
+                            <li data-i18n="about.services.prototypes">Выпускать прототипы в срок</li>
+                            <li data-i18n="about.services.quality">Контролировать качество на каждом этапе</li>
+                            <li data-i18n="about.services.massProduction">Запускать серийное производство любого объёма</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Card 5: Brandbook -->
+                <div class="speck-service-card reveal-left">
+                    <div class="speck-card-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="speck-card-title" data-i18n="about.services.brandbook.title">Брендбук</h3>
+                    <div class="speck-card-divider"></div>
+                    <p class="speck-card-text" data-i18n="about.services.brandbook.description">
+                        Разрабатываем бренд-системы для компаний, которым важно выглядеть цельно и конкурентно на международном уровне.
+                    </p>
+                    <div class="speck-card-list">
+                        <h4 data-i18n="about.services.includes">В брендбук входит:</h4>
+                        <ul>
+                            <li data-i18n="about.services.visualIdentity">Визуальная идентичность</li>
+                            <li data-i18n="about.services.colorTypography">Цветовая и шрифтовая система</li>
+                            <li data-i18n="about.services.brandedElements">Фирменные элементы и носители</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Card 6: Identity Development -->
+                <div class="speck-service-card reveal-right">
+                    <div class="speck-card-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="speck-card-title" data-i18n="about.services.identity.title">Разработка айдентики</h3>
+                    <div class="speck-card-divider"></div>
+                    <p class="speck-card-text" data-i18n="about.services.identity.description">
+                        Создаём визуальную систему, которая повышает узнаваемость бренда и укрепляет его репутацию.
+                    </p>
+                    <div class="speck-card-detail" data-i18n="about.services.identity.details">
+                        Айдентика работает одинаково точно на упаковке, сайте, в соцсетях и в самом продукте.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Team Section -->
+    <section class="our-team">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="about.team.title">Команда</h2>
+                <p data-i18n="about.team.subtitle">Профессионалы с опытом реальных проектов</p>
+            </div>
+            
+            <div class="team-grid">
+                <!-- Member 1 -->
+                <div class="team-member">
+                    <div class="member-photo">
+                        <div class="member-avatar-placeholder">
+                            <i class="fas fa-user-tie" style="font-size: 3rem; color: var(--accent);"></i>
+                        </div>
+                    </div>
+                    <h3 class="member-name" data-i18n="about.team.spartak.name">Спартак Нухсан</h3>
+                    <p class="member-role" data-i18n="about.team.spartak.role">Основатель, креативный директор</p>
+                    <p class="member-bio" data-i18n="about.team.spartak.bio">Десятки проектов в России, Турции, Дубае и Европе</p>
+                </div>
+                
+                <!-- Member 2 -->
+                <div class="team-member">
+                    <div class="member-photo">
+                        <div class="member-avatar-placeholder">
+                            <i class="fas fa-user-cog" style="font-size: 3rem; color: var(--accent);"></i>
+                        </div>
+                    </div>
+                    <h3 class="member-name" data-i18n="about.team.urmat.name">Исмаилов Урмат</h3>
+                    <p class="member-role" data-i18n="about.team.urmat.role">Сооснователь и операционный директор</p>
+                    <p class="member-bio" data-i18n="about.team.urmat.bio">Системность, организация и стабильный рост</p>
+                </div>
+                
+                <!-- Member 3 -->
+                <div class="team-member">
+                    <div class="member-photo">
+                        <div class="member-avatar-placeholder">
+                            <i class="fas fa-user-graduate" style="font-size: 3rem; color: var(--accent);"></i>
+                        </div>
+                    </div>
+                    <h3 class="member-name" data-i18n="about.team.elena.name">Елена Кирьянова</h3>
+                    <p class="member-role" data-i18n="about.team.elena.role">Директор NB Group Company</p>
+                    <p class="member-bio" data-i18n="about.team.elena.bio">Эксперт в области бренд-стратегии и развития бизнеса</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="about-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 data-i18n="about.cta.title">Готовы к сотрудничеству?</h2>
+                <p data-i18n="about.cta.description">Обсудим ваш проект и предложим оптимальное решение</p>
+                <a href="contacts.html" class="btn btn-primary">
+                    <span data-i18n="about.cta.button">Обсудить проект</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -367,6 +590,13 @@
                 window.i18n.refresh();
             }
         }, 1000);
+        
+        // Initialize about page animations
+        setTimeout(() => {
+            if (typeof window.initAbout === 'function') {
+                window.initAbout();
+            }
+        }, 1500);
     </script>
 </body>
 </html>
