@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/services.css">
     <style>
-        /* Glass header styling for internal pages */
-        .internal-page .main-header {
+        /* Glass header styling for services page */
+        .services-page .main-header {
             position: fixed !important;
             top: 20px !important;
             left: 0 !important;
@@ -31,25 +31,45 @@
             border: 1px solid rgba(255, 255, 255, 0.22) !important;
         }
 
-        .internal-page .main-header.header-hidden {
+        .services-page .main-header.header-hidden {
             transform: translateY(-100%) !important;
             opacity: 0 !important;
             pointer-events: none !important;
         }
 
-        .internal-page .main-header.header-scrolled {
+        .services-page .main-header.header-scrolled {
             background: rgba(0, 102, 255, 0.2) !important;
             backdrop-filter: blur(20px) saturate(200%) !important;
             -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+            padding: 15px 0 !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+            top: 10px !important;
         }
 
         .services-hero {
-            padding-top: 140px !important;
+            padding-top: 180px !important;
         }
 
-        /* Mobile adjustments for internal pages */
+        /* Active link styling */
+        .services-page .nav-link[href="services.html"] {
+            position: relative !important;
+            color: white !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            border-radius: 10px !important;
+            padding: 10px 20px !important;
+            font-weight: 600 !important;
+        }
+
+        .services-page .nav-link[href="services.html"]::after {
+            display: none !important;
+        }
+
+        /* Mobile adjustments */
         @media (max-width: 768px) {
-            .internal-page .main-header {
+            .services-page .main-header {
                 top: 0 !important;
                 width: 100% !important;
                 max-width: 100% !important;
@@ -57,19 +77,81 @@
                 margin: 0 !important;
                 padding: 14px 0 !important;
                 background: rgba(0, 102, 255, 0.22) !important;
+                backdrop-filter: blur(20px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
                 border: none !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
             }
             
+            .services-hero {
+                padding-top: 120px !important;
+            }
+            
+            .services-page .nav-link[href="services.html"] {
+                padding: 10px 16px !important;
+                background: rgba(255, 255, 255, 0.25) !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
             .services-hero {
                 padding-top: 100px !important;
             }
         }
     </style>
 </head>
-<body class="internal-page">
-    <!-- Glass Header Container -->
-    <div id="header-container"></div>
+<body class="services-page">
+    <!-- Glass Header -->
+    <header class="main-header services-header">
+        <div class="container">
+            <div class="header-inner">
+                <!-- Логотип NB Group -->
+                <a href="index.html" class="logo">
+                    <div class="logo-mark">NB</div>
+                    <span class="logo-text" data-i18n="nav.brand">NB Group</span>
+                </a>
+                
+                <!-- Навигация -->
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                    <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                    <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                    <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
+                    <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                    <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
+                </nav>
+                
+                <!-- Действия -->
+                <div class="header-actions">
+                    <!-- Переключатель языка -->
+                    <div class="language-switcher" data-current-lang="ru">
+                        <div class="lang-slider"></div>
+                        <button class="lang-btn" data-lang="ru">
+                            <span class="lang-text">RU</span>
+                            <span class="lang-flag">🇷🇺</span>
+                        </button>
+                        <button class="lang-btn active" data-lang="en">
+                            <span class="lang-text">EN</span>
+                            <span class="lang-flag">🇺🇸</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Кнопка Начать проект -->
+                    <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
+                        Начать проект
+                    </a>
+                    
+                    <!-- Мобильное меню -->
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-menu-overlay"></div>
+    </header>
 
     <section class="services-hero">
         <div class="container">
@@ -392,8 +474,18 @@
         </div>
     </section>
 
-    <!-- Footer Container -->
-    <div id="footer-container"></div>
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-bottom">
+                    <div class="copyright" data-i18n="footer.copyright">
+                        © 2024 NBGROUP.TECH Все права защищены.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- JavaScript -->
     <script src="js/i18n.js"></script>
@@ -402,138 +494,25 @@
     <script src="js/services.js"></script>
     
     <script>
-        // Load header component with glass effect
-        function loadGlassHeader() {
-            console.log('🔵 Loading glass header for services page...');
-            
-            fetch('components/header.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('header-container').innerHTML = html;
-                    
-                    // Инициализировать хедер
-                    if (typeof initHeader === 'function') {
-                        setTimeout(() => {
-                            initHeader();
-                            
-                            // Добавляем класс для внутренних страниц
-                            const header = document.querySelector('.main-header');
-                            if (header) {
-                                header.classList.add('internal-page-header');
-                                
-                                // Анимация появления
-                                setTimeout(() => {
-                                    header.style.opacity = '1';
-                                    header.style.transform = 'translateY(0)';
-                                }, 100);
-                            }
-                        }, 100);
-                    }
-                    
-                    // Применить переводы к хедеру
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 200);
-                    
-                    console.log('✅ Glass header loaded successfully');
-                })
-                .catch(error => {
-                    console.error('❌ Error loading glass header:', error);
-                    // Fallback header
-                    document.getElementById('header-container').innerHTML = `
-                        <header class="main-header">
-                            <div class="container">
-                                <div class="header-inner">
-                                    <a href="index.html" class="logo">
-                                        <div class="logo-mark">NB</div>
-                                        <span class="logo-text">NBGROUP.TECH</span>
-                                    </a>
-                                    <nav class="main-nav">
-                                        <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
-                                        <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
-                                        <a href="services.html" class="nav-link active" data-i18n="nav.services">Услуги</a>
-                                        <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
-                                        <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
-                                        <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
-                                    </nav>
-                                    <div class="header-actions">
-                                        <div class="language-switcher" data-current-lang="ru">
-                                            <button class="lang-btn" data-lang="ru">RU</button>
-                                            <button class="lang-btn active" data-lang="en">EN</button>
-                                        </div>
-                                        <a href="contacts.html" class="btn btn-small btn-primary" data-i18n="nav.startProject">
-                                            Начать проект
-                                        </a>
-                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mobile-menu-overlay"></div>
-                        </header>
-                    `;
-                    
-                    // Применить переводы к fallback хедеру
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 300);
-                });
-        }
-
-        // Load footer component
-        function loadFooter() {
-            fetch('components/footer.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('footer-container').innerHTML = html;
-                    console.log('✅ Footer loaded successfully');
-                    
-                    // Применить переводы к футеру
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 200);
-                })
-                .catch(error => {
-                    console.error('Error loading footer:', error);
-                    document.getElementById('footer-container').innerHTML = `
-                        <footer class="minimal-footer">
-                            <div class="footer-container">
-                                <div class="footer-content">
-                                    <div class="footer-bottom">
-                                        <div class="copyright" data-i18n="footer.copyright">
-                                            © 2024 NBGROUP.TECH Все права защищены.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </footer>
-                    `;
-                });
-        }
-
-        // Инициализация страницы услуг
+        // Services Page Initialization
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Services page initializing...');
             
-            // Загружаем стеклянный хедер
-            loadGlassHeader();
-            
-            // Загружаем футер
-            loadFooter();
+            // Активируем ссылку "Услуги" в хедере
+            const servicesLink = document.querySelector('.nav-link[href="services.html"]');
+            if (servicesLink) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                servicesLink.classList.add('active');
+            }
             
             // Инициализируем навигацию по услугам
             setTimeout(() => {
-                // Навигация по якорям
                 const navItems = document.querySelectorAll('.nav-item');
+                const sections = document.querySelectorAll('.service-detail');
+                
+                // Обработка кликов по навигации
                 navItems.forEach(item => {
                     item.addEventListener('click', function(e) {
                         e.preventDefault();
@@ -541,10 +520,17 @@
                         this.classList.add('active');
                         
                         const targetId = this.getAttribute('href');
-                        const targetSection = document.querySelector(targetId);
                         
+                        // Обработка ссылки на brandbook.html
+                        if (targetId === '#brandbook') {
+                            window.location.href = 'brandbook.html';
+                            return;
+                        }
+                        
+                        const targetSection = document.querySelector(targetId);
                         if (targetSection) {
-                            const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
+                            const header = document.querySelector('.main-header');
+                            const headerHeight = header?.offsetHeight || 0;
                             const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
                             const offset = headerHeight + navHeight + 20;
                             
@@ -556,10 +542,9 @@
                     });
                 });
                 
-                // Активный элемент навигации при скролле
+                // Активное состояние при скролле
                 window.addEventListener('scroll', () => {
-                    const sections = document.querySelectorAll('.service-detail');
-                    const scrollPosition = window.scrollY + 100;
+                    const scrollPosition = window.scrollY + 150;
                     
                     sections.forEach(section => {
                         const sectionTop = section.offsetTop;
@@ -575,36 +560,90 @@
                             });
                         }
                     });
+                    
+                    // Логика скролла для хедера на странице услуг
+                    const header = document.querySelector('.main-header');
+                    const scrollY = window.scrollY;
+                    
+                    if (scrollY > 100) {
+                        header.classList.add('header-scrolled');
+                        header.classList.remove('header-hidden');
+                    } else {
+                        header.classList.remove('header-scrolled');
+                        header.classList.remove('header-hidden');
+                    }
                 });
-            }, 500);
+                
+                console.log('✅ Services navigation initialized');
+            }, 300);
             
             // Инициализация функциональности услуг
             setTimeout(() => {
                 if (typeof initServices === 'function') {
                     initServices();
-                } else {
-                    console.warn('initServices function not found');
                 }
-            }, 300);
+            }, 500);
         });
 
-        // Добавляем padding-top для body чтобы контент не скрывался под фиксированным хедером
+        // Header scroll logic for services page
+        function setupServicesHeaderScroll() {
+            const header = document.querySelector('.main-header');
+            let lastScrollY = window.scrollY;
+            const scrollThreshold = 100;
+            
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                
+                if (currentScrollY <= 0) {
+                    header.classList.remove('header-hidden', 'header-scrolled');
+                    header.style.opacity = '1';
+                    return;
+                }
+                
+                if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                    // Scrolling down - show minimized header
+                    header.classList.remove('header-hidden');
+                    header.classList.add('header-scrolled');
+                } else if (currentScrollY < lastScrollY) {
+                    // Scrolling up - show normal header
+                    header.classList.remove('header-hidden');
+                    header.classList.remove('header-scrolled');
+                }
+                
+                lastScrollY = currentScrollY;
+            }, { passive: true });
+        }
+
+        // Setup on load
         window.addEventListener('load', function() {
+            setupServicesHeaderScroll();
+            
+            // Adjust hero padding
             const header = document.querySelector('.main-header');
             if (header) {
                 const headerHeight = header.offsetHeight;
-                document.querySelector('.services-hero').style.paddingTop = (headerHeight + 40) + 'px';
+                const hero = document.querySelector('.services-hero');
+                if (hero) {
+                    hero.style.paddingTop = (headerHeight + 60) + 'px';
+                }
             }
         });
 
-        // Адаптация для мобильных
+        // Mobile adjustments
         window.addEventListener('resize', function() {
             const header = document.querySelector('.main-header');
-            if (header && window.innerWidth <= 768) {
-                document.querySelector('.services-hero').style.paddingTop = '100px';
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                const hero = document.querySelector('.services-hero');
+                if (hero) {
+                    if (window.innerWidth <= 768) {
+                        hero.style.paddingTop = '120px';
+                    } else {
+                        hero.style.paddingTop = (headerHeight + 60) + 'px';
+                    }
+                }
             }
         });
     </script>
 </body>
-</html>
-
+                                </html>
