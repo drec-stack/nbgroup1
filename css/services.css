@@ -2,6 +2,7 @@
 .services-hero {
     padding: 160px 0 80px;
     background: var(--secondary);
+    transition: padding-top 0.3s ease;
 }
 
 .services-hero-content {
@@ -17,7 +18,7 @@
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 80px;
-    z-index: 100;
+    z-index: 99;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
                 opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -229,17 +230,16 @@
     -webkit-text-fill-color: transparent;
     margin-bottom: 20px;
     transition: var(--transition);
-    display: block; /* Убедимся, что цифра отображается */
+    display: block;
 }
 
-/* Убираем проблемные стили, которые скрывали цифры */
 .process-phase:hover .phase-number {
-    transform: scale(1.1); /* Только легкое увеличение */
-    background: var(--accent-gradient); /* Сохраняем градиент */
+    transform: scale(1.1);
+    background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent; /* Явно указываем прозрачность текста */
+    color: transparent;
 }
 
 .process-phase h3 {
@@ -302,7 +302,7 @@
 
 @media (max-width: 768px) {
     .services-hero {
-        padding: 140px 0 60px !important;
+        padding: 120px 0 60px !important;
     }
     
     .services-hero-content {
@@ -312,11 +312,12 @@
     /* Navigation Mobile */
     .services-nav {
         padding: 25px 0;
-        position: static; /* На мобильных не скрываем */
+        position: static;
         transform: none !important;
         opacity: 1 !important;
         background: var(--primary);
         border-bottom: 1px solid var(--border);
+        top: 0;
     }
     
     .services-nav.hidden {
@@ -351,7 +352,7 @@
     }
     
     .nav-item.active::after {
-        display: none; /* Убираем подчеркивание на мобильных */
+        display: none;
     }
 
     /* Service Detail Mobile */
@@ -475,7 +476,18 @@
 }
 
 @media (max-width: 480px) {
-    /* Extra Small Devices */
+    .services-hero {
+        padding: 100px 0 40px !important;
+    }
+    
+    .services-hero-content h1 {
+        font-size: 2rem !important;
+    }
+    
+    .services-hero-content p {
+        font-size: 1rem !important;
+    }
+    
     .services-navigation {
         gap: 8px;
     }
@@ -544,11 +556,11 @@
 @media (max-width: 768px) {
     .service-cta .btn {
         padding: 14px 24px;
-        font-size: 16px; /* Минимальный размер для удобного тапа */
+        font-size: 16px;
     }
     
     .nav-item {
-        min-height: 44px; /* Минимальная высота для touch */
+        min-height: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -558,7 +570,7 @@
 /* Поддержка landscape ориентации */
 @media (max-width: 768px) and (orientation: landscape) {
     .services-hero {
-        padding: 120px 0 40px !important;
+        padding: 100px 0 40px !important;
         min-height: auto;
     }
     
@@ -567,9 +579,32 @@
         flex-wrap: nowrap;
         overflow-x: auto;
         justify-content: flex-start;
+        padding: 0 15px;
     }
     
     .nav-item {
         flex: 0 0 auto;
+        white-space: nowrap;
+    }
+}
+
+/* Дополнительные стили для стеклянного хедера */
+.main-header {
+    z-index: 1000 !important;
+}
+
+/* Ensure content is below header */
+body.services-page {
+    padding-top: 0;
+}
+
+/* Adjust for fixed header */
+.service-detail:first-of-type {
+    scroll-margin-top: 150px;
+}
+
+@media (max-width: 768px) {
+    .service-detail:first-of-type {
+        scroll-margin-top: 120px;
     }
 }
