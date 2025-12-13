@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/services.css">
     <style>
-        /* Glass header styling for internal pages */
-        .internal-page .main-header {
+        /* GLASS HEADER STYLING FOR ALL PAGES (SAME AS HOME) */
+        .main-header {
             position: fixed !important;
             top: 20px !important;
             left: 0 !important;
@@ -23,51 +23,99 @@
             transform: translateY(0) !important;
             opacity: 1 !important;
             pointer-events: auto !important;
-            transition: all 0.4s ease !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
             border-radius: 20px !important;
             background: rgba(0, 102, 255, 0.12) !important;
             backdrop-filter: blur(16px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            box-shadow: 
+                0 8px 32px rgba(0, 102, 255, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
             border: 1px solid rgba(255, 255, 255, 0.22) !important;
         }
 
-        .internal-page .main-header.header-hidden {
+        /* Стеклянный слой */
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.04) 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            border-radius: 20px;
+            opacity: 0.5;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Эффект при наведении */
+        .main-header:hover {
+            background: rgba(0, 102, 255, 0.15) !important;
+            box-shadow: 
+                0 12px 40px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                0 0 30px rgba(0, 102, 255, 0.12) !important;
+            border-color: rgba(255, 255, 255, 0.28) !important;
+        }
+
+        /* Скрытый хедер (при скролле вниз) */
+        .main-header.header-hidden {
             transform: translateY(-100%) !important;
             opacity: 0 !important;
             pointer-events: none !important;
         }
 
-        .internal-page .main-header.header-scrolled {
+        /* Хедер при скролле для внутренних страниц */
+        .main-header.header-scrolled {
             background: rgba(0, 102, 255, 0.2) !important;
             backdrop-filter: blur(20px) saturate(200%) !important;
             -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+            box-shadow: 
+                0 4px 20px rgba(0, 102, 255, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
         }
 
         .services-hero {
-            padding-top: 140px !important;
+            padding-top: 160px !important;
         }
 
-        /* Mobile adjustments for internal pages */
+        /* МОБИЛЬНАЯ АДАПТАЦИЯ */
         @media (max-width: 768px) {
-            .internal-page .main-header {
+            .main-header {
                 top: 0 !important;
                 width: 100% !important;
                 max-width: 100% !important;
                 border-radius: 0 !important;
                 margin: 0 !important;
                 padding: 14px 0 !important;
-                background: rgba(0, 102, 255, 0.22) !important;
+                background: rgba(0, 102, 255, 0.25) !important;
                 border: none !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+                transition: all 0.4s ease !important;
             }
             
+            .services-hero {
+                padding-top: 120px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
             .services-hero {
                 padding-top: 100px !important;
             }
         }
     </style>
 </head>
-<body class="internal-page">
+<body class="services-page">
     <!-- Glass Header Container -->
     <div id="header-container"></div>
 
@@ -412,23 +460,40 @@
                     document.getElementById('header-container').innerHTML = html;
                     
                     // Инициализировать хедер
-                    if (typeof initHeader === 'function') {
-                        setTimeout(() => {
+                    setTimeout(() => {
+                        if (typeof initHeader === 'function') {
                             initHeader();
+                        }
+                        
+                        // Принудительно добавляем стили для стеклянного хедера
+                        const header = document.querySelector('.main-header');
+                        if (header) {
+                            // Убедимся, что стили применены
+                            header.style.position = 'fixed';
+                            header.style.top = '20px';
+                            header.style.left = '0';
+                            header.style.right = '0';
+                            header.style.width = 'calc(100% - 40px)';
+                            header.style.maxWidth = '1400px';
+                            header.style.margin = '0 auto';
+                            header.style.borderRadius = '20px';
+                            header.style.background = 'rgba(0, 102, 255, 0.12)';
+                            header.style.backdropFilter = 'blur(16px) saturate(180%)';
+                            header.style.webkitBackdropFilter = 'blur(16px) saturate(180%)';
+                            header.style.border = '1px solid rgba(255, 255, 255, 0.22)';
+                            header.style.boxShadow = '0 8px 32px rgba(0, 102, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 20px rgba(255, 255, 255, 0.05)';
+                            header.style.zIndex = '1000';
                             
-                            // Добавляем класс для внутренних страниц
-                            const header = document.querySelector('.main-header');
-                            if (header) {
-                                header.classList.add('internal-page-header');
-                                
-                                // Анимация появления
-                                setTimeout(() => {
-                                    header.style.opacity = '1';
-                                    header.style.transform = 'translateY(0)';
-                                }, 100);
-                            }
-                        }, 100);
-                    }
+                            // Анимация появления
+                            setTimeout(() => {
+                                header.style.opacity = '1';
+                                header.style.transform = 'translateY(0)';
+                            }, 100);
+                        }
+                        
+                        // Setup header scroll behavior for services page
+                        setupServicesHeaderScroll();
+                    }, 100);
                     
                     // Применить переводы к хедеру
                     setTimeout(() => {
@@ -441,7 +506,7 @@
                 })
                 .catch(error => {
                     console.error('❌ Error loading glass header:', error);
-                    // Fallback header
+                    // Fallback header with exact same styles as home
                     document.getElementById('header-container').innerHTML = `
                         <header class="main-header">
                             <div class="container">
@@ -460,10 +525,17 @@
                                     </nav>
                                     <div class="header-actions">
                                         <div class="language-switcher" data-current-lang="ru">
-                                            <button class="lang-btn" data-lang="ru">RU</button>
-                                            <button class="lang-btn active" data-lang="en">EN</button>
+                                            <div class="lang-slider"></div>
+                                            <button class="lang-btn" data-lang="ru">
+                                                <span class="lang-text">RU</span>
+                                                <span class="lang-flag">🇷🇺</span>
+                                            </button>
+                                            <button class="lang-btn active" data-lang="en">
+                                                <span class="lang-text">EN</span>
+                                                <span class="lang-flag">🇺🇸</span>
+                                            </button>
                                         </div>
-                                        <a href="contacts.html" class="btn btn-small btn-primary" data-i18n="nav.startProject">
+                                        <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
                                             Начать проект
                                         </a>
                                         <button class="mobile-menu-toggle" aria-label="Toggle menu">
@@ -483,8 +555,73 @@
                         if (window.i18n && window.i18n.refresh) {
                             window.i18n.refresh();
                         }
+                        
+                        // Initialize the fallback header
+                        const header = document.querySelector('.main-header');
+                        if (header) {
+                            header.style.position = 'fixed';
+                            header.style.top = '20px';
+                            header.style.width = 'calc(100% - 40px)';
+                            header.style.maxWidth = '1400px';
+                            header.style.margin = '0 auto';
+                            header.style.borderRadius = '20px';
+                            header.style.background = 'rgba(0, 102, 255, 0.12)';
+                            header.style.backdropFilter = 'blur(16px) saturate(180%)';
+                            header.style.webkitBackdropFilter = 'blur(16px) saturate(180%)';
+                            header.style.border = '1px solid rgba(255, 255, 255, 0.22)';
+                            header.style.zIndex = '1000';
+                            
+                            setupServicesHeaderScroll();
+                        }
                     }, 300);
                 });
+        }
+
+        // Setup special scroll behavior for services page
+        function setupServicesHeaderScroll() {
+            const header = document.querySelector('.main-header');
+            if (!header) return;
+            
+            let lastScrollY = window.scrollY;
+            const scrollThreshold = 100;
+            
+            function handleScroll() {
+                const currentScrollY = window.scrollY;
+                
+                if (currentScrollY <= 0) {
+                    header.style.transform = 'translateY(0px)';
+                    header.classList.remove('header-hidden', 'header-scrolled');
+                    return;
+                }
+                
+                if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                    // Scrolling down
+                    header.classList.remove('header-hidden');
+                    header.classList.add('header-scrolled');
+                    header.style.opacity = '1';
+                } else if (currentScrollY < lastScrollY) {
+                    // Scrolling up
+                    header.classList.remove('header-hidden');
+                    header.classList.remove('header-scrolled');
+                    header.style.opacity = '1';
+                }
+                
+                lastScrollY = currentScrollY;
+            }
+            
+            // Initial check
+            handleScroll();
+            
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // Show header on hover
+            header.addEventListener('mouseenter', () => {
+                if (header.classList.contains('header-hidden')) {
+                    header.classList.remove('header-hidden', 'header-scrolled');
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateY(0)';
+                }
+            });
         }
 
         // Load footer component
@@ -586,24 +723,31 @@
                     console.warn('initServices function not found');
                 }
             }, 300);
+            
+            // Обновляем padding для контента
+            setTimeout(updateContentPadding, 500);
         });
 
-        // Добавляем padding-top для body чтобы контент не скрывался под фиксированным хедером
-        window.addEventListener('load', function() {
+        // Обновление отступов для контента
+        function updateContentPadding() {
             const header = document.querySelector('.main-header');
-            if (header) {
-                const headerHeight = header.offsetHeight;
-                document.querySelector('.services-hero').style.paddingTop = (headerHeight + 40) + 'px';
+            const servicesHero = document.querySelector('.services-hero');
+            
+            if (header && servicesHero) {
+                if (window.innerWidth <= 768) {
+                    servicesHero.style.paddingTop = '120px';
+                } else {
+                    const headerHeight = header.offsetHeight;
+                    servicesHero.style.paddingTop = (headerHeight + 60) + 'px';
+                }
             }
-        });
+        }
 
         // Адаптация для мобильных
-        window.addEventListener('resize', function() {
-            const header = document.querySelector('.main-header');
-            if (header && window.innerWidth <= 768) {
-                document.querySelector('.services-hero').style.paddingTop = '100px';
-            }
-        });
+        window.addEventListener('resize', updateContentPadding);
+
+        // При загрузке страницы
+        window.addEventListener('load', updateContentPadding);
     </script>
 </body>
-</html>
+                            </html>
