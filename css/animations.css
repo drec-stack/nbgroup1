@@ -11,6 +11,78 @@
     --animation-duration-slow: 1s;
 }
 
+/* ===== SMOOTH HEADER HIDE ANIMATIONS ===== */
+/* Плавное скрытие хедера при скролле */
+.header-hide-smooth {
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s ease, 
+                visibility 0.5s linear;
+    pointer-events: none;
+    box-shadow: none !important;
+}
+
+/* Плавное появление хедера */
+.header-show-smooth {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s ease 0.1s, 
+                visibility 0s linear;
+    pointer-events: auto;
+}
+
+/* Эффект при скролле - мини версия хедера */
+.header-minimized {
+    padding: 12px 0 !important;
+    background: rgba(0, 102, 255, 0.25) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* Анимация появления при скролле вверх */
+@keyframes headerSlideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.header-slide-down {
+    animation: headerSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Эффект свечения при появлении */
+.header-glow-appear {
+    animation: headerGlowAppear 0.6s ease forwards;
+}
+
+@keyframes headerGlowAppear {
+    0% {
+        transform: translateY(-30px);
+        opacity: 0;
+        box-shadow: 0 0 0 rgba(0, 102, 255, 0);
+    }
+    70% {
+        transform: translateY(5px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+        box-shadow: 0 8px 32px rgba(0, 102, 255, 0.18);
+    }
+}
+
 /* ===== BASE ANIMATION SETTINGS ===== */
 * {
     animation-duration: var(--animation-duration-normal);
@@ -777,6 +849,16 @@
     .loading-spinner, .loading-dots span {
         animation: none !important;
     }
+    
+    /* Отключаем анимации хедера при reduced motion */
+    .header-hide-smooth,
+    .header-show-smooth,
+    .header-minimized,
+    .header-slide-down,
+    .header-glow-appear {
+        transition: none !important;
+        animation: none !important;
+    }
 }
 
 /* High contrast mode support */
@@ -1164,4 +1246,4 @@
 .reveal-on-scroll.revealed {
     opacity: 1;
     transform: translateY(0);
-}
+    }
