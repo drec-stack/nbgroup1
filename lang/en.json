@@ -490,6 +490,19 @@
   "about": {
     "title": "About Us | NBGROUP.TECH",
     "subtitle": "Full-cycle industrial design, engineering and manufacturing",
+    "mission": {
+      "title": "Our Mission",
+      "text": "Create innovative products that define markets and improve people's lives through a combination of aesthetics, engineering precision, and production implementation.",
+      "features": {
+        "aesthetics": "AESTHETICS",
+        "engineering": "ENGINEERING",
+        "production": "PRODUCTION"
+      },
+      "visual": {
+        "title": "Innovation and Excellence",
+        "subtitle": "Quality in Every Detail"
+      }
+    },
     "story": {
       "title": "Our Story",
       "p1": "Founded in 2012, NBGROUP.TECH began as a small industrial design studio with a big vision.",
@@ -562,20 +575,24 @@
     "team": {
       "title": "Team",
       "subtitle": "Professionals with real project experience",
+      "philosophy": {
+        "title": "Our Philosophy",
+        "text": "We believe that project success depends on the synergy of design, engineering, and production. Our team brings together experts from different fields to create products that are not only beautiful, but also functional, reliable, and ready for mass production."
+      },
       "spartak": {
         "name": "Spartak Nukhsan",
         "role": "Founder, Creative Director, Brand Architect, Designer",
-        "bio": "Dozens of projects in Russia, Turkey, Dubai and Europe"
+        "bio": "Dozens of projects in Russia, Turkey, Dubai and Europe. Expert in industrial design and branding with over 12 years of experience."
       },
       "urmat": {
         "name": "Urmat Ismailov",
         "role": "Co-founder and Operations Director",
-        "bio": "Systematic approach, organization and stable growth"
+        "bio": "Systematic approach, organization and stable growth. Specialist in production processes and project management."
       },
       "elena": {
         "name": "Elena Kiryanova",
         "role": "Director of NB Group Company, Brand Development Strategist",
-        "bio": "Expert in brand strategy and business development"
+        "bio": "Expert in brand strategy and business development. Helps companies build effective marketing strategies."
       }
     },
     "cta": {
@@ -694,4 +711,4 @@
     "minLength": "Minimum {length} characters required",
     "maxLength": "Maximum {length} characters allowed"
   }
-}
+  }
