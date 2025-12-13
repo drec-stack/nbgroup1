@@ -13,17 +13,17 @@ function initAbout() {
     setupCTAAnimations();
     setupScrollAnimations();
     
-    // Инициализация языковых функций
+    // Инициализация языковых функций (используем i18n.js)
     setupLanguageIntegration();
     
     console.log('✅ About page with Speck Design fully optimized');
 }
 
-// ИНТЕГРАЦИЯ С ЯЗЫКОВОЙ СИСТЕМОЙ
+// ИНТЕГРАЦИЯ С ЯЗЫКОВОЙ СИСТЕМОЙ i18n.js
 function setupLanguageIntegration() {
     console.log('🌐 Setting up language integration for about page...');
     
-    // Слушаем события изменения языка
+    // Слушаем события изменения языка от i18n.js
     window.addEventListener('languageChanged', function(event) {
         console.log('🔄 Language changed detected in about.js:', event.detail.lang);
         
@@ -35,13 +35,22 @@ function setupLanguageIntegration() {
             if (typeof window.setupStoryStats === 'function') {
                 window.setupStoryStats();
             }
+            
+            // Синхронизируем UI переключателя языка
+            updateLanguageSwitcherUIFromEvent(event.detail.lang);
         }, 300);
     });
     
-    // Инициализируем переключатель языка на странице
+    // Инициализируем переключатель языка на странице (только UI)
+    updateLanguageSwitcherUI();
+}
+
+// Обновление UI переключателя языка
+function updateLanguageSwitcherUI() {
     const langSwitcher = document.querySelector('.language-switcher');
     if (langSwitcher) {
-        const currentLang = localStorage.getItem('preferredLang') || 'ru';
+        // Используем i18n.js если доступен, иначе localStorage
+        const currentLang = window.i18n ? window.i18n.getCurrentLang() : (localStorage.getItem('preferredLang') || 'ru');
         langSwitcher.setAttribute('data-current-lang', currentLang);
         
         // Обновляем активные кнопки
@@ -49,6 +58,21 @@ function setupLanguageIntegration() {
         langButtons.forEach(btn => {
             btn.classList.remove('active');
             if (btn.getAttribute('data-lang') === currentLang) {
+                btn.classList.add('active');
+            }
+        });
+    }
+}
+
+function updateLanguageSwitcherUIFromEvent(lang) {
+    const langSwitcher = document.querySelector('.language-switcher');
+    if (langSwitcher) {
+        langSwitcher.setAttribute('data-current-lang', lang);
+        
+        const langButtons = document.querySelectorAll('.lang-btn');
+        langButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-lang') === lang) {
                 btn.classList.add('active');
             }
         });
@@ -498,20 +522,10 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
     }
 })();
 
-// ДОБАВЛЯЕМ ОБРАБОТЧИК ДЛЯ СМЕНЫ ЯЗЫКА
-document.addEventListener('languageChanged', function(event) {
-    // Переинициализируем после смены языка
-    setTimeout(() => {
-        if (typeof initAbout === 'function') {
-            initAbout();
-        }
-    }, 500);
-});
-
 // ЭКСПОРТ ФУНКЦИЙ ДЛЯ ГЛОБАЛЬНОГО ДОСТУПА
 window.initAbout = initAbout;
 window.setupSpeckAnimations = setupSpeckAnimations;
 window.setupStoryStats = setupStoryStats;
-window.setupLanguageIntegration = setupLanguageIntegration;
+window.updateLanguageSwitcherUI = updateLanguageSwitcherUI;
 
 console.log('✅ about.js initialization functions ready');
