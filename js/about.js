@@ -1,5 +1,5 @@
-// about.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ДЛЯ SPECK DESIGN СТИЛЯ
-console.log('🎯 about.js loaded - SPECK DESIGN OPTIMIZED');
+// about.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ДЛЯ SPECK DESIGN СТИЛЯ С ИСПРАВЛЕННЫМ ЯЗЫКОМ
+console.log('🎯 about.js loaded - SPECK DESIGN OPTIMIZED WITH LANGUAGE FIX');
 
 function initAbout() {
     console.log('🎯 Initializing about page with Speck Design optimizations...');
@@ -13,7 +13,46 @@ function initAbout() {
     setupCTAAnimations();
     setupScrollAnimations();
     
+    // Инициализация языковых функций
+    setupLanguageIntegration();
+    
     console.log('✅ About page with Speck Design fully optimized');
+}
+
+// ИНТЕГРАЦИЯ С ЯЗЫКОВОЙ СИСТЕМОЙ
+function setupLanguageIntegration() {
+    console.log('🌐 Setting up language integration for about page...');
+    
+    // Слушаем события изменения языка
+    window.addEventListener('languageChanged', function(event) {
+        console.log('🔄 Language changed detected in about.js:', event.detail.lang);
+        
+        // Обновляем анимации после смены языка
+        setTimeout(() => {
+            if (typeof window.setupSpeckAnimations === 'function') {
+                window.setupSpeckAnimations();
+            }
+            if (typeof window.setupStoryStats === 'function') {
+                window.setupStoryStats();
+            }
+        }, 300);
+    });
+    
+    // Инициализируем переключатель языка на странице
+    const langSwitcher = document.querySelector('.language-switcher');
+    if (langSwitcher) {
+        const currentLang = localStorage.getItem('preferredLang') || 'ru';
+        langSwitcher.setAttribute('data-current-lang', currentLang);
+        
+        // Обновляем активные кнопки
+        const langButtons = document.querySelectorAll('.lang-btn');
+        langButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-lang') === currentLang) {
+                btn.classList.add('active');
+            }
+        });
+    }
 }
 
 // ОПТИМИЗИРОВАННЫЕ ВЗАИМОДЕЙСТВИЯ С КОМАНДОЙ
@@ -137,10 +176,13 @@ function setupStoryStats() {
                         stat.style.opacity = '1';
                         stat.style.transform = 'translateY(0)';
                         
-                        // Анимация чисел
-                        const numberElement = stat.querySelector('.stat-number');
-                        if (numberElement) {
-                            animateCounter(numberElement);
+                        // Анимация чисел только если еще не анимированы
+                        if (!stat.classList.contains('animated')) {
+                            const numberElement = stat.querySelector('.stat-number');
+                            if (numberElement) {
+                                animateCounter(numberElement);
+                                stat.classList.add('animated');
+                            }
                         }
                     }, index * (isMobile ? 100 : 200));
                 });
@@ -164,11 +206,15 @@ function setupStoryStats() {
 
 // ФУНКЦИЯ АНИМАЦИИ СЧЕТЧИКОВ
 function animateCounter(element) {
+    if (element.classList.contains('animated')) return;
+    
     const text = element.textContent;
     const finalValue = parseInt(text.replace('+', ''));
     const duration = 2000;
     const increment = finalValue / (duration / 16);
     let currentValue = 0;
+    
+    element.classList.add('animated');
     
     const timer = setInterval(() => {
         currentValue += increment;
@@ -259,8 +305,10 @@ function setupMobileOptimizations() {
 
 // ОПТИМИЗАЦИЯ ЗАГРУЗКИ ИЗОБРАЖЕНИЙ
 function setupImageLoading() {
-    const images = document.querySelectorAll('img[class*="avatar"], img[class*="member"]');
+    const images = document.querySelectorAll('.member-photo img');
     const isMobile = window.innerWidth <= 768;
+    
+    console.log(`📸 Found ${images.length} team images to optimize`);
     
     images.forEach(img => {
         img.loading = 'lazy';
@@ -270,24 +318,21 @@ function setupImageLoading() {
             img.fetchPriority = 'low';
         }
         
-        // Добавляем fallback для битых изображений
+        // Проверяем загрузку изображений
+        img.onload = function() {
+            console.log(`✅ Image loaded: ${this.src}`);
+            this.style.opacity = '1';
+            this.style.transition = 'opacity 0.3s ease';
+        };
+        
+        // Если изображение не загружается, используем fallback
         img.onerror = function() {
-            this.style.display = 'none';
-            const parent = this.parentElement;
-            if (parent) {
-                const fallback = document.createElement('div');
-                fallback.className = 'image-fallback';
-                fallback.style.width = '100%';
-                fallback.style.height = '100%';
-                fallback.style.background = 'var(--accent-gradient)';
-                fallback.style.borderRadius = 'inherit';
-                fallback.style.display = 'flex';
-                fallback.style.alignItems = 'center';
-                fallback.style.justifyContent = 'center';
-                fallback.style.color = 'white';
-                fallback.style.fontWeight = 'bold';
-                fallback.innerHTML = this.alt || 'NB';
-                parent.appendChild(fallback);
+            console.warn(`❌ Failed to load image: ${this.src}`);
+            const initials = this.alt.match(/\b([A-Z])/g)?.join('') || 'NB';
+            
+            // Вызываем глобальную функцию для создания fallback
+            if (window.handleTeamPhotoError) {
+                window.handleTeamPhotoError(this, initials);
             }
         };
     });
@@ -435,13 +480,26 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
                     transform: translateY(0);
                 }
             }
+            
+            /* Стили для загрузки изображений */
+            .member-photo img {
+                transition: opacity 0.3s ease;
+            }
+            
+            .member-photo img.loading {
+                opacity: 0;
+            }
+            
+            .member-photo img.loaded {
+                opacity: 1;
+            }
         `;
         document.head.appendChild(style);
     }
 })();
 
 // ДОБАВЛЯЕМ ОБРАБОТЧИК ДЛЯ СМЕНЫ ЯЗЫКА
-document.addEventListener('languageChanged', function() {
+document.addEventListener('languageChanged', function(event) {
     // Переинициализируем после смены языка
     setTimeout(() => {
         if (typeof initAbout === 'function') {
@@ -454,5 +512,6 @@ document.addEventListener('languageChanged', function() {
 window.initAbout = initAbout;
 window.setupSpeckAnimations = setupSpeckAnimations;
 window.setupStoryStats = setupStoryStats;
+window.setupLanguageIntegration = setupLanguageIntegration;
 
 console.log('✅ about.js initialization functions ready');
