@@ -3,6 +3,7 @@ console.log('🎯 portfolio.js loaded - CALYANS & PACKAGING PORTFOLIO');
 function initPortfolio() {
     console.log('🎯 Initializing portfolio page with new categories...');
     
+    setupPortfolioHeaderBehavior(); // ← Добавлено
     setupPortfolioFilter();
     setupProjectInteractions();
     setupTestimonialCarousel();
@@ -11,6 +12,67 @@ function initPortfolio() {
     setupHoverEffects();
     
     console.log('✅ Portfolio page initialized with new hookah/accessories/packaging projects');
+}
+
+// NEW FUNCTION: Header behavior for portfolio page
+function setupPortfolioHeaderBehavior() {
+    const header = document.querySelector('.main-header');
+    if (!header) {
+        console.log('⚠️ Header not found, retrying...');
+        setTimeout(setupPortfolioHeaderBehavior, 100);
+        return;
+    }
+    
+    console.log('🏗️ Setting up portfolio header behavior');
+    
+    // Для внутренних страниц (portfolio) используем базовую логику скролла
+    const isHomePage = window.location.pathname.includes('index.html') || 
+                      window.location.pathname === '/' || 
+                      window.location.pathname.endsWith('/');
+    
+    if (isHomePage) return; // Главная страница обрабатывается отдельно
+    
+    let lastScrollY = window.scrollY;
+    const scrollThreshold = 100;
+    
+    function handleScroll() {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY <= 0) {
+            header.classList.remove('header-hidden', 'header-scrolled');
+            header.style.opacity = '1';
+            return;
+        }
+        
+        if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+            // Scrolling down - show minimized header
+            header.classList.remove('header-hidden');
+            header.classList.add('header-scrolled');
+            header.style.opacity = '1';
+        } else if (currentScrollY < lastScrollY) {
+            // Scrolling up - show normal header
+            header.classList.remove('header-hidden');
+            header.classList.remove('header-scrolled');
+            header.style.opacity = '1';
+        }
+        
+        lastScrollY = currentScrollY;
+    }
+    
+    // Применяем начальное состояние
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Показывать хедер при наведении (если скрыт)
+    header.addEventListener('mouseenter', () => {
+        if (header.classList.contains('header-hidden')) {
+            header.classList.remove('header-hidden');
+            header.style.opacity = '1';
+        }
+    });
+    
+    console.log('✅ Portfolio header behavior setup complete');
 }
 
 // UPDATED FILTER FOR NEW CATEGORIES
