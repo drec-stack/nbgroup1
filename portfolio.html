@@ -7,11 +7,29 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/portfolio.css">
     <style>
         .portfolio-hero {
             padding-top: 140px !important;
+        }
+        
+        /* Анимация для хедера портфолио */
+        @keyframes headerGlassEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .main-header {
+            animation: headerGlassEnter 0.6s ease forwards;
         }
 
         /* Mobile adjustments */
@@ -396,101 +414,97 @@
     <script src="js/portfolio.js"></script>
     
     <script>
-        // Load header component (SAME AS index.html)
+        // Load header component (OPTIMIZED VERSION - SAME AS HOME)
         fetch('components/header.html')
             .then(response => response.text())
             .then(html => {
                 document.getElementById('header-container').innerHTML = html;
                 
-                // Инициализировать хедер
-                if (typeof initHeader === 'function') {
-                    setTimeout(() => {
-                        initHeader();
-                        console.log('✅ Header initialized for portfolio page');
-                        
-                        // Добавляем класс для внутренних страниц
-                        const header = document.querySelector('.main-header');
-                        if (header) {
-                            header.classList.add('internal-page-header');
-                            
-                            // Анимация появления
-                            setTimeout(() => {
-                                header.style.opacity = '1';
-                                header.style.transform = 'translateY(0)';
-                            }, 100);
-                        }
-                    }, 100);
-                }
-                
-                // Применить переводы к хедеру
+                // Initialize header functions
                 setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
+                    // Global header initialization (from header.html)
+                    if (typeof initHeader === 'function') {
+                        initHeader();
                     }
-                }, 200);
-                
-                console.log('✅ Glass header loaded successfully');
+                    
+                    // Home-specific header behavior (for consistency)
+                    if (typeof initHomeHeader === 'function') {
+                        initHomeHeader();
+                    }
+                    
+                    // Portfolio-specific header behavior
+                    if (typeof setupPortfolioHeaderBehavior === 'function') {
+                        setupPortfolioHeaderBehavior();
+                    }
+                    
+                    console.log('✅ Header fully initialized on portfolio page (matching home behavior)');
+                    
+                    // Apply translations
+                    if (window.i18n && window.i18n.refresh) {
+                        setTimeout(() => window.i18n.refresh(), 200);
+                    }
+                    
+                }, 100);
             })
             .catch(error => {
                 console.error('❌ Error loading header:', error);
-                // Fallback header (SAME AS index.html)
-                document.getElementById('header-container').innerHTML = `
-                    <header class="main-header">
-                        <div class="container">
-                            <div class="header-inner">
-                                <a href="index.html" class="logo">
-                                    <div class="logo-mark">NB</div>
-                                    <span class="logo-text" data-i18n="nav.brand">NB Group</span>
-                                </a>
-                                <nav class="main-nav">
-                                    <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
-                                    <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
-                                    <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
-                                    <a href="portfolio.html" class="nav-link active" data-i18n="nav.portfolio">Портфолио</a>
-                                    <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
-                                    <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
-                                </nav>
-                                <div class="header-actions">
-                                    <div class="language-switcher" data-current-lang="ru">
-                                        <div class="lang-slider"></div>
-                                        <button class="lang-btn" data-lang="ru">
-                                            <span class="lang-text">RU</span>
-                                            <span class="lang-flag">🇷🇺</span>
-                                        </button>
-                                        <button class="lang-btn active" data-lang="en">
-                                            <span class="lang-text">EN</span>
-                                            <span class="lang-flag">🇺🇸</span>
-                                        </button>
-                                    </div>
-                                    <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
-                                        Начать проект
-                                    </a>
-                                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
+                // Load fallback header
+                loadFallbackHeader();
+            });
+        
+        // Fallback header function (matching home page)
+        function loadFallbackHeader() {
+            document.getElementById('header-container').innerHTML = `
+                <header class="main-header">
+                    <div class="container">
+                        <div class="header-inner">
+                            <a href="index.html" class="logo">
+                                <div class="logo-mark">NB</div>
+                                <span class="logo-text" data-i18n="nav.brand">NB Group</span>
+                            </a>
+                            <nav class="main-nav">
+                                <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                                <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                                <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                                <a href="portfolio.html" class="nav-link active" data-i18n="nav.portfolio">Портфолио</a>
+                                <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                                <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
+                            </nav>
+                            <div class="header-actions">
+                                <div class="language-switcher" data-current-lang="ru">
+                                    <div class="lang-slider"></div>
+                                    <button class="lang-btn" data-lang="ru">
+                                        <span class="lang-text">RU</span>
+                                        <span class="lang-flag">🇷🇺</span>
+                                    </button>
+                                    <button class="lang-btn active" data-lang="en">
+                                        <span class="lang-text">EN</span>
+                                        <span class="lang-flag">🇺🇸</span>
                                     </button>
                                 </div>
+                                <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
+                                    Начать проект
+                                </a>
+                                <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </button>
                             </div>
                         </div>
-                    </header>
-                    <div class="mobile-menu-overlay"></div>
-                `;
-                
-                // Инициализировать fallback хедер
-                setTimeout(() => {
-                    if (typeof initHeader === 'function') initHeader();
-                }, 100);
-                
-                // Применить переводы к fallback хедеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 300);
-            });
+                    </div>
+                </header>
+                <div class="mobile-menu-overlay"></div>
+            `;
+            
+            setTimeout(() => {
+                if (typeof initHeader === 'function') initHeader();
+                if (typeof initHomeHeader === 'function') initHomeHeader();
+                if (window.i18n && window.i18n.refresh) window.i18n.refresh();
+            }, 100);
+        }
 
-        // Load footer component (SAME AS index.html)
+        // Load footer component (SAME AS HOME)
         fetch('components/footer.html')
             .then(response => response.text())
             .then(html => {
@@ -519,9 +533,16 @@
                         </div>
                     </footer>
                 `;
+                
+                // Применить переводы к fallback футеру
+                setTimeout(() => {
+                    if (window.i18n && window.i18n.refresh) {
+                        window.i18n.refresh();
+                    }
+                }, 300);
             });
 
-        // Инициализация страницы портфолио
+        // Инициализация страницы портфолио (UPDATED)
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Portfolio page initializing...');
             
@@ -535,7 +556,7 @@
                 }
             }, 300);
             
-            // Адаптация padding для фиксированного хедера
+            // Адаптация padding для фиксированного хедера (как на главной)
             function updateHeaderPadding() {
                 const header = document.querySelector('.main-header');
                 if (header) {
@@ -560,4 +581,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
