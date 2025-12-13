@@ -1,8 +1,15 @@
-// home.js - Complete Home Page Functionality
+// home.js - Complete Home Page Functionality with Enhanced Header Hide
 
 class HomePage {
     constructor() {
         this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        this.header = null;
+        this.isHeaderHidden = false;
+        this.lastScrollTop = 0;
+        this.scrollThreshold = 100;
+        this.showThreshold = 10;
+        
+        // Initialize everything
         this.init();
     }
 
@@ -14,9 +21,192 @@ class HomePage {
         this.initMarqueeAnimations();
         this.initClickableStats();
         this.initCTAClickable();
+        
+        // Initialize enhanced header hide after a short delay
+        setTimeout(() => {
+            this.initEnhancedHeaderHide();
+        }, 500);
+        
         console.log('🏠 HomePage инициализирован');
     }
 
+    // ===== ENHANCED SMOOTH HEADER HIDE =====
+    initEnhancedHeaderHide() {
+        this.header = document.querySelector('.main-header');
+        const isHomePage = document.body.classList.contains('home-page');
+        
+        if (!this.header || !isHomePage) {
+            console.log('⚠️ Header not found or not on home page');
+            return;
+        }
+        
+        console.log('🎭 Initializing enhanced smooth header hide...');
+        
+        // Set initial state
+        this.updateHeaderState();
+        
+        // Add glow animation on first load
+        setTimeout(() => {
+            this.header.classList.add('header-glow-appear');
+            
+            // Remove after animation completes
+            setTimeout(() => {
+                this.header.classList.remove('header-glow-appear');
+            }, 600);
+        }, 300);
+        
+        // Setup scroll event with throttling
+        this.setupScrollHandler();
+        
+        // Setup mouse events
+        this.setupMouseEvents();
+        
+        // Setup mobile touch events
+        this.setupTouchEvents();
+        
+        console.log('✅ Enhanced header hide initialized');
+    }
+    
+    setupScrollHandler() {
+        let ticking = false;
+        
+        const handleScroll = () => {
+            if (ticking) return;
+            
+            ticking = true;
+            requestAnimationFrame(() => {
+                this.updateHeaderState();
+                ticking = false;
+            });
+        };
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Initial update
+        handleScroll();
+    }
+    
+    updateHeaderState() {
+        if (!this.header) return;
+        
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollDelta = currentScroll - this.lastScrollTop;
+        const scrollingDown = scrollDelta > 0;
+        const scrollingUp = scrollDelta < 0;
+        
+        // At the very top - always show header
+        if (currentScroll <= this.showThreshold) {
+            if (this.isHeaderHidden) {
+                this.showHeader();
+            }
+            this.header.classList.remove('header-minimized');
+            this.lastScrollTop = Math.max(0, currentScroll);
+            return;
+        }
+        
+        // Scrolling down - hide header
+        if (scrollingDown && currentScroll > this.scrollThreshold && !this.isHeaderHidden) {
+            this.hideHeader();
+        }
+        // Scrolling up - show header
+        else if (scrollingUp && this.isHeaderHidden) {
+            this.showHeader();
+        }
+        
+        // Minimize header when scrolled down
+        if (currentScroll > 50 && !this.isHeaderHidden) {
+            this.header.classList.add('header-minimized');
+        } else if (currentScroll <= 50) {
+            this.header.classList.remove('header-minimized');
+        }
+        
+        this.lastScrollTop = currentScroll;
+    }
+    
+    hideHeader() {
+        if (!this.header || this.isHeaderHidden) return;
+        
+        this.header.classList.remove('header-show-smooth', 'header-slide-down', 'header-glow-appear');
+        this.header.classList.add('header-hide-smooth');
+        this.isHeaderHidden = true;
+        
+        console.log('⬆️ Header hidden');
+    }
+    
+    showHeader() {
+        if (!this.header || !this.isHeaderHidden) return;
+        
+        this.header.classList.remove('header-hide-smooth');
+        this.header.classList.add('header-show-smooth', 'header-slide-down');
+        this.isHeaderHidden = false;
+        
+        // Remove slide-down animation after it completes
+        setTimeout(() => {
+            this.header.classList.remove('header-slide-down');
+        }, 400);
+        
+        console.log('⬇️ Header shown');
+    }
+    
+    setupMouseEvents() {
+        if (!this.header) return;
+        
+        // Show header on hover
+        this.header.addEventListener('mouseenter', () => {
+            if (this.isHeaderHidden) {
+                this.showHeader();
+            }
+        });
+        
+        // Auto-hide after mouse leaves (if scrolled down)
+        this.header.addEventListener('mouseleave', () => {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (currentScroll > this.scrollThreshold && !this.isHeaderHidden) {
+                // Wait 1.5 seconds before hiding
+                setTimeout(() => {
+                    const currentScrollAfterDelay = window.pageYOffset || document.documentElement.scrollTop;
+                    const isStillScrolledDown = currentScrollAfterDelay > this.scrollThreshold;
+                    const isMouseStillOver = this.header.matches(':hover');
+                    
+                    if (isStillScrolledDown && !isMouseStillOver && !this.isHeaderHidden) {
+                        this.hideHeader();
+                    }
+                }, 1500);
+            }
+        });
+    }
+    
+    setupTouchEvents() {
+        if (!this.header || !this.isTouchDevice()) return;
+        
+        // Touch device optimizations
+        this.header.addEventListener('touchstart', () => {
+            if (this.isHeaderHidden) {
+                this.showHeader();
+            }
+        });
+        
+        // Hide header after 3 seconds on touch devices
+        document.addEventListener('touchstart', (e) => {
+            if (!this.header.contains(e.target) && !this.isHeaderHidden) {
+                const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+                if (currentScroll > this.scrollThreshold) {
+                    setTimeout(() => {
+                        if (!this.header.contains(document.activeElement)) {
+                            this.hideHeader();
+                        }
+                    }, 3000);
+                }
+            }
+        });
+    }
+    
+    isTouchDevice() {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    }
+
+    // ===== EXISTING FUNCTIONALITY =====
     // Speck Design Blocks Initialization
     initSpeckDesignBlocks() {
         const speckBlocks = document.querySelectorAll('.speck-service-block-full');
@@ -401,4 +591,55 @@ window.initHomePage = function() {
     if (!window.homePage) {
         window.homePage = new HomePage();
     }
+};
+
+// Simple header hide function for quick integration
+window.initSimpleHeaderHide = function() {
+    const header = document.querySelector('.main-header');
+    if (!header || !document.body.classList.contains('home-page')) return;
+    
+    let lastScroll = 0;
+    const hideHeight = 100;
+    let isHidden = false;
+    
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll <= 50) {
+            // Вверху страницы - показываем
+            header.style.transform = 'translateY(0)';
+            header.style.opacity = '1';
+            header.style.pointerEvents = 'auto';
+            header.style.transition = 'transform 0.4s ease, opacity 0.3s ease';
+            isHidden = false;
+        } 
+        else if (currentScroll > lastScroll && currentScroll > hideHeight && !isHidden) {
+            // Скроллим вниз - скрываем
+            header.style.transform = 'translateY(-100%)';
+            header.style.opacity = '0';
+            header.style.pointerEvents = 'none';
+            header.style.transition = 'transform 0.5s ease, opacity 0.4s ease';
+            isHidden = true;
+        } 
+        else if (currentScroll < lastScroll && isHidden) {
+            // Скроллим вверх - показываем
+            header.style.transform = 'translateY(0)';
+            header.style.opacity = '1';
+            header.style.pointerEvents = 'auto';
+            header.style.transition = 'transform 0.4s ease, opacity 0.3s ease';
+            isHidden = false;
+        }
+        
+        lastScroll = currentScroll;
+    });
+    
+    // Показываем при наведении
+    header.addEventListener('mouseenter', () => {
+        if (isHidden) {
+            header.style.transform = 'translateY(0)';
+            header.style.opacity = '1';
+            header.style.pointerEvents = 'auto';
+            isHidden = false;
+        }
+    });
 };
