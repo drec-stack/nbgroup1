@@ -233,7 +233,7 @@
 
         .btn-primary {
             background: rgba(255, 255, 255, 0.92);
-            color: #ff0000 !important;
+            color: #0066ff !important;
             font-weight: 700;
             border: 1px solid rgba(255, 255, 255, 0.35);
             box-shadow: 
@@ -243,7 +243,7 @@
 
         .btn-primary:hover {
             background: white;
-            color: #cc0000 !important;
+            color: #0066ff !important;
             transform: translateY(-2px);
             box-shadow: 
                 0 8px 25px rgba(255, 255, 255, 0.3),
@@ -596,7 +596,7 @@
                 <!-- Логотип NB Group -->
                 <a href="index.html" class="logo">
                     <div class="logo-mark">NB</div>
-                    <span class="logo-text">NB Group</span>
+                    <span class="logo-text" data-i18n="nav.brand">NB Group</span>
                 </a>
                 
                 <!-- Навигация -->
@@ -668,6 +668,8 @@
         if (header) {
             header.style.animation = 'headerGlassEnter 0.6s ease forwards';
         }
+        
+        console.log('✅ Header initialization complete');
     }
 
     function setupHomeHeaderBehavior() {
@@ -850,11 +852,25 @@
                 // Update switcher state
                 updateLanguageSwitcherState(lang);
                 
-                // Trigger language change
+                // Сохраняем язык
+                localStorage.setItem('preferredLang', lang);
+                
+                // Отправляем событие смены языка
+                window.dispatchEvent(new CustomEvent('languageChanged', { 
+                    detail: { lang: lang } 
+                }));
+                
+                console.log('🌐 Language changed to:', lang);
+                
+                // Trigger language change через i18n.js
                 if (window.i18n && window.i18n.smoothSwitchLanguage) {
                     window.i18n.smoothSwitchLanguage(lang);
+                } else if (window.i18n && window.i18n.refresh) {
+                    // Fallback
+                    window.i18n.refresh();
                 } else {
-                    localStorage.setItem('preferredLang', lang);
+                    console.log('⚠️ i18n not found, reloading page');
+                    location.reload();
                 }
             });
         });
