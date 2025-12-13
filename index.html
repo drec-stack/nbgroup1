@@ -900,7 +900,7 @@
                 }, 300);
             });
 
-        // Header hide functionality
+        // Smooth header hide functionality
         function initHomeHeader() {
             const header = document.querySelector('.main-header');
             if (!header) {
@@ -1101,6 +1101,96 @@
             }
         }
 
+        // Smooth header hide initialization
+        function initSmoothHeaderHide() {
+            const header = document.querySelector('.main-header');
+            const isHomePage = document.body.classList.contains('home-page');
+            
+            if (!header || !isHomePage) return;
+            
+            console.log('🎭 Initializing smooth header hide on home page...');
+            
+            let lastScrollTop = 0;
+            let isHidden = false;
+            const hideThreshold = 100;
+            const showThreshold = 10;
+            
+            function updateHeader() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // At the very top - always show
+                if (scrollTop <= showThreshold) {
+                    if (isHidden) {
+                        header.classList.remove('header-hide-smooth');
+                        header.classList.add('header-show-smooth');
+                        isHidden = false;
+                    }
+                    lastScrollTop = Math.max(0, scrollTop);
+                    return;
+                }
+                
+                const scrollDelta = scrollTop - lastScrollTop;
+                const scrollingDown = scrollDelta > 0;
+                const scrollingUp = scrollDelta < 0;
+                
+                if (scrollingDown && scrollTop > hideThreshold && !isHidden) {
+                    header.classList.add('header-hide-smooth');
+                    header.classList.remove('header-show-smooth');
+                    isHidden = true;
+                } else if (scrollingUp && isHidden) {
+                    header.classList.remove('header-hide-smooth');
+                    header.classList.add('header-show-smooth');
+                    isHidden = false;
+                }
+                
+                // Minimize header when scrolled
+                if (scrollTop > 50 && !isHidden) {
+                    header.classList.add('header-minimized');
+                } else if (scrollTop <= 50) {
+                    header.classList.remove('header-minimized');
+                }
+                
+                lastScrollTop = scrollTop;
+            }
+            
+            // Throttle scroll events
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateHeader();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+            
+            // Show on hover
+            header.addEventListener('mouseenter', () => {
+                if (isHidden) {
+                    header.classList.remove('header-hide-smooth');
+                    header.classList.add('header-show-smooth');
+                    isHidden = false;
+                }
+            });
+            
+            // Initial update
+            updateHeader();
+            
+            // Add glow animation on load
+            setTimeout(() => {
+                header.classList.add('header-glow-appear');
+                setTimeout(() => {
+                    header.classList.remove('header-glow-appear');
+                }, 600);
+            }, 300);
+        }
+        
+        // Call after header is loaded
+        setTimeout(() => {
+            initSmoothHeaderHide();
+        }, 1000);
+
         // Запустить проверки и инициализацию
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 DOM fully loaded');
@@ -1148,4 +1238,4 @@
         window.addEventListener('load', initParallaxIndicator);
     </script>
 </body>
-</html>
+    </html>
