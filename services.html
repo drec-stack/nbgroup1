@@ -3,394 +3,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="portfolio.title">Портфолио - NBGROUP.TECH | Industrial Design & Manufacturing</title>
+    <title>Services - NBGROUP.TECH</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/portfolio.css">
+    <link rel="stylesheet" href="css/services.css">
+    <style>
+        /* Glass header styling for internal pages */
+        .main-header {
+            position: fixed !important;
+            top: 20px !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: calc(100% - 40px) !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            z-index: 1000 !important;
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+            border-radius: 20px !important;
+            background: rgba(0, 102, 255, 0.12) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            box-shadow: 
+                0 8px 32px rgba(0, 102, 255, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        }
+
+        .main-header.header-hidden {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        .main-header.header-scrolled {
+            background: rgba(0, 102, 255, 0.2) !important;
+            backdrop-filter: blur(20px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+            box-shadow: 
+                0 4px 20px rgba(0, 102, 255, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+        }
+
+        .services-hero {
+            padding-top: 160px !important;
+        }
+
+        /* Mobile adjustments for internal pages */
+        @media (max-width: 768px) {
+            .main-header {
+                top: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 14px 0 !important;
+                background: rgba(0, 102, 255, 0.25) !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+            }
+            
+            .services-hero {
+                padding-top: 120px !important;
+            }
+        }
+    </style>
 </head>
-<body class="home-page">
-    <!-- PARALLAX BACKGROUNDS (как на главной) -->
-    <div class="parallax-bg-container">
-        <div id="parallax-bg-1" class="parallax-bg active"></div>
-        <div id="parallax-bg-2" class="parallax-bg"></div>
-    </div>
-
-    <!-- SCROLL PROGRESS BAR (как на главной) -->
-    <div class="scroll-progress">
-        <div class="scroll-progress-bar"></div>
-    </div>
-
-    <!-- Header Component -->
+<body class="internal-page">
+    <!-- Glass Header Container -->
     <div id="header-container"></div>
 
-    <section class="portfolio-hero parallax-hero">
+    <section class="services-hero">
         <div class="container">
-            <div class="portfolio-hero-content">
-                <h1 class="page-title" data-i18n="portfolio.title">Наши Работы</h1>
-                <p class="page-subtitle" data-i18n="portfolio.subtitle">
-                    Реализуем проекты с высокой степенью точности и эстетики: кальяны, аксессуары, премиальная упаковка. Каждый проект — результат сочетания дизайна, инженерии и производственного опыта.
+            <div class="services-hero-content">
+                <h1 class="page-title" data-i18n="services.title">Our Services</h1>
+                <p class="page-subtitle" data-i18n="services.subtitle">
+                    End-to-end product development from initial concept to mass production. 
+                    We combine design thinking with engineering excellence.
                 </p>
             </div>
         </div>
     </section>
 
-    <section class="portfolio-filter content-section" data-bg-index="0">
+    <section class="services-nav">
         <div class="container">
-            <div class="filter-nav-container">
-                <div class="filter-nav">
-                    <button class="filter-btn active" data-filter="all" data-i18n="portfolio.filter.all">Все Проекты</button>
-                    <button class="filter-btn" data-filter="hookahs" data-i18n="portfolio.filter.hookahs">Кальяны</button>
-                    <button class="filter-btn" data-filter="accessories" data-i18n="portfolio.filter.accessories">Аксессуары</button>
-                    <button class="filter-btn" data-filter="packaging" data-i18n="portfolio.filter.packaging">Премиальная упаковка</button>
-                </div>
-            </div>
+            <nav class="services-navigation">
+                <a href="#design" class="nav-item active" data-i18n="services.nav.design">Design</a>
+                <a href="#engineering" class="nav-item" data-i18n="services.nav.engineering">Engineering</a>
+                <a href="#production" class="nav-item" data-i18n="services.nav.production">Production</a>
+                <a href="#brand" class="nav-item" data-i18n="services.nav.brand">Brand</a>
+                <a href="#brandbook" class="nav-item" data-i18n="services.nav.brandbook">Brandbook</a>
+                <a href="#strategy" class="nav-item" data-i18n="services.nav.strategy">Strategy</a>
+            </nav>
         </div>
     </section>
 
-    <section class="portfolio-grid-section content-section" data-bg-index="0">
+    <!-- Design Section -->
+    <section id="design" class="service-detail">
         <div class="container">
-            <div class="portfolio-grid">
-                <!-- Кальян Amira - Кальяны -->
-                <div class="portfolio-item" data-category="hookahs">
-                    <div class="project-card clickable-service-block">
-                        <div class="project-image hookah1-image">
-                            <div class="project-overlay">
-                                <div class="project-icon">
-                                    <i class="fas fa-fire"></i>
-                                </div>
-                            </div>
-                            <div class="project-badge">
-                                <span class="badge-text" data-i18n="portfolio.status.handmade">Ручная Работа</span>
-                            </div>
+            <div class="service-header">
+                <span class="service-number">01</span>
+                <h2 class="service-title" data-i18n="services.design.title">Industrial Design</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p data-i18n="services.design.description">Human-centered design approach that balances aesthetics, ergonomics, 
+                    and brand identity to create products people love to use.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4 data-i18n="services.design.features.conceptDevelopment.title">Concept Development</h4>
+                            <p data-i18n="services.design.features.conceptDevelopment.description">Sketching, mood boards, and concept exploration</p>
                         </div>
-                        <div class="project-info">
-                            <div class="project-header">
-                                <span class="project-category" data-i18n="portfolio.filter.hookahs">
-                                    <i class="fas fa-fire"></i> Кальяны
-                                </span>
-                                <div class="project-duration">
-                                    <i class="far fa-clock"></i> 3 месяца
-                                </div>
-                            </div>
-                            <h3 class="project-title" data-i18n="portfolio.projects.hookah1.title">Премиум Кальян Amira</h3>
-                            <p class="project-description" data-i18n="portfolio.projects.hookah1.description">
-                                Элитный кальян ручной работы из нержавеющей стали с гравировкой и уникальной системой охлаждения дыма.
-                            </p>
-                            <div class="project-meta">
-                                <div class="meta-item">
-                                    <i class="fas fa-hammer"></i>
-                                    <span data-i18n="portfolio.status.handmade">Ручная Работа</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-gem"></i>
-                                    <span>Нержавеющая сталь</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-snowflake"></i>
-                                    <span>Система охлаждения</span>
-                                </div>
-                            </div>
-                            <div class="project-footer">
-                                <a href="#" class="project-link" data-i18n="featuredWork.viewCaseStudy">
-                                    Смотреть Кейс <i class="fas fa-arrow-right"></i>
-                                </a>
-                                <div class="project-stats">
-                                    <div class="stat">
-                                        <div class="stat-value">99.8%</div>
-                                        <div class="stat-label">Точность</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="stat-value">60%</div>
-                                        <div class="stat-label">Снижение веса</div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.design.features.modeling.title">3D Modeling</h4>
+                            <p data-i18n="services.design.features.modeling.description">Detailed CAD modeling and visualization</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.design.features.prototyping.title">Prototyping</h4>
+                            <p data-i18n="services.design.features.prototyping.description">Rapid prototyping and user testing</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Аксессуары для кальяна -->
-                <div class="portfolio-item" data-category="accessories">
-                    <div class="project-card clickable-service-block">
-                        <div class="project-image accessory1-image">
-                            <div class="project-overlay">
-                                <div class="project-icon">
-                                    <i class="fas fa-gift"></i>
-                                </div>
-                            </div>
-                            <div class="project-badge">
-                                <span class="badge-text" data-i18n="portfolio.status.premium">Премиум Класс</span>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <div class="project-header">
-                                <span class="project-category" data-i18n="portfolio.filter.accessories">
-                                    <i class="fas fa-gift"></i> Аксессуары
-                                </span>
-                                <div class="project-duration">
-                                    <i class="far fa-clock"></i> 2 месяца
-                                </div>
-                            </div>
-                            <h3 class="project-title" data-i18n="portfolio.projects.accessory1.title">Аксессуары для Кальяна</h3>
-                            <p class="project-description" data-i18n="portfolio.projects.accessory1.description">
-                                Комплект аксессуаров премиум-класса: щипцы, щетки, чистящие средства в футляре из натуральной кожи.
-                            </p>
-                            <div class="project-meta">
-                                <div class="meta-item">
-                                    <i class="fas fa-star"></i>
-                                    <span data-i18n="portfolio.status.premium">Премиум Класс</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-leather"></i>
-                                    <span>Натуральная кожа</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-tools"></i>
-                                    <span>6 предметов в наборе</span>
-                                </div>
-                            </div>
-                            <div class="project-footer">
-                                <a href="#" class="project-link" data-i18n="featuredWork.viewCaseStudy">
-                                    Смотреть Кейс <i class="fas fa-arrow-right"></i>
-                                </a>
-                                <div class="project-stats">
-                                    <div class="stat">
-                                        <div class="stat-value">95%</div>
-                                        <div class="stat-label">Качество</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="stat-value">40%</div>
-                                        <div class="stat-label">Снижение себестоимости</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">500+</div>
+                        <div class="stat-label" data-i18n="services.design.stats.products">Products Designed</div>
                     </div>
-                </div>
-
-                <!-- Премиальная упаковка -->
-                <div class="portfolio-item" data-category="packaging">
-                    <div class="project-card clickable-service-block">
-                        <div class="project-image packaging1-image">
-                            <div class="project-overlay">
-                                <div class="project-icon">
-                                    <i class="fas fa-box-open"></i>
-                                </div>
-                            </div>
-                            <div class="project-badge">
-                                <span class="badge-text" data-i18n="portfolio.status.limited">Лимитированная Серия</span>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <div class="project-header">
-                                <span class="project-category" data-i18n="portfolio.filter.packaging">
-                                    <i class="fas fa-box-open"></i> Премиальная упаковка
-                                </span>
-                                <div class="project-duration">
-                                    <i class="far fa-clock"></i> 4 месяца
-                                </div>
-                            </div>
-                            <h3 class="project-title" data-i18n="portfolio.projects.packaging1.title">Упаковка Luxury Collection</h3>
-                            <p class="project-description" data-i18n="portfolio.projects.packaging1.description">
-                                Премиальная упаковка для подарочных наборов с магнитным замком, бархатной отделкой и металлическими элементами.
-                            </p>
-                            <div class="project-meta">
-                                <div class="meta-item">
-                                    <i class="fas fa-crown"></i>
-                                    <span data-i18n="portfolio.status.limited">Лимитированная Серия</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-magnet"></i>
-                                    <span>Магнитный замок</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-vector-square"></i>
-                                    <span>Бархатная отделка</span>
-                                </div>
-                            </div>
-                            <div class="project-footer">
-                                <a href="#" class="project-link" data-i18n="featuredWork.viewCaseStudy">
-                                    Смотреть Кейс <i class="fas fa-arrow-right"></i>
-                                </a>
-                                <div class="project-stats">
-                                    <div class="stat">
-                                        <div class="stat-value">40%</div>
-                                        <div class="stat-label">Рост продаж</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="stat-value">4.9★</div>
-                                        <div class="stat-label">Оценка клиентов</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Кальян Alpha Pro -->
-                <div class="portfolio-item" data-category="hookahs">
-                    <div class="project-card clickable-service-block">
-                        <div class="project-image hookah2-image">
-                            <div class="project-overlay">
-                                <div class="project-icon">
-                                    <i class="fas fa-fire-alt"></i>
-                                </div>
-                            </div>
-                            <div class="project-badge">
-                                <span class="badge-text" data-i18n="portfolio.status.premium">Премиум Класс</span>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <div class="project-header">
-                                <span class="project-category" data-i18n="portfolio.filter.hookahs">
-                                    <i class="fas fa-fire-alt"></i> Кальяны
-                                </span>
-                                <div class="project-duration">
-                                    <i class="far fa-clock"></i> 5 месяцев
-                                </div>
-                            </div>
-                            <h3 class="project-title" data-i18n="portfolio.projects.hookah2.title">Кальян Alpha Pro</h3>
-                            <p class="project-description" data-i18n="portfolio.projects.hookah2.description">
-                                Инновационный кальян с модульной системой, керамической чашей и технологией улучшенной фильтрации.
-                            </p>
-                            <div class="project-meta">
-                                <div class="meta-item">
-                                    <i class="fas fa-puzzle-piece"></i>
-                                    <span>Модульная система</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-cookie"></i>
-                                    <span>Керамическая чаша</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-filter"></i>
-                                    <span>Улучшенная фильтрация</span>
-                                </div>
-                            </div>
-                            <div class="project-footer">
-                                <a href="#" class="project-link" data-i18n="featuredWork.viewCaseStudy">
-                                    Смотреть Кейс <i class="fas fa-arrow-right"></i>
-                                </a>
-                                <div class="project-stats">
-                                    <div class="stat">
-                                        <div class="stat-value">99.9%</div>
-                                        <div class="stat-label">Надежность</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="stat-value">12</div>
-                                        <div class="stat-label">Модулей в комплекте</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="stat">
+                        <div class="stat-value">25</div>
+                        <div class="stat-label" data-i18n="services.design.stats.awards">Design Awards</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Project Highlights Section -->
-    <section class="project-highlights content-section" data-bg-index="1">
+    <!-- Engineering Section -->
+    <section id="engineering" class="service-detail">
         <div class="container">
-            <div class="section-header">
-                <h2 data-i18n="portfolio.highlights.title">Ключевые Достижения</h2>
-                <p data-i18n="portfolio.highlights.subtitle">Основные результаты и измеримые показатели</p>
+            <div class="service-header">
+                <span class="service-number">02</span>
+                <h2 class="service-title" data-i18n="services.engineering.title">Engineering & Development</h2>
             </div>
-            <div class="highlights-grid">
-                <div class="highlight-card clickable-stat-card">
-                    <div class="highlight-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3>Ускоренная Разработка</h3>
-                    <p>Среднее время выполнения проекта сокращено на 35% благодаря оптимизированным рабочим процессам</p>
-                    <div class="highlight-value">+35%</div>
-                </div>
-                <div class="highlight-card clickable-stat-card">
-                    <div class="highlight-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Эффективность по Цене</h3>
-                    <p>Затраты на производство снижены в среднем на 28% при сохранении премиального качества</p>
-                    <div class="highlight-value">-28%</div>
-                </div>
-                <div class="highlight-card clickable-stat-card">
-                    <div class="highlight-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Удовлетворенность Клиентов</h3>
-                    <p>98% клиентов возвращаются с новыми проектами, довольные результатом и сроком выполнения</p>
-                    <div class="highlight-value">98%</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="testimonials content-section" data-bg-index="0">
-        <div class="container">
-            <div class="section-header">
-                <h2 data-i18n="portfolio.testimonials.title">Отзывы Клиентов</h2>
-                <p data-i18n="portfolio.testimonials.subtitle">Что говорят наши партнеры о работе с нами</p>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <div class="testimonial-quote">
-                            <i class="fas fa-quote-left"></i>
+            <div class="service-content">
+                <div class="service-description">
+                    <p data-i18n="services.engineering.description">Technical engineering solutions that transform designs into manufacturable 
+                    products with focus on quality, cost, and scalability.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4 data-i18n="services.engineering.features.mechanical.title">Mechanical Engineering</h4>
+                            <p data-i18n="services.engineering.features.mechanical.description">Structural analysis and mechanism design</p>
                         </div>
-                        <p data-i18n="portfolio.testimonials.1">"NBGROUP.TECH создали кальян, который стал эталоном в индустрии. Дизайн и качество исполнения на высшем уровне."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user-circle"></i>
+                        <div class="feature">
+                            <h4 data-i18n="services.engineering.features.dfm.title">DFM Optimization</h4>
+                            <p data-i18n="services.engineering.features.dfm.description">Design for manufacturing and assembly</p>
                         </div>
-                        <div class="author-info">
-                            <div class="author-name">Александр Иванов</div>
-                            <div class="author-company">Hookah Premium Group</div>
+                        <div class="feature">
+                            <h4 data-i18n="services.engineering.features.materials.title">Material Selection</h4>
+                            <p data-i18n="services.engineering.features.materials.description">Optimal material choices for performance and cost</p>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <div class="testimonial-quote">
-                            <i class="fas fa-quote-left"></i>
-                        </div>
-                        <p data-i18n="portfolio.testimonials.2">"Премиальная упаковка от NBGROUP.TECH увеличила воспринимаемую ценность нашего продукта на 40%. Отличная работа!"</p>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">99.7%</div>
+                        <div class="stat-label" data-i18n="services.engineering.stats.quality">Quality Rate</div>
                     </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                        <div class="author-info">
-                            <div class="author-name">Мария Смирнова</div>
-                            <div class="author-company">Luxury Gifts Inc.</div>
-                        </div>
+                    <div class="stat">
+                        <div class="stat-value">50%</div>
+                        <div class="stat-label" data-i18n="services.engineering.stats.costReduction">Cost Reduction</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section (как на главной) -->
-    <a href="contacts.html" class="cta-improved content-section clickable-cta" data-bg-index="1">
+    <!-- Production Section -->
+    <section id="production" class="service-detail">
         <div class="container">
-            <div class="cta-content-improved">
-                <div class="cta-text">
-                    <h2 data-i18n="home.cta.title">Готовы начать проект?</h2>
-                    <p data-i18n="home.cta.description">Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
+            <div class="service-header">
+                <span class="service-number">03</span>
+                <h2 class="service-title" data-i18n="services.production.title">Manufacturing & Production</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p data-i18n="services.production.description">Scalable manufacturing solutions with rigorous quality control 
+                    and supply chain management for reliable product delivery.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4 data-i18n="services.production.features.factory.title">Factory Sourcing</h4>
+                            <p data-i18n="services.production.features.factory.description">Partner selection and manufacturing setup</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.production.features.quality.title">Quality Assurance</h4>
+                            <p data-i18n="services.production.features.quality.description">Comprehensive QC processes and testing</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.production.features.supply.title">Supply Chain</h4>
+                            <p data-i18n="services.production.features.supply.description">Material sourcing and logistics management</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="cta-action">
-                    <div class="btn btn-primary btn-large btn-glow">
-                        <span data-i18n="home.cta.button">Связаться с нами</span>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">1M+</div>
+                        <div class="stat-label" data-i18n="services.production.stats.units">Units Produced</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">48h</div>
+                        <div class="stat-label" data-i18n="services.production.stats.leadTime">Avg. Lead Time</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Section -->
+    <section id="brand" class="service-detail">
+        <div class="container">
+            <div class="service-header">
+                <span class="service-number">04</span>
+                <h2 class="service-title">Brand Development</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p>Comprehensive brand identity development including logo design, visual language, 
+                    and brand positioning to create memorable and impactful brands.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4>Brand Strategy</h4>
+                            <p>Market positioning and competitive analysis</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Visual Identity</h4>
+                            <p>Logo, color palette, and typography development</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Brand Assets</h4>
+                            <p>Complete set of brand elements and applications</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">100+</div>
+                        <div class="stat-label">Brands Created</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">360°</div>
+                        <div class="stat-label">Full Brand Coverage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brandbook Section -->
+    <section id="brandbook" class="service-detail">
+        <div class="container">
+            <div class="service-header">
+                <span class="service-number">05</span>
+                <h2 class="service-title">Brandbook Development</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p>Complete brand guideline systems that ensure consistent brand representation 
+                    across all platforms and touchpoints with detailed usage rules.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4>Brand Guidelines</h4>
+                            <p>Comprehensive usage rules and specifications</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Visual Standards</h4>
+                            <p>Logo usage, color systems, and typography</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Application Examples</h4>
+                            <p>Real-world usage across various media</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">50+</div>
+                        <div class="stat-label">Brandbooks</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Consistency</div>
+                    </div>
+                </div>
+                <div class="service-cta">
+                    <a href="brandbook.html" class="btn btn-primary">
+                        View Brandbook Examples
                         <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy Section -->
+    <section id="strategy" class="service-detail">
+        <div class="container">
+            <div class="service-header">
+                <span class="service-number">06</span>
+                <h2 class="service-title" data-i18n="services.strategy.title">Product Strategy & Research</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p data-i18n="services.strategy.description">We begin with deep market analysis and user research to define product vision, 
+                    positioning, and business objectives that ensure market success.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4 data-i18n="services.strategy.features.marketAnalysis.title">Market Analysis</h4>
+                            <p data-i18n="services.strategy.features.marketAnalysis.description">Competitive landscape and opportunity assessment</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.strategy.features.userResearch.title">User Research</h4>
+                            <p data-i18n="services.strategy.features.userResearch.description">In-depth understanding of user needs and behaviors</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.strategy.features.productPlanning.title">Product Planning</h4>
+                            <p data-i18n="services.strategy.features.productPlanning.description">Roadmap development and feature prioritization</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">150+</div>
+                        <div class="stat-label" data-i18n="services.strategy.stats.studies">Market Studies</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">95%</div>
+                        <div class="stat-label" data-i18n="services.strategy.stats.successRate">Success Rate</div>
                     </div>
                 </div>
             </div>
         </div>
-    </a>
+    </section>
+
+    <section class="process-overview">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="services.process.title">Our Process</h2>
+                <p data-i18n="services.process.subtitle">Structured approach to product development</p>
+            </div>
+            <div class="process-timeline">
+                <div class="process-phase">
+                    <div class="phase-number">01</div>
+                    <h3 data-i18n="services.process.discover.title">Discover</h3>
+                    <p data-i18n="services.process.discover.description">Research and strategy definition</p>
+                </div>
+                <div class="process-phase">
+                    <div class="phase-number">02</div>
+                    <h3 data-i18n="services.process.design.title">Design</h3>
+                    <p data-i18n="services.process.design.description">Concept development and validation</p>
+                </div>
+                <div class="process-phase">
+                    <div class="phase-number">03</div>
+                    <h3 data-i18n="services.process.develop.title">Develop</h3>
+                    <p data-i18n="services.process.develop.description">Engineering and prototyping</p>
+                </div>
+                <div class="process-phase">
+                    <div class="phase-number">04</div>
+                    <h3 data-i18n="services.process.deliver.title">Deliver</h3>
+                    <p data-i18n="services.process.deliver.description">Production and launch</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 data-i18n="services.cta.title">Start Your Project</h2>
+                <p data-i18n="services.cta.description">Ready to bring your product idea to life? Let's discuss your project requirements.</p>
+                <a href="contacts.html" class="btn btn-primary btn-large">
+                    <span data-i18n="services.cta.button">Get Quote</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer Container -->
     <div id="footer-container"></div>
@@ -398,30 +407,36 @@
     <!-- JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/home.js"></script>
-    <script src="js/parallax.js"></script>
-    <script src="js/portfolio.js"></script>
-
+    <script src="js/animations.js"></script>
+    <script src="js/services.js"></script>
+    
     <script>
-        // Загрузка хедера и футера
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Portfolio page initializing...');
+        // Load header component with glass effect
+        function loadGlassHeader() {
+            console.log('🔵 Loading glass header for services page...');
             
-            // Load header component (как на главной)
             fetch('components/header.html')
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById('header-container').innerHTML = html;
                     
                     // Инициализировать хедер
-                    if (typeof initHeader === 'function') initHeader();
-                    
-                    // Инициализировать smooth header hide (функция из home.js)
-                    if (typeof initSmoothHeaderHide === 'function') {
+                    if (typeof initHeader === 'function') {
                         setTimeout(() => {
-                            initSmoothHeaderHide();
-                            console.log('✅ Smooth header hide initialized');
-                        }, 500);
+                            initHeader();
+                            
+                            // Добавляем класс для внутренних страниц
+                            const header = document.querySelector('.main-header');
+                            if (header) {
+                                header.classList.add('internal-page-header');
+                                
+                                // Анимация появления
+                                setTimeout(() => {
+                                    header.style.opacity = '1';
+                                    header.style.transform = 'translateY(0)';
+                                }, 100);
+                            }
+                        }, 100);
                     }
                     
                     // Применить переводы к хедеру
@@ -429,10 +444,12 @@
                         if (window.i18n && window.i18n.refresh) {
                             window.i18n.refresh();
                         }
-                    }, 500);
+                    }, 200);
+                    
+                    console.log('✅ Glass header loaded successfully');
                 })
                 .catch(error => {
-                    console.error('Error loading header:', error);
+                    console.error('❌ Error loading glass header:', error);
                     // Fallback header
                     document.getElementById('header-container').innerHTML = `
                         <header class="main-header">
@@ -445,8 +462,8 @@
                                     <nav class="main-nav">
                                         <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
                                         <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
-                                        <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
-                                        <a href="portfolio.html" class="nav-link active" data-i18n="nav.portfolio">Портфолио</a>
+                                        <a href="services.html" class="nav-link active" data-i18n="nav.services">Услуги</a>
+                                        <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
                                         <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
                                         <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
                                     </nav>
@@ -477,8 +494,10 @@
                         }
                     }, 300);
                 });
+        }
 
-            // Load footer component
+        // Load footer component
+        function loadFooter() {
             fetch('components/footer.html')
                 .then(response => response.text())
                 .then(html => {
@@ -490,11 +509,10 @@
                         if (window.i18n && window.i18n.refresh) {
                             window.i18n.refresh();
                         }
-                    }, 500);
+                    }, 200);
                 })
                 .catch(error => {
                     console.error('Error loading footer:', error);
-                    // Fallback footer
                     document.getElementById('footer-container').innerHTML = `
                         <footer class="minimal-footer">
                             <div class="footer-container">
@@ -508,169 +526,93 @@
                             </div>
                         </footer>
                     `;
-                    
-                    // Применить переводы к fallback футеру
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 300);
                 });
+        }
 
-            // Инициализация функциональности портфолио
+        // Инициализация страницы услуг
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Services page initializing...');
+            
+            // Загружаем стеклянный хедер
+            loadGlassHeader();
+            
+            // Загружаем футер
+            loadFooter();
+            
+            // Инициализируем навигацию по услугам
             setTimeout(() => {
-                if (typeof initPortfolio === 'function') {
-                    initPortfolio();
-                } else {
-                    console.warn('initPortfolio function not found');
-                }
+                // Навигация по якорям
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        navItems.forEach(nav => nav.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        const targetId = this.getAttribute('href');
+                        const targetSection = document.querySelector(targetId);
+                        
+                        if (targetSection) {
+                            const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
+                            const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
+                            const offset = headerHeight + navHeight + 20;
+                            
+                            window.scrollTo({
+                                top: targetSection.offsetTop - offset,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+                
+                // Активный элемент навигации при скролле
+                window.addEventListener('scroll', () => {
+                    const sections = document.querySelectorAll('.service-detail');
+                    const scrollPosition = window.scrollY + 100;
+                    
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        const sectionBottom = sectionTop + section.offsetHeight;
+                        const sectionId = section.getAttribute('id');
+                        
+                        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                            navItems.forEach(item => {
+                                item.classList.remove('active');
+                                if (item.getAttribute('href') === `#${sectionId}`) {
+                                    item.classList.add('active');
+                                }
+                            });
+                        }
+                    });
+                });
             }, 500);
             
-            // Инициализация кликабельных блоков
-            initPortfolioClickableBlocks();
-            
-            // Инициализация параллакс фонов
-            if (typeof initParallaxBackgrounds === 'function') {
-                setTimeout(() => {
-                    initParallaxBackgrounds();
-                }, 300);
+            // Инициализация функциональности услуг
+            setTimeout(() => {
+                if (typeof initServices === 'function') {
+                    initServices();
+                } else {
+                    console.warn('initServices function not found');
+                }
+            }, 300);
+        });
+
+        // Добавляем padding-top для body чтобы контент не скрывался под фиксированным хедером
+        window.addEventListener('load', function() {
+            const header = document.querySelector('.main-header');
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                document.querySelector('.services-hero').style.paddingTop = (headerHeight + 40) + 'px';
             }
         });
-        
-        // Инициализация ВСЕХ кликабельных блоков на странице портфолио
-        function initPortfolioClickableBlocks() {
-            console.log('🎴 Initializing clickable blocks on portfolio page...');
-            
-            // 1. Карточки проектов
-            const projectCards = document.querySelectorAll('.clickable-service-block');
-            console.log(`🎴 Found ${projectCards.length} project cards`);
-            
-            projectCards.forEach(block => {
-                initClickableCard(block, 'project');
-            });
-            
-            // 2. Карточки highlights
-            const highlightCards = document.querySelectorAll('.clickable-stat-card');
-            console.log(`📊 Found ${highlightCards.length} highlight cards`);
-            
-            highlightCards.forEach(card => {
-                initClickableCard(card, 'highlight');
-            });
-            
-            // 3. CTA блок
-            const ctaBlocks = document.querySelectorAll('.clickable-cta');
-            console.log(`📣 Found ${ctaBlocks.length} CTA blocks`);
-            
-            ctaBlocks.forEach(block => {
-                initClickableCard(block, 'cta');
-            });
-            
-            console.log('✅ All clickable blocks initialized!');
-        }
-        
-        // Общая функция инициализации кликабельного элемента
-        function initClickableCard(element, type) {
-            // Добавляем accessibility атрибуты
-            element.setAttribute('role', 'link');
-            element.setAttribute('tabindex', '0');
-            
-            // Разные описания для разных типов элементов
-            const titles = {
-                'project': 'Click to view project details',
-                'highlight': 'Click to learn more',
-                'cta': 'Click to contact us'
-            };
-            
-            if (titles[type]) {
-                element.setAttribute('title', titles[type]);
-            }
-            
-            // Keyboard navigation
-            element.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    const href = this.getAttribute('href');
-                    if (href) {
-                        window.location.href = href;
-                    } else if (typeof this.click === 'function') {
-                        this.click();
-                    }
-                }
-            });
-            
-            // Анимация при клике
-            element.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href && href !== '#') {
-                    console.log(`🔄 Navigating to: ${href}`);
-                    
-                    // Добавляем класс active для анимации
-                    this.classList.add('card-clicked');
-                    setTimeout(() => {
-                        this.classList.remove('card-clicked');
-                    }, 300);
-                    
-                    // Анимация загрузки
-                    if (href.includes('.html')) {
-                        document.body.style.opacity = '0.7';
-                        document.body.style.transition = 'opacity 0.3s ease';
-                        
-                        setTimeout(() => {
-                            document.body.style.opacity = '1';
-                        }, 1000);
-                    }
-                }
-            });
-            
-            // Анимация при загрузке
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }, 300);
-        }
-        
-        // Функция для инициализации параллакс фонов
-        function initParallaxBackgrounds() {
-            const contentSections = document.querySelectorAll('.content-section');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const bgIndex = entry.target.getAttribute('data-bg-index');
-                        switchBackground(bgIndex);
-                    }
-                });
-            }, { threshold: 0.3 });
 
-            contentSections.forEach(section => observer.observe(section));
-        }
-
-        function switchBackground(bgIndex) {
-            const backgrounds = document.querySelectorAll('.parallax-bg');
-            backgrounds.forEach(bg => bg.classList.remove('active'));
-            
-            const targetBg = document.getElementById(`parallax-bg-${parseInt(bgIndex) + 1}`);
-            if (targetBg) {
-                targetBg.classList.add('active');
+        // Адаптация для мобильных
+        window.addEventListener('resize', function() {
+            const header = document.querySelector('.main-header');
+            if (header && window.innerWidth <= 768) {
+                document.querySelector('.services-hero').style.paddingTop = '120px';
             }
-        }
-        
-        // Проверка переводов
-        function applyTranslationsForce() {
-            setTimeout(() => {
-                if (window.i18n && window.i18n.refresh) {
-                    const count = window.i18n.refresh();
-                    console.log(`✅ Force applied ${count} translations`);
-                }
-            }, 1000);
-        }
-        
-        // Принудительное обновление переводов
-        applyTranslationsForce();
+        });
     </script>
 </body>
-            </html>
+    </html>
