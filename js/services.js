@@ -1,9 +1,9 @@
-// services.js - Enhanced with Glass Header Support
+// services.js - Optimized for Services Page
 
-console.log('🎯 services.js loaded - GLASS HEADER VERSION');
+console.log('🎯 services.js loaded - OPTIMIZED VERSION');
 
 function initServices() {
-    console.log('🎯 Initializing services page with glass header support...');
+    console.log('🎯 Initializing services page...');
     
     // Инициализация с учетом стеклянного хедера
     setupServicesNavigation();
@@ -11,70 +11,8 @@ function initServices() {
     setupProcessInteractions();
     setupBrandbookLink();
     setupTouchOptimizations();
-    setupPerformanceMonitoring();
-    setupGlassHeaderCompatibility();
     
-    console.log('✅ Services page with glass header initialized');
-}
-
-// СОВМЕСТИМОСТЬ СО СТЕКЛЯННЫМ ХЕДЕРОМ
-function setupGlassHeaderCompatibility() {
-    console.log('🔵 Setting up glass header compatibility...');
-    
-    const header = document.querySelector('.main-header');
-    const servicesNav = document.querySelector('.services-nav');
-    const isInternalPage = document.body.classList.contains('internal-page');
-    
-    if (!isInternalPage || !header || !servicesNav) return;
-    
-    // Настройка позиционирования для стеклянного хедера
-    function updateNavPosition() {
-        if (window.innerWidth <= 768) {
-            servicesNav.style.position = 'static';
-            servicesNav.style.top = 'auto';
-        } else {
-            const headerHeight = header.offsetHeight;
-            servicesNav.style.position = 'sticky';
-            servicesNav.style.top = (headerHeight + 20) + 'px';
-            
-            // Если хедер в состоянии "scrolled", корректируем позицию
-            if (header.classList.contains('header-scrolled')) {
-                servicesNav.style.top = (headerHeight - 10) + 'px';
-            }
-        }
-    }
-    
-    // Обновляем позицию при скролле
-    function handleScroll() {
-        const scrollY = window.scrollY;
-        
-        if (scrollY > 100) {
-            header.classList.add('header-scrolled');
-        } else {
-            header.classList.remove('header-scrolled');
-        }
-        
-        updateNavPosition();
-    }
-    
-    // Инициализация
-    updateNavPosition();
-    
-    // Слушатели событий
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', updateNavPosition);
-    
-    // Обновляем при изменении размера хедера
-    const headerObserver = new MutationObserver(() => {
-        updateNavPosition();
-    });
-    
-    headerObserver.observe(header, {
-        attributes: true,
-        attributeFilter: ['class']
-    });
-    
-    console.log('✅ Glass header compatibility setup complete');
+    console.log('✅ Services page initialized');
 }
 
 // ОПТИМИЗИРОВАННАЯ НАВИГАЦИЯ ДЛЯ УСЛУГ
@@ -83,40 +21,15 @@ function setupServicesNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
     const serviceSections = document.querySelectorAll('.service-detail');
     
-    if (!servicesNav) return;
+    if (!servicesNav || navItems.length === 0) return;
     
     const isMobile = window.innerWidth <= 768;
-    const isInternalPage = document.body.classList.contains('internal-page');
-    
-    if (isMobile) {
-        // На мобильных не скрываем навигацию
-        servicesNav.classList.add('mobile-optimized');
-        setupMobileNavBehavior(navItems);
-    } else if (!isInternalPage) {
-        // На десктопах без стеклянного хедера - оригинальная логика скрытия
-        setupScrollHideNavigation();
-    }
     
     // Общая логика для smooth scroll
     setupSmoothScrollNavigation(navItems, serviceSections, isMobile);
     
     // Активное состояние при скролле
     setupScrollActiveState(navItems, serviceSections, isMobile);
-}
-
-function setupMobileNavBehavior(navItems) {
-    // Добавляем индикатор загрузки для мобильных
-    navItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            if (this.getAttribute('href') === '#brandbook') return;
-            
-            // Визуальный feedback для мобильных
-            this.style.opacity = '0.7';
-            setTimeout(() => {
-                this.style.opacity = '1';
-            }, 300);
-        });
-    });
 }
 
 function setupSmoothScrollNavigation(navItems, serviceSections, isMobile) {
@@ -141,12 +54,9 @@ function setupSmoothScrollNavigation(navItems, serviceSections, isMobile) {
                 const additionalOffset = isMobile ? 20 : 40;
                 const targetPosition = targetSection.offsetTop - headerHeight - navHeight - additionalOffset;
                 
-                // Плавный скролл с разной скоростью для мобильных
-                const scrollBehavior = isMobile ? 'smooth' : 'smooth';
-                
                 window.scrollTo({
                     top: targetPosition,
-                    behavior: scrollBehavior
+                    behavior: 'smooth'
                 });
                 
                 // Обновляем активное состояние
@@ -163,8 +73,6 @@ function setupSmoothScrollNavigation(navItems, serviceSections, isMobile) {
 }
 
 function setupScrollActiveState(navItems, serviceSections, isMobile) {
-    let scrollTimeout;
-    
     const updateActiveNav = () => {
         let current = '';
         const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
@@ -200,38 +108,6 @@ function setupScrollActiveState(navItems, serviceSections, isMobile) {
     
     // Initial update
     setTimeout(updateActiveNav, 300);
-}
-
-// ОРИГИНАЛЬНАЯ ФУНКЦИЯ СКРЫТИЯ НАВИГАЦИИ (только для десктопов без стеклянного хедера)
-function setupScrollHideNavigation() {
-    const servicesNav = document.querySelector('.services-nav');
-    if (!servicesNav) return;
-
-    let lastScrollTop = 0;
-    const scrollThreshold = 100;
-    let isHidden = false;
-
-    const handleScroll = () => {
-        if (window.innerWidth <= 768) return;
-
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollDelta = scrollTop - lastScrollTop;
-        
-        if (scrollDelta > 5 && scrollTop > scrollThreshold && !isHidden) {
-            servicesNav.classList.add('hidden');
-            servicesNav.classList.remove('visible');
-            isHidden = true;
-        } else if (scrollDelta < -5 && isHidden) {
-            servicesNav.classList.remove('hidden');
-            servicesNav.classList.add('visible');
-            isHidden = false;
-        }
-        
-        lastScrollTop = scrollTop;
-    };
-
-    window.addEventListener('scroll', throttle(handleScroll, 50), { passive: true });
-    servicesNav.classList.add('visible');
 }
 
 // ОПТИМИЗИРОВАННЫЕ АНИМАЦИИ
@@ -384,36 +260,6 @@ function setupTouchOptimizations() {
             this.style.transform = 'scale(1)';
         });
     });
-    
-    // Оптимизация скролла на мобильных
-    document.documentElement.style.scrollBehavior = 'smooth';
-}
-
-// МОНИТОРИНГ ПРОИЗВОДИТЕЛЬНОСТИ
-function setupPerformanceMonitoring() {
-    const isMobile = window.innerWidth <= 768;
-    
-    if (isMobile && 'performance' in window) {
-        // Мониторинг времени загрузки
-        const loadTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
-        console.log(`📱 Mobile page load time: ${loadTime}ms`);
-        
-        if (loadTime > 3000) {
-            console.warn('⚠️ Slow mobile load time detected, applying optimizations');
-            applyAggressiveOptimizations();
-        }
-    }
-}
-
-function applyAggressiveOptimizations() {
-    // Агрессивные оптимизации для медленных устройств
-    const heavyElements = document.querySelectorAll('.process-phase, .stat, .feature');
-    heavyElements.forEach(el => {
-        el.style.willChange = 'auto';
-    });
-    
-    // Отключаем сложные анимации
-    document.documentElement.style.scrollBehavior = 'auto';
 }
 
 function setupBrandbookLink() {
@@ -483,8 +329,8 @@ function throttle(func, limit) {
     };
 }
 
-// ФУНКЦИЯ ДЛЯ КОРРЕКТНОЙ НАСТРОЙКИ ОТСТУПОВ ПРИ СТЕКЛЯННОМ ХЕДЕРЕ
-function setupGlassHeaderSpacing() {
+// ФУНКЦИЯ ДЛЯ КОРРЕКТНОЙ НАСТРОЙКИ ОТСТУПОВ
+function setupServicesSpacing() {
     const header = document.querySelector('.main-header');
     const hero = document.querySelector('.services-hero');
     
@@ -494,16 +340,8 @@ function setupGlassHeaderSpacing() {
         const headerHeight = header.offsetHeight;
         
         if (window.innerWidth > 768) {
-            // Десктоп: учитываем стеклянный хедер с отступами
             hero.style.paddingTop = (headerHeight + 80) + 'px';
-            
-            // Также обновляем отступы для навигации
-            const servicesNav = document.querySelector('.services-nav');
-            if (servicesNav) {
-                servicesNav.style.marginTop = '20px';
-            }
         } else {
-            // Мобильные: фиксированный хедер
             hero.style.paddingTop = (headerHeight + 40) + 'px';
         }
     }
@@ -513,16 +351,9 @@ function setupGlassHeaderSpacing() {
     
     // Обновление при ресайзе
     window.addEventListener('resize', updateSpacing);
-    
-    // Обновление при изменении класса хедера
-    const observer = new MutationObserver(updateSpacing);
-    observer.observe(header, {
-        attributes: true,
-        attributeFilter: ['class']
-    });
 }
 
-// ИНИЦИАЛИЗАЦИЯ И ОБРАБОТЧИКИ
+// ИНИЦИАЛИЗАЦИЯ
 document.addEventListener('DOMContentLoaded', () => {
     console.log('📄 Services page DOM loaded');
     
@@ -534,8 +365,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Анимируем секции
         animateServiceSections();
         
-        // Настраиваем отступы для стеклянного хедера
-        setupGlassHeaderSpacing();
+        // Настраиваем отступы
+        setupServicesSpacing();
         
         console.log('✅ Services page fully initialized');
     }, 300);
@@ -550,36 +381,13 @@ window.addEventListener('resize', () => {
         if (typeof initServices === 'function') {
             initServices();
         }
-        if (typeof setupGlassHeaderSpacing === 'function') {
-            setupGlassHeaderSpacing();
+        if (typeof setupServicesSpacing === 'function') {
+            setupServicesSpacing();
         }
     }, 250);
-});
-
-// ОБРАБОТКА ВИДИМОСТИ СТРАНИЦЫ
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-        // Переинициализация при возвращении на страницу
-        setTimeout(() => {
-            if (typeof initServices === 'function') {
-                initServices();
-            }
-        }, 100);
-    }
 });
 
 // Экспорт для глобального доступа
 window.initServices = initServices;
 window.animateServiceSections = animateServiceSections;
-window.setupGlassHeaderSpacing = setupGlassHeaderSpacing;
-
-// Авто-инициализация если DOM уже готов
-if (document.readyState === 'interactive' || document.readyState === 'complete') {
-    setTimeout(() => {
-        if (typeof initServices === 'function') {
-            initServices();
-            animateServiceSections();
-            setupGlassHeaderSpacing();
-        }
-    }, 500);
-                                     }
+window.setupServicesSpacing = setupServicesSpacing;
