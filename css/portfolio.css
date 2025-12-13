@@ -1,7 +1,7 @@
 /* Portfolio Hero */
 .portfolio-hero {
     padding: 180px 0 100px;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    background: transparent;
     position: relative;
     overflow: hidden;
 }
@@ -24,13 +24,31 @@
     z-index: 2;
 }
 
+.page-title {
+    font-size: 4rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, #ffffff 0%, #66b5ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    font-weight: 400;
+}
+
 /* Portfolio Filter */
 .portfolio-filter {
     padding: 40px 0;
-    background: #0a0a0a;
-    border-bottom: 1px solid #333;
+    background: transparent;
     position: sticky;
-    top: 80px;
+    top: 120px;
     z-index: 90;
     backdrop-filter: blur(10px);
 }
@@ -80,7 +98,7 @@
 /* Portfolio Grid */
 .portfolio-grid-section {
     padding: 100px 0;
-    background: #0a0a0a;
+    background: transparent;
 }
 
 .portfolio-grid {
@@ -105,13 +123,15 @@
 
 /* Project Card - Major Redesign */
 .project-card {
-    background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
     border-radius: 20px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     height: 100%;
     position: relative;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .project-card::before {
@@ -129,7 +149,11 @@
 .project-card:hover {
     transform: translateY(-15px);
     border-color: rgba(0, 102, 255, 0.4);
-    box-shadow: 0 25px 50px rgba(0, 102, 255, 0.15);
+    box-shadow: 
+        0 25px 50px rgba(0, 102, 255, 0.15),
+        0 0 60px rgba(0, 102, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .project-card:hover::before {
@@ -141,7 +165,7 @@
     height: 280px;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
 }
 
 /* Hookah Projects */
@@ -185,15 +209,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0.2;
-}
-
-/* Remove old project images */
-.speaker-image::before,
-.monitor-image::before,
-.thermostat-image::before,
-.printer-image::before {
-    content: '';
-    display: none;
 }
 
 .project-overlay {
@@ -276,6 +291,8 @@
     font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.5px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 /* Specific category colors */
@@ -315,7 +332,7 @@
 }
 
 .project-description {
-    color: #a0a0a0;
+    color: rgba(255, 255, 255, 0.85);
     margin-bottom: 25px;
     line-height: 1.7;
     font-size: 16px;
@@ -340,6 +357,8 @@
     font-size: 14px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .project-card:hover .meta-item {
@@ -427,7 +446,7 @@
 /* Project Highlights */
 .project-highlights {
     padding: 100px 0;
-    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    background: transparent;
 }
 
 .highlights-grid {
@@ -445,6 +464,8 @@
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .highlight-card::before {
@@ -462,7 +483,11 @@
 .highlight-card:hover {
     transform: translateY(-10px);
     border-color: rgba(0, 102, 255, 0.3);
-    box-shadow: 0 20px 40px rgba(0, 102, 255, 0.1);
+    box-shadow: 
+        0 20px 40px rgba(0, 102, 255, 0.1),
+        0 0 50px rgba(0, 102, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .highlight-card:hover::before {
@@ -495,7 +520,7 @@
 }
 
 .highlight-card p {
-    color: #a0a0a0;
+    color: rgba(255, 255, 255, 0.85);
     line-height: 1.6;
     margin-bottom: 20px;
     font-size: 15px;
@@ -519,7 +544,7 @@
 /* Testimonials Enhanced */
 .testimonials {
     padding: 120px 0;
-    background: #0a0a0a;
+    background: transparent;
 }
 
 .testimonials-grid {
@@ -529,12 +554,14 @@
 }
 
 .testimonial-card {
-    background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
     padding: 45px;
     transition: all 0.4s ease;
     position: relative;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .testimonial-card::before {
@@ -552,7 +579,11 @@
 .testimonial-card:hover {
     transform: translateY(-10px);
     border-color: rgba(0, 102, 255, 0.4);
-    box-shadow: 0 20px 40px rgba(0, 102, 255, 0.1);
+    box-shadow: 
+        0 20px 40px rgba(0, 102, 255, 0.1),
+        0 0 50px rgba(0, 102, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .testimonial-card:hover::before {
@@ -620,7 +651,7 @@
 }
 
 .author-company {
-    color: #a0a0a0;
+    color: rgba(255, 255, 255, 0.7);
     font-size: 0.9rem;
 }
 
@@ -752,18 +783,6 @@
     animation: slideInFilter 0.5s ease-out;
 }
 
-/* Ripple animation for buttons */
-@keyframes ripple-animation {
-    0% {
-        transform: scale(0);
-        opacity: 0.5;
-    }
-    100% {
-        transform: scale(20);
-        opacity: 0;
-    }
-}
-
 /* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===== */
 @media (max-width: 1024px) {
     .portfolio-grid {
@@ -782,10 +801,19 @@
         padding: 150px 0 70px !important;
     }
     
+    .page-title {
+        font-size: 3rem;
+    }
+    
+    .page-subtitle {
+        font-size: 1.1rem;
+    }
+    
     /* Filter Navigation Mobile */
     .portfolio-filter {
         position: static;
         padding: 30px 0;
+        top: 100px;
     }
     
     .filter-nav {
@@ -898,6 +926,14 @@
 }
 
 @media (max-width: 480px) {
+    .page-title {
+        font-size: 2.5rem;
+    }
+    
+    .page-subtitle {
+        font-size: 1rem;
+    }
+    
     .filter-btn {
         padding: 10px 20px;
         font-size: 13px;
@@ -1063,13 +1099,6 @@
     }
 }
 
-/* Оптимизация для медленных устройств */
-.slow-connection .project-card,
-.slow-connection .testimonial-card,
-.slow-connection .highlight-card {
-    transform: none !important;
-}
-
 /* Совместимость с темной темой */
 @media (prefers-color-scheme: dark) {
     .project-card,
@@ -1136,4 +1165,4 @@
         color: #000;
         opacity: 0.1;
     }
-}
+        }
