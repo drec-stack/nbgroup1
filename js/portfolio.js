@@ -3,7 +3,7 @@ console.log('🎯 portfolio.js loaded - CALYANS & PACKAGING PORTFOLIO');
 function initPortfolio() {
     console.log('🎯 Initializing portfolio page with new categories...');
     
-    setupPortfolioHeaderBehavior(); // ← Добавлено
+    setupPortfolioHeaderBehavior(); // ← ОБНОВЛЕНА
     setupPortfolioFilter();
     setupProjectInteractions();
     setupTestimonialCarousel();
@@ -14,7 +14,7 @@ function initPortfolio() {
     console.log('✅ Portfolio page initialized with new hookah/accessories/packaging projects');
 }
 
-// NEW FUNCTION: Header behavior for portfolio page
+// UPDATED FUNCTION: Header behavior matching home page
 function setupPortfolioHeaderBehavior() {
     const header = document.querySelector('.main-header');
     if (!header) {
@@ -23,56 +23,61 @@ function setupPortfolioHeaderBehavior() {
         return;
     }
     
-    console.log('🏗️ Setting up portfolio header behavior');
+    console.log('🏗️ Setting up portfolio header behavior (MATCHING HOME PAGE)');
     
-    // Для внутренних страниц (portfolio) используем базовую логику скролла
-    const isHomePage = window.location.pathname.includes('index.html') || 
-                      window.location.pathname === '/' || 
-                      window.location.pathname.endsWith('/');
-    
-    if (isHomePage) return; // Главная страница обрабатывается отдельно
-    
+    // Используем ту же логику, что и на главной странице
     let lastScrollY = window.scrollY;
     const scrollThreshold = 100;
     
     function handleScroll() {
         const currentScrollY = window.scrollY;
         
-        if (currentScrollY <= 0) {
-            header.classList.remove('header-hidden', 'header-scrolled');
+        // В самом верху страницы - всегда показываем
+        if (currentScrollY <= 50) {
             header.style.opacity = '1';
+            header.style.transform = 'translateY(0)';
+            header.classList.remove('header-hidden');
             return;
         }
         
-        if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-            // Scrolling down - show minimized header
+        // Плавное изменение прозрачности (как на главной)
+        if (currentScrollY <= 150) {
+            const opacity = 1 - (currentScrollY - 50) / 100;
+            header.style.opacity = opacity.toString();
             header.classList.remove('header-hidden');
-            header.classList.add('header-scrolled');
-            header.style.opacity = '1';
-        } else if (currentScrollY < lastScrollY) {
-            // Scrolling up - show normal header
-            header.classList.remove('header-hidden');
-            header.classList.remove('header-scrolled');
-            header.style.opacity = '1';
+        } else {
+            // Полностью скрываем при глубоком скролле
+            header.style.opacity = '0';
+            header.classList.add('header-hidden');
         }
         
         lastScrollY = currentScrollY;
     }
     
-    // Применяем начальное состояние
+    // Начальное состояние
     handleScroll();
     
     window.addEventListener('scroll', handleScroll, { passive: true });
     
-    // Показывать хедер при наведении (если скрыт)
+    // Показывать хедер при наведении (как на главной)
     header.addEventListener('mouseenter', () => {
-        if (header.classList.contains('header-hidden')) {
-            header.classList.remove('header-hidden');
-            header.style.opacity = '1';
+        header.style.opacity = '1';
+        header.classList.remove('header-hidden');
+    });
+    
+    // Через 2 секунды снова скрыть, если пользователь не взаимодействует
+    header.addEventListener('mouseleave', () => {
+        if (window.scrollY > 150) {
+            setTimeout(() => {
+                if (!header.matches(':hover')) {
+                    header.style.opacity = '0';
+                    header.classList.add('header-hidden');
+                }
+            }, 2000);
         }
     });
     
-    console.log('✅ Portfolio header behavior setup complete');
+    console.log('✅ Portfolio header behavior setup complete (MATCHING HOME)');
 }
 
 // UPDATED FILTER FOR NEW CATEGORIES
@@ -608,4 +613,4 @@ if (!document.querySelector('#ripple-styles')) {
         }
     `;
     document.head.appendChild(style);
-}
+        }
