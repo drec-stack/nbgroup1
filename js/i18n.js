@@ -252,7 +252,18 @@ class I18n {
         document.querySelectorAll('.lang-btn').forEach(btn => {
             const btnLang = btn.getAttribute('data-lang');
             btn.classList.toggle('active', btnLang === this.currentLang);
+            
+            // Также обновляем родительский switcher
+            const switcher = btn.closest('.language-switcher');
+            if (switcher) {
+                switcher.setAttribute('data-current-lang', this.currentLang);
+            }
         });
+        
+        // Отправляем событие для синхронизации всех компонентов
+        window.dispatchEvent(new CustomEvent('languageSwitcherUpdated', {
+            detail: { lang: this.currentLang }
+        }));
     }
 
     setupMutationObserver() {
