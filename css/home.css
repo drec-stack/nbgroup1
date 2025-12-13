@@ -1218,8 +1218,9 @@
     z-index: 1000 !important;
     transform: translateY(0) !important;
     opacity: 1 !important;
+    visibility: visible !important;
     pointer-events: auto !important;
-    transition: all 0.4s ease !important;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
     border-radius: 20px !important;
     background: rgba(0, 102, 255, 0.12) !important;
     backdrop-filter: blur(16px) saturate(180%) !important;
@@ -1227,11 +1228,26 @@
     border: 1px solid rgba(255, 255, 255, 0.22) !important;
 }
 
-.home-page .main-header.header-hidden {
+/* Состояние скрытого хедера */
+.home-page .main-header.header-hide-smooth {
     transform: translateY(-100%) !important;
     opacity: 0 !important;
+    visibility: hidden !important;
     pointer-events: none !important;
-    transition: all 0.4s ease !important;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s ease, 
+                visibility 0.5s linear !important;
+}
+
+/* Минимизированный хедер при скролле */
+.home-page .main-header.header-minimized {
+    padding: 12px 0 !important;
+    background: rgba(0, 102, 255, 0.25) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    top: 10px !important;
 }
 
 .home-page .main-header.header-scrolled {
@@ -1240,8 +1256,10 @@
     -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
 }
 
+/* Увеличение отступа для контента под хедером */
 .home-page .hero {
-    padding-top: 100px !important;
+    padding-top: 120px !important;
+    transition: padding-top 0.3s ease !important;
 }
 
 /* ===== GLASS EFFECTS FOR HOME PAGE ELEMENTS ===== */
@@ -1269,13 +1287,23 @@
         border-radius: 0 !important;
         margin: 0 !important;
         padding: 14px 0 !important;
-        background: rgba(0, 102, 255, 0.22) !important;
+        background: rgba(0, 102, 255, 0.25) !important;
         border: none !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+        transition: all 0.4s ease !important;
+    }
+    
+    .home-page .main-header.header-hide-smooth {
+        transform: translateY(-120%) !important;
+    }
+    
+    .home-page .main-header.header-minimized {
+        padding: 10px 0 !important;
+        top: 0 !important;
     }
     
     .home-page .hero {
-        padding-top: 80px !important;
+        padding-top: 100px !important;
     }
     
     .hero-subtitle {
@@ -1960,63 +1988,41 @@
     }
 }
 
-/* ===== GLASS HEADER SPECIFIC ANIMATIONS ===== */
-@keyframes headerGlassEnter {
-    0% {
-        opacity: 0;
-        transform: translateY(-30px);
-        backdrop-filter: blur(0);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-        backdrop-filter: blur(16px);
-    }
+/* ===== HEADER HIDE UTILITY CLASSES ===== */
+/* Быстрая анимация для демо */
+.header-hide-quick {
+    transition: transform 0.3s ease, opacity 0.2s ease !important;
 }
 
-@keyframes headerGlassExit {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
-        backdrop-filter: blur(16px);
+.header-show-quick {
+    transition: transform 0.3s ease, opacity 0.2s ease 0.1s !important;
+}
+
+/* Отключаем анимации для устройств с reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .home-page .main-header {
+        transition: none !important;
     }
-    100% {
-        opacity: 0;
-        transform: translateY(-30px);
-        backdrop-filter: blur(0);
-    }
-}
-
-.header-glass-enter {
-    animation: headerGlassEnter 0.6s ease forwards;
-}
-
-.header-glass-exit {
-    animation: headerGlassExit 0.4s ease forwards;
-}
-
-/* Glass morphism эффект для хедера */
-.glass-morph {
-    animation: glassMorph 6s ease-in-out infinite;
-    background: linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.1),
-        rgba(255, 255, 255, 0.05),
-        rgba(255, 255, 255, 0.1)
-    );
-    background-size: 400% 400%;
-}
-
-@keyframes glassMorph {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
+    
+    .header-hide-smooth,
+    .header-show-smooth,
+    .header-minimized,
+    .header-slide-down,
+    .header-glow-appear,
+    .header-hide-quick,
+    .header-show-quick {
+        transition: none !important;
+        animation: none !important;
     }
 }
 
-/* Добавляем эффект морфинга к хедеру при наведении */
-.main-header:hover {
-    animation: glassMorph 3s ease-in-out infinite;
-}
+/* Поддержка старых браузеров */
+@supports not (backdrop-filter: blur(16px)) {
+    .home-page .main-header {
+        background: rgba(0, 102, 255, 0.25) !important;
+    }
+    
+    .home-page .main-header.header-minimized {
+        background: rgba(0, 102, 255, 0.35) !important;
+    }
+    }
