@@ -344,10 +344,10 @@
                 <div class="team-member">
                     <div class="member-photo">
                         <img 
-                            src="images/team/spartak.jpg" 
+                            src="assets/images/team/spartak.jpg" 
                             alt="Спартак Нухсан"
                             loading="lazy"
-                            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\"><rect width=\"200\" height=\"200\" fill=\"%230066ff\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"50\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">SN</text></svg>';"
+                            onerror="handleTeamPhotoError(this, 'SN')"
                         >
                     </div>
                     <h3 class="member-name" data-i18n="about.team.spartak.name">Спартак Нухсан</h3>
@@ -370,10 +370,10 @@
                 <div class="team-member">
                     <div class="member-photo">
                         <img 
-                            src="images/team/urmat.jpg" 
+                            src="assets/images/team/urmat.jpg" 
                             alt="Исмаилов Урмат"
                             loading="lazy"
-                            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\"><rect width=\"200\" height=\"200\" fill=\"%2300aaff\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"50\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">UI</text></svg>';"
+                            onerror="handleTeamPhotoError(this, 'UI')"
                         >
                     </div>
                     <h3 class="member-name" data-i18n="about.team.urmat.name">Исмаилов Урмат</h3>
@@ -396,10 +396,10 @@
                 <div class="team-member">
                     <div class="member-photo">
                         <img 
-                            src="images/team/elena.jpg" 
+                            src="assets/images/team/elena.jpg" 
                             alt="Елена Кирьянова"
                             loading="lazy"
-                            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\"><rect width=\"200\" height=\"200\" fill=\"%2300ffaa\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"50\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">EK</text></svg>';"
+                            onerror="handleTeamPhotoError(this, 'EK')"
                         >
                     </div>
                     <h3 class="member-name" data-i18n="about.team.elena.name">Елена Кирьянова</h3>
@@ -455,6 +455,34 @@
     <script src="js/about.js"></script>
     
     <script>
+        // Функция для обработки ошибок загрузки фото
+        function handleTeamPhotoError(img, initials) {
+            console.warn('⚠️ Failed to load team photo:', img.src);
+            
+            // Создаем SVG placeholder с инициалами
+            const svg = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+                    <defs>
+                        <linearGradient id="grad${initials}" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#00aaff;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="200" height="200" fill="url(#grad${initials})" rx="100"/>
+                    <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="70" 
+                          fill="white" text-anchor="middle" dy="0.35em" font-weight="bold">
+                        ${initials}
+                    </text>
+                </svg>
+            `;
+            
+            // Заменяем изображение на SVG
+            img.outerHTML = svg;
+        }
+
+        // Глобальная функция для обработки ошибок
+        window.handleTeamPhotoError = handleTeamPhotoError;
+
         // Component loader for about page
         function loadComponents() {
             console.log('🔄 Loading components for about page...');
@@ -650,13 +678,32 @@
                         e.stopPropagation();
                         
                         const lang = btn.getAttribute('data-lang');
+                        const currentActive = document.querySelector('.lang-btn.active');
+                        
+                        if (currentActive && currentActive.getAttribute('data-lang') === lang) {
+                            return;
+                        }
+                        
+                        // Обновляем состояние переключателя
                         updateLanguageSwitcherState(lang);
                         
+                        // Вызываем функцию перевода
                         if (window.i18n && window.i18n.smoothSwitchLanguage) {
                             window.i18n.smoothSwitchLanguage(lang);
-                        } else {
+                        } else if (window.i18n && window.i18n.refresh) {
+                            // Fallback метод
                             localStorage.setItem('preferredLang', lang);
+                            window.i18n.refresh();
+                        } else {
+                            // Самый простой способ
+                            localStorage.setItem('preferredLang', lang);
+                            location.reload();
                         }
+                        
+                        // Отправляем событие для header.js
+                        window.dispatchEvent(new CustomEvent('languageChanged', { 
+                            detail: { lang: lang } 
+                        }));
                     });
                 });
                 
@@ -708,6 +755,56 @@
             }
         }
         
+        // Обработчик события смены языка
+        window.addEventListener('languageChanged', function(event) {
+            console.log('🌐 Language changed to:', event.detail.lang);
+            
+            // Обновляем переключатель
+            const switcher = document.querySelector('.language-switcher');
+            if (switcher) {
+                switcher.setAttribute('data-current-lang', event.detail.lang);
+            }
+            
+            // Обновляем кнопки
+            const langBtns = document.querySelectorAll('.lang-btn');
+            langBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === event.detail.lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Обновляем заголовок страницы
+            if (window.i18n && window.i18n.refresh) {
+                setTimeout(() => {
+                    window.i18n.refresh();
+                }, 100);
+            }
+        });
+        
+        // Проверка наличия изображений команды
+        function checkTeamPhotos() {
+            const photoUrls = [
+                'assets/images/team/spartak.jpg',
+                'assets/images/team/urmat.jpg', 
+                'assets/images/team/elena.jpg'
+            ];
+            
+            photoUrls.forEach(url => {
+                fetch(url, { method: 'HEAD' })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.warn(`⚠️ Photo not found: ${url}`);
+                        } else {
+                            console.log(`✅ Photo found: ${url}`);
+                        }
+                    })
+                    .catch(() => {
+                        console.warn(`❌ Cannot access: ${url}`);
+                    });
+            });
+        }
+        
         // Load components when DOM is ready
         document.addEventListener('DOMContentLoaded', loadComponents);
         
@@ -724,6 +821,9 @@
                 window.initAbout();
             }
         }, 1500);
+        
+        // Проверяем фото через 2 секунды после загрузки
+        setTimeout(checkTeamPhotos, 2000);
         
         // Image loading optimization
         document.addEventListener('DOMContentLoaded', function() {
@@ -792,4 +892,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
