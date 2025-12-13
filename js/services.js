@@ -1,10 +1,11 @@
-// services.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ (ПОЛНАЯ ВЕРСИЯ)
-console.log('🎯 services.js loaded - MOBILE OPTIMIZED');
+// services.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ С ОБНОВЛЕННЫМ ХЕДЕРОМ
+console.log('🎯 services.js loaded - UPDATED HEADER SUPPORT');
 
 function initServices() {
-    console.log('🎯 Initializing services page with mobile optimizations...');
+    console.log('🎯 Initializing services page with updated header support...');
     
-    // Инициализация с учетом мобильных устройств
+    // Инициализация с учетом обновленного стеклянного хедера
+    setupUpdatedHeaderSupport();
     setupMobileServiceNavigation();
     setupServiceAnimations();
     setupProcessInteractions();
@@ -12,7 +13,122 @@ function initServices() {
     setupTouchOptimizations();
     setupPerformanceMonitoring();
     
-    console.log('✅ Services page optimized for mobile');
+    console.log('✅ Services page initialized with glass header support');
+}
+
+// ОБНОВЛЕННАЯ ПОДДЕРЖКА СТЕКЛЯННОГО ХЕДЕРА
+function setupUpdatedHeaderSupport() {
+    const header = document.querySelector('.main-header');
+    if (!header) {
+        console.warn('⚠️ No header found for setup');
+        return;
+    }
+    
+    console.log('🔵 Setting up glass header behavior for services page...');
+    
+    // Убедимся, что хедер имеет правильные стили
+    ensureHeaderStyles(header);
+    
+    // Настройка поведения при скролле
+    setupServicesHeaderScroll(header);
+    
+    // Обновление отступов для контента
+    updateContentPadding();
+    
+    // Слушатель изменения размера окна
+    window.addEventListener('resize', updateContentPadding);
+    
+    // Принудительное обновление при загрузке
+    setTimeout(updateContentPadding, 500);
+}
+
+function ensureHeaderStyles(header) {
+    // Применяем стили если они не были применены
+    if (!header.style.backdropFilter || header.style.backdropFilter === '') {
+        header.style.position = 'fixed';
+        header.style.top = '20px';
+        header.style.left = '0';
+        header.style.right = '0';
+        header.style.width = 'calc(100% - 40px)';
+        header.style.maxWidth = '1400px';
+        header.style.margin = '0 auto';
+        header.style.borderRadius = '20px';
+        header.style.background = 'rgba(0, 102, 255, 0.12)';
+        header.style.backdropFilter = 'blur(16px) saturate(180%)';
+        header.style.webkitBackdropFilter = 'blur(16px) saturate(180%)';
+        header.style.border = '1px solid rgba(255, 255, 255, 0.22)';
+        header.style.boxShadow = '0 8px 32px rgba(0, 102, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 20px rgba(255, 255, 255, 0.05)';
+        header.style.zIndex = '1000';
+        header.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    }
+    
+    // Для мобильных
+    if (window.innerWidth <= 768) {
+        header.style.top = '0';
+        header.style.width = '100%';
+        header.style.maxWidth = '100%';
+        header.style.borderRadius = '0';
+        header.style.background = 'rgba(0, 102, 255, 0.25)';
+        header.style.border = 'none';
+        header.style.borderBottom = '1px solid rgba(255, 255, 255, 0.15)';
+    }
+}
+
+function setupServicesHeaderScroll(header) {
+    let lastScrollY = window.scrollY;
+    const scrollThreshold = 100;
+    
+    function handleScroll() {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY <= 0) {
+            header.style.transform = 'translateY(0px)';
+            header.classList.remove('header-hidden', 'header-scrolled');
+            return;
+        }
+        
+        if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+            // Scrolling down
+            header.classList.remove('header-hidden');
+            header.classList.add('header-scrolled');
+            header.style.opacity = '1';
+        } else if (currentScrollY < lastScrollY) {
+            // Scrolling up
+            header.classList.remove('header-hidden');
+            header.classList.remove('header-scrolled');
+            header.style.opacity = '1';
+        }
+        
+        lastScrollY = currentScrollY;
+    }
+    
+    // Initial check
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Show header on hover
+    header.addEventListener('mouseenter', () => {
+        if (header.classList.contains('header-hidden')) {
+            header.classList.remove('header-hidden', 'header-scrolled');
+            header.style.opacity = '1';
+            header.style.transform = 'translateY(0)';
+        }
+    });
+}
+
+function updateContentPadding() {
+    const header = document.querySelector('.main-header');
+    const servicesHero = document.querySelector('.services-hero');
+    
+    if (header && servicesHero) {
+        if (window.innerWidth <= 768) {
+            servicesHero.style.paddingTop = '120px';
+        } else {
+            const headerHeight = header.offsetHeight;
+            servicesHero.style.paddingTop = (headerHeight + 60) + 'px';
+        }
+    }
 }
 
 // ОПТИМИЗИРОВАННАЯ НАВИГАЦИЯ ДЛЯ МОБИЛЬНЫХ
@@ -26,18 +142,13 @@ function setupMobileServiceNavigation() {
     const isMobile = window.innerWidth <= 768;
     
     if (isMobile) {
-        // На мобильных не скрываем навигацию, добавляем специальный класс
         servicesNav.classList.add('mobile-optimized');
         setupMobileNavBehavior();
     } else {
-        // На десктопах оставляем оригинальную логику скрытия
         setupScrollHideNavigation();
     }
     
-    // Общая логика для smooth scroll
     setupSmoothScrollNavigation(navItems, serviceSections, isMobile);
-    
-    // Активное состояние при скролле
     setupScrollActiveState(navItems, serviceSections, isMobile);
 }
 
@@ -45,12 +156,10 @@ function setupMobileNavBehavior() {
     const navItems = document.querySelectorAll('.nav-item');
     const servicesNav = document.querySelector('.services-nav');
     
-    // Добавляем индикатор загрузки для мобильных
     navItems.forEach(item => {
         item.addEventListener('click', function(e) {
             if (this.getAttribute('href') === '#brandbook') return;
             
-            // Визуальный feedback для мобильных
             this.style.opacity = '0.7';
             setTimeout(() => {
                 this.style.opacity = '1';
@@ -58,7 +167,6 @@ function setupMobileNavBehavior() {
         });
     });
     
-    // Оптимизация производительности скролла на мобильных
     servicesNav.style.willChange = 'transform';
 }
 
@@ -69,7 +177,6 @@ function setupSmoothScrollNavigation(navItems, serviceSections, isMobile) {
             
             const targetId = item.getAttribute('href');
             
-            // Обработка ссылки на brandbook
             if (targetId === '#brandbook') {
                 window.location.href = 'brandbook.html';
                 return;
@@ -83,7 +190,6 @@ function setupSmoothScrollNavigation(navItems, serviceSections, isMobile) {
                 const additionalOffset = isMobile ? 20 : 40;
                 const targetPosition = targetSection.offsetTop - headerHeight - navHeight - additionalOffset;
                 
-                // Плавный скролл с разной скоростью для мобильных
                 const scrollBehavior = isMobile ? 'smooth' : 'smooth';
                 
                 window.scrollTo({
@@ -91,11 +197,9 @@ function setupSmoothScrollNavigation(navItems, serviceSections, isMobile) {
                     behavior: scrollBehavior
                 });
                 
-                // Обновляем активное состояние
                 navItems.forEach(navItem => navItem.classList.remove('active'));
                 item.classList.add('active');
                 
-                // На мобильных закрываем клавиатуру если открыта
                 if (isMobile) {
                     document.activeElement.blur();
                 }
@@ -129,21 +233,17 @@ function setupScrollActiveState(navItems, serviceSections, isMobile) {
             }
         });
         
-        // Если нет активной секции, делаем первую активной
         if (!current && navItems.length > 0 && window.pageYOffset < 100) {
             navItems[0].classList.add('active');
         }
     };
     
-    // Throttled scroll handler
     const throttledScroll = throttle(updateActiveNav, isMobile ? 100 : 50);
     window.addEventListener('scroll', throttledScroll, { passive: true });
     
-    // Initial update
     updateActiveNav();
 }
 
-// ОРИГИНАЛЬНАЯ ФУНКЦИЯ СКРЫТИЯ НАВИГАЦИИ (только для десктопов)
 function setupScrollHideNavigation() {
     const servicesNav = document.querySelector('.services-nav');
     if (!servicesNav) return;
@@ -181,10 +281,8 @@ function setupServiceAnimations() {
     const serviceStats = document.querySelectorAll('.stat');
     const isMobile = window.innerWidth <= 768;
     
-    // Более быстрые анимации на мобильных
     const animationDelay = isMobile ? 80 : 150;
     
-    // Анимация features с staggered эффектом
     if (serviceFeatures.length > 0) {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
@@ -209,7 +307,6 @@ function setupServiceAnimations() {
         });
     }
     
-    // Анимации для статистики
     serviceStats.forEach(stat => {
         const eventType = isMobile ? 'touchstart' : 'mouseenter';
         const leaveEvent = isMobile ? 'touchend' : 'mouseleave';
@@ -235,7 +332,6 @@ function setupProcessInteractions() {
     const isMobile = window.innerWidth <= 768;
     
     processPhases.forEach(phase => {
-        // Упрощенные анимации для мобильных
         if (!isMobile) {
             phase.addEventListener('mouseenter', () => {
                 const number = phase.querySelector('.phase-number');
@@ -253,12 +349,10 @@ function setupProcessInteractions() {
             });
         }
         
-        // Клик для навигации (работает на всех устройствах)
         const handlePhaseClick = () => {
             const phaseText = phase.querySelector('h3').textContent.toLowerCase();
             let targetSection = '';
             
-            // Определяем целевую секцию на основе текста фазы
             if (phaseText.includes('discover') || phaseText.includes('исследование')) {
                 targetSection = 'strategy';
             } else if (phaseText.includes('design') || phaseText.includes('дизайн')) {
@@ -281,7 +375,6 @@ function setupProcessInteractions() {
                         behavior: 'smooth'
                     });
                     
-                    // Обновляем навигацию
                     const navItems = document.querySelectorAll('.nav-item');
                     navItems.forEach(item => {
                         item.classList.remove('active');
@@ -293,7 +386,6 @@ function setupProcessInteractions() {
             }
         };
         
-        // Для мобильных используем touch, для десктопов - click
         if (isMobile) {
             phase.addEventListener('touchend', handlePhaseClick);
         } else {
@@ -307,7 +399,6 @@ function setupTouchOptimizations() {
     const isMobile = window.innerWidth <= 768;
     if (!isMobile) return;
     
-    // Улучшение feedback для кнопок
     const buttons = document.querySelectorAll('.service-cta .btn, .nav-item');
     
     buttons.forEach(btn => {
@@ -325,7 +416,6 @@ function setupTouchOptimizations() {
         });
     });
     
-    // Оптимизация скролла на мобильных
     document.documentElement.style.scrollBehavior = 'smooth';
 }
 
@@ -334,7 +424,6 @@ function setupPerformanceMonitoring() {
     const isMobile = window.innerWidth <= 768;
     
     if (isMobile && 'performance' in window) {
-        // Мониторинг времени загрузки
         const loadTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
         console.log(`📱 Mobile page load time: ${loadTime}ms`);
         
@@ -346,13 +435,11 @@ function setupPerformanceMonitoring() {
 }
 
 function applyAggressiveOptimizations() {
-    // Агрессивные оптимизации для медленных устройств
     const heavyElements = document.querySelectorAll('.process-phase, .stat, .feature');
     heavyElements.forEach(el => {
         el.style.willChange = 'auto';
     });
     
-    // Отключаем сложные анимации
     document.documentElement.style.scrollBehavior = 'auto';
 }
 
@@ -415,7 +502,6 @@ function animateServiceSections() {
         section.style.opacity = '0';
         section.style.transform = 'translateY(30px)';
         
-        // Разная скорость анимации для мобильных
         const transitionDuration = isMobile ? '0.5s' : '0.8s';
         section.style.transition = `all ${transitionDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
         
@@ -425,7 +511,6 @@ function animateServiceSections() {
 
 // ИНИЦИАЛИЗАЦИЯ И ОБРАБОТЧИКИ
 document.addEventListener('DOMContentLoaded', () => {
-    // Задержка для стабилизации DOM
     setTimeout(() => {
         initServices();
         animateServiceSections();
@@ -447,7 +532,6 @@ window.addEventListener('resize', () => {
 // ОБРАБОТКА ВИДИМОСТИ СТРАНИЦЫ
 document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
-        // Переинициализация при возвращении на страницу
         setTimeout(() => {
             if (typeof initServices === 'function') {
                 initServices();
@@ -459,6 +543,7 @@ document.addEventListener('visibilitychange', () => {
 // Экспорт для глобального доступа
 window.initServices = initServices;
 window.animateServiceSections = animateServiceSections;
+window.updateContentPadding = updateContentPadding;
 
 // Авто-инициализация если DOM уже готов
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
