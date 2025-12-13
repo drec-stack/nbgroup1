@@ -3,106 +3,598 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services - NBGROUP.TECH</title>
+    <title data-i18n="services.title">Services - NBGROUP.TECH</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/services.css">
     <style>
-        /* Glass header styling for services page */
-        .services-page .main-header {
-            position: fixed !important;
-            top: 20px !important;
-            left: 0 !important;
-            right: 0 !important;
-            width: calc(100% - 40px) !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            z-index: 1000 !important;
-            transform: translateY(0) !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-            transition: all 0.4s ease !important;
-            border-radius: 20px !important;
-            background: rgba(0, 102, 255, 0.12) !important;
-            backdrop-filter: blur(16px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        /* Exact header styles from main page */
+        .main-header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            width: calc(100% - 40px);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 18px 0;
+            background: rgba(0, 102, 255, 0.12);
+            z-index: 1000;
+            border-radius: 20px;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            box-shadow: 
+                0 8px 32px rgba(0, 102, 255, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            transform: translateY(0);
+            opacity: 1;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .services-page .main-header.header-hidden {
-            transform: translateY(-100%) !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
+        /* Стеклянный слой */
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.04) 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            border-radius: 20px;
+            opacity: 0.5;
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .services-page .main-header.header-scrolled {
-            background: rgba(0, 102, 255, 0.2) !important;
-            backdrop-filter: blur(20px) saturate(200%) !important;
-            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
-            padding: 15px 0 !important;
-            border-color: rgba(255, 255, 255, 0.25) !important;
-            top: 10px !important;
+        /* Эффект при наведении */
+        .main-header:hover {
+            background: rgba(0, 102, 255, 0.15);
+            box-shadow: 
+                0 12px 40px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                0 0 30px rgba(0, 102, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.28);
         }
 
-        .services-hero {
-            padding-top: 180px !important;
+        /* Хедер при скролле (для services page) */
+        .main-header.header-scrolled {
+            background: rgba(0, 102, 255, 0.2);
+            backdrop-filter: blur(20px) saturate(200%);
+            -webkit-backdrop-filter: blur(20px) saturate(200%);
+            box-shadow: 
+                0 4px 20px rgba(0, 102, 255, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            padding: 15px 0;
+            border-color: rgba(255, 255, 255, 0.25);
+            top: 10px;
         }
 
-        /* Active link styling */
-        .services-page .nav-link[href="services.html"] {
-            position: relative !important;
-            color: white !important;
+        /* Active link for services page */
+        .nav-link[href="services.html"] {
+            position: relative;
             background: rgba(255, 255, 255, 0.15) !important;
             backdrop-filter: blur(10px) !important;
             -webkit-backdrop-filter: blur(10px) !important;
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            border-radius: 10px !important;
-            padding: 10px 20px !important;
+            border-radius: 10px;
+            padding: 10px 17px !important;
+            color: white !important;
             font-weight: 600 !important;
         }
 
-        .services-page .nav-link[href="services.html"]::after {
-            display: none !important;
+        /* Container adjustments */
+        .main-header .container {
+            padding: 0;
+            max-width: 100%;
+            width: 100%;
         }
 
-        /* Mobile adjustments */
+        .main-header .header-inner {
+            padding: 0 30px;
+            max-width: 100%;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Логотип */
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 24px;
+            gap: 12px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-mark {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 17px;
+            color: #0066ff;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 
+                0 4px 12px rgba(0, 102, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .logo-mark:hover {
+            transform: scale(1.08);
+            background: white;
+            box-shadow: 
+                0 6px 20px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .logo-text {
+            color: white;
+            font-weight: 700;
+            font-size: 23px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Навигация */
+        .main-nav {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.95);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15.5px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            padding: 10px 17px;
+            border-radius: 10px;
+            white-space: nowrap;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-color: rgba(255, 255, 255, 0.12);
+            font-weight: 600;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8));
+            transition: width 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .nav-link:hover::after {
+            width: 70%;
+        }
+
+        /* Действия */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 11px 23px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.92);
+            color: #0066ff !important;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 
+                0 4px 15px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .btn-primary:hover {
+            background: white;
+            color: #0066ff !important;
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(255, 255, 255, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-small {
+            padding: 9px 19px;
+            font-size: 13.5px;
+            border-radius: 9px;
+        }
+
+        /* Переключатель языка */
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 4px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            min-width: 118px;
+            height: 38px;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 15px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            min-width: 54px;
+            justify-content: center;
+            flex: 1;
+            outline: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .lang-btn.active {
+            color: white;
+            font-weight: 600;
+        }
+
+        .lang-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 20px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1;
+            box-shadow: 
+                0 4px 12px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .language-switcher[data-current-lang="en"] .lang-slider {
+            transform: translateX(100%);
+        }
+
+        .language-switcher[data-current-lang="ru"] .lang-slider {
+            transform: translateX(0);
+        }
+
+        .lang-flag {
+            font-size: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .lang-btn:hover .lang-flag {
+            transform: scale(1.15);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: white;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Мобильное меню */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            position: relative;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .mobile-menu-toggle span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: white;
+            position: absolute;
+            left: 7px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 1px;
+        }
+
+        .mobile-menu-toggle span:nth-child(1) { top: 10px; }
+        .mobile-menu-toggle span:nth-child(2) { top: 15px; }
+        .mobile-menu-toggle span:nth-child(3) { top: 20px; }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Мобильные стили */
         @media (max-width: 768px) {
-            .services-page .main-header {
-                top: 0 !important;
+            .main-header {
+                top: 0;
                 width: 100% !important;
                 max-width: 100% !important;
-                border-radius: 0 !important;
+                border-radius: 0;
+                padding: 14px 0;
                 margin: 0 !important;
-                padding: 14px 0 !important;
-                background: rgba(0, 102, 255, 0.22) !important;
-                backdrop-filter: blur(20px) saturate(200%) !important;
-                -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
-                border: none !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+                left: 0 !important;
+                right: 0 !important;
+                background: rgba(0, 102, 255, 0.22);
+                backdrop-filter: blur(20px) saturate(200%);
+                -webkit-backdrop-filter: blur(20px) saturate(200%);
+                border: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             }
             
-            .services-hero {
-                padding-top: 120px !important;
+            .main-header .header-inner {
+                padding: 0 15px;
             }
             
-            .services-page .nav-link[href="services.html"] {
-                padding: 10px 16px !important;
+            .logo {
+                font-size: 19px;
+            }
+            
+            .logo-mark {
+                width: 34px;
+                height: 34px;
+                border-radius: 9px;
+                font-size: 15px;
+            }
+            
+            .main-nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 102, 255, 0.95);
+                backdrop-filter: blur(25px) saturate(200%);
+                -webkit-backdrop-filter: blur(25px) saturate(200%);
+                flex-direction: column;
+                padding: 100px 30px 30px;
+                border-left: 1px solid rgba(255, 255, 255, 0.2);
+                transition: right 0.4s ease;
+                z-index: 999;
+                border-radius: 0;
+            }
+            
+            .main-nav.active {
+                right: 0;
+            }
+            
+            .main-nav .nav-link {
+                padding: 15px 20px;
+                font-size: 17px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+                width: 100%;
+                text-align: center;
+                color: rgba(255, 255, 255, 0.95);
+                border-radius: 10px;
+                margin-bottom: 5px;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            
+            .main-nav .nav-link:hover {
+                color: white;
+                background: rgba(255, 255, 255, 0.2);
+            }
+            
+            .main-nav .nav-link:last-child {
+                border-bottom: none;
+            }
+            
+            .nav-link[href="services.html"] {
+                padding: 15px 20px !important;
                 background: rgba(255, 255, 255, 0.25) !important;
             }
+            
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            .header-actions .btn-primary {
+                display: none;
+            }
+
+            .language-switcher {
+                min-width: 100px;
+                height: 34px;
+                margin-right: 10px;
+                border-radius: 12px;
+            }
+            
+            .lang-btn {
+                padding: 6px 12px;
+                font-size: 12.5px;
+                min-width: 46px;
+                border-radius: 10px;
+            }
+            
+            .lang-flag {
+                font-size: 13px;
+            }
         }
-        
+
+        @media (max-width: 480px) {
+            .main-header {
+                padding: 12px 0;
+            }
+            
+            .main-header .header-inner {
+                padding: 0 10px;
+            }
+            
+            .logo-text {
+                font-size: 17px;
+            }
+            
+            .logo-mark {
+                width: 30px;
+                height: 30px;
+                font-size: 13px;
+                border-radius: 7px;
+            }
+            
+            .language-switcher {
+                min-width: 90px;
+                border-radius: 10px;
+            }
+            
+            .lang-btn {
+                padding: 5px 10px;
+                font-size: 11.5px;
+                min-width: 42px;
+                border-radius: 8px;
+            }
+            
+            .lang-text {
+                display: none;
+            }
+            
+            .lang-btn {
+                gap: 0;
+            }
+
+            .main-nav {
+                padding: 100px 20px 30px;
+            }
+            
+            .nav-link[href="services.html"] {
+                padding: 15px 20px !important;
+            }
+        }
+
+        /* Services page specific adjustments */
+        .services-hero {
+            padding-top: 180px;
+            padding-bottom: 80px;
+            background: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .services-hero {
+                padding-top: 120px;
+                padding-bottom: 60px;
+            }
+        }
+
         @media (max-width: 480px) {
             .services-hero {
-                padding-top: 100px !important;
+                padding-top: 100px;
+                padding-bottom: 40px;
             }
         }
     </style>
 </head>
 <body class="services-page">
-    <!-- Glass Header -->
-    <header class="main-header services-header">
+    <!-- Glass Header - Exact copy from main page -->
+    <header class="main-header">
         <div class="container">
             <div class="header-inner">
                 <!-- Логотип NB Group -->
@@ -115,7 +607,7 @@
                 <nav class="main-nav">
                     <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
                     <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
-                    <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                    <a href="services.html" class="nav-link active" data-i18n="nav.services">Услуги</a>
                     <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
                     <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
                     <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
@@ -494,11 +986,224 @@
     <script src="js/services.js"></script>
     
     <script>
-        // Services Page Initialization
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Services page initializing...');
+        // Services Page Specific JavaScript
+        console.log('🚀 Services page initialization started...');
+        
+        // Mobile menu functionality
+        function setupMobileMenu() {
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+            const mobileOverlay = document.querySelector('.mobile-menu-overlay');
             
-            // Активируем ссылку "Услуги" в хедере
+            if (!mobileToggle || !mainNav) return;
+            
+            const toggleMenu = () => {
+                const isActive = mainNav.classList.contains('active');
+                
+                mobileToggle.classList.toggle('active');
+                mainNav.classList.toggle('active');
+                if (mobileOverlay) mobileOverlay.classList.toggle('active');
+                document.body.style.overflow = isActive ? '' : 'hidden';
+            };
+
+            mobileToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', () => {
+                    mobileToggle.classList.remove('active');
+                    mainNav.classList.remove('active');
+                    mobileOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
+
+            const navLinks = mainNav.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileToggle.classList.remove('active');
+                    mainNav.classList.remove('active');
+                    if (mobileOverlay) mobileOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
+                    mobileToggle.classList.remove('active');
+                    mainNav.classList.remove('active');
+                    if (mobileOverlay) mobileOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+        
+        // Header scroll behavior for services page
+        function setupHeaderScroll() {
+            const header = document.querySelector('.main-header');
+            if (!header) return;
+            
+            let lastScrollY = window.scrollY;
+            const scrollThreshold = 100;
+            
+            const handleScroll = () => {
+                const currentScrollY = window.scrollY;
+                
+                if (currentScrollY <= 0) {
+                    header.classList.remove('header-scrolled');
+                    return;
+                }
+                
+                if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                    // Scrolling down
+                    header.classList.add('header-scrolled');
+                } else if (currentScrollY < lastScrollY) {
+                    // Scrolling up
+                    header.classList.remove('header-scrolled');
+                }
+                
+                lastScrollY = currentScrollY;
+            };
+            
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // Initial state
+            if (window.scrollY > scrollThreshold) {
+                header.classList.add('header-scrolled');
+            }
+        }
+        
+        // Language switcher functionality
+        function setupLanguageSwitcher() {
+            const langButtons = document.querySelectorAll('.lang-btn');
+            const switcher = document.querySelector('.language-switcher');
+            
+            if (!langButtons.length || !switcher) return;
+            
+            // Set initial state
+            const currentLang = localStorage.getItem('preferredLang') || 'ru';
+            updateLanguageSwitcherState(currentLang);
+            
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const lang = btn.getAttribute('data-lang');
+                    if (lang && window.i18n && lang !== window.i18n.getCurrentLang()) {
+                        window.i18n.switchLanguage(lang);
+                    }
+                });
+            });
+        }
+        
+        function updateLanguageSwitcherState(lang) {
+            const langBtns = document.querySelectorAll('.lang-btn');
+            const switcher = document.querySelector('.language-switcher');
+            
+            langBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            if (switcher) {
+                switcher.setAttribute('data-current-lang', lang);
+            }
+        }
+        
+        // Services navigation
+        function setupServicesNavigation() {
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.service-detail');
+            
+            if (!navItems.length) return;
+            
+            // Click handlers
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    
+                    // Handle brandbook link
+                    if (targetId === '#brandbook') {
+                        window.location.href = 'brandbook.html';
+                        return;
+                    }
+                    
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        // Update active state
+                        navItems.forEach(navItem => navItem.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Calculate scroll position
+                        const header = document.querySelector('.main-header');
+                        const headerHeight = header?.offsetHeight || 0;
+                        const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
+                        const offset = headerHeight + navHeight + 20;
+                        
+                        // Smooth scroll
+                        window.scrollTo({
+                            top: targetSection.offsetTop - offset,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Update active state on scroll
+            const updateActiveNav = () => {
+                const scrollPosition = window.scrollY + 150;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                        navItems.forEach(item => {
+                            item.classList.remove('active');
+                            if (item.getAttribute('href') === `#${sectionId}`) {
+                                item.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', updateActiveNav, { passive: true });
+        }
+        
+        // Adjust hero padding based on header height
+        function adjustHeroPadding() {
+            const header = document.querySelector('.main-header');
+            const hero = document.querySelector('.services-hero');
+            
+            if (!header || !hero) return;
+            
+            const updatePadding = () => {
+                const headerHeight = header.offsetHeight;
+                if (window.innerWidth <= 768) {
+                    hero.style.paddingTop = Math.max(120, headerHeight + 40) + 'px';
+                } else {
+                    hero.style.paddingTop = (headerHeight + 80) + 'px';
+                }
+            };
+            
+            updatePadding();
+            window.addEventListener('resize', updatePadding);
+        }
+        
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Services page DOM loaded');
+            
+            // Activate services link in header
             const servicesLink = document.querySelector('.nav-link[href="services.html"]');
             if (servicesLink) {
                 document.querySelectorAll('.nav-link').forEach(link => {
@@ -507,143 +1212,39 @@
                 servicesLink.classList.add('active');
             }
             
-            // Инициализируем навигацию по услугам
-            setTimeout(() => {
-                const navItems = document.querySelectorAll('.nav-item');
-                const sections = document.querySelectorAll('.service-detail');
-                
-                // Обработка кликов по навигации
-                navItems.forEach(item => {
-                    item.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        navItems.forEach(nav => nav.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        const targetId = this.getAttribute('href');
-                        
-                        // Обработка ссылки на brandbook.html
-                        if (targetId === '#brandbook') {
-                            window.location.href = 'brandbook.html';
-                            return;
-                        }
-                        
-                        const targetSection = document.querySelector(targetId);
-                        if (targetSection) {
-                            const header = document.querySelector('.main-header');
-                            const headerHeight = header?.offsetHeight || 0;
-                            const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
-                            const offset = headerHeight + navHeight + 20;
-                            
-                            window.scrollTo({
-                                top: targetSection.offsetTop - offset,
-                                behavior: 'smooth'
-                            });
-                        }
-                    });
-                });
-                
-                // Активное состояние при скролле
-                window.addEventListener('scroll', () => {
-                    const scrollPosition = window.scrollY + 150;
-                    
-                    sections.forEach(section => {
-                        const sectionTop = section.offsetTop;
-                        const sectionBottom = sectionTop + section.offsetHeight;
-                        const sectionId = section.getAttribute('id');
-                        
-                        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                            navItems.forEach(item => {
-                                item.classList.remove('active');
-                                if (item.getAttribute('href') === `#${sectionId}`) {
-                                    item.classList.add('active');
-                                }
-                            });
-                        }
-                    });
-                    
-                    // Логика скролла для хедера на странице услуг
-                    const header = document.querySelector('.main-header');
-                    const scrollY = window.scrollY;
-                    
-                    if (scrollY > 100) {
-                        header.classList.add('header-scrolled');
-                        header.classList.remove('header-hidden');
-                    } else {
-                        header.classList.remove('header-scrolled');
-                        header.classList.remove('header-hidden');
-                    }
-                });
-                
-                console.log('✅ Services navigation initialized');
-            }, 300);
+            // Setup functionality
+            setupMobileMenu();
+            setupHeaderScroll();
+            setupLanguageSwitcher();
+            setupServicesNavigation();
+            adjustHeroPadding();
             
-            // Инициализация функциональности услуг
+            // Listen for language changes
+            window.addEventListener('languageChanged', (e) => {
+                updateLanguageSwitcherState(e.detail.lang);
+            });
+            
+            // Initialize services specific functionality
             setTimeout(() => {
                 if (typeof initServices === 'function') {
                     initServices();
                 }
-            }, 500);
-        });
-
-        // Header scroll logic for services page
-        function setupServicesHeaderScroll() {
-            const header = document.querySelector('.main-header');
-            let lastScrollY = window.scrollY;
-            const scrollThreshold = 100;
+                if (typeof animateServiceSections === 'function') {
+                    animateServiceSections();
+                }
+            }, 300);
             
-            window.addEventListener('scroll', () => {
-                const currentScrollY = window.scrollY;
-                
-                if (currentScrollY <= 0) {
-                    header.classList.remove('header-hidden', 'header-scrolled');
-                    header.style.opacity = '1';
-                    return;
-                }
-                
-                if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                    // Scrolling down - show minimized header
-                    header.classList.remove('header-hidden');
-                    header.classList.add('header-scrolled');
-                } else if (currentScrollY < lastScrollY) {
-                    // Scrolling up - show normal header
-                    header.classList.remove('header-hidden');
-                    header.classList.remove('header-scrolled');
-                }
-                
-                lastScrollY = currentScrollY;
-            }, { passive: true });
-        }
-
-        // Setup on load
+            console.log('✅ Services page fully initialized');
+        });
+        
+        // Fallback for header animation on load
         window.addEventListener('load', function() {
-            setupServicesHeaderScroll();
-            
-            // Adjust hero padding
             const header = document.querySelector('.main-header');
             if (header) {
-                const headerHeight = header.offsetHeight;
-                const hero = document.querySelector('.services-hero');
-                if (hero) {
-                    hero.style.paddingTop = (headerHeight + 60) + 'px';
-                }
-            }
-        });
-
-        // Mobile adjustments
-        window.addEventListener('resize', function() {
-            const header = document.querySelector('.main-header');
-            if (header) {
-                const headerHeight = header.offsetHeight;
-                const hero = document.querySelector('.services-hero');
-                if (hero) {
-                    if (window.innerWidth <= 768) {
-                        hero.style.paddingTop = '120px';
-                    } else {
-                        hero.style.paddingTop = (headerHeight + 60) + 'px';
-                    }
-                }
+                header.style.opacity = '1';
+                header.style.transform = 'translateY(0)';
             }
         });
     </script>
 </body>
-                                </html>
+            </html>
