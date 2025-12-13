@@ -580,8 +580,8 @@
             // Установка активной ссылки
             setActiveNavLink();
             
-            // Инициализация переключателя языка
-            setupLanguageSwitcher();
+            // Обновление UI переключателя языка (синхронизация с i18n.js)
+            updateLanguageSwitcherUI();
             
             // Установка логики скролла
             setupHeaderScroll();
@@ -666,60 +666,34 @@
                 });
             }
             
-            function setupLanguageSwitcher() {
-                const langButtons = document.querySelectorAll('.lang-btn');
-                
-                const currentLang = localStorage.getItem('preferredLang') || 'ru';
-                updateLanguageSwitcherState(currentLang);
-                
-                langButtons.forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        const lang = btn.getAttribute('data-lang');
-                        const currentActive = document.querySelector('.lang-btn.active');
-                        
-                        if (currentActive && currentActive.getAttribute('data-lang') === lang) {
-                            return;
-                        }
-                        
-                        // Обновляем состояние переключателя
-                        updateLanguageSwitcherState(lang);
-                        
-                        // Вызываем функцию перевода
-                        if (window.i18n && window.i18n.smoothSwitchLanguage) {
-                            window.i18n.smoothSwitchLanguage(lang);
-                        } else if (window.i18n && window.i18n.refresh) {
-                            // Fallback метод
-                            localStorage.setItem('preferredLang', lang);
-                            window.i18n.refresh();
-                        } else {
-                            // Самый простой способ
-                            localStorage.setItem('preferredLang', lang);
-                            location.reload();
-                        }
-                        
-                        // Отправляем событие для header.js
-                        window.dispatchEvent(new CustomEvent('languageChanged', { 
-                            detail: { lang: lang } 
-                        }));
+            function updateLanguageSwitcherUI() {
+                // Синхронизация с i18n.js если он доступен
+                if (window.i18n && window.i18n.getCurrentLang) {
+                    const currentLang = window.i18n.getCurrentLang();
+                    const langButtons = document.querySelectorAll('.lang-btn');
+                    
+                    langButtons.forEach(btn => {
+                        const btnLang = btn.getAttribute('data-lang');
+                        btn.classList.toggle('active', btnLang === currentLang);
                     });
-                });
-                
-                function updateLanguageSwitcherState(lang) {
-                    const langBtns = document.querySelectorAll('.lang-btn');
+                    
                     const switcher = document.querySelector('.language-switcher');
+                    if (switcher) {
+                        switcher.setAttribute('data-current-lang', currentLang);
+                    }
+                } else {
+                    // Fallback на localStorage
+                    const currentLang = localStorage.getItem('preferredLang') || 'ru';
+                    const langButtons = document.querySelectorAll('.lang-btn');
                     
-                    langBtns.forEach(btn => {
-                        btn.classList.remove('active');
-                        if (btn.getAttribute('data-lang') === lang) {
-                            btn.classList.add('active');
-                        }
+                    langButtons.forEach(btn => {
+                        const btnLang = btn.getAttribute('data-lang');
+                        btn.classList.toggle('active', btnLang === currentLang);
                     });
                     
+                    const switcher = document.querySelector('.language-switcher');
                     if (switcher) {
-                        switcher.setAttribute('data-current-lang', lang);
+                        switcher.setAttribute('data-current-lang', currentLang);
                     }
                 }
             }
@@ -773,13 +747,6 @@
                     btn.classList.add('active');
                 }
             });
-            
-            // Обновляем заголовок страницы
-            if (window.i18n && window.i18n.refresh) {
-                setTimeout(() => {
-                    window.i18n.refresh();
-                }, 100);
-            }
         });
         
         // Проверка наличия изображений команды
@@ -808,12 +775,12 @@
         // Load components when DOM is ready
         document.addEventListener('DOMContentLoaded', loadComponents);
         
-        // Apply translations
+        // Initialize i18n with delay
         setTimeout(() => {
-            if (window.i18n && window.i18n.refresh) {
-                window.i18n.refresh();
+            if (window.i18n && window.i18n.init) {
+                window.i18n.init();
             }
-        }, 1000);
+        }, 300);
         
         // Initialize about page animations
         setTimeout(() => {
