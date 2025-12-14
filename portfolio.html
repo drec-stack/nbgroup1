@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/home.css"> <!-- ОБЯЗАТЕЛЬНО для стилей хедера как на главной -->
+    <link rel="stylesheet" href="css/home.css"> <!-- Для стилей хедера -->
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/portfolio.css">
     <style>
@@ -52,44 +52,271 @@
             top: 20px;
         }
         
-        /* СТИЛИ ДЛЯ ХЕДЕРА КАК НА ГЛАВНОЙ */
+        /* ===== СТИЛИ ХЕДЕРА ДЛЯ ПОРТФОЛИО ===== */
+        .main-header {
+            position: fixed !important;
+            top: 20px !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: calc(100% - 40px) !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            padding: 18px 0 !important;
+            background: rgba(0, 102, 255, 0.12) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border-radius: 20px !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+            z-index: 1000 !important;
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+            box-shadow: 
+                0 8px 32px rgba(0, 102, 255, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+        }
+
+        /* Стеклянный слой */
+        .main-header::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 100% !important;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.04) 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            ) !important;
+            border-radius: 20px !important;
+            opacity: 0.5 !important;
+            z-index: -1 !important;
+            pointer-events: none !important;
+        }
+
+        /* Хедер при скролле */
         .main-header.header-minimized {
             background: rgba(0, 102, 255, 0.2) !important;
             backdrop-filter: blur(20px) saturate(200%) !important;
             -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
             padding: 15px 0 !important;
             border-color: rgba(255, 255, 255, 0.25) !important;
+            box-shadow: 
+                0 4px 20px rgba(0, 102, 255, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
         }
 
+        /* Скрытый хедер */
         .main-header.header-hidden {
             transform: translateY(-100%) !important;
             opacity: 0 !important;
             pointer-events: none !important;
-            transition: transform 0.4s ease, opacity 0.4s ease !important;
         }
 
-        .main-header:not(.header-hidden) {
-            transform: translateY(0) !important;
-            opacity: 1 !important;
-            transition: transform 0.4s ease, opacity 0.4s ease !important;
+        /* Эффект при наведении */
+        .main-header:hover {
+            background: rgba(0, 102, 255, 0.15) !important;
+            box-shadow: 
+                0 12px 40px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                0 0 30px rgba(0, 102, 255, 0.12) !important;
+            border-color: rgba(255, 255, 255, 0.28) !important;
         }
 
-        /* Анимация появления хедера */
-        @keyframes headerGlassEnter {
-            0% {
-                opacity: 0;
-                transform: translateY(-20px);
+        .main-header .container {
+            padding: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+
+        .main-header .header-inner {
+            padding: 0 30px !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            width: 100% !important;
+        }
+
+        .header-inner {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            width: 100% !important;
+        }
+
+        /* ===== ЛОГОТИП ===== */
+        .logo {
+            display: flex !important;
+            align-items: center !important;
+            text-decoration: none !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 24px !important;
+            gap: 12px !important;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px) !important;
+        }
+
+        .logo-mark {
+            width: 42px !important;
+            height: 42px !important;
+            background: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-weight: 800 !important;
+            font-size: 17px !important;
+            color: #0066ff !important;
+            border: 1px solid rgba(255, 255, 255, 0.35) !important;
+        }
+
+        .logo-text {
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 23px !important;
+            letter-spacing: -0.5px !important;
+        }
+
+        /* ===== НАВИГАЦИЯ ===== */
+        .main-nav {
+            display: flex !important;
+            gap: 22px !important;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.95) !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+            font-size: 15.5px !important;
+            padding: 10px 17px !important;
+            border-radius: 10px !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            font-weight: 600 !important;
+        }
+
+        /* ===== КНОПКИ ===== */
+        .btn-primary {
+            display: inline-flex !important;
+            align-items: center !important;
+            padding: 11px 23px !important;
+            background: rgba(255, 255, 255, 0.92) !important;
+            color: #0066ff !important;
+            border: 1px solid rgba(255, 255, 255, 0.35) !important;
+            border-radius: 10px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            gap: 8px !important;
+            cursor: pointer !important;
+        }
+
+        .btn-small {
+            padding: 9px 19px !important;
+            font-size: 13.5px !important;
+            border-radius: 9px !important;
+        }
+
+        /* ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
+        .language-switcher {
+            display: flex !important;
+            align-items: center !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 24px !important;
+            padding: 4px !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            min-width: 118px !important;
+            height: 38px !important;
+        }
+
+        /* ===== МОБИЛЬНЫЕ СТИЛИ ===== */
+        @media (max-width: 768px) {
+            .main-header {
+                top: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                padding: 14px 0 !important;
+                margin: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                background: rgba(0, 102, 255, 0.22) !important;
+                backdrop-filter: blur(20px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
             }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
+            
+            .main-header .header-inner {
+                padding: 0 15px !important;
+            }
+            
+            .logo {
+                font-size: 19px !important;
+            }
+            
+            .logo-mark {
+                width: 34px !important;
+                height: 34px !important;
+                border-radius: 9px !important;
+                font-size: 15px !important;
+            }
+            
+            .main-nav {
+                position: fixed !important;
+                top: 0 !important;
+                right: -100% !important;
+                width: 100% !important;
+                height: 100vh !important;
+                background: rgba(0, 102, 255, 0.95) !important;
+                backdrop-filter: blur(25px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+                flex-direction: column !important;
+                padding: 100px 30px 30px !important;
+                border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+                transition: right 0.4s ease !important;
+                z-index: 999 !important;
+                border-radius: 0 !important;
+            }
+            
+            .main-nav.active {
+                right: 0 !important;
+            }
+            
+            .main-nav .nav-link {
+                padding: 15px 20px !important;
+                font-size: 17px !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+                width: 100% !important;
+                text-align: center !important;
+            }
+            
+            .header-actions .btn-primary {
+                display: none !important;
+            }
+
+            .language-switcher {
+                min-width: 100px !important;
+                height: 34px !important;
+                margin-right: 10px !important;
+                border-radius: 12px !important;
             }
         }
 
-        .main-header {
-            animation: headerGlassEnter 0.6s ease forwards;
-        }
-        
         /* Плавные переходы */
         .portfolio-hero, 
         .main-header,
@@ -102,7 +329,7 @@
     <!-- Skip to content для accessibility -->
     <a href="#main-content" class="skip-to-content" data-i18n="nav.skipToContent">Skip to main content</a>
     
-    <!-- Header Container (ЗАГРУЖАЕТСЯ КАК НА ГЛАВНОЙ) -->
+    <!-- Header Container -->
     <div id="header-container"></div>
 
     <!-- Main Content -->
@@ -474,14 +701,14 @@
     <!-- JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/home.js"></script> <!-- ОБЯЗАТЕЛЬНО для логики хедера как на главной -->
+    <!-- НЕ ИСПОЛЬЗУЕМ home.js - он конфликтует! -->
     <script src="js/animations.js"></script>
     <script src="js/portfolio.js"></script>
     
     <script>
-        console.log('🚀 Initializing portfolio page with IDENTICAL header to home...');
+        console.log('🚀 Initializing portfolio page with identical header to home...');
         
-        // ===== 1. ЗАГРУЗКА ХЕДЕРА КАК НА ГЛАВНОЙ СТРАНИЦЕ =====
+        // ===== 1. ЗАГРУЗКА ХЕДЕРА =====
         function loadPortfolioHeader() {
             fetch('components/header.html')
                 .then(response => {
@@ -499,7 +726,7 @@
                             console.log('✅ Header initialized with initHeader()');
                         }
                         
-                        // Специальная логика для портфолио
+                        // Наша специальная логика для портфолио
                         setupPortfolioHeaderBehavior();
                         
                         // Применить переводы
@@ -511,50 +738,11 @@
                 })
                 .catch(error => {
                     console.error('Error loading header:', error);
-                    // Fallback header
-                    document.getElementById('header-container').innerHTML = `
-                        <header class="main-header">
-                            <div class="container">
-                                <div class="header-inner">
-                                    <a href="index.html" class="logo">
-                                        <div class="logo-mark">NB</div>
-                                        <span class="logo-text">NBGROUP.TECH</span>
-                                    </a>
-                                    <nav class="main-nav">
-                                        <a href="index.html" class="nav-link">Главная</a>
-                                        <a href="services.html" class="nav-link">Услуги</a>
-                                        <a href="portfolio.html" class="nav-link active">Работы</a>
-                                        <a href="brandbook.html" class="nav-link">Брендбук</a>
-                                        <a href="about.html" class="nav-link">О нас</a>
-                                        <a href="contacts.html" class="nav-link">Контакты</a>
-                                    </nav>
-                                    <div class="header-actions">
-                                        <div class="language-switcher" data-current-lang="ru">
-                                            <button class="lang-btn" data-lang="ru">RU</button>
-                                            <button class="lang-btn active" data-lang="en">EN</button>
-                                        </div>
-                                        <a href="contacts.html" class="btn btn-small btn-primary">Начать проект</a>
-                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mobile-menu-overlay"></div>
-                        </header>
-                    `;
-                    
-                    // Инициализировать fallback хедер
-                    setTimeout(() => {
-                        if (typeof initHeader === 'function') initHeader();
-                        setupPortfolioHeaderBehavior();
-                    }, 100);
+                    createFallbackHeader();
                 });
         }
         
-        // ===== 2. НАСТРОЙКА ПОВЕДЕНИЯ ХЕДЕРА ТОЧНО КАК НА ГЛАВНОЙ =====
+        // ===== 2. НАСТРОЙКА ПОВЕДЕНИЯ ХЕДЕРА =====
         function setupPortfolioHeaderBehavior() {
             const header = document.querySelector('.main-header');
             if (!header) {
@@ -563,87 +751,81 @@
                 return;
             }
             
-            console.log('🎯 Setting up portfolio header behavior IDENTICAL TO HOME');
+            console.log('🎯 Setting up portfolio header behavior');
             
-            // Сбрасываем любые существующие стили
-            header.style.opacity = '';
-            header.style.transform = '';
+            // Сбросим все классы
             header.classList.remove('header-hidden', 'header-scrolled', 'header-minimized');
             
-            // ТОЧНО ТАК ЖЕ КАК НА ГЛАВНОЙ СТРАНИЦЕ
-            let isHidden = false;
-            const hideThreshold = 100;
-            const showThreshold = 10;
+            // Установим начальные стили
+            header.style.position = 'fixed';
+            header.style.top = '20px';
+            header.style.left = '0';
+            header.style.right = '0';
+            header.style.width = 'calc(100% - 40px)';
+            header.style.maxWidth = '1400px';
+            header.style.margin = '0 auto';
+            header.style.zIndex = '1000';
+            header.style.opacity = '1';
+            header.style.transform = 'translateY(0)';
             
-            function updateHeaderState() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            // Логика скролла как на главной
+            let lastScrollY = window.scrollY;
+            let isHidden = false;
+            
+            function handleScroll() {
+                const scrollY = window.scrollY;
+                const delta = scrollY - lastScrollY;
                 
-                // В самом верху страницы - всегда показываем
-                if (scrollTop <= showThreshold) {
-                    if (isHidden) {
-                        header.classList.remove('header-hidden');
-                        header.style.opacity = '1';
-                        header.style.transform = 'translateY(0)';
-                        isHidden = false;
-                    }
-                    return;
-                }
-                
-                // Плавное изменение прозрачности от 50px до 150px
-                if (scrollTop <= 150) {
-                    const opacity = 1 - (scrollTop - 50) / 100;
-                    header.style.opacity = Math.max(0.3, opacity).toString();
+                // В самом верху страницы
+                if (scrollY <= 50) {
                     header.classList.remove('header-hidden');
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateY(0)';
                     isHidden = false;
-                } 
-                // После 150px - полностью скрываем
-                else if (scrollTop > 150 && !isHidden) {
-                    header.style.opacity = '0';
+                }
+                // Скроллим вниз и прошли порог
+                else if (delta > 0 && scrollY > 100 && !isHidden) {
                     header.classList.add('header-hidden');
                     isHidden = true;
                 }
-                // Если скроллим вверх из скрытого состояния
-                else if (scrollTop <= 150 && isHidden) {
+                // Скроллим вверх
+                else if (delta < 0 && isHidden) {
                     header.classList.remove('header-hidden');
-                    const opacity = 1 - (scrollTop - 50) / 100;
-                    header.style.opacity = Math.max(0.3, opacity).toString();
                     isHidden = false;
                 }
                 
-                // Для внутренних страниц добавляем minimized класс при скролле
-                if (scrollTop > 50) {
+                // Минимизированный стиль при скролле
+                if (scrollY > 50) {
                     header.classList.add('header-minimized');
                 } else {
                     header.classList.remove('header-minimized');
                 }
+                
+                lastScrollY = scrollY;
             }
             
             // Инициализация
-            updateHeaderState();
+            handleScroll();
             
-            // Throttle scroll events
-            let ticking = false;
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        updateHeaderState();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            }, { passive: true });
+            // Обработчик скролла
+            window.addEventListener('scroll', handleScroll, { passive: true });
             
-            // Показать при наведении (если скрылся)
+            // Показать при наведении
             header.addEventListener('mouseenter', () => {
                 if (isHidden) {
                     header.classList.remove('header-hidden');
                     header.style.opacity = '1';
                     isHidden = false;
-                    
-                    // Через 2 секунды снова скрыть если все еще внизу
+                }
+            });
+            
+            // Скрыть через 2 секунды после ухода мыши (если мы внизу)
+            header.addEventListener('mouseleave', () => {
+                if (!isHidden && window.scrollY > 100) {
                     setTimeout(() => {
-                        if (isHidden && (window.pageYOffset || document.documentElement.scrollTop) > hideThreshold) {
+                        if (window.scrollY > 100) {
                             header.classList.add('header-hidden');
+                            isHidden = true;
                         }
                     }, 2000);
                 }
@@ -652,10 +834,10 @@
             // Корректировка отступов
             adjustPortfolioHeaderPadding();
             
-            console.log('✅ Portfolio header behavior set up (IDENTICAL TO HOME)');
+            console.log('✅ Portfolio header behavior set up');
         }
         
-        // ===== 3. КОРРЕКТИРОВКА ОТСТУПОВ ДИНАМИЧЕСКИ =====
+        // ===== 3. КОРРЕКТИРОВКА ОТСТУПОВ =====
         function adjustPortfolioHeaderPadding() {
             const header = document.querySelector('.main-header');
             const portfolioHero = document.querySelector('.portfolio-hero');
@@ -665,17 +847,17 @@
                 
                 const updatePadding = () => {
                     const isHidden = header.classList.contains('header-hidden');
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollY = window.scrollY;
                     
-                    if (isHidden || scrollTop > 150) {
-                        // Когда хедер скрыт или мы далеко внизу - меньше отступ
+                    if (isHidden || scrollY > 150) {
+                        // Когда хедер скрыт или мы далеко внизу
                         portfolioHero.style.paddingTop = '100px';
-                    } else if (scrollTop <= 50) {
-                        // В самом верху - полный отступ
+                    } else if (scrollY <= 50) {
+                        // В самом верху
                         portfolioHero.style.paddingTop = (headerHeight + 80) + 'px';
                     } else {
-                        // Плавное уменьшение отступа при скролле
-                        const progress = Math.min(1, (scrollTop - 50) / 100);
+                        // Плавное уменьшение
+                        const progress = Math.min(1, (scrollY - 50) / 100);
                         const padding = headerHeight + 80 - (progress * 30);
                         portfolioHero.style.paddingTop = Math.max(100, padding) + 'px';
                     }
@@ -684,26 +866,52 @@
                 };
                 
                 updatePadding();
-                
-                // Обновлять при ресайзе
                 window.addEventListener('resize', updatePadding);
-                
-                // Обновлять при скролле
                 window.addEventListener('scroll', updatePadding);
                 
-                // Обновлять после загрузки изображений
-                window.addEventListener('load', () => {
-                    setTimeout(updatePadding, 100);
-                });
-                
-                console.log('📏 Header padding adjusted dynamically');
+                console.log('📏 Header padding adjusted');
             } else {
-                // Повторная попытка если элементы еще не загрузились
                 setTimeout(adjustPortfolioHeaderPadding, 100);
             }
         }
         
-        // ===== 4. ЗАГРУЗКА ФУТЕРА =====
+        // ===== 4. FALLBACK HEADER =====
+        function createFallbackHeader() {
+            console.log('🔄 Creating fallback header');
+            document.getElementById('header-container').innerHTML = `
+                <header class="main-header">
+                    <div class="container">
+                        <div class="header-inner">
+                            <a href="index.html" class="logo">
+                                <div class="logo-mark">NB</div>
+                                <span class="logo-text">NBGROUP.TECH</span>
+                            </a>
+                            <nav class="main-nav">
+                                <a href="index.html" class="nav-link">Главная</a>
+                                <a href="services.html" class="nav-link">Услуги</a>
+                                <a href="portfolio.html" class="nav-link active">Работы</a>
+                                <a href="brandbook.html" class="nav-link">Брендбук</a>
+                                <a href="about.html" class="nav-link">О нас</a>
+                                <a href="contacts.html" class="nav-link">Контакты</a>
+                            </nav>
+                            <div class="header-actions">
+                                <div class="language-switcher">
+                                    <button class="lang-btn">RU</button>
+                                    <button class="lang-btn">EN</button>
+                                </div>
+                                <a href="contacts.html" class="btn btn-small btn-primary">Начать проект</a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            `;
+            
+            setTimeout(() => {
+                setupPortfolioHeaderBehavior();
+            }, 100);
+        }
+        
+        // ===== 5. ЗАГРУЗКА ФУТЕРА =====
         function loadPortfolioFooter() {
             fetch('components/footer.html')
                 .then(response => response.text())
@@ -711,20 +919,18 @@
                     document.getElementById('footer-container').innerHTML = html;
                     console.log('✅ Footer loaded successfully');
                     
-                    // Применить переводы
                     if (window.i18n && window.i18n.refresh) {
                         setTimeout(() => window.i18n.refresh(), 200);
                     }
                 })
                 .catch(error => {
                     console.error('Error loading footer:', error);
-                    // Fallback footer
                     document.getElementById('footer-container').innerHTML = `
                         <footer class="minimal-footer">
                             <div class="footer-container">
                                 <div class="footer-content">
                                     <div class="footer-bottom">
-                                        <div class="copyright" data-i18n="footer.copyright">
+                                        <div class="copyright">
                                             © 2024 NBGROUP.TECH Все права защищены.
                                         </div>
                                     </div>
@@ -735,7 +941,7 @@
                 });
         }
         
-        // ===== 5. ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
+        // ===== 6. ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 Portfolio DOM loaded');
             
@@ -745,7 +951,7 @@
             // 2. Загружаем футер
             loadPortfolioFooter();
             
-            // 3. Инициализируем функциональность портфолио
+            // 3. Инициализируем портфолио
             setTimeout(() => {
                 if (typeof initPortfolio === 'function') {
                     initPortfolio();
@@ -762,36 +968,20 @@
             }, 1000);
         });
         
-        // ===== 6. ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ =====
-        // Глобальная функция для обновления отступов
+        // ===== 7. ГЛОБАЛЬНЫЕ ФУНКЦИИ =====
         window.updatePortfolioHeaderPadding = adjustPortfolioHeaderPadding;
         
         // Обработчик изменения языка
         window.addEventListener('languageChanged', function(e) {
             console.log('🌐 Language changed to:', e.detail.lang);
-            // Обновляем отступы после смены языка (может измениться высота хедера)
             setTimeout(adjustPortfolioHeaderPadding, 300);
         });
         
-        // Обработчик полной загрузки страницы
+        // Обработчик полной загрузки
         window.addEventListener('load', function() {
             console.log('📦 Portfolio page fully loaded');
             adjustPortfolioHeaderPadding();
-            
-            // Финальная проверка
-            setTimeout(() => {
-                const header = document.querySelector('.main-header');
-                if (header) {
-                    console.log('✅ Header confirmed:', {
-                        height: header.offsetHeight,
-                        visible: header.style.opacity !== '0',
-                        hasHomeBehavior: true
-                    });
-                }
-            }, 500);
         });
-        
-        console.log('🚀 Portfolio initialization script loaded');
     </script>
 </body>
-                            </html>
+</html>
