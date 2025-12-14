@@ -11,11 +11,11 @@
     <link rel="stylesheet" href="css/brandbook.css">
 </head>
 <body class="internal-page">
-    <!-- ===== GLASS HEADER (ТОЧНО КАК НА ГЛАВНОЙ) ===== -->
+    <!-- ===== HEADER ТОЧНО КАК НА ГЛАВНОЙ ===== -->
     <header class="main-header">
         <div class="container">
             <div class="header-inner">
-                <!-- Логотип NB Group -->
+                <!-- Логотип -->
                 <a href="index.html" class="logo">
                     <div class="logo-mark">NB</div>
                     <span class="logo-text" data-i18n="nav.brand">NB Group</span>
@@ -89,8 +89,8 @@
                     <h2 data-i18n="brandbook.intro.title">Брендбук — это основа бренда</h2>
                     <p data-i18n="brandbook.intro.description">
                         Брендбук — это не просто набор правил, а основа, на которой держится весь образ компании. 
-                        Я подхожу к его созданию так же внимательно, как к работе над любым продуктом: изучаю характер бренда, 
-                        его аудиторию, его цель. На фундаменте этих смыслов формирую систему — от цвета и шрифта до логики подачи материалов.
+                        Мы подходим к его созданию так же внимательно, как к работе над любым продуктом: изучаем характер бренда, 
+                        его аудиторию, его цель. На фундаменте этих смыслов формируем систему — от цвета и шрифта до логики подачи материалов.
                     </p>
                     <p data-i18n="brandbook.intro.description2">
                         Мы разрабатываем брендбуки для компаний любого масштаба. Хотите стройную визуальную систему с продуманными элементами? 
@@ -155,7 +155,7 @@
                             <div class="brand-element">
                                 <h4>Typography</h4>
                                 <div class="typography-sample">
-                                    <div class="font-sample" style="font-family: 'Inter', sans-serif;">
+                                    <div class="font-sample">
                                         <div class="font-name">Inter</div>
                                         <div class="font-weights">
                                             <span class="font-weight light">Light</span>
@@ -192,7 +192,7 @@
                             <div class="brand-element">
                                 <h4>Typography</h4>
                                 <div class="typography-sample">
-                                    <div class="font-sample" style="font-family: 'Montserrat', sans-serif;">
+                                    <div class="font-sample">
                                         <div class="font-name">Montserrat</div>
                                         <div class="font-weights">
                                             <span class="font-weight light">Light</span>
@@ -229,7 +229,7 @@
                             <div class="brand-element">
                                 <h4>Typography</h4>
                                 <div class="typography-sample">
-                                    <div class="font-sample" style="font-family: 'Roboto', sans-serif;">
+                                    <div class="font-sample">
                                         <div class="font-name">Roboto</div>
                                         <div class="font-weights">
                                             <span class="font-weight light">Light</span>
@@ -266,7 +266,7 @@
                             <div class="brand-element">
                                 <h4>Typography</h4>
                                 <div class="typography-sample">
-                                    <div class="font-sample" style="font-family: 'Poppins', sans-serif;">
+                                    <div class="font-sample">
                                         <div class="font-name">Poppins</div>
                                         <div class="font-weights">
                                             <span class="font-weight light">Light</span>
@@ -303,7 +303,7 @@
                             <div class="brand-element">
                                 <h4>Typography</h4>
                                 <div class="typography-sample">
-                                    <div class="font-sample" style="font-family: 'SF Pro Display', sans-serif;">
+                                    <div class="font-sample">
                                         <div class="font-name">SF Pro Display</div>
                                         <div class="font-weights">
                                             <span class="font-weight light">Light</span>
@@ -340,7 +340,7 @@
                             <div class="brand-element">
                                 <h4>Typography</h4>
                                 <div class="typography-sample">
-                                    <div class="font-sample" style="font-family: 'Playfair Display', serif;">
+                                    <div class="font-sample">
                                         <div class="font-name">Playfair Display</div>
                                         <div class="font-weights">
                                             <span class="font-weight regular">Regular</span>
@@ -463,42 +463,34 @@
     <script src="js/animations.js"></script>
     <script src="js/brandbook.js"></script>
     
-    <!-- Header Functionality Script -->
     <script>
-        // ===== HEADER INITIALIZATION =====
+        // ===== HEADER FUNCTIONALITY =====
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Brandbook page initialization...');
+            console.log('🚀 Brandbook page initialized');
             
-            // Initialize header
+            // Инициализация хедера
             initBrandbookHeader();
             
-            // Initialize brandbook functionality
-            setTimeout(() => {
-                if (typeof initBrandbook === 'function') {
-                    initBrandbook();
-                }
-            }, 300);
+            // Инициализация языка
+            initLanguageSwitcher();
             
-            // Initialize language switchers
-            initLanguageSwitchers();
+            // Настройка фильтрации
+            initFilterButtons();
             
-            // Smooth scroll for anchor links
-            initSmoothScroll();
-            
-            // Adjust hero padding for header
-            adjustHeroPadding();
+            // Настройка палитр цветов
+            setupColorPalettes();
         });
         
         function initBrandbookHeader() {
+            console.log('🎯 Initializing brandbook header...');
+            
             const header = document.querySelector('.main-header');
             if (!header) return;
             
-            console.log('🎯 Initializing brandbook header...');
-            
-            // Mobile menu functionality
-            const toggle = header.querySelector('.mobile-menu-toggle');
-            const nav = header.querySelector('.main-nav');
-            const overlay = header.querySelector('.mobile-menu-overlay');
+            // Mobile menu
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            const nav = document.querySelector('.main-nav');
+            const overlay = document.querySelector('.mobile-menu-overlay');
             
             if (toggle && nav) {
                 toggle.addEventListener('click', function(e) {
@@ -518,7 +510,7 @@
                     });
                 }
                 
-                // Close menu on link click
+                // Close on link click
                 nav.querySelectorAll('.nav-link').forEach(link => {
                     link.addEventListener('click', function() {
                         toggle.classList.remove('active');
@@ -526,16 +518,6 @@
                         if (overlay) overlay.classList.remove('active');
                         document.body.style.overflow = '';
                     });
-                });
-                
-                // Close menu on escape key
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && nav.classList.contains('active')) {
-                        toggle.classList.remove('active');
-                        nav.classList.remove('active');
-                        if (overlay) overlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
                 });
             }
             
@@ -548,27 +530,26 @@
             if (!header) return;
             
             let lastScrollTop = 0;
-            const scrollThreshold = 100;
+            const threshold = 100;
             
             window.addEventListener('scroll', function() {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 
-                // В самом верху страницы
                 if (scrollTop <= 50) {
                     header.classList.remove('header-hidden', 'header-scrolled');
                     return;
                 }
                 
-                // Прячем при скролле вниз
-                if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+                // Down scroll
+                if (scrollTop > lastScrollTop && scrollTop > threshold) {
                     header.classList.add('header-hidden');
                 } 
-                // Показываем при скролле вверх
+                // Up scroll
                 else if (scrollTop < lastScrollTop) {
                     header.classList.remove('header-hidden');
                 }
                 
-                // Добавляем класс при скролле
+                // Add scrolled class
                 if (scrollTop > 20) {
                     header.classList.add('header-scrolled');
                 } else {
@@ -578,119 +559,166 @@
                 lastScrollTop = scrollTop;
             }, { passive: true });
             
-            // Показываем хедер при наведении
+            // Show header on hover
             header.addEventListener('mouseenter', function() {
                 this.classList.remove('header-hidden');
             });
-            
-            // Инициализация при загрузке
-            if (window.scrollY > 20) {
-                header.classList.add('header-scrolled');
-            }
         }
         
-        function initLanguageSwitchers() {
-            // Main header language switcher
-            const mainLangButtons = document.querySelectorAll('.main-header .lang-btn');
-            if (mainLangButtons.length > 0) {
-                const currentLang = localStorage.getItem('preferredLang') || 'ru';
-                updateLanguageSwitcherState(mainLangButtons, currentLang);
-                
-                mainLangButtons.forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const lang = this.getAttribute('data-lang');
-                        updateLanguageSwitcherState(mainLangButtons, lang);
-                        localStorage.setItem('preferredLang', lang);
-                        
-                        // Trigger language change
-                        if (window.i18n && window.i18n.smoothSwitchLanguage) {
-                            window.i18n.smoothSwitchLanguage(lang);
-                        }
-                    });
-                });
-            }
+        function initLanguageSwitcher() {
+            const langButtons = document.querySelectorAll('.lang-btn, .lang-btn-small');
+            const currentLang = localStorage.getItem('preferredLang') || 'ru';
             
-            // Footer language switcher
-            const footerLangButtons = document.querySelectorAll('.footer-bottom .lang-btn-small');
-            if (footerLangButtons.length > 0) {
-                const currentLang = localStorage.getItem('preferredLang') || 'ru';
-                updateLanguageSwitcherState(footerLangButtons, currentLang);
-                
-                footerLangButtons.forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const lang = this.getAttribute('data-lang');
-                        updateLanguageSwitcherState(footerLangButtons, lang);
-                        localStorage.setItem('preferredLang', lang);
-                        
-                        // Update main switcher
-                        updateLanguageSwitcherState(mainLangButtons, lang);
-                        
-                        // Trigger language change
-                        if (window.i18n && window.i18n.smoothSwitchLanguage) {
-                            window.i18n.smoothSwitchLanguage(lang);
-                        }
-                    });
+            updateLanguageSwitcher(currentLang);
+            
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute('data-lang');
+                    updateLanguageSwitcher(lang);
+                    localStorage.setItem('preferredLang', lang);
+                    
+                    // Trigger i18n change
+                    if (window.i18n && window.i18n.smoothSwitchLanguage) {
+                        window.i18n.smoothSwitchLanguage(lang);
+                    }
                 });
-            }
+            });
         }
         
-        function updateLanguageSwitcherState(buttons, lang) {
-            if (!buttons) return;
-            
-            buttons.forEach(btn => {
+        function updateLanguageSwitcher(lang) {
+            document.querySelectorAll('.lang-btn, .lang-btn-small').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.getAttribute('data-lang') === lang) {
                     btn.classList.add('active');
                 }
             });
             
-            // Update switcher container
-            const switcher = document.querySelector('.language-switcher');
-            if (switcher) {
+            const switchers = document.querySelectorAll('.language-switcher, .language-switcher-small');
+            switchers.forEach(switcher => {
                 switcher.setAttribute('data-current-lang', lang);
-            }
+            });
         }
         
-        function initSmoothScroll() {
-            // Smooth scroll for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href === '#') return;
+        function initFilterButtons() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const brandCases = document.querySelectorAll('.brand-case');
+            
+            if (!filterBtns.length) return;
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
                     
-                    if (href.startsWith('#')) {
-                        e.preventDefault();
-                        const targetId = href.substring(1);
-                        const targetElement = document.getElementById(targetId);
-                        
-                        if (targetElement) {
-                            window.scrollTo({
-                                top: targetElement.offsetTop - 100,
-                                behavior: 'smooth'
-                            });
+                    // Update active button
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter cases
+                    brandCases.forEach(caseEl => {
+                        if (filter === 'all' || caseEl.getAttribute('data-category') === filter) {
+                            caseEl.style.display = 'block';
+                            setTimeout(() => {
+                                caseEl.style.opacity = '1';
+                                caseEl.style.transform = 'translateY(0)';
+                            }, 100);
+                        } else {
+                            caseEl.style.opacity = '0';
+                            caseEl.style.transform = 'translateY(10px)';
+                            setTimeout(() => {
+                                caseEl.style.display = 'none';
+                            }, 300);
                         }
+                    });
+                });
+            });
+        }
+        
+        function setupColorPalettes() {
+            const colorItems = document.querySelectorAll('.color-item');
+            
+            colorItems.forEach(item => {
+                item.addEventListener('click', async function() {
+                    const color = this.style.backgroundColor || this.getAttribute('title');
+                    const hexColor = rgbToHex(color);
+                    
+                    try {
+                        await navigator.clipboard.writeText(hexColor);
+                        showNotification(`Color ${hexColor} copied!`, 'success');
+                        
+                        // Visual feedback
+                        const originalColor = this.style.backgroundColor;
+                        this.style.backgroundColor = '#4CAF50';
+                        this.innerHTML = '<i class="fas fa-check"></i>';
+                        
+                        setTimeout(() => {
+                            this.style.backgroundColor = originalColor;
+                            this.innerHTML = '';
+                        }, 1000);
+                    } catch (err) {
+                        console.error('Copy failed:', err);
+                        showNotification('Failed to copy color', 'error');
                     }
                 });
             });
         }
         
-        function adjustHeroPadding() {
-            const header = document.querySelector('.main-header');
-            const hero = document.querySelector('.brandbook-hero');
+        function rgbToHex(rgb) {
+            if (!rgb) return '#000000';
+            if (rgb.startsWith('#')) return rgb;
             
-            if (header && hero) {
-                const headerHeight = header.offsetHeight;
-                hero.style.paddingTop = (headerHeight + 40) + 'px';
-                
-                // Update on resize
-                window.addEventListener('resize', function() {
-                    const newHeight = header.offsetHeight;
-                    hero.style.paddingTop = (newHeight + 40) + 'px';
-                });
-            }
+            const result = rgb.match(/\d+/g);
+            if (!result) return '#000000';
+            
+            const r = parseInt(result[0]);
+            const g = parseInt(result[1]);
+            const b = parseInt(result[2]);
+            
+            return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? '#4CAF50' : '#2196F3'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+                z-index: 10000;
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+                max-width: 300px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
         }
     </script>
 </body>
-    </html>
+                                        </html>
