@@ -1,5 +1,5 @@
-// brandbook.js - Complete functionality for brandbook page
-console.log('🎨 Brandbook page script loaded');
+// brandbook.js - Complete functionality for brandbook page with language support
+console.log('🎨 Brandbook page script loaded with language support');
 
 // Main initialization function
 function initBrandbook() {
@@ -9,13 +9,90 @@ function initBrandbook() {
     setupCaseStudies();
     setupFilterButtons();
     setupColorPalettes();
-    setupAnimations();
+    setupBrandbookAnimations();
     setupCopyFunctionality();
     
     // Setup mobile interactions
     setupMobileInteractions();
     
+    // Setup language integration
+    setupBrandbookLanguageIntegration();
+    
     console.log('✅ Brandbook functionality initialized');
+}
+
+// ИНТЕГРАЦИЯ С ЯЗЫКОВОЙ СИСТЕМОЙ i18n.js
+function setupBrandbookLanguageIntegration() {
+    console.log('🌐 Setting up language integration for brandbook page...');
+    
+    // Слушаем события изменения языка от i18n.js
+    window.addEventListener('languageChanged', function(event) {
+        console.log('🔄 Language changed detected in brandbook.js:', event.detail.lang);
+        
+        // Обновляем анимации после смены языка
+        setTimeout(() => {
+            if (typeof window.setupCaseStudies === 'function') {
+                window.setupCaseStudies();
+            }
+            
+            // Обновляем текст кнопок фильтра
+            updateFilterButtonsText();
+            
+            // Синхронизируем UI переключателя языка
+            updateLanguageSwitcherUIFromEvent(event.detail.lang);
+        }, 300);
+    });
+    
+    // Инициализируем переключатель языка на странице (только UI)
+    updateLanguageSwitcherUI();
+}
+
+function updateFilterButtonsText() {
+    // Обновляем текст кнопок фильтра после смены языка
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        const filter = btn.getAttribute('data-filter');
+        const key = `brandbook.filters.${filter}`;
+        
+        if (window.i18n && window.i18n.getTranslation) {
+            const translation = window.i18n.getTranslation(key);
+            if (translation) {
+                btn.textContent = translation;
+            }
+        }
+    });
+}
+
+// Обновление UI переключателя языка
+function updateLanguageSwitcherUI() {
+    const langSwitcher = document.querySelector('.language-switcher');
+    if (langSwitcher) {
+        const currentLang = window.i18n ? window.i18n.getCurrentLang() : (localStorage.getItem('preferredLang') || 'ru');
+        langSwitcher.setAttribute('data-current-lang', currentLang);
+        
+        const langButtons = document.querySelectorAll('.lang-btn');
+        langButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-lang') === currentLang) {
+                btn.classList.add('active');
+            }
+        });
+    }
+}
+
+function updateLanguageSwitcherUIFromEvent(lang) {
+    const langSwitcher = document.querySelector('.language-switcher');
+    if (langSwitcher) {
+        langSwitcher.setAttribute('data-current-lang', lang);
+        
+        const langButtons = document.querySelectorAll('.lang-btn');
+        langButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('active');
+            }
+        });
+    }
 }
 
 // Setup case studies interactions
@@ -29,13 +106,13 @@ function setupCaseStudies() {
         // Desktop hover effects
         if (window.innerWidth > 768) {
             caseStudy.addEventListener('mouseenter', () => {
-                caseStudy.style.transform = 'translateY(-10px)';
-                caseStudy.style.boxShadow = '0 25px 50px rgba(0, 102, 255, 0.15)';
+                caseStudy.style.transform = 'translateY(-15px)';
+                caseStudy.style.boxShadow = '0 35px 70px rgba(0, 102, 255, 0.25)';
             });
             
             caseStudy.addEventListener('mouseleave', () => {
                 caseStudy.style.transform = 'translateY(0)';
-                caseStudy.style.boxShadow = 'none';
+                caseStudy.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.4)';
             });
         }
         
@@ -137,22 +214,28 @@ function setupColorPalettes() {
     const colorItems = document.querySelectorAll('.color-item');
     
     colorItems.forEach(item => {
-        // Store original color
-        const originalColor = item.style.backgroundColor;
-        item.setAttribute('data-original-color', originalColor);
+        // Get color from background
+        const bgColor = item.style.backgroundColor;
+        if (bgColor) {
+            const hexColor = rgbToHex(bgColor);
+            item.setAttribute('title', hexColor);
+            item.setAttribute('data-original-color', bgColor);
+        }
         
         // Add tooltip for desktop
         if (window.innerWidth > 768) {
             item.addEventListener('mouseenter', function() {
-                const color = this.style.backgroundColor || this.getAttribute('title');
-                this.setAttribute('title', rgbToHex(color));
+                const color = this.style.backgroundColor || this.getAttribute('data-original-color');
+                if (color) {
+                    this.setAttribute('title', rgbToHex(color));
+                }
             });
         }
     });
 }
 
 // Setup animations
-function setupAnimations() {
+function setupBrandbookAnimations() {
     // Intersection Observer for scroll animations
     const observerOptions = {
         threshold: 0.1,
@@ -162,7 +245,7 @@ function setupAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('animated');
+                entry.target.classList.add('visible');
                 
                 // Stagger animation for cases
                 if (entry.target.classList.contains('brand-case')) {
@@ -175,6 +258,11 @@ function setupAnimations() {
     
     // Observe elements
     document.querySelectorAll('.brand-case, .section-header, .intro-text, .stat-item, .cta-content').forEach(el => {
+        if (el.classList.contains('fade-in')) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        }
         observer.observe(el);
     });
 }
@@ -185,7 +273,9 @@ function setupCopyFunctionality() {
     
     colorItems.forEach(item => {
         item.addEventListener('click', async function() {
-            const color = this.style.backgroundColor || this.getAttribute('title');
+            const color = this.style.backgroundColor || this.getAttribute('data-original-color');
+            if (!color) return;
+            
             const hexColor = rgbToHex(color);
             
             try {
@@ -225,15 +315,32 @@ function setupMobileInteractions() {
         interactiveElements.forEach(el => {
             el.addEventListener('touchstart', function() {
                 this.style.opacity = '0.9';
+                this.style.transform = 'scale(0.98)';
             });
             
             el.addEventListener('touchend', function() {
                 this.style.opacity = '1';
+                this.style.transform = 'scale(1)';
+            });
+            
+            el.addEventListener('touchcancel', function() {
+                this.style.opacity = '1';
+                this.style.transform = 'scale(1)';
             });
         });
         
         // Smooth scroll for mobile
         document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // Prevent double tap zoom
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
     }
 }
 
@@ -349,7 +456,21 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
     }, 100);
 }
 
-// Export functions for global use - УДАЛЕНА СТРОКА С export
+// Handle window resize
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (typeof initBrandbook === 'function') {
+            initBrandbook();
+        }
+    }, 250);
+});
+
+// Export functions for global use
 window.initBrandbook = initBrandbook;
 window.showNotification = showNotification;
 window.rgbToHex = rgbToHex;
+window.updateLanguageSwitcherUI = updateLanguageSwitcherUI;
+
+console.log('✅ Brandbook.js initialization functions ready');
