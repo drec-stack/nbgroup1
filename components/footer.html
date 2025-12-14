@@ -5,7 +5,7 @@
             <div class="footer-section">
                 <div class="footer-logo">
                     <div class="logo-mark">NB</div>
-                    <span class="logo-text">NBGROUP.TECH</span>
+                    <span class="logo-text" data-i18n="nav.brand">NBGROUP.TECH</span>
                 </div>
                 <p class="footer-description" data-i18n="footer.description">
                     Industrial design and product development studio creating 
@@ -33,7 +33,7 @@
                     <li><a href="services.html#strategy" data-i18n="servicesPreview.strategy.title">Product Strategy</a></li>
                     <li><a href="services.html#design" data-i18n="servicesPreview.design.title">Industrial Design</a></li>
                     <li><a href="services.html#engineering" data-i18n="servicesPreview.engineering.title">Engineering</a></li>
-                    <li><a href="services.html#production">Manufacturing</a></li>
+                    <li><a href="services.html#production" data-i18n="services.production.title">Manufacturing</a></li>
                 </ul>
             </div>
             
@@ -43,14 +43,14 @@
                     <li><a href="about.html" data-i18n="nav.about">About</a></li>
                     <li><a href="portfolio.html" data-i18n="nav.portfolio">Work</a></li>
                     <li><a href="contacts.html" data-i18n="nav.contact">Contact</a></li>
-                    <li><a href="#" data-i18n="footer.careers">Careers</a></li>
+                    <li><a href="#" data-i18n="footer.links.careers">Careers</a></li>
                 </ul>
             </div>
             
             <div class="footer-section">
-                <h3 data-i18n="nav.contact">Contact</h3>
+                <h3 data-i18n="footer.contact.title">Contact</h3>
                 <div class="contact-info">
-                    <p><i class="fas fa-map-marker-alt"></i> Moscow, Russia</p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="footer.contact.address">Moscow, Russia</span></p>
                     <p><i class="fas fa-phone"></i> +7 (495) 123-4567</p>
                     <p><i class="fas fa-envelope"></i> info@nbgroup.tech</p>
                 </div>
@@ -60,8 +60,9 @@
         <div class="footer-bottom">
             <p>&copy; 2024 NBGROUP.TECH. <span data-i18n="footer.rights">All rights reserved.</span></p>
             <div class="footer-legal">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
+                <a href="#" data-i18n="footer.links.privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer.links.terms">Terms of Service</a>
+                <a href="#" data-i18n="footer.links.cookies">Cookie Policy</a>
             </div>
         </div>
     </div>
@@ -365,7 +366,7 @@
 
 <script>
 function initFooter() {
-    console.log('Footer initialized');
+    console.log('🦶 Footer initialized');
     setupFooterAnimations();
     setupSocialLinks();
 }
