@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/brandbook.css">
 </head>
 <body class="internal-page">
-    <!-- ===== GLASS HEADER ===== -->
+    <!-- ===== GLASS HEADER (ТОЧНО КАК НА ГЛАВНОЙ) ===== -->
     <header class="main-header">
         <div class="container">
             <div class="header-inner">
@@ -65,6 +65,7 @@
         <div class="mobile-menu-overlay"></div>
     </header>
 
+    <!-- ===== HERO SECTION ===== -->
     <section class="brandbook-hero">
         <div class="container">
             <div class="brandbook-hero-content">
@@ -72,10 +73,15 @@
                 <p class="page-subtitle" data-i18n="brandbook.subtitle">
                     Comprehensive brand identity systems that create memorable and consistent brand experiences across all touchpoints.
                 </p>
+                <a href="#cases" class="btn btn-scroll">
+                    <span data-i18n="brandbook.viewCases">View Cases</span>
+                    <i class="fas fa-arrow-down"></i>
+                </a>
             </div>
         </div>
     </section>
 
+    <!-- ===== INTRO SECTION ===== -->
     <section class="brandbook-intro">
         <div class="container">
             <div class="intro-content">
@@ -91,15 +97,38 @@
                         Сделаем так, чтобы она стала вашим сильным инструментом, а не красивой папкой «для галочки».
                     </p>
                 </div>
+                <div class="intro-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label" data-i18n="brandbook.stats.projects">Brand Projects</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label" data-i18n="brandbook.stats.satisfaction">Client Satisfaction</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label" data-i18n="brandbook.stats.support">Support</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="brandbook-cases">
+    <!-- ===== CASES SECTION ===== -->
+    <section class="brandbook-cases" id="cases">
         <div class="container">
             <div class="section-header">
                 <h2 data-i18n="brandbook.cases.title">Brandbook Cases</h2>
                 <p data-i18n="brandbook.cases.subtitle">Our recent brand identity projects</p>
+                
+                <!-- Filter Buttons -->
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all" data-i18n="brandbook.filter.all">All</button>
+                    <button class="filter-btn" data-filter="web" data-i18n="brandbook.filter.web">Web Design</button>
+                    <button class="filter-btn" data-filter="mobile" data-i18n="brandbook.filter.mobile">Mobile App</button>
+                    <button class="filter-btn" data-filter="corporate" data-i18n="brandbook.filter.corporate">Corporate</button>
+                </div>
             </div>
             
             <div class="brand-cases-grid">
@@ -125,7 +154,16 @@
                             </div>
                             <div class="brand-element">
                                 <h4>Typography</h4>
-                                <p>Inter (sans-serif) • 16px base • 1.6 line height</p>
+                                <div class="typography-sample">
+                                    <div class="font-sample" style="font-family: 'Inter', sans-serif;">
+                                        <div class="font-name">Inter</div>
+                                        <div class="font-weights">
+                                            <span class="font-weight light">Light</span>
+                                            <span class="font-weight regular">Regular</span>
+                                            <span class="font-weight bold">Bold</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -153,7 +191,16 @@
                             </div>
                             <div class="brand-element">
                                 <h4>Typography</h4>
-                                <p>Montserrat • Bold headings • 14px body</p>
+                                <div class="typography-sample">
+                                    <div class="font-sample" style="font-family: 'Montserrat', sans-serif;">
+                                        <div class="font-name">Montserrat</div>
+                                        <div class="font-weights">
+                                            <span class="font-weight light">Light</span>
+                                            <span class="font-weight regular">Regular</span>
+                                            <span class="font-weight bold">Bold</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -181,7 +228,16 @@
                             </div>
                             <div class="brand-element">
                                 <h4>Typography</h4>
-                                <p>Roboto • Professional • Multiple weights</p>
+                                <div class="typography-sample">
+                                    <div class="font-sample" style="font-family: 'Roboto', sans-serif;">
+                                        <div class="font-name">Roboto</div>
+                                        <div class="font-weights">
+                                            <span class="font-weight light">Light</span>
+                                            <span class="font-weight regular">Regular</span>
+                                            <span class="font-weight bold">Bold</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -209,7 +265,16 @@
                             </div>
                             <div class="brand-element">
                                 <h4>Typography</h4>
-                                <p>Poppins • Modern • Multiple sizes</p>
+                                <div class="typography-sample">
+                                    <div class="font-sample" style="font-family: 'Poppins', sans-serif;">
+                                        <div class="font-name">Poppins</div>
+                                        <div class="font-weights">
+                                            <span class="font-weight light">Light</span>
+                                            <span class="font-weight regular">Regular</span>
+                                            <span class="font-weight bold">Bold</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -237,7 +302,16 @@
                             </div>
                             <div class="brand-element">
                                 <h4>Typography</h4>
-                                <p>SF Pro Display • Tech feel • Clean</p>
+                                <div class="typography-sample">
+                                    <div class="font-sample" style="font-family: 'SF Pro Display', sans-serif;">
+                                        <div class="font-name">SF Pro Display</div>
+                                        <div class="font-weights">
+                                            <span class="font-weight light">Light</span>
+                                            <span class="font-weight regular">Regular</span>
+                                            <span class="font-weight bold">Bold</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -265,7 +339,16 @@
                             </div>
                             <div class="brand-element">
                                 <h4>Typography</h4>
-                                <p>Playfair Display • Serif • Elegant</p>
+                                <div class="typography-sample">
+                                    <div class="font-sample" style="font-family: 'Playfair Display', serif;">
+                                        <div class="font-name">Playfair Display</div>
+                                        <div class="font-weights">
+                                            <span class="font-weight regular">Regular</span>
+                                            <span class="font-weight medium">Medium</span>
+                                            <span class="font-weight bold">Bold</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -274,6 +357,7 @@
         </div>
     </section>
 
+    <!-- ===== CTA SECTION ===== -->
     <section class="brandbook-cta">
         <div class="container">
             <div class="cta-content">
@@ -287,10 +371,93 @@
         </div>
     </section>
 
-    <!-- Footer Container -->
-    <div id="footer-container"></div>
+    <!-- ===== FOOTER ===== -->
+    <footer class="minimal-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <a href="index.html" class="logo">
+                        <div class="logo-mark">NB</div>
+                        <span class="logo-text" data-i18n="nav.brand">NB Group</span>
+                    </a>
+                    <p class="footer-description" data-i18n="footer.description">
+                        We create innovative brand identities that tell your story and connect with your audience.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4 data-i18n="footer.links.services">Services</h4>
+                        <a href="services.html" data-i18n="nav.services">Services</a>
+                        <a href="portfolio.html" data-i18n="nav.portfolio">Portfolio</a>
+                        <a href="brandbook.html" data-i18n="nav.brandbook">Brandbook</a>
+                    </div>
+                    
+                    <div class="link-group">
+                        <h4 data-i18n="footer.links.company">Company</h4>
+                        <a href="about.html" data-i18n="nav.about">About</a>
+                        <a href="contacts.html" data-i18n="nav.contact">Contact</a>
+                        <a href="#" data-i18n="footer.links.careers">Careers</a>
+                    </div>
+                    
+                    <div class="link-group">
+                        <h4 data-i18n="footer.links.legal">Legal</h4>
+                        <a href="#" data-i18n="footer.links.privacy">Privacy Policy</a>
+                        <a href="#" data-i18n="footer.links.terms">Terms of Service</a>
+                        <a href="#" data-i18n="footer.links.cookies">Cookie Policy</a>
+                    </div>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4 data-i18n="footer.contact.title">Contact Us</h4>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>contact@nbgroup.tech</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (999) 123-45-67</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span data-i18n="footer.contact.address">Moscow, Russia</span>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright" data-i18n="footer.copyright">
+                    © 2024 NBGROUP.TECH Все права защищены.
+                </div>
+                <div class="footer-lang">
+                    <span data-i18n="footer.language">Language:</span>
+                    <div class="language-switcher-small" data-current-lang="ru">
+                        <button class="lang-btn-small" data-lang="ru">RU</button>
+                        <button class="lang-btn-small active" data-lang="en">EN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    <!-- JavaScript -->
+    <!-- ===== JAVASCRIPT ===== -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
@@ -305,15 +472,21 @@
             // Initialize header
             initBrandbookHeader();
             
-            // Load footer
-            loadFooter();
-            
             // Initialize brandbook functionality
             setTimeout(() => {
                 if (typeof initBrandbook === 'function') {
                     initBrandbook();
                 }
             }, 300);
+            
+            // Initialize language switchers
+            initLanguageSwitchers();
+            
+            // Smooth scroll for anchor links
+            initSmoothScroll();
+            
+            // Adjust hero padding for header
+            adjustHeroPadding();
         });
         
         function initBrandbookHeader() {
@@ -354,52 +527,20 @@
                         document.body.style.overflow = '';
                     });
                 });
-            }
-            
-            // Language switcher
-            const langButtons = header.querySelectorAll('.lang-btn');
-            if (langButtons.length > 0) {
-                const currentLang = localStorage.getItem('preferredLang') || 'ru';
-                updateLanguageSwitcherState(currentLang);
                 
-                langButtons.forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const lang = this.getAttribute('data-lang');
-                        updateLanguageSwitcherState(lang);
-                        localStorage.setItem('preferredLang', lang);
-                        
-                        // Trigger language change
-                        if (window.i18n && window.i18n.smoothSwitchLanguage) {
-                            window.i18n.smoothSwitchLanguage(lang);
-                        }
-                    });
+                // Close menu on escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && nav.classList.contains('active')) {
+                        toggle.classList.remove('active');
+                        nav.classList.remove('active');
+                        if (overlay) overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
                 });
             }
             
-            // Header scroll behavior for internal pages
+            // Header scroll behavior
             setupHeaderScroll();
-            
-            // Adjust hero padding for header height
-            adjustHeroPadding();
-            
-            console.log('✅ Brandbook header initialized');
-        }
-        
-        function updateLanguageSwitcherState(lang) {
-            const langBtns = document.querySelectorAll('.lang-btn');
-            const switcher = document.querySelector('.language-switcher');
-            
-            langBtns.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-lang') === lang) {
-                    btn.classList.add('active');
-                }
-            });
-            
-            if (switcher) {
-                switcher.setAttribute('data-current-lang', lang);
-            }
         }
         
         function setupHeaderScroll() {
@@ -441,6 +582,98 @@
             header.addEventListener('mouseenter', function() {
                 this.classList.remove('header-hidden');
             });
+            
+            // Инициализация при загрузке
+            if (window.scrollY > 20) {
+                header.classList.add('header-scrolled');
+            }
+        }
+        
+        function initLanguageSwitchers() {
+            // Main header language switcher
+            const mainLangButtons = document.querySelectorAll('.main-header .lang-btn');
+            if (mainLangButtons.length > 0) {
+                const currentLang = localStorage.getItem('preferredLang') || 'ru';
+                updateLanguageSwitcherState(mainLangButtons, currentLang);
+                
+                mainLangButtons.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const lang = this.getAttribute('data-lang');
+                        updateLanguageSwitcherState(mainLangButtons, lang);
+                        localStorage.setItem('preferredLang', lang);
+                        
+                        // Trigger language change
+                        if (window.i18n && window.i18n.smoothSwitchLanguage) {
+                            window.i18n.smoothSwitchLanguage(lang);
+                        }
+                    });
+                });
+            }
+            
+            // Footer language switcher
+            const footerLangButtons = document.querySelectorAll('.footer-bottom .lang-btn-small');
+            if (footerLangButtons.length > 0) {
+                const currentLang = localStorage.getItem('preferredLang') || 'ru';
+                updateLanguageSwitcherState(footerLangButtons, currentLang);
+                
+                footerLangButtons.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const lang = this.getAttribute('data-lang');
+                        updateLanguageSwitcherState(footerLangButtons, lang);
+                        localStorage.setItem('preferredLang', lang);
+                        
+                        // Update main switcher
+                        updateLanguageSwitcherState(mainLangButtons, lang);
+                        
+                        // Trigger language change
+                        if (window.i18n && window.i18n.smoothSwitchLanguage) {
+                            window.i18n.smoothSwitchLanguage(lang);
+                        }
+                    });
+                });
+            }
+        }
+        
+        function updateLanguageSwitcherState(buttons, lang) {
+            if (!buttons) return;
+            
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Update switcher container
+            const switcher = document.querySelector('.language-switcher');
+            if (switcher) {
+                switcher.setAttribute('data-current-lang', lang);
+            }
+        }
+        
+        function initSmoothScroll() {
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#') return;
+                    
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 100,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
         }
         
         function adjustHeroPadding() {
@@ -458,38 +691,6 @@
                 });
             }
         }
-        
-        function loadFooter() {
-            fetch('components/footer.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('footer-container').innerHTML = html;
-                    console.log('✅ Footer loaded');
-                    
-                    // Apply translations
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 200);
-                })
-                .catch(error => {
-                    console.error('Error loading footer:', error);
-                    document.getElementById('footer-container').innerHTML = `
-                        <footer class="minimal-footer">
-                            <div class="footer-container">
-                                <div class="footer-content">
-                                    <div class="footer-bottom">
-                                        <div class="copyright" data-i18n="footer.copyright">
-                                            © 2024 NBGROUP.TECH Все права защищены.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </footer>
-                    `;
-                });
-        }
     </script>
 </body>
-</html>
+    </html>
