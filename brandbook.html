@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brandbook - NBGROUP.TECH</title>
+    <title data-i18n="brandbook.title">Brandbook - NBGROUP.TECH</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -85,64 +85,15 @@
         }
     </style>
 </head>
-<body>
-    <!-- ТОТ ЖЕ САМЫЙ ХЕДЕР КАК НА ГЛАВНОЙ -->
-    <header class="main-header">
-        <div class="container">
-            <div class="header-inner">
-                <!-- Логотип NB Group -->
-                <a href="index.html" class="logo">
-                    <div class="logo-mark">NB</div>
-                    <span class="logo-text">NB Group</span>
-                </a>
-                
-                <!-- Навигация -->
-                <nav class="main-nav">
-                    <a href="index.html" class="nav-link">Главная</a>
-                    <a href="about.html" class="nav-link">О нас</a>
-                    <a href="services.html" class="nav-link">Услуги</a>
-                    <a href="portfolio.html" class="nav-link">Портфолио</a>
-                    <a href="brandbook.html" class="nav-link active">Брендбук</a>
-                    <a href="contacts.html" class="nav-link">Контакты</a>
-                </nav>
-                
-                <!-- Действия -->
-                <div class="header-actions">
-                    <!-- Переключатель языка -->
-                    <div class="language-switcher" data-current-lang="ru">
-                        <div class="lang-slider"></div>
-                        <button class="lang-btn" data-lang="ru">
-                            <span class="lang-text">RU</span>
-                            <span class="lang-flag">🇷🇺</span>
-                        </button>
-                        <button class="lang-btn active" data-lang="en">
-                            <span class="lang-text">EN</span>
-                            <span class="lang-flag">🇺🇸</span>
-                        </button>
-                    </div>
-                    
-                    <!-- Кнопка Начать проект -->
-                    <a href="contacts.html" class="btn btn-primary btn-small">
-                        Начать проект
-                    </a>
-                    
-                    <!-- Мобильное меню -->
-                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="mobile-menu-overlay"></div>
-    </header>
+<body class="internal-page">
+    <!-- Header Container -->
+    <div id="header-container"></div>
 
     <section class="brandbook-hero">
         <div class="container">
             <div class="brandbook-hero-content">
-                <h1 class="page-title">Brandbook Development</h1>
-                <p class="page-subtitle">
+                <h1 class="page-title" data-i18n="brandbook.title">Brandbook Development</h1>
+                <p class="page-subtitle" data-i18n="brandbook.subtitle">
                     Comprehensive brand identity systems that create memorable and consistent brand experiences across all touchpoints.
                 </p>
             </div>
@@ -153,13 +104,13 @@
         <div class="container">
             <div class="intro-content">
                 <div class="intro-text">
-                    <h2>Брендбук — это основа бренда</h2>
-                    <p>
+                    <h2 data-i18n="brandbook.intro.title">Брендбук — это основа бренда</h2>
+                    <p data-i18n="brandbook.intro.description">
                         Брендбук — это не просто набор правил, а основа, на которой держится весь образ компании. 
                         Я подхожу к его созданию так же внимательно, как к работе над любым продуктом: изучаю характер бренда, 
                         его аудиторию, его цель. На фундаменте этих смыслов формирую систему — от цвета и шрифта до логики подачи материалов.
                     </p>
-                    <p>
+                    <p data-i18n="brandbook.intro.description2">
                         Мы разрабатываем брендбуки для компаний любого масштаба. Хотите стройную визуальную систему с продуманными элементами? 
                         Сделаем так, чтобы она стала вашим сильным инструментом, а не красивой папкой «для галочки».
                     </p>
@@ -171,8 +122,8 @@
     <section class="brandbook-cases">
         <div class="container">
             <div class="section-header">
-                <h2>Brandbook Cases</h2>
-                <p>Our recent brand identity projects</p>
+                <h2 data-i18n="brandbook.cases.title">Brandbook Cases</h2>
+                <p data-i18n="brandbook.cases.subtitle">Our recent brand identity projects</p>
             </div>
             
             <div class="brand-cases-grid">
@@ -191,9 +142,9 @@
                             <div class="brand-element">
                                 <h4>Color Palette</h4>
                                 <div class="color-palette">
-                                    <div class="color-item" style="background-color: #FF6B6B;"></div>
-                                    <div class="color-item" style="background-color: #4ECDC4;"></div>
-                                    <div class="color-item" style="background-color: #45B7D1;"></div>
+                                    <div class="color-item placeholder-color-1"></div>
+                                    <div class="color-item placeholder-color-2"></div>
+                                    <div class="color-item placeholder-color-3"></div>
                                 </div>
                             </div>
                             <div class="brand-element">
@@ -219,9 +170,9 @@
                             <div class="brand-element">
                                 <h4>Color Palette</h4>
                                 <div class="color-palette">
-                                    <div class="color-item" style="background-color: #FFE66D;"></div>
-                                    <div class="color-item" style="background-color: #FF6B6B;"></div>
-                                    <div class="color-item" style="background-color: #4ECDC4;"></div>
+                                    <div class="color-item placeholder-color-1"></div>
+                                    <div class="color-item placeholder-color-2"></div>
+                                    <div class="color-item placeholder-color-3"></div>
                                 </div>
                             </div>
                             <div class="brand-element">
@@ -247,9 +198,9 @@
                             <div class="brand-element">
                                 <h4>Color Palette</h4>
                                 <div class="color-palette">
-                                    <div class="color-item" style="background-color: #6B48FF;"></div>
-                                    <div class="color-item" style="background-color: #1AFFD5;"></div>
-                                    <div class="color-item" style="background-color: #FF9A3D;"></div>
+                                    <div class="color-item placeholder-color-1"></div>
+                                    <div class="color-item placeholder-color-2"></div>
+                                    <div class="color-item placeholder-color-3"></div>
                                 </div>
                             </div>
                             <div class="brand-element">
@@ -275,9 +226,9 @@
                             <div class="brand-element">
                                 <h4>Color Palette</h4>
                                 <div class="color-palette">
-                                    <div class="color-item" style="background-color: #FF4081;"></div>
-                                    <div class="color-item" style="background-color: #7C4DFF;"></div>
-                                    <div class="color-item" style="background-color: #448AFF;"></div>
+                                    <div class="color-item placeholder-color-1"></div>
+                                    <div class="color-item placeholder-color-2"></div>
+                                    <div class="color-item placeholder-color-3"></div>
                                 </div>
                             </div>
                             <div class="brand-element">
@@ -303,9 +254,9 @@
                             <div class="brand-element">
                                 <h4>Color Palette</h4>
                                 <div class="color-palette">
-                                    <div class="color-item" style="background-color: #00BCD4;"></div>
-                                    <div class="color-item" style="background-color: #4CAF50;"></div>
-                                    <div class="color-item" style="background-color: #FFC107;"></div>
+                                    <div class="color-item placeholder-color-1"></div>
+                                    <div class="color-item placeholder-color-2"></div>
+                                    <div class="color-item placeholder-color-3"></div>
                                 </div>
                             </div>
                             <div class="brand-element">
@@ -331,9 +282,9 @@
                             <div class="brand-element">
                                 <h4>Color Palette</h4>
                                 <div class="color-palette">
-                                    <div class="color-item" style="background-color: #9C27B0;"></div>
-                                    <div class="color-item" style="background-color: #3F51B5;"></div>
-                                    <div class="color-item" style="background-color: #03A9F4;"></div>
+                                    <div class="color-item placeholder-color-1"></div>
+                                    <div class="color-item placeholder-color-2"></div>
+                                    <div class="color-item placeholder-color-3"></div>
                                 </div>
                             </div>
                             <div class="brand-element">
@@ -350,28 +301,18 @@
     <section class="brandbook-cta">
         <div class="container">
             <div class="cta-content">
-                <h2>Develop Your Brand Identity</h2>
-                <p>Ready to create a powerful brand system that stands out? Let's discuss your brand vision.</p>
+                <h2 data-i18n="brandbook.cta.title">Develop Your Brand Identity</h2>
+                <p data-i18n="brandbook.cta.description">Ready to create a powerful brand system that stands out? Let's discuss your brand vision.</p>
                 <a href="contacts.html" class="btn btn-primary btn-large">
-                    <span>Start Brand Project</span>
+                    <span data-i18n="brandbook.cta.button">Start Brand Project</span>
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="minimal-footer">
-        <div class="footer-container">
-            <div class="footer-content">
-                <div class="footer-bottom">
-                    <div class="copyright">
-                        © 2024 NBGROUP.TECH Все права защищены.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
 
     <!-- JavaScript -->
     <script src="js/i18n.js"></script>
@@ -380,15 +321,154 @@
     <script src="js/brandbook.js"></script>
     
     <script>
-        // ФУНКЦИЯ ДЛЯ ПЛАВНОГО СКРЫТИЯ ХЕДЕРА ПРИ СКРОЛЛЕ (ТАК ЖЕ КАК НА ГЛАВНОЙ)
-        function initHeaderScrollBehavior() {
+        // Load glass header component
+        function loadGlassHeader() {
+            console.log('🔵 Loading glass header for brandbook page...');
+            
+            fetch('components/header.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('header-container').innerHTML = html;
+                    
+                    // Инициализировать хедер
+                    if (typeof initHeader === 'function') {
+                        setTimeout(() => {
+                            initHeader();
+                            
+                            // Добавляем класс для внутренних страниц
+                            const header = document.querySelector('.main-header');
+                            if (header) {
+                                header.classList.add('internal-page-header');
+                                
+                                // Анимация появления
+                                setTimeout(() => {
+                                    header.style.opacity = '1';
+                                    header.style.transform = 'translateY(0)';
+                                }, 100);
+                            }
+                        }, 100);
+                    }
+                    
+                    // Применить переводы к хедеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 200);
+                    
+                    console.log('✅ Glass header loaded successfully');
+                })
+                .catch(error => {
+                    console.error('❌ Error loading glass header:', error);
+                    // Fallback header
+                    document.getElementById('header-container').innerHTML = `
+                        <header class="main-header">
+                            <div class="container">
+                                <div class="header-inner">
+                                    <a href="index.html" class="logo">
+                                        <div class="logo-mark">NB</div>
+                                        <span class="logo-text" data-i18n="nav.brand">NB Group</span>
+                                    </a>
+                                    <nav class="main-nav">
+                                        <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                                        <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                                        <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                                        <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
+                                        <a href="brandbook.html" class="nav-link active" data-i18n="nav.brandbook">Брендбук</a>
+                                        <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
+                                    </nav>
+                                    <div class="header-actions">
+                                        <div class="language-switcher" data-current-lang="ru">
+                                            <div class="lang-slider"></div>
+                                            <button class="lang-btn" data-lang="ru">
+                                                <span class="lang-text">RU</span>
+                                                <span class="lang-flag">🇷🇺</span>
+                                            </button>
+                                            <button class="lang-btn active" data-lang="en">
+                                                <span class="lang-text">EN</span>
+                                                <span class="lang-flag">🇺🇸</span>
+                                            </button>
+                                        </div>
+                                        <a href="contacts.html" class="btn btn-small btn-primary" data-i18n="nav.startProject">
+                                            Начать проект
+                                        </a>
+                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mobile-menu-overlay"></div>
+                        </header>
+                    `;
+                    
+                    // Инициализируем fallback хедер
+                    setTimeout(() => {
+                        if (typeof initHeader === 'function') {
+                            initHeader();
+                        }
+                        
+                        // Применить переводы к fallback хедеру
+                        setTimeout(() => {
+                            if (window.i18n && window.i18n.refresh) {
+                                window.i18n.refresh();
+                            }
+                        }, 300);
+                    }, 300);
+                });
+        }
+
+        // Load footer component
+        function loadFooter() {
+            fetch('components/footer.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('footer-container').innerHTML = html;
+                    console.log('✅ Footer loaded successfully');
+                    
+                    // Применить переводы к футеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 200);
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = `
+                        <footer class="minimal-footer">
+                            <div class="footer-container">
+                                <div class="footer-content">
+                                    <div class="footer-bottom">
+                                        <div class="copyright" data-i18n="footer.copyright">
+                                            © 2024 NBGROUP.TECH Все права защищены.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    `;
+                    
+                    // Применить переводы к fallback футеру
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 200);
+                });
+        }
+
+        // Функция для плавного скрытия/показа хедера при скролле (как на главной)
+        function initBrandbookHeaderScroll() {
             const header = document.querySelector('.main-header');
             if (!header) {
-                setTimeout(initHeaderScrollBehavior, 100);
+                setTimeout(initBrandbookHeaderScroll, 100);
                 return;
             }
 
-            console.log('🎭 Initializing header scroll behavior (same as homepage)...');
+            console.log('🎭 Initializing smooth header hide on brandbook page...');
             
             let lastScrollTop = 0;
             let isHidden = false;
@@ -439,7 +519,7 @@
                 lastScrollTop = scrollTop;
             }
             
-            // Показываем хедер при наведении мыши (как на главной)
+            // Показываем хедер при наведении мыши
             header.addEventListener('mouseenter', () => {
                 if (isHidden) {
                     header.classList.remove('header-hidden');
@@ -459,130 +539,6 @@
                 }
             });
             
-            // Мобильное меню
-            function setupMobileMenu() {
-                const toggle = document.querySelector('.mobile-menu-toggle');
-                const nav = document.querySelector('.main-nav');
-                const overlay = document.querySelector('.mobile-menu-overlay');
-
-                if (!toggle || !nav) return;
-
-                const toggleMenu = () => {
-                    const isActive = nav.classList.contains('active');
-                    
-                    toggle.classList.toggle('active');
-                    nav.classList.toggle('active');
-                    if (overlay) overlay.classList.toggle('active');
-                    document.body.style.overflow = isActive ? '' : 'hidden';
-                };
-
-                toggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    toggleMenu();
-                });
-
-                if (overlay) {
-                    overlay.addEventListener('click', () => {
-                        toggle.classList.remove('active');
-                        nav.classList.remove('active');
-                        overlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    });
-                }
-
-                const navLinks = nav.querySelectorAll('.nav-link');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        toggle.classList.remove('active');
-                        nav.classList.remove('active');
-                        if (overlay) overlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    });
-                });
-
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && nav.classList.contains('active')) {
-                        toggle.classList.remove('active');
-                        nav.classList.remove('active');
-                        if (overlay) overlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
-
-                window.addEventListener('resize', () => {
-                    if (window.innerWidth > 768 && nav.classList.contains('active')) {
-                        toggle.classList.remove('active');
-                        nav.classList.remove('active');
-                        if (overlay) overlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
-            }
-            
-            // Переключатель языка
-            function setupLanguageSwitcher() {
-                const langButtons = document.querySelectorAll('.lang-btn');
-                const switcher = document.querySelector('.language-switcher');
-                
-                if (!langButtons.length || !switcher) return;
-                
-                // Устанавливаем текущий язык
-                const currentLang = localStorage.getItem('preferredLang') || 'ru';
-                switcher.setAttribute('data-current-lang', currentLang);
-                
-                langButtons.forEach(btn => {
-                    if (btn.getAttribute('data-lang') === currentLang) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                    
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        const lang = btn.getAttribute('data-lang');
-                        const currentActive = document.querySelector('.lang-btn.active');
-                        
-                        if (currentActive && currentActive.getAttribute('data-lang') === lang) {
-                            return;
-                        }
-                        
-                        // Обновляем состояние переключателя
-                        langButtons.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        switcher.setAttribute('data-current-lang', lang);
-                        
-                        // Сохраняем язык
-                        localStorage.setItem('preferredLang', lang);
-                        
-                        console.log('🌐 Language changed to:', lang);
-                        
-                        // Если есть i18n, используем его
-                        if (window.i18n && window.i18n.smoothSwitchLanguage) {
-                            window.i18n.smoothSwitchLanguage(lang);
-                        } else if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    });
-                });
-            }
-            
-            // Активная ссылка в навигации
-            function setActiveNavLink() {
-                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-                const navLinks = document.querySelectorAll('.nav-link');
-                
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href === currentPage) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
-                    }
-                });
-            }
-            
             // Оптимизация скролла
             let ticking = false;
             window.addEventListener('scroll', () => {
@@ -595,32 +551,30 @@
                 }
             }, { passive: true });
             
-            // Плавная анимация для хедера
+            // Инициализация
+            updateHeader();
+            
+            // Плавная анимация
             setTimeout(() => {
                 header.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
             }, 100);
             
-            // Инициализация всех функций
-            setupMobileMenu();
-            setupLanguageSwitcher();
-            setActiveNavLink();
-            updateHeader();
-            
-            console.log('✅ Header scroll behavior initialized');
+            console.log('✅ Brandbook header scroll behavior initialized');
         }
 
-        // Инициализация при загрузке страницы
+        // Инициализация страницы брендбука
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Brandbook page initializing...');
             
-            // Инициализация хедера
-            initHeaderScrollBehavior();
+            // Загружаем стеклянный хедер
+            loadGlassHeader();
             
-            // Инициализация функциональности брендбука
+            // Загружаем футер
+            loadFooter();
+            
+            // Инициализация скролла хедера
             setTimeout(() => {
-                if (typeof initBrandbook === 'function') {
-                    initBrandbook();
-                }
+                initBrandbookHeaderScroll();
                 
                 // Анимация появления кейсов
                 const brandCases = document.querySelectorAll('.brand-case');
@@ -658,6 +612,7 @@
                     const colors = palette.querySelectorAll('.color-item');
                     colors.forEach(colorItem => {
                         colorItem.addEventListener('click', function() {
+                            // Создаем временное поле для копирования
                             const tempInput = document.createElement('input');
                             tempInput.value = this.style.backgroundColor || '#3498db';
                             document.body.appendChild(tempInput);
@@ -665,6 +620,7 @@
                             document.execCommand('copy');
                             document.body.removeChild(tempInput);
                             
+                            // Визуальная обратная связь
                             const originalColor = this.style.backgroundColor;
                             this.style.backgroundColor = '#2ecc71';
                             this.innerHTML = '<i class="fas fa-check"></i>';
@@ -673,13 +629,72 @@
                                 this.style.backgroundColor = originalColor;
                                 this.innerHTML = '';
                             }, 1000);
+                            
+                            // Показываем уведомление
+                            showNotification('Цвет скопирован в буфер обмена!', 'info');
                         });
                         
+                        // Подсказка при наведении
                         colorItem.setAttribute('title', 'Нажмите, чтобы скопировать цвет');
                     });
                 });
                 
+                // Функция показа уведомления
+                function showNotification(message, type = 'info') {
+                    const notification = document.createElement('div');
+                    notification.className = `notification notification-${type}`;
+                    notification.innerHTML = `
+                        <div class="notification-content">
+                            <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                            <span>${message}</span>
+                        </div>
+                    `;
+                    
+                    notification.style.cssText = `
+                        position: fixed;
+                        top: 100px;
+                        right: 20px;
+                        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+                        color: white;
+                        padding: 15px 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                        z-index: 10000;
+                        transform: translateX(400px);
+                        transition: transform 0.3s ease;
+                        max-width: 400px;
+                        font-weight: 500;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    `;
+                    
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.style.transform = 'translateX(0)';
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        notification.style.transform = 'translateX(400px)';
+                        setTimeout(() => {
+                            if (notification.parentNode) {
+                                notification.parentNode.removeChild(notification);
+                            }
+                        }, 300);
+                    }, 3000);
+                }
+                
             }, 500);
+            
+            // Инициализация функциональности брендбука
+            setTimeout(() => {
+                if (typeof initBrandbook === 'function') {
+                    initBrandbook();
+                } else {
+                    console.warn('initBrandbook function not found');
+                }
+            }, 300);
         });
 
         // Добавляем padding-top для body чтобы контент не скрывался под фиксированным хедером
@@ -687,7 +702,7 @@
             const header = document.querySelector('.main-header');
             if (header) {
                 const headerHeight = header.offsetHeight;
-                document.querySelector('.brandbook-hero').style.paddingTop = (headerHeight + 80) + 'px';
+                document.querySelector('.brandbook-hero').style.paddingTop = (headerHeight + 40) + 'px';
             }
         });
 
@@ -695,33 +710,9 @@
         window.addEventListener('resize', function() {
             const header = document.querySelector('.main-header');
             if (header && window.innerWidth <= 768) {
-                document.querySelector('.brandbook-hero').style.paddingTop = '120px';
-            }
-        });
-
-        // Анимация появления хедера при загрузке
-        window.addEventListener('load', function() {
-            const header = document.querySelector('.main-header');
-            if (header) {
-                header.style.animation = 'fadeInDown 0.6s ease forwards';
-                
-                // Добавляем CSS анимацию
-                const style = document.createElement('style');
-                style.textContent = `
-                    @keyframes fadeInDown {
-                        from {
-                            opacity: 0;
-                            transform: translateY(-30px);
-                        }
-                        to {
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-                `;
-                document.head.appendChild(style);
+                document.querySelector('.brandbook-hero').style.paddingTop = '100px';
             }
         });
     </script>
 </body>
-    </html>
+                            </html>
