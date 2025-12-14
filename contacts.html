@@ -9,67 +9,61 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/contacts.css">
-    <style>
-        /* Glass header styling for internal pages */
-        .internal-page .main-header {
-            position: fixed !important;
-            top: 20px !important;
-            left: 0 !important;
-            right: 0 !important;
-            width: calc(100% - 40px) !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            z-index: 1000 !important;
-            transform: translateY(0) !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-            transition: all 0.4s ease !important;
-            border-radius: 20px !important;
-            background: rgba(0, 102, 255, 0.12) !important;
-            backdrop-filter: blur(16px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.22) !important;
-        }
-
-        .internal-page .main-header.header-hidden {
-            transform: translateY(-100%) !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-
-        .internal-page .main-header.header-scrolled {
-            background: rgba(0, 102, 255, 0.2) !important;
-            backdrop-filter: blur(20px) saturate(200%) !important;
-            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
-        }
-
-        .contact-hero {
-            padding-top: 140px !important;
-        }
-
-        /* Mobile adjustments for internal pages */
-        @media (max-width: 768px) {
-            .internal-page .main-header {
-                top: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                border-radius: 0 !important;
-                margin: 0 !important;
-                padding: 14px 0 !important;
-                background: rgba(0, 102, 255, 0.22) !important;
-                border: none !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-            }
-            
-            .contact-hero {
-                padding-top: 100px !important;
-            }
-        }
-    </style>
 </head>
 <body class="internal-page">
-    <!-- Glass Header Container -->
-    <div id="header-container"></div>
+    <!-- Glass Header (точно как в about.html) -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-inner">
+                <!-- Logo -->
+                <a href="index.html" class="logo">
+                    <div class="logo-mark">NB</div>
+                    <span class="logo-text">NBGROUP.TECH</span>
+                </a>
+
+                <!-- Main Navigation -->
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                    <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                    <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                    <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
+                    <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                    <a href="contacts.html" class="nav-link active" data-i18n="nav.contact">Контакты</a>
+                </nav>
+
+                <!-- Header Actions -->
+                <div class="header-actions">
+                    <!-- Language Switcher -->
+                    <div class="language-switcher" data-current-lang="ru">
+                        <div class="lang-slider"></div>
+                        <button class="lang-btn" data-lang="ru">
+                            <span class="lang-text">RU</span>
+                            <span class="lang-flag">🇷🇺</span>
+                        </button>
+                        <button class="lang-btn active" data-lang="en">
+                            <span class="lang-text">EN</span>
+                            <span class="lang-flag">🇺🇸</span>
+                        </button>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
+                        Начать проект
+                    </a>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-menu-overlay"></div>
+    </header>
 
     <!-- Hero Section -->
     <section class="contact-hero">
@@ -358,8 +352,18 @@
         </div>
     </section>
 
-    <!-- Footer Container -->
-    <div id="footer-container"></div>
+    <!-- Footer -->
+    <footer class="minimal-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-bottom">
+                    <div class="copyright" data-i18n="footer.copyright">
+                        © 2024 NBGROUP.TECH Все права защищены.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- JavaScript -->
     <script src="js/i18n.js"></script>
@@ -368,133 +372,194 @@
     <script src="js/contacts.js"></script>
     
     <script>
-        // Load glass header component
-        function loadGlassHeader() {
-            console.log('🔵 Loading glass header for contacts page...');
+        // Инициализация хедера (как в about.html)
+        function initializeHeader() {
+            console.log('🔵 Initializing header for contacts page...');
             
-            fetch('components/header.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('header-container').innerHTML = html;
+            const header = document.querySelector('.main-header');
+            const isHomePage = false;
+            
+            // Инициализация мобильного меню
+            setupMobileMenu();
+            
+            // Установка активной ссылки
+            setActiveNavLink();
+            
+            // Обновление UI переключателя языка
+            updateLanguageSwitcherUI();
+            
+            // Установка логики скролла
+            setupHeaderScroll();
+            
+            // Добавляем стеклянный эффект
+            if (header) {
+                setTimeout(() => {
+                    header.classList.add('header-glass-enter');
                     
-                    // Инициализировать хедер
-                    if (typeof initHeader === 'function') {
-                        setTimeout(() => {
-                            initHeader();
-                            
-                            // Добавляем класс для внутренних страниц
-                            const header = document.querySelector('.main-header');
-                            if (header) {
-                                header.classList.add('internal-page-header');
-                                
-                                // Анимация появления
-                                setTimeout(() => {
-                                    header.style.opacity = '1';
-                                    header.style.transform = 'translateY(0)';
-                                }, 100);
-                            }
-                        }, 100);
+                    setTimeout(() => {
+                        header.classList.remove('header-glass-enter');
+                    }, 600);
+                }, 100);
+                
+                // Эффект при наведении
+                header.addEventListener('mouseenter', () => {
+                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        header.classList.add('glass-morph');
+                    }
+                });
+                
+                header.addEventListener('mouseleave', () => {
+                    header.classList.remove('glass-morph');
+                });
+            }
+            
+            function setupMobileMenu() {
+                const toggle = document.querySelector('.mobile-menu-toggle');
+                const nav = document.querySelector('.main-nav');
+                const overlay = document.querySelector('.mobile-menu-overlay');
+
+                if (!toggle || !nav) return;
+
+                const toggleMenu = () => {
+                    const isActive = nav.classList.contains('active');
+                    toggle.classList.toggle('active');
+                    nav.classList.toggle('active');
+                    if (overlay) overlay.classList.toggle('active');
+                    document.body.style.overflow = isActive ? '' : 'hidden';
+                };
+
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleMenu();
+                });
+
+                if (overlay) {
+                    overlay.addEventListener('click', toggleMenu);
+                }
+
+                const navLinks = nav.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', toggleMenu);
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && nav.classList.contains('active')) {
+                        toggleMenu();
+                    }
+                });
+
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768 && nav.classList.contains('active')) {
+                        toggleMenu();
+                    }
+                });
+            }
+            
+            function setActiveNavLink() {
+                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                const navLinks = document.querySelectorAll('.nav-link');
+                
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href === currentPage || 
+                        (currentPage === '' && href === 'index.html') ||
+                        (currentPage === 'index.html' && href === 'index.html')) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+            
+            function updateLanguageSwitcherUI() {
+                // Синхронизация с i18n если он доступен
+                if (window.i18n && window.i18n.getCurrentLang) {
+                    const currentLang = window.i18n.getCurrentLang();
+                    const langButtons = document.querySelectorAll('.lang-btn');
+                    
+                    langButtons.forEach(btn => {
+                        const btnLang = btn.getAttribute('data-lang');
+                        btn.classList.toggle('active', btnLang === currentLang);
+                    });
+                    
+                    const switcher = document.querySelector('.language-switcher');
+                    if (switcher) {
+                        switcher.setAttribute('data-current-lang', currentLang);
+                    }
+                } else {
+                    // Fallback на localStorage
+                    const currentLang = localStorage.getItem('preferredLang') || 'ru';
+                    const langButtons = document.querySelectorAll('.lang-btn');
+                    
+                    langButtons.forEach(btn => {
+                        const btnLang = btn.getAttribute('data-lang');
+                        btn.classList.toggle('active', btnLang === currentLang);
+                    });
+                    
+                    const switcher = document.querySelector('.language-switcher');
+                    if (switcher) {
+                        switcher.setAttribute('data-current-lang', currentLang);
+                    }
+                }
+            }
+            
+            function setupHeaderScroll() {
+                const header = document.querySelector('.main-header');
+                if (!header) return;
+                
+                let lastScrollY = window.scrollY;
+                const scrollThreshold = 100;
+                
+                window.addEventListener('scroll', () => {
+                    const currentScrollY = window.scrollY;
+                    
+                    if (currentScrollY <= 0) {
+                        header.classList.remove('header-hidden', 'header-scrolled');
+                        header.style.opacity = '1';
+                        return;
                     }
                     
-                    // Применить переводы к хедеру
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 200);
+                    if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                        // Scrolling down
+                        header.classList.remove('header-hidden');
+                        header.classList.add('header-scrolled');
+                    } else if (currentScrollY < lastScrollY) {
+                        // Scrolling up
+                        header.classList.remove('header-hidden');
+                        header.classList.remove('header-scrolled');
+                    }
                     
-                    console.log('✅ Glass header loaded successfully');
-                })
-                .catch(error => {
-                    console.error('❌ Error loading glass header:', error);
-                    // Fallback header
-                    document.getElementById('header-container').innerHTML = `
-                        <header class="main-header">
-                            <div class="container">
-                                <div class="header-inner">
-                                    <a href="index.html" class="logo">
-                                        <div class="logo-mark">NB</div>
-                                        <span class="logo-text">NBGROUP.TECH</span>
-                                    </a>
-                                    <nav class="main-nav">
-                                        <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
-                                        <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
-                                        <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
-                                        <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
-                                        <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
-                                        <a href="contacts.html" class="nav-link active" data-i18n="nav.contact">Контакты</a>
-                                    </nav>
-                                    <div class="header-actions">
-                                        <div class="language-switcher" data-current-lang="ru">
-                                            <button class="lang-btn" data-lang="ru">RU</button>
-                                            <button class="lang-btn active" data-lang="en">EN</button>
-                                        </div>
-                                        <a href="contacts.html" class="btn btn-small btn-primary" data-i18n="nav.startProject">
-                                            Начать проект
-                                        </a>
-                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mobile-menu-overlay"></div>
-                        </header>
-                    `;
-                    
-                    // Применить переводы к fallback хедеру
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 300);
-                });
+                    lastScrollY = currentScrollY;
+                }, { passive: true });
+            }
         }
-
-        // Load footer component
-        function loadFooter() {
-            fetch('components/footer.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('footer-container').innerHTML = html;
-                    console.log('✅ Footer loaded successfully');
-                    
-                    // Применить переводы к футеру
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 200);
-                })
-                .catch(error => {
-                    console.error('Error loading footer:', error);
-                    document.getElementById('footer-container').innerHTML = `
-                        <footer class="minimal-footer">
-                            <div class="footer-container">
-                                <div class="footer-content">
-                                    <div class="footer-bottom">
-                                        <div class="copyright" data-i18n="footer.copyright">
-                                            © 2024 NBGROUP.TECH Все права защищены.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </footer>
-                    `;
-                });
-        }
-
+        
+        // Обработчик события смены языка
+        window.addEventListener('languageChanged', function(event) {
+            console.log('🌐 Language changed to:', event.detail.lang);
+            
+            // Обновляем переключатель
+            const switcher = document.querySelector('.language-switcher');
+            if (switcher) {
+                switcher.setAttribute('data-current-lang', event.detail.lang);
+            }
+            
+            // Обновляем кнопки
+            const langBtns = document.querySelectorAll('.lang-btn');
+            langBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === event.detail.lang) {
+                    btn.classList.add('active');
+                }
+            });
+        });
+        
         // Инициализация страницы контактов
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Contact page initializing...');
             
-            // Загружаем стеклянный хедер
-            loadGlassHeader();
-            
-            // Загружаем футер
-            loadFooter();
+            // Инициализация хедера
+            initializeHeader();
             
             // Инициализация контактной формы
             setTimeout(() => {
@@ -682,7 +747,7 @@
         window.addEventListener('resize', function() {
             const header = document.querySelector('.main-header');
             if (header && window.innerWidth <= 768) {
-                document.querySelector('.contact-hero').style.paddingTop = '100px';
+                document.querySelector('.contact-hero').style.paddingTop = '120px';
             }
         });
     </script>
