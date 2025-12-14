@@ -1166,3 +1166,148 @@
         opacity: 0.1;
     }
         }
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ ХЕДЕРА ПОРТФОЛИО ===== */
+
+/* Плавные анимации для хедера */
+.main-header {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                opacity 0.4s ease !important;
+}
+
+/* Анимация скрытия/показа хедера */
+@keyframes headerSlideDown {
+    0% {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes headerSlideUp {
+    0% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+    }
+}
+
+.header-slide-down {
+    animation: headerSlideDown 0.4s ease forwards !important;
+}
+
+.header-slide-up {
+    animation: headerSlideUp 0.4s ease forwards !important;
+}
+
+/* Индикатор активной страницы для портфолио */
+.nav-link[href="portfolio.html"].active {
+    position: relative;
+}
+
+.nav-link[href="portfolio.html"].active::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -5px;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: #0066ff;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(0, 102, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 102, 255, 0);
+    }
+}
+
+/* Адаптация отступов для фиксированного хедера */
+.internal-page {
+    padding-top: 0 !important;
+}
+
+/* Мобильная оптимизация для хедера портфолио */
+@media (max-width: 768px) {
+    .portfolio-hero {
+        transition: padding-top 0.3s ease !important;
+    }
+    
+    .main-nav.active {
+        backdrop-filter: blur(25px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+    }
+    
+    /* Улучшение touch-целей для мобильных */
+    .filter-btn {
+        min-height: 44px !important;
+        min-width: 120px !important;
+    }
+    
+    .project-link {
+        min-height: 44px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}
+
+/* Улучшение доступности */
+@media (prefers-reduced-motion: reduce) {
+    .main-header {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .header-slide-down,
+    .header-slide-up {
+        animation: none !important;
+    }
+    
+    .nav-link[href="portfolio.html"].active::before {
+        animation: none !important;
+    }
+}
+
+/* Поддержка темной темы для хедера */
+@media (prefers-color-scheme: dark) {
+    .main-header {
+        background: rgba(0, 102, 255, 0.15) !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .main-header:hover {
+        background: rgba(0, 102, 255, 0.2) !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+}
+
+/* Высокая контрастность */
+@media (prefers-contrast: high) {
+    .main-header {
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        background: rgba(0, 102, 255, 0.2) !important;
+    }
+    
+    .nav-link {
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    .nav-link.active {
+        border: 2px solid white !important;
+    }
+}
