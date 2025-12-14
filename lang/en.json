@@ -6,7 +6,8 @@
     "brandbook": "Brandbook",
     "about": "About",
     "contact": "Contact",
-    "startProject": "Start Project"
+    "startProject": "Start Project",
+    "brand": "NB Group"
   },
   "home": {
     "title": "Innovative Product Development | NBGROUP.TECH",
@@ -412,7 +413,8 @@
     },
     "cases": {
       "title": "Brandbook Cases",
-      "subtitle": "Our recent brand identity projects"
+      "subtitle": "Our recent brand identity projects",
+      "viewCases": "View Cases"
     },
     "benefits": {
       "title": "Why Invest in Brandbook?",
@@ -438,6 +440,17 @@
       "title": "Develop Your Brand Identity",
       "description": "Ready to create a powerful brand system that stands out? Let's discuss your brand vision.",
       "button": "Start Brand Project"
+    },
+    "stats": {
+      "projects": "Projects",
+      "satisfaction": "Client Satisfaction",
+      "support": "Support"
+    },
+    "filter": {
+      "all": "All",
+      "web": "Web Design",
+      "mobile": "Mobile Apps",
+      "corporate": "Corporate"
     }
   },
   "portfolio": {
@@ -678,14 +691,19 @@
       "services": "Services",
       "work": "Our Work",
       "about": "About",
-      "contact": "Contact"
-    },
-    "contact": "Contact",
-    "legal": {
+      "contact": "Contact",
+      "company": "Company",
+      "careers": "Careers",
+      "legal": "Legal",
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",
       "cookies": "Cookie Policy"
     },
+    "contact": {
+      "title": "Contact",
+      "address": "Address"
+    },
+    "language": "Language",
     "copyright": "© 2024 NBGROUP.TECH. All rights reserved."
   },
   "buttons": {
@@ -711,4 +729,4 @@
     "minLength": "Minimum {length} characters required",
     "maxLength": "Maximum {length} characters allowed"
   }
-  }
+    }
