@@ -1,8 +1,8 @@
-// portfolio.js - Full portfolio functionality with COMPATIBLE header
-console.log('🎯 portfolio.js loaded - COMPATIBLE VERSION');
+// portfolio.js - Full portfolio functionality with IDENTICAL header behavior
+console.log('🎯 portfolio.js loaded - IDENTICAL HEADER VERSION');
 
 function initPortfolio() {
-    console.log('🎯 Initializing portfolio page with compatible header...');
+    console.log('🎯 Initializing portfolio page with identical header...');
     
     // Основная функциональность портфолио
     setupPortfolioFilter();
@@ -12,36 +12,43 @@ function initPortfolio() {
     setupHoverEffects();
     setupMobileOptimizations();
     
-    // Проверка хедера
-    checkHeaderCompatibility();
+    // Проверка и корректировка хедера
+    checkAndAdjustHeader();
     
     console.log('✅ Portfolio page fully initialized');
 }
 
-// Проверка совместимости хедера
-function checkHeaderCompatibility() {
+// Проверка и корректировка хедера
+function checkAndAdjustHeader() {
     const header = document.querySelector('.main-header');
     if (!header) {
         console.warn('⚠️ Header not found, checking again...');
-        setTimeout(checkHeaderCompatibility, 500);
+        setTimeout(checkAndAdjustHeader, 500);
         return;
     }
     
-    console.log('✅ Header found, checking compatibility:', {
-        isFixed: header.style.position === 'fixed',
-        hasGlass: window.getComputedStyle(header).backdropFilter !== 'none',
-        height: header.offsetHeight
+    console.log('✅ Header compatibility check:', {
+        height: header.offsetHeight,
+        isHidden: header.classList.contains('header-hidden'),
+        hasHomeBehavior: true
     });
     
-    // Принудительно добавляем необходимые классы
-    if (!document.body.classList.contains('internal-page')) {
-        document.body.classList.add('internal-page');
-    }
-    
-    // Обновляем отступы
+    // Обновляем отступы если функция доступна
     if (typeof window.updatePortfolioHeaderPadding === 'function') {
         window.updatePortfolioHeaderPadding();
     }
+    
+    // Добавляем event listener для обновления отступов при изменении видимости хедера
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'class' && 
+                typeof window.updatePortfolioHeaderPadding === 'function') {
+                setTimeout(window.updatePortfolioHeaderPadding, 50);
+            }
+        });
+    });
+    
+    observer.observe(header, { attributes: true });
 }
 
 // Фильтрация проектов
@@ -112,8 +119,11 @@ function setupPortfolioFilter() {
                 setTimeout(() => {
                     const firstVisible = document.querySelector('.portfolio-item:not(.hidden)');
                     if (firstVisible) {
-                        const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
-                        const targetPosition = firstVisible.offsetTop - headerHeight - 50;
+                        const header = document.querySelector('.main-header');
+                        const headerHeight = header ? header.offsetHeight : 0;
+                        const isHeaderHidden = header ? header.classList.contains('header-hidden') : false;
+                        const baseOffset = isHeaderHidden ? 50 : headerHeight + 50;
+                        const targetPosition = firstVisible.offsetTop - baseOffset;
                         
                         window.scrollTo({
                             top: targetPosition,
@@ -371,6 +381,17 @@ function setupMobileOptimizations() {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.documentElement.classList.add('reduced-animations');
         }
+        
+        // Adjust header behavior for mobile
+        const header = document.querySelector('.main-header');
+        if (header) {
+            header.addEventListener('touchstart', function() {
+                if (this.classList.contains('header-hidden')) {
+                    this.classList.remove('header-hidden');
+                    this.style.opacity = '1';
+                }
+            });
+        }
     }
 }
 
@@ -379,6 +400,7 @@ let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
+        console.log('🔄 Window resized, re-initializing portfolio...');
         if (typeof initPortfolio === 'function') {
             initPortfolio();
         }
