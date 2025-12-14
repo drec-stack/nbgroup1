@@ -1,90 +1,37 @@
-console.log('🎯 portfolio.js loaded - CALYANS & PACKAGING PORTFOLIO');
+// portfolio.js - Full portfolio functionality with header integration
+console.log('🎯 portfolio.js loaded - FULL VERSION');
 
 function initPortfolio() {
-    console.log('🎯 Initializing portfolio page with new categories...');
+    console.log('🎯 Initializing portfolio page...');
     
-    setupPortfolioHeaderBehavior(); // ← ОБНОВЛЕНА
+    // Если хедер еще не инициализирован, инициализируем его
+    if (typeof initPortfolioHeader === 'function') {
+        initPortfolioHeader();
+    }
+    
+    // Основная функциональность портфолио
     setupPortfolioFilter();
     setupProjectInteractions();
     setupTestimonialCarousel();
-    setupMobileOptimizations();
     setupScrollAnimations();
     setupHoverEffects();
+    setupMobileOptimizations();
     
-    console.log('✅ Portfolio page initialized with new hookah/accessories/packaging projects');
+    console.log('✅ Portfolio page fully initialized');
 }
 
-// UPDATED FUNCTION: Header behavior matching home page
-function setupPortfolioHeaderBehavior() {
-    const header = document.querySelector('.main-header');
-    if (!header) {
-        console.log('⚠️ Header not found, retrying...');
-        setTimeout(setupPortfolioHeaderBehavior, 100);
-        return;
-    }
-    
-    console.log('🏗️ Setting up portfolio header behavior (MATCHING HOME PAGE)');
-    
-    // Используем ту же логику, что и на главной странице
-    let lastScrollY = window.scrollY;
-    const scrollThreshold = 100;
-    
-    function handleScroll() {
-        const currentScrollY = window.scrollY;
-        
-        // В самом верху страницы - всегда показываем
-        if (currentScrollY <= 50) {
-            header.style.opacity = '1';
-            header.style.transform = 'translateY(0)';
-            header.classList.remove('header-hidden');
-            return;
-        }
-        
-        // Плавное изменение прозрачности (как на главной)
-        if (currentScrollY <= 150) {
-            const opacity = 1 - (currentScrollY - 50) / 100;
-            header.style.opacity = opacity.toString();
-            header.classList.remove('header-hidden');
-        } else {
-            // Полностью скрываем при глубоком скролле
-            header.style.opacity = '0';
-            header.classList.add('header-hidden');
-        }
-        
-        lastScrollY = currentScrollY;
-    }
-    
-    // Начальное состояние
-    handleScroll();
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    // Показывать хедер при наведении (как на главной)
-    header.addEventListener('mouseenter', () => {
-        header.style.opacity = '1';
-        header.classList.remove('header-hidden');
-    });
-    
-    // Через 2 секунды снова скрыть, если пользователь не взаимодействует
-    header.addEventListener('mouseleave', () => {
-        if (window.scrollY > 150) {
-            setTimeout(() => {
-                if (!header.matches(':hover')) {
-                    header.style.opacity = '0';
-                    header.classList.add('header-hidden');
-                }
-            }, 2000);
-        }
-    });
-    
-    console.log('✅ Portfolio header behavior setup complete (MATCHING HOME)');
-}
-
-// UPDATED FILTER FOR NEW CATEGORIES
+// Фильтрация проектов
 function setupPortfolioFilter() {
     const filterBtns = document.querySelectorAll('.filter-btn');
     const portfolioItems = document.querySelectorAll('.portfolio-item');
     const isMobile = window.innerWidth <= 768;
+    
+    if (filterBtns.length === 0) {
+        console.log('⚠️ Filter buttons not found');
+        return;
+    }
+    
+    console.log(`🎯 Setting up portfolio filter with ${filterBtns.length} buttons`);
     
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -102,13 +49,16 @@ function setupPortfolioFilter() {
             }, 300);
             
             const filter = this.getAttribute('data-filter');
+            console.log(`🔍 Filtering by: ${filter}`);
             
             // Animate filter items
+            let visibleCount = 0;
             portfolioItems.forEach((item, index) => {
                 const itemCategory = item.getAttribute('data-category');
                 const shouldShow = filter === 'all' || itemCategory === filter;
                 
                 if (shouldShow) {
+                    visibleCount++;
                     // Show animation
                     item.classList.remove('hidden');
                     item.style.display = 'block';
@@ -131,6 +81,8 @@ function setupPortfolioFilter() {
                 }
             });
             
+            console.log(`👁️ Showing ${visibleCount} projects for filter: ${filter}`);
+            
             // Scroll to first visible item on mobile
             if (isMobile && filter !== 'all') {
                 setTimeout(() => {
@@ -150,7 +102,7 @@ function setupPortfolioFilter() {
             // Update URL hash for bookmarking
             history.pushState(null, null, `#${filter}`);
             
-            // Send analytics event
+            // Analytics event
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'portfolio_filter', {
                     'event_category': 'engagement',
@@ -170,10 +122,12 @@ function setupPortfolioFilter() {
     }
 }
 
-// ENHANCED PROJECT INTERACTIONS FOR HOOKAH PRODUCTS
+// Взаимодействия с проектами
 function setupProjectInteractions() {
     const projectCards = document.querySelectorAll('.project-card');
     const isMobile = window.innerWidth <= 768;
+    
+    console.log(`🎴 Setting up interactions for ${projectCards.length} project cards`);
     
     projectCards.forEach(card => {
         // Enhanced hover effects for desktop
@@ -193,12 +147,6 @@ function setupProjectInteractions() {
                 if (badge) {
                     badge.style.transform = 'translateY(0) scale(1.05)';
                 }
-                
-                // Animate category
-                const category = card.querySelector('.project-category');
-                if (category) {
-                    category.style.transform = 'translateY(-2px)';
-                }
             });
             
             card.addEventListener('mouseleave', () => {
@@ -214,15 +162,10 @@ function setupProjectInteractions() {
                 if (badge) {
                     badge.style.transform = 'translateY(0)';
                 }
-                
-                const category = card.querySelector('.project-category');
-                if (category) {
-                    category.style.transform = 'translateY(0)';
-                }
             });
         }
         
-        // Click handling for all devices
+        // Click handling for case study links
         const caseStudyLink = card.querySelector('.project-link');
         if (caseStudyLink) {
             caseStudyLink.addEventListener('click', (e) => {
@@ -237,14 +180,17 @@ function setupProjectInteractions() {
                     caseStudyLink.style.transform = 'translateX(0) scale(1)';
                 }, 300);
                 
-                // Get project title for analytics
-                const projectTitle = card.querySelector('.project-title').textContent;
-                console.log(`Opening case study: ${projectTitle}`);
+                // Get project title
+                const projectTitle = card.querySelector('.project-title')?.textContent || 'Project';
+                console.log(`📖 Opening case study: ${projectTitle}`);
                 
                 // Show notification on mobile
                 if (isMobile) {
                     showMobileNotification(`Загружаем кейс: ${projectTitle}`);
                 }
+                
+                // In a real project, you would navigate to the case study page
+                // window.location.href = `case-study.html?project=${encodeURIComponent(projectTitle)}`;
             });
         }
         
@@ -263,7 +209,7 @@ function setupProjectInteractions() {
     });
 }
 
-// RIPPLE EFFECT FUNCTION
+// Ripple effect
 function createRippleEffect(element, event) {
     const ripple = document.createElement('span');
     const rect = element.getBoundingClientRect();
@@ -296,12 +242,14 @@ function createRippleEffect(element, event) {
     }, 600);
 }
 
-// TESTIMONIAL CAROUSEL WITH AUTO-ROTATION
+// Testimonial carousel
 function setupTestimonialCarousel() {
     const testimonialCards = document.querySelectorAll('.testimonial-card');
     const isMobile = window.innerWidth <= 768;
     
     if (testimonialCards.length > 1) {
+        console.log(`💬 Setting up testimonial carousel with ${testimonialCards.length} cards`);
+        
         let currentTestimonial = 0;
         let carouselInterval;
         
@@ -363,7 +311,7 @@ function setupTestimonialCarousel() {
     }
 }
 
-// SWIPE FOR MOBILE TESTIMONIALS
+// Swipe for mobile testimonials
 function setupTestimonialSwipe(testimonialCards, carouselInterval) {
     let touchStartX = 0;
     let touchEndX = 0;
@@ -410,11 +358,13 @@ function setupTestimonialSwipe(testimonialCards, carouselInterval) {
     }
 }
 
-// SCROLL ANIMATIONS
+// Scroll animations
 function setupScrollAnimations() {
     const animatedElements = document.querySelectorAll('.portfolio-item, .highlight-card, .testimonial-card');
     
     if (animatedElements.length > 0 && 'IntersectionObserver' in window) {
+        console.log(`🎬 Setting up scroll animations for ${animatedElements.length} elements`);
+        
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -443,7 +393,7 @@ function setupScrollAnimations() {
     }
 }
 
-// HOVER EFFECTS FOR DESKTOP
+// Hover effects for desktop
 function setupHoverEffects() {
     if (window.innerWidth <= 768) return;
     
@@ -478,11 +428,13 @@ function setupHoverEffects() {
     });
 }
 
-// MOBILE OPTIMIZATIONS
+// Mobile optimizations
 function setupMobileOptimizations() {
     const isMobile = window.innerWidth <= 768;
     
     if (isMobile) {
+        console.log('📱 Setting up mobile optimizations');
+        
         // Optimize touch interactions
         const filterBtns = document.querySelectorAll('.filter-btn');
         filterBtns.forEach(btn => {
@@ -524,7 +476,7 @@ function setupMobileOptimizations() {
     }
 }
 
-// MOBILE NOTIFICATION FUNCTION
+// Mobile notification
 function showMobileNotification(message) {
     // Create notification element
     const notification = document.createElement('div');
@@ -563,7 +515,7 @@ function showMobileNotification(message) {
     }, 3000);
 }
 
-// RESIZE HANDLER
+// Resize handler
 let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
@@ -574,26 +526,10 @@ window.addEventListener('resize', () => {
     }, 250);
 });
 
-// INITIALIZATION
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        initPortfolio();
-    }, 100);
-});
-
-if (document.readyState === 'interactive' || document.readyState === 'complete') {
-    setTimeout(() => {
-        if (typeof initPortfolio === 'function') initPortfolio();
-    }, 200);
-}
-
-// Export function
-window.initPortfolio = initPortfolio;
-
-// Add CSS for ripple animation if not already present
-if (!document.querySelector('#ripple-styles')) {
+// CSS for ripple animation
+if (!document.querySelector('#portfolio-ripple-styles')) {
     const style = document.createElement('style');
-    style.id = 'ripple-styles';
+    style.id = 'portfolio-ripple-styles';
     style.textContent = `
         @keyframes ripple-animation {
             0% {
@@ -611,6 +547,28 @@ if (!document.querySelector('#ripple-styles')) {
             animation-iteration-count: 1 !important;
             transition-duration: 0.01ms !important;
         }
+        
+        /* Smooth header animations */
+        .main-header {
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                       opacity 0.4s ease !important;
+        }
     `;
     document.head.appendChild(style);
-        }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            if (typeof initPortfolio === 'function') initPortfolio();
+        }, 100);
+    });
+} else {
+    setTimeout(() => {
+        if (typeof initPortfolio === 'function') initPortfolio();
+    }, 100);
+}
+
+// Export function
+window.initPortfolio = initPortfolio;
