@@ -1,35 +1,161 @@
-// contacts.js - Инициализация страницы контактов с хедером
-console.log('🚀 Contact page with header initialized');
+// contacts.js - Инициализация страницы контактов с стеклянным хедером
 
-// Инициализация страницы контактов
+console.log('🚀 Contact page with glass header initialized');
+
+// Основная функция инициализации страницы
 function initContact() {
-    console.log('🎯 Initializing contact page with header...');
+    console.log('🎯 Initializing contact page with glass header...');
     
+    setupHeaderFunctionality();
     setupContactForm();
     setupContactInteractions();
     setupMapInteraction();
     setupFAQAccordion();
     setupContactCards();
-    setupHeaderPadding();
+    setupHeaderScroll();
     
     console.log('✅ Contact page initialized successfully');
 }
 
-// Настройка отступов для хедера
-function setupHeaderPadding() {
-    const header = document.querySelector('.main-header');
-    const contactHero = document.querySelector('.contact-hero');
+// Настройка функционала хедера
+function setupHeaderFunctionality() {
+    // Мобильное меню
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const nav = document.querySelector('.main-nav');
+    const overlay = document.querySelector('.mobile-menu-overlay');
     
-    if (header && contactHero) {
-        const updatePadding = () => {
-            const headerHeight = header.offsetHeight;
-            contactHero.style.paddingTop = (headerHeight + 100) + 'px';
+    if (toggle && nav) {
+        const toggleMenu = () => {
+            const isActive = nav.classList.contains('active');
+            toggle.classList.toggle('active');
+            nav.classList.toggle('active');
+            if (overlay) overlay.classList.toggle('active');
+            document.body.style.overflow = isActive ? '' : 'hidden';
         };
-        
-        updatePadding();
-        window.addEventListener('resize', updatePadding);
-        window.addEventListener('load', updatePadding);
+
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        if (overlay) {
+            overlay.addEventListener('click', toggleMenu);
+        }
+
+        // Закрытие меню при клике на ссылки
+        const navLinks = nav.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && nav.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Закрытие при ресайзе (десктоп)
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && nav.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
     }
+
+    // Переключатель языка
+    const langSwitcher = document.querySelector('.language-switcher');
+    const langButtons = document.querySelectorAll('.lang-btn');
+    
+    if (langSwitcher && langButtons.length) {
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const newLang = this.getAttribute('data-lang');
+                const currentLang = langSwitcher.getAttribute('data-current-lang');
+                
+                if (newLang !== currentLang) {
+                    // Обновление UI
+                    langButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    langSwitcher.setAttribute('data-current-lang', newLang);
+                    
+                    // Событие смены языка
+                    window.dispatchEvent(new CustomEvent('languageChanged', {
+                        detail: { lang: newLang }
+                    }));
+                    
+                    // Если доступен i18n
+                    if (window.i18n && window.i18n.setLang) {
+                        window.i18n.setLang(newLang);
+                    }
+                    
+                    console.log(`🌐 Language switched to: ${newLang}`);
+                }
+            });
+        });
+        
+        // Синхронизация с i18n если доступен
+        if (window.i18n && window.i18n.getCurrentLang) {
+            const currentLang = window.i18n.getCurrentLang();
+            langSwitcher.setAttribute('data-current-lang', currentLang);
+            langButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
+            });
+        }
+    }
+
+    // Установка активной навигационной ссылки
+    setActiveNavLink();
+}
+
+// Установка активной ссылки в навигации
+function setActiveNavLink() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === currentPage || 
+            (currentPage === '' && href === 'index.html') ||
+            (currentPage === 'index.html' && href === 'index.html')) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+// Эффект скролла для хедера
+function setupHeaderScroll() {
+    const header = document.querySelector('.main-header');
+    if (!header) return;
+    
+    let lastScrollY = window.scrollY;
+    const scrollThreshold = 100;
+    
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY <= 0) {
+            header.classList.remove('header-hidden', 'header-scrolled');
+            header.style.opacity = '1';
+            return;
+        }
+        
+        if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+            // Скролл вниз
+            header.classList.remove('header-hidden');
+            header.classList.add('header-scrolled');
+        } else if (currentScrollY < lastScrollY) {
+            // Скролл вверх
+            header.classList.remove('header-hidden');
+            header.classList.remove('header-scrolled');
+        }
+        
+        lastScrollY = currentScrollY;
+    }, { passive: true });
 }
 
 // Настройка контактной формы
@@ -52,26 +178,13 @@ function setupContactForm() {
             const originalText = submitBtn.innerHTML;
             
             // Показ состояния загрузки
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + 
-                (window.i18n ? window.i18n.t('contact.form.sending') : 'Sending...');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
             submitBtn.disabled = true;
             
             // Симуляция отправки
             setTimeout(() => {
                 // Уведомление об успехе
-                if (window.NBApp && window.NBApp.showNotification) {
-                    window.NBApp.showNotification(
-                        window.i18n ? window.i18n.t('contact.form.success') : 
-                        'Message sent successfully! We\'ll get back to you within 24 hours.', 
-                        'success'
-                    );
-                } else {
-                    showNotification(
-                        window.i18n ? window.i18n.t('contact.form.success') : 
-                        'Message sent successfully! We\'ll get back to you within 24 hours.',
-                        'success'
-                    );
-                }
+                showNotification('Сообщение успешно отправлено! Мы свяжемся с вами в течение 24 часов.', 'success');
                 
                 // Сброс формы
                 this.reset();
@@ -85,36 +198,17 @@ function setupContactForm() {
                 celebrateSubmission();
             }, 2000);
         });
-    }
-    
-    // Улучшенная валидация в реальном времени
-    const formInputs = contactForm?.querySelectorAll('input, select, textarea');
-    if (formInputs) {
+        
+        // Валидация в реальном времени
+        const formInputs = contactForm.querySelectorAll('input, select, textarea');
         formInputs.forEach(input => {
-            // Оптимизация для мобильных
-            if (isMobile) {
-                input.addEventListener('focus', () => {
-                    input.parentElement.classList.add('focused');
-                    // Прокрутка к полю ввода на мобильных
-                    setTimeout(() => {
-                        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
-                });
-            } else {
-                input.addEventListener('focus', () => {
-                    input.parentElement.classList.add('focused');
-                });
-            }
-            
             input.addEventListener('blur', () => {
-                if (!input.value) {
-                    input.parentElement.classList.remove('focused');
-                }
                 validateField(input);
             });
             
             input.addEventListener('input', () => {
                 validateField(input);
+                clearFieldError(input);
             });
         });
     }
@@ -128,6 +222,7 @@ function validateForm(form) {
     requiredFields.forEach(field => {
         if (!validateField(field)) {
             isValid = false;
+            showFieldError(field);
         }
     });
     
@@ -138,6 +233,7 @@ function validateField(field) {
     const value = field.value.trim();
     const formGroup = field.parentElement;
     
+    // Сначала очищаем предыдущие состояния
     formGroup.classList.remove('valid', 'invalid');
     
     if (field.hasAttribute('required') && !value) {
@@ -149,10 +245,7 @@ function validateField(field) {
     
     if (field.type === 'email') {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (emailRegex.test(value)) {
-            formGroup.classList.add('valid');
-            return true;
-        } else {
+        if (!emailRegex.test(value)) {
             formGroup.classList.add('invalid');
             return false;
         }
@@ -160,31 +253,44 @@ function validateField(field) {
     
     if (field.type === 'tel') {
         const phoneRegex = /^[\+]?[0-9\s\-\(\)]+$/;
-        if (phoneRegex.test(value) && value.replace(/\D/g, '').length >= 10) {
-            formGroup.classList.add('valid');
-            return true;
-        } else {
+        if (!phoneRegex.test(value) || value.replace(/\D/g, '').length < 10) {
             formGroup.classList.add('invalid');
             return false;
         }
     }
     
-    if (field.hasAttribute('required') && value) {
-        formGroup.classList.add('valid');
-        return true;
-    }
-    
+    // Если все проверки пройдены
+    formGroup.classList.add('valid');
     return true;
+}
+
+function showFieldError(field) {
+    const formGroup = field.parentElement;
+    formGroup.classList.add('invalid');
+    
+    // Анимация ошибки
+    formGroup.style.animation = 'none';
+    setTimeout(() => {
+        formGroup.style.animation = 'shake 0.5s ease';
+    }, 10);
+}
+
+function clearFieldError(field) {
+    const formGroup = field.parentElement;
+    if (field.value.trim()) {
+        formGroup.classList.remove('invalid');
+    }
 }
 
 function resetFormValidation(form) {
     const formGroups = form.querySelectorAll('.form-group');
     formGroups.forEach(group => {
-        group.classList.remove('valid', 'invalid', 'focused');
+        group.classList.remove('valid', 'invalid');
+        group.style.animation = '';
     });
 }
 
-// Анимация ошибки для мобильных
+// Анимация ошибки формы
 function shakeForm(form) {
     form.style.transform = 'translateX(10px)';
     setTimeout(() => {
@@ -201,34 +307,17 @@ function setupContactCards() {
     const isMobile = window.innerWidth <= 768;
     
     contactCards.forEach(card => {
-        if (!isMobile) {
-            card.addEventListener('mouseenter', () => {
-                const icon = card.querySelector('.card-icon');
-                if (icon) {
-                    icon.style.transform = 'scale(1.1) rotate(5deg)';
-                }
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                const icon = card.querySelector('.card-icon');
-                if (icon) {
-                    icon.style.transform = 'scale(1) rotate(0)';
-                }
-            });
-        }
-        
         // Клик для мобильных
         if (isMobile) {
-            card.addEventListener('click', function() {
-                const link = this.querySelector('.card-link');
-                if (link && (link.getAttribute('href').startsWith('tel:') || 
-                             link.getAttribute('href').startsWith('mailto:'))) {
+            card.addEventListener('click', function(e) {
+                // Не применяем к кликам по ссылкам
+                if (e.target.tagName === 'A' || e.target.closest('a')) {
                     return;
                 }
                 
                 this.style.transform = 'scale(0.98)';
                 setTimeout(() => {
-                    this.style.transform = 'scale(1)';
+                    this.style.transform = '';
                 }, 150);
             });
         }
@@ -240,51 +329,29 @@ function setupContactInteractions() {
     const socialCards = document.querySelectorAll('.social-card');
     const isMobile = window.innerWidth <= 768;
     
-    socialCards.forEach(card => {
-        if (!isMobile) {
-            card.addEventListener('mouseenter', () => {
-                const icon = card.querySelector('.social-icon');
-                const arrow = card.querySelector('.social-arrow');
-                
-                if (icon) icon.style.transform = 'scale(1.1) rotate(5deg)';
-                if (arrow) arrow.style.transform = 'translateX(5px)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                const icon = card.querySelector('.social-icon');
-                const arrow = card.querySelector('.social-arrow');
-                
-                if (icon) icon.style.transform = 'scale(1) rotate(0)';
-                if (arrow) arrow.style.transform = 'translateX(0)';
-            });
-        }
-        
-        // Touch feedback для мобильных
-        if (isMobile) {
+    // Touch feedback для мобильных
+    if (isMobile) {
+        socialCards.forEach(card => {
             card.addEventListener('touchstart', function() {
                 this.style.transform = 'scale(0.98)';
             });
             
             card.addEventListener('touchend', function() {
-                this.style.transform = 'scale(1)';
+                this.style.transform = '';
             });
-        }
-    });
+        });
+    }
 }
 
 // Настройка карты
 function setupMapInteraction() {
     const mapBtn = document.getElementById('openMapBtn');
     const copyBtn = document.getElementById('copyAddressBtn');
-    const isMobile = window.innerWidth <= 768;
     
     if (mapBtn) {
         mapBtn.addEventListener('click', () => {
-            if (isMobile) {
-                window.open('https://maps.google.com/?q=Moscow+City+Tower+45+Presnenskaya+Naberezhnaya+123+Moscow+Russia+123112', '_blank');
-            } else {
-                window.open('https://www.google.com/maps/place/Moscow+City', '_blank');
-            }
+            const address = 'Moscow City, Tower 45, Presnenskaya Naberezhnaya, 123, Moscow, Russia 123112';
+            window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`, '_blank');
         });
     }
     
@@ -294,10 +361,7 @@ function setupMapInteraction() {
             
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(address).then(() => {
-                    showNotification(
-                        window.i18n ? window.i18n.t('contact.map.copied') : 'Address copied to clipboard!',
-                        'success'
-                    );
+                    showNotification('Адрес скопирован в буфер обмена!', 'success');
                 });
             } else {
                 // Fallback для старых браузеров
@@ -308,10 +372,7 @@ function setupMapInteraction() {
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 
-                showNotification(
-                    window.i18n ? window.i18n.t('contact.map.copied') : 'Address copied to clipboard!',
-                    'success'
-                );
+                showNotification('Адрес скопирован в буфер обмена!', 'success');
             }
         });
     }
@@ -320,7 +381,6 @@ function setupMapInteraction() {
 // Настройка FAQ аккордеона
 function setupFAQAccordion() {
     const faqItems = document.querySelectorAll('.faq-item');
-    const isMobile = window.innerWidth <= 768;
     
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
@@ -329,28 +389,29 @@ function setupFAQAccordion() {
             question.addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
                 
-                // Закрываем все items
+                // Закрываем все остальные
                 faqItems.forEach(faq => {
-                    faq.classList.remove('active');
-                    const answer = faq.querySelector('.faq-answer');
-                    if (answer) {
-                        answer.style.maxHeight = '0';
+                    if (faq !== item) {
+                        faq.classList.remove('active');
+                        const answer = faq.querySelector('.faq-answer');
+                        if (answer) {
+                            answer.style.maxHeight = '0';
+                        }
                     }
                 });
                 
-                // Открываем clicked item если не активен
+                // Открываем/закрываем текущий
                 if (!isActive) {
                     item.classList.add('active');
                     const answer = item.querySelector('.faq-answer');
                     if (answer) {
                         answer.style.maxHeight = answer.scrollHeight + 'px';
-                        
-                        // На мобильных скроллим к открытому вопросу
-                        if (isMobile) {
-                            setTimeout(() => {
-                                item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                            }, 300);
-                        }
+                    }
+                } else {
+                    item.classList.remove('active');
+                    const answer = item.querySelector('.faq-answer');
+                    if (answer) {
+                        answer.style.maxHeight = '0';
                     }
                 }
             });
@@ -362,24 +423,27 @@ function setupFAQAccordion() {
 function celebrateSubmission() {
     const form = document.getElementById('contactForm');
     if (form) {
-        form.style.transform = 'scale(0.98)';
+        // Анимация пульсации
+        form.style.animation = 'pulse 0.5s ease';
         setTimeout(() => {
-            form.style.transform = 'scale(1)';
-        }, 150);
+            form.style.animation = '';
+        }, 500);
     }
 }
 
 // Функция показа уведомлений
 function showNotification(message, type = 'info') {
+    // Создаем элемент уведомления
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.innerHTML = `
         <div class="notification-content">
-            <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
             <span>${message}</span>
         </div>
     `;
     
+    // Стили для уведомления
     notification.style.cssText = `
         position: fixed;
         top: 120px;
@@ -403,10 +467,12 @@ function showNotification(message, type = 'info') {
     
     document.body.appendChild(notification);
     
+    // Анимация появления
     setTimeout(() => {
         notification.style.transform = 'translateX(0)';
     }, 100);
     
+    // Автоматическое скрытие через 5 секунд
     setTimeout(() => {
         notification.style.transform = 'translateX(400px)';
         setTimeout(() => {
@@ -415,35 +481,50 @@ function showNotification(message, type = 'info') {
             }
         }, 400);
     }, 5000);
-}
-
-// Мобильные оптимизации
-function setupMobileOptimizations() {
-    const isMobile = window.innerWidth <= 768;
     
-    if (isMobile) {
-        // Оптимизация ввода для мобильных
-        const inputs = document.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                document.documentElement.style.scrollPaddingBottom = '300px';
-            });
-            
-            input.addEventListener('blur', function() {
-                document.documentElement.style.scrollPaddingBottom = '0';
-            });
-        });
-        
-        // Предотвращение zoom при фокусе
-        document.addEventListener('touchstart', function() {}, { passive: true });
+    // Добавляем CSS анимацию shake если её нет
+    if (!document.querySelector('#shake-animation')) {
+        const style = document.createElement('style');
+        style.id = 'shake-animation';
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(0.98); }
+            }
+        `;
+        document.head.appendChild(style);
     }
 }
+
+// Обработчик события смены языка
+window.addEventListener('languageChanged', function(event) {
+    console.log('🌐 Language changed to:', event.detail.lang);
+    
+    // Обновляем переключатель языка
+    const switcher = document.querySelector('.language-switcher');
+    if (switcher) {
+        switcher.setAttribute('data-current-lang', event.detail.lang);
+    }
+    
+    // Обновляем кнопки
+    const langBtns = document.querySelectorAll('.lang-btn');
+    langBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-lang') === event.detail.lang) {
+            btn.classList.add('active');
+        }
+    });
+});
 
 // Инициализация при загрузке DOM
 document.addEventListener('DOMContentLoaded', () => {
     console.log('📄 Contact page DOM loaded');
     
-    // Даем время на загрузку хедера
     setTimeout(() => {
         if (typeof initContact === 'function') {
             initContact();
