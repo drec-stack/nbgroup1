@@ -15,38 +15,39 @@ class I18n {
         // Fallback translations
         this.fallbackTranslations = {
             "nav": {
-                "home": "Home",
-                "services": "Services",
-                "portfolio": "Work",
-                "about": "About",
-                "contact": "Contact",
-                "brandbook": "Brandbook",
-                "startProject": "Start Project"
+                "home": "Главная",
+                "services": "Услуги",
+                "portfolio": "Портфолио",
+                "about": "О нас",
+                "contact": "Контакты",
+                "brandbook": "Брендбук",
+                "startProject": "Начать проект",
+                "brand": "NB Group"
             },
             "home": {
-                "title": "Innovative Product Development",
-                "subtitle": "From concept to production",
+                "title": "NBGROUP.TECH | Industrial Design & Manufacturing",
+                "subtitle": "Промышленная дизайн-студия полного цикла",
                 "hero": {
                     "titleLine1": "NB GROUP TECH",
-                    "titleLine2": "products that",
-                    "titleLine3": "define markets",
-                    "description": "Full-cycle industrial design studio. We create products that combine aesthetics, engineering precision, and manufacturable implementation.",
-                    "ourServices": "Our Services",
-                    "viewWork": "View Work"
+                    "titleLine2": "продукты, которые",
+                    "titleLine3": "определяют рынки",
+                    "description": "Промышленная дизайн-студия полного цикла. Создаём продукты, которые сочетают эстетику, инженерную точность и производимую реализацию. Работаем системно: дизайн → инженерия → прототип → производство → упаковка → бренд-система. Наш подход основан на прозрачности, точности и ответственности за результат.",
+                    "ourServices": "Наши Услуги",
+                    "viewWork": "Смотреть Работы"
                 },
                 "clients": {
-                    "label": "Trusted by industry leaders"
+                    "label": "ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ"
                 },
                 "stats": {
-                    "projects": "Projects Delivered",
-                    "years": "Years Experience",
-                    "satisfaction": "Client Satisfaction",
-                    "awards": "Design Awards"
+                    "projects": "Проектов завершено",
+                    "years": "Лет опыта",
+                    "satisfaction": "Довольных клиентов",
+                    "awards": "Наград"
                 },
                 "cta": {
-                    "title": "Ready to start your project?",
-                    "description": "Let's discuss how we can bring your product vision to life",
-                    "button": "Get in Touch"
+                    "title": "Готовы начать проект?",
+                    "description": "Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь",
+                    "button": "Связаться с нами"
                 }
             }
         };
@@ -155,6 +156,7 @@ class I18n {
 
     applyTranslations() {
         if (!this.translations || Object.keys(this.translations).length === 0) {
+            console.log('⚠️ No translations, using fallback');
             this.translations = this.fallbackTranslations;
         }
 
@@ -168,6 +170,8 @@ class I18n {
             if (translation) {
                 this.updateElement(element, translation);
                 translatedCount++;
+            } else {
+                console.warn(`❌ No translation found for key: ${key}`);
             }
         });
 
@@ -178,7 +182,10 @@ class I18n {
     }
 
     getTranslation(key) {
-        if (!key || !this.translations) return null;
+        if (!key || !this.translations) {
+            console.log(`⚠️ Missing key or translations: ${key}`);
+            return null;
+        }
         
         const keys = key.split('.');
         let result = this.translations;
@@ -187,6 +194,7 @@ class I18n {
             if (result && typeof result === 'object' && k in result) {
                 result = result[k];
             } else {
+                console.log(`⚠️ Translation path not found: ${key} (failed at: ${k})`);
                 return null;
             }
         }
@@ -200,13 +208,35 @@ class I18n {
         if (tag === 'input' || tag === 'textarea') {
             if (element.type !== 'submit' && element.type !== 'button') {
                 element.placeholder = translation;
+            } else {
+                element.value = translation;
             }
         } else if (tag === 'img') {
             element.alt = translation;
         } else if (tag === 'title') {
             element.textContent = translation;
         } else {
-            element.textContent = translation;
+            // Сохраняем HTML внутри элементов
+            const hasHTML = element.innerHTML && element.innerHTML.includes('<');
+            if (hasHTML) {
+                // Находим первый текстовый узел и заменяем его
+                const childNodes = Array.from(element.childNodes);
+                let found = false;
+                
+                for (const node of childNodes) {
+                    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                        node.textContent = translation;
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if (!found) {
+                    element.innerHTML = translation;
+                }
+            } else {
+                element.textContent = translation;
+            }
         }
     }
 
@@ -217,6 +247,7 @@ class I18n {
             const titleTranslation = this.getTranslation(titleKey);
             if (titleTranslation) {
                 document.title = titleTranslation;
+                titleElement.textContent = titleTranslation;
             }
         }
     }
@@ -249,16 +280,41 @@ class I18n {
     }
 
     updateLanguageSwitcherUI() {
+        console.log('🔄 Updating language switcher UI...');
+        
         document.querySelectorAll('.lang-btn').forEach(btn => {
             const btnLang = btn.getAttribute('data-lang');
-            btn.classList.toggle('active', btnLang === this.currentLang);
+            const isActive = btnLang === this.currentLang;
             
-            // Также обновляем родительский switcher
+            btn.classList.toggle('active', isActive);
+            
+            // Обновляем текст и иконку
+            const langText = btn.querySelector('.lang-text');
+            const langFlag = btn.querySelector('.lang-flag');
+            
+            if (langText) {
+                langText.textContent = btnLang.toUpperCase();
+            }
+            
+            if (langFlag) {
+                langFlag.textContent = btnLang === 'ru' ? '🇷🇺' : '🇺🇸';
+            }
+            
+            // Обновляем родительский switcher
             const switcher = btn.closest('.language-switcher');
             if (switcher) {
                 switcher.setAttribute('data-current-lang', this.currentLang);
+                
+                // Анимируем ползунок
+                const slider = switcher.querySelector('.lang-slider');
+                if (slider) {
+                    slider.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    slider.style.transform = this.currentLang === 'en' ? 'translateX(100%)' : 'translateX(0)';
+                }
             }
         });
+        
+        console.log('✅ Language switcher UI updated');
         
         // Отправляем событие для синхронизации всех компонентов
         window.dispatchEvent(new CustomEvent('languageSwitcherUpdated', {
@@ -291,7 +347,10 @@ class I18n {
     }
 
     async switchLanguage(lang) {
-        if (this.isSwitching || lang === this.currentLang) return;
+        if (this.isSwitching || lang === this.currentLang) {
+            console.log(`⚠️ Language switch skipped: ${lang} (already ${this.currentLang})`);
+            return;
+        }
         
         this.isSwitching = true;
         console.log(`🎬 Switching language to: ${lang}`);
@@ -304,18 +363,26 @@ class I18n {
             await this.loadTranslations(lang);
             this.currentLang = lang;
             
-            // Update UI
+            // Update UI immediately
             this.updateLanguageSwitcherUI();
             
-            // Apply translations
+            // Apply translations with animation
             this.applyTranslations();
+            
+            // Анимация смены языка
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                el.style.animation = 'fadeInLanguage 0.5s ease';
+            });
             
             console.log(`✅ Language switched to: ${lang}`);
             
             // Remove loading state
             setTimeout(() => {
                 document.body.classList.remove('language-changing');
-            }, 300);
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    el.style.animation = '';
+                });
+            }, 500);
             
             // Notify
             window.dispatchEvent(new CustomEvent('languageChanged', {
@@ -330,6 +397,24 @@ class I18n {
         }
     }
 
+    // Плавная смена языка (публичный метод)
+    smoothSwitchLanguage(lang) {
+        if (lang === this.currentLang) return;
+        
+        console.log(`🎭 Smooth switching to: ${lang}`);
+        
+        // Предварительная анимация
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            el.style.opacity = '0.7';
+            el.style.transition = 'opacity 0.3s ease';
+        });
+        
+        // Смена языка с задержкой
+        setTimeout(() => {
+            this.switchLanguage(lang);
+        }, 300);
+    }
+
     // Public API
     getCurrentLang() {
         return this.currentLang;
@@ -337,7 +422,9 @@ class I18n {
 
     refresh() {
         console.log('🔄 Refreshing translations...');
-        return this.applyTranslations();
+        const count = this.applyTranslations();
+        this.updateLanguageSwitcherUI();
+        return count;
     }
 
     reinitForDynamicContent() {
@@ -354,9 +441,11 @@ window.i18n = new I18n();
 (function initI18n() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('📄 DOM loaded, initializing i18n...');
             setTimeout(() => window.i18n.init(), 100);
         });
     } else {
+        console.log('📄 DOM already loaded, initializing i18n...');
         setTimeout(() => window.i18n.init(), 100);
     }
 })();
@@ -374,6 +463,27 @@ window.reinitI18n = function() {
     }
 };
 
+// Добавляем CSS для анимаций
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeInLanguage {
+        from {
+            opacity: 0.7;
+            transform: translateY(5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .language-changing [data-i18n] {
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+    }
+`;
+document.head.appendChild(style);
+
 // Debug
 window.debugI18n = function() {
     console.group('🌍 i18n Debug');
@@ -382,7 +492,7 @@ window.debugI18n = function() {
     console.log('Language buttons:', document.querySelectorAll('.lang-btn').length);
     
     // Test a few keys
-    const testKeys = ['nav.home', 'home.hero.titleLine1', 'home.subtitle'];
+    const testKeys = ['nav.home', 'home.hero.titleLine1', 'home.subtitle', 'nav.brand'];
     testKeys.forEach(key => {
         const translation = window.i18n.getTranslation(key);
         console.log(`${key}:`, translation || '❌ Missing');
@@ -390,3 +500,11 @@ window.debugI18n = function() {
     
     console.groupEnd();
 };
+
+// Автоматический дебаг при ошибках
+window.addEventListener('error', function(e) {
+    if (e.message.includes('i18n') || e.filename.includes('i18n.js')) {
+        console.error('❌ i18n Error:', e.message);
+        window.debugI18n();
+    }
+});
