@@ -349,7 +349,7 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
     }, 100);
 }
 
-// Export functions for global use
+// Export functions for global use - УДАЛЕНА СТРОКА С export
 window.initBrandbook = initBrandbook;
 window.showNotification = showNotification;
 window.rgbToHex = rgbToHex;
