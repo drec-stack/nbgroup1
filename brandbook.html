@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/brandbook.css">
     <style>
-        /* Убираем специальные стили для внутренних страниц - используем те же что на главной */
+        /* ТОЧНО ТАКИЕ ЖЕ СТИЛИ ХЕДЕРА КАК НА ГЛАВНОЙ СТРАНИЦЕ */
         .main-header {
             position: fixed !important;
             top: 20px !important;
@@ -51,7 +51,11 @@
         }
 
         .brandbook-hero {
-            padding-top: 140px !important;
+            padding-top: 160px !important;
+            min-height: 100vh !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
         /* Mobile adjustments */
@@ -69,20 +73,76 @@
             }
             
             .brandbook-hero {
+                padding-top: 120px !important;
+                min-height: 80vh !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brandbook-hero {
                 padding-top: 100px !important;
             }
         }
     </style>
 </head>
-<body class="internal-page">
-    <!-- Header Container (будет загружен тот же header.html что и на главной) -->
-    <div id="header-container"></div>
+<body>
+    <!-- ТОТ ЖЕ САМЫЙ ХЕДЕР КАК НА ГЛАВНОЙ -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-inner">
+                <!-- Логотип NB Group -->
+                <a href="index.html" class="logo">
+                    <div class="logo-mark">NB</div>
+                    <span class="logo-text">NB Group</span>
+                </a>
+                
+                <!-- Навигация -->
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link">Главная</a>
+                    <a href="about.html" class="nav-link">О нас</a>
+                    <a href="services.html" class="nav-link">Услуги</a>
+                    <a href="portfolio.html" class="nav-link">Портфолио</a>
+                    <a href="brandbook.html" class="nav-link active">Брендбук</a>
+                    <a href="contacts.html" class="nav-link">Контакты</a>
+                </nav>
+                
+                <!-- Действия -->
+                <div class="header-actions">
+                    <!-- Переключатель языка -->
+                    <div class="language-switcher" data-current-lang="ru">
+                        <div class="lang-slider"></div>
+                        <button class="lang-btn" data-lang="ru">
+                            <span class="lang-text">RU</span>
+                            <span class="lang-flag">🇷🇺</span>
+                        </button>
+                        <button class="lang-btn active" data-lang="en">
+                            <span class="lang-text">EN</span>
+                            <span class="lang-flag">🇺🇸</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Кнопка Начать проект -->
+                    <a href="contacts.html" class="btn btn-primary btn-small">
+                        Начать проект
+                    </a>
+                    
+                    <!-- Мобильное меню -->
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-menu-overlay"></div>
+    </header>
 
     <section class="brandbook-hero">
         <div class="container">
             <div class="brandbook-hero-content">
-                <h1 class="page-title" data-i18n="brandbook.title">Brandbook Development</h1>
-                <p class="page-subtitle" data-i18n="brandbook.subtitle">
+                <h1 class="page-title">Brandbook Development</h1>
+                <p class="page-subtitle">
                     Comprehensive brand identity systems that create memorable and consistent brand experiences across all touchpoints.
                 </p>
             </div>
@@ -93,13 +153,13 @@
         <div class="container">
             <div class="intro-content">
                 <div class="intro-text">
-                    <h2 data-i18n="brandbook.intro.title">Брендбук — это основа бренда</h2>
-                    <p data-i18n="brandbook.intro.description">
+                    <h2>Брендбук — это основа бренда</h2>
+                    <p>
                         Брендбук — это не просто набор правил, а основа, на которой держится весь образ компании. 
                         Я подхожу к его созданию так же внимательно, как к работе над любым продуктом: изучаю характер бренда, 
                         его аудиторию, его цель. На фундаменте этих смыслов формирую систему — от цвета и шрифта до логики подачи материалов.
                     </p>
-                    <p data-i18n="brandbook.intro.description2">
+                    <p>
                         Мы разрабатываем брендбуки для компаний любого масштаба. Хотите стройную визуальную систему с продуманными элементами? 
                         Сделаем так, чтобы она стала вашим сильным инструментом, а не красивой папкой «для галочки».
                     </p>
@@ -111,12 +171,178 @@
     <section class="brandbook-cases">
         <div class="container">
             <div class="section-header">
-                <h2 data-i18n="brandbook.cases.title">Brandbook Cases</h2>
-                <p data-i18n="brandbook.cases.subtitle">Our recent brand identity projects</p>
+                <h2>Brandbook Cases</h2>
+                <p>Our recent brand identity projects</p>
             </div>
             
             <div class="brand-cases-grid">
-                <!-- Кейсы... (остаются без изменений) -->
+                <!-- Кейс 1 -->
+                <div class="brand-case">
+                    <div class="case-header">
+                        <span class="case-number">01</span>
+                        <h3 class="case-title">Project Name</h3>
+                        <span class="case-category">Category</span>
+                    </div>
+                    <div class="case-content">
+                        <div class="case-description">
+                            <p>Project description will be added here...</p>
+                        </div>
+                        <div class="case-elements">
+                            <div class="brand-element">
+                                <h4>Color Palette</h4>
+                                <div class="color-palette">
+                                    <div class="color-item" style="background-color: #FF6B6B;"></div>
+                                    <div class="color-item" style="background-color: #4ECDC4;"></div>
+                                    <div class="color-item" style="background-color: #45B7D1;"></div>
+                                </div>
+                            </div>
+                            <div class="brand-element">
+                                <h4>Typography</h4>
+                                <p>Font family and style information...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кейс 2 -->
+                <div class="brand-case">
+                    <div class="case-header">
+                        <span class="case-number">02</span>
+                        <h3 class="case-title">Project Name</h3>
+                        <span class="case-category">Category</span>
+                    </div>
+                    <div class="case-content">
+                        <div class="case-description">
+                            <p>Project description will be added here...</p>
+                        </div>
+                        <div class="case-elements">
+                            <div class="brand-element">
+                                <h4>Color Palette</h4>
+                                <div class="color-palette">
+                                    <div class="color-item" style="background-color: #FFE66D;"></div>
+                                    <div class="color-item" style="background-color: #FF6B6B;"></div>
+                                    <div class="color-item" style="background-color: #4ECDC4;"></div>
+                                </div>
+                            </div>
+                            <div class="brand-element">
+                                <h4>Typography</h4>
+                                <p>Font family and style information...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кейс 3 -->
+                <div class="brand-case">
+                    <div class="case-header">
+                        <span class="case-number">03</span>
+                        <h3 class="case-title">Project Name</h3>
+                        <span class="case-category">Category</span>
+                    </div>
+                    <div class="case-content">
+                        <div class="case-description">
+                            <p>Project description will be added here...</p>
+                        </div>
+                        <div class="case-elements">
+                            <div class="brand-element">
+                                <h4>Color Palette</h4>
+                                <div class="color-palette">
+                                    <div class="color-item" style="background-color: #6B48FF;"></div>
+                                    <div class="color-item" style="background-color: #1AFFD5;"></div>
+                                    <div class="color-item" style="background-color: #FF9A3D;"></div>
+                                </div>
+                            </div>
+                            <div class="brand-element">
+                                <h4>Typography</h4>
+                                <p>Font family and style information...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кейс 4 -->
+                <div class="brand-case">
+                    <div class="case-header">
+                        <span class="case-number">04</span>
+                        <h3 class="case-title">Project Name</h3>
+                        <span class="case-category">Category</span>
+                    </div>
+                    <div class="case-content">
+                        <div class="case-description">
+                            <p>Project description will be added here...</p>
+                        </div>
+                        <div class="case-elements">
+                            <div class="brand-element">
+                                <h4>Color Palette</h4>
+                                <div class="color-palette">
+                                    <div class="color-item" style="background-color: #FF4081;"></div>
+                                    <div class="color-item" style="background-color: #7C4DFF;"></div>
+                                    <div class="color-item" style="background-color: #448AFF;"></div>
+                                </div>
+                            </div>
+                            <div class="brand-element">
+                                <h4>Typography</h4>
+                                <p>Font family and style information...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кейс 5 -->
+                <div class="brand-case">
+                    <div class="case-header">
+                        <span class="case-number">05</span>
+                        <h3 class="case-title">Project Name</h3>
+                        <span class="case-category">Category</span>
+                    </div>
+                    <div class="case-content">
+                        <div class="case-description">
+                            <p>Project description will be added here...</p>
+                        </div>
+                        <div class="case-elements">
+                            <div class="brand-element">
+                                <h4>Color Palette</h4>
+                                <div class="color-palette">
+                                    <div class="color-item" style="background-color: #00BCD4;"></div>
+                                    <div class="color-item" style="background-color: #4CAF50;"></div>
+                                    <div class="color-item" style="background-color: #FFC107;"></div>
+                                </div>
+                            </div>
+                            <div class="brand-element">
+                                <h4>Typography</h4>
+                                <p>Font family and style information...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кейс 6 -->
+                <div class="brand-case">
+                    <div class="case-header">
+                        <span class="case-number">06</span>
+                        <h3 class="case-title">Project Name</h3>
+                        <span class="case-category">Category</span>
+                    </div>
+                    <div class="case-content">
+                        <div class="case-description">
+                            <p>Project description will be added here...</p>
+                        </div>
+                        <div class="case-elements">
+                            <div class="brand-element">
+                                <h4>Color Palette</h4>
+                                <div class="color-palette">
+                                    <div class="color-item" style="background-color: #9C27B0;"></div>
+                                    <div class="color-item" style="background-color: #3F51B5;"></div>
+                                    <div class="color-item" style="background-color: #03A9F4;"></div>
+                                </div>
+                            </div>
+                            <div class="brand-element">
+                                <h4>Typography</h4>
+                                <p>Font family and style information...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -124,18 +350,28 @@
     <section class="brandbook-cta">
         <div class="container">
             <div class="cta-content">
-                <h2 data-i18n="brandbook.cta.title">Develop Your Brand Identity</h2>
-                <p data-i18n="brandbook.cta.description">Ready to create a powerful brand system that stands out? Let's discuss your brand vision.</p>
+                <h2>Develop Your Brand Identity</h2>
+                <p>Ready to create a powerful brand system that stands out? Let's discuss your brand vision.</p>
                 <a href="contacts.html" class="btn btn-primary btn-large">
-                    <span data-i18n="brandbook.cta.button">Start Brand Project</span>
+                    <span>Start Brand Project</span>
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Footer Container -->
-    <div id="footer-container"></div>
+    <!-- Footer -->
+    <footer class="minimal-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-bottom">
+                    <div class="copyright">
+                        © 2024 NBGROUP.TECH Все права защищены.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- JavaScript -->
     <script src="js/i18n.js"></script>
@@ -144,105 +380,7 @@
     <script src="js/brandbook.js"></script>
     
     <script>
-        // Load THE SAME header as on homepage
-        function loadHeader() {
-            console.log('🔵 Loading header (same as homepage)...');
-            
-            fetch('components/header.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('header-container').innerHTML = html;
-                    
-                    // Инициализировать хедер (та же функция что на главной)
-                    if (typeof initHeader === 'function') {
-                        setTimeout(() => {
-                            initHeader();
-                            console.log('✅ Header initialized');
-                        }, 100);
-                    }
-                    
-                    // Применить переводы
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 200);
-                })
-                .catch(error => {
-                    console.error('❌ Error loading header:', error);
-                    // Fallback header - ТОЧНАЯ КОПИЯ ТОГО ЧТО НА ГЛАВНОЙ
-                    document.getElementById('header-container').innerHTML = `
-                        <header class="main-header">
-                            <div class="container">
-                                <div class="header-inner">
-                                    <a href="index.html" class="logo">
-                                        <div class="logo-mark">NB</div>
-                                        <span class="logo-text">NBGROUP.TECH</span>
-                                    </a>
-                                    <nav class="main-nav">
-                                        <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
-                                        <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
-                                        <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
-                                        <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
-                                        <a href="brandbook.html" class="nav-link active" data-i18n="nav.brandbook">Брендбук</a>
-                                        <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
-                                    </nav>
-                                    <div class="header-actions">
-                                        <div class="language-switcher" data-current-lang="ru">
-                                            <div class="lang-slider"></div>
-                                            <button class="lang-btn" data-lang="ru">
-                                                <span class="lang-text">RU</span>
-                                                <span class="lang-flag">🇷🇺</span>
-                                            </button>
-                                            <button class="lang-btn active" data-lang="en">
-                                                <span class="lang-text">EN</span>
-                                                <span class="lang-flag">🇺🇸</span>
-                                            </button>
-                                        </div>
-                                        <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
-                                            Начать проект
-                                        </a>
-                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mobile-menu-overlay"></div>
-                        </header>
-                    `;
-                    
-                    // Инициализируем fallback хедер
-                    setTimeout(() => {
-                        if (typeof initHeader === 'function') {
-                            initHeader();
-                        }
-                    }, 300);
-                });
-        }
-
-        // Load footer
-        function loadFooter() {
-            fetch('components/footer.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('footer-container').innerHTML = html;
-                    
-                    // Применить переводы
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 200);
-                })
-                .catch(error => {
-                    console.error('Error loading footer:', error);
-                });
-        }
-
-        // Функция для плавного скрытия/показа хедера ПРИ СКРОЛЛЕ (как на главной)
+        // ФУНКЦИЯ ДЛЯ ПЛАВНОГО СКРЫТИЯ ХЕДЕРА ПРИ СКРОЛЛЕ (ТАК ЖЕ КАК НА ГЛАВНОЙ)
         function initHeaderScrollBehavior() {
             const header = document.querySelector('.main-header');
             if (!header) {
@@ -250,43 +388,48 @@
                 return;
             }
 
-            console.log('🎭 Initializing header scroll behavior (like homepage)...');
+            console.log('🎭 Initializing header scroll behavior (same as homepage)...');
             
             let lastScrollTop = 0;
             let isHidden = false;
             const hideThreshold = 100;
+            const showThreshold = 10;
             
-            function handleScroll() {
+            function updateHeader() {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 
-                // В самом верху - всегда показываем
-                if (scrollTop <= 10) {
-                    header.classList.remove('header-hidden');
-                    header.style.opacity = '1';
-                    header.style.transform = 'translateY(0)';
-                    isHidden = false;
+                // В самом верху страницы - всегда показываем
+                if (scrollTop <= showThreshold) {
+                    if (isHidden) {
+                        header.classList.remove('header-hidden');
+                        header.style.opacity = '1';
+                        header.style.transform = 'translateY(0)';
+                        isHidden = false;
+                    }
                     lastScrollTop = Math.max(0, scrollTop);
                     return;
                 }
                 
                 const scrollDelta = scrollTop - lastScrollTop;
+                const scrollingDown = scrollDelta > 0;
+                const scrollingUp = scrollDelta < 0;
                 
                 // Прячем при скролле вниз
-                if (scrollDelta > 0 && scrollTop > hideThreshold && !isHidden) {
+                if (scrollingDown && scrollTop > hideThreshold && !isHidden) {
                     header.classList.add('header-hidden');
                     header.style.opacity = '0';
                     header.style.transform = 'translateY(-20px)';
                     isHidden = true;
                 } 
                 // Показываем при скролле вверх
-                else if (scrollDelta < 0 && isHidden) {
+                else if (scrollingUp && isHidden) {
                     header.classList.remove('header-hidden');
                     header.style.opacity = '1';
                     header.style.transform = 'translateY(0)';
                     isHidden = false;
                 }
                 
-                // Добавляем класс при скролле
+                // Добавляем класс при скролле для изменения стилей
                 if (scrollTop > 20) {
                     header.classList.add('header-scrolled');
                 } else {
@@ -296,7 +439,7 @@
                 lastScrollTop = scrollTop;
             }
             
-            // Показываем при наведении мыши (как на главной)
+            // Показываем хедер при наведении мыши (как на главной)
             header.addEventListener('mouseenter', () => {
                 if (isHidden) {
                     header.classList.remove('header-hidden');
@@ -304,7 +447,7 @@
                     header.style.transform = 'translateY(0)';
                     isHidden = false;
                     
-                    // Автоскрытие через 2 секунды
+                    // Автоматически скрываем через 2 секунды
                     setTimeout(() => {
                         if (window.pageYOffset > hideThreshold && !header.matches(':hover')) {
                             header.classList.add('header-hidden');
@@ -316,58 +459,235 @@
                 }
             });
             
+            // Мобильное меню
+            function setupMobileMenu() {
+                const toggle = document.querySelector('.mobile-menu-toggle');
+                const nav = document.querySelector('.main-nav');
+                const overlay = document.querySelector('.mobile-menu-overlay');
+
+                if (!toggle || !nav) return;
+
+                const toggleMenu = () => {
+                    const isActive = nav.classList.contains('active');
+                    
+                    toggle.classList.toggle('active');
+                    nav.classList.toggle('active');
+                    if (overlay) overlay.classList.toggle('active');
+                    document.body.style.overflow = isActive ? '' : 'hidden';
+                };
+
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleMenu();
+                });
+
+                if (overlay) {
+                    overlay.addEventListener('click', () => {
+                        toggle.classList.remove('active');
+                        nav.classList.remove('active');
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                }
+
+                const navLinks = nav.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        toggle.classList.remove('active');
+                        nav.classList.remove('active');
+                        if (overlay) overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && nav.classList.contains('active')) {
+                        toggle.classList.remove('active');
+                        nav.classList.remove('active');
+                        if (overlay) overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768 && nav.classList.contains('active')) {
+                        toggle.classList.remove('active');
+                        nav.classList.remove('active');
+                        if (overlay) overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+            
+            // Переключатель языка
+            function setupLanguageSwitcher() {
+                const langButtons = document.querySelectorAll('.lang-btn');
+                const switcher = document.querySelector('.language-switcher');
+                
+                if (!langButtons.length || !switcher) return;
+                
+                // Устанавливаем текущий язык
+                const currentLang = localStorage.getItem('preferredLang') || 'ru';
+                switcher.setAttribute('data-current-lang', currentLang);
+                
+                langButtons.forEach(btn => {
+                    if (btn.getAttribute('data-lang') === currentLang) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                    
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const lang = btn.getAttribute('data-lang');
+                        const currentActive = document.querySelector('.lang-btn.active');
+                        
+                        if (currentActive && currentActive.getAttribute('data-lang') === lang) {
+                            return;
+                        }
+                        
+                        // Обновляем состояние переключателя
+                        langButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        switcher.setAttribute('data-current-lang', lang);
+                        
+                        // Сохраняем язык
+                        localStorage.setItem('preferredLang', lang);
+                        
+                        console.log('🌐 Language changed to:', lang);
+                        
+                        // Если есть i18n, используем его
+                        if (window.i18n && window.i18n.smoothSwitchLanguage) {
+                            window.i18n.smoothSwitchLanguage(lang);
+                        } else if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    });
+                });
+            }
+            
+            // Активная ссылка в навигации
+            function setActiveNavLink() {
+                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                const navLinks = document.querySelectorAll('.nav-link');
+                
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href === currentPage) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+            
             // Оптимизация скролла
             let ticking = false;
             window.addEventListener('scroll', () => {
                 if (!ticking) {
                     requestAnimationFrame(() => {
-                        handleScroll();
+                        updateHeader();
                         ticking = false;
                     });
                     ticking = true;
                 }
             }, { passive: true });
             
-            // Плавная анимация
+            // Плавная анимация для хедера
             setTimeout(() => {
                 header.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
             }, 100);
             
-            // Инициализация
-            handleScroll();
+            // Инициализация всех функций
+            setupMobileMenu();
+            setupLanguageSwitcher();
+            setActiveNavLink();
+            updateHeader();
+            
+            console.log('✅ Header scroll behavior initialized');
         }
 
-        // Инициализация страницы
+        // Инициализация при загрузке страницы
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Brandbook page initializing...');
             
-            // Загружаем ТОТ ЖЕ хедер что на главной
-            loadHeader();
-            
-            // Загружаем футер
-            loadFooter();
-            
-            // Инициализация скролла хедера
-            setTimeout(() => {
-                initHeaderScrollBehavior();
-                
-                // Остальная инициализация страницы...
-            }, 500);
+            // Инициализация хедера
+            initHeaderScrollBehavior();
             
             // Инициализация функциональности брендбука
             setTimeout(() => {
                 if (typeof initBrandbook === 'function') {
                     initBrandbook();
                 }
-            }, 300);
+                
+                // Анимация появления кейсов
+                const brandCases = document.querySelectorAll('.brand-case');
+                brandCases.forEach((caseItem, index) => {
+                    caseItem.style.opacity = '0';
+                    caseItem.style.transform = 'translateY(30px)';
+                    caseItem.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    
+                    setTimeout(() => {
+                        caseItem.style.opacity = '1';
+                        caseItem.style.transform = 'translateY(0)';
+                    }, 100 * index);
+                });
+                
+                // Интерактивность кейсов
+                brandCases.forEach(caseItem => {
+                    caseItem.addEventListener('mouseenter', () => {
+                        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                            caseItem.style.transform = 'translateY(-10px)';
+                            caseItem.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.2)';
+                        }
+                    });
+                    
+                    caseItem.addEventListener('mouseleave', () => {
+                        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                            caseItem.style.transform = 'translateY(0)';
+                            caseItem.style.boxShadow = '';
+                        }
+                    });
+                });
+                
+                // Палитры цветов - интерактивные
+                const colorPalettes = document.querySelectorAll('.color-palette');
+                colorPalettes.forEach(palette => {
+                    const colors = palette.querySelectorAll('.color-item');
+                    colors.forEach(colorItem => {
+                        colorItem.addEventListener('click', function() {
+                            const tempInput = document.createElement('input');
+                            tempInput.value = this.style.backgroundColor || '#3498db';
+                            document.body.appendChild(tempInput);
+                            tempInput.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(tempInput);
+                            
+                            const originalColor = this.style.backgroundColor;
+                            this.style.backgroundColor = '#2ecc71';
+                            this.innerHTML = '<i class="fas fa-check"></i>';
+                            
+                            setTimeout(() => {
+                                this.style.backgroundColor = originalColor;
+                                this.innerHTML = '';
+                            }, 1000);
+                        });
+                        
+                        colorItem.setAttribute('title', 'Нажмите, чтобы скопировать цвет');
+                    });
+                });
+                
+            }, 500);
         });
 
-        // Корректировка отступов под фиксированный хедер
+        // Добавляем padding-top для body чтобы контент не скрывался под фиксированным хедером
         window.addEventListener('load', function() {
             const header = document.querySelector('.main-header');
             if (header) {
                 const headerHeight = header.offsetHeight;
-                document.querySelector('.brandbook-hero').style.paddingTop = (headerHeight + 60) + 'px';
+                document.querySelector('.brandbook-hero').style.paddingTop = (headerHeight + 80) + 'px';
             }
         });
 
@@ -378,6 +698,30 @@
                 document.querySelector('.brandbook-hero').style.paddingTop = '120px';
             }
         });
+
+        // Анимация появления хедера при загрузке
+        window.addEventListener('load', function() {
+            const header = document.querySelector('.main-header');
+            if (header) {
+                header.style.animation = 'fadeInDown 0.6s ease forwards';
+                
+                // Добавляем CSS анимацию
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes fadeInDown {
+                        from {
+                            opacity: 0;
+                            transform: translateY(-30px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        });
     </script>
 </body>
-</html>
+    </html>
