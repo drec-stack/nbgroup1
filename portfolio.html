@@ -51,6 +51,51 @@
         .skip-to-content:focus {
             top: 20px;
         }
+        
+        /* СТИЛИ ДЛЯ ХЕДЕРА КАК НА ГЛАВНОЙ */
+        .main-header.header-minimized {
+            background: rgba(0, 102, 255, 0.2) !important;
+            backdrop-filter: blur(20px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+            padding: 15px 0 !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+        }
+
+        .main-header.header-hidden {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: transform 0.4s ease, opacity 0.4s ease !important;
+        }
+
+        .main-header:not(.header-hidden) {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            transition: transform 0.4s ease, opacity 0.4s ease !important;
+        }
+
+        /* Анимация появления хедера */
+        @keyframes headerGlassEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-header {
+            animation: headerGlassEnter 0.6s ease forwards;
+        }
+        
+        /* Плавные переходы */
+        .portfolio-hero, 
+        .main-header,
+        .portfolio-grid-section {
+            transition: all 0.3s ease !important;
+        }
     </style>
 </head>
 <body class="portfolio-page">
@@ -434,7 +479,7 @@
     <script src="js/portfolio.js"></script>
     
     <script>
-        console.log('🚀 Initializing portfolio page with identical header...');
+        console.log('🚀 Initializing portfolio page with IDENTICAL header to home...');
         
         // ===== 1. ЗАГРУЗКА ХЕДЕРА КАК НА ГЛАВНОЙ СТРАНИЦЕ =====
         function loadPortfolioHeader() {
@@ -454,7 +499,7 @@
                             console.log('✅ Header initialized with initHeader()');
                         }
                         
-                        // Для главной страницы логика, но мы ее адаптируем
+                        // Специальная логика для портфолио
                         setupPortfolioHeaderBehavior();
                         
                         // Применить переводы
@@ -509,7 +554,7 @@
                 });
         }
         
-        // ===== 2. НАСТРОЙКА ПОВЕДЕНИЯ ХЕДЕРА ДЛЯ ПОРТФОЛИО =====
+        // ===== 2. НАСТРОЙКА ПОВЕДЕНИЯ ХЕДЕРА ТОЧНО КАК НА ГЛАВНОЙ =====
         function setupPortfolioHeaderBehavior() {
             const header = document.querySelector('.main-header');
             if (!header) {
@@ -518,40 +563,65 @@
                 return;
             }
             
-            console.log('🎯 Setting up portfolio header behavior');
+            console.log('🎯 Setting up portfolio header behavior IDENTICAL TO HOME');
             
-            // Убираем класс home-page если он есть (чтобы не скрывался как на главной)
-            document.body.classList.remove('home-page');
+            // Сбрасываем любые существующие стили
+            header.style.opacity = '';
+            header.style.transform = '';
+            header.classList.remove('header-hidden', 'header-scrolled', 'header-minimized');
             
-            // На внутренних страницах хедер всегда видим, но может менять стиль
-            let lastScrollY = window.scrollY;
-            const scrollThreshold = 50;
+            // ТОЧНО ТАК ЖЕ КАК НА ГЛАВНОЙ СТРАНИЦЕ
+            let isHidden = false;
+            const hideThreshold = 100;
+            const showThreshold = 10;
             
             function updateHeaderState() {
-                const currentScrollY = window.scrollY;
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 
-                if (currentScrollY <= scrollThreshold) {
-                    // Вверху страницы - обычный хедер
-                    header.classList.remove('header-scrolled');
-                    header.style.opacity = '1';
-                    header.style.transform = 'translateY(0)';
-                } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                    // Скроллим вниз - компактный хедер
-                    header.classList.add('header-scrolled');
-                    header.style.opacity = '1';
-                } else if (currentScrollY < lastScrollY) {
-                    // Скроллим вверх - обычный хедер
-                    header.classList.remove('header-scrolled');
-                    header.style.opacity = '1';
+                // В самом верху страницы - всегда показываем
+                if (scrollTop <= showThreshold) {
+                    if (isHidden) {
+                        header.classList.remove('header-hidden');
+                        header.style.opacity = '1';
+                        header.style.transform = 'translateY(0)';
+                        isHidden = false;
+                    }
+                    return;
                 }
                 
-                lastScrollY = currentScrollY;
+                // Плавное изменение прозрачности от 50px до 150px
+                if (scrollTop <= 150) {
+                    const opacity = 1 - (scrollTop - 50) / 100;
+                    header.style.opacity = Math.max(0.3, opacity).toString();
+                    header.classList.remove('header-hidden');
+                    isHidden = false;
+                } 
+                // После 150px - полностью скрываем
+                else if (scrollTop > 150 && !isHidden) {
+                    header.style.opacity = '0';
+                    header.classList.add('header-hidden');
+                    isHidden = true;
+                }
+                // Если скроллим вверх из скрытого состояния
+                else if (scrollTop <= 150 && isHidden) {
+                    header.classList.remove('header-hidden');
+                    const opacity = 1 - (scrollTop - 50) / 100;
+                    header.style.opacity = Math.max(0.3, opacity).toString();
+                    isHidden = false;
+                }
+                
+                // Для внутренних страниц добавляем minimized класс при скролле
+                if (scrollTop > 50) {
+                    header.classList.add('header-minimized');
+                } else {
+                    header.classList.remove('header-minimized');
+                }
             }
             
             // Инициализация
             updateHeaderState();
             
-            // Обработчик скролла с throttling
+            // Throttle scroll events
             let ticking = false;
             window.addEventListener('scroll', () => {
                 if (!ticking) {
@@ -563,31 +633,54 @@
                 }
             }, { passive: true });
             
-            // Показывать при наведении (если скрылся)
+            // Показать при наведении (если скрылся)
             header.addEventListener('mouseenter', () => {
-                header.style.opacity = '1';
-                header.classList.remove('header-hidden');
+                if (isHidden) {
+                    header.classList.remove('header-hidden');
+                    header.style.opacity = '1';
+                    isHidden = false;
+                    
+                    // Через 2 секунды снова скрыть если все еще внизу
+                    setTimeout(() => {
+                        if (isHidden && (window.pageYOffset || document.documentElement.scrollTop) > hideThreshold) {
+                            header.classList.add('header-hidden');
+                        }
+                    }, 2000);
+                }
             });
             
             // Корректировка отступов
             adjustPortfolioHeaderPadding();
             
-            console.log('✅ Portfolio header behavior set up');
+            console.log('✅ Portfolio header behavior set up (IDENTICAL TO HOME)');
         }
         
-        // ===== 3. КОРРЕКТИРОВКА ОТСТУПОВ =====
+        // ===== 3. КОРРЕКТИРОВКА ОТСТУПОВ ДИНАМИЧЕСКИ =====
         function adjustPortfolioHeaderPadding() {
             const header = document.querySelector('.main-header');
             const portfolioHero = document.querySelector('.portfolio-hero');
             
             if (header && portfolioHero) {
                 const headerHeight = header.offsetHeight;
+                
                 const updatePadding = () => {
-                    if (window.innerWidth > 768) {
-                        portfolioHero.style.paddingTop = (headerHeight + 60) + 'px';
+                    const isHidden = header.classList.contains('header-hidden');
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    if (isHidden || scrollTop > 150) {
+                        // Когда хедер скрыт или мы далеко внизу - меньше отступ
+                        portfolioHero.style.paddingTop = '100px';
+                    } else if (scrollTop <= 50) {
+                        // В самом верху - полный отступ
+                        portfolioHero.style.paddingTop = (headerHeight + 80) + 'px';
                     } else {
-                        portfolioHero.style.paddingTop = (headerHeight + 40) + 'px';
+                        // Плавное уменьшение отступа при скролле
+                        const progress = Math.min(1, (scrollTop - 50) / 100);
+                        const padding = headerHeight + 80 - (progress * 30);
+                        portfolioHero.style.paddingTop = Math.max(100, padding) + 'px';
                     }
+                    
+                    portfolioHero.style.transition = 'padding-top 0.3s ease';
                 };
                 
                 updatePadding();
@@ -595,12 +688,15 @@
                 // Обновлять при ресайзе
                 window.addEventListener('resize', updatePadding);
                 
+                // Обновлять при скролле
+                window.addEventListener('scroll', updatePadding);
+                
                 // Обновлять после загрузки изображений
                 window.addEventListener('load', () => {
                     setTimeout(updatePadding, 100);
                 });
                 
-                console.log('📏 Header padding adjusted:', portfolioHero.style.paddingTop);
+                console.log('📏 Header padding adjusted dynamically');
             } else {
                 // Повторная попытка если элементы еще не загрузились
                 setTimeout(adjustPortfolioHeaderPadding, 100);
@@ -688,7 +784,8 @@
                 if (header) {
                     console.log('✅ Header confirmed:', {
                         height: header.offsetHeight,
-                        visible: header.style.opacity !== '0'
+                        visible: header.style.opacity !== '0',
+                        hasHomeBehavior: true
                     });
                 }
             }, 500);
@@ -697,4 +794,4 @@
         console.log('🚀 Portfolio initialization script loaded');
     </script>
 </body>
-    </html>
+                            </html>
