@@ -7,42 +7,643 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/portfolio.css">
     <style>
-        .portfolio-hero {
-            padding-top: 140px !important;
+        /* ===== СТИЛИ ХЕДЕРА КАК НА ГЛАВНОЙ СТРАНИЦЕ ===== */
+        
+        /* Основной хедер */
+        .main-header {
+            position: fixed !important;
+            top: 20px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: calc(100% - 40px) !important;
+            max-width: 1400px !important;
+            padding: 18px 0 !important;
+            background: rgba(0, 102, 255, 0.12) !important;
+            z-index: 1000 !important;
+            border-radius: 20px !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            box-shadow: 
+                0 8px 32px rgba(0, 102, 255, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+            opacity: 1 !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
         }
         
-        /* Анимация для хедера портфолио */
+        /* Стеклянный эффект */
+        .main-header::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 100% !important;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.04) 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            ) !important;
+            border-radius: 20px !important;
+            opacity: 0.5 !important;
+            z-index: -1 !important;
+            pointer-events: none !important;
+        }
+        
+        /* Хедер при наведении */
+        .main-header:hover {
+            background: rgba(0, 102, 255, 0.15) !important;
+            box-shadow: 
+                0 12px 40px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                0 0 30px rgba(0, 102, 255, 0.12) !important;
+            border-color: rgba(255, 255, 255, 0.28) !important;
+        }
+        
+        /* Скрытый хедер (при скролле) */
+        .main-header.header-hidden {
+            transform: translateX(-50%) translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
+        /* Хедер при скролле */
+        .main-header.header-scrolled {
+            background: rgba(0, 102, 255, 0.2) !important;
+            backdrop-filter: blur(20px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+            box-shadow: 
+                0 4px 20px rgba(0, 102, 255, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+            padding: 15px 0 !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+        }
+        
+        /* Контейнер хедера */
+        .main-header .container {
+            padding: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+        
+        /* Внутренний контейнер */
+        .header-inner {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            width: 100% !important;
+            padding: 0 30px !important;
+        }
+        
+        /* Логотип */
+        .logo {
+            display: flex !important;
+            align-items: center !important;
+            text-decoration: none !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 24px !important;
+            gap: 12px !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        }
+        
+        .logo:hover {
+            transform: translateY(-2px) !important;
+        }
+        
+        .logo-mark {
+            width: 42px !important;
+            height: 42px !important;
+            background: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-weight: 800 !important;
+            font-size: 17px !important;
+            color: #0066ff !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+            border: 1px solid rgba(255, 255, 255, 0.35) !important;
+            box-shadow: 
+                0 4px 12px rgba(0, 102, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        .logo-mark:hover {
+            transform: scale(1.08) !important;
+            background: white !important;
+            box-shadow: 
+                0 6px 20px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+            border-color: rgba(255, 255, 255, 0.5) !important;
+        }
+        
+        .logo-text {
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 23px !important;
+            letter-spacing: -0.5px !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        /* Навигация */
+        .main-nav {
+            display: flex !important;
+            gap: 22px !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.95) !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+            font-size: 15.5px !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+            position: relative !important;
+            padding: 10px 17px !important;
+            border-radius: 10px !important;
+            white-space: nowrap !important;
+            backdrop-filter: blur(5px) !important;
+            -webkit-backdrop-filter: blur(5px) !important;
+            border: 1px solid transparent !important;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.18) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        .nav-link.active {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            font-weight: 600 !important;
+        }
+        
+        .nav-link::after {
+            content: '' !important;
+            position: absolute !important;
+            bottom: -2px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: 0 !important;
+            height: 2px !important;
+            background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8)) !important;
+            transition: width 0.3s ease !important;
+            border-radius: 1px !important;
+        }
+        
+        .nav-link:hover::after {
+            width: 70% !important;
+        }
+        
+        /* Действия хедера */
+        .header-actions {
+            display: flex !important;
+            align-items: center !important;
+            gap: 20px !important;
+        }
+        
+        /* Кнопки */
+        .btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            padding: 11px 23px !important;
+            border: none !important;
+            border-radius: 10px !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+            gap: 8px !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+        }
+        
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.92) !important;
+            color: #0066ff !important;
+            font-weight: 700 !important;
+            border: 1px solid rgba(255, 255, 255, 0.35) !important;
+            box-shadow: 
+                0 4px 15px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        .btn-primary:hover {
+            background: white !important;
+            color: #0066ff !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 
+                0 8px 25px rgba(255, 255, 255, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.6) !important;
+        }
+        
+        .btn-small {
+            padding: 9px 19px !important;
+            font-size: 13.5px !important;
+            border-radius: 9px !important;
+        }
+        
+        /* Переключатель языка */
+        .language-switcher {
+            display: flex !important;
+            align-items: center !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 24px !important;
+            padding: 4px !important;
+            position: relative !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            min-width: 118px !important;
+            height: 38px !important;
+            overflow: hidden !important;
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .lang-btn {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding: 7px 15px !important;
+            background: none !important;
+            border: none !important;
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-size: 13.5px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            border-radius: 20px !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+            z-index: 2 !important;
+            min-width: 54px !important;
+            justify-content: center !important;
+            flex: 1 !important;
+            outline: none !important;
+            backdrop-filter: blur(5px) !important;
+            -webkit-backdrop-filter: blur(5px) !important;
+        }
+        
+        .lang-btn.active {
+            color: white !important;
+            font-weight: 600 !important;
+        }
+        
+        .lang-slider {
+            position: absolute !important;
+            top: 4px !important;
+            left: 4px !important;
+            width: calc(50% - 4px) !important;
+            height: calc(100% - 8px) !important;
+            background: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            border-radius: 20px !important;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            z-index: 1 !important;
+            box-shadow: 
+                0 4px 12px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                0 0 0 1px rgba(255, 255, 255, 0.3) !important;
+        }
+        
+        .language-switcher[data-current-lang="en"] .lang-slider {
+            transform: translateX(100%) !important;
+        }
+        
+        .language-switcher[data-current-lang="ru"] .lang-slider {
+            transform: translateX(0) !important;
+        }
+        
+        /* Мобильное меню */
+        .mobile-menu-toggle {
+            display: none !important;
+            background: none !important;
+            border: none !important;
+            width: 32px !important;
+            height: 32px !important;
+            position: relative !important;
+            cursor: pointer !important;
+            border-radius: 8px !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        .mobile-menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.18) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+        }
+        
+        .mobile-menu-toggle span {
+            display: block !important;
+            width: 18px !important;
+            height: 2px !important;
+            background: white !important;
+            position: absolute !important;
+            left: 7px !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+            border-radius: 1px !important;
+        }
+        
+        .mobile-menu-toggle span:nth-child(1) { top: 10px !important; }
+        .mobile-menu-toggle span:nth-child(2) { top: 15px !important; }
+        .mobile-menu-toggle span:nth-child(3) { top: 20px !important; }
+        
+        .mobile-menu-overlay {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: rgba(0, 0, 0, 0.7) !important;
+            backdrop-filter: blur(5px) !important;
+            -webkit-backdrop-filter: blur(5px) !important;
+            z-index: 998 !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        }
+        
+        .mobile-menu-overlay.active {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        /* Анимации */
         @keyframes headerGlassEnter {
             0% {
                 opacity: 0;
-                transform: translateY(-30px);
+                transform: translateX(-50%) translateY(-30px);
             }
             100% {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(-50%) translateY(0);
             }
         }
         
         .main-header {
-            animation: headerGlassEnter 0.6s ease forwards;
+            animation: headerGlassEnter 0.6s ease forwards !important;
         }
-
-        /* Mobile adjustments */
+        
+        @keyframes headerHide {
+            0% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-100%);
+            }
+        }
+        
+        @keyframes headerShow {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-100%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        /* Отступы для героя */
+        .portfolio-hero {
+            padding-top: 180px !important;
+        }
+        
+        /* ===== МОБИЛЬНЫЕ СТИЛИ ===== */
         @media (max-width: 768px) {
+            .main-header {
+                top: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                padding: 14px 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                background: rgba(0, 102, 255, 0.22) !important;
+                backdrop-filter: blur(20px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            .header-inner {
+                padding: 0 15px !important;
+            }
+            
+            .main-header.header-hidden {
+                transform: translateY(-100%) !important;
+            }
+            
+            .logo {
+                font-size: 19px !important;
+            }
+            
+            .logo-mark {
+                width: 34px !important;
+                height: 34px !important;
+                border-radius: 9px !important;
+                font-size: 15px !important;
+            }
+            
+            .main-nav {
+                position: fixed !important;
+                top: 0 !important;
+                right: -100% !important;
+                width: 100% !important;
+                height: 100vh !important;
+                background: rgba(0, 102, 255, 0.95) !important;
+                backdrop-filter: blur(25px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+                flex-direction: column !important;
+                padding: 100px 30px 30px !important;
+                border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+                transition: right 0.4s ease !important;
+                z-index: 999 !important;
+                border-radius: 0 !important;
+            }
+            
+            .main-nav.active {
+                right: 0 !important;
+            }
+            
+            .main-nav .nav-link {
+                padding: 15px 20px !important;
+                font-size: 17px !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+                width: 100% !important;
+                text-align: center !important;
+                color: rgba(255, 255, 255, 0.95) !important;
+                border-radius: 10px !important;
+                margin-bottom: 5px !important;
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
+            }
+            
+            .main-nav .nav-link:hover {
+                color: white !important;
+                background: rgba(255, 255, 255, 0.2) !important;
+            }
+            
+            .main-nav .nav-link:last-child {
+                border-bottom: none !important;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex !important;
+            }
+            
+            .header-actions .btn-primary {
+                display: none !important;
+            }
+
+            .language-switcher {
+                min-width: 100px !important;
+                height: 34px !important;
+                margin-right: 10px !important;
+                border-radius: 12px !important;
+            }
+            
+            .lang-btn {
+                padding: 6px 12px !important;
+                font-size: 12.5px !important;
+                min-width: 46px !important;
+                border-radius: 10px !important;
+            }
+            
+            .lang-flag {
+                font-size: 13px !important;
+            }
+            
             .portfolio-hero {
-                padding-top: 100px !important;
+                padding-top: 140px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-header {
+                padding: 12px 0 !important;
+            }
+            
+            .header-inner {
+                padding: 0 10px !important;
+            }
+            
+            .logo-text {
+                font-size: 17px !important;
+            }
+            
+            .logo-mark {
+                width: 30px !important;
+                height: 30px !important;
+                font-size: 13px !important;
+                border-radius: 7px !important;
+            }
+            
+            .language-switcher {
+                min-width: 90px !important;
+                border-radius: 10px !important;
+            }
+            
+            .lang-btn {
+                padding: 5px 10px !important;
+                font-size: 11.5px !important;
+                min-width: 42px !important;
+                border-radius: 8px !important;
+            }
+            
+            .lang-text {
+                display: none !important;
+            }
+            
+            .lang-btn {
+                gap: 0 !important;
+            }
+
+            .main-nav {
+                padding: 100px 20px 30px !important;
+            }
+            
+            .portfolio-hero {
+                padding-top: 120px !important;
             }
         }
     </style>
 </head>
 <body class="internal-page">
-    <!-- Glass Header Container -->
-    <div id="header-container"></div>
+    <!-- ВСТРОЕННЫЙ ХЕДЕР (ТОЧНАЯ КОПИЯ ГЛАВНОЙ СТРАНИЦЫ) -->
+    <header class="main-header" id="portfolio-main-header">
+        <div class="container">
+            <div class="header-inner">
+                <!-- Логотип NB Group -->
+                <a href="index.html" class="logo">
+                    <div class="logo-mark">NB</div>
+                    <span class="logo-text" data-i18n="nav.brand">NB Group</span>
+                </a>
+                
+                <!-- Навигация -->
+                <nav class="main-nav" id="portfolio-main-nav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                    <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                    <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                    <a href="portfolio.html" class="nav-link active" data-i18n="nav.portfolio">Портфолио</a>
+                    <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                    <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
+                </nav>
+                
+                <!-- Действия -->
+                <div class="header-actions">
+                    <!-- Переключатель языка -->
+                    <div class="language-switcher" data-current-lang="ru" id="portfolio-language-switcher">
+                        <div class="lang-slider"></div>
+                        <button class="lang-btn" data-lang="ru">
+                            <span class="lang-text">RU</span>
+                            <span class="lang-flag">🇷🇺</span>
+                        </button>
+                        <button class="lang-btn active" data-lang="en">
+                            <span class="lang-text">EN</span>
+                            <span class="lang-flag">🇺🇸</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Кнопка Начать проект -->
+                    <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
+                        Начать проект
+                    </a>
+                    
+                    <!-- Мобильное меню -->
+                    <button class="mobile-menu-toggle" id="portfolio-menu-toggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu-overlay" id="portfolio-menu-overlay"></div>
 
     <section class="portfolio-hero">
         <div class="container">
@@ -414,171 +1015,321 @@
     <script src="js/portfolio.js"></script>
     
     <script>
-        // Load header component (OPTIMIZED VERSION - SAME AS HOME)
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-container').innerHTML = html;
+        // ===== КОМПЛЕКСНАЯ ИНИЦИАЛИЗАЦИЯ ХЕДЕРА ДЛЯ PORTFOLIO =====
+        console.log('🚀 Initializing portfolio header...');
+        
+        // Функция инициализации мобильного меню
+        function initPortfolioMobileMenu() {
+            const toggle = document.getElementById('portfolio-menu-toggle');
+            const nav = document.getElementById('portfolio-main-nav');
+            const overlay = document.getElementById('portfolio-menu-overlay');
+            
+            if (!toggle || !nav) {
+                console.log('⚠️ Mobile menu elements not found');
+                return;
+            }
+            
+            console.log('📱 Initializing portfolio mobile menu');
+            
+            const toggleMenu = () => {
+                const isActive = nav.classList.contains('active');
                 
-                // Initialize header functions
+                toggle.classList.toggle('active');
+                nav.classList.toggle('active');
+                if (overlay) overlay.classList.toggle('active');
+                document.body.style.overflow = isActive ? '' : 'hidden';
+            };
+            
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
+            
+            if (overlay) {
+                overlay.addEventListener('click', () => {
+                    toggle.classList.remove('active');
+                    nav.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
+            
+            const navLinks = nav.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    toggle.classList.remove('active');
+                    nav.classList.remove('active');
+                    if (overlay) overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && nav.classList.contains('active')) {
+                    toggle.classList.remove('active');
+                    nav.classList.remove('active');
+                    if (overlay) overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && nav.classList.contains('active')) {
+                    toggle.classList.remove('active');
+                    nav.classList.remove('active');
+                    if (overlay) overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+        
+        // Функция для переключателя языка
+        function initPortfolioLanguageSwitcher() {
+            const langButtons = document.querySelectorAll('#portfolio-language-switcher .lang-btn');
+            const switcher = document.getElementById('portfolio-language-switcher');
+            
+            if (!langButtons.length || !switcher) {
+                console.log('⚠️ Language switcher not found');
+                return;
+            }
+            
+            console.log('🌐 Initializing portfolio language switcher');
+            
+            // Устанавливаем начальное состояние
+            const currentLang = localStorage.getItem('preferredLang') || 'ru';
+            updatePortfolioLanguageSwitcher(currentLang);
+            
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const lang = btn.getAttribute('data-lang');
+                    const currentActive = document.querySelector('#portfolio-language-switcher .lang-btn.active');
+                    
+                    if (currentActive && currentActive.getAttribute('data-lang') === lang) {
+                        return;
+                    }
+                    
+                    updatePortfolioLanguageSwitcher(lang);
+                    localStorage.setItem('preferredLang', lang);
+                    
+                    if (window.i18n && window.i18n.switchLanguage) {
+                        window.i18n.switchLanguage(lang);
+                    } else if (window.i18n && window.i18n.refresh) {
+                        window.i18n.refresh();
+                    }
+                    
+                    console.log('🌐 Portfolio language changed to:', lang);
+                });
+            });
+        }
+        
+        function updatePortfolioLanguageSwitcher(lang) {
+            const langBtns = document.querySelectorAll('#portfolio-language-switcher .lang-btn');
+            const switcher = document.getElementById('portfolio-language-switcher');
+            
+            langBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            if (switcher) {
+                switcher.setAttribute('data-current-lang', lang);
+            }
+        }
+        
+        // Функция для логики скролла хедера (как на главной)
+        function initPortfolioHeaderScroll() {
+            const header = document.getElementById('portfolio-main-header');
+            if (!header) {
+                console.log('⚠️ Header not found for scroll behavior');
+                setTimeout(initPortfolioHeaderScroll, 100);
+                return;
+            }
+            
+            console.log('🎯 Setting up portfolio header scroll behavior');
+            
+            let lastScrollY = window.scrollY;
+            let ticking = false;
+            const scrollThreshold = 100;
+            
+            function updateHeader() {
+                const currentScrollY = window.scrollY;
+                
+                // В самом верху страницы
+                if (currentScrollY <= 50) {
+                    header.classList.remove('header-hidden', 'header-scrolled');
+                    header.style.opacity = '1';
+                    return;
+                }
+                
+                // Плавное изменение прозрачности
+                if (currentScrollY <= 150) {
+                    const opacity = 1 - (currentScrollY - 50) / 100;
+                    header.style.opacity = opacity.toString();
+                    header.classList.remove('header-hidden');
+                } else {
+                    header.style.opacity = '0';
+                    header.classList.add('header-hidden');
+                }
+                
+                // Добавляем класс при скролле
+                if (currentScrollY > scrollThreshold) {
+                    header.classList.add('header-scrolled');
+                } else {
+                    header.classList.remove('header-scrolled');
+                }
+                
+                lastScrollY = currentScrollY;
+            }
+            
+            function onScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateHeader();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+            
+            // Инициализация
+            updateHeader();
+            
+            // Слушаем скролл
+            window.addEventListener('scroll', onScroll, { passive: true });
+            
+            // Показываем при наведении
+            header.addEventListener('mouseenter', () => {
+                header.style.opacity = '1';
+                header.classList.remove('header-hidden');
+            });
+            
+            console.log('✅ Portfolio header scroll behavior initialized');
+        }
+        
+        // Функция для установки активной ссылки навигации
+        function setActivePortfolioNavLink() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('#portfolio-main-nav .nav-link');
+            
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Принудительно активируем portfolio
+            const portfolioLink = document.querySelector('#portfolio-main-nav .nav-link[href="portfolio.html"]');
+            if (portfolioLink) {
+                portfolioLink.classList.add('active');
+            }
+        }
+        
+        // Функция корректировки отступов для хедера
+        function adjustPortfolioHeaderPadding() {
+            const header = document.getElementById('portfolio-main-header');
+            const portfolioHero = document.querySelector('.portfolio-hero');
+            
+            if (header && portfolioHero) {
+                const headerHeight = header.offsetHeight;
+                if (window.innerWidth > 768) {
+                    portfolioHero.style.paddingTop = (headerHeight + 40) + 'px';
+                } else {
+                    portfolioHero.style.paddingTop = (headerHeight + 20) + 'px';
+                }
+            }
+        }
+        
+        // Основная функция инициализации хедера
+        function initPortfolioHeader() {
+            console.log('🎬 Initializing portfolio header system...');
+            
+            // Инициализируем компоненты
+            initPortfolioMobileMenu();
+            initPortfolioLanguageSwitcher();
+            initPortfolioHeaderScroll();
+            setActivePortfolioNavLink();
+            
+            // Корректируем отступы
+            adjustPortfolioHeaderPadding();
+            
+            // Обновляем отступы при ресайзе
+            window.addEventListener('resize', adjustPortfolioHeaderPadding);
+            
+            // Применяем переводы
+            if (window.i18n && window.i18n.refresh) {
                 setTimeout(() => {
-                    // Global header initialization (from header.html)
-                    if (typeof initHeader === 'function') {
-                        initHeader();
-                    }
+                    window.i18n.refresh();
+                    console.log('🌍 Translations applied to portfolio header');
+                }, 300);
+            }
+            
+            console.log('✅ Portfolio header fully initialized');
+        }
+        
+        // Загрузка футера
+        function loadPortfolioFooter() {
+            fetch('components/footer.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('footer-container').innerHTML = html;
+                    console.log('✅ Portfolio footer loaded');
                     
-                    // Home-specific header behavior (for consistency)
-                    if (typeof initHomeHeader === 'function') {
-                        initHomeHeader();
-                    }
-                    
-                    // Portfolio-specific header behavior
-                    if (typeof setupPortfolioHeaderBehavior === 'function') {
-                        setupPortfolioHeaderBehavior();
-                    }
-                    
-                    console.log('✅ Header fully initialized on portfolio page (matching home behavior)');
-                    
-                    // Apply translations
                     if (window.i18n && window.i18n.refresh) {
                         setTimeout(() => window.i18n.refresh(), 200);
                     }
-                    
-                }, 100);
-            })
-            .catch(error => {
-                console.error('❌ Error loading header:', error);
-                // Load fallback header
-                loadFallbackHeader();
-            });
-        
-        // Fallback header function (matching home page)
-        function loadFallbackHeader() {
-            document.getElementById('header-container').innerHTML = `
-                <header class="main-header">
-                    <div class="container">
-                        <div class="header-inner">
-                            <a href="index.html" class="logo">
-                                <div class="logo-mark">NB</div>
-                                <span class="logo-text" data-i18n="nav.brand">NB Group</span>
-                            </a>
-                            <nav class="main-nav">
-                                <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
-                                <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
-                                <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
-                                <a href="portfolio.html" class="nav-link active" data-i18n="nav.portfolio">Портфолио</a>
-                                <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
-                                <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
-                            </nav>
-                            <div class="header-actions">
-                                <div class="language-switcher" data-current-lang="ru">
-                                    <div class="lang-slider"></div>
-                                    <button class="lang-btn" data-lang="ru">
-                                        <span class="lang-text">RU</span>
-                                        <span class="lang-flag">🇷🇺</span>
-                                    </button>
-                                    <button class="lang-btn active" data-lang="en">
-                                        <span class="lang-text">EN</span>
-                                        <span class="lang-flag">🇺🇸</span>
-                                    </button>
-                                </div>
-                                <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
-                                    Начать проект
-                                </a>
-                                <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-                <div class="mobile-menu-overlay"></div>
-            `;
-            
-            setTimeout(() => {
-                if (typeof initHeader === 'function') initHeader();
-                if (typeof initHomeHeader === 'function') initHomeHeader();
-                if (window.i18n && window.i18n.refresh) window.i18n.refresh();
-            }, 100);
-        }
-
-        // Load footer component (SAME AS HOME)
-        fetch('components/footer.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('footer-container').innerHTML = html;
-                console.log('✅ Footer loaded successfully');
-                
-                // Применить переводы к футеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 200);
-            })
-            .catch(error => {
-                console.error('Error loading footer:', error);
-                document.getElementById('footer-container').innerHTML = `
-                    <footer class="minimal-footer">
-                        <div class="footer-container">
-                            <div class="footer-content">
-                                <div class="footer-bottom">
-                                    <div class="copyright" data-i18n="footer.copyright">
-                                        © 2024 NBGROUP.TECH Все права защищены.
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = `
+                        <footer class="minimal-footer">
+                            <div class="footer-container">
+                                <div class="footer-content">
+                                    <div class="footer-bottom">
+                                        <div class="copyright" data-i18n="footer.copyright">
+                                            © 2024 NBGROUP.TECH Все права защищены.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </footer>
-                `;
-                
-                // Применить переводы к fallback футеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 300);
-            });
-
-        // Инициализация страницы портфолио (UPDATED)
+                        </footer>
+                    `;
+                });
+        }
+        
+        // Инициализация при загрузке DOM
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Portfolio page initializing...');
+            console.log('📄 Portfolio DOM loaded');
             
-            // Инициализация функциональности портфолио
+            // Инициализируем хедер
+            setTimeout(initPortfolioHeader, 100);
+            
+            // Загружаем футер
+            loadPortfolioFooter();
+            
+            // Инициализируем функциональность портфолио
             setTimeout(() => {
                 if (typeof initPortfolio === 'function') {
                     initPortfolio();
                     console.log('✅ Portfolio functionality initialized');
-                } else {
-                    console.warn('initPortfolio function not found');
                 }
             }, 300);
             
-            // Адаптация padding для фиксированного хедера (как на главной)
-            function updateHeaderPadding() {
-                const header = document.querySelector('.main-header');
-                if (header) {
-                    const headerHeight = header.offsetHeight;
-                    const portfolioHero = document.querySelector('.portfolio-hero');
-                    if (portfolioHero) {
-                        if (window.innerWidth > 768) {
-                            portfolioHero.style.paddingTop = (headerHeight + 40) + 'px';
-                        } else {
-                            portfolioHero.style.paddingTop = (headerHeight + 20) + 'px';
-                        }
-                    }
-                }
-            }
-            
-            // Обновить padding при загрузке и изменении размера
-            window.addEventListener('load', updateHeaderPadding);
-            window.addEventListener('resize', updateHeaderPadding);
-            
-            // Обновить через 500ms после загрузки хедера
-            setTimeout(updateHeaderPadding, 500);
+            // Обновляем отступы после полной загрузки
+            window.addEventListener('load', adjustPortfolioHeaderPadding);
+            setTimeout(adjustPortfolioHeaderPadding, 500);
         });
+        
+        // Экспортируем функции для глобального использования
+        window.initPortfolioHeader = initPortfolioHeader;
+        window.adjustPortfolioHeaderPadding = adjustPortfolioHeaderPadding;
     </script>
 </body>
     </html>
