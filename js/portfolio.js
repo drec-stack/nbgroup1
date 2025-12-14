@@ -1,13 +1,8 @@
-// portfolio.js - Full portfolio functionality with header integration
-console.log('🎯 portfolio.js loaded - FULL VERSION');
+// portfolio.js - Full portfolio functionality with COMPATIBLE header
+console.log('🎯 portfolio.js loaded - COMPATIBLE VERSION');
 
 function initPortfolio() {
-    console.log('🎯 Initializing portfolio page...');
-    
-    // Если хедер еще не инициализирован, инициализируем его
-    if (typeof initPortfolioHeader === 'function') {
-        initPortfolioHeader();
-    }
+    console.log('🎯 Initializing portfolio page with compatible header...');
     
     // Основная функциональность портфолио
     setupPortfolioFilter();
@@ -17,7 +12,36 @@ function initPortfolio() {
     setupHoverEffects();
     setupMobileOptimizations();
     
+    // Проверка хедера
+    checkHeaderCompatibility();
+    
     console.log('✅ Portfolio page fully initialized');
+}
+
+// Проверка совместимости хедера
+function checkHeaderCompatibility() {
+    const header = document.querySelector('.main-header');
+    if (!header) {
+        console.warn('⚠️ Header not found, checking again...');
+        setTimeout(checkHeaderCompatibility, 500);
+        return;
+    }
+    
+    console.log('✅ Header found, checking compatibility:', {
+        isFixed: header.style.position === 'fixed',
+        hasGlass: window.getComputedStyle(header).backdropFilter !== 'none',
+        height: header.offsetHeight
+    });
+    
+    // Принудительно добавляем необходимые классы
+    if (!document.body.classList.contains('internal-page')) {
+        document.body.classList.add('internal-page');
+    }
+    
+    // Обновляем отступы
+    if (typeof window.updatePortfolioHeaderPadding === 'function') {
+        window.updatePortfolioHeaderPadding();
+    }
 }
 
 // Фильтрация проектов
@@ -35,7 +59,7 @@ function setupPortfolioFilter() {
     
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            // Update active button with animation
+            // Update active button
             filterBtns.forEach(b => {
                 b.classList.remove('active');
                 b.style.transform = 'scale(1)';
@@ -101,14 +125,6 @@ function setupPortfolioFilter() {
             
             // Update URL hash for bookmarking
             history.pushState(null, null, `#${filter}`);
-            
-            // Analytics event
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'portfolio_filter', {
-                    'event_category': 'engagement',
-                    'event_label': filter
-                });
-            }
         });
     });
     
@@ -171,9 +187,6 @@ function setupProjectInteractions() {
             caseStudyLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 
-                // Ripple effect
-                createRippleEffect(caseStudyLink, e);
-                
                 // Visual feedback
                 caseStudyLink.style.transform = 'translateX(10px) scale(1.05)';
                 setTimeout(() => {
@@ -183,14 +196,6 @@ function setupProjectInteractions() {
                 // Get project title
                 const projectTitle = card.querySelector('.project-title')?.textContent || 'Project';
                 console.log(`📖 Opening case study: ${projectTitle}`);
-                
-                // Show notification on mobile
-                if (isMobile) {
-                    showMobileNotification(`Загружаем кейс: ${projectTitle}`);
-                }
-                
-                // In a real project, you would navigate to the case study page
-                // window.location.href = `case-study.html?project=${encodeURIComponent(projectTitle)}`;
             });
         }
         
@@ -207,39 +212,6 @@ function setupProjectInteractions() {
             });
         }
     });
-}
-
-// Ripple effect
-function createRippleEffect(element, event) {
-    const ripple = document.createElement('span');
-    const rect = element.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    const x = event.clientX - rect.left - size / 2;
-    const y = event.clientY - rect.top - size / 2;
-    
-    ripple.style.cssText = `
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.6);
-        transform: scale(0);
-        animation: ripple-animation 0.6s ease-out;
-        width: ${size}px;
-        height: ${size}px;
-        top: ${y}px;
-        left: ${x}px;
-        pointer-events: none;
-        z-index: 1;
-    `;
-    
-    element.style.position = 'relative';
-    element.style.overflow = 'hidden';
-    element.appendChild(ripple);
-    
-    setTimeout(() => {
-        if (ripple.parentNode === element) {
-            element.removeChild(ripple);
-        }
-    }, 600);
 }
 
 // Testimonial carousel
@@ -303,58 +275,6 @@ function setupTestimonialCarousel() {
         
         // Initialize
         showTestimonial(0);
-        
-        // Touch swipe for mobile
-        if (isMobile) {
-            setupTestimonialSwipe(testimonialCards, carouselInterval);
-        }
-    }
-}
-
-// Swipe for mobile testimonials
-function setupTestimonialSwipe(testimonialCards, carouselInterval) {
-    let touchStartX = 0;
-    let touchEndX = 0;
-    let currentIndex = 0;
-    const swipeThreshold = 50;
-    
-    const container = document.querySelector('.testimonials-grid');
-    if (!container) return;
-    
-    container.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-        clearInterval(carouselInterval);
-    }, { passive: true });
-    
-    container.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    }, { passive: true });
-    
-    function handleSwipe() {
-        const swipeDistance = touchEndX - touchStartX;
-        
-        if (Math.abs(swipeDistance) > swipeThreshold) {
-            if (swipeDistance > 0) {
-                // Swipe right - previous
-                currentIndex = (currentIndex - 1 + testimonialCards.length) % testimonialCards.length;
-            } else {
-                // Swipe left - next
-                currentIndex = (currentIndex + 1) % testimonialCards.length;
-            }
-            
-            // Animate the change
-            testimonialCards.forEach((card, i) => {
-                if (i === currentIndex) {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                } else {
-                    card.style.opacity = '0.5';
-                    card.style.transform = 'translateY(20px)';
-                }
-                card.style.transition = 'all 0.6s ease';
-            });
-        }
     }
 }
 
@@ -368,13 +288,11 @@ function setupScrollAnimations() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const delay = entry.target.getAttribute('data-delay') || 0;
-                    
                     setTimeout(() => {
                         entry.target.style.opacity = '1';
                         entry.target.style.transform = 'translateY(0) scale(1)';
                         entry.target.classList.add('animated');
-                    }, parseInt(delay));
+                    }, 100);
                     
                     observer.unobserve(entry.target);
                 }
@@ -449,70 +367,11 @@ function setupMobileOptimizations() {
             });
         });
         
-        // Optimize scroll for filters
-        const filterNav = document.querySelector('.filter-nav');
-        if (filterNav) {
-            filterNav.style.webkitOverflowScrolling = 'touch';
-            filterNav.style.scrollBehavior = 'smooth';
-        }
-        
         // Reduce animations for performance
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.documentElement.classList.add('reduced-animations');
         }
-        
-        // Handle orientation change
-        let previousOrientation = window.orientation;
-        window.addEventListener('orientationchange', () => {
-            if (window.orientation !== previousOrientation) {
-                setTimeout(() => {
-                    if (typeof initPortfolio === 'function') {
-                        initPortfolio();
-                    }
-                }, 300);
-                previousOrientation = window.orientation;
-            }
-        });
     }
-}
-
-// Mobile notification
-function showMobileNotification(message) {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%) translateY(-100px);
-        background: rgba(0, 102, 255, 0.95);
-        color: white;
-        padding: 12px 24px;
-        border-radius: 25px;
-        font-weight: 600;
-        z-index: 9999;
-        transition: transform 0.3s ease;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
-    `;
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    
-    // Show notification
-    setTimeout(() => {
-        notification.style.transform = 'translateX(-50%) translateY(0)';
-    }, 10);
-    
-    // Hide and remove after 3 seconds
-    setTimeout(() => {
-        notification.style.transform = 'translateX(-50%) translateY(-100px)';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    }, 3000);
 }
 
 // Resize handler
@@ -526,49 +385,20 @@ window.addEventListener('resize', () => {
     }, 250);
 });
 
-// CSS for ripple animation
-if (!document.querySelector('#portfolio-ripple-styles')) {
-    const style = document.createElement('style');
-    style.id = 'portfolio-ripple-styles';
-    style.textContent = `
-        @keyframes ripple-animation {
-            0% {
-                transform: scale(0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(20);
-                opacity: 0;
-            }
-        }
-        
-        .reduced-animations * {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-        }
-        
-        /* Smooth header animations */
-        .main-header {
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                       opacity 0.4s ease !important;
-        }
-    `;
-    document.head.appendChild(style);
-}
-
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             if (typeof initPortfolio === 'function') initPortfolio();
-        }, 100);
+        }, 300);
     });
 } else {
     setTimeout(() => {
         if (typeof initPortfolio === 'function') initPortfolio();
-    }, 100);
+    }, 300);
 }
 
 // Export function
 window.initPortfolio = initPortfolio;
+
+console.log('✅ Portfolio script loaded successfully');
