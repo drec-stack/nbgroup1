@@ -1,8 +1,17 @@
-// portfolio.js - Full portfolio functionality with IDENTICAL header behavior
-console.log('🎯 portfolio.js loaded - IDENTICAL HEADER VERSION');
+// portfolio.js - Full portfolio functionality
+console.log('🎯 portfolio.js loaded');
 
 function initPortfolio() {
-    console.log('🎯 Initializing portfolio page with identical header...');
+    console.log('🎯 Initializing portfolio page...');
+    
+    // Остановить home.js если он запустился
+    if (typeof window.homeInitialized !== 'undefined') {
+        console.log('🛑 Stopping home.js behavior on portfolio');
+        const header = document.querySelector('.main-header');
+        if (header) {
+            header.classList.remove('header-hide-smooth', 'header-show-smooth');
+        }
+    }
     
     // Основная функциональность портфолио
     setupPortfolioFilter();
@@ -12,7 +21,7 @@ function initPortfolio() {
     setupHoverEffects();
     setupMobileOptimizations();
     
-    // Проверка и корректировка хедера
+    // Проверка хедера
     checkAndAdjustHeader();
     
     console.log('✅ Portfolio page fully initialized');
@@ -27,28 +36,16 @@ function checkAndAdjustHeader() {
         return;
     }
     
-    console.log('✅ Header compatibility check:', {
+    console.log('✅ Header check:', {
         height: header.offsetHeight,
         isHidden: header.classList.contains('header-hidden'),
-        hasHomeBehavior: true
+        position: window.getComputedStyle(header).position
     });
     
-    // Обновляем отступы если функция доступна
+    // Обновляем отступы
     if (typeof window.updatePortfolioHeaderPadding === 'function') {
         window.updatePortfolioHeaderPadding();
     }
-    
-    // Добавляем event listener для обновления отступов при изменении видимости хедера
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            if (mutation.attributeName === 'class' && 
-                typeof window.updatePortfolioHeaderPadding === 'function') {
-                setTimeout(window.updatePortfolioHeaderPadding, 50);
-            }
-        });
-    });
-    
-    observer.observe(header, { attributes: true });
 }
 
 // Фильтрация проектов
@@ -57,10 +54,7 @@ function setupPortfolioFilter() {
     const portfolioItems = document.querySelectorAll('.portfolio-item');
     const isMobile = window.innerWidth <= 768;
     
-    if (filterBtns.length === 0) {
-        console.log('⚠️ Filter buttons not found');
-        return;
-    }
+    if (filterBtns.length === 0) return;
     
     console.log(`🎯 Setting up portfolio filter with ${filterBtns.length} buttons`);
     
