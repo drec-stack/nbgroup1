@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/contacts.css">
     <style>
-        /* Ensure content starts below header */
+        /* Ensure content starts below header - EXACTLY LIKE ABOUT.HTML */
         body {
             padding-top: 80px;
             background: var(--secondary);
@@ -22,7 +22,7 @@
             }
         }
         
-        /* Glass header styles for contact page - EXACTLY LIKE ABOUT.HTML */
+        /* Glass header styles - EXACTLY LIKE ABOUT.HTML */
         .main-header {
             position: fixed !important;
             top: 20px !important;
@@ -55,6 +55,209 @@
             -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
         }
         
+        .main-header .container {
+            padding: 0 30px !important;
+        }
+        
+        .header-inner {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 18px 0 !important;
+        }
+        
+        .logo {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            text-decoration: none !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 1.4rem !important;
+            letter-spacing: -0.5px !important;
+        }
+        
+        .logo-mark {
+            width: 42px !important;
+            height: 42px !important;
+            background: linear-gradient(135deg, #0066ff, #00aaff) !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: white !important;
+            font-weight: 800 !important;
+            font-size: 1.2rem !important;
+        }
+        
+        .logo-text {
+            background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            font-weight: 700 !important;
+        }
+        
+        .main-nav {
+            display: flex !important;
+            gap: 35px !important;
+            align-items: center !important;
+        }
+        
+        .nav-link {
+            color: white !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+            font-size: 1rem !important;
+            opacity: 0.85 !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+            padding: 8px 0 !important;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            opacity: 1 !important;
+            color: white !important;
+        }
+        
+        .nav-link.active::after {
+            content: '' !important;
+            position: absolute !important;
+            bottom: -2px !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 2px !important;
+            background: linear-gradient(135deg, #0066ff, #00aaff) !important;
+            border-radius: 1px !important;
+        }
+        
+        .header-actions {
+            display: flex !important;
+            align-items: center !important;
+            gap: 20px !important;
+        }
+        
+        .language-switcher {
+            display: flex !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 25px !important;
+            padding: 4px !important;
+            position: relative !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        }
+        
+        .lang-btn {
+            padding: 8px 18px !important;
+            background: transparent !important;
+            border: none !important;
+            color: white !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+            cursor: pointer !important;
+            border-radius: 20px !important;
+            transition: all 0.3s ease !important;
+            z-index: 2 !important;
+            position: relative !important;
+            min-width: 50px !important;
+            text-align: center !important;
+            opacity: 0.7 !important;
+        }
+        
+        .lang-btn.active {
+            opacity: 1 !important;
+            color: white !important;
+        }
+        
+        .lang-slider {
+            position: absolute !important;
+            top: 4px !important;
+            left: 4px !important;
+            height: calc(100% - 8px) !important;
+            width: 50px !important;
+            background: linear-gradient(135deg, #0066ff, #00aaff) !important;
+            border-radius: 20px !important;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            z-index: 1 !important;
+        }
+        
+        .language-switcher[data-current-lang="en"] .lang-slider {
+            transform: translateX(46px) !important;
+        }
+        
+        .language-switcher[data-current-lang="ru"] .lang-slider {
+            transform: translateX(0) !important;
+        }
+        
+        .btn-small {
+            padding: 10px 25px !important;
+            font-size: 0.95rem !important;
+            background: linear-gradient(135deg, #0066ff, #00aaff) !important;
+            border: none !important;
+            border-radius: 25px !important;
+            color: white !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            text-decoration: none !important;
+            display: inline-block !important;
+        }
+        
+        .mobile-menu-toggle {
+            display: none !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            width: 28px !important;
+            height: 20px !important;
+            background: transparent !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 0 !important;
+            position: relative !important;
+            z-index: 1002 !important;
+        }
+        
+        .mobile-menu-toggle span {
+            display: block !important;
+            width: 100% !important;
+            height: 2px !important;
+            background: white !important;
+            transition: all 0.3s ease !important;
+            border-radius: 1px !important;
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg) !important;
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0 !important;
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg) !important;
+        }
+        
+        .mobile-menu-overlay {
+            display: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background: rgba(10, 12, 18, 0.95) !important;
+            backdrop-filter: blur(10px) !important;
+            z-index: 999 !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease !important;
+        }
+        
+        .mobile-menu-overlay.active {
+            display: block !important;
+            opacity: 1 !important;
+        }
+        
+        /* Мобильная версия */
         @media (max-width: 768px) {
             .main-header {
                 top: 0 !important;
@@ -62,14 +265,62 @@
                 max-width: 100% !important;
                 border-radius: 0 !important;
                 margin: 0 !important;
-                padding: 14px 0 !important;
+                padding: 0 !important;
                 background: rgba(0, 102, 255, 0.22) !important;
                 border: none !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
             }
+            
+            .main-header .container {
+                padding: 0 20px !important;
+            }
+            
+            .header-inner {
+                padding: 16px 0 !important;
+            }
+            
+            .logo-text {
+                font-size: 1.1rem !important;
+            }
+            
+            .main-nav {
+                position: fixed !important;
+                top: 80px !important;
+                right: -100% !important;
+                width: 280px !important;
+                height: calc(100vh - 80px) !important;
+                background: rgba(15, 17, 23, 0.98) !important;
+                backdrop-filter: blur(20px) !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                padding: 40px 30px !important;
+                transition: right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+                border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+                z-index: 1000 !important;
+                gap: 25px !important;
+            }
+            
+            .main-nav.active {
+                right: 0 !important;
+            }
+            
+            .nav-link {
+                font-size: 1.2rem !important;
+                width: 100% !important;
+                padding: 12px 0 !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex !important;
+            }
+            
+            .header-actions .btn-small {
+                display: none !important;
+            }
         }
         
-        /* Отступ для хедера */
+        /* Отступ для контента */
         .contact-hero {
             padding-top: 180px !important;
         }
@@ -80,7 +331,7 @@
             }
         }
         
-        /* Animation for header entrance */
+        /* Анимация для хедера */
         .header-glass-enter {
             animation: glassEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
         }
@@ -95,12 +346,76 @@
                 transform: translateY(0) !important;
             }
         }
+        
+        .glass-morph {
+            animation: glassMorph 6s ease-in-out infinite alternate !important;
+        }
+        
+        @keyframes glassMorph {
+            0% {
+                backdrop-filter: blur(16px) saturate(180%) !important;
+            }
+            100% {
+                backdrop-filter: blur(20px) saturate(200%) !important;
+            }
+        }
     </style>
 </head>
 <body class="contact-page internal-page">
-    <!-- Header Container (dynamic like about.html) -->
-    <div id="header-container"></div>
-    
+    <!-- СТАТИЧЕСКИЙ ХЕДЕР ТОЧЬ-В-ТОЧЬ КАК В ABOUT.HTML -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-inner">
+                <!-- Logo -->
+                <a href="index.html" class="logo">
+                    <div class="logo-mark">NB</div>
+                    <span class="logo-text">NBGROUP.TECH</span>
+                </a>
+
+                <!-- Main Navigation -->
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                    <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                    <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                    <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
+                    <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                    <a href="contacts.html" class="nav-link active" data-i18n="nav.contact">Контакты</a>
+                </nav>
+
+                <!-- Header Actions -->
+                <div class="header-actions">
+                    <!-- Language Switcher -->
+                    <div class="language-switcher" data-current-lang="ru">
+                        <div class="lang-slider"></div>
+                        <button class="lang-btn" data-lang="ru">
+                            <span class="lang-text">RU</span>
+                            <span class="lang-flag">🇷🇺</span>
+                        </button>
+                        <button class="lang-btn active" data-lang="en">
+                            <span class="lang-text">EN</span>
+                            <span class="lang-flag">🇺🇸</span>
+                        </button>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
+                        Начать проект
+                    </a>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-menu-overlay"></div>
+    </header>
+
     <!-- Hero Section -->
     <section class="contact-hero">
         <div class="container">
@@ -388,9 +703,19 @@
         </div>
     </section>
 
-    <!-- Footer Container -->
-    <div id="footer-container"></div>
-    
+    <!-- Footer -->
+    <footer class="minimal-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-bottom">
+                    <div class="copyright" data-i18n="footer.copyright">
+                        © 2024 NBGROUP.TECH Все права защищены.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <!-- JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
@@ -398,110 +723,13 @@
     <script src="js/contacts.js"></script>
     
     <script>
-        // Component loader for contacts page (EXACTLY LIKE ABOUT.HTML)
-        function loadComponents() {
-            console.log('🔄 Loading components for contacts page...');
-            
-            // Load header
-            fetch('components/header.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('header-container').innerHTML = html;
-                    initializeHeader();
-                })
-                .catch(error => {
-                    console.error('Error loading header:', error);
-                    document.getElementById('header-container').innerHTML = `
-                        <header class="main-header">
-                            <div class="container">
-                                <div class="header-inner">
-                                    <a href="index.html" class="logo">
-                                        <div class="logo-mark">NB</div>
-                                        <span class="logo-text">NBGROUP.TECH</span>
-                                    </a>
-                                    <nav class="main-nav">
-                                        <a href="index.html" class="nav-link">Главная</a>
-                                        <a href="about.html" class="nav-link">О нас</a>
-                                        <a href="services.html" class="nav-link">Услуги</a>
-                                        <a href="portfolio.html" class="nav-link">Портфолио</a>
-                                        <a href="brandbook.html" class="nav-link">Брендбук</a>
-                                        <a href="contacts.html" class="nav-link active">Контакты</a>
-                                    </nav>
-                                    <div class="header-actions">
-                                        <div class="language-switcher" data-current-lang="ru">
-                                            <div class="lang-slider"></div>
-                                            <button class="lang-btn" data-lang="ru">
-                                                <span class="lang-text">RU</span>
-                                                <span class="lang-flag">🇷🇺</span>
-                                            </button>
-                                            <button class="lang-btn active" data-lang="en">
-                                                <span class="lang-text">EN</span>
-                                                <span class="lang-flag">🇺🇸</span>
-                                            </button>
-                                        </div>
-                                        <a href="contacts.html" class="btn btn-primary btn-small">
-                                            Начать проект
-                                        </a>
-                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </header>
-                        <div class="mobile-menu-overlay"></div>
-                    `;
-                    initializeHeader();
-                });
-            
-            // Load footer
-            fetch('components/footer.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('footer-container').innerHTML = html;
-                    if (typeof window.initFooter === 'function') {
-                        setTimeout(window.initFooter, 100);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading footer:', error);
-                    document.getElementById('footer-container').innerHTML = `
-                        <footer class="minimal-footer">
-                            <div class="footer-container">
-                                <div class="footer-content">
-                                    <div class="footer-bottom">
-                                        <div class="copyright" data-i18n="footer.copyright">
-                                            © 2024 NBGROUP.TECH Все права защищены.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </footer>
-                    `;
-                });
-        }
-        
-        function initializeHeader() {
-            console.log('🔵 Initializing header for contacts page...');
+        // Инициализация хедера ТОЧЬ-В-ТОЧЬ как в about.html
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Contact page with glass header initializing...');
             
             const header = document.querySelector('.main-header');
-            const isHomePage = false; // Это не главная страница
             
-            // Инициализация мобильного меню
-            setupMobileMenu();
-            
-            // Установка активной ссылки
-            setActiveNavLink();
-            
-            // Обновление UI переключателя языка (синхронизация с i18n.js)
-            updateLanguageSwitcherUI();
-            
-            // Установка логики скролла
-            setupHeaderScroll();
-            
-            // Добавляем стеклянный эффект
+            // Добавляем анимацию входа
             if (header) {
                 setTimeout(() => {
                     header.classList.add('header-glass-enter');
@@ -522,14 +750,13 @@
                     header.classList.remove('glass-morph');
                 });
             }
+
+            // Mobile menu functionality - EXACTLY LIKE ABOUT.HTML
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            const nav = document.querySelector('.main-nav');
+            const overlay = document.querySelector('.mobile-menu-overlay');
             
-            function setupMobileMenu() {
-                const toggle = document.querySelector('.mobile-menu-toggle');
-                const nav = document.querySelector('.main-nav');
-                const overlay = document.querySelector('.mobile-menu-overlay');
-
-                if (!toggle || !nav) return;
-
+            if (toggle && nav) {
                 const toggleMenu = () => {
                     const isActive = nav.classList.contains('active');
                     toggle.classList.toggle('active');
@@ -547,40 +774,62 @@
                     overlay.addEventListener('click', toggleMenu);
                 }
 
+                // Close menu when clicking on nav links
                 const navLinks = nav.querySelectorAll('.nav-link');
                 navLinks.forEach(link => {
                     link.addEventListener('click', toggleMenu);
                 });
 
+                // Close on escape key
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape' && nav.classList.contains('active')) {
                         toggleMenu();
                     }
                 });
 
+                // Close on window resize (desktop)
                 window.addEventListener('resize', () => {
                     if (window.innerWidth > 768 && nav.classList.contains('active')) {
                         toggleMenu();
                     }
                 });
             }
+
+            // Language switcher functionality - EXACTLY LIKE ABOUT.HTML
+            const langSwitcher = document.querySelector('.language-switcher');
+            const langButtons = document.querySelectorAll('.lang-btn');
             
-            function setActiveNavLink() {
-                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-                const navLinks = document.querySelectorAll('.nav-link');
+            if (langSwitcher && langButtons.length) {
+                // Обновляем UI в зависимости от текущего языка
+                updateLanguageSwitcherUI();
                 
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href === currentPage || 
-                        (currentPage === '' && href === 'index.html') ||
-                        (currentPage === 'index.html' && href === 'index.html')) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
-                    }
+                langButtons.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const newLang = this.getAttribute('data-lang');
+                        const currentLang = langSwitcher.getAttribute('data-current-lang');
+                        
+                        if (newLang !== currentLang) {
+                            // Update UI
+                            langButtons.forEach(b => b.classList.remove('active'));
+                            this.classList.add('active');
+                            langSwitcher.setAttribute('data-current-lang', newLang);
+                            
+                            // Trigger language change event
+                            window.dispatchEvent(new CustomEvent('languageChanged', {
+                                detail: { lang: newLang }
+                            }));
+                            
+                            // If i18n is available, switch language
+                            if (window.i18n && window.i18n.setLang) {
+                                window.i18n.setLang(newLang);
+                            }
+                        }
+                    });
                 });
             }
-            
+
             function updateLanguageSwitcherUI() {
                 // Синхронизация с i18n.js если он доступен
                 if (window.i18n && window.i18n.getCurrentLang) {
@@ -612,38 +861,44 @@
                     }
                 }
             }
+
+            // Header scroll effect - EXACTLY LIKE ABOUT.HTML
+            let lastScrollY = window.scrollY;
+            const headerEl = document.querySelector('.main-header');
+            const scrollThreshold = 100;
             
-            function setupHeaderScroll() {
-                const header = document.querySelector('.main-header');
-                if (!header) return;
-                
-                let lastScrollY = window.scrollY;
-                const scrollThreshold = 100;
-                
+            if (headerEl) {
                 window.addEventListener('scroll', () => {
                     const currentScrollY = window.scrollY;
                     
                     if (currentScrollY <= 0) {
-                        header.classList.remove('header-hidden', 'header-scrolled');
-                        header.style.opacity = '1';
+                        headerEl.classList.remove('header-hidden', 'header-scrolled');
+                        headerEl.style.opacity = '1';
                         return;
                     }
                     
                     if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
                         // Scrolling down
-                        header.classList.remove('header-hidden');
-                        header.classList.add('header-scrolled');
+                        headerEl.classList.remove('header-hidden');
+                        headerEl.classList.add('header-scrolled');
                     } else if (currentScrollY < lastScrollY) {
                         // Scrolling up
-                        header.classList.remove('header-hidden');
-                        header.classList.remove('header-scrolled');
+                        headerEl.classList.remove('header-hidden');
+                        headerEl.classList.remove('header-scrolled');
                     }
                     
                     lastScrollY = currentScrollY;
                 }, { passive: true });
             }
-        }
-        
+
+            // Initialize contact page functionality
+            setTimeout(() => {
+                if (typeof initContact === 'function') {
+                    initContact();
+                }
+            }, 300);
+        });
+
         // Обработчик события смены языка
         window.addEventListener('languageChanged', function(event) {
             console.log('🌐 Language changed to:', event.detail.lang);
@@ -663,25 +918,8 @@
                 }
             });
         });
-        
-        // Load components when DOM is ready
-        document.addEventListener('DOMContentLoaded', loadComponents);
-        
-        // Initialize i18n with delay
-        setTimeout(() => {
-            if (window.i18n && window.i18n.init) {
-                window.i18n.init();
-            }
-        }, 300);
-        
-        // Initialize contact page animations
-        setTimeout(() => {
-            if (typeof window.initContact === 'function') {
-                window.initContact();
-            }
-        }, 1500);
-        
-        // Smooth scrolling for anchor links
+
+        // Smooth scrolling for anchor links - EXACTLY LIKE ABOUT.HTML
         document.addEventListener('click', function(e) {
             if (e.target.matches('a[href^="#"]')) {
                 e.preventDefault();
@@ -697,6 +935,13 @@
                 }
             }
         });
+        
+        // Initialize i18n with delay
+        setTimeout(() => {
+            if (window.i18n && window.i18n.init) {
+                window.i18n.init();
+            }
+        }, 300);
     </script>
 </body>
-</html>
+                                        </html>
