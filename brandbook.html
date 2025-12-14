@@ -421,6 +421,108 @@
                 });
         }
 
+        // Функция для плавного скрытия/показа хедера при скролле (как на главной)
+        function initBrandbookHeaderScroll() {
+            const header = document.querySelector('.main-header');
+            if (!header) {
+                setTimeout(initBrandbookHeaderScroll, 100);
+                return;
+            }
+
+            console.log('🎭 Initializing smooth header hide on brandbook page...');
+            
+            let lastScrollTop = 0;
+            let isHidden = false;
+            const hideThreshold = 100;
+            const showThreshold = 10;
+            
+            function updateHeader() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // В самом верху страницы - всегда показываем
+                if (scrollTop <= showThreshold) {
+                    if (isHidden) {
+                        header.classList.remove('header-hidden');
+                        header.style.opacity = '1';
+                        header.style.transform = 'translateY(0)';
+                        isHidden = false;
+                    }
+                    lastScrollTop = Math.max(0, scrollTop);
+                    return;
+                }
+                
+                const scrollDelta = scrollTop - lastScrollTop;
+                const scrollingDown = scrollDelta > 0;
+                const scrollingUp = scrollDelta < 0;
+                
+                // Прячем при скролле вниз
+                if (scrollingDown && scrollTop > hideThreshold && !isHidden) {
+                    header.classList.add('header-hidden');
+                    header.style.opacity = '0';
+                    header.style.transform = 'translateY(-20px)';
+                    isHidden = true;
+                } 
+                // Показываем при скролле вверх
+                else if (scrollingUp && isHidden) {
+                    header.classList.remove('header-hidden');
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateY(0)';
+                    isHidden = false;
+                }
+                
+                // Добавляем класс при скролле для изменения стилей
+                if (scrollTop > 20) {
+                    header.classList.add('header-scrolled');
+                } else {
+                    header.classList.remove('header-scrolled');
+                }
+                
+                lastScrollTop = scrollTop;
+            }
+            
+            // Показываем хедер при наведении мыши
+            header.addEventListener('mouseenter', () => {
+                if (isHidden) {
+                    header.classList.remove('header-hidden');
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateY(0)';
+                    isHidden = false;
+                    
+                    // Автоматически скрываем через 2 секунды
+                    setTimeout(() => {
+                        if (window.pageYOffset > hideThreshold && !header.matches(':hover')) {
+                            header.classList.add('header-hidden');
+                            header.style.opacity = '0';
+                            header.style.transform = 'translateY(-20px)';
+                            isHidden = true;
+                        }
+                    }, 2000);
+                }
+            });
+            
+            // Оптимизация скролла
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateHeader();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+            
+            // Инициализация
+            updateHeader();
+            
+            // Плавная анимация
+            setTimeout(() => {
+                header.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            }, 100);
+            
+            console.log('✅ Brandbook header scroll behavior initialized');
+        }
+
         // Инициализация страницы брендбука
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Brandbook page initializing...');
@@ -431,8 +533,10 @@
             // Загружаем футер
             loadFooter();
             
-            // Инициализация интерактивных элементов брендбука
+            // Инициализация скролла хедера
             setTimeout(() => {
+                initBrandbookHeaderScroll();
+                
                 // Анимация появления кейсов
                 const brandCases = document.querySelectorAll('.brand-case');
                 brandCases.forEach((caseItem, index) => {
@@ -572,4 +676,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
