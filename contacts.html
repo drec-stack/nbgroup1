@@ -9,6 +9,316 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/contacts.css">
+    <style>
+        /* Стили для стеклянного хедера */
+        .main-header {
+            position: fixed !important;
+            top: 20px !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: calc(100% - 40px) !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            z-index: 1000 !important;
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transition: all 0.4s ease !important;
+            border-radius: 20px !important;
+            background: rgba(0, 102, 255, 0.12) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        }
+        
+        .main-header.header-hidden {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
+        .main-header.header-scrolled {
+            background: rgba(0, 102, 255, 0.2) !important;
+            backdrop-filter: blur(20px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+        }
+        
+        .main-header .container {
+            padding: 0 30px !important;
+        }
+        
+        .header-inner {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 18px 0 !important;
+        }
+        
+        .logo {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            text-decoration: none !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 1.4rem !important;
+            letter-spacing: -0.5px !important;
+        }
+        
+        .logo-mark {
+            width: 42px !important;
+            height: 42px !important;
+            background: linear-gradient(135deg, #0066ff, #00aaff) !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: white !important;
+            font-weight: 800 !important;
+            font-size: 1.2rem !important;
+        }
+        
+        .logo-text {
+            background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            font-weight: 700 !important;
+        }
+        
+        .main-nav {
+            display: flex !important;
+            gap: 35px !important;
+            align-items: center !important;
+        }
+        
+        .nav-link {
+            color: white !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+            font-size: 1rem !important;
+            opacity: 0.85 !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+            padding: 8px 0 !important;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            opacity: 1 !important;
+            color: white !important;
+        }
+        
+        .nav-link.active::after {
+            content: '' !important;
+            position: absolute !important;
+            bottom: -2px !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 2px !important;
+            background: linear-gradient(135deg, #0066ff, #00aaff) !important;
+            border-radius: 1px !important;
+        }
+        
+        .header-actions {
+            display: flex !important;
+            align-items: center !important;
+            gap: 20px !important;
+        }
+        
+        .language-switcher {
+            display: flex !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 25px !important;
+            padding: 4px !important;
+            position: relative !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        }
+        
+        .lang-btn {
+            padding: 8px 18px !important;
+            background: transparent !important;
+            border: none !important;
+            color: white !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+            cursor: pointer !important;
+            border-radius: 20px !important;
+            transition: all 0.3s ease !important;
+            z-index: 2 !important;
+            position: relative !important;
+            min-width: 50px !important;
+            text-align: center !important;
+            opacity: 0.7 !important;
+        }
+        
+        .lang-btn.active {
+            opacity: 1 !important;
+            color: #0a0c12 !important;
+        }
+        
+        .lang-slider {
+            position: absolute !important;
+            top: 4px !important;
+            left: 4px !important;
+            height: calc(100% - 8px) !important;
+            width: 50px !important;
+            background: linear-gradient(135deg, #0066ff, #00aaff) !important;
+            border-radius: 20px !important;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            z-index: 1 !important;
+        }
+        
+        .language-switcher[data-current-lang="en"] .lang-slider {
+            transform: translateX(46px) !important;
+        }
+        
+        .language-switcher[data-current-lang="ru"] .lang-slider {
+            transform: translateX(0) !important;
+        }
+        
+        .btn-small {
+            padding: 10px 25px !important;
+            font-size: 0.95rem !important;
+            background: linear-gradient(135deg, #0066ff, #00aaff) !important;
+            border: none !important;
+            border-radius: 25px !important;
+            color: white !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            text-decoration: none !important;
+            display: inline-block !important;
+        }
+        
+        .mobile-menu-toggle {
+            display: none !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            width: 28px !important;
+            height: 20px !important;
+            background: transparent !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 0 !important;
+            position: relative !important;
+            z-index: 1002 !important;
+        }
+        
+        .mobile-menu-toggle span {
+            display: block !important;
+            width: 100% !important;
+            height: 2px !important;
+            background: white !important;
+            transition: all 0.3s ease !important;
+            border-radius: 1px !important;
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg) !important;
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0 !important;
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg) !important;
+        }
+        
+        .mobile-menu-overlay {
+            display: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background: rgba(10, 12, 18, 0.95) !important;
+            backdrop-filter: blur(10px) !important;
+            z-index: 999 !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease !important;
+        }
+        
+        .mobile-menu-overlay.active {
+            display: block !important;
+            opacity: 1 !important;
+        }
+        
+        /* Мобильная версия */
+        @media (max-width: 768px) {
+            .main-header {
+                top: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: rgba(0, 102, 255, 0.22) !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            .main-header .container {
+                padding: 0 20px !important;
+            }
+            
+            .header-inner {
+                padding: 16px 0 !important;
+            }
+            
+            .logo-text {
+                font-size: 1.1rem !important;
+            }
+            
+            .main-nav {
+                position: fixed !important;
+                top: 80px !important;
+                right: -100% !important;
+                width: 280px !important;
+                height: calc(100vh - 80px) !important;
+                background: rgba(15, 17, 23, 0.98) !important;
+                backdrop-filter: blur(20px) !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                padding: 40px 30px !important;
+                transition: right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+                border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+                z-index: 1000 !important;
+                gap: 25px !important;
+            }
+            
+            .main-nav.active {
+                right: 0 !important;
+            }
+            
+            .nav-link {
+                font-size: 1.2rem !important;
+                width: 100% !important;
+                padding: 12px 0 !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex !important;
+            }
+            
+            .header-actions .btn-primary {
+                display: none !important;
+            }
+        }
+        
+        /* Отступ для хедера */
+        .contact-hero {
+            padding-top: 180px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-hero {
+                padding-top: 140px !important;
+            }
+        }
+    </style>
 </head>
 <body class="internal-page">
     <!-- Glass Header (точно как в about.html) -->
@@ -134,7 +444,7 @@
         <div class="container">
             <div class="contact-layout">
                 <!-- Left Column - Contact Form -->
-                <div class="contact-form-column">
+                <div class="contact-form-column" id="contact-form">
                     <div class="form-header">
                         <h2 class="fade-in" data-i18n="contact.form.title">Start Your Project</h2>
                         <p class="fade-in" data-delay="100" data-i18n="contact.form.subtitle">
@@ -372,54 +682,16 @@
     <script src="js/contacts.js"></script>
     
     <script>
-        // Инициализация хедера (как в about.html)
-        function initializeHeader() {
-            console.log('🔵 Initializing header for contacts page...');
+        // Инициализация хедера для страницы контактов
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Contact page with glass header initializing...');
             
-            const header = document.querySelector('.main-header');
-            const isHomePage = false;
+            // Mobile menu functionality
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            const nav = document.querySelector('.main-nav');
+            const overlay = document.querySelector('.mobile-menu-overlay');
             
-            // Инициализация мобильного меню
-            setupMobileMenu();
-            
-            // Установка активной ссылки
-            setActiveNavLink();
-            
-            // Обновление UI переключателя языка
-            updateLanguageSwitcherUI();
-            
-            // Установка логики скролла
-            setupHeaderScroll();
-            
-            // Добавляем стеклянный эффект
-            if (header) {
-                setTimeout(() => {
-                    header.classList.add('header-glass-enter');
-                    
-                    setTimeout(() => {
-                        header.classList.remove('header-glass-enter');
-                    }, 600);
-                }, 100);
-                
-                // Эффект при наведении
-                header.addEventListener('mouseenter', () => {
-                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                        header.classList.add('glass-morph');
-                    }
-                });
-                
-                header.addEventListener('mouseleave', () => {
-                    header.classList.remove('glass-morph');
-                });
-            }
-            
-            function setupMobileMenu() {
-                const toggle = document.querySelector('.mobile-menu-toggle');
-                const nav = document.querySelector('.main-nav');
-                const overlay = document.querySelector('.mobile-menu-overlay');
-
-                if (!toggle || !nav) return;
-
+            if (toggle && nav) {
                 const toggleMenu = () => {
                     const isActive = nav.classList.contains('active');
                     toggle.classList.toggle('active');
@@ -437,79 +709,65 @@
                     overlay.addEventListener('click', toggleMenu);
                 }
 
+                // Close menu when clicking on nav links
                 const navLinks = nav.querySelectorAll('.nav-link');
                 navLinks.forEach(link => {
                     link.addEventListener('click', toggleMenu);
                 });
 
+                // Close on escape key
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape' && nav.classList.contains('active')) {
                         toggleMenu();
                     }
                 });
 
+                // Close on window resize (desktop)
                 window.addEventListener('resize', () => {
                     if (window.innerWidth > 768 && nav.classList.contains('active')) {
                         toggleMenu();
                     }
                 });
             }
+
+            // Language switcher functionality
+            const langSwitcher = document.querySelector('.language-switcher');
+            const langButtons = document.querySelectorAll('.lang-btn');
             
-            function setActiveNavLink() {
-                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-                const navLinks = document.querySelectorAll('.nav-link');
-                
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href === currentPage || 
-                        (currentPage === '' && href === 'index.html') ||
-                        (currentPage === 'index.html' && href === 'index.html')) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
-                    }
+            if (langSwitcher && langButtons.length) {
+                langButtons.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const newLang = this.getAttribute('data-lang');
+                        const currentLang = langSwitcher.getAttribute('data-current-lang');
+                        
+                        if (newLang !== currentLang) {
+                            // Update UI
+                            langButtons.forEach(b => b.classList.remove('active'));
+                            this.classList.add('active');
+                            langSwitcher.setAttribute('data-current-lang', newLang);
+                            
+                            // Trigger language change event
+                            window.dispatchEvent(new CustomEvent('languageChanged', {
+                                detail: { lang: newLang }
+                            }));
+                            
+                            // If i18n is available, switch language
+                            if (window.i18n && window.i18n.setLang) {
+                                window.i18n.setLang(newLang);
+                            }
+                        }
+                    });
                 });
             }
+
+            // Header scroll effect
+            let lastScrollY = window.scrollY;
+            const header = document.querySelector('.main-header');
+            const scrollThreshold = 100;
             
-            function updateLanguageSwitcherUI() {
-                // Синхронизация с i18n если он доступен
-                if (window.i18n && window.i18n.getCurrentLang) {
-                    const currentLang = window.i18n.getCurrentLang();
-                    const langButtons = document.querySelectorAll('.lang-btn');
-                    
-                    langButtons.forEach(btn => {
-                        const btnLang = btn.getAttribute('data-lang');
-                        btn.classList.toggle('active', btnLang === currentLang);
-                    });
-                    
-                    const switcher = document.querySelector('.language-switcher');
-                    if (switcher) {
-                        switcher.setAttribute('data-current-lang', currentLang);
-                    }
-                } else {
-                    // Fallback на localStorage
-                    const currentLang = localStorage.getItem('preferredLang') || 'ru';
-                    const langButtons = document.querySelectorAll('.lang-btn');
-                    
-                    langButtons.forEach(btn => {
-                        const btnLang = btn.getAttribute('data-lang');
-                        btn.classList.toggle('active', btnLang === currentLang);
-                    });
-                    
-                    const switcher = document.querySelector('.language-switcher');
-                    if (switcher) {
-                        switcher.setAttribute('data-current-lang', currentLang);
-                    }
-                }
-            }
-            
-            function setupHeaderScroll() {
-                const header = document.querySelector('.main-header');
-                if (!header) return;
-                
-                let lastScrollY = window.scrollY;
-                const scrollThreshold = 100;
-                
+            if (header) {
                 window.addEventListener('scroll', () => {
                     const currentScrollY = window.scrollY;
                     
@@ -532,224 +790,14 @@
                     lastScrollY = currentScrollY;
                 }, { passive: true });
             }
-        }
-        
-        // Обработчик события смены языка
-        window.addEventListener('languageChanged', function(event) {
-            console.log('🌐 Language changed to:', event.detail.lang);
-            
-            // Обновляем переключатель
-            const switcher = document.querySelector('.language-switcher');
-            if (switcher) {
-                switcher.setAttribute('data-current-lang', event.detail.lang);
-            }
-            
-            // Обновляем кнопки
-            const langBtns = document.querySelectorAll('.lang-btn');
-            langBtns.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-lang') === event.detail.lang) {
-                    btn.classList.add('active');
-                }
-            });
-        });
-        
-        // Инициализация страницы контактов
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Contact page initializing...');
-            
-            // Инициализация хедера
-            initializeHeader();
-            
-            // Инициализация контактной формы
-            setTimeout(() => {
-                // Обработка отправки формы
-                const contactForm = document.getElementById('contactForm');
-                if (contactForm) {
-                    contactForm.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        
-                        // Простая валидация
-                        const nameInput = document.getElementById('name');
-                        const emailInput = document.getElementById('email');
-                        const messageInput = document.getElementById('message');
-                        
-                        let isValid = true;
-                        
-                        if (!nameInput.value.trim()) {
-                            nameInput.parentElement.classList.add('error');
-                            isValid = false;
-                        } else {
-                            nameInput.parentElement.classList.remove('error');
-                        }
-                        
-                        if (!emailInput.value.trim() || !isValidEmail(emailInput.value)) {
-                            emailInput.parentElement.classList.add('error');
-                            isValid = false;
-                        } else {
-                            emailInput.parentElement.classList.remove('error');
-                        }
-                        
-                        if (!messageInput.value.trim()) {
-                            messageInput.parentElement.classList.add('error');
-                            isValid = false;
-                        } else {
-                            messageInput.parentElement.classList.remove('error');
-                        }
-                        
-                        if (isValid) {
-                            // Показываем сообщение об успехе
-                            const submitBtn = contactForm.querySelector('button[type="submit"]');
-                            const originalText = submitBtn.innerHTML;
-                            
-                            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-                            submitBtn.disabled = true;
-                            
-                            // Имитация отправки
-                            setTimeout(() => {
-                                submitBtn.innerHTML = '<i class="fas fa-check"></i> Отправлено!';
-                                submitBtn.style.background = '#4CAF50';
-                                
-                                // Сброс формы
-                                setTimeout(() => {
-                                    contactForm.reset();
-                                    submitBtn.innerHTML = originalText;
-                                    submitBtn.disabled = false;
-                                    submitBtn.style.background = '';
-                                    
-                                    // Показываем уведомление
-                                    showNotification('Сообщение успешно отправлено! Мы свяжемся с вами в течение 24 часов.', 'success');
-                                }, 2000);
-                            }, 1500);
-                        }
-                    });
-                    
-                    // Убираем ошибки при вводе
-                    const inputs = contactForm.querySelectorAll('input, textarea');
-                    inputs.forEach(input => {
-                        input.addEventListener('input', function() {
-                            this.parentElement.classList.remove('error');
-                        });
-                    });
-                }
-                
-                // FAQ аккордеон
-                const faqItems = document.querySelectorAll('.faq-item');
-                faqItems.forEach(item => {
-                    const question = item.querySelector('.faq-question');
-                    question.addEventListener('click', () => {
-                        // Закрываем все остальные
-                        faqItems.forEach(otherItem => {
-                            if (otherItem !== item) {
-                                otherItem.classList.remove('active');
-                            }
-                        });
-                        
-                        // Открываем/закрываем текущий
-                        item.classList.toggle('active');
-                    });
-                });
-                
-                // Копирование адреса
-                const copyAddressBtn = document.getElementById('copyAddressBtn');
-                if (copyAddressBtn) {
-                    copyAddressBtn.addEventListener('click', () => {
-                        const address = 'Moscow City, Tower 45, Presnenskaya Naberezhnaya, 123, Moscow, Russia 123112';
-                        navigator.clipboard.writeText(address).then(() => {
-                            showNotification('Адрес скопирован в буфер обмена!', 'info');
-                        });
-                    });
-                }
-                
-                // Открытие карты
-                const openMapBtn = document.getElementById('openMapBtn');
-                if (openMapBtn) {
-                    openMapBtn.addEventListener('click', () => {
-                        const address = encodeURIComponent('Moscow City, Tower 45, Presnenskaya Naberezhnaya, 123, Moscow, Russia 123112');
-                        window.open(`https://www.google.com/maps/search/?api=1&query=${address}`, '_blank');
-                    });
-                }
-                
-                // Функция проверки email
-                function isValidEmail(email) {
-                    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    return re.test(email.toLowerCase());
-                }
-                
-                // Функция показа уведомления
-                function showNotification(message, type = 'info') {
-                    const notification = document.createElement('div');
-                    notification.className = `notification notification-${type}`;
-                    notification.innerHTML = `
-                        <div class="notification-content">
-                            <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
-                            <span>${message}</span>
-                        </div>
-                    `;
-                    
-                    notification.style.cssText = `
-                        position: fixed;
-                        top: 100px;
-                        right: 20px;
-                        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
-                        color: white;
-                        padding: 15px 20px;
-                        border-radius: 8px;
-                        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-                        z-index: 10000;
-                        transform: translateX(400px);
-                        transition: transform 0.3s ease;
-                        max-width: 400px;
-                        font-weight: 500;
-                        display: flex;
-                        align-items: center;
-                        gap: 10px;
-                    `;
-                    
-                    document.body.appendChild(notification);
-                    
-                    setTimeout(() => {
-                        notification.style.transform = 'translateX(0)';
-                    }, 100);
-                    
-                    setTimeout(() => {
-                        notification.style.transform = 'translateX(400px)';
-                        setTimeout(() => {
-                            if (notification.parentNode) {
-                                notification.parentNode.removeChild(notification);
-                            }
-                        }, 300);
-                    }, 5000);
-                }
-                
-            }, 500);
-            
-            // Инициализация функциональности контактов
+
+            // Initialize contact page functionality
             setTimeout(() => {
                 if (typeof initContact === 'function') {
                     initContact();
-                } else {
-                    console.warn('initContact function not found');
                 }
             }, 300);
         });
-
-        // Добавляем padding-top для body чтобы контент не скрывался под фиксированным хедером
-        window.addEventListener('load', function() {
-            const header = document.querySelector('.main-header');
-            if (header) {
-                const headerHeight = header.offsetHeight;
-                document.querySelector('.contact-hero').style.paddingTop = (headerHeight + 40) + 'px';
-            }
-        });
-
-        // Адаптация для мобильных
-        window.addEventListener('resize', function() {
-            const header = document.querySelector('.main-header');
-            if (header && window.innerWidth <= 768) {
-                document.querySelector('.contact-hero').style.paddingTop = '120px';
-            }
-        });
     </script>
 </body>
-</html>
+    </html>
