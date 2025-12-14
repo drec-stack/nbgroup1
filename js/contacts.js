@@ -1,20 +1,38 @@
-// contacts.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ
-console.log('🎯 contacts.js loaded - MOBILE OPTIMIZED');
+// contacts.js - Инициализация страницы контактов с хедером
+console.log('🚀 Contact page with header initialized');
 
+// Инициализация страницы контактов
 function initContact() {
-    console.log('🎯 Initializing contact page with mobile optimizations...');
+    console.log('🎯 Initializing contact page with header...');
     
     setupContactForm();
     setupContactInteractions();
     setupMapInteraction();
     setupFAQAccordion();
     setupContactCards();
-    setupMobileOptimizations();
+    setupHeaderPadding();
     
-    console.log('✅ Contact page optimized for mobile');
+    console.log('✅ Contact page initialized successfully');
 }
 
-// ОПТИМИЗИРОВАННАЯ ФОРМА ДЛЯ МОБИЛЬНЫХ
+// Настройка отступов для хедера
+function setupHeaderPadding() {
+    const header = document.querySelector('.main-header');
+    const contactHero = document.querySelector('.contact-hero');
+    
+    if (header && contactHero) {
+        const updatePadding = () => {
+            const headerHeight = header.offsetHeight;
+            contactHero.style.paddingTop = (headerHeight + 100) + 'px';
+        };
+        
+        updatePadding();
+        window.addEventListener('resize', updatePadding);
+        window.addEventListener('load', updatePadding);
+    }
+}
+
+// Настройка контактной формы
 function setupContactForm() {
     const contactForm = document.getElementById('contactForm');
     const isMobile = window.innerWidth <= 768;
@@ -24,7 +42,6 @@ function setupContactForm() {
             e.preventDefault();
             
             if (!validateForm(this)) {
-                // Визуальный feedback при ошибке
                 if (isMobile) {
                     shakeForm(this);
                 }
@@ -35,14 +52,23 @@ function setupContactForm() {
             const originalText = submitBtn.innerHTML;
             
             // Показ состояния загрузки
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (window.i18n ? window.i18n.t('contact.form.sending') : 'Sending...');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + 
+                (window.i18n ? window.i18n.t('contact.form.sending') : 'Sending...');
             submitBtn.disabled = true;
             
             // Симуляция отправки
             setTimeout(() => {
-                if (window.NBApp) {
+                // Уведомление об успехе
+                if (window.NBApp && window.NBApp.showNotification) {
                     window.NBApp.showNotification(
-                        window.i18n ? window.i18n.t('contact.form.success') : 'Message sent successfully! We\'ll get back to you within 24 hours.', 
+                        window.i18n ? window.i18n.t('contact.form.success') : 
+                        'Message sent successfully! We\'ll get back to you within 24 hours.', 
+                        'success'
+                    );
+                } else {
+                    showNotification(
+                        window.i18n ? window.i18n.t('contact.form.success') : 
+                        'Message sent successfully! We\'ll get back to you within 24 hours.',
                         'success'
                     );
                 }
@@ -94,7 +120,7 @@ function setupContactForm() {
     }
 }
 
-// ВАЛИДАЦИЯ ФОРМЫ
+// Валидация формы
 function validateForm(form) {
     let isValid = true;
     const requiredFields = form.querySelectorAll('[required]');
@@ -158,7 +184,7 @@ function resetFormValidation(form) {
     });
 }
 
-// АНИМАЦИЯ ОШИБКИ ДЛЯ МОБИЛЬНЫХ
+// Анимация ошибки для мобильных
 function shakeForm(form) {
     form.style.transform = 'translateX(10px)';
     setTimeout(() => {
@@ -169,7 +195,7 @@ function shakeForm(form) {
     }, 100);
 }
 
-// ОПТИМИЗИРОВАННЫЕ КОНТАКТНЫЕ КАРТОЧКИ
+// Настройка контактных карточек
 function setupContactCards() {
     const contactCards = document.querySelectorAll('.contact-card');
     const isMobile = window.innerWidth <= 768;
@@ -195,12 +221,11 @@ function setupContactCards() {
         if (isMobile) {
             card.addEventListener('click', function() {
                 const link = this.querySelector('.card-link');
-                if (link && link.getAttribute('href').startsWith('tel:') || link.getAttribute('href').startsWith('mailto:')) {
-                    // Прямое действие для телефона/email
+                if (link && (link.getAttribute('href').startsWith('tel:') || 
+                             link.getAttribute('href').startsWith('mailto:'))) {
                     return;
                 }
                 
-                // Визуальный feedback
                 this.style.transform = 'scale(0.98)';
                 setTimeout(() => {
                     this.style.transform = 'scale(1)';
@@ -210,7 +235,7 @@ function setupContactCards() {
     });
 }
 
-// ОПТИМИЗИРОВАННЫЕ СОЦИАЛЬНЫЕ КАРТОЧКИ
+// Настройка взаимодействий
 function setupContactInteractions() {
     const socialCards = document.querySelectorAll('.social-card');
     const isMobile = window.innerWidth <= 768;
@@ -221,7 +246,7 @@ function setupContactInteractions() {
                 const icon = card.querySelector('.social-icon');
                 const arrow = card.querySelector('.social-arrow');
                 
-                if (icon) icon.style.transform = 'scale(1.1)';
+                if (icon) icon.style.transform = 'scale(1.1) rotate(5deg)';
                 if (arrow) arrow.style.transform = 'translateX(5px)';
             });
             
@@ -229,7 +254,7 @@ function setupContactInteractions() {
                 const icon = card.querySelector('.social-icon');
                 const arrow = card.querySelector('.social-arrow');
                 
-                if (icon) icon.style.transform = 'scale(1)';
+                if (icon) icon.style.transform = 'scale(1) rotate(0)';
                 if (arrow) arrow.style.transform = 'translateX(0)';
             });
         }
@@ -247,7 +272,7 @@ function setupContactInteractions() {
     });
 }
 
-// ОПТИМИЗИРОВАННОЕ ВЗАИМОДЕЙСТВИЕ С КАРТОЙ
+// Настройка карты
 function setupMapInteraction() {
     const mapBtn = document.getElementById('openMapBtn');
     const copyBtn = document.getElementById('copyAddressBtn');
@@ -255,9 +280,7 @@ function setupMapInteraction() {
     
     if (mapBtn) {
         mapBtn.addEventListener('click', () => {
-            // Разные действия для мобильных и десктопов
             if (isMobile) {
-                // На мобильных открываем в нативном приложении карт
                 window.open('https://maps.google.com/?q=Moscow+City+Tower+45+Presnenskaya+Naberezhnaya+123+Moscow+Russia+123112', '_blank');
             } else {
                 window.open('https://www.google.com/maps/place/Moscow+City', '_blank');
@@ -271,12 +294,10 @@ function setupMapInteraction() {
             
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(address).then(() => {
-                    if (window.NBApp) {
-                        window.NBApp.showNotification(
-                            window.i18n ? window.i18n.t('contact.map.copied') : 'Address copied to clipboard!',
-                            'success'
-                        );
-                    }
+                    showNotification(
+                        window.i18n ? window.i18n.t('contact.map.copied') : 'Address copied to clipboard!',
+                        'success'
+                    );
                 });
             } else {
                 // Fallback для старых браузеров
@@ -287,18 +308,16 @@ function setupMapInteraction() {
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 
-                if (window.NBApp) {
-                    window.NBApp.showNotification(
-                        window.i18n ? window.i18n.t('contact.map.copied') : 'Address copied to clipboard!',
-                        'success'
-                    );
-                }
+                showNotification(
+                    window.i18n ? window.i18n.t('contact.map.copied') : 'Address copied to clipboard!',
+                    'success'
+                );
             }
         });
     }
 }
 
-// ОПТИМИЗИРОВАННЫЙ FAQ АККОРДЕОН
+// Настройка FAQ аккордеона
 function setupFAQAccordion() {
     const faqItems = document.querySelectorAll('.faq-item');
     const isMobile = window.innerWidth <= 768;
@@ -339,7 +358,66 @@ function setupFAQAccordion() {
     });
 }
 
-// ДОПОЛНИТЕЛЬНЫЕ МОБИЛЬНЫЕ ОПТИМИЗАЦИИ
+// Анимация успешной отправки
+function celebrateSubmission() {
+    const form = document.getElementById('contactForm');
+    if (form) {
+        form.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+            form.style.transform = 'scale(1)';
+        }, 150);
+    }
+}
+
+// Функция показа уведомлений
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    notification.style.cssText = `
+        position: fixed;
+        top: 120px;
+        right: 20px;
+        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+        transform: translateX(400px);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        max-width: 350px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    setTimeout(() => {
+        notification.style.transform = 'translateX(400px)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 400);
+    }, 5000);
+}
+
+// Мобильные оптимизации
 function setupMobileOptimizations() {
     const isMobile = window.innerWidth <= 768;
     
@@ -348,7 +426,6 @@ function setupMobileOptimizations() {
         const inputs = document.querySelectorAll('input, textarea');
         inputs.forEach(input => {
             input.addEventListener('focus', function() {
-                // Увеличиваем отступ снизу для клавиатуры
                 document.documentElement.style.scrollPaddingBottom = '300px';
             });
             
@@ -362,34 +439,37 @@ function setupMobileOptimizations() {
     }
 }
 
-// АНИМАЦИЯ УСПЕШНОЙ ОТПРАВКИ
-function celebrateSubmission() {
-    const form = document.getElementById('contactForm');
-    if (form) {
-        form.style.transform = 'scale(0.98)';
-        setTimeout(() => {
-            form.style.transform = 'scale(1)';
-        }, 150);
-    }
-}
-
-// ИНИЦИАЛИЗАЦИЯ
+// Инициализация при загрузке DOM
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('📄 Contact page DOM loaded');
+    
+    // Даем время на загрузку хедера
     setTimeout(() => {
-        initContact();
-    }, 100);
+        if (typeof initContact === 'function') {
+            initContact();
+        }
+    }, 300);
 });
 
+// Реинициализация при изменении размера окна
 window.addEventListener('resize', () => {
     setTimeout(() => {
-        if (typeof initContact === 'function') initContact();
+        if (typeof initContact === 'function') {
+            initContact();
+        }
     }, 250);
 });
 
+// Экспорт функции для глобального использования
+window.initContact = initContact;
+
+// Инициализация если DOM уже загружен
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
     setTimeout(() => {
-        if (typeof initContact === 'function') initContact();
+        if (typeof initContact === 'function') {
+            initContact();
+        }
     }, 200);
 }
 
-window.initContact = initContact;
+console.log('✅ contacts.js loaded successfully');
