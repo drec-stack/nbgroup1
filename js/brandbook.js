@@ -1,37 +1,36 @@
-// brandbook.js - Полный функционал страницы брендбука
-console.log('🎨 Brandbook page loaded');
+// brandbook.js - Complete functionality for brandbook page
+console.log('🎨 Brandbook page script loaded');
 
-// Основная функция инициализации
+// Main initialization function
 function initBrandbook() {
-    console.log('🚀 Initializing brandbook page...');
+    console.log('🚀 Initializing brandbook functionality...');
     
-    // Инициализация всех модулей
-    initCaseStudies();
-    initBrandbookAnimations();
-    initBrandbookFilter();
+    // Initialize all modules
+    setupCaseStudies();
+    setupFilterButtons();
     setupColorPalettes();
-    setupTypographySamples();
-    setupCopyColorFunctionality();
+    setupAnimations();
+    setupCopyFunctionality();
     
-    // Настройка взаимодействий
+    // Setup mobile interactions
     setupMobileInteractions();
-    setupScrollAnimations();
-    setupNotifications();
     
-    console.log('✅ Brandbook page initialized');
+    console.log('✅ Brandbook functionality initialized');
 }
 
-// ===== КЕЙСЫ БРЕНДБУКА =====
-function initCaseStudies() {
+// Setup case studies interactions
+function setupCaseStudies() {
     const caseStudies = document.querySelectorAll('.brand-case');
     
-    caseStudies.forEach((caseStudy) => {
-        // Анимация при наведении (только для десктопов)
+    caseStudies.forEach((caseStudy, index) => {
+        // Add animation delay
+        caseStudy.style.animationDelay = `${index * 0.1}s`;
+        
+        // Desktop hover effects
         if (window.innerWidth > 768) {
             caseStudy.addEventListener('mouseenter', () => {
                 caseStudy.style.transform = 'translateY(-10px)';
                 caseStudy.style.boxShadow = '0 25px 50px rgba(0, 102, 255, 0.15)';
-                caseStudy.style.transition = 'all 0.4s ease';
             });
             
             caseStudy.addEventListener('mouseleave', () => {
@@ -40,33 +39,33 @@ function initCaseStudies() {
             });
         }
         
-        // Клик для разворачивания контента на мобильных
+        // Mobile tap handling
         if (window.innerWidth <= 768) {
-            const caseHeader = caseStudy.querySelector('.case-header');
-            const caseContent = caseStudy.querySelector('.case-content');
+            const header = caseStudy.querySelector('.case-header');
+            const content = caseStudy.querySelector('.case-content');
             
-            if (caseHeader && caseContent) {
-                caseHeader.addEventListener('click', function(e) {
+            if (header && content) {
+                header.addEventListener('click', (e) => {
                     if (!e.target.closest('.case-number') && !e.target.closest('.case-category')) {
-                        const isExpanded = caseContent.style.maxHeight && caseContent.style.maxHeight !== '0px';
+                        const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
                         
-                        // Закрываем все другие кейсы
-                        document.querySelectorAll('.case-content').forEach(content => {
-                            if (content !== caseContent) {
-                                content.style.maxHeight = '0px';
-                                content.parentElement.querySelector('.case-header').classList.remove('expanded');
+                        // Close all other cases
+                        document.querySelectorAll('.case-content').forEach(item => {
+                            if (item !== content) {
+                                item.style.maxHeight = '0px';
+                                item.parentElement.querySelector('.case-header').classList.remove('expanded');
                             }
                         });
                         
-                        // Переключаем текущий кейс
+                        // Toggle current case
                         if (isExpanded) {
-                            caseContent.style.maxHeight = '0px';
-                            caseHeader.classList.remove('expanded');
+                            content.style.maxHeight = '0px';
+                            header.classList.remove('expanded');
                         } else {
-                            caseContent.style.maxHeight = caseContent.scrollHeight + 'px';
-                            caseHeader.classList.add('expanded');
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                            header.classList.add('expanded');
                             
-                            // Скроллим к открытому кейсу
+                            // Scroll to case
                             setTimeout(() => {
                                 caseStudy.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                             }, 300);
@@ -74,16 +73,87 @@ function initCaseStudies() {
                     }
                 });
                 
-                // Изначально скрываем контент на мобильных
-                caseContent.style.maxHeight = '0px';
-                caseContent.style.transition = 'max-height 0.3s ease';
+                // Initialize collapsed on mobile
+                content.style.maxHeight = '0px';
+                content.style.transition = 'max-height 0.3s ease';
             }
         }
     });
 }
 
-// ===== АНИМАЦИИ ПРИ СКРОЛЛЕ =====
-function initBrandbookAnimations() {
+// Setup filter buttons
+function setupFilterButtons() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const brandCases = document.querySelectorAll('.brand-case');
+    
+    if (!filterBtns.length) return;
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter cases with animation
+            brandCases.forEach((caseEl, index) => {
+                if (filter === 'all' || caseEl.getAttribute('data-category') === filter) {
+                    setTimeout(() => {
+                        caseEl.style.display = 'block';
+                        caseEl.style.opacity = '0';
+                        caseEl.style.transform = 'translateY(20px)';
+                        
+                        setTimeout(() => {
+                            caseEl.style.opacity = '1';
+                            caseEl.style.transform = 'translateY(0)';
+                            caseEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                        }, 50);
+                    }, index * 50);
+                } else {
+                    caseEl.style.opacity = '0';
+                    caseEl.style.transform = 'translateY(10px)';
+                    setTimeout(() => {
+                        caseEl.style.display = 'none';
+                    }, 300);
+                }
+            });
+            
+            // Scroll to results on mobile
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    const firstVisible = document.querySelector('.brand-case:not([style*="display: none"])');
+                    if (firstVisible) {
+                        firstVisible.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 500);
+            }
+        });
+    });
+}
+
+// Setup color palettes
+function setupColorPalettes() {
+    const colorItems = document.querySelectorAll('.color-item');
+    
+    colorItems.forEach(item => {
+        // Store original color
+        const originalColor = item.style.backgroundColor;
+        item.setAttribute('data-original-color', originalColor);
+        
+        // Add tooltip for desktop
+        if (window.innerWidth > 768) {
+            item.addEventListener('mouseenter', function() {
+                const color = this.style.backgroundColor || this.getAttribute('title');
+                this.setAttribute('title', rgbToHex(color));
+            });
+        }
+    });
+}
+
+// Setup animations
+function setupAnimations() {
+    // Intersection Observer for scroll animations
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -94,7 +164,7 @@ function initBrandbookAnimations() {
             if (entry.isIntersecting) {
                 entry.target.classList.add('animated');
                 
-                // Задержка для каждого элемента
+                // Stagger animation for cases
                 if (entry.target.classList.contains('brand-case')) {
                     const index = Array.from(entry.target.parentNode.children).indexOf(entry.target);
                     entry.target.style.animationDelay = `${index * 0.1}s`;
@@ -103,121 +173,41 @@ function initBrandbookAnimations() {
         });
     }, observerOptions);
     
-    // Наблюдаем за всеми элементами, которые должны анимироваться
-    document.querySelectorAll('.brand-case, .section-header, .intro-text, .stat-item').forEach(el => {
+    // Observe elements
+    document.querySelectorAll('.brand-case, .section-header, .intro-text, .stat-item, .cta-content').forEach(el => {
         observer.observe(el);
     });
 }
 
-// ===== ФИЛЬТРАЦИЯ КЕЙСОВ =====
-function initBrandbookFilter() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const brandCases = document.querySelectorAll('.brand-case');
-    
-    if (filterBtns.length === 0) return;
-    
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const filter = this.getAttribute('data-filter');
-            
-            // Обновление активной кнопки
-            filterBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Фильтрация кейсов
-            brandCases.forEach(caseEl => {
-                if (filter === 'all' || caseEl.getAttribute('data-category') === filter) {
-                    caseEl.style.display = 'block';
-                    setTimeout(() => {
-                        caseEl.style.opacity = '1';
-                        caseEl.style.transform = 'translateY(0)';
-                    }, 100);
-                } else {
-                    caseEl.style.opacity = '0';
-                    caseEl.style.transform = 'translateY(10px)';
-                    setTimeout(() => {
-                        caseEl.style.display = 'none';
-                    }, 300);
-                }
-            });
-            
-            // На мобильных скроллим к результатам
-            if (window.innerWidth <= 768) {
-                setTimeout(() => {
-                    const firstVisible = document.querySelector('.brand-case:not([style*="display: none"])');
-                    if (firstVisible) {
-                        firstVisible.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }, 400);
-            }
-        });
-    });
-}
-
-// ===== ЦВЕТОВЫЕ ПАЛИТРЫ =====
-function setupColorPalettes() {
-    const colorPalettes = document.querySelectorAll('.color-palette');
-    
-    colorPalettes.forEach(palette => {
-        const colors = palette.querySelectorAll('.color-item');
-        colors.forEach(colorItem => {
-            // Добавляем атрибут для копирования
-            const color = colorItem.style.backgroundColor || colorItem.getAttribute('title');
-            colorItem.setAttribute('data-color', color);
-            
-            // Показываем код цвета при наведении на десктопах
-            if (window.innerWidth > 768) {
-                colorItem.addEventListener('mouseenter', function() {
-                    this.setAttribute('title', this.getAttribute('data-color'));
-                });
-            }
-        });
-    });
-}
-
-// ===== ТИПОГРАФИЯ =====
-function setupTypographySamples() {
-    // Загружаем шрифты для демонстрации
-    const fontLinks = [
-        'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap',
-        'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap',
-        'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap',
-        'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
-        'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap'
-    ];
-    
-    // Добавляем шрифты в head
-    fontLinks.forEach(link => {
-        const fontLink = document.createElement('link');
-        fontLink.href = link;
-        fontLink.rel = 'stylesheet';
-        document.head.appendChild(fontLink);
-    });
-}
-
-// ===== КОПИРОВАНИЕ ЦВЕТОВ =====
-function setupCopyColorFunctionality() {
+// Setup copy functionality
+function setupCopyFunctionality() {
     const colorItems = document.querySelectorAll('.color-item');
     
     colorItems.forEach(item => {
         item.addEventListener('click', async function() {
-            const color = this.getAttribute('data-color') || this.style.backgroundColor;
+            const color = this.style.backgroundColor || this.getAttribute('title');
             const hexColor = rgbToHex(color);
             
             try {
-                // Копируем цвет в буфер обмена
+                // Copy to clipboard
                 await navigator.clipboard.writeText(hexColor);
+                
+                // Show notification
                 showNotification(`Color ${hexColor} copied to clipboard!`, 'success');
                 
-                // Визуальная обратная связь
-                const originalColor = this.style.backgroundColor;
+                // Visual feedback
+                const originalColor = this.getAttribute('data-original-color');
                 this.style.backgroundColor = '#4CAF50';
                 this.innerHTML = '<i class="fas fa-check"></i>';
+                this.style.color = 'white';
                 
+                // Reset after 1 second
                 setTimeout(() => {
                     this.style.backgroundColor = originalColor;
                     this.innerHTML = '';
+                    this.style.color = '';
                 }, 1000);
+                
             } catch (err) {
                 console.error('Failed to copy color:', err);
                 showNotification('Failed to copy color', 'error');
@@ -226,11 +216,11 @@ function setupCopyColorFunctionality() {
     });
 }
 
-// ===== МОБИЛЬНЫЕ ВЗАИМОДЕЙСТВИЯ =====
+// Setup mobile interactions
 function setupMobileInteractions() {
     if (window.innerWidth <= 768) {
-        // Touch feedback для элементов
-        const interactiveElements = document.querySelectorAll('.brand-case, .color-item, .btn');
+        // Touch feedback
+        const interactiveElements = document.querySelectorAll('.brand-case, .color-item, .btn, .filter-btn');
         
         interactiveElements.forEach(el => {
             el.addEventListener('touchstart', function() {
@@ -242,54 +232,34 @@ function setupMobileInteractions() {
             });
         });
         
-        // Улучшение скролла для мобильных
+        // Smooth scroll for mobile
         document.documentElement.style.scrollBehavior = 'smooth';
     }
 }
 
-// ===== АНИМАЦИИ ПРИ СКРОЛЛЕ =====
-function setupScrollAnimations() {
-    let ticking = false;
+// Utility: Convert RGB to HEX
+function rgbToHex(rgb) {
+    if (!rgb) return '#000000';
     
-    window.addEventListener('scroll', function() {
-        if (!ticking) {
-            requestAnimationFrame(() => {
-                const scrolled = window.pageYOffset;
-                const parallaxElements = document.querySelectorAll('.brandbook-hero');
-                
-                parallaxElements.forEach(el => {
-                    const speed = 0.5;
-                    el.style.transform = `translateY(${scrolled * speed}px)`;
-                });
-                
-                ticking = false;
-            });
-            
-            ticking = true;
-        }
-    }, { passive: true });
+    // If already hex
+    if (rgb.startsWith('#')) return rgb.toUpperCase();
+    
+    // Extract RGB values
+    const result = rgb.match(/\d+/g);
+    if (!result || result.length < 3) return '#000000';
+    
+    const r = parseInt(result[0]);
+    const g = parseInt(result[1]);
+    const b = parseInt(result[2]);
+    
+    // Convert to HEX
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
 }
 
-// ===== УВЕДОМЛЕНИЯ =====
-function setupNotifications() {
-    // Создаем контейнер для уведомлений
-    const notificationContainer = document.createElement('div');
-    notificationContainer.id = 'notification-container';
-    notificationContainer.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 10000;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    `;
-    document.body.appendChild(notificationContainer);
-}
-
+// Utility: Show notification
 function showNotification(message, type = 'info') {
-    const container = document.getElementById('notification-container');
-    if (!container) return;
+    // Remove existing notifications
+    document.querySelectorAll('.notification').forEach(n => n.remove());
     
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
@@ -301,11 +271,15 @@ function showNotification(message, type = 'info') {
     `;
     
     notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
         background: ${getNotificationColor(type)};
         color: white;
         padding: 12px 20px;
         border-radius: 8px;
         box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        z-index: 10000;
         transform: translateX(400px);
         transition: transform 0.3s ease;
         max-width: 300px;
@@ -315,14 +289,14 @@ function showNotification(message, type = 'info') {
         gap: 10px;
     `;
     
-    container.appendChild(notification);
+    document.body.appendChild(notification);
     
-    // Анимация появления
+    // Animate in
     setTimeout(() => {
         notification.style.transform = 'translateX(0)';
     }, 100);
     
-    // Авто-удаление
+    // Auto remove after 3 seconds
     setTimeout(() => {
         notification.style.transform = 'translateX(400px)';
         setTimeout(() => {
@@ -353,55 +327,29 @@ function getNotificationColor(type) {
     return colors[type] || '#2196F3';
 }
 
-// ===== УТИЛИТЫ =====
-function rgbToHex(rgb) {
-    if (!rgb) return '#000000';
-    
-    // Если уже hex
-    if (rgb.startsWith('#')) return rgb.toUpperCase();
-    
-    // Извлекаем значения RGB из строки
-    const result = rgb.match(/\d+/g);
-    if (!result || result.length < 3) return '#000000';
-    
-    const r = parseInt(result[0]);
-    const g = parseInt(result[1]);
-    const b = parseInt(result[2]);
-    
-    // Конвертируем в HEX
-    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
-}
-
-// ===== ИНИЦИАЛИЗАЦИЯ =====
+// Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', function() {
-    // Ждем загрузки всех ресурсов
     setTimeout(() => {
-        if (typeof initBrandbook === 'function') {
-            initBrandbook();
-        }
-        
-        // Анимация появления страницы
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 0.3s ease';
-        
-        setTimeout(() => {
-            document.body.style.opacity = '1';
-        }, 100);
+        initBrandbook();
     }, 300);
+    
+    // Fade in page
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.3s ease';
+    
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
 });
 
-// Инициализация при быстрой загрузке
+// Initialize if page already loaded
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
     setTimeout(() => {
-        if (typeof initBrandbook === 'function') {
-            initBrandbook();
-        }
+        initBrandbook();
     }, 100);
 }
 
-// Глобальная функция для ручной инициализации
+// Export functions for global use
 window.initBrandbook = initBrandbook;
 window.showNotification = showNotification;
-
-// Экспорт для модулей
-export { initBrandbook, showNotification, rgbToHex };
+window.rgbToHex = rgbToHex;
