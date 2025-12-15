@@ -1,4 +1,4 @@
-// home.js - Complete Home Page Functionality with Enhanced Header Hide
+// home.js - Complete Home Page Functionality
 
 class HomePage {
     constructor() {
@@ -22,192 +22,10 @@ class HomePage {
         this.initClickableStats();
         this.initCTAClickable();
         
-        // Initialize enhanced header hide after a short delay
-        setTimeout(() => {
-            this.initEnhancedHeaderHide();
-        }, 500);
-        
         console.log('🏠 HomePage инициализирован');
     }
 
-    // ===== ENHANCED SMOOTH HEADER HIDE =====
-    initEnhancedHeaderHide() {
-        this.header = document.querySelector('.main-header');
-        const isHomePage = document.body.classList.contains('home-page');
-        
-        if (!this.header || !isHomePage) {
-            console.log('⚠️ Header not found or not on home page');
-            return;
-        }
-        
-        console.log('🎭 Initializing enhanced smooth header hide...');
-        
-        // Set initial state
-        this.updateHeaderState();
-        
-        // Add glow animation on first load
-        setTimeout(() => {
-            this.header.classList.add('header-glow-appear');
-            
-            // Remove after animation completes
-            setTimeout(() => {
-                this.header.classList.remove('header-glow-appear');
-            }, 600);
-        }, 300);
-        
-        // Setup scroll event with throttling
-        this.setupScrollHandler();
-        
-        // Setup mouse events
-        this.setupMouseEvents();
-        
-        // Setup mobile touch events
-        this.setupTouchEvents();
-        
-        console.log('✅ Enhanced header hide initialized');
-    }
-    
-    setupScrollHandler() {
-        let ticking = false;
-        
-        const handleScroll = () => {
-            if (ticking) return;
-            
-            ticking = true;
-            requestAnimationFrame(() => {
-                this.updateHeaderState();
-                ticking = false;
-            });
-        };
-        
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        
-        // Initial update
-        handleScroll();
-    }
-    
-    updateHeaderState() {
-        if (!this.header) return;
-        
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollDelta = currentScroll - this.lastScrollTop;
-        const scrollingDown = scrollDelta > 0;
-        const scrollingUp = scrollDelta < 0;
-        
-        // At the very top - always show header
-        if (currentScroll <= this.showThreshold) {
-            if (this.isHeaderHidden) {
-                this.showHeader();
-            }
-            this.header.classList.remove('header-minimized');
-            this.lastScrollTop = Math.max(0, currentScroll);
-            return;
-        }
-        
-        // Scrolling down - hide header
-        if (scrollingDown && currentScroll > this.scrollThreshold && !this.isHeaderHidden) {
-            this.hideHeader();
-        }
-        // Scrolling up - show header
-        else if (scrollingUp && this.isHeaderHidden) {
-            this.showHeader();
-        }
-        
-        // Minimize header when scrolled down
-        if (currentScroll > 50 && !this.isHeaderHidden) {
-            this.header.classList.add('header-minimized');
-        } else if (currentScroll <= 50) {
-            this.header.classList.remove('header-minimized');
-        }
-        
-        this.lastScrollTop = currentScroll;
-    }
-    
-    hideHeader() {
-        if (!this.header || this.isHeaderHidden) return;
-        
-        this.header.classList.remove('header-show-smooth', 'header-slide-down', 'header-glow-appear');
-        this.header.classList.add('header-hide-smooth');
-        this.isHeaderHidden = true;
-        
-        console.log('⬆️ Header hidden');
-    }
-    
-    showHeader() {
-        if (!this.header || !this.isHeaderHidden) return;
-        
-        this.header.classList.remove('header-hide-smooth');
-        this.header.classList.add('header-show-smooth', 'header-slide-down');
-        this.isHeaderHidden = false;
-        
-        // Remove slide-down animation after it completes
-        setTimeout(() => {
-            this.header.classList.remove('header-slide-down');
-        }, 400);
-        
-        console.log('⬇️ Header shown');
-    }
-    
-    setupMouseEvents() {
-        if (!this.header) return;
-        
-        // Show header on hover
-        this.header.addEventListener('mouseenter', () => {
-            if (this.isHeaderHidden) {
-                this.showHeader();
-            }
-        });
-        
-        // Auto-hide after mouse leaves (if scrolled down)
-        this.header.addEventListener('mouseleave', () => {
-            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-            
-            if (currentScroll > this.scrollThreshold && !this.isHeaderHidden) {
-                // Wait 1.5 seconds before hiding
-                setTimeout(() => {
-                    const currentScrollAfterDelay = window.pageYOffset || document.documentElement.scrollTop;
-                    const isStillScrolledDown = currentScrollAfterDelay > this.scrollThreshold;
-                    const isMouseStillOver = this.header.matches(':hover');
-                    
-                    if (isStillScrolledDown && !isMouseStillOver && !this.isHeaderHidden) {
-                        this.hideHeader();
-                    }
-                }, 1500);
-            }
-        });
-    }
-    
-    setupTouchEvents() {
-        if (!this.header || !this.isTouchDevice()) return;
-        
-        // Touch device optimizations
-        this.header.addEventListener('touchstart', () => {
-            if (this.isHeaderHidden) {
-                this.showHeader();
-            }
-        });
-        
-        // Hide header after 3 seconds on touch devices
-        document.addEventListener('touchstart', (e) => {
-            if (!this.header.contains(e.target) && !this.isHeaderHidden) {
-                const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-                if (currentScroll > this.scrollThreshold) {
-                    setTimeout(() => {
-                        if (!this.header.contains(document.activeElement)) {
-                            this.hideHeader();
-                        }
-                    }, 3000);
-                }
-            }
-        });
-    }
-    
-    isTouchDevice() {
-        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    }
-
-    // ===== EXISTING FUNCTIONALITY =====
-    // Speck Design Blocks Initialization
+    // ===== SPECK DESIGN BLOCKS INITIALIZATION =====
     initSpeckDesignBlocks() {
         const speckBlocks = document.querySelectorAll('.speck-service-block-full');
         
@@ -313,91 +131,7 @@ class HomePage {
         console.log(`🎨 Initialized ${speckBlocks.length} Speck Design blocks`);
     }
 
-    // Clickable stats cards
-    initClickableStats() {
-        const statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
-        
-        statCards.forEach(card => {
-            // Добавляем класс для глобальной обработки
-            if (!card.classList.contains('clickable-element')) {
-                card.classList.add('clickable-element');
-            }
-            
-            // Enhanced hover effects
-            card.addEventListener('mouseenter', () => {
-                if (!this.isReducedMotion) {
-                    card.style.transform = 'translateY(-10px)';
-                    const icon = card.querySelector('.stat-icon');
-                    if (icon) {
-                        icon.style.transform = 'scale(1.1)';
-                        icon.style.color = '#3399ff';
-                    }
-                }
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                if (!this.isReducedMotion) {
-                    card.style.transform = '';
-                    const icon = card.querySelector('.stat-icon');
-                    if (icon) {
-                        icon.style.transform = '';
-                        icon.style.color = '';
-                    }
-                }
-            });
-        });
-    }
-
-    // Clickable CTA section
-    initCTAClickable() {
-        const ctaSection = document.querySelector('.cta-improved.clickable-cta');
-        if (!ctaSection) return;
-        
-        // Добавляем класс для глобальной обработки
-        if (!ctaSection.classList.contains('clickable-element')) {
-            ctaSection.classList.add('clickable-element');
-        }
-        
-        // Enhanced hover effects
-        ctaSection.addEventListener('mouseenter', () => {
-            if (!this.isReducedMotion) {
-                ctaSection.style.transform = 'translateY(-5px)';
-                const button = ctaSection.querySelector('.btn-glow');
-                if (button) {
-                    button.style.boxShadow = '0 12px 35px rgba(0, 102, 255, 0.4)';
-                    button.style.transform = 'translateY(-3px)';
-                }
-            }
-        });
-        
-        ctaSection.addEventListener('mouseleave', () => {
-            if (!this.isReducedMotion) {
-                ctaSection.style.transform = '';
-                const button = ctaSection.querySelector('.btn-glow');
-                if (button) {
-                    button.style.boxShadow = '';
-                    button.style.transform = '';
-                }
-            }
-        });
-    }
-
-    // Scroll animations
-    initScrollAnimations() {
-        const elementsToAnimate = document.querySelectorAll('.reveal-element, .slide-up');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed', 'animate-in');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        elementsToAnimate.forEach(el => observer.observe(el));
-    }
-
-    // Stats counters
+    // ===== STATS COUNTER =====
     initStatsCounter() {
         const statNumbers = document.querySelectorAll('.stat-number-improved');
         
@@ -441,7 +175,91 @@ class HomePage {
         requestAnimationFrame(updateNumber);
     }
 
-    // Parallax backgrounds
+    // ===== CLICKABLE STATS CARDS =====
+    initClickableStats() {
+        const statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
+        
+        statCards.forEach(card => {
+            // Enhanced hover effects
+            card.addEventListener('mouseenter', () => {
+                if (!this.isReducedMotion) {
+                    card.style.transform = 'translateY(-10px)';
+                    const icon = card.querySelector('.stat-icon');
+                    if (icon) {
+                        icon.style.transform = 'scale(1.1)';
+                        icon.style.color = '#3399ff';
+                    }
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                if (!this.isReducedMotion) {
+                    card.style.transform = '';
+                    const icon = card.querySelector('.stat-icon');
+                    if (icon) {
+                        icon.style.transform = '';
+                        icon.style.color = '';
+                    }
+                }
+            });
+            
+            // Touch/click effect
+            card.addEventListener('click', (e) => {
+                if (!this.isReducedMotion) {
+                    card.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        card.style.transform = '';
+                    }, 150);
+                }
+            });
+        });
+    }
+
+    // ===== CLICKABLE CTA SECTION =====
+    initCTAClickable() {
+        const ctaSection = document.querySelector('.cta-improved.clickable-cta');
+        if (!ctaSection) return;
+        
+        // Enhanced hover effects
+        ctaSection.addEventListener('mouseenter', () => {
+            if (!this.isReducedMotion) {
+                ctaSection.style.transform = 'translateY(-5px)';
+                const button = ctaSection.querySelector('.btn-glow');
+                if (button) {
+                    button.style.boxShadow = '0 12px 35px rgba(0, 102, 255, 0.4)';
+                    button.style.transform = 'translateY(-3px)';
+                }
+            }
+        });
+        
+        ctaSection.addEventListener('mouseleave', () => {
+            if (!this.isReducedMotion) {
+                ctaSection.style.transform = '';
+                const button = ctaSection.querySelector('.btn-glow');
+                if (button) {
+                    button.style.boxShadow = '';
+                    button.style.transform = '';
+                }
+            }
+        });
+    }
+
+    // ===== SCROLL ANIMATIONS =====
+    initScrollAnimations() {
+        const elementsToAnimate = document.querySelectorAll('.reveal-element, .slide-up');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed', 'animate-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        elementsToAnimate.forEach(el => observer.observe(el));
+    }
+
+    // ===== PARALLAX BACKGROUNDS =====
     initParallaxBackgrounds() {
         const contentSections = document.querySelectorAll('.content-section');
         
@@ -467,7 +285,7 @@ class HomePage {
         }
     }
 
-    // Marquee animations
+    // ===== MARQUEE ANIMATIONS =====
     initMarqueeAnimations() {
         const marqueeTracks = document.querySelectorAll('.marquee-track');
         
@@ -555,6 +373,7 @@ class HomePage {
     }
 }
 
+// ===== GLOBAL INITIALIZATION =====
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.homePage = new HomePage();
@@ -586,13 +405,7 @@ window.addEventListener('load', checkMarqueeWorking);
 // Резервный запуск через 5 секунд
 setTimeout(checkMarqueeWorking, 5000);
 
-// Export для глобального доступа
-window.initHomePage = function() {
-    if (!window.homePage) {
-        window.homePage = new HomePage();
-    }
-};
-
+// ===== UTILITY FUNCTIONS =====
 // Simple header hide function for quick integration
 window.initSimpleHeaderHide = function() {
     const header = document.querySelector('.main-header');
@@ -643,3 +456,59 @@ window.initSimpleHeaderHide = function() {
         }
     });
 };
+
+// Export для глобального доступа
+window.initHomePage = function() {
+    if (!window.homePage) {
+        window.homePage = new HomePage();
+    }
+};
+
+// Инициализация хедера для главной страницы
+function initHomeHeader() {
+    const header = document.querySelector('.main-header');
+    if (!header) {
+        setTimeout(initHomeHeader, 100);
+        return;
+    }
+
+    let isHidden = false;
+    const hideThreshold = 100;
+
+    function handleScroll() {
+        const scrollY = window.pageYOffset;
+        
+        if (scrollY > hideThreshold && !isHidden) {
+            header.classList.add('header-hidden');
+            isHidden = true;
+        } else if (scrollY <= hideThreshold && isHidden) {
+            header.classList.remove('header-hidden');
+            isHidden = false;
+        }
+    }
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    header.addEventListener('mouseenter', function() {
+        if (isHidden) {
+            header.classList.remove('header-hidden');
+            setTimeout(function() {
+                if (isHidden && window.pageYOffset > hideThreshold) {
+                    header.classList.add('header-hidden');
+                }
+            }, 2000);
+        }
+    });
+}
+
+// Автоматическая инициализация при загрузке
+if (document.body.classList.contains('home-page')) {
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            if (window.homePage) {
+                window.homePage.initSpeckDesignBlocks();
+            }
+        }, 500);
+    });
+        }
