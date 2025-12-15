@@ -125,252 +125,6 @@
             border-color: rgba(255, 255, 255, 0.4);
             font-weight: 600;
         }
-
-        /* СТИЛИ ДЛЯ КЛИКАБЕЛЬНЫХ КАРТОЧЕК И БЛОКОВ */
-        .clickable-service-block {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            outline: none;
-        }
-
-        .clickable-service-block:hover {
-            transform: translateY(-5px);
-        }
-
-        .clickable-service-block:active {
-            transform: translateY(-3px) scale(0.98);
-            transition: transform 0.1s ease;
-        }
-
-        /* Индикатор кликабельности */
-        .clickable-service-block::after {
-            content: '';
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 6px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .clickable-service-block:hover::after {
-            opacity: 1;
-        }
-
-        /* Кликабельные стат-карточки */
-        .clickable-stat-card {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            outline: none;
-        }
-
-        .clickable-stat-card:hover {
-            transform: translateY(-10px);
-        }
-
-        /* Кликабельная CTA секция */
-        .clickable-cta {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .clickable-cta:hover {
-            transform: translateY(-5px);
-        }
-
-        /* Кликабельный логотип в бегущей строке */
-        .clickable-brand {
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .clickable-brand:hover {
-            color: white !important;
-            opacity: 1 !important;
-            transform: translateY(-2px);
-        }
-
-        .clickable-brand::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #0066ff;
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .clickable-brand:hover::after {
-            transform: scaleX(0.8);
-        }
-
-        /* Кликабельные кнопки героя */
-        .hero-actions a {
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-actions a:hover {
-            transform: translateY(-3px);
-        }
-
-        .hero-actions .btn-primary:hover {
-            background: white;
-            color: #cc0000 !important;
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
-        }
-
-        .hero-actions .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: white;
-        }
-
-        /* Мобильная оптимизация для бегущей строки - ФИКС НАЛОЖЕНИЯ */
-        @media (max-width: 768px) {
-            .clickable-service-block:active {
-                transform: translateY(-3px) scale(0.97);
-            }
-            
-            .clickable-stat-card:active {
-                transform: translateY(-5px) scale(0.97);
-            }
-            
-            .clickable-cta:active {
-                transform: translateY(-2px);
-            }
-            
-            /* Увеличение touch area на мобильных */
-            .clickable-service-block::before,
-            .clickable-stat-card::before {
-                content: '';
-                position: absolute;
-                top: -10px;
-                left: -10px;
-                right: -10px;
-                bottom: -10px;
-                z-index: 1;
-            }
-            
-            /* ФИКС БЕГУЩЕЙ СТРОКИ */
-            .marquee-track {
-                padding: 15px 0 !important;
-            }
-            
-            .brand {
-                font-size: 1rem !important;
-                padding: 0 20px !important;
-            }
-            
-            .separator {
-                font-size: 1.2rem !important;
-            }
-            
-            #marquee1 {
-                animation: marquee-scroll-mobile 50s linear infinite !important;
-            }
-            
-            #marquee2 {
-                animation: marquee-scroll-reverse-mobile 50s linear infinite !important;
-            }
-            
-            @keyframes marquee-scroll-mobile {
-                0% { transform: translateX(0) !important; }
-                100% { transform: translateX(-33.33%) !important; }
-            }
-            
-            @keyframes marquee-scroll-reverse-mobile {
-                0% { transform: translateX(-33.33%) !important; }
-                100% { transform: translateX(0) !important; }
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .brand {
-                font-size: 0.9rem !important;
-                padding: 0 15px !important;
-            }
-            
-            .separator {
-                font-size: 1.1rem !important;
-            }
-            
-            .marquee-track {
-                padding: 10px 0 !important;
-            }
-            
-            #marquee1 {
-                animation: marquee-scroll-mobile-480 60s linear infinite !important;
-            }
-            
-            #marquee2 {
-                animation: marquee-scroll-reverse-mobile-480 60s linear infinite !important;
-            }
-            
-            @keyframes marquee-scroll-mobile-480 {
-                0% { transform: translateX(0) !important; }
-                100% { transform: translateX(-33.33%) !important; }
-            }
-            
-            @keyframes marquee-scroll-reverse-mobile-480 {
-                0% { transform: translateX(-33.33%) !important; }
-                100% { transform: translateX(0) !important; }
-            }
-        }
-
-        /* Анимация при клике */
-        .card-clicked {
-            animation: cardClick 0.3s ease;
-        }
-
-        @keyframes cardClick {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.98); }
-            100% { transform: scale(1); }
-        }
-
-        /* Доступность */
-        .clickable-service-block:focus,
-        .clickable-stat-card:focus,
-        .clickable-cta:focus {
-            outline: 2px solid #0066ff;
-            outline-offset: 2px;
-        }
-
-        .clickable-service-block:focus:not(:focus-visible),
-        .clickable-stat-card:focus:not(:focus-visible),
-        .clickable-cta:focus:not(:focus-visible) {
-            outline: none;
-        }
-
-        /* Ripple effect animation */
-        @keyframes ripple-animation {
-            0% {
-                transform: scale(0);
-                opacity: 0.6;
-            }
-            100% {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 <body class="home-page">
@@ -426,130 +180,194 @@
         </div>
     </section>
 
-    <!-- Speck Design Style Services Section - IMAGE BACKGROUNDS LIKE SPECKDESIGN.COM -->
-    <section class="speck-services-image-background content-section" data-bg-index="0">
+    <!-- Speck Design Style Services Section - FULL VERSION -->
+    <section class="speck-services-full content-section" data-bg-index="0">
         <div class="container">
-            <div class="speck-header-minimal">
-                <h2 class="speck-minimal-title" data-i18n="home.speckServices.title">Our Expertise</h2>
-                <p class="speck-minimal-subtitle" data-i18n="home.speckServices.subtitle">End-to-end product development from strategy to market</p>
+            <div class="speck-services-header">
+                <h2 class="speck-main-title" data-i18n="home.speckServices.title">Our Expertise</h2>
+                <p class="speck-main-description" data-i18n="home.speckServices.subtitle">End-to-end product development from strategy to market</p>
             </div>
-        </div>
-        
-        <!-- Strategy Block -->
-        <a href="services.html#strategy" class="speck-image-block clickable-service-block" data-category="strategy">
-            <div class="speck-image-block-bg" style="background-image: url('assets/images/strategy-bg.jpg');"></div>
-            <div class="speck-image-overlay"></div>
-            <div class="container">
-                <div class="speck-image-content">
-                    <span class="speck-image-number">01</span>
-                    <div class="speck-image-titles">
-                        <h3 class="speck-image-title" data-i18n="home.speckServices.strategy.title">Strategy</h3>
-                        <p class="speck-image-subtitle" data-i18n="home.speckServices.strategy.subtitle">Drive Innovation And Align Goals</p>
-                    </div>
-                    <div class="speck-image-tags">
-                        <span class="speck-image-tag" data-i18n="home.speckServices.strategy.features.innovation.title">Innovation Strategy</span>
-                        <span class="speck-image-tag" data-i18n="home.speckServices.strategy.features.design.title">Design Strategy</span>
-                        <span class="speck-image-tag" data-i18n="home.speckServices.strategy.features.research.title">User Research</span>
-                    </div>
-                    <div class="speck-image-action">
-                        <span class="speck-image-action-text" data-i18n="home.speckServices.strategy.explore">Explore</span>
-                        <div class="speck-image-arrow">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+            
+            <div class="speck-services-grid-full">
+                <!-- Strategy Block -->
+                <a href="services.html#strategy" class="speck-service-block-full clickable-service-block" data-category="strategy">
+                    <div class="speck-block-overlay"></div>
+                    <div class="speck-block-inner">
+                        <div class="speck-block-header">
+                            <span class="speck-block-number">01</span>
+                            <div class="speck-block-titles">
+                                <h3 class="speck-block-title" data-i18n="home.speckServices.strategy.title">Strategy</h3>
+                                <p class="speck-block-subtitle" data-i18n="home.speckServices.strategy.subtitle">Drive Innovation And Align Goals</p>
+                            </div>
+                        </div>
+                        
+                        <div class="speck-block-content">
+                            <div class="speck-block-description" data-i18n="home.speckServices.strategy.description">
+                                Comprehensive market research and strategic planning to align product goals with business objectives.
+                            </div>
+                            
+                            <ul class="speck-block-list">
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.strategy.features.innovation.title">Innovation Strategy</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.strategy.features.innovation.desc">Transformative product vision</span>
+                                </li>
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.strategy.features.design.title">Design Strategy</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.strategy.features.design.desc">Holistic design approaches</span>
+                                </li>
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.strategy.features.research.title">User Research</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.strategy.features.research.desc">Deep customer insights</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="speck-block-action">
+                            <span class="speck-action-text" data-i18n="home.speckServices.strategy.explore">Explore</span>
+                            <div class="speck-action-arrow">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </a>
+                </a>
 
-        <!-- Design Block -->
-        <a href="services.html#design" class="speck-image-block clickable-service-block" data-category="design">
-            <div class="speck-image-block-bg" style="background-image: url('assets/images/design-bg.jpg');"></div>
-            <div class="speck-image-overlay"></div>
-            <div class="container">
-                <div class="speck-image-content">
-                    <span class="speck-image-number">02</span>
-                    <div class="speck-image-titles">
-                        <h3 class="speck-image-title" data-i18n="home.speckServices.design.title">Design</h3>
-                        <p class="speck-image-subtitle" data-i18n="home.speckServices.design.subtitle">Engage Audiences With Product Design</p>
-                    </div>
-                    <div class="speck-image-tags">
-                        <span class="speck-image-tag" data-i18n="home.speckServices.design.features.industrial.title">Industrial Design</span>
-                        <span class="speck-image-tag" data-i18n="home.speckServices.design.features.brand.title">Brand Design</span>
-                        <span class="speck-image-tag" data-i18n="home.speckServices.design.features.uiux.title">UI/UX Design</span>
-                    </div>
-                    <div class="speck-image-action">
-                        <span class="speck-image-action-text" data-i18n="home.speckServices.design.explore">Explore</span>
-                        <div class="speck-image-arrow">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                <!-- Design Block -->
+                <a href="services.html#design" class="speck-service-block-full clickable-service-block" data-category="design">
+                    <div class="speck-block-overlay"></div>
+                    <div class="speck-block-inner">
+                        <div class="speck-block-header">
+                            <span class="speck-block-number">02</span>
+                            <div class="speck-block-titles">
+                                <h3 class="speck-block-title" data-i18n="home.speckServices.design.title">Design</h3>
+                                <p class="speck-block-subtitle" data-i18n="home.speckServices.design.subtitle">Engage Audiences With Product Design</p>
+                            </div>
+                        </div>
+                        
+                        <div class="speck-block-content">
+                            <div class="speck-block-description" data-i18n="home.speckServices.design.description">
+                                Industrial, brand, and UI/UX design that creates compelling product experiences and user connections.
+                            </div>
+                            
+                            <ul class="speck-block-list">
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.design.features.industrial.title">Industrial Design</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.design.features.industrial.desc">Physical product aesthetics</span>
+                                </li>
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.design.features.brand.title">Brand Design</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.design.features.brand.desc">Visual identity systems</span>
+                                </li>
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.design.features.uiux.title">UI/UX Design</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.design.features.uiux.desc">Digital interaction design</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="speck-block-action">
+                            <span class="speck-action-text" data-i18n="home.speckServices.design.explore">Explore</span>
+                            <div class="speck-action-arrow">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </a>
+                </a>
 
-        <!-- Engineering Block -->
-        <a href="services.html#engineering" class="speck-image-block clickable-service-block" data-category="engineering">
-            <div class="speck-image-block-bg" style="background-image: url('assets/images/engineering-bg.jpg');"></div>
-            <div class="speck-image-overlay"></div>
-            <div class="container">
-                <div class="speck-image-content">
-                    <span class="speck-image-number">03</span>
-                    <div class="speck-image-titles">
-                        <h3 class="speck-image-title" data-i18n="home.speckServices.engineering.title">Engineering</h3>
-                        <p class="speck-image-subtitle" data-i18n="home.speckServices.engineering.subtitle">Complex Technical Solutions</p>
-                    </div>
-                    <div class="speck-image-tags">
-                        <span class="speck-image-tag" data-i18n="home.speckServices.engineering.features.architecture.title">Architecture</span>
-                        <span class="speck-image-tag" data-i18n="home.speckServices.engineering.features.optimization.title">Optimization</span>
-                        <span class="speck-image-tag" data-i18n="home.speckServices.engineering.features.scaling.title">Scaling</span>
-                    </div>
-                    <div class="speck-image-action">
-                        <span class="speck-image-action-text" data-i18n="home.speckServices.engineering.explore">Explore</span>
-                        <div class="speck-image-arrow">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                <!-- Engineering Block -->
+                <a href="services.html#engineering" class="speck-service-block-full clickable-service-block" data-category="engineering">
+                    <div class="speck-block-overlay"></div>
+                    <div class="speck-block-inner">
+                        <div class="speck-block-header">
+                            <span class="speck-block-number">03</span>
+                            <div class="speck-block-titles">
+                                <h3 class="speck-block-title" data-i18n="home.speckServices.engineering.title">Engineering</h3>
+                                <p class="speck-block-subtitle" data-i18n="home.speckServices.engineering.subtitle">Complex Technical Solutions</p>
+                            </div>
+                        </div>
+                        
+                        <div class="speck-block-content">
+                            <div class="speck-block-description" data-i18n="home.speckServices.engineering.description">
+                                Mechanical, electrical, and software engineering solutions that transform concepts into manufacturable products.
+                            </div>
+                            
+                            <ul class="speck-block-list">
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.engineering.features.architecture.title">Architecture</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.engineering.features.architecture.desc">System architecture design</span>
+                                </li>
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.engineering.features.optimization.title">Optimization</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.engineering.features.optimization.desc">Performance enhancement</span>
+                                </li>
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.engineering.features.scaling.title">Scaling</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.engineering.features.scaling.desc">Production scalability</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="speck-block-action">
+                            <span class="speck-action-text" data-i18n="home.speckServices.engineering.explore">Explore</span>
+                            <div class="speck-action-arrow">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </a>
+                </a>
 
-        <!-- Marketing Block -->
-        <a href="services.html#marketing" class="speck-image-block clickable-service-block" data-category="marketing">
-            <div class="speck-image-block-bg" style="background-image: url('assets/images/marketing-bg.jpg');"></div>
-            <div class="speck-image-overlay"></div>
-            <div class="container">
-                <div class="speck-image-content">
-                    <span class="speck-image-number">04</span>
-                    <div class="speck-image-titles">
-                        <h3 class="speck-image-title" data-i18n="home.speckServices.marketing.title">Marketing</h3>
-                        <p class="speck-image-subtitle" data-i18n="home.speckServices.marketing.subtitle">Digital Strategies & Promotion</p>
-                    </div>
-                    <div class="speck-image-tags">
-                        <span class="speck-image-tag" data-i18n="home.speckServices.marketing.features.seo.title">SEO</span>
-                        <span class="speck-image-tag" data-i18n="home.speckServices.marketing.features.smm.title">SMM</span>
-                        <span class="speck-image-tag" data-i18n="home.speckServices.marketing.features.analytics.title">Analytics</span>
-                    </div>
-                    <div class="speck-image-action">
-                        <span class="speck-image-action-text" data-i18n="home.speckServices.marketing.explore">Explore</span>
-                        <div class="speck-image-arrow">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                <!-- Marketing Block -->
+                <a href="services.html#marketing" class="speck-service-block-full clickable-service-block" data-category="marketing">
+                    <div class="speck-block-overlay"></div>
+                    <div class="speck-block-inner">
+                        <div class="speck-block-header">
+                            <span class="speck-block-number">04</span>
+                            <div class="speck-block-titles">
+                                <h3 class="speck-block-title" data-i18n="home.speckServices.marketing.title">Marketing</h3>
+                                <p class="speck-block-subtitle" data-i18n="home.speckServices.marketing.subtitle">Digital Strategies & Promotion</p>
+                            </div>
+                        </div>
+                        
+                        <div class="speck-block-content">
+                            <div class="speck-block-description" data-i18n="home.speckServices.marketing.description">
+                                Comprehensive digital marketing strategies to launch products successfully and build brand presence.
+                            </div>
+                            
+                            <ul class="speck-block-list">
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.marketing.features.seo.title">SEO</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.marketing.features.seo.desc">Search engine optimization</span>
+                                </li>
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.marketing.features.smm.title">SMM</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.marketing.features.smm.desc">Social media marketing</span>
+                                </li>
+                                <li>
+                                    <span class="speck-list-title" data-i18n="home.speckServices.marketing.features.analytics.title">Analytics</span>
+                                    <span class="speck-list-desc" data-i18n="home.speckServices.marketing.features.analytics.desc">Data-driven insights</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="speck-block-action">
+                            <span class="speck-action-text" data-i18n="home.speckServices.marketing.explore">Explore</span>
+                            <div class="speck-action-arrow">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
-        </a>
-
-        <div class="container">
-            <div class="speck-footer-minimal">
-                <p class="speck-minimal-footer-text" data-i18n="home.speckServices.footer">From initial concept to market launch and beyond</p>
+            
+            <div class="speck-services-footer">
+                <p class="speck-footer-text" data-i18n="home.speckServices.footer">From initial concept to market launch and beyond</p>
             </div>
         </div>
     </section>
@@ -900,303 +718,11 @@
                 }, 300);
             });
 
-        // Smooth header hide functionality
-        function initHomeHeader() {
-            const header = document.querySelector('.main-header');
-            if (!header) {
-                setTimeout(initHomeHeader, 100);
-                return;
-            }
-
-            let isHidden = false;
-            const hideThreshold = 100;
-
-            function handleScroll() {
-                const scrollY = window.pageYOffset;
-                
-                if (scrollY > hideThreshold && !isHidden) {
-                    header.classList.add('header-hidden');
-                    isHidden = true;
-                } else if (scrollY <= hideThreshold && isHidden) {
-                    header.classList.remove('header-hidden');
-                    isHidden = false;
-                }
-            }
-
-            handleScroll();
-            window.addEventListener('scroll', handleScroll, { passive: true });
-
-            header.addEventListener('mouseenter', function() {
-                if (isHidden) {
-                    header.classList.remove('header-hidden');
-                    setTimeout(function() {
-                        if (isHidden && window.pageYOffset > hideThreshold) {
-                            header.classList.add('header-hidden');
-                        }
-                    }, 2000);
-                }
-            });
-        }
-
-        // Инициализация ВСЕХ кликабельных блоков на главной
-        function initAllClickableBlocks() {
-            console.log('🎴 Initializing ALL clickable blocks on home page...');
-            
-            // 1. Карточки услуг
-            const serviceBlocks = document.querySelectorAll('.clickable-service-block');
-            console.log(`🎴 Found ${serviceBlocks.length} service blocks`);
-            
-            serviceBlocks.forEach(block => {
-                initClickableCard(block, 'service');
-            });
-            
-            // 2. Статистические карточки
-            const statCards = document.querySelectorAll('.clickable-stat-card');
-            console.log(`📊 Found ${statCards.length} stat cards`);
-            
-            statCards.forEach(card => {
-                initClickableCard(card, 'stat');
-            });
-            
-            // 3. CTA блок
-            const ctaBlocks = document.querySelectorAll('.clickable-cta');
-            console.log(`📣 Found ${ctaBlocks.length} CTA blocks`);
-            
-            ctaBlocks.forEach(block => {
-                initClickableCard(block, 'cta');
-            });
-            
-            // 4. Бренды в бегущей строке
-            const brandLinks = document.querySelectorAll('.clickable-brand');
-            console.log(`🏢 Found ${brandLinks.length} brand links`);
-            
-            brandLinks.forEach(brand => {
-                initClickableCard(brand, 'brand');
-            });
-            
-            // 5. Кнопки героя
-            const heroButtons = document.querySelectorAll('.hero-actions a');
-            console.log(`🚀 Found ${heroButtons.length} hero buttons`);
-            
-            heroButtons.forEach(button => {
-                initClickableCard(button, 'button');
-            });
-            
-            // 6. Параллакс scroll indicator
-            const scrollIndicator = document.querySelector('.parallax-scroll-indicator');
-            if (scrollIndicator) {
-                scrollIndicator.style.cursor = 'pointer';
-                scrollIndicator.addEventListener('click', function() {
-                    window.scrollTo({
-                        top: window.innerHeight,
-                        behavior: 'smooth'
-                    });
-                });
-                
-                scrollIndicator.addEventListener('mouseenter', function() {
-                    this.style.opacity = '0.8';
-                });
-                
-                scrollIndicator.addEventListener('mouseleave', function() {
-                    this.style.opacity = '1';
-                });
-            }
-            
-            // 7. Progress bar тоже можно сделать кликабельной
-            const progressBar = document.querySelector('.scroll-progress');
-            if (progressBar) {
-                progressBar.style.cursor = 'pointer';
-                progressBar.addEventListener('click', function() {
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-                
-                progressBar.title = 'Click to scroll to top';
-            }
-            
-            console.log('✅ All clickable blocks initialized!');
-        }
-        
-        // Общая функция инициализации кликабельного элемента
-        function initClickableCard(element, type) {
-            // Добавляем accessibility атрибуты
-            element.setAttribute('role', 'link');
-            element.setAttribute('tabindex', '0');
-            
-            // Разные описания для разных типов элементов
-            const titles = {
-                'service': 'Click to view service details',
-                'stat': 'Click to learn more',
-                'cta': 'Click to contact us',
-                'brand': 'Click to view portfolio',
-                'button': 'Click to navigate'
-            };
-            
-            if (titles[type]) {
-                element.setAttribute('title', titles[type]);
-            }
-            
-            // Keyboard navigation
-            element.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    const href = this.getAttribute('href');
-                    if (href) {
-                        window.location.href = href;
-                    } else if (typeof this.click === 'function') {
-                        this.click();
-                    }
-                }
-            });
-            
-            // Анимация при клике
-            element.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href && href !== '#') {
-                    console.log(`🔄 Navigating to: ${href}`);
-                    
-                    // Добавляем класс active для анимации
-                    this.classList.add('card-clicked');
-                    setTimeout(() => {
-                        this.classList.remove('card-clicked');
-                    }, 300);
-                    
-                    // Анимация загрузки
-                    if (href.includes('.html')) {
-                        document.body.style.opacity = '0.7';
-                        document.body.style.transition = 'opacity 0.3s ease';
-                        
-                        setTimeout(() => {
-                            document.body.style.opacity = '1';
-                        }, 1000);
-                    }
-                }
-            });
-            
-            // Анимация при загрузке (только для карточек услуг и статов)
-            if (type === 'service' || type === 'stat') {
-                element.style.opacity = '0';
-                element.style.transform = type === 'service' ? 'translateY(20px)' : 'translateY(10px)';
-                
-                setTimeout(() => {
-                    element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }, type === 'service' ? 300 : 100);
-            }
-            
-            // Специальные hover эффекты для разных типов
-            if (type === 'brand') {
-                element.addEventListener('mouseenter', function() {
-                    this.style.opacity = '1';
-                    this.style.transform = 'translateY(-2px)';
-                });
-                
-                element.addEventListener('mouseleave', function() {
-                    this.style.opacity = '0.8';
-                    this.style.transform = 'translateY(0)';
-                });
-            }
-        }
-
-        // Smooth header hide initialization
-        function initSmoothHeaderHide() {
-            const header = document.querySelector('.main-header');
-            const isHomePage = document.body.classList.contains('home-page');
-            
-            if (!header || !isHomePage) return;
-            
-            console.log('🎭 Initializing smooth header hide on home page...');
-            
-            let lastScrollTop = 0;
-            let isHidden = false;
-            const hideThreshold = 100;
-            const showThreshold = 10;
-            
-            function updateHeader() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                // At the very top - always show
-                if (scrollTop <= showThreshold) {
-                    if (isHidden) {
-                        header.classList.remove('header-hide-smooth');
-                        header.classList.add('header-show-smooth');
-                        isHidden = false;
-                    }
-                    lastScrollTop = Math.max(0, scrollTop);
-                    return;
-                }
-                
-                const scrollDelta = scrollTop - lastScrollTop;
-                const scrollingDown = scrollDelta > 0;
-                const scrollingUp = scrollDelta < 0;
-                
-                if (scrollingDown && scrollTop > hideThreshold && !isHidden) {
-                    header.classList.add('header-hide-smooth');
-                    header.classList.remove('header-show-smooth');
-                    isHidden = true;
-                } else if (scrollingUp && isHidden) {
-                    header.classList.remove('header-hide-smooth');
-                    header.classList.add('header-show-smooth');
-                    isHidden = false;
-                }
-                
-                // Minimize header when scrolled
-                if (scrollTop > 50 && !isHidden) {
-                    header.classList.add('header-minimized');
-                } else if (scrollTop <= 50) {
-                    header.classList.remove('header-minimized');
-                }
-                
-                lastScrollTop = scrollTop;
-            }
-            
-            // Throttle scroll events
-            let ticking = false;
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        updateHeader();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            }, { passive: true });
-            
-            // Show on hover
-            header.addEventListener('mouseenter', () => {
-                if (isHidden) {
-                    header.classList.remove('header-hide-smooth');
-                    header.classList.add('header-show-smooth');
-                    isHidden = false;
-                }
-            });
-            
-            // Initial update
-            updateHeader();
-            
-            // Add glow animation on load
-            setTimeout(() => {
-                header.classList.add('header-glow-appear');
-                setTimeout(() => {
-                    header.classList.remove('header-glow-appear');
-                }, 600);
-            }, 300);
-        }
-        
-        // Call after header is loaded
-        setTimeout(() => {
-            initSmoothHeaderHide();
-        }, 1000);
-
         // Запустить проверки и инициализацию
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 DOM fully loaded');
             checkMarquee();
             applyTranslationsForce();
-            initAllClickableBlocks(); // <-- Инициализация ВСЕХ кликабельных блоков
             
             // Резервная проверка через 5 секунд
             setTimeout(() => {
@@ -1212,30 +738,6 @@
             console.log('📦 Page fully loaded');
             applyTranslationsForce();
         });
-        
-        // Анимация для параллакс индикатора
-        function initParallaxIndicator() {
-            const indicator = document.querySelector('.parallax-scroll-indicator');
-            if (indicator) {
-                // Мигающая анимация
-                setInterval(() => {
-                    indicator.style.opacity = indicator.style.opacity === '0.5' ? '1' : '0.5';
-                }, 1500);
-                
-                // Пульсация
-                const arrow = indicator.querySelector('.scroll-arrow');
-                if (arrow) {
-                    setInterval(() => {
-                        arrow.style.transform = arrow.style.transform === 'rotate(45deg) scale(1.1)' 
-                            ? 'rotate(45deg) scale(1)' 
-                            : 'rotate(45deg) scale(1.1)';
-                    }, 1000);
-                }
-            }
-        }
-        
-        // Инициализируем после полной загрузки
-        window.addEventListener('load', initParallaxIndicator);
     </script>
 </body>
-                                                                                                </html>
+    </html>
