@@ -14,6 +14,7 @@ class HomePage {
     }
 
     init() {
+        this.initFloatingExpertise(); // НОВАЯ ФУНКЦИЯ - висящие блоки
         this.initSpeckDesignBlocks();
         this.initScrollAnimations();
         this.initStatsCounter();
@@ -23,6 +24,93 @@ class HomePage {
         this.initCTAClickable();
         
         console.log('🏠 HomePage инициализирован');
+    }
+
+    // ===== FLOATING EXPERTISE SECTION (NEW) =====
+    initFloatingExpertise() {
+        const floatingItems = document.querySelectorAll('.speck-floating-item');
+        if (!floatingItems.length) return;
+
+        // Intersection Observer для анимации появления
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = entry.target.getAttribute('data-index');
+                    const delay = (index - 1) * 200;
+                    
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }, delay);
+                }
+            });
+        }, observerOptions);
+
+        floatingItems.forEach(item => {
+            // Начальное состояние
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(60px)';
+            item.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+            
+            observer.observe(item);
+            
+            // Добавляем параллакс эффект для номеров
+            const number = item.querySelector('.floating-number');
+            if (number) {
+                window.addEventListener('scroll', () => {
+                    if (!this.isReducedMotion) {
+                        const rect = item.getBoundingClientRect();
+                        const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+                        
+                        if (isInView) {
+                            const scrollPercent = (rect.top - window.innerHeight) / (rect.height + window.innerHeight);
+                            const parallaxOffset = scrollPercent * 50;
+                            number.style.transform = `translateY(${parallaxOffset}px) scale(${1 + Math.abs(scrollPercent * 0.1)})`;
+                        }
+                    }
+                }, { passive: true });
+            }
+            
+            // Hover эффекты
+            item.addEventListener('mouseenter', () => {
+                if (!this.isReducedMotion) {
+                    const title = item.querySelector('.floating-title');
+                    const tags = item.querySelectorAll('.floating-tag');
+                    
+                    if (title) {
+                        title.style.transform = 'translateX(10px)';
+                    }
+                    
+                    tags.forEach((tag, index) => {
+                        setTimeout(() => {
+                            tag.style.transform = 'translateY(-3px)';
+                        }, index * 50);
+                    });
+                }
+            });
+
+            item.addEventListener('mouseleave', () => {
+                if (!this.isReducedMotion) {
+                    const title = item.querySelector('.floating-title');
+                    const tags = item.querySelectorAll('.floating-tag');
+                    
+                    if (title) {
+                        title.style.transform = '';
+                    }
+                    
+                    tags.forEach(tag => {
+                        tag.style.transform = '';
+                    });
+                }
+            });
+        });
+
+        console.log(`🎯 Initialized ${floatingItems.length} floating expertise items`);
     }
 
     // ===== SPECK DESIGN BLOCKS INITIALIZATION =====
@@ -507,8 +595,9 @@ if (document.body.classList.contains('home-page')) {
     window.addEventListener('load', () => {
         setTimeout(() => {
             if (window.homePage) {
+                window.homePage.initFloatingExpertise();
                 window.homePage.initSpeckDesignBlocks();
             }
         }, 500);
     });
-        }
+}
