@@ -5,32 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="home.title">NBGROUP.TECH | Industrial Design & Manufacturing</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <!-- Кроссбраузерные иконки -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Кроссбраузерные стили для всех браузеров -->
     <style>
-        /* ГАРАНТИРОВАННЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ */
+        /* ГАРАНТИРОВАННЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ - КРОССБРАУЗЕРНЫЕ */
         .marquee-container {
             width: 100%;
             overflow: hidden;
             position: relative;
             margin-bottom: 10px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .marquee-track {
+            display: -webkit-box !important;
+            display: -ms-flexbox !important;
             display: flex !important;
+            width: -webkit-max-content !important;
+            width: -moz-max-content !important;
             width: max-content !important;
             padding: 25px 0 !important;
             white-space: nowrap !important;
-            will-change: transform !important;
+            -webkit-backface-visibility: hidden !important;
+            backface-visibility: hidden !important;
+            -webkit-transform-style: preserve-3d !important;
+            transform-style: preserve-3d !important;
         }
 
         .marquee-content {
+            display: -webkit-box !important;
+            display: -ms-flexbox !important;
             display: flex !important;
+            -webkit-box-align: center !important;
+            -ms-flex-align: center !important;
             align-items: center !important;
             white-space: nowrap !important;
+            -webkit-flex-shrink: 0 !important;
+            -ms-flex-negative: 0 !important;
             flex-shrink: 0 !important;
         }
 
@@ -41,7 +61,11 @@
             opacity: 0.8 !important;
             padding: 0 30px !important;
             white-space: nowrap !important;
+            -webkit-flex-shrink: 0 !important;
+            -ms-flex-negative: 0 !important;
             flex-shrink: 0 !important;
+            text-decoration: none !important;
+            -webkit-tap-highlight-color: transparent !important;
         }
 
         .separator {
@@ -49,51 +73,95 @@
             font-size: 1.5rem !important;
             opacity: 0.3 !important;
             font-weight: 300 !important;
+            -webkit-flex-shrink: 0 !important;
+            -ms-flex-negative: 0 !important;
             flex-shrink: 0 !important;
         }
 
-        /* АНИМАЦИИ */
+        /* КРОССБРАУЗЕРНЫЕ АНИМАЦИИ */
         #marquee1 {
+            -webkit-animation: marquee-scroll 40s linear infinite !important;
             animation: marquee-scroll 40s linear infinite !important;
         }
 
         #marquee2 {
+            -webkit-animation: marquee-scroll-reverse 40s linear infinite !important;
             animation: marquee-scroll-reverse 40s linear infinite !important;
         }
 
+        @-webkit-keyframes marquee-scroll {
+            0% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
+            100% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
+        }
+
         @keyframes marquee-scroll {
-            0% { transform: translateX(0) !important; }
-            100% { transform: translateX(-33.33%) !important; }
+            0% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
+            100% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
+        }
+
+        @-webkit-keyframes marquee-scroll-reverse {
+            0% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
+            100% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
         }
 
         @keyframes marquee-scroll-reverse {
-            0% { transform: translateX(-33.33%) !important; }
-            100% { transform: translateX(0) !important; }
+            0% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
+            100% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
         }
 
         .marquee-track:hover {
+            -webkit-animation-play-state: paused !important;
             animation-play-state: paused !important;
         }
 
-        /* Стили для переключения языка */
+        /* Кроссбраузерная прозрачность для текста */
+        .hero h1 span:first-child {
+            background: -webkit-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-fill-color: transparent;
+            color: transparent; /* Fallback для старых браузеров */
+        }
+
+        /* Кроссбраузерные стили для переключения языка */
         .language-changing [data-i18n] {
             opacity: 0.7;
+            -webkit-transition: opacity 0.3s ease;
             transition: opacity 0.3s ease;
+        }
+
+        @-webkit-keyframes fadeInLanguage {
+            from {
+                opacity: 0.7;
+                -webkit-transform: translateY(5px);
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                -webkit-transform: translateY(0);
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeInLanguage {
             from {
                 opacity: 0.7;
+                -webkit-transform: translateY(5px);
                 transform: translateY(5px);
             }
             to {
                 opacity: 1;
+                -webkit-transform: translateY(0);
                 transform: translateY(0);
             }
         }
 
-        /* Language switcher styles */
+        /* Language switcher styles - кроссбраузерные */
         .language-switcher {
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
             gap: 5px;
             margin-right: 20px;
@@ -108,6 +176,7 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
+            -webkit-transition: all 0.2s ease;
             transition: all 0.2s ease;
             min-width: 40px;
             text-align: center;
@@ -124,6 +193,29 @@
             color: white;
             border-color: rgba(255, 255, 255, 0.4);
             font-weight: 600;
+        }
+
+        /* Исправление для браузеров без поддержки backdrop-filter */
+        .no-backdropfilter .main-header {
+            background: rgba(0, 102, 255, 0.25) !important;
+        }
+
+        .no-backdropfilter .parallax-content {
+            background: rgba(0, 0, 0, 0.5) !important;
+        }
+
+        /* Исправление для IE 11 */
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            .hero h1 span:first-child {
+                background: none !important;
+                color: #ffffff !important;
+            }
+            .marquee-track {
+                display: block !important;
+            }
+            .marquee-content {
+                display: inline-block !important;
+            }
         }
     </style>
 </head>
@@ -428,6 +520,26 @@
     <script src="js/parallax.js"></script>
 
     <script>
+        // Проверка поддержки современных функций
+        (function() {
+            // Проверка backdrop-filter
+            if (!CSS.supports('backdrop-filter', 'blur(10px)') && 
+                !CSS.supports('-webkit-backdrop-filter', 'blur(10px)')) {
+                document.body.classList.add('no-backdropfilter');
+            }
+            
+            // Проверка flexbox gap для старых браузеров
+            if (!CSS.supports('gap', '1px')) {
+                document.body.classList.add('no-flex-gap');
+            }
+            
+            // Проверка для IE
+            if (/*@cc_on!@*/false || document.documentMode) {
+                document.body.classList.add('is-ie');
+                console.log('IE обнаружен, применяем специальные стили');
+            }
+        })();
+        
         // Проверка состояния i18n
         console.log('📄 Page loading, initializing...');
         
@@ -458,7 +570,9 @@
                 console.log('✅ Треки найдены');
                 
                 // Принудительно запускаем CSS анимации
+                track1.style.WebkitAnimation = 'marquee-scroll 40s linear infinite';
                 track1.style.animation = 'marquee-scroll 40s linear infinite';
+                track2.style.WebkitAnimation = 'marquee-scroll-reverse 40s linear infinite';
                 track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
                 
                 console.log('🚀 Бегущая строка запущена через CSS');
@@ -590,4 +704,4 @@
         });
     </script>
 </body>
-        </html>
+</html>
