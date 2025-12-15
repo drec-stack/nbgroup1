@@ -178,15 +178,18 @@
     opacity: 0.7;
 }
 
-/* ===== NEW SPECK-DESIGN.COM MINIMAL BLOCKS ===== */
+/* ===== NEW SPECK-DESIGN.COM EXACT BLOCKS ===== */
 
 .speck-minimal-section {
-    padding: 140px 0;
-    background: linear-gradient(135deg, #0a0a0f 0%, #15151e 100%);
     position: relative;
+    padding: 180px 0 100px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
     overflow: hidden;
 }
 
+/* Фон как на speckdesign.com - параллакс эффект */
 .speck-minimal-section::before {
     content: '';
     position: absolute;
@@ -195,79 +198,112 @@
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 30%, rgba(0, 102, 255, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(255, 100, 100, 0.03) 0%, transparent 50%);
-    pointer-events: none;
+        linear-gradient(135deg, rgba(10, 10, 15, 0.95) 0%, rgba(21, 21, 30, 0.98) 100%),
+        url('../images/parallax/bg-1.jpg') center center / cover no-repeat;
     z-index: 1;
 }
 
-.speck-minimal-section .container {
+/* Контейнер для блоков */
+.speck-minimal-container {
     position: relative;
     z-index: 2;
-}
-
-.speck-minimal-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 70px 50px;
-    max-width: 1100px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 60px;
+    align-items: start;
 }
 
+/* Позиционирование как на speckdesign.com */
+.speck-minimal-block:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+    margin-top: 50px;
+}
+
+.speck-minimal-block:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 150px;
+}
+
+.speck-minimal-block:nth-child(3) {
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: -50px;
+}
+
+.speck-minimal-block:nth-child(4) {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 50px;
+}
+
+/* Стили блоков как на speckdesign.com */
 .speck-minimal-block {
-    background: rgba(15, 15, 25, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 12px;
-    padding: 50px 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 50px 45px;
     position: relative;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    min-height: 240px;
+    min-height: 280px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     box-shadow: 
-        0 4px 20px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        0 10px 40px rgba(0, 0, 0, 0.25),
+        0 5px 20px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Номера как на speckdesign.com */
 .speck-minimal-number {
-    font-size: 56px;
-    font-weight: 800;
-    color: rgba(255, 255, 255, 0.09);
-    line-height: 1;
-    margin-bottom: 30px;
+    font-size: 64px;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.07);
+    line-height: 0.8;
+    margin-bottom: 35px;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     letter-spacing: -0.03em;
     user-select: none;
 }
 
-/* Заголовки */
+/* Заголовки как на speckdesign.com */
 .speck-minimal-title {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 600;
     color: #ffffff;
     margin: 0 0 15px 0;
-    line-height: 1.2;
+    line-height: 1.1;
     letter-spacing: -0.01em;
+    text-transform: uppercase;
 }
 
-/* Подзаголовки */
+/* Подзаголовки как на speckdesign.com */
 .speck-minimal-subtitle {
     font-size: 18px;
-    color: rgba(255, 255, 255, 0.65);
-    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
     margin: 0;
     font-weight: 400;
-    max-width: 320px;
+    max-width: 350px;
 }
 
-/* Контент внутри блока */
-.speck-minimal-content {
-    flex: 1;
+/* Легкий hover эффект как на speckdesign.com */
+.speck-minimal-block:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.35),
+        0 10px 30px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* ===== CLIENTS SECTION ===== */
@@ -760,14 +796,80 @@
 /* ===== АДАПТИВНОСТЬ ДЛЯ НОВЫХ БЛОКОВ ===== */
 
 @media (max-width: 1200px) {
-    .speck-minimal-grid {
-        gap: 60px 40px;
-        max-width: 900px;
+    .speck-minimal-container {
+        max-width: 1100px;
+        padding: 0 30px;
+        gap: 50px;
     }
     
     .speck-minimal-block {
-        padding: 45px 35px;
-        min-height: 220px;
+        padding: 45px 40px;
+        min-height: 260px;
+    }
+    
+    .speck-minimal-number {
+        font-size: 58px;
+        margin-bottom: 30px;
+    }
+    
+    .speck-minimal-title {
+        font-size: 28px;
+    }
+    
+    .speck-minimal-subtitle {
+        font-size: 17px;
+    }
+    
+    .speck-minimal-block:nth-child(2) {
+        margin-top: 120px;
+    }
+    
+    .hero h1 {
+        font-size: 4rem;
+    }
+    
+    .hero h1 span:first-child {
+        font-size: 4.5rem;
+    }
+    
+    .hero h1 span:nth-child(2) {
+        font-size: 3.5rem;
+    }
+    
+    .hero h1 span:last-child {
+        font-size: 4rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .speck-minimal-section {
+        padding: 150px 0 80px;
+    }
+    
+    .speck-minimal-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, auto);
+        gap: 40px;
+        max-width: 700px;
+    }
+    
+    /* Сбрасываем позиционирование на мобильных */
+    .speck-minimal-block:nth-child(1),
+    .speck-minimal-block:nth-child(2),
+    .speck-minimal-block:nth-child(3),
+    .speck-minimal-block:nth-child(4) {
+        grid-column: 1;
+        grid-row: auto;
+        margin-top: 0;
+    }
+    
+    .speck-minimal-block:nth-child(2) {
+        margin-top: 0;
+    }
+    
+    .speck-minimal-block {
+        padding: 40px 35px;
+        min-height: 240px;
     }
     
     .speck-minimal-number {
@@ -780,37 +882,8 @@
     }
     
     .speck-minimal-subtitle {
-        font-size: 17px;
-    }
-}
-
-@media (max-width: 992px) {
-    .speck-minimal-section {
-        padding: 120px 0;
-    }
-    
-    .speck-minimal-grid {
-        gap: 50px 35px;
-    }
-    
-    .speck-minimal-block {
-        padding: 40px 30px;
-        min-height: 200px;
-    }
-    
-    .speck-minimal-number {
-        font-size: 48px;
-        margin-bottom: 22px;
-    }
-    
-    .speck-minimal-title {
-        font-size: 24px;
-        margin-bottom: 12px;
-    }
-    
-    .speck-minimal-subtitle {
         font-size: 16px;
-        max-width: 280px;
+        max-width: 100%;
     }
     
     .hero {
@@ -873,33 +946,31 @@
 
 @media (max-width: 768px) {
     .speck-minimal-section {
-        padding: 100px 0;
+        padding: 120px 0 60px;
     }
     
-    .speck-minimal-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        max-width: 500px;
+    .speck-minimal-container {
+        padding: 0 20px;
+        gap: 30px;
     }
     
     .speck-minimal-block {
         padding: 35px 30px;
-        min-height: 180px;
+        min-height: 220px;
     }
     
     .speck-minimal-number {
-        font-size: 44px;
+        font-size: 48px;
         margin-bottom: 20px;
     }
     
     .speck-minimal-title {
-        font-size: 22px;
-        margin-bottom: 10px;
+        font-size: 24px;
+        margin-bottom: 12px;
     }
     
     .speck-minimal-subtitle {
         font-size: 15px;
-        max-width: 100%;
     }
     
     .hero {
@@ -1028,26 +1099,22 @@
 
 @media (max-width: 576px) {
     .speck-minimal-section {
-        padding: 80px 0;
-    }
-    
-    .speck-minimal-grid {
-        gap: 30px;
+        padding: 100px 0 50px;
     }
     
     .speck-minimal-block {
         padding: 30px 25px;
-        min-height: 160px;
+        min-height: 200px;
     }
     
     .speck-minimal-number {
-        font-size: 40px;
-        margin-bottom: 18px;
+        font-size: 42px;
+        margin-bottom: 20px;
     }
     
     .speck-minimal-title {
-        font-size: 20px;
-        margin-bottom: 8px;
+        font-size: 22px;
+        margin-bottom: 10px;
     }
     
     .speck-minimal-subtitle {
@@ -1128,7 +1195,7 @@
 @media (max-width: 400px) {
     .speck-minimal-block {
         padding: 25px 20px;
-        min-height: 150px;
+        min-height: 180px;
     }
     
     .speck-minimal-number {
@@ -1136,7 +1203,7 @@
     }
     
     .speck-minimal-title {
-        font-size: 18px;
+        font-size: 20px;
     }
     
     .speck-minimal-subtitle {
