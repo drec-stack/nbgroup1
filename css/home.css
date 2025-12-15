@@ -5,7 +5,7 @@
     padding: 180px 0 120px;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #000000 0%, #0a0a0f 50%, #151520 100%);
+    background: transparent;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -47,11 +47,7 @@
 .hero h1 span:nth-child(2) {
     font-size: 4rem;
     opacity: 0.9;
-}
-
-.hero h1 span:last-child {
-    font-size: 4.5rem;
-    background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -198,7 +194,7 @@
     width: 100%;
     height: 100%;
     background: 
-        linear-gradient(135deg, rgba(10, 10, 15, 0.95) 0%, rgba(21, 21, 30, 0.98) 100%),
+        rgba(0, 0, 0, 0),
         url('../images/parallax/bg-1.jpg') center center / cover no-repeat;
     z-index: 1;
 }
@@ -309,7 +305,7 @@
 /* ===== CLIENTS SECTION ===== */
 .clients-section {
     padding: 120px 0;
-    background: linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 100%);
+    background: transparent;
     position: relative;
     overflow: hidden;
 }
@@ -374,12 +370,12 @@
 
 .marquee-container::before {
     left: 0;
-    background: linear-gradient(90deg, #0a0a0f 0%, transparent 100%);
+    background: linear-gradient(90deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
 }
 
 .marquee-container::after {
     right: 0;
-    background: linear-gradient(270deg, #0a0a0f 0%, transparent 100%);
+    background: linear-gradient(270deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
 }
 
 .marquee-track {
@@ -450,7 +446,7 @@
 /* ===== STATS SECTION ===== */
 .stats-improved {
     padding: 140px 0;
-    background: linear-gradient(135deg, #0f0f1a 0%, #151525 100%);
+    background: transparent;
     position: relative;
     overflow: hidden;
     z-index: 2;
@@ -1413,4 +1409,4 @@
         border: 1px solid #ccc !important;
         break-inside: avoid;
     }
-        }
+    }
