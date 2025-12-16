@@ -1181,7 +1181,6 @@
     .home-page .main-header {
         width: calc(100% - 30px) !important;
         top: 15px !important;
-        border-radius: 20px !important;
     }
     
     .home-page .hero {
@@ -1287,7 +1286,6 @@
     .home-page .main-header {
         width: calc(100% - 20px) !important;
         top: 10px !important;
-        border-radius: 15px !important;
     }
     
     .home-page .hero {
@@ -1515,4 +1513,10 @@
         border: 1px solid #ccc !important;
         break-inside: avoid;
     }
-        }
+}
+
+/* ===== УБИРАЕМ ФОНОВЫЕ ЦИФРЫ В СЕКЦИИ SPECK ===== */
+/* Добавляем этот код в самый конец файла */
+.speck-bg-number {
+    display: none !important;
+    }
