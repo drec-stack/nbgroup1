@@ -541,4 +541,101 @@ if (document.body.classList.contains('home-page')) {
             }
         }, 500);
     });
-                }
+}
+
+// ===== SIMPLE 4-BACKGROUND PARALLAX EXTENSION =====
+// Дополнительная простая реализация для 4 фонов
+document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем, есть ли 4 фона на странице
+    const backgrounds = document.querySelectorAll('.parallax-bg');
+    if (backgrounds.length < 4) {
+        console.log(`ℹ️ Found only ${backgrounds.length} backgrounds, 4-background extension not needed`);
+        return;
+    }
+    
+    console.log('🎨 Initializing 4-background parallax extension...');
+    
+    // Ждем, чтобы основной скрипт успел инициализироваться
+    setTimeout(function() {
+        // Если основной parallax не работает, запускаем нашу версию
+        if (!window.parallaxInstance) {
+            console.log('⚡ Main parallax not found, activating 4-background extension');
+            initSimple4BackgroundParallax();
+        } else {
+            console.log('✅ Main parallax is working, 4-background extension ready as fallback');
+        }
+    }, 2000);
+    
+    function initSimple4BackgroundParallax() {
+        let currentBg = 0;
+        let isAnimating = false;
+        
+        // Показываем только первый фон
+        backgrounds.forEach((bg, index) => {
+            bg.style.opacity = index === 0 ? '1' : '0';
+            bg.style.transition = 'opacity 1.2s ease-in-out';
+        });
+        
+        function switchBackground(newIndex) {
+            if (isAnimating || newIndex === currentBg || newIndex >= backgrounds.length) return;
+            
+            isAnimating = true;
+            console.log(`🔄 4BG: Switching to background ${newIndex}`);
+            
+            backgrounds[currentBg].style.opacity = '0';
+            
+            setTimeout(() => {
+                backgrounds[newIndex].style.opacity = '1';
+                currentBg = newIndex;
+                
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 1200);
+            }, 100);
+        }
+        
+        // Смена фонов на основе секций
+        const sections = document.querySelectorAll('.content-section[data-bg-index]');
+        if (sections.length > 0) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bgIndex = parseInt(entry.target.getAttribute('data-bg-index')) || 0;
+                        const safeIndex = Math.min(bgIndex, backgrounds.length - 1);
+                        switchBackground(safeIndex);
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            sections.forEach(section => observer.observe(section));
+        }
+        
+        // Простая логика по скроллу
+        window.addEventListener('scroll', function() {
+            const scrollY = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            
+            if (documentHeight === 0) return;
+            
+            const scrollPercentage = Math.min((scrollY / documentHeight) * 100, 100);
+            
+            let newBgIndex = 0;
+            
+            if (scrollPercentage < 25) {
+                newBgIndex = 0;
+            } else if (scrollPercentage < 50) {
+                newBgIndex = 1;
+            } else if (scrollPercentage < 75) {
+                newBgIndex = 2;
+            } else {
+                newBgIndex = 3;
+            }
+            
+            newBgIndex = Math.min(newBgIndex, backgrounds.length - 1);
+            switchBackground(newBgIndex);
+        });
+        
+        console.log(`✅ 4-background parallax extension initialized with ${backgrounds.length} backgrounds`);
+    }
+});
