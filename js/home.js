@@ -14,7 +14,7 @@ class HomePage {
     }
 
     init() {
-        this.initSpeckDesignBlocks();
+        this.initSpeckVerticalBlocks();
         this.initScrollAnimations();
         this.initStatsCounter();
         this.initParallaxBackgrounds();
@@ -25,110 +25,135 @@ class HomePage {
         console.log('🏠 HomePage инициализирован');
     }
 
-    // ===== SPECK DESIGN BLOCKS INITIALIZATION =====
-    initSpeckDesignBlocks() {
-        const speckBlocks = document.querySelectorAll('.speck-service-block-full');
+    // ===== SPECK VERTICAL BLOCKS INITIALIZATION =====
+    initSpeckVerticalBlocks() {
+        console.log('🎨 Инициализация вертикальных блоков Speck Design...');
         
-        if (!speckBlocks.length) return;
-
-        // Scroll animation with staggered delay
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    // Delay based on position
-                    const delay = index * 150;
-                    setTimeout(() => {
-                        entry.target.style.animationDelay = `${delay}ms`;
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }, 300);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { 
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-
-        speckBlocks.forEach(block => {
-            // Initial state
-            block.style.opacity = '0';
-            block.style.transform = 'translateY(40px)';
-            block.style.transition = 'opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            
-            observer.observe(block);
-            
-            // Enhanced hover effects
-            const arrow = block.querySelector('.speck-action-arrow');
-            const listItems = block.querySelectorAll('.speck-block-list li');
-            
-            if (arrow) {
-                block.addEventListener('mouseenter', () => {
-                    if (!this.isReducedMotion) {
-                        arrow.style.transform = 'translateX(8px)';
-                    }
-                });
-                
-                block.addEventListener('mouseleave', () => {
-                    if (!this.isReducedMotion) {
-                        arrow.style.transform = '';
-                    }
-                });
-            }
-            
-            // Animate list items on hover
-            block.addEventListener('mouseenter', () => {
-                if (!this.isReducedMotion) {
-                    listItems.forEach((item, index) => {
-                        setTimeout(() => {
-                            item.style.transform = 'translateX(5px)';
-                        }, index * 50);
-                    });
-                }
-            });
-            
-            block.addEventListener('mouseleave', () => {
-                if (!this.isReducedMotion) {
-                    listItems.forEach((item, index) => {
-                        setTimeout(() => {
-                            item.style.transform = '';
-                        }, index * 30);
-                    });
-                }
-            });
-            
-            // Add keyboard navigation
-            block.setAttribute('tabindex', '0');
-            block.setAttribute('role', 'link');
-            
-            block.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    window.location.href = block.getAttribute('href');
-                }
-            });
-        });
+        const speckBlocks = document.querySelectorAll('.speck-vertical-block');
+        const bgNumbers = document.querySelectorAll('.speck-bg-number');
         
-        // Add hover effect for main title
-        const mainTitle = document.querySelector('.speck-main-title');
-        if (mainTitle) {
-            mainTitle.style.transition = 'all 0.4s ease';
-            mainTitle.addEventListener('mouseenter', () => {
-                if (!this.isReducedMotion) {
-                    mainTitle.style.background = 'linear-gradient(135deg, #ffffff 0%, #66b5ff 100%)';
-                    mainTitle.style.webkitBackgroundClip = 'text';
-                    mainTitle.style.backgroundClip = 'text';
-                }
-            });
-            
-            mainTitle.addEventListener('mouseleave', () => {
-                if (!this.isReducedMotion) {
-                    mainTitle.style.background = 'linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%)';
-                }
-            });
+        if (!speckBlocks.length) {
+            console.log('⚠️ Вертикальные блоки Speck не найдены');
+            return;
         }
         
-        console.log(`🎨 Initialized ${speckBlocks.length} Speck Design blocks`);
+        // Инициализируем Intersection Observer для блоков
+        const blockObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Активируем блок с задержкой
+                    setTimeout(() => {
+                        entry.target.classList.add('active');
+                        
+                        // Активируем соответствующую фоновую цифру
+                        const blockIndex = entry.target.getAttribute('data-block-index');
+                        const bgNumber = document.querySelector(`.speck-bg-${parseInt(blockIndex) + 1}`);
+                        if (bgNumber) {
+                            bgNumber.classList.add('active');
+                        }
+                    }, index * 200);
+                    
+                    blockObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        });
+        
+        // Наблюдаем за всеми блоками
+        speckBlocks.forEach(block => {
+            blockObserver.observe(block);
+        });
+        
+        // Инициализируем параллакс для фоновых цифр
+        this.initSpeckParallax();
+        
+        // Инициализируем hover эффекты для CTA кнопок
+        this.initSpeckCTAHover();
+        
+        console.log(`✅ Инициализировано ${speckBlocks.length} вертикальных блоков`);
+    }
+
+    // Параллакс для фоновых цифр
+    initSpeckParallax() {
+        if (this.isReducedMotion) return;
+        
+        // Инициализируем Rellax.js если он подключен
+        if (typeof Rellax !== 'undefined') {
+            try {
+                this.rellax = new Rellax('.speck-bg-number', {
+                    speed: -0.5,
+                    center: false,
+                    wrapper: null,
+                    round: true,
+                    vertical: true,
+                    horizontal: false
+                });
+                console.log('🌀 Параллакс Rellax.js инициализирован');
+            } catch (e) {
+                console.warn('⚠️ Ошибка инициализации Rellax:', e);
+                this.initFallbackSpeckParallax();
+            }
+        } else {
+            console.log('ℹ️ Rellax.js не найден, используем fallback параллакс');
+            this.initFallbackSpeckParallax();
+        }
+    }
+
+    // Fallback параллакс на чистом JS
+    initFallbackSpeckParallax() {
+        const bgNumbers = document.querySelectorAll('.speck-bg-number');
+        const shapes = document.querySelectorAll('.speck-shape');
+        
+        if (!bgNumbers.length) return;
+        
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            
+            // Анимируем цифры
+            bgNumbers.forEach((number, index) => {
+                const speed = 0.3 + (index * 0.1);
+                const yPos = -(scrolled * speed * 0.1);
+                number.style.transform = `translateY(calc(${yPos}px + 100px))`;
+            });
+            
+            // Анимируем формы
+            shapes.forEach((shape, index) => {
+                const speed = 0.1 + (index * 0.05);
+                const yPos = scrolled * speed * 0.05;
+                shape.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+    }
+
+    // Hover эффекты для кнопок Speck
+    initSpeckCTAHover() {
+        const ctaButtons = document.querySelectorAll('.speck-block-cta');
+        
+        ctaButtons.forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                if (!this.isReducedMotion) {
+                    button.style.transform = 'translateX(10px)';
+                }
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                if (!this.isReducedMotion) {
+                    button.style.transform = '';
+                }
+            });
+            
+            // Клик эффект
+            button.addEventListener('click', (e) => {
+                if (!this.isReducedMotion) {
+                    button.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        button.style.transform = '';
+                    }, 150);
+                }
+            });
+        });
     }
 
     // ===== STATS COUNTER =====
@@ -370,6 +395,11 @@ class HomePage {
                 cancelAnimationFrame(track._animationId);
             }
         });
+        
+        // Останавливаем Rellax если он используется
+        if (this.rellax) {
+            this.rellax.destroy();
+        }
     }
 }
 
@@ -507,8 +537,8 @@ if (document.body.classList.contains('home-page')) {
     window.addEventListener('load', () => {
         setTimeout(() => {
             if (window.homePage) {
-                window.homePage.initSpeckDesignBlocks();
+                window.homePage.initSpeckVerticalBlocks();
             }
         }, 500);
     });
-                    }
+    }
