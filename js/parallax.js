@@ -335,3 +335,83 @@ window.addEventListener('resize', function() {
 
 // Экспорт для глобального доступа
 window.ScrollBackgroundChanger = ScrollBackgroundChanger;
+
+// ===== SIMPLE 4-BACKGROUND FALLBACK =====
+// Простая реализация для 4 фонов как fallback
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        const backgrounds = document.querySelectorAll('.parallax-bg');
+        if (backgrounds.length >= 4 && !window.parallaxInstance) {
+            console.log('⚡ Using simple 4-background fallback');
+            
+            let currentBg = 0;
+            let isAnimating = false;
+            
+            // Показываем только первый фон
+            backgrounds.forEach((bg, index) => {
+                bg.style.opacity = index === 0 ? '1' : '0';
+                bg.style.transition = 'opacity 1.2s ease-in-out';
+            });
+            
+            function switchBackground(newIndex) {
+                if (isAnimating || newIndex === currentBg || newIndex >= backgrounds.length) return;
+                
+                isAnimating = true;
+                backgrounds[currentBg].style.opacity = '0';
+                
+                setTimeout(() => {
+                    backgrounds[newIndex].style.opacity = '1';
+                    currentBg = newIndex;
+                    
+                    setTimeout(() => {
+                        isAnimating = false;
+                    }, 1200);
+                }, 100);
+            }
+            
+            // Смена фонов на основе секций
+            const sections = document.querySelectorAll('.content-section[data-bg-index]');
+            if (sections.length > 0) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const bgIndex = parseInt(entry.target.getAttribute('data-bg-index')) || 0;
+                            const safeIndex = Math.min(bgIndex, backgrounds.length - 1);
+                            switchBackground(safeIndex);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                
+                sections.forEach(section => observer.observe(section));
+            }
+            
+            // Простая логика по скроллу
+            window.addEventListener('scroll', function() {
+                const scrollY = window.pageYOffset;
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight - windowHeight;
+                
+                if (documentHeight === 0) return;
+                
+                const scrollPercentage = Math.min((scrollY / documentHeight) * 100, 100);
+                
+                let newBgIndex = 0;
+                
+                if (scrollPercentage < 25) {
+                    newBgIndex = 0;
+                } else if (scrollPercentage < 50) {
+                    newBgIndex = 1;
+                } else if (scrollPercentage < 75) {
+                    newBgIndex = 2;
+                } else {
+                    newBgIndex = 3;
+                }
+                
+                newBgIndex = Math.min(newBgIndex, backgrounds.length - 1);
+                switchBackground(newBgIndex);
+            });
+            
+            console.log(`✅ Simple 4-background fallback initialized`);
+        }
+    }, 1500);
+});
