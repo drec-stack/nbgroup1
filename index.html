@@ -126,15 +126,65 @@
             border-color: rgba(255, 255, 255, 0.4);
             font-weight: 600;
         }
+        
+        /* Параллакс индикаторы */
+        .parallax-indicators {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .parallax-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .parallax-indicator.active {
+            background: white;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .parallax-indicator:hover {
+            transform: scale(1.2);
+            background: rgba(255, 255, 255, 0.4);
+        }
     </style>
 </head>
 <body class="home-page">
-    <!-- PARALLAX BACKGROUNDS (4 фона) -->
+    <!-- PARALLAX BACKGROUNDS (4 фона как на speckdesign.com) -->
     <div class="parallax-bg-container">
-        <div id="parallax-bg-1" class="parallax-bg active"></div>
-        <div id="parallax-bg-2" class="parallax-bg"></div>
-        <div id="parallax-bg-3" class="parallax-bg"></div>
-        <div id="parallax-bg-4" class="parallax-bg"></div>
+        <!-- Слои фонов как на speckdesign.com -->
+        <div class="parallax-layer layer-1 active">
+            <div class="parallax-bg" id="parallax-bg-1"></div>
+        </div>
+        <div class="parallax-layer layer-2">
+            <div class="parallax-bg" id="parallax-bg-2"></div>
+        </div>
+        <div class="parallax-layer layer-3">
+            <div class="parallax-bg" id="parallax-bg-3"></div>
+        </div>
+        <div class="parallax-layer layer-4">
+            <div class="parallax-bg" id="parallax-bg-4"></div>
+        </div>
+    </div>
+
+    <!-- Индикаторы параллакса -->
+    <div class="parallax-indicators">
+        <div class="parallax-indicator active" data-layer="1"></div>
+        <div class="parallax-indicator" data-layer="2"></div>
+        <div class="parallax-indicator" data-layer="3"></div>
+        <div class="parallax-indicator" data-layer="4"></div>
     </div>
 
     <!-- SCROLL PROGRESS BAR -->
@@ -146,7 +196,7 @@
     <div id="header-container"></div>
 
     <!-- Hero Section -->
-    <section class="hero parallax-hero">
+    <section class="hero parallax-hero" data-layer="1">
         <div class="container">
             <div class="parallax-content">
                 <!-- ЗАГОЛОВОК с data-i18n -->
@@ -182,8 +232,8 @@
         </div>
     </section>
 
-    <!-- Speck Design Vertical Blocks (точно как speckdesign.com) -->
-    <section class="speck-vertical-section">
+    <!-- Speck Design Vertical Blocks -->
+    <section class="speck-vertical-section" data-layer="2">
         <div class="speck-parallax-bg">
             <!-- Фоновые цифры с параллаксом -->
             <div class="speck-bg-number speck-bg-1" data-rellax-speed="0.5">01</div>
@@ -354,8 +404,8 @@
         </div>
     </section>
 
-    <!-- Clients Section (фон 2) -->
-    <section class="clients-section content-section" data-bg-index="1">
+    <!-- Clients Section -->
+    <section class="clients-section content-section" data-layer="3">
         <div class="container">
             <div class="clients-content">
                 <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
@@ -481,8 +531,8 @@
         </div>
     </section>
 
-    <!-- Stats Section (фон 3) -->
-    <section class="stats-improved content-section" data-bg-index="2">
+    <!-- Stats Section -->
+    <section class="stats-improved content-section" data-layer="4">
         <div class="container">
             <div class="stats-grid-improved">
                 <!-- Проекты завершено -->
@@ -532,8 +582,8 @@
         </div>
     </section>
 
-    <!-- CTA Section (фон 4) -->
-    <a href="contacts.html" class="cta-improved content-section clickable-cta" data-bg-index="3">
+    <!-- CTA Section -->
+    <a href="contacts.html" class="cta-improved content-section clickable-cta">
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
@@ -722,4 +772,4 @@
         });
     </script>
 </body>
-                                </html>
+</html>
