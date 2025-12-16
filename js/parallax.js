@@ -1,5 +1,5 @@
-// parallax.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ (ПОЛНАЯ ВЕРСИЯ С ФИКСОМ)
-console.log('🎯 parallax.js loaded - MOBILE OPTIMIZED');
+// parallax.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ (ПОЛНАЯ ВЕРСИЯ С 4 ФОНАМИ)
+console.log('🎯 parallax.js loaded - MOBILE OPTIMIZED WITH 4 BACKGROUNDS');
 
 class ScrollBackgroundChanger {
     constructor() {
@@ -42,7 +42,7 @@ class ScrollBackgroundChanger {
             // 3. Добавляем fallback фон для контентных секций
             this.sections.forEach(section => {
                 if (section.classList.contains('content-section')) {
-                    section.style.backgroundColor = 'var(--secondary)';
+                    section.style.backgroundColor = 'transparent';
                     section.style.position = 'relative';
                     section.style.zIndex = '2';
                 }
@@ -51,9 +51,14 @@ class ScrollBackgroundChanger {
     }
     
     init() {
-        console.log('🎯 Initializing mobile-optimized background changes...');
+        console.log('🎯 Initializing mobile-optimized background changes with 4 backgrounds...');
         
-        if (this.backgrounds.length === 0) return;
+        if (this.backgrounds.length === 0) {
+            console.error('❌ No parallax backgrounds found');
+            return;
+        }
+        
+        console.log(`✅ Found ${this.backgrounds.length} backgrounds`);
         
         // Упрощенная логика для мобильных
         if (this.isMobile) {
@@ -64,11 +69,11 @@ class ScrollBackgroundChanger {
         
         this.setupProgressBar();
         this.setupPerformanceOptimizations();
-        console.log('✅ Background changer optimized for mobile');
+        console.log('✅ Background changer optimized for mobile with 4 backgrounds');
     }
     
     setupMobileBackgrounds() {
-        // На мобильных используем упрощенную логику смены фонов
+        // На мобильных используем упрощенную логику смены 4 фонов
         this.setBackground(0);
         
         // Оптимизированный скролл для мобильных
@@ -84,7 +89,7 @@ class ScrollBackgroundChanger {
     }
     
     setupDesktopBackgrounds() {
-        // Полная функциональность для десктопов
+        // Полная функциональность для десктопов с 4 фонами
         this.setBackground(0);
         this.throttledScroll = this.throttle(this.handleScroll.bind(this), 16);
         window.addEventListener('scroll', this.throttledScroll, { passive: true });
@@ -96,17 +101,26 @@ class ScrollBackgroundChanger {
         
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight - windowHeight;
         
-        // Определяем новый индекс фона на основе позиции скролла
+        // Определяем процент скролла
+        const scrollPercentage = (scrollY / documentHeight) * 100;
+        
+        // Логика смены 4 фонов на основе процента скролла
         let newBgIndex = 0;
         
-        if (scrollY > windowHeight * 0.3 && scrollY <= windowHeight * 1.5) {
-            newBgIndex = 1; // Clients section
-        } else if (scrollY > windowHeight * 1.5 && scrollY <= windowHeight * 2.5) {
-            newBgIndex = 0; // Services section
-        } else if (scrollY > windowHeight * 2.5) {
-            newBgIndex = 1; // Stats & CTA sections
+        if (scrollPercentage < 25) {
+            newBgIndex = 0; // Первый фон
+        } else if (scrollPercentage >= 25 && scrollPercentage < 50) {
+            newBgIndex = 1; // Второй фон
+        } else if (scrollPercentage >= 50 && scrollPercentage < 75) {
+            newBgIndex = 2; // Третий фон (новый 1)
+        } else {
+            newBgIndex = 3; // Четвертый фон (новый 2)
         }
+        
+        // Ограничиваем индекс количеством доступных фонов
+        newBgIndex = Math.min(newBgIndex, this.backgrounds.length - 1);
         
         // Меняем фон только если индекс изменился
         if (newBgIndex !== this.currentBgIndex) {
@@ -121,21 +135,28 @@ class ScrollBackgroundChanger {
         
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight - windowHeight;
         
-        // Полная логика для десктопов
+        // Определяем процент скролла
+        const scrollPercentage = (scrollY / documentHeight) * 100;
+        
+        // Логика смены 4 фонов на основе процента скролла
         let newBgIndex = 0;
         
-        if (scrollY < windowHeight * 0.5) {
-            newBgIndex = 0;
-        } else if (scrollY >= windowHeight * 0.5 && scrollY < windowHeight * 1.5) {
-            newBgIndex = 1;
-        } else if (scrollY >= windowHeight * 1.5 && scrollY < windowHeight * 2.5) {
-            newBgIndex = 0;
-        } else if (scrollY >= windowHeight * 2.5 && scrollY < windowHeight * 3.5) {
-            newBgIndex = 1;
+        if (scrollPercentage < 20) {
+            newBgIndex = 0; // Первый фон
+        } else if (scrollPercentage >= 20 && scrollPercentage < 40) {
+            newBgIndex = 1; // Второй фон
+        } else if (scrollPercentage >= 40 && scrollPercentage < 60) {
+            newBgIndex = 2; // Третий фон (новый 1)
+        } else if (scrollPercentage >= 60 && scrollPercentage < 80) {
+            newBgIndex = 3; // Четвертый фон (новый 2)
         } else {
-            newBgIndex = 0;
+            newBgIndex = 0; // Возвращаемся к первому фону
         }
+        
+        // Ограничиваем индекс количеством доступных фонов
+        newBgIndex = Math.min(newBgIndex, this.backgrounds.length - 1);
         
         if (newBgIndex !== this.currentBgIndex && newBgIndex < this.backgrounds.length) {
             this.setBackground(newBgIndex);
@@ -143,20 +164,24 @@ class ScrollBackgroundChanger {
     }
     
     setupIntersectionObserver() {
+        // Создаем Intersection Observer для смены фонов на основе секций
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const section = entry.target;
                     const bgIndex = parseInt(section.getAttribute('data-bg-index')) || 0;
                     
-                    this.setBackground(bgIndex);
+                    // Ограничиваем индекс количеством фонов
+                    const safeIndex = Math.min(bgIndex, this.backgrounds.length - 1);
+                    this.setBackground(safeIndex);
                 }
             });
         }, {
-            threshold: 0.4,
+            threshold: 0.3,
             rootMargin: '-100px 0px -100px 0px'
         });
         
+        // Наблюдаем за всеми секциями
         this.sections.forEach(section => {
             observer.observe(section);
         });
@@ -200,9 +225,9 @@ class ScrollBackgroundChanger {
     }
     
     simplifyForLowPerformance() {
-        // Оставляем только первый фон
+        // Оставляем только первый и последний фон
         this.backgrounds.forEach((bg, index) => {
-            if (index > 0) {
+            if (index > 0 && index < this.backgrounds.length - 1) {
                 bg.style.display = 'none';
             }
         });
@@ -291,6 +316,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 else bg.style.display = 'none';
             });
         }
+    } else {
+        console.warn('⚠️ No parallax backgrounds found on the page');
     }
 });
 
