@@ -541,4 +541,4 @@ if (document.body.classList.contains('home-page')) {
             }
         }, 500);
     });
-    }
+                }
