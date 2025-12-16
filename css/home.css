@@ -1,4 +1,4 @@
-/* home.css - КРОССБРАУЗЕРНЫЕ СТИЛИ для Home Page */
+/* home.css - Main Styles for Home Page */
 
 /* ===== HERO SECTION ===== */
 .hero {
@@ -7,11 +7,7 @@
     overflow: hidden;
     background: transparent;
     min-height: 100vh;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
 }
 
@@ -40,28 +36,21 @@
     display: block;
 }
 
-/* КРОССБРАУЗЕРНЫЙ ГРАДИЕНТ ДЛЯ ТЕКСТА */
 .hero h1 span:first-child {
-    background: -webkit-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-    color: transparent;
+    background-clip: text;
     font-size: 5rem;
 }
 
 .hero h1 span:nth-child(2) {
     font-size: 4rem;
     opacity: 0.9;
-    background: -webkit-linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-    color: transparent;
+    background-clip: text;
 }
 
 .hero-subtitle {
@@ -88,14 +77,9 @@
 }
 
 .hero-actions {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     gap: 25px;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
-    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 }
 
@@ -105,25 +89,19 @@
     font-size: 1.1rem;
     font-weight: 600;
     border-radius: 50px;
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .hero-actions .btn-primary {
-    background: -webkit-linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     color: white;
     border: none;
-    -webkit-box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
     box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
 }
 
 .hero-actions .btn-primary:hover {
-    -webkit-transform: translateY(-5px);
     transform: translateY(-5px);
-    -webkit-box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
     box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
-    background: -webkit-linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
     background: linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
 }
 
@@ -131,27 +109,21 @@
     background: transparent;
     color: white;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 
 .hero-actions .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: white;
-    -webkit-transform: translateY(-5px);
     transform: translateY(-5px);
 }
 
 .hero-actions .btn i {
     margin-left: 10px;
-    -webkit-transition: -webkit-transform 0.3s ease;
-    transition: -webkit-transform 0.3s ease;
     transition: transform 0.3s ease;
-    transition: transform 0.3s ease, -webkit-transform 0.3s ease;
 }
 
 .hero-actions .btn:hover i {
-    -webkit-transform: translateX(5px);
     transform: translateX(5px);
 }
 
@@ -159,13 +131,11 @@
     position: absolute;
     bottom: 40px;
     left: 50%;
-    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     text-align: center;
     color: white;
     opacity: 0.8;
     cursor: pointer;
-    -webkit-transition: opacity 0.3s ease;
     transition: opacity 0.3s ease;
     z-index: 3;
 }
@@ -180,39 +150,19 @@
     border: 2px solid white;
     border-left: none;
     border-top: none;
-    -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
     margin: 0 auto 10px;
-    -webkit-animation: bounce 2s infinite;
     animation: bounce 2s infinite;
-}
-
-@-webkit-keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        -webkit-transform: rotate(45deg) translateY(0);
-        transform: rotate(45deg) translateY(0);
-    }
-    40% {
-        -webkit-transform: rotate(45deg) translateY(-10px);
-        transform: rotate(45deg) translateY(-10px);
-    }
-    60% {
-        -webkit-transform: rotate(45deg) translateY(-5px);
-        transform: rotate(45deg) translateY(-5px);
-    }
 }
 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
-        -webkit-transform: rotate(45deg) translateY(0);
         transform: rotate(45deg) translateY(0);
     }
     40% {
-        -webkit-transform: rotate(45deg) translateY(-10px);
         transform: rotate(45deg) translateY(-10px);
     }
     60% {
-        -webkit-transform: rotate(45deg) translateY(-5px);
         transform: rotate(45deg) translateY(-5px);
     }
 }
@@ -224,169 +174,238 @@
     opacity: 0.7;
 }
 
-/* ===== NEW SPECK-DESIGN.COM EXACT BLOCKS ===== */
+/* ===== SPECK DESIGN VERTICAL BLOCKS (ТОЧНО КАК НА SPECKDESIGN.COM) ===== */
 
-.speck-minimal-section {
+.speck-vertical-section {
     position: relative;
-    padding: 180px 0 100px;
+    width: 100%;
+    overflow: hidden;
+    background: transparent;
+    padding: 0;
+}
+
+/* Фоновый слой с параллаксом */
+.speck-parallax-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Гигантские цифры как на Speck */
+.speck-bg-number {
+    position: absolute;
+    font-size: 35vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.02);
+    line-height: 1;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    user-select: none;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.speck-bg-number.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.speck-bg-1 { top: 10%; left: -5%; }
+.speck-bg-2 { top: 25%; right: -10%; }
+.speck-bg-3 { top: 60%; left: -8%; }
+.speck-bg-4 { top: 75%; right: -5%; }
+
+/* Абстрактные формы как на Speck */
+.speck-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 102, 255, 0.05) 0%, transparent 70%);
+    filter: blur(60px);
+    opacity: 0.5;
+}
+
+.shape-1 { width: 500px; height: 500px; top: 15%; left: 15%; }
+.shape-2 { width: 300px; height: 300px; bottom: 20%; right: 20%; }
+.shape-3 { width: 400px; height: 400px; top: 50%; left: 5%; }
+
+/* Вертикальные блоки */
+.speck-vertical-block {
     min-height: 100vh;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
+    position: relative;
+    z-index: 2;
+    padding: 120px 0;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.speck-vertical-block.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.speck-block-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.speck-block-inner.alternate {
+    flex-direction: row-reverse;
+}
+
+/* Контентная часть */
+.speck-block-content {
+    flex: 1;
+    max-width: 600px;
+}
+
+.speck-block-number {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0066ff;
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.speck-block-title {
+    font-size: 4.5rem;
+    font-weight: 800;
+    color: white;
+    margin: 0 0 20px 0;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+
+.speck-block-subtitle {
+    font-size: 1.8rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 30px 0;
+    line-height: 1.4;
+    font-weight: 400;
+}
+
+.speck-block-description {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 40px 0;
+}
+
+/* Список особенностей */
+.speck-feature-list {
+    margin: 0 0 50px 0;
+    padding: 0;
+}
+
+.speck-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.speck-feature-icon {
+    color: #0066ff;
+    font-weight: bold;
+    font-size: 1.3rem;
+    min-width: 20px;
+}
+
+.speck-feature-text {
+    line-height: 1.6;
+}
+
+/* Кнопка CTA */
+.speck-block-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 18px 35px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(10px);
+}
+
+.speck-block-cta:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+    transform: translateX(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.speck-block-cta i {
+    transition: transform 0.3s ease;
+}
+
+.speck-block-cta:hover i {
+    transform: translateX(5px);
+}
+
+/* Визуальная часть (заглушка для изображений) */
+.speck-block-visual {
+    flex: 1;
+    max-width: 600px;
+}
+
+.speck-visual-placeholder {
+    width: 100%;
+    height: 500px;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.03) 0%, 
+        rgba(255, 255, 255, 0.01) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     overflow: hidden;
 }
 
-/* Фон как на speckdesign.com - параллакс эффект */
-.speck-minimal-section::before {
+.speck-visual-placeholder:before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-        rgba(0, 0, 0, 0),
-        url('../images/parallax/bg-1.jpg') center center / cover no-repeat;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 15px,
+        rgba(255, 255, 255, 0.02) 15px,
+        rgba(255, 255, 255, 0.02) 30px
+    );
+}
+
+.speck-visual-placeholder i {
+    font-size: 6rem;
+    color: rgba(255, 255, 255, 0.1);
     z-index: 1;
-}
-
-/* Контейнер для блоков */
-.speck-minimal-container {
-    position: relative;
-    z-index: 2;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px;
-    display: -ms-grid;
-    display: grid;
-    -ms-grid-columns: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
-    -ms-grid-rows: auto auto;
-    grid-template-rows: auto auto;
-    gap: 60px;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-}
-
-/* Позиционирование как на speckdesign.com */
-.speck-minimal-block:nth-child(1) {
-    -ms-grid-column: 1;
-    grid-column: 1;
-    -ms-grid-row: 1;
-    grid-row: 1;
-    margin-top: 50px;
-}
-
-.speck-minimal-block:nth-child(2) {
-    -ms-grid-column: 2;
-    grid-column: 2;
-    -ms-grid-row: 1;
-    grid-row: 1;
-    margin-top: 150px;
-}
-
-.speck-minimal-block:nth-child(3) {
-    -ms-grid-column: 1;
-    grid-column: 1;
-    -ms-grid-row: 2;
-    grid-row: 2;
-    margin-top: -50px;
-}
-
-.speck-minimal-block:nth-child(4) {
-    -ms-grid-column: 2;
-    grid-column: 2;
-    -ms-grid-row: 2;
-    grid-row: 2;
-    margin-top: 50px;
-}
-
-/* Стили блоков как на speckdesign.com */
-.speck-minimal-block {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 50px 45px;
-    position: relative;
-    min-height: 280px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: flex-start;
-    -webkit-backdrop-filter: blur(15px);
-    backdrop-filter: blur(15px);
-    -webkit-box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.25),
-        0 5px 20px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.25),
-        0 5px 20px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* Номера как на speckdesign.com */
-.speck-minimal-number {
-    font-size: 64px;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.07);
-    line-height: 0.8;
-    margin-bottom: 35px;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    letter-spacing: -0.03em;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* Заголовки как на speckdesign.com */
-.speck-minimal-title {
-    font-size: 32px;
-    font-weight: 600;
-    color: #ffffff;
-    margin: 0 0 15px 0;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-}
-
-/* Подзаголовки как на speckdesign.com */
-.speck-minimal-subtitle {
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.6;
-    margin: 0;
-    font-weight: 400;
-    max-width: 350px;
-}
-
-/* Легкий hover эффект как на speckdesign.com */
-.speck-minimal-block:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.15);
-    -webkit-transform: translateY(-8px);
-    transform: translateY(-8px);
-    -webkit-box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.35),
-        0 10px 30px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.35),
-        0 10px 30px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* ===== CLIENTS SECTION ===== */
@@ -431,11 +450,9 @@
     position: absolute;
     bottom: 0;
     left: 50%;
-    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     width: 40px;
     height: 2px;
-    background: -webkit-linear-gradient(90deg, transparent, #0066ff, transparent);
     background: linear-gradient(90deg, transparent, #0066ff, transparent);
 }
 
@@ -459,39 +476,26 @@
 
 .marquee-container::before {
     left: 0;
-    background: -webkit-linear-gradient(90deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
     background: linear-gradient(90deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
 }
 
 .marquee-container::after {
     right: 0;
-    background: -webkit-linear-gradient(270deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
     background: linear-gradient(270deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
 }
 
 .marquee-track {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    width: -webkit-max-content;
-    width: -moz-max-content;
     width: max-content;
     padding: 35px 0;
     white-space: nowrap;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+    will-change: transform;
 }
 
 .marquee-content {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     white-space: nowrap;
-    -webkit-flex-shrink: 0;
-    -ms-flex-negative: 0;
     flex-shrink: 0;
 }
 
@@ -500,12 +504,9 @@
     font-weight: 700;
     color: white;
     opacity: 0.7;
-    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     padding: 0 40px;
     white-space: nowrap;
-    -webkit-flex-shrink: 0;
-    -ms-flex-negative: 0;
     flex-shrink: 0;
     text-decoration: none;
     position: relative;
@@ -516,7 +517,6 @@
 .brand:hover {
     color: white;
     opacity: 1;
-    -webkit-transform: translateY(-3px);
     transform: translateY(-3px);
 }
 
@@ -527,18 +527,12 @@
     left: 40px;
     right: 40px;
     height: 2px;
-    background: -webkit-linear-gradient(90deg, transparent, #0066ff, transparent);
     background: linear-gradient(90deg, transparent, #0066ff, transparent);
-    -webkit-transform: scaleX(0);
     transform: scaleX(0);
-    -webkit-transition: -webkit-transform 0.4s ease;
-    transition: -webkit-transform 0.4s ease;
     transition: transform 0.4s ease;
-    transition: transform 0.4s ease, -webkit-transform 0.4s ease;
 }
 
 .brand:hover::after {
-    -webkit-transform: scaleX(1);
     transform: scaleX(1);
 }
 
@@ -546,15 +540,12 @@
     color: rgba(255, 255, 255, 0.2);
     font-size: 1.8rem;
     font-weight: 300;
-    -webkit-flex-shrink: 0;
-    -ms-flex-negative: 0;
     flex-shrink: 0;
     opacity: 0.5;
 }
 
 /* Marquee animations - управляются через inline стили в index.html */
 .marquee-track:hover {
-    -webkit-animation-play-state: paused !important;
     animation-play-state: paused !important;
 }
 
@@ -581,9 +572,7 @@
 }
 
 .stats-grid-improved {
-    display: -ms-grid;
     display: grid;
-    -ms-grid-columns: (minmax(280px, 1fr))[auto-fit];
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 40px;
     position: relative;
@@ -591,9 +580,6 @@
 }
 
 .stat-card {
-    background: -webkit-linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.05) 0%, 
-        rgba(255, 255, 255, 0.02) 100%);
     background: linear-gradient(135deg, 
         rgba(255, 255, 255, 0.05) 0%, 
         rgba(255, 255, 255, 0.02) 100%);
@@ -601,9 +587,8 @@
     border-radius: 24px;
     padding: 50px 35px;
     text-align: center;
-    -webkit-backdrop-filter: blur(15px);
     backdrop-filter: blur(15px);
-    -webkit-transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    -webkit-backdrop-filter: blur(15px);
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     overflow: hidden;
@@ -619,15 +604,10 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: -webkit-linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.1), 
-        transparent);
     background: linear-gradient(90deg, 
         transparent, 
         rgba(255, 255, 255, 0.1), 
         transparent);
-    -webkit-transition: left 0.7s ease;
     transition: left 0.7s ease;
     z-index: 1;
 }
@@ -637,18 +617,11 @@
 }
 
 .stat-card:hover {
-    -webkit-transform: translateY(-15px);
     transform: translateY(-15px);
     border-color: rgba(255, 255, 255, 0.25);
-    -webkit-box-shadow: 
-        0 25px 50px rgba(255, 255, 255, 0.15),
-        0 10px 30px rgba(0, 0, 0, 0.3);
     box-shadow: 
         0 25px 50px rgba(255, 255, 255, 0.15),
         0 10px 30px rgba(0, 0, 0, 0.3);
-    background: -webkit-linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.08) 0%, 
-        rgba(255, 255, 255, 0.04) 100%);
     background: linear-gradient(135deg, 
         rgba(255, 255, 255, 0.08) 0%, 
         rgba(255, 255, 255, 0.04) 100%);
@@ -658,14 +631,12 @@
     font-size: 3.5rem;
     margin-bottom: 25px;
     color: white;
-    -webkit-transition: all 0.4s ease;
     transition: all 0.4s ease;
     position: relative;
     z-index: 2;
 }
 
 .stat-card:hover .stat-icon {
-    -webkit-transform: scale(1.15);
     transform: scale(1.15);
     color: #66b5ff;
     text-shadow: 0 0 20px rgba(102, 181, 255, 0.5);
@@ -682,24 +653,18 @@
     color: white;
     margin-bottom: 15px;
     line-height: 1;
-    background: -webkit-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-    -webkit-transition: all 0.4s ease;
+    background-clip: text;
     transition: all 0.4s ease;
 }
 
 .stat-card:hover .stat-number-improved {
-    background: -webkit-linear-gradient(135deg, #66b5ff 0%, #3399ff 100%);
     background: linear-gradient(135deg, #66b5ff 0%, #3399ff 100%);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-    -webkit-transform: scale(1.05);
+    background-clip: text;
     transform: scale(1.05);
 }
 
@@ -709,7 +674,6 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
@@ -721,9 +685,6 @@
 /* ===== CTA SECTION ===== */
 .cta-improved {
     padding: 140px 0;
-    background: -webkit-linear-gradient(135deg, 
-        rgba(0, 102, 255, 0.15) 0%, 
-        rgba(0, 170, 255, 0.15) 100%);
     background: linear-gradient(135deg, 
         rgba(0, 102, 255, 0.15) 0%, 
         rgba(0, 170, 255, 0.15) 100%);
@@ -757,15 +718,10 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: -webkit-linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.1), 
-        transparent);
     background: linear-gradient(90deg, 
         transparent, 
         rgba(255, 255, 255, 0.1), 
         transparent);
-    -webkit-transition: left 0.7s ease;
     transition: left 0.7s ease;
     z-index: 1;
 }
@@ -790,24 +746,18 @@
     color: white;
     line-height: 1.1;
     letter-spacing: -0.02em;
-    background: -webkit-linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-    -webkit-transition: all 0.4s ease;
+    background-clip: text;
     transition: all 0.4s ease;
 }
 
 .cta-improved:hover .cta-text h2 {
-    background: -webkit-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-    -webkit-transform: scale(1.02);
+    background-clip: text;
     transform: scale(1.02);
 }
 
@@ -819,7 +769,6 @@
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
-    -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
@@ -835,7 +784,6 @@
 .btn-glow {
     position: relative;
     overflow: hidden;
-    background: -webkit-linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     color: white;
     border: none;
@@ -843,24 +791,14 @@
     font-size: 1.2rem;
     font-weight: 600;
     border-radius: 50px;
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
     display: inline-flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     gap: 15px;
-    -webkit-transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    -webkit-box-shadow: 
-        0 15px 35px rgba(0, 102, 255, 0.4),
-        0 5px 15px rgba(0, 102, 255, 0.2);
     box-shadow: 
         0 15px 35px rgba(0, 102, 255, 0.4),
         0 5px 15px rgba(0, 102, 255, 0.2);
     min-width: 280px;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
 }
 
@@ -871,15 +809,10 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: -webkit-linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.3), 
-        transparent);
     background: linear-gradient(90deg, 
         transparent, 
         rgba(255, 255, 255, 0.3), 
         transparent);
-    -webkit-transition: left 0.7s ease;
     transition: left 0.7s ease;
     border-radius: 50px;
 }
@@ -889,29 +822,19 @@
 }
 
 .btn-glow:hover {
-    -webkit-transform: translateY(-8px) scale(1.05);
     transform: translateY(-8px) scale(1.05);
-    -webkit-box-shadow: 
-        0 25px 50px rgba(0, 102, 255, 0.5),
-        0 10px 30px rgba(0, 102, 255, 0.3),
-        0 0 100px rgba(0, 102, 255, 0.2);
     box-shadow: 
         0 25px 50px rgba(0, 102, 255, 0.5),
         0 10px 30px rgba(0, 102, 255, 0.3),
         0 0 100px rgba(0, 102, 255, 0.2);
-    background: -webkit-linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
     background: linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
 }
 
 .btn-glow i {
-    -webkit-transition: -webkit-transform 0.4s ease;
-    transition: -webkit-transform 0.4s ease;
     transition: transform 0.4s ease;
-    transition: transform 0.4s ease, -webkit-transform 0.4s ease;
 }
 
 .btn-glow:hover i {
-    -webkit-transform: translateX(8px) rotate(-15deg);
     transform: translateX(8px) rotate(-15deg);
 }
 
@@ -925,7 +848,6 @@
     position: fixed !important;
     top: 30px !important;
     left: 50% !important;
-    -webkit-transform: translateX(-50%) translateY(0) !important;
     transform: translateX(-50%) translateY(0) !important;
     width: calc(100% - 60px) !important;
     max-width: 1400px !important;
@@ -933,17 +855,12 @@
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    -webkit-transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
     border-radius: 25px !important;
     background: rgba(0, 102, 255, 0.12) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
     border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    -webkit-box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.2),
-        0 4px 16px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.2),
         0 4px 16px rgba(0, 0, 0, 0.1),
@@ -952,7 +869,6 @@
 
 /* Состояние скрытого хедера */
 .home-page .main-header.header-hidden {
-    -webkit-transform: translateX(-50%) translateY(-150%) !important;
     transform: translateX(-50%) translateY(-150%) !important;
     opacity: 0 !important;
     visibility: hidden !important;
@@ -963,12 +879,8 @@
 .home-page .main-header.header-minimized {
     padding: 15px 0 !important;
     background: rgba(0, 102, 255, 0.25) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
     backdrop-filter: blur(25px) saturate(200%) !important;
-    -webkit-box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.25),
-        0 5px 20px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
     box-shadow: 
         0 10px 40px rgba(0, 0, 0, 0.25),
         0 5px 20px rgba(0, 0, 0, 0.15),
@@ -980,127 +892,27 @@
 /* Увеличение отступа для контента под хедером */
 .home-page .hero {
     padding-top: 140px !important;
-    -webkit-transition: padding-top 0.4s ease !important;
     transition: padding-top 0.4s ease !important;
 }
 
-/* ===== КРОССБРАУЗЕРНЫЕ ИСПРАВЛЕНИЯ ===== */
-
-/* Для браузеров без backdrop-filter */
-.no-backdropfilter .main-header {
-    background: rgba(0, 102, 255, 0.25) !important;
-}
-
-.no-backdropfilter .parallax-content {
-    background: rgba(0, 0, 0, 0.5) !important;
-}
-
-.no-backdropfilter .speck-minimal-block {
-    background: rgba(20, 20, 35, 0.95) !important;
-}
-
-.no-backdropfilter .stat-card {
-    background: rgba(25, 25, 40, 0.95) !important;
-}
-
-/* Для старых Safari */
-_::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
-    color: #ffffff !important;
-    background: none !important;
-    -webkit-text-fill-color: #ffffff !important;
-}
-
-/* Для IE 11 */
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-    .hero h1 span:first-child,
-    .hero h1 span:nth-child(2),
-    .stat-number-improved,
-    .cta-text h2 {
-        color: #ffffff !important;
-        background: none !important;
-    }
-    
-    .hero-actions {
-        display: block;
-    }
-    
-    .hero-actions .btn {
-        display: inline-block;
-        margin: 0 10px;
-    }
-    
-    .stats-grid-improved {
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-    }
-    
-    .stat-card {
-        -ms-flex: 1 1 250px;
-        flex: 1 1 250px;
-        margin: 10px;
-    }
-    
-    .marquee-track {
-        display: block;
-    }
-    
-    .marquee-content {
-        display: inline-block;
-    }
-    
-    /* Фикс для flex gap в IE */
-    .hero-actions > * {
-        margin-right: 25px;
-        margin-bottom: 10px;
-    }
-    
-    .hero-actions > *:last-child {
-        margin-right: 0;
-    }
-    
-    .stats-grid-improved > * {
-        margin: 10px;
-    }
-}
-
-/* Для Firefox старых версий */
-@-moz-document url-prefix() {
-    .hero h1 span:first-child {
-        color: transparent;
-    }
-}
-
-/* ===== АДАПТИВНОСТЬ ДЛЯ НОВЫХ БЛОКОВ ===== */
+/* ===== АДАПТИВНОСТЬ ДЛЯ VERTICAL BLOCKS ===== */
 
 @media (max-width: 1200px) {
-    .speck-minimal-container {
-        max-width: 1100px;
+    .speck-block-inner {
+        gap: 60px;
         padding: 0 30px;
-        gap: 50px;
     }
     
-    .speck-minimal-block {
-        padding: 45px 40px;
-        min-height: 260px;
+    .speck-block-title {
+        font-size: 4rem;
     }
     
-    .speck-minimal-number {
-        font-size: 58px;
-        margin-bottom: 30px;
+    .speck-block-subtitle {
+        font-size: 1.6rem;
     }
     
-    .speck-minimal-title {
-        font-size: 28px;
-    }
-    
-    .speck-minimal-subtitle {
-        font-size: 17px;
-    }
-    
-    .speck-minimal-block:nth-child(2) {
-        margin-top: 120px;
+    .speck-visual-placeholder {
+        height: 450px;
     }
     
     .hero h1 {
@@ -1114,46 +926,46 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
     .hero h1 span:nth-child(2) {
         font-size: 3.5rem;
     }
+    
+    .hero h1 span:last-child {
+        font-size: 4rem;
+    }
 }
 
 @media (max-width: 992px) {
-    .speck-minimal-section {
-        padding: 150px 0 80px;
+    .speck-block-inner {
+        flex-direction: column;
+        gap: 50px;
     }
     
-    .speck-minimal-container {
-        display: block;
-        max-width: 700px;
+    .speck-block-inner.alternate {
+        flex-direction: column;
     }
     
-    /* Сбрасываем позиционирование на мобильных */
-    .speck-minimal-block {
-        margin: 0 auto 30px !important;
-        width: 100%;
-        max-width: 600px;
-    }
-    
-    .speck-minimal-block:nth-child(2) {
-        margin-top: 0 !important;
-    }
-    
-    .speck-minimal-block {
-        padding: 40px 35px;
-        min-height: 240px;
-    }
-    
-    .speck-minimal-number {
-        font-size: 52px;
-        margin-bottom: 25px;
-    }
-    
-    .speck-minimal-title {
-        font-size: 26px;
-    }
-    
-    .speck-minimal-subtitle {
-        font-size: 16px;
+    .speck-block-content,
+    .speck-block-visual {
         max-width: 100%;
+        width: 100%;
+    }
+    
+    .speck-block-title {
+        font-size: 3.5rem;
+    }
+    
+    .speck-block-subtitle {
+        font-size: 1.5rem;
+    }
+    
+    .speck-block-description {
+        font-size: 1.2rem;
+    }
+    
+    .speck-visual-placeholder {
+        height: 400px;
+    }
+    
+    .speck-bg-number {
+        font-size: 30vw;
     }
     
     .hero {
@@ -1171,6 +983,10 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
     
     .hero h1 span:nth-child(2) {
         font-size: 3rem;
+    }
+    
+    .hero h1 span:last-child {
+        font-size: 3.5rem;
     }
     
     .hero-subtitle {
@@ -1211,32 +1027,42 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
 }
 
 @media (max-width: 768px) {
-    .speck-minimal-section {
-        padding: 120px 0 60px;
+    .speck-vertical-block {
+        padding: 80px 0;
+        min-height: 90vh;
     }
     
-    .speck-minimal-container {
+    .speck-block-inner {
         padding: 0 20px;
+        gap: 40px;
     }
     
-    .speck-minimal-block {
-        padding: 35px 30px;
-        min-height: 220px;
-        margin-bottom: 20px !important;
+    .speck-block-title {
+        font-size: 3rem;
     }
     
-    .speck-minimal-number {
-        font-size: 48px;
-        margin-bottom: 20px;
+    .speck-block-subtitle {
+        font-size: 1.4rem;
     }
     
-    .speck-minimal-title {
-        font-size: 24px;
-        margin-bottom: 12px;
+    .speck-block-description {
+        font-size: 1.1rem;
     }
     
-    .speck-minimal-subtitle {
-        font-size: 15px;
+    .speck-feature-item {
+        font-size: 1rem;
+    }
+    
+    .speck-visual-placeholder {
+        height: 350px;
+    }
+    
+    .speck-visual-placeholder i {
+        font-size: 4rem;
+    }
+    
+    .speck-bg-number {
+        font-size: 25vw;
     }
     
     .hero {
@@ -1255,6 +1081,10 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
         font-size: 2.5rem;
     }
     
+    .hero h1 span:last-child {
+        font-size: 2.8rem;
+    }
+    
     .hero-subtitle {
         font-size: 1.4rem;
         margin-bottom: 2rem;
@@ -1270,12 +1100,7 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
     }
     
     .hero-actions {
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
         flex-direction: column;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
         align-items: center;
         gap: 20px;
     }
@@ -1283,8 +1108,6 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
     .hero-actions .btn {
         width: 100%;
         max-width: 300px;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
         justify-content: center;
     }
     
@@ -1316,10 +1139,7 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
     }
     
     .stats-grid-improved {
-        display: -ms-grid;
-        display: grid;
-        -ms-grid-columns: 1fr 1fr;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 30px;
     }
     
@@ -1370,28 +1190,38 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
 }
 
 @media (max-width: 576px) {
-    .speck-minimal-section {
-        padding: 100px 0 50px;
+    .speck-vertical-block {
+        padding: 60px 0;
+        min-height: 80vh;
     }
     
-    .speck-minimal-block {
-        padding: 30px 25px;
-        min-height: 200px;
-        margin-bottom: 15px !important;
+    .speck-block-title {
+        font-size: 2.5rem;
     }
     
-    .speck-minimal-number {
-        font-size: 42px;
-        margin-bottom: 20px;
+    .speck-block-subtitle {
+        font-size: 1.3rem;
     }
     
-    .speck-minimal-title {
-        font-size: 22px;
-        margin-bottom: 10px;
+    .speck-block-description {
+        font-size: 1rem;
     }
     
-    .speck-minimal-subtitle {
-        font-size: 14px;
+    .speck-block-cta {
+        padding: 15px 30px;
+        font-size: 1rem;
+    }
+    
+    .speck-visual-placeholder {
+        height: 300px;
+    }
+    
+    .speck-bg-number {
+        font-size: 20vw;
+    }
+    
+    .speck-shape {
+        display: none;
     }
     
     .hero {
@@ -1410,6 +1240,10 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
         font-size: 2rem;
     }
     
+    .hero h1 span:last-child {
+        font-size: 2.2rem;
+    }
+    
     .hero-subtitle {
         font-size: 1.2rem;
     }
@@ -1419,13 +1253,12 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
     }
     
     .stats-grid-improved {
-        display: block;
+        grid-template-columns: 1fr;
+        gap: 25px;
     }
     
     .stat-card {
         padding: 35px 20px;
-        margin-bottom: 20px;
-        width: 100%;
     }
     
     .brand {
@@ -1463,22 +1296,16 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
 }
 
 @media (max-width: 400px) {
-    .speck-minimal-block {
-        padding: 25px 20px;
-        min-height: 180px;
-        margin-bottom: 10px !important;
+    .speck-block-title {
+        font-size: 2rem;
     }
     
-    .speck-minimal-number {
-        font-size: 36px;
+    .speck-block-subtitle {
+        font-size: 1.2rem;
     }
     
-    .speck-minimal-title {
-        font-size: 20px;
-    }
-    
-    .speck-minimal-subtitle {
-        font-size: 13px;
+    .speck-visual-placeholder {
+        height: 250px;
     }
     
     .hero h1 {
@@ -1491,6 +1318,10 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
     
     .hero h1 span:nth-child(2) {
         font-size: 1.6rem;
+    }
+    
+    .hero h1 span:last-child {
+        font-size: 1.8rem;
     }
     
     .hero-subtitle {
@@ -1509,46 +1340,42 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
 
 /* ===== REDUCED MOTION SUPPORT ===== */
 @media (prefers-reduced-motion: reduce) {
-    .speck-minimal-block,
+    .speck-bg-number,
+    .speck-vertical-block,
     .stat-card,
     .cta-improved,
     .hero-actions .btn,
     .btn-glow {
-        -webkit-animation: none !important;
         animation: none !important;
-        -webkit-transition: none !important;
         transition: none !important;
     }
     
-    .speck-minimal-block:hover,
+    .speck-bg-number:hover,
+    .speck-vertical-block:hover,
     .stat-card:hover,
     .cta-improved:hover,
     .hero-actions .btn:hover,
     .btn-glow:hover {
-        -webkit-transform: none !important;
         transform: none !important;
     }
     
     .btn-glow:hover i,
-    .hero-actions .btn:hover i {
-        -webkit-transform: none !important;
+    .hero-actions .btn:hover i,
+    .speck-block-cta:hover i {
         transform: none !important;
     }
     
     .stat-card::before,
     .cta-improved::after,
     .btn-glow::before {
-        -webkit-transition: none !important;
         transition: none !important;
     }
     
     .marquee-track {
-        -webkit-animation: none !important;
         animation: none !important;
     }
     
     .scroll-arrow {
-        -webkit-animation: none;
         animation: none;
     }
     
@@ -1559,25 +1386,22 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
 
 /* ===== TOUCH DEVICE OPTIMIZATION ===== */
 @media (hover: none) {
-    .speck-minimal-block:hover,
+    .speck-block-cta:hover,
     .stat-card:hover,
     .cta-improved:hover,
     .hero-actions .btn:hover,
     .btn-glow:hover,
     .brand:hover {
-        -webkit-transform: none;
         transform: none;
     }
     
-    .speck-minimal-block:active,
+    .speck-block-cta:active,
     .stat-card:active,
     .cta-improved:active {
-        -webkit-transform: scale(0.98);
         transform: scale(0.98);
     }
     
     .btn-glow:active {
-        -webkit-transform: scale(0.95);
         transform: scale(0.95);
     }
     
@@ -1592,44 +1416,63 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
     }
 }
 
-/* ===== LOADING ANIMATIONS ===== */
-@-webkit-keyframes fadeInUp {
-    from {
-        opacity: 0;
-        -webkit-transform: translateY(30px);
-        transform: translateY(30px);
+/* ===== FALLBACK FOR NO BACKDROP-FILTER SUPPORT ===== */
+@supports not (backdrop-filter: blur(15px)) {
+    .speck-visual-placeholder {
+        background: rgba(20, 20, 35, 0.95);
     }
-    to {
-        opacity: 1;
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
+    
+    .stat-card {
+        background: rgba(25, 25, 40, 0.95);
+    }
+    
+    .home-page .main-header {
+        background: rgba(0, 102, 255, 0.25);
+    }
+    
+    .home-page .main-header.header-minimized {
+        background: rgba(0, 102, 255, 0.35);
     }
 }
 
+/* ===== CLICKABLE ELEMENTS ENHANCEMENT ===== */
+.clickable-stat-card,
+.clickable-cta,
+.clickable-brand {
+    cursor: pointer;
+    outline: none;
+}
+
+.clickable-stat-card:focus-visible,
+.clickable-cta:focus-visible,
+.clickable-brand:focus-visible {
+    outline: 3px solid #0066ff;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* ===== LOADING ANIMATIONS ===== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        -webkit-transform: translateY(30px);
         transform: translateY(30px);
     }
     to {
         opacity: 1;
-        -webkit-transform: translateY(0);
         transform: translateY(0);
     }
 }
 
 .content-section {
-    -webkit-animation: fadeInUp 0.8s ease-out forwards;
     animation: fadeInUp 0.8s ease-out forwards;
 }
 
 /* Delay animations for staggered effect */
-.hero { -webkit-animation-delay: 0.1s; animation-delay: 0.1s; }
-.speck-minimal-section { -webkit-animation-delay: 0.2s; animation-delay: 0.2s; }
-.clients-section { -webkit-animation-delay: 0.3s; animation-delay: 0.3s; }
-.stats-improved { -webkit-animation-delay: 0.4s; animation-delay: 0.4s; }
-.cta-improved { -webkit-animation-delay: 0.5s; animation-delay: 0.5s; }
+.hero { animation-delay: 0.1s; }
+.speck-vertical-section { animation-delay: 0.2s; }
+.clients-section { animation-delay: 0.3s; }
+.stats-improved { animation-delay: 0.4s; }
+.cta-improved { animation-delay: 0.5s; }
 
 /* Hide during loading */
 .content-section {
@@ -1639,7 +1482,7 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
 /* ===== PRINT STYLES ===== */
 @media print {
     .hero,
-    .speck-minimal-section,
+    .speck-vertical-section,
     .clients-section,
     .stats-improved,
     .cta-improved {
@@ -1650,28 +1493,26 @@ _::-webkit-full-page-media, _:future, :root .hero h1 span:first-child {
     
     .hero h1,
     .hero-subtitle,
-    .speck-minimal-title,
+    .speck-block-title,
     .stat-number-improved,
     .cta-text h2 {
         color: black !important;
         background: none !important;
         -webkit-text-fill-color: black !important;
-        text-fill-color: black !important;
     }
     
     .hero-actions,
     .parallax-scroll-indicator,
     .marquee-track,
-    .btn-glow {
+    .btn-glow,
+    .speck-parallax-bg {
         display: none !important;
     }
     
-    .speck-minimal-block,
+    .speck-visual-placeholder,
     .stat-card {
-        -webkit-box-shadow: none !important;
         box-shadow: none !important;
         border: 1px solid #ccc !important;
-        -webkit-column-break-inside: avoid;
         break-inside: avoid;
     }
-}
+        }
