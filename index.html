@@ -5,52 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="home.title">NBGROUP.TECH | Industrial Design & Manufacturing</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <!-- Кроссбраузерные иконки -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
-    
-    <!-- Кроссбраузерные стили для всех браузеров -->
+    <script src="https://cdn.jsdelivr.net/gh/dixonandmoe/rellax@master/rellax.min.js"></script>
     <style>
-        /* ГАРАНТИРОВАННЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ - КРОССБРАУЗЕРНЫЕ */
+        /* ГАРАНТИРОВАННЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ */
         .marquee-container {
             width: 100%;
             overflow: hidden;
             position: relative;
             margin-bottom: 10px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
         .marquee-track {
-            display: -webkit-box !important;
-            display: -ms-flexbox !important;
             display: flex !important;
-            width: -webkit-max-content !important;
-            width: -moz-max-content !important;
             width: max-content !important;
             padding: 25px 0 !important;
             white-space: nowrap !important;
-            -webkit-backface-visibility: hidden !important;
-            backface-visibility: hidden !important;
-            -webkit-transform-style: preserve-3d !important;
-            transform-style: preserve-3d !important;
+            will-change: transform !important;
         }
 
         .marquee-content {
-            display: -webkit-box !important;
-            display: -ms-flexbox !important;
             display: flex !important;
-            -webkit-box-align: center !important;
-            -ms-flex-align: center !important;
             align-items: center !important;
             white-space: nowrap !important;
-            -webkit-flex-shrink: 0 !important;
-            -ms-flex-negative: 0 !important;
             flex-shrink: 0 !important;
         }
 
@@ -61,11 +42,7 @@
             opacity: 0.8 !important;
             padding: 0 30px !important;
             white-space: nowrap !important;
-            -webkit-flex-shrink: 0 !important;
-            -ms-flex-negative: 0 !important;
             flex-shrink: 0 !important;
-            text-decoration: none !important;
-            -webkit-tap-highlight-color: transparent !important;
         }
 
         .separator {
@@ -73,95 +50,51 @@
             font-size: 1.5rem !important;
             opacity: 0.3 !important;
             font-weight: 300 !important;
-            -webkit-flex-shrink: 0 !important;
-            -ms-flex-negative: 0 !important;
             flex-shrink: 0 !important;
         }
 
-        /* КРОССБРАУЗЕРНЫЕ АНИМАЦИИ */
+        /* АНИМАЦИИ */
         #marquee1 {
-            -webkit-animation: marquee-scroll 40s linear infinite !important;
             animation: marquee-scroll 40s linear infinite !important;
         }
 
         #marquee2 {
-            -webkit-animation: marquee-scroll-reverse 40s linear infinite !important;
             animation: marquee-scroll-reverse 40s linear infinite !important;
         }
 
-        @-webkit-keyframes marquee-scroll {
-            0% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
-            100% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
-        }
-
         @keyframes marquee-scroll {
-            0% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
-            100% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
-        }
-
-        @-webkit-keyframes marquee-scroll-reverse {
-            0% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
-            100% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
+            0% { transform: translateX(0) !important; }
+            100% { transform: translateX(-33.33%) !important; }
         }
 
         @keyframes marquee-scroll-reverse {
-            0% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
-            100% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
+            0% { transform: translateX(-33.33%) !important; }
+            100% { transform: translateX(0) !important; }
         }
 
         .marquee-track:hover {
-            -webkit-animation-play-state: paused !important;
             animation-play-state: paused !important;
         }
 
-        /* Кроссбраузерная прозрачность для текста */
-        .hero h1 span:first-child {
-            background: -webkit-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
-            background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-fill-color: transparent;
-            color: transparent; /* Fallback для старых браузеров */
-        }
-
-        /* Кроссбраузерные стили для переключения языка */
+        /* Стили для переключения языка */
         .language-changing [data-i18n] {
             opacity: 0.7;
-            -webkit-transition: opacity 0.3s ease;
             transition: opacity 0.3s ease;
-        }
-
-        @-webkit-keyframes fadeInLanguage {
-            from {
-                opacity: 0.7;
-                -webkit-transform: translateY(5px);
-                transform: translateY(5px);
-            }
-            to {
-                opacity: 1;
-                -webkit-transform: translateY(0);
-                transform: translateY(0);
-            }
         }
 
         @keyframes fadeInLanguage {
             from {
                 opacity: 0.7;
-                -webkit-transform: translateY(5px);
                 transform: translateY(5px);
             }
             to {
                 opacity: 1;
-                -webkit-transform: translateY(0);
                 transform: translateY(0);
             }
         }
 
-        /* Language switcher styles - кроссбраузерные */
+        /* Language switcher styles */
         .language-switcher {
-            display: -webkit-box;
-            display: -ms-flexbox;
             display: flex;
             gap: 5px;
             margin-right: 20px;
@@ -176,7 +109,6 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
-            -webkit-transition: all 0.2s ease;
             transition: all 0.2s ease;
             min-width: 40px;
             text-align: center;
@@ -193,29 +125,6 @@
             color: white;
             border-color: rgba(255, 255, 255, 0.4);
             font-weight: 600;
-        }
-
-        /* Исправление для браузеров без поддержки backdrop-filter */
-        .no-backdropfilter .main-header {
-            background: rgba(0, 102, 255, 0.25) !important;
-        }
-
-        .no-backdropfilter .parallax-content {
-            background: rgba(0, 0, 0, 0.5) !important;
-        }
-
-        /* Исправление для IE 11 */
-        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-            .hero h1 span:first-child {
-                background: none !important;
-                color: #ffffff !important;
-            }
-            .marquee-track {
-                display: block !important;
-            }
-            .marquee-content {
-                display: inline-block !important;
-            }
         }
     </style>
 </head>
@@ -271,46 +180,175 @@
         </div>
     </section>
 
-    <!-- Speck Design Minimal Blocks -->
-    <section class="speck-minimal-section">
-        <div class="speck-minimal-container">
+    <!-- Speck Design Vertical Blocks (точно как speckdesign.com) -->
+    <section class="speck-vertical-section">
+        <div class="speck-parallax-bg">
+            <!-- Фоновые цифры с параллаксом -->
+            <div class="speck-bg-number speck-bg-1" data-rellax-speed="0.5">01</div>
+            <div class="speck-bg-number speck-bg-2" data-rellax-speed="0.3">02</div>
+            <div class="speck-bg-number speck-bg-3" data-rellax-speed="0.4">03</div>
+            <div class="speck-bg-number speck-bg-4" data-rellax-speed="0.6">04</div>
             
-            <!-- Strategy Block -->
-            <div class="speck-minimal-block">
-                <div class="speck-minimal-number">01</div>
-                <div class="speck-minimal-content">
-                    <h3 class="speck-minimal-title">Strategy</h3>
-                    <p class="speck-minimal-subtitle">Drive Innovation And Align Goals</p>
+            <!-- Фоновые абстрактные формы -->
+            <div class="speck-shape shape-1" data-rellax-speed="0.2"></div>
+            <div class="speck-shape shape-2" data-rellax-speed="0.1"></div>
+            <div class="speck-shape shape-3" data-rellax-speed="0.3"></div>
+        </div>
+
+        <!-- Блок 1: Strategy -->
+        <div class="speck-vertical-block" data-block-index="0">
+            <div class="container">
+                <div class="speck-block-inner">
+                    <div class="speck-block-content">
+                        <div class="speck-block-number">01</div>
+                        <h3 class="speck-block-title">Strategy</h3>
+                        <p class="speck-block-subtitle">Drive Innovation And Align Goals</p>
+                        <p class="speck-block-description">
+                            We are Speck Design, an award-winning product design firm. Our principle is that Great industrial designs form a bond between the user and the product. It should be smooth at every touchpoint.
+                        </p>
+                        <div class="speck-feature-list">
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">Human-centric designs</span>
+                            </div>
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">Balance of engineering and human needs</span>
+                            </div>
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">Modern and cutting-edge techniques</span>
+                            </div>
+                        </div>
+                        <a href="services.html" class="speck-block-cta">
+                            <span>Learn More</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="speck-block-visual">
+                        <div class="speck-visual-placeholder">
+                            <i class="fas fa-chess-board"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Design Block -->
-            <div class="speck-minimal-block">
-                <div class="speck-minimal-number">02</div>
-                <div class="speck-minimal-content">
-                    <h3 class="speck-minimal-title">Design</h3>
-                    <p class="speck-minimal-subtitle">Engage Audiences With Product Design</p>
+        <!-- Блок 2: Design -->
+        <div class="speck-vertical-block" data-block-index="1">
+            <div class="container">
+                <div class="speck-block-inner alternate">
+                    <div class="speck-block-content">
+                        <div class="speck-block-number">02</div>
+                        <h3 class="speck-block-title">Design</h3>
+                        <p class="speck-block-subtitle">Engage Audiences With Product Design</p>
+                        <p class="speck-block-description">
+                            The digital age has transformed our world. Today, every product needs both digital and physical forms. More companies now partner with UX design agencies to meet this demand.
+                        </p>
+                        <div class="speck-feature-list">
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">User research and insights</span>
+                            </div>
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">Mobile app development</span>
+                            </div>
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">Usability testing</span>
+                            </div>
+                        </div>
+                        <a href="portfolio.html" class="speck-block-cta">
+                            <span>View Projects</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="speck-block-visual">
+                        <div class="speck-visual-placeholder">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Hardware Block -->
-            <div class="speck-minimal-block">
-                <div class="speck-minimal-number">03</div>
-                <div class="speck-minimal-content">
-                    <h3 class="speck-minimal-title">Hardware</h3>
-                    <p class="speck-minimal-subtitle">Engineer Robust And Reliable Hardware</p>
+        <!-- Блок 3: Hardware -->
+        <div class="speck-vertical-block" data-block-index="2">
+            <div class="container">
+                <div class="speck-block-inner">
+                    <div class="speck-block-content">
+                        <div class="speck-block-number">03</div>
+                        <h3 class="speck-block-title">Hardware</h3>
+                        <p class="speck-block-subtitle">Engineer Robust And Reliable Hardware</p>
+                        <p class="speck-block-description">
+                            Speck Design is a globally awarded and top-ranked product engineering and industrial design firm. They provide comprehensive and unique product engineering solutions.
+                        </p>
+                        <div class="speck-feature-list">
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">Initial concept to final product</span>
+                            </div>
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">Unsurpassed engineering</span>
+                            </div>
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">User-centered design approach</span>
+                            </div>
+                        </div>
+                        <a href="services.html#hardware" class="speck-block-cta">
+                            <span>Our Process</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="speck-block-visual">
+                        <div class="speck-visual-placeholder">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Software Block -->
-            <div class="speck-minimal-block">
-                <div class="speck-minimal-number">04</div>
-                <div class="speck-minimal-content">
-                    <h3 class="speck-minimal-title">Software</h3>
-                    <p class="speck-minimal-subtitle">Create Seamless, Scalable Software Solutions</p>
+        <!-- Блок 4: Software -->
+        <div class="speck-vertical-block" data-block-index="3">
+            <div class="container">
+                <div class="speck-block-inner alternate">
+                    <div class="speck-block-content">
+                        <div class="speck-block-number">04</div>
+                        <h3 class="speck-block-title">Software</h3>
+                        <p class="speck-block-subtitle">Create Seamless, Scalable Software Solutions</p>
+                        <p class="speck-block-description">
+                            A product's journey doesn't conclude with its design—it merely takes off. Speck Design offers robust product fulfillment services, transitioning designs into production with high-quality delivery.
+                        </p>
+                        <div class="speck-feature-list">
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">Manufacturing engineering</span>
+                            </div>
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">Supply chain management</span>
+                            </div>
+                            <div class="speck-feature-item">
+                                <span class="speck-feature-icon">→</span>
+                                <span class="speck-feature-text">Product fulfillment</span>
+                            </div>
+                        </div>
+                        <a href="services.html#software" class="speck-block-cta">
+                            <span>Get Started</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="speck-block-visual">
+                        <div class="speck-visual-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
     </section>
 
@@ -520,26 +558,6 @@
     <script src="js/parallax.js"></script>
 
     <script>
-        // Проверка поддержки современных функций
-        (function() {
-            // Проверка backdrop-filter
-            if (!CSS.supports('backdrop-filter', 'blur(10px)') && 
-                !CSS.supports('-webkit-backdrop-filter', 'blur(10px)')) {
-                document.body.classList.add('no-backdropfilter');
-            }
-            
-            // Проверка flexbox gap для старых браузеров
-            if (!CSS.supports('gap', '1px')) {
-                document.body.classList.add('no-flex-gap');
-            }
-            
-            // Проверка для IE
-            if (/*@cc_on!@*/false || document.documentMode) {
-                document.body.classList.add('is-ie');
-                console.log('IE обнаружен, применяем специальные стили');
-            }
-        })();
-        
         // Проверка состояния i18n
         console.log('📄 Page loading, initializing...');
         
@@ -570,9 +588,7 @@
                 console.log('✅ Треки найдены');
                 
                 // Принудительно запускаем CSS анимации
-                track1.style.WebkitAnimation = 'marquee-scroll 40s linear infinite';
                 track1.style.animation = 'marquee-scroll 40s linear infinite';
-                track2.style.WebkitAnimation = 'marquee-scroll-reverse 40s linear infinite';
                 track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
                 
                 console.log('🚀 Бегущая строка запущена через CSS');
