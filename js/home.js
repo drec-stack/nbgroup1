@@ -406,6 +406,156 @@
             console.log('✅ Анимации Speck блоков инициализированы');
         }
 
+        // ===== ENHANCED SPECK ANIMATIONS =====
+        initEnhancedSpeckAnimations() {
+            console.log('🚀 Инициализация улучшенных анимаций Speck блоков...');
+            
+            const speckBlocks = document.querySelectorAll('.speck-vertical-block');
+            
+            if (!window.IntersectionObserver) {
+                // Fallback для браузеров без IntersectionObserver
+                setTimeout(() => {
+                    speckBlocks.forEach((block, index) => {
+                        setTimeout(() => {
+                            block.classList.add('visible', 'full-reveal');
+                            
+                            // Анимация элементов внутри блока
+                            const number = block.querySelector('.speck-block-number');
+                            const title = block.querySelector('.speck-block-title');
+                            const subtitle = block.querySelector('.speck-block-subtitle');
+                            const featureItems = block.querySelectorAll('.speck-feature-item');
+                            
+                            if (number) number.classList.add('animate-in');
+                            setTimeout(() => {
+                                if (title) title.classList.add('animate-in');
+                            }, 200);
+                            setTimeout(() => {
+                                if (subtitle) subtitle.classList.add('animate-in', 'animate-underline');
+                            }, 400);
+                            
+                            featureItems.forEach((item, itemIndex) => {
+                                setTimeout(() => {
+                                    item.classList.add('animate-in');
+                                }, 600 + itemIndex * 100);
+                            });
+                            
+                            const columns = block.querySelectorAll('.speck-feature-column');
+                            columns.forEach((col, colIndex) => {
+                                setTimeout(() => {
+                                    col.classList.add('stagger-animate');
+                                }, colIndex * 200);
+                            });
+                        }, index * 300);
+                    });
+                }, 800);
+                return;
+            }
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible', 'full-reveal');
+                            entry.target.classList.add('scroll-animated');
+                            
+                            // Анимация элементов внутри блока
+                            const number = entry.target.querySelector('.speck-block-number');
+                            const title = entry.target.querySelector('.speck-block-title');
+                            const subtitle = entry.target.querySelector('.speck-block-subtitle');
+                            const featureItems = entry.target.querySelectorAll('.speck-feature-item');
+                            const blockRight = entry.target.querySelector('.speck-block-right');
+                            
+                            if (number) {
+                                setTimeout(() => {
+                                    number.classList.add('animate-in');
+                                }, 200);
+                            }
+                            
+                            if (title) {
+                                setTimeout(() => {
+                                    title.classList.add('animate-in');
+                                }, 400);
+                            }
+                            
+                            if (subtitle) {
+                                setTimeout(() => {
+                                    subtitle.classList.add('animate-in', 'animate-underline');
+                                }, 600);
+                            }
+                            
+                            if (blockRight) {
+                                setTimeout(() => {
+                                    blockRight.classList.add('animate-border');
+                                }, 800);
+                            }
+                            
+                            featureItems.forEach((item, itemIndex) => {
+                                setTimeout(() => {
+                                    item.classList.add('animate-in');
+                                }, 1000 + itemIndex * 100);
+                            });
+                            
+                            // Анимация колонок
+                            const columns = entry.target.querySelectorAll('.speck-feature-column');
+                            columns.forEach((col, colIndex) => {
+                                setTimeout(() => {
+                                    col.classList.add('stagger-animate');
+                                    col.style.animationDelay = `${colIndex * 0.2}s`;
+                                }, 1200 + colIndex * 100);
+                            });
+                            
+                            // Добавляем glow эффект
+                            setTimeout(() => {
+                                entry.target.classList.add('glow-animate');
+                            }, 1500);
+                            
+                        }, index * 400);
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: '0px 0px -150px 0px'
+            });
+
+            speckBlocks.forEach(block => observer.observe(block));
+            
+            // Добавляем hover анимации для иконок
+            const featureIcons = document.querySelectorAll('.speck-feature-icon');
+            featureIcons.forEach(icon => {
+                if (icon.addEventListener) {
+                    icon.addEventListener('mouseenter', () => {
+                        if (!this.isReducedMotion) {
+                            icon.classList.add('animate-pulse');
+                        }
+                    });
+                    
+                    icon.addEventListener('mouseleave', () => {
+                        icon.classList.remove('animate-pulse');
+                    });
+                }
+            });
+            
+            // Добавляем hover анимации для колонок
+            const columns = document.querySelectorAll('.speck-feature-column');
+            columns.forEach(col => {
+                if (col.addEventListener) {
+                    col.addEventListener('mouseenter', () => {
+                        if (!this.isReducedMotion && supports.classList) {
+                            col.classList.add('hover-animate');
+                        }
+                    });
+                    
+                    col.addEventListener('mouseleave', () => {
+                        col.classList.remove('hover-animate');
+                    });
+                }
+            });
+            
+            console.log('🚀 Улучшенные анимации Speck блоков инициализированы для ' + speckBlocks.length + ' блоков');
+        }
+
         // ===== STATS COUNTER =====
         initStatsCounter() {
             var statNumbers = document.querySelectorAll('.stat-number-improved');
@@ -758,6 +908,159 @@
         }
     }
 
+    // ===== ENHANCED SPECK ANIMATIONS CLASS =====
+    class EnhancedSpeckAnimations {
+        constructor() {
+            this.init();
+        }
+
+        init() {
+            this.setupEnhancedSpeckAnimations();
+            this.setupStaggeredColumnAnimations();
+            this.setupSpeckHoverAnimations();
+        }
+
+        setupEnhancedSpeckAnimations() {
+            const speckBlocks = document.querySelectorAll('.speck-vertical-block');
+            
+            if (!window.IntersectionObserver) {
+                // Fallback для браузеров без IntersectionObserver
+                setTimeout(() => {
+                    speckBlocks.forEach((block, index) => {
+                        setTimeout(() => {
+                            block.classList.add('full-reveal');
+                            
+                            // Анимация элементов внутри блока
+                            this.animateSpeckBlockElements(block, index);
+                        }, index * 300);
+                    });
+                }, 800);
+                return;
+            }
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('full-reveal');
+                            
+                            // Анимация элементов внутри блока
+                            this.animateSpeckBlockElements(entry.target, index);
+                            
+                        }, index * 400);
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: '0px 0px -150px 0px'
+            });
+
+            speckBlocks.forEach(block => observer.observe(block));
+        }
+
+        animateSpeckBlockElements(block, blockIndex) {
+            // Анимация номера блока
+            const number = block.querySelector('.speck-block-number');
+            if (number) {
+                setTimeout(() => {
+                    number.classList.add('animate-in');
+                }, 200);
+            }
+            
+            // Анимация заголовка блока
+            const title = block.querySelector('.speck-block-title');
+            if (title) {
+                setTimeout(() => {
+                    title.classList.add('animate-in');
+                }, 400);
+            }
+            
+            // Анимация подзаголовка блока
+            const subtitle = block.querySelector('.speck-block-subtitle');
+            if (subtitle) {
+                setTimeout(() => {
+                    subtitle.classList.add('animate-in', 'animate-underline');
+                }, 600);
+            }
+            
+            // Анимация правой границы
+            const blockRight = block.querySelector('.speck-block-right');
+            if (blockRight) {
+                setTimeout(() => {
+                    blockRight.classList.add('animate-border');
+                }, 800);
+            }
+            
+            // Анимация элементов списка
+            const featureItems = block.querySelectorAll('.speck-feature-item');
+            featureItems.forEach((item, itemIndex) => {
+                setTimeout(() => {
+                    item.classList.add('animate-in');
+                }, 1000 + itemIndex * 100);
+            });
+            
+            // Анимация колонок
+            const columns = block.querySelectorAll('.speck-feature-column');
+            columns.forEach((col, colIndex) => {
+                setTimeout(() => {
+                    col.classList.add('stagger-animate');
+                    col.style.animationDelay = `${colIndex * 0.2}s`;
+                }, 1200 + colIndex * 100);
+            });
+            
+            // Добавляем glow эффект
+            setTimeout(() => {
+                block.classList.add('glow-animate');
+            }, 1500);
+        }
+
+        setupStaggeredColumnAnimations() {
+            // Инициализация анимации для всех колонок при загрузке
+            const columns = document.querySelectorAll('.speck-feature-column');
+            
+            columns.forEach((column, index) => {
+                column.style.animationDelay = `${index * 0.1 + 0.3}s`;
+            });
+            
+            // Добавляем класс для активации анимаций после загрузки
+            setTimeout(() => {
+                document.body.classList.add('speck-animations-loaded');
+            }, 1000);
+        }
+
+        setupSpeckHoverAnimations() {
+            // Добавляем hover анимации для иконок
+            const featureIcons = document.querySelectorAll('.speck-feature-icon');
+            featureIcons.forEach(icon => {
+                icon.addEventListener('mouseenter', () => {
+                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        icon.classList.add('animate-pulse');
+                    }
+                });
+                
+                icon.addEventListener('mouseleave', () => {
+                    icon.classList.remove('animate-pulse');
+                });
+            });
+            
+            // Добавляем hover анимации для колонок
+            const columns = document.querySelectorAll('.speck-feature-column');
+            columns.forEach(col => {
+                col.addEventListener('mouseenter', () => {
+                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        col.classList.add('hover-animate');
+                    }
+                });
+                
+                col.addEventListener('mouseleave', () => {
+                    col.classList.remove('hover-animate');
+                });
+            });
+        }
+    }
+
     // ===== GLOBAL INITIALIZATION =====
     // Инициализация при загрузке DOM
     function initHomePage() {
@@ -770,9 +1073,19 @@
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
                 window.homePage = new HomePage();
+                
+                // Инициализируем улучшенные анимации Speck блоков
+                if (document.querySelector('.speck-vertical-section')) {
+                    window.enhancedSpeckAnimations = new EnhancedSpeckAnimations();
+                }
             });
         } else {
             window.homePage = new HomePage();
+            
+            // Инициализируем улучшенные анимации Speck блоков
+            if (document.querySelector('.speck-vertical-section')) {
+                window.enhancedSpeckAnimations = new EnhancedSpeckAnimations();
+            }
         }
     }
     
