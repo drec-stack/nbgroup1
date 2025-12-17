@@ -1342,6 +1342,8 @@
         background-attachment: scroll !important;
     }
     
+    /* Удален черный оверлей для мобильных */
+    
     .content-section {
         min-height: 90vh;
     }
@@ -1702,112 +1704,4 @@
     .parallax-bg-container {
         display: none !important;
     }
-}
-
-/* ===== ФИНАЛЬНЫЙ ФИКС ЧЕРНОГО ФОНА ===== */
-/* Убираем все оверлеи */
-.hero::before,
-.hero::after,
-.speck-vertical-section::before,
-.speck-vertical-section::after,
-.clients-section::before,
-.clients-section::after,
-.stats-improved::before,
-.stats-improved::after,
-.cta-improved::before,
-.cta-improved::after,
-.parallax-hero::before,
-.parallax-hero::after {
-    display: none !important;
-    background: transparent !important;
-    opacity: 0 !important;
-    content: none !important;
-}
-
-/* Убираем все темные градиенты */
-*::before,
-*::after {
-    background-image: none !important;
-}
-
-/* Усиливаем яркость фонов */
-#parallax-bg-1,
-#parallax-bg-2,
-#parallax-bg-3,
-#parallax-bg-4 {
-    filter: brightness(1.3) contrast(1.2) saturate(1.1) !important;
-}
-
-/* Делаем все слои прозрачными */
-.layer-1,
-.layer-2,
-.layer-3,
-.layer-4 {
-    background: transparent !important;
-}
-
-/* Усиливаем тени текста для лучшей читаемости */
-.hero h1,
-.hero-subtitle,
-.hero-description p,
-.speck-block-title,
-.speck-block-subtitle,
-.speck-block-description,
-.clients-label,
-.brand,
-.stat-number-improved,
-.stat-label-improved,
-.cta-text h2,
-.cta-text p {
-    text-shadow: 
-        0 2px 6px rgba(0, 0, 0, 0.8),
-        0 3px 10px rgba(0, 0, 0, 0.6) !important;
-}
-
-/* Делаем кнопки более контрастными */
-.hero-actions .btn-primary {
-    background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%) !important;
-    box-shadow: 
-        0 10px 35px rgba(0, 102, 255, 0.5),
-        0 5px 20px rgba(0, 102, 255, 0.3) !important;
-}
-
-.hero-actions .btn-secondary {
-    background: rgba(255, 255, 255, 0.25) !important;
-    border: 2px solid rgba(255, 255, 255, 0.4) !important;
-}
-
-/* Убираем темные эффекты с визуальных элементов */
-.speck-visual-placeholder::before {
-    background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 15px,
-        rgba(255, 255, 255, 0.05) 15px,
-        rgba(255, 255, 255, 0.05) 30px
-    ) !important;
-}
-
-/* Делаем абстрактные формы ярче */
-.speck-shape {
-    background: radial-gradient(circle, rgba(0, 102, 255, 0.15) 0%, transparent 70%) !important;
-    opacity: 0.8 !important;
-}
-
-/* Гарантированно убираем черный фон */
-body {
-    background: transparent !important;
-}
-
-html {
-    background: transparent !important;
-}
-
-/* Убираем inline стили с темными фонами */
-[style*="background: rgba(0"],
-[style*="background-color: rgba(0"],
-[style*="background-image: linear-gradient(rgba(0"] {
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
         }
