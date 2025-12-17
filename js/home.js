@@ -14,7 +14,7 @@ class HomePage {
     }
 
     init() {
-        this.initSpeckVerticalBlocks();
+        this.initSpeckBlocksAnimation();
         this.initScrollAnimations();
         this.initStatsCounter();
         this.initParallaxBackgrounds();
@@ -25,15 +25,13 @@ class HomePage {
         console.log('🏠 HomePage инициализирован');
     }
 
-    // ===== SPECK VERTICAL BLOCKS INITIALIZATION =====
-    initSpeckVerticalBlocks() {
-        console.log('🎨 Инициализация вертикальных блоков Speck Design...');
+    // ===== SPECK BLOCKS ANIMATION =====
+    initSpeckBlocksAnimation() {
+        console.log('🎨 Инициализация 4-х блоков Speck Design...');
         
-        const speckBlocks = document.querySelectorAll('.speck-vertical-block');
-        const bgNumbers = document.querySelectorAll('.speck-bg-number');
-        
+        const speckBlocks = document.querySelectorAll('.speck-block');
         if (!speckBlocks.length) {
-            console.log('⚠️ Вертикальные блоки Speck не найдены');
+            console.log('⚠️ Блоки Speck Design не найдены');
             return;
         }
         
@@ -41,24 +39,17 @@ class HomePage {
         const blockObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    // Активируем блок с задержкой
+                    // Активируем блок с задержкой (staggered animation)
                     setTimeout(() => {
-                        entry.target.classList.add('active');
-                        
-                        // Активируем соответствующую фоновую цифру
-                        const blockIndex = entry.target.getAttribute('data-block-index');
-                        const bgNumber = document.querySelector(`.speck-bg-${parseInt(blockIndex) + 1}`);
-                        if (bgNumber) {
-                            bgNumber.classList.add('active');
-                        }
-                    }, index * 200);
+                        entry.target.classList.add('visible');
+                    }, index * 150);
                     
                     blockObserver.unobserve(entry.target);
                 }
             });
         }, {
-            threshold: 0.2,
-            rootMargin: '0px 0px -100px 0px'
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         });
         
         // Наблюдаем за всеми блоками
@@ -66,94 +57,69 @@ class HomePage {
             blockObserver.observe(block);
         });
         
-        // Инициализируем параллакс для фоновых цифр
-        this.initSpeckParallax();
-        
-        // Инициализируем hover эффекты для CTA кнопок
-        this.initSpeckCTAHover();
-        
-        console.log(`✅ Инициализировано ${speckBlocks.length} вертикальных блоков`);
-    }
-
-    // Параллакс для фоновых цифр
-    initSpeckParallax() {
-        if (this.isReducedMotion) return;
-        
-        // Инициализируем Rellax.js если он подключен
-        if (typeof Rellax !== 'undefined') {
-            try {
-                this.rellax = new Rellax('.speck-bg-number', {
-                    speed: -0.5,
-                    center: false,
-                    wrapper: null,
-                    round: true,
-                    vertical: true,
-                    horizontal: false
-                });
-                console.log('🌀 Параллакс Rellax.js инициализирован');
-            } catch (e) {
-                console.warn('⚠️ Ошибка инициализации Rellax:', e);
-                this.initFallbackSpeckParallax();
-            }
-        } else {
-            console.log('ℹ️ Rellax.js не найден, используем fallback параллакс');
-            this.initFallbackSpeckParallax();
-        }
-    }
-
-    // Fallback параллакс на чистом JS
-    initFallbackSpeckParallax() {
-        const bgNumbers = document.querySelectorAll('.speck-bg-number');
-        const shapes = document.querySelectorAll('.speck-shape');
-        
-        if (!bgNumbers.length) return;
-        
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            
-            // Анимируем цифры
-            bgNumbers.forEach((number, index) => {
-                const speed = 0.3 + (index * 0.1);
-                const yPos = -(scrolled * speed * 0.1);
-                number.style.transform = `translateY(calc(${yPos}px + 100px))`;
-            });
-            
-            // Анимируем формы
-            shapes.forEach((shape, index) => {
-                const speed = 0.1 + (index * 0.05);
-                const yPos = scrolled * speed * 0.05;
-                shape.style.transform = `translateY(${yPos}px)`;
-            });
-        });
-    }
-
-    // Hover эффекты для кнопок Speck
-    initSpeckCTAHover() {
-        const ctaButtons = document.querySelectorAll('.speck-block-cta');
-        
-        ctaButtons.forEach(button => {
-            button.addEventListener('mouseenter', () => {
+        // Enhanced hover effects
+        speckBlocks.forEach(block => {
+            block.addEventListener('mouseenter', () => {
                 if (!this.isReducedMotion) {
-                    button.style.transform = 'translateX(10px)';
+                    const link = block.querySelector('.speck-block-link i');
+                    if (link) {
+                        link.style.transform = 'translateX(5px)';
+                    }
+                    
+                    // Подсвечиваем номер блока
+                    const number = block.querySelector('.speck-block-number');
+                    if (number) {
+                        number.style.color = '#3399ff';
+                    }
                 }
             });
             
-            button.addEventListener('mouseleave', () => {
+            block.addEventListener('mouseleave', () => {
                 if (!this.isReducedMotion) {
-                    button.style.transform = '';
+                    const link = block.querySelector('.speck-block-link i');
+                    if (link) {
+                        link.style.transform = '';
+                    }
+                    
+                    const number = block.querySelector('.speck-block-number');
+                    if (number) {
+                        number.style.color = '';
+                    }
                 }
             });
             
-            // Клик эффект
-            button.addEventListener('click', (e) => {
-                if (!this.isReducedMotion) {
-                    button.style.transform = 'scale(0.95)';
+            // Клик по всему блоку (кроме ссылок)
+            block.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A' || e.target.closest('a')) return;
+                
+                const link = block.querySelector('.speck-block-link');
+                if (link && link.href) {
+                    e.preventDefault();
+                    
+                    // Pulse animation
+                    block.style.transform = 'scale(0.98)';
                     setTimeout(() => {
-                        button.style.transform = '';
-                    }, 150);
+                        block.style.transform = '';
+                        window.location.href = link.href;
+                    }, 200);
+                }
+            });
+            
+            // Touch device optimization
+            block.addEventListener('touchstart', () => {
+                if (!this.isReducedMotion) {
+                    block.style.transform = 'scale(0.98)';
+                }
+            });
+            
+            block.addEventListener('touchend', () => {
+                if (!this.isReducedMotion) {
+                    block.style.transform = '';
                 }
             });
         });
+        
+        console.log(`✅ Инициализировано ${speckBlocks.length} блоков Speck Design`);
     }
 
     // ===== STATS COUNTER =====
@@ -395,11 +361,6 @@ class HomePage {
                 cancelAnimationFrame(track._animationId);
             }
         });
-        
-        // Останавливаем Rellax если он используется
-        if (this.rellax) {
-            this.rellax.destroy();
-        }
     }
 }
 
@@ -537,105 +498,8 @@ if (document.body.classList.contains('home-page')) {
     window.addEventListener('load', () => {
         setTimeout(() => {
             if (window.homePage) {
-                window.homePage.initSpeckVerticalBlocks();
+                window.homePage.initSpeckBlocksAnimation();
             }
         }, 500);
     });
-}
-
-// ===== SIMPLE 4-BACKGROUND PARALLAX EXTENSION =====
-// Дополнительная простая реализация для 4 фонов
-document.addEventListener('DOMContentLoaded', function() {
-    // Проверяем, есть ли 4 фона на странице
-    const backgrounds = document.querySelectorAll('.parallax-bg');
-    if (backgrounds.length < 4) {
-        console.log(`ℹ️ Found only ${backgrounds.length} backgrounds, 4-background extension not needed`);
-        return;
-    }
-    
-    console.log('🎨 Initializing 4-background parallax extension...');
-    
-    // Ждем, чтобы основной скрипт успел инициализироваться
-    setTimeout(function() {
-        // Если основной parallax не работает, запускаем нашу версию
-        if (!window.parallaxInstance) {
-            console.log('⚡ Main parallax not found, activating 4-background extension');
-            initSimple4BackgroundParallax();
-        } else {
-            console.log('✅ Main parallax is working, 4-background extension ready as fallback');
-        }
-    }, 2000);
-    
-    function initSimple4BackgroundParallax() {
-        let currentBg = 0;
-        let isAnimating = false;
-        
-        // Показываем только первый фон
-        backgrounds.forEach((bg, index) => {
-            bg.style.opacity = index === 0 ? '1' : '0';
-            bg.style.transition = 'opacity 1.2s ease-in-out';
-        });
-        
-        function switchBackground(newIndex) {
-            if (isAnimating || newIndex === currentBg || newIndex >= backgrounds.length) return;
-            
-            isAnimating = true;
-            console.log(`🔄 4BG: Switching to background ${newIndex}`);
-            
-            backgrounds[currentBg].style.opacity = '0';
-            
-            setTimeout(() => {
-                backgrounds[newIndex].style.opacity = '1';
-                currentBg = newIndex;
-                
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 1200);
-            }, 100);
-        }
-        
-        // Смена фонов на основе секций
-        const sections = document.querySelectorAll('.content-section[data-bg-index]');
-        if (sections.length > 0) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const bgIndex = parseInt(entry.target.getAttribute('data-bg-index')) || 0;
-                        const safeIndex = Math.min(bgIndex, backgrounds.length - 1);
-                        switchBackground(safeIndex);
-                    }
-                });
-            }, { threshold: 0.3 });
-            
-            sections.forEach(section => observer.observe(section));
-        }
-        
-        // Простая логика по скроллу
-        window.addEventListener('scroll', function() {
-            const scrollY = window.pageYOffset;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight - windowHeight;
-            
-            if (documentHeight === 0) return;
-            
-            const scrollPercentage = Math.min((scrollY / documentHeight) * 100, 100);
-            
-            let newBgIndex = 0;
-            
-            if (scrollPercentage < 25) {
-                newBgIndex = 0;
-            } else if (scrollPercentage < 50) {
-                newBgIndex = 1;
-            } else if (scrollPercentage < 75) {
-                newBgIndex = 2;
-            } else {
-                newBgIndex = 3;
-            }
-            
-            newBgIndex = Math.min(newBgIndex, backgrounds.length - 1);
-            switchBackground(newBgIndex);
-        });
-        
-        console.log(`✅ 4-background parallax extension initialized with ${backgrounds.length} backgrounds`);
-    }
-});
+                }
