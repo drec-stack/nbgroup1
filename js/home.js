@@ -14,7 +14,7 @@ class HomePage {
     }
 
     init() {
-        this.initSpeckBlocksAnimation();
+        this.initSpeckVerticalBlocks();
         this.initScrollAnimations();
         this.initStatsCounter();
         this.initParallaxBackgrounds();
@@ -25,13 +25,14 @@ class HomePage {
         console.log('🏠 HomePage инициализирован');
     }
 
-    // ===== SPECK BLOCKS ANIMATION =====
-    initSpeckBlocksAnimation() {
-        console.log('🎨 Инициализация 4-х блоков Speck Design...');
+    // ===== SPECK VERTICAL BLOCKS INITIALIZATION =====
+    initSpeckVerticalBlocks() {
+        console.log('🎨 Инициализация вертикальных блоков Speck Design...');
         
-        const speckBlocks = document.querySelectorAll('.speck-block');
+        const speckBlocks = document.querySelectorAll('.speck-vertical-block');
+        
         if (!speckBlocks.length) {
-            console.log('⚠️ Блоки Speck Design не найдены');
+            console.log('⚠️ Вертикальные блоки Speck не найдены');
             return;
         }
         
@@ -42,7 +43,7 @@ class HomePage {
                     // Активируем блок с задержкой (staggered animation)
                     setTimeout(() => {
                         entry.target.classList.add('visible');
-                    }, index * 150);
+                    }, index * 200);
                     
                     blockObserver.unobserve(entry.target);
                 }
@@ -57,69 +58,53 @@ class HomePage {
             blockObserver.observe(block);
         });
         
-        // Enhanced hover effects
-        speckBlocks.forEach(block => {
-            block.addEventListener('mouseenter', () => {
+        // Enhanced hover effects для элементов списка
+        const featureItems = document.querySelectorAll('.speck-feature-item');
+        featureItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
                 if (!this.isReducedMotion) {
-                    const link = block.querySelector('.speck-block-link i');
-                    if (link) {
-                        link.style.transform = 'translateX(5px)';
-                    }
-                    
-                    // Подсвечиваем номер блока
-                    const number = block.querySelector('.speck-block-number');
-                    if (number) {
-                        number.style.color = '#3399ff';
+                    const icon = item.querySelector('.speck-feature-icon');
+                    if (icon) {
+                        icon.style.transform = 'translateX(5px)';
+                        icon.style.color = '#3399ff';
                     }
                 }
             });
             
-            block.addEventListener('mouseleave', () => {
+            item.addEventListener('mouseleave', () => {
                 if (!this.isReducedMotion) {
-                    const link = block.querySelector('.speck-block-link i');
-                    if (link) {
-                        link.style.transform = '';
-                    }
-                    
-                    const number = block.querySelector('.speck-block-number');
-                    if (number) {
-                        number.style.color = '';
+                    const icon = item.querySelector('.speck-feature-icon');
+                    if (icon) {
+                        icon.style.transform = '';
+                        icon.style.color = '';
                     }
                 }
             });
             
-            // Клик по всему блоку (кроме ссылок)
-            block.addEventListener('click', (e) => {
-                if (e.target.tagName === 'A' || e.target.closest('a')) return;
+            // Клик по элементам списка
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
                 
-                const link = block.querySelector('.speck-block-link');
-                if (link && link.href) {
-                    e.preventDefault();
-                    
-                    // Pulse animation
-                    block.style.transform = 'scale(0.98)';
+                // Pulse animation
+                item.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    item.style.transform = '';
+                }, 150);
+                
+                // Можно добавить логику перехода на конкретную страницу
+                // Например, если это элемент из блока Strategy, то вести на services.html#strategy
+                const blockIndex = item.closest('.speck-vertical-block').getAttribute('data-block-index');
+                const blockTitles = ['strategy', 'design', 'engineering', 'manufacturing'];
+                
+                if (blockTitles[blockIndex]) {
                     setTimeout(() => {
-                        block.style.transform = '';
-                        window.location.href = link.href;
+                        window.location.href = `services.html#${blockTitles[blockIndex]}`;
                     }, 200);
-                }
-            });
-            
-            // Touch device optimization
-            block.addEventListener('touchstart', () => {
-                if (!this.isReducedMotion) {
-                    block.style.transform = 'scale(0.98)';
-                }
-            });
-            
-            block.addEventListener('touchend', () => {
-                if (!this.isReducedMotion) {
-                    block.style.transform = '';
                 }
             });
         });
         
-        console.log(`✅ Инициализировано ${speckBlocks.length} блоков Speck Design`);
+        console.log(`✅ Инициализировано ${speckBlocks.length} вертикальных блоков`);
     }
 
     // ===== STATS COUNTER =====
@@ -498,8 +483,8 @@ if (document.body.classList.contains('home-page')) {
     window.addEventListener('load', () => {
         setTimeout(() => {
             if (window.homePage) {
-                window.homePage.initSpeckBlocksAnimation();
+                window.homePage.initSpeckVerticalBlocks();
             }
         }, 500);
     });
-                }
+    }
