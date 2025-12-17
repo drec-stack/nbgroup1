@@ -1,4 +1,17 @@
-/* home.css - Main Styles for Home Page */
+/* home.css - Main Styles for Home Page with Full Browser Support */
+
+/* ===== RESET AND BASE STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Для IE11 */
+main, section, article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
 
 /* ===== HERO SECTION ===== */
 .hero {
@@ -7,7 +20,11 @@
     overflow: hidden;
     background: transparent;
     min-height: 100vh;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
 }
 
@@ -37,6 +54,8 @@
 }
 
 .hero h1 span:first-child {
+    background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#a0a0ff));
+    background: -o-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -47,10 +66,20 @@
 .hero h1 span:nth-child(2) {
     font-size: 4rem;
     opacity: 0.9;
+    background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ccccff));
+    background: -o-linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+}
+
+/* Фолбэк для градиентов текста */
+.no-cssgradients .hero h1 span:first-child,
+.no-cssgradients .hero h1 span:nth-child(2) {
+    background: none;
+    -webkit-text-fill-color: white;
+    color: white;
 }
 
 .hero-subtitle {
@@ -77,10 +106,24 @@
 }
 
 .hero-actions {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     gap: 25px;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
+}
+
+/* Фолбэк для flexbox gap */
+.no-flexgap .hero-actions {
+    margin: -12.5px;
+}
+
+.no-flexgap .hero-actions .btn {
+    margin: 12.5px;
 }
 
 .hero-actions .btn {
@@ -89,10 +132,14 @@
     font-size: 1.1rem;
     font-weight: 600;
     border-radius: 50px;
+    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    -o-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .hero-actions .btn-primary {
+    background: -webkit-gradient(linear, left top, right bottom, from(#0066ff), to(#00aaff));
+    background: -o-linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     color: white;
     border: none;
@@ -100,8 +147,12 @@
 }
 
 .hero-actions .btn-primary:hover {
+    -webkit-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
+    background: -webkit-gradient(linear, left top, right bottom, from(#0052cc), to(#0088cc));
+    background: -o-linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
     background: linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
 }
 
@@ -109,21 +160,35 @@
     background: transparent;
     color: white;
     border: 2px solid rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
+}
+
+/* Фолбэк для backdrop-filter */
+.no-backdropfilter .hero-actions .btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .hero-actions .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: white;
+    -webkit-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
     transform: translateY(-5px);
 }
 
 .hero-actions .btn i {
     margin-left: 10px;
+    -webkit-transition: -webkit-transform 0.3s ease;
+    transition: -webkit-transform 0.3s ease;
+    -o-transition: transform 0.3s ease;
     transition: transform 0.3s ease;
+    transition: transform 0.3s ease, -webkit-transform 0.3s ease;
 }
 
 .hero-actions .btn:hover i {
+    -webkit-transform: translateX(5px);
+    -ms-transform: translateX(5px);
     transform: translateX(5px);
 }
 
@@ -131,11 +196,15 @@
     position: absolute;
     bottom: 40px;
     left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
     transform: translateX(-50%);
     text-align: center;
     color: white;
     opacity: 0.8;
     cursor: pointer;
+    -webkit-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
     transition: opacity 0.3s ease;
     z-index: 3;
 }
@@ -150,19 +219,40 @@
     border: 2px solid white;
     border-left: none;
     border-top: none;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
     transform: rotate(45deg);
     margin: 0 auto 10px;
+    -webkit-animation: bounce 2s infinite;
     animation: bounce 2s infinite;
+}
+
+@-webkit-keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        -webkit-transform: rotate(45deg) translateY(0);
+        transform: rotate(45deg) translateY(0);
+    }
+    40% {
+        -webkit-transform: rotate(45deg) translateY(-10px);
+        transform: rotate(45deg) translateY(-10px);
+    }
+    60% {
+        -webkit-transform: rotate(45deg) translateY(-5px);
+        transform: rotate(45deg) translateY(-5px);
+    }
 }
 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
+        -webkit-transform: rotate(45deg) translateY(0);
         transform: rotate(45deg) translateY(0);
     }
     40% {
+        -webkit-transform: rotate(45deg) translateY(-10px);
         transform: rotate(45deg) translateY(-10px);
     }
     60% {
+        -webkit-transform: rotate(45deg) translateY(-5px);
         transform: rotate(45deg) translateY(-5px);
     }
 }
@@ -174,268 +264,239 @@
     opacity: 0.7;
 }
 
-/* ===== SPECK DESIGN 4-BLOCK GRID (как на speckdesign.com) ===== */
-.speck-blocks-section {
-    padding: 150px 0;
+/* ===== SPECK DESIGN VERTICAL BLOCKS ===== */
+.speck-vertical-section {
+    padding: 120px 0;
     position: relative;
-    overflow: hidden;
     background: transparent;
 }
 
-.speck-blocks-container {
-    max-width: 1400px;
+.speck-vertical-grid {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 40px;
-}
-
-.speck-blocks-header {
-    text-align: center;
-    margin-bottom: 100px;
-}
-
-.speck-blocks-title {
-    font-size: 4rem;
-    font-weight: 800;
-    color: white;
-    margin-bottom: 25px;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.speck-blocks-subtitle {
-    font-size: 1.4rem;
-    color: rgba(255, 255, 255, 0.8);
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-/* 4-колоночная сетка */
-.speck-blocks-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-    position: relative;
-    z-index: 2;
-}
-
-/* Каждый блок */
-.speck-block {
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.05) 0%, 
-        rgba(255, 255, 255, 0.02) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 50px 40px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    height: 100%;
-    min-height: 450px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    gap: 60px;
 }
 
-/* Эффект свечения при наведении */
-.speck-block::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at center, 
-        rgba(255, 255, 255, 0.03) 0%, 
-        transparent 70%);
+/* Фолбэк для flexbox gap */
+.no-flexgap .speck-vertical-grid {
+    margin: -30px 0;
+}
+
+.no-flexgap .speck-vertical-block {
+    margin: 30px 0;
+}
+
+.speck-vertical-block {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    gap: 80px;
     opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: 1;
+    -webkit-transform: translateY(30px);
+    -ms-transform: translateY(30px);
+    transform: translateY(30px);
+    -webkit-transition: opacity 0.8s ease, -webkit-transform 0.8s ease;
+    transition: opacity 0.8s ease, -webkit-transform 0.8s ease;
+    -o-transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 0.8s ease, transform 0.8s ease, -webkit-transform 0.8s ease;
 }
 
-.speck-block:hover {
-    transform: translateY(-15px);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 
-        0 30px 60px rgba(0, 0, 0, 0.3),
-        0 15px 35px rgba(0, 102, 255, 0.2);
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.08) 0%, 
-        rgba(255, 255, 255, 0.04) 100%);
+/* Фолбэк для CSS transforms */
+.no-csstransforms .speck-vertical-block {
+    opacity: 1;
+    -webkit-transition: opacity 0.8s ease;
+    -o-transition: opacity 0.8s ease;
+    transition: opacity 0.8s ease;
 }
 
-.speck-block:hover::before {
+.no-flexgap .speck-vertical-block {
+    margin-right: -80px;
+}
+
+.no-flexgap .speck-block-left,
+.no-flexgap .speck-block-right {
+    margin-right: 80px;
+}
+
+.speck-vertical-block.visible {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+}
+
+.no-csstransforms .speck-vertical-block.visible {
     opacity: 1;
 }
 
-/* Номер блока */
+.speck-block-left {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 200px;
+    flex: 0 0 200px;
+    text-align: right;
+    padding-top: 10px;
+}
+
 .speck-block-number {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: #0066ff;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     letter-spacing: 3px;
     text-transform: uppercase;
     position: relative;
     display: inline-block;
-    z-index: 2;
 }
 
 .speck-block-number::after {
     content: '';
     position: absolute;
-    bottom: -8px;
-    left: 0;
+    bottom: -6px;
+    right: 0;
     width: 30px;
     height: 2px;
     background: #0066ff;
+    -webkit-transition: width 0.3s ease;
+    -o-transition: width 0.3s ease;
     transition: width 0.3s ease;
 }
 
-.speck-block:hover .speck-block-number::after {
+.speck-vertical-block:hover .speck-block-number::after {
     width: 40px;
 }
 
-/* Заголовок блока */
 .speck-block-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: white;
-    margin-bottom: 20px;
-    line-height: 1.2;
-    z-index: 2;
-    position: relative;
+    line-height: 1.1;
+    margin: 0;
 }
 
-/* Подзаголовок */
+.speck-block-right {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    padding-left: 80px;
+    padding-top: 10px;
+}
+
 .speck-block-subtitle {
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 30px;
+    margin: 0 0 30px 0;
     line-height: 1.4;
-    z-index: 2;
-    position: relative;
 }
 
-/* Описание */
-.speck-block-description {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 40px;
-    flex-grow: 1;
-    z-index: 2;
-    position: relative;
-}
-
-/* Список фич */
-.speck-block-features {
+.speck-feature-list {
     margin: 0;
     padding: 0;
     list-style: none;
-    z-index: 2;
-    position: relative;
 }
 
-.speck-block-feature {
+.speck-feature-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 15px;
-    font-size: 1rem;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
     color: rgba(255, 255, 255, 0.85);
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    padding: 8px 0;
+    position: relative;
+    cursor: pointer;
+}
+
+.no-flexgap .speck-feature-item {
+    margin-right: -15px;
+}
+
+.no-flexgap .speck-feature-icon,
+.no-flexgap .speck-feature-text {
+    margin-right: 15px;
+}
+
+.speck-feature-item::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #0066ff;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+
+.speck-feature-item:hover::before {
+    opacity: 1;
+}
+
+.speck-feature-item:hover {
+    color: white;
+    -webkit-transform: translateX(10px);
+    -ms-transform: translateX(10px);
+    transform: translateX(10px);
+}
+
+.no-csstransforms .speck-feature-item:hover {
+    padding-left: 10px;
 }
 
 .speck-feature-icon {
     color: #0066ff;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     min-width: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    -webkit-transition: -webkit-transform 0.3s ease;
+    transition: -webkit-transform 0.3s ease;
+    -o-transition: transform 0.3s ease;
+    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.speck-feature-item:hover .speck-feature-icon {
+    -webkit-transform: translateX(5px);
+    -ms-transform: translateX(5px);
+    transform: translateX(5px);
+}
+
+.no-csstransforms .speck-feature-item:hover .speck-feature-icon {
+    margin-left: 5px;
 }
 
 .speck-feature-text {
     line-height: 1.5;
 }
 
-/* Кнопка Learn More */
-.speck-block-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: #0066ff;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    margin-top: auto;
-    z-index: 2;
-    position: relative;
-    padding: 10px 0;
-    transition: all 0.3s ease;
+/* Анимация при наведении на весь блок */
+.speck-vertical-block:hover .speck-block-title {
+    color: #66b5ff;
 }
 
-.speck-block-link i {
-    transition: transform 0.3s ease;
-}
-
-.speck-block-link:hover {
-    color: #3399ff;
-}
-
-.speck-block-link:hover i {
-    transform: translateX(5px);
-}
-
-/* Фоновые элементы для сетки */
-.speck-grid-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.speck-grid-line {
-    position: absolute;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.05), 
-        transparent);
-}
-
-/* Декоративные линии между блоками */
-.speck-grid-line.horizontal {
-    width: 100%;
-    height: 1px;
-    left: 0;
-}
-
-.speck-grid-line.vertical {
-    height: 100%;
-    width: 1px;
-    top: 0;
-}
-
-/* Анимация появления блоков */
-.speck-block {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.speck-block.visible {
-    opacity: 1;
-    transform: translateY(0);
+.speck-vertical-block:hover .speck-block-subtitle {
+    color: white;
 }
 
 /* ===== CLIENTS SECTION ===== */
@@ -480,9 +541,13 @@
     position: absolute;
     bottom: 0;
     left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
     transform: translateX(-50%);
     width: 40px;
     height: 2px;
+    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(#0066ff), to(transparent));
+    background: -o-linear-gradient(left, transparent, #0066ff, transparent);
     background: linear-gradient(90deg, transparent, #0066ff, transparent);
 }
 
@@ -506,16 +571,24 @@
 
 .marquee-container::before {
     left: 0;
+    background: -webkit-gradient(linear, left top, right top, from(rgba(10, 10, 15, 0.8)), to(transparent));
+    background: -o-linear-gradient(left, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
     background: linear-gradient(90deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
 }
 
 .marquee-container::after {
     right: 0;
+    background: -webkit-gradient(linear, right top, left top, from(rgba(10, 10, 15, 0.8)), to(transparent));
+    background: -o-linear-gradient(right, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
     background: linear-gradient(270deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
 }
 
 .marquee-track {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    width: -webkit-max-content;
+    width: -moz-max-content;
     width: max-content;
     padding: 35px 0;
     white-space: nowrap;
@@ -523,9 +596,14 @@
 }
 
 .marquee-content {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     white-space: nowrap;
+    -ms-flex-negative: 0;
     flex-shrink: 0;
 }
 
@@ -534,9 +612,12 @@
     font-weight: 700;
     color: white;
     opacity: 0.7;
+    -webkit-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    -o-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     padding: 0 40px;
     white-space: nowrap;
+    -ms-flex-negative: 0;
     flex-shrink: 0;
     text-decoration: none;
     position: relative;
@@ -547,7 +628,14 @@
 .brand:hover {
     color: white;
     opacity: 1;
+    -webkit-transform: translateY(-3px);
+    -ms-transform: translateY(-3px);
     transform: translateY(-3px);
+}
+
+.no-csstransforms .brand:hover {
+    opacity: 1;
+    text-decoration: underline;
 }
 
 .brand::after {
@@ -557,25 +645,41 @@
     left: 40px;
     right: 40px;
     height: 2px;
+    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(#0066ff), to(transparent));
+    background: -o-linear-gradient(left, transparent, #0066ff, transparent);
     background: linear-gradient(90deg, transparent, #0066ff, transparent);
+    -webkit-transform: scaleX(0);
+    -ms-transform: scaleX(0);
     transform: scaleX(0);
+    -webkit-transition: -webkit-transform 0.4s ease;
+    transition: -webkit-transform 0.4s ease;
+    -o-transition: transform 0.4s ease;
     transition: transform 0.4s ease;
+    transition: transform 0.4s ease, -webkit-transform 0.4s ease;
 }
 
 .brand:hover::after {
+    -webkit-transform: scaleX(1);
+    -ms-transform: scaleX(1);
     transform: scaleX(1);
+}
+
+.no-csstransforms .brand::after {
+    display: none;
 }
 
 .separator {
     color: rgba(255, 255, 255, 0.2);
     font-size: 1.8rem;
     font-weight: 300;
+    -ms-flex-negative: 0;
     flex-shrink: 0;
     opacity: 0.5;
 }
 
-/* Marquee animations - управляются через inline стили в index.html */
+/* Marquee animations */
 .marquee-track:hover {
+    -webkit-animation-play-state: paused !important;
     animation-play-state: paused !important;
 }
 
@@ -601,6 +705,24 @@
     pointer-events: none;
 }
 
+/* Фолбэк для CSS Grid */
+.no-cssgrid .stats-grid-improved {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    margin: -20px;
+}
+
+.no-cssgrid .stat-card {
+    width: calc(25% - 40px);
+    margin: 20px;
+}
+
 .stats-grid-improved {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -609,22 +731,39 @@
     z-index: 2;
 }
 
+/* Фолбэк для flexbox gap */
+.no-flexgap .stats-grid-improved {
+    margin: -20px;
+}
+
+.no-flexgap .stat-card {
+    margin: 20px;
+}
+
 .stat-card {
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.05) 0%, 
-        rgba(255, 255, 255, 0.02) 100%);
+    background: -webkit-gradient(linear, left top, right bottom, from(rgba(255, 255, 255, 0.05)), to(rgba(255, 255, 255, 0.02)));
+    background: -o-linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 24px;
     padding: 50px 35px;
     text-align: center;
-    backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    -webkit-transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    -o-transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     overflow: hidden;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
+}
+
+/* Фолбэк для backdrop-filter */
+.no-backdropfilter .stat-card {
+    background: rgba(20, 25, 40, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .stat-card::before {
@@ -634,10 +773,11 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.1), 
-        transparent);
+    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(rgba(255, 255, 255, 0.1)), to(transparent));
+    background: -o-linear-gradient(left, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    -webkit-transition: left 0.7s ease;
+    -o-transition: left 0.7s ease;
     transition: left 0.7s ease;
     z-index: 1;
 }
@@ -647,27 +787,49 @@
 }
 
 .stat-card:hover {
+    -webkit-transform: translateY(-15px);
+    -ms-transform: translateY(-15px);
     transform: translateY(-15px);
     border-color: rgba(255, 255, 255, 0.25);
     box-shadow: 
         0 25px 50px rgba(255, 255, 255, 0.15),
         0 10px 30px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.08) 0%, 
-        rgba(255, 255, 255, 0.04) 100%);
+    background: -webkit-gradient(linear, left top, right bottom, from(rgba(255, 255, 255, 0.08)), to(rgba(255, 255, 255, 0.04)));
+    background: -o-linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+}
+
+.no-csstransforms .stat-card:hover {
+    box-shadow: 
+        0 25px 50px rgba(255, 255, 255, 0.15),
+        0 10px 30px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.no-backdropfilter .stat-card:hover {
+    background: rgba(25, 30, 45, 0.95);
 }
 
 .stat-icon {
     font-size: 3.5rem;
     margin-bottom: 25px;
     color: white;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
     position: relative;
     z-index: 2;
 }
 
 .stat-card:hover .stat-icon {
+    -webkit-transform: scale(1.15);
+    -ms-transform: scale(1.15);
     transform: scale(1.15);
+    color: #66b5ff;
+    text-shadow: 0 0 20px rgba(102, 181, 255, 0.5);
+}
+
+.no-csstransforms .stat-card:hover .stat-icon {
     color: #66b5ff;
     text-shadow: 0 0 20px rgba(102, 181, 255, 0.5);
 }
@@ -683,19 +845,38 @@
     color: white;
     margin-bottom: 15px;
     line-height: 1;
+    background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#a0a0ff));
+    background: -o-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
 }
 
+.no-cssgradients .stat-number-improved {
+    background: none;
+    -webkit-text-fill-color: white;
+    color: white;
+}
+
 .stat-card:hover .stat-number-improved {
+    background: -webkit-gradient(linear, left top, right bottom, from(#66b5ff), to(#3399ff));
+    background: -o-linear-gradient(135deg, #66b5ff 0%, #3399ff 100%);
     background: linear-gradient(135deg, #66b5ff 0%, #3399ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
     transform: scale(1.05);
+}
+
+.no-csstransforms .stat-card:hover .stat-number-improved,
+.no-cssgradients .stat-card:hover .stat-number-improved {
+    color: #66b5ff;
 }
 
 .stat-label-improved {
@@ -704,6 +885,8 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1.5px;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
@@ -715,9 +898,9 @@
 /* ===== CTA SECTION ===== */
 .cta-improved {
     padding: 140px 0;
-    background: linear-gradient(135deg, 
-        rgba(0, 102, 255, 0.15) 0%, 
-        rgba(0, 170, 255, 0.15) 100%);
+    background: -webkit-gradient(linear, left top, right bottom, from(rgba(0, 102, 255, 0.15)), to(rgba(0, 170, 255, 0.15)));
+    background: -o-linear-gradient(135deg, rgba(0, 102, 255, 0.15) 0%, rgba(0, 170, 255, 0.15) 100%);
+    background: linear-gradient(135deg, rgba(0, 102, 255, 0.15) 0%, rgba(0, 170, 255, 0.15) 100%);
     position: relative;
     z-index: 2;
     cursor: pointer;
@@ -748,10 +931,11 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.1), 
-        transparent);
+    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(rgba(255, 255, 255, 0.1)), to(transparent));
+    background: -o-linear-gradient(left, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    -webkit-transition: left 0.7s ease;
+    -o-transition: left 0.7s ease;
     transition: left 0.7s ease;
     z-index: 1;
 }
@@ -776,19 +960,38 @@
     color: white;
     line-height: 1.1;
     letter-spacing: -0.02em;
+    background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ccccff));
+    background: -o-linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
 }
 
+.no-cssgradients .cta-text h2 {
+    background: none;
+    -webkit-text-fill-color: white;
+    color: white;
+}
+
 .cta-improved:hover .cta-text h2 {
+    background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#a0a0ff));
+    background: -o-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-transform: scale(1.02);
+    -ms-transform: scale(1.02);
     transform: scale(1.02);
+}
+
+.no-csstransforms .cta-improved:hover .cta-text h2,
+.no-cssgradients .cta-improved:hover .cta-text h2 {
+    color: #a0a0ff;
 }
 
 .cta-text p {
@@ -799,6 +1002,8 @@
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
@@ -814,6 +1019,8 @@
 .btn-glow {
     position: relative;
     overflow: hidden;
+    background: -webkit-gradient(linear, left top, right bottom, from(#0066ff), to(#00aaff));
+    background: -o-linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     color: white;
     border: none;
@@ -821,15 +1028,31 @@
     font-size: 1.2rem;
     font-weight: 600;
     border-radius: 50px;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
     display: inline-flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     gap: 15px;
+    -webkit-transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    -o-transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 
         0 15px 35px rgba(0, 102, 255, 0.4),
         0 5px 15px rgba(0, 102, 255, 0.2);
     min-width: 280px;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+}
+
+.no-flexgap .btn-glow {
+    margin-right: -15px;
+}
+
+.no-flexgap .btn-glow i {
+    margin-right: 15px;
 }
 
 .btn-glow::before {
@@ -839,10 +1062,11 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.3), 
-        transparent);
+    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(rgba(255, 255, 255, 0.3)), to(transparent));
+    background: -o-linear-gradient(left, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    -webkit-transition: left 0.7s ease;
+    -o-transition: left 0.7s ease;
     transition: left 0.7s ease;
     border-radius: 50px;
 }
@@ -852,20 +1076,42 @@
 }
 
 .btn-glow:hover {
+    -webkit-transform: translateY(-8px) scale(1.05);
+    -ms-transform: translateY(-8px) scale(1.05);
     transform: translateY(-8px) scale(1.05);
     box-shadow: 
         0 25px 50px rgba(0, 102, 255, 0.5),
         0 10px 30px rgba(0, 102, 255, 0.3),
         0 0 100px rgba(0, 102, 255, 0.2);
+    background: -webkit-gradient(linear, left top, right bottom, from(#0052cc), to(#0088cc));
+    background: -o-linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
     background: linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
 }
 
+.no-csstransforms .btn-glow:hover {
+    box-shadow: 
+        0 25px 50px rgba(0, 102, 255, 0.5),
+        0 10px 30px rgba(0, 102, 255, 0.3),
+        0 0 100px rgba(0, 102, 255, 0.2);
+    background: #0052cc;
+}
+
 .btn-glow i {
+    -webkit-transition: -webkit-transform 0.4s ease;
+    transition: -webkit-transform 0.4s ease;
+    -o-transition: transform 0.4s ease;
     transition: transform 0.4s ease;
+    transition: transform 0.4s ease, -webkit-transform 0.4s ease;
 }
 
 .btn-glow:hover i {
+    -webkit-transform: translateX(8px) rotate(-15deg);
+    -ms-transform: translateX(8px) rotate(-15deg);
     transform: translateX(8px) rotate(-15deg);
+}
+
+.no-csstransforms .btn-glow:hover i {
+    margin-left: 8px;
 }
 
 .btn-large {
@@ -878,6 +1124,8 @@
     position: fixed !important;
     top: 30px !important;
     left: 50% !important;
+    -webkit-transform: translateX(-50%) translateY(0) !important;
+    -ms-transform: translateX(-50%) translateY(0) !important;
     transform: translateX(-50%) translateY(0) !important;
     width: calc(100% - 60px) !important;
     max-width: 1400px !important;
@@ -885,11 +1133,13 @@
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
+    -webkit-transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    -o-transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
     border-radius: 25px !important;
     background: rgba(0, 102, 255, 0.12) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
     border: 1px solid rgba(255, 255, 255, 0.25) !important;
     box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.2),
@@ -897,20 +1147,32 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
+/* Фолбэк для backdrop-filter */
+.no-backdropfilter .home-page .main-header {
+    background: rgba(0, 102, 255, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
 /* Состояние скрытого хедера */
 .home-page .main-header.header-hidden {
+    -webkit-transform: translateX(-50%) translateY(-150%) !important;
+    -ms-transform: translateX(-50%) translateY(-150%) !important;
     transform: translateX(-50%) translateY(-150%) !important;
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
 }
 
+.no-csstransforms .home-page .main-header.header-hidden {
+    display: none !important;
+}
+
 /* Минимизированный хедер при скролле */
 .home-page .main-header.header-minimized {
     padding: 15px 0 !important;
     background: rgba(0, 102, 255, 0.25) !important;
-    backdrop-filter: blur(25px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+    backdrop-filter: blur(25px) saturate(200%) !important;
     box-shadow: 
         0 10px 40px rgba(0, 0, 0, 0.25),
         0 5px 20px rgba(0, 0, 0, 0.15),
@@ -919,75 +1181,178 @@
     top: 20px !important;
 }
 
+.no-backdropfilter .home-page .main-header.header-minimized {
+    background: rgba(0, 102, 255, 0.35) !important;
+}
+
 /* Увеличение отступа для контента под хедером */
 .home-page .hero {
     padding-top: 140px !important;
+    -webkit-transition: padding-top 0.4s ease !important;
+    -o-transition: padding-top 0.4s ease !important;
     transition: padding-top 0.4s ease !important;
 }
 
-/* АДАПТИВНОСТЬ ДЛЯ SPECK BLOCKS */
+/* ===== АДАПТИВНОСТЬ ДЛЯ VERTICAL BLOCKS ===== */
 
 @media (max-width: 1200px) {
-    .speck-blocks-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 40px;
+    .speck-vertical-grid {
+        max-width: 900px;
     }
     
-    .speck-blocks-title {
-        font-size: 3.5rem;
+    .speck-vertical-block {
+        gap: 60px;
     }
     
-    .speck-blocks-subtitle {
-        font-size: 1.3rem;
+    .no-flexgap .speck-vertical-block {
+        margin-right: -60px;
     }
     
-    .hero h1 {
-        font-size: 4rem;
+    .no-flexgap .speck-block-left,
+    .no-flexgap .speck-block-right {
+        margin-right: 60px;
     }
     
-    .hero h1 span:first-child {
-        font-size: 4.5rem;
+    .speck-block-left {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 180px;
+        flex: 0 0 180px;
     }
     
-    .hero h1 span:nth-child(2) {
-        font-size: 3.5rem;
+    .speck-block-right {
+        padding-left: 60px;
     }
     
-    .hero h1 span:last-child {
-        font-size: 4rem;
+    .speck-block-title {
+        font-size: 2.2rem;
     }
     
-    .home-page .main-header {
-        width: calc(100% - 40px) !important;
-        top: 20px !important;
+    .speck-block-subtitle {
+        font-size: 1.6rem;
     }
     
-    .home-page .hero {
-        padding-top: 120px !important;
+    /* Адаптивность для старых браузеров без CSS Grid */
+    .no-cssgrid .stat-card {
+        width: calc(50% - 40px);
     }
 }
 
 @media (max-width: 992px) {
-    .speck-blocks-section {
-        padding: 100px 0;
+    .speck-vertical-section {
+        padding: 80px 0;
     }
     
-    .speck-blocks-header {
-        margin-bottom: 60px;
+    .speck-vertical-grid {
+        max-width: 700px;
+        gap: 50px;
     }
     
-    .speck-blocks-title {
-        font-size: 3rem;
+    .no-flexgap .speck-vertical-grid {
+        margin: -25px 0;
     }
     
-    .speck-blocks-subtitle {
+    .no-flexgap .speck-vertical-block {
+        margin: 25px 0;
+    }
+    
+    .speck-vertical-block {
+        gap: 40px;
+    }
+    
+    .no-flexgap .speck-vertical-block {
+        margin-right: -40px;
+    }
+    
+    .no-flexgap .speck-block-left,
+    .no-flexgap .speck-block-right {
+        margin-right: 40px;
+    }
+    
+    .speck-block-left {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 150px;
+        flex: 0 0 150px;
+    }
+    
+    .speck-block-right {
+        padding-left: 40px;
+    }
+    
+    .speck-block-title {
+        font-size: 2rem;
+    }
+    
+    .speck-block-subtitle {
+        font-size: 1.4rem;
+    }
+    
+    .speck-feature-item {
+        font-size: 1rem;
+    }
+    
+    .speck-feature-icon {
         font-size: 1.2rem;
-        padding: 0 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .speck-vertical-section {
+        padding: 60px 0;
     }
     
-    .speck-block {
-        padding: 40px 30px;
-        min-height: 400px;
+    .speck-vertical-grid {
+        gap: 40px;
+    }
+    
+    .no-flexgap .speck-vertical-grid {
+        margin: -20px 0;
+    }
+    
+    .no-flexgap .speck-vertical-block {
+        margin: 20px 0;
+    }
+    
+    .speck-vertical-block {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        gap: 20px;
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+    }
+    
+    .no-flexgap .speck-vertical-block {
+        margin-right: 0;
+    }
+    
+    .speck-block-left {
+        -webkit-box-flex: 0;
+        -ms-flex: none;
+        flex: none;
+        width: 100%;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .no-flexgap .speck-block-left,
+    .no-flexgap .speck-block-right {
+        margin-right: 0;
+        width: 100%;
+    }
+    
+    .speck-block-right {
+        border-left: none;
+        padding-left: 0;
+        width: 100%;
+    }
+    
+    .speck-block-number::after {
+        left: 0;
+        right: auto;
     }
     
     .speck-block-title {
@@ -995,402 +1360,130 @@
     }
     
     .speck-block-subtitle {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+        margin-bottom: 20px;
     }
     
-    .speck-block-description {
+    .speck-feature-item {
         font-size: 1rem;
+        margin-bottom: 15px;
     }
     
-    .hero {
-        padding: 150px 0 100px;
-        min-height: auto;
-    }
-    
-    .hero h1 {
-        font-size: 3.5rem;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 4rem;
-    }
-    
-    .hero h1 span:nth-child(2) {
-        font-size: 3rem;
-    }
-    
-    .hero h1 span:last-child {
-        font-size: 3.5rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.6rem;
-    }
-    
-    .hero-description p {
-        font-size: 1.2rem;
-    }
-    
-    .clients-section,
-    .stats-improved,
-    .cta-improved {
-        padding: 100px 0;
-    }
-    
-    .cta-text h2 {
-        font-size: 3rem;
-    }
-    
-    .cta-text p {
-        font-size: 1.2rem;
-    }
-    
-    .brand {
-        font-size: 1.4rem;
-        padding: 0 30px;
-    }
-}
-
-@media (max-width: 768px) {
-    .speck-blocks-container {
-        padding: 0 30px;
-    }
-    
-    .speck-blocks-title {
-        font-size: 2.8rem;
-    }
-    
-    .speck-blocks-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-        max-width: 500px;
-        margin: 0 auto;
-    }
-    
-    .speck-block {
-        padding: 35px 25px;
-        min-height: 350px;
-    }
-    
-    .speck-block-title {
-        font-size: 1.6rem;
-    }
-    
-    .speck-block-subtitle {
-        font-size: 1.1rem;
-    }
-    
-    .hero {
-        padding: 120px 0 80px;
-    }
-    
-    .hero h1 {
-        font-size: 2.8rem;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 3.2rem;
-    }
-    
-    .hero h1 span:nth-child(2) {
-        font-size: 2.5rem;
-    }
-    
-    .hero h1 span:last-child {
-        font-size: 2.8rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.4rem;
-        margin-bottom: 2rem;
-    }
-    
-    .hero-description {
-        margin-bottom: 2.5rem;
-    }
-    
-    .hero-description p {
-        font-size: 1.1rem;
-        line-height: 1.6;
-    }
-    
-    .hero-actions {
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-    }
-    
-    .hero-actions .btn {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-    }
-    
-    .clients-section {
-        padding: 80px 0;
-    }
-    
-    .clients-label {
-        font-size: 0.85rem;
-        letter-spacing: 2px;
-        margin-bottom: 40px;
-    }
-    
-    .brand {
-        font-size: 1.2rem;
-        padding: 0 25px;
-    }
-    
-    .separator {
-        font-size: 1.5rem;
-    }
-    
-    .marquee-track {
-        padding: 25px 0;
-    }
-    
-    .stats-improved {
-        padding: 80px 0;
-    }
-    
-    .stats-grid-improved {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
-    }
-    
-    .stat-card {
-        padding: 40px 25px;
-    }
-    
-    .stat-icon {
-        font-size: 3rem;
-    }
-    
-    .stat-number-improved {
-        font-size: 3.5rem;
-    }
-    
-    .stat-label-improved {
-        font-size: 1.1rem;
-    }
-    
-    .cta-improved {
-        padding: 80px 0;
-    }
-    
-    .cta-text h2 {
-        font-size: 2.5rem;
-    }
-    
-    .cta-text p {
-        font-size: 1.1rem;
-        margin-bottom: 40px;
-    }
-    
-    .btn-glow {
-        padding: 20px 35px;
-        font-size: 1.1rem;
-        min-width: 250px;
-    }
-    
-    .home-page .main-header {
-        width: calc(100% - 30px) !important;
-        top: 15px !important;
-    }
-    
-    .home-page .hero {
-        padding-top: 100px !important;
+    /* Адаптивность для старых браузеров без CSS Grid */
+    .no-cssgrid .stat-card {
+        width: calc(100% - 40px);
     }
 }
 
 @media (max-width: 576px) {
-    .speck-blocks-container {
-        padding: 0 20px;
+    .speck-vertical-section {
+        padding: 50px 0;
     }
     
-    .speck-blocks-title {
-        font-size: 2.2rem;
+    .speck-vertical-grid {
+        gap: 35px;
     }
     
-    .speck-blocks-subtitle {
-        font-size: 1rem;
+    .no-flexgap .speck-vertical-grid {
+        margin: -17.5px 0;
     }
     
-    .speck-block {
-        padding: 30px 20px;
-        min-height: 300px;
+    .no-flexgap .speck-vertical-block {
+        margin: 17.5px 0;
     }
     
     .speck-block-title {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1rem;
-    }
-    
-    .speck-block-description {
-        font-size: 0.95rem;
-    }
-    
-    .speck-block-feature {
-        font-size: 0.95rem;
-    }
-    
-    .speck-block-link {
-        font-size: 0.95rem;
-    }
-    
-    .hero {
-        padding: 100px 0 60px;
-    }
-    
-    .hero h1 {
-        font-size: 2.2rem;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 2.5rem;
-    }
-    
-    .hero h1 span:nth-child(2) {
-        font-size: 2rem;
-    }
-    
-    .hero h1 span:last-child {
-        font-size: 2.2rem;
-    }
-    
-    .hero-subtitle {
         font-size: 1.2rem;
     }
     
-    .hero-description p {
-        font-size: 1rem;
+    .speck-feature-item {
+        font-size: 0.95rem;
+        gap: 10px;
     }
     
-    .stats-grid-improved {
-        grid-template-columns: 1fr;
-        gap: 25px;
+    .no-flexgap .speck-feature-item {
+        margin-right: -10px;
     }
     
-    .stat-card {
-        padding: 35px 20px;
+    .no-flexgap .speck-feature-icon,
+    .no-flexgap .speck-feature-text {
+        margin-right: 10px;
     }
     
-    .brand {
-        font-size: 1rem;
-        padding: 0 20px;
-    }
-    
-    .separator {
-        font-size: 1.2rem;
-    }
-    
-    .cta-text h2 {
-        font-size: 2rem;
-    }
-    
-    .cta-text p {
-        font-size: 1rem;
-    }
-    
-    .btn-glow {
-        padding: 18px 30px;
-        font-size: 1rem;
-        min-width: 220px;
-    }
-    
-    .home-page .main-header {
-        width: calc(100% - 20px) !important;
-        top: 10px !important;
-    }
-    
-    .home-page .hero {
-        padding-top: 80px !important;
+    .speck-feature-icon {
+        font-size: 1.1rem;
     }
 }
 
 @media (max-width: 400px) {
     .speck-block-title {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
     
     .speck-block-subtitle {
-        font-size: 0.95rem;
-    }
-    
-    .speck-block {
-        min-height: 280px;
-        padding: 25px 15px;
-    }
-    
-    .hero h1 {
-        font-size: 1.8rem;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 2rem;
-    }
-    
-    .hero h1 span:nth-child(2) {
-        font-size: 1.6rem;
-    }
-    
-    .hero h1 span:last-child {
-        font-size: 1.8rem;
-    }
-    
-    .hero-subtitle {
         font-size: 1.1rem;
     }
     
-    .hero-description p {
-        font-size: 0.95rem;
-    }
-    
-    .brand {
+    .speck-feature-item {
         font-size: 0.9rem;
-        padding: 0 15px;
     }
 }
 
 /* ===== REDUCED MOTION SUPPORT ===== */
 @media (prefers-reduced-motion: reduce) {
-    .speck-block,
+    .speck-vertical-block,
+    .speck-feature-item,
     .stat-card,
     .cta-improved,
     .hero-actions .btn,
-    .btn-glow {
+    .btn-glow,
+    .brand {
+        -webkit-animation: none !important;
         animation: none !important;
+        -webkit-transition: none !important;
+        -o-transition: none !important;
         transition: none !important;
     }
     
-    .speck-block:hover,
+    .speck-vertical-block:hover,
+    .speck-feature-item:hover,
     .stat-card:hover,
     .cta-improved:hover,
     .hero-actions .btn:hover,
-    .btn-glow:hover {
+    .btn-glow:hover,
+    .brand:hover {
+        -webkit-transform: none !important;
+        -ms-transform: none !important;
         transform: none !important;
     }
     
     .btn-glow:hover i,
     .hero-actions .btn:hover i,
-    .speck-block-link:hover i {
+    .speck-feature-item:hover .speck-feature-icon {
+        -webkit-transform: none !important;
+        -ms-transform: none !important;
         transform: none !important;
     }
     
     .stat-card::before,
     .cta-improved::after,
     .btn-glow::before {
+        -webkit-transition: none !important;
+        -o-transition: none !important;
         transition: none !important;
     }
     
     .marquee-track {
+        -webkit-animation: none !important;
         animation: none !important;
     }
     
     .scroll-arrow {
+        -webkit-animation: none;
         animation: none;
     }
     
@@ -1401,22 +1494,34 @@
 
 /* ===== TOUCH DEVICE OPTIMIZATION ===== */
 @media (hover: none) {
-    .speck-block-link:hover,
+    .speck-feature-item:hover,
     .stat-card:hover,
     .cta-improved:hover,
     .hero-actions .btn:hover,
     .btn-glow:hover,
     .brand:hover {
+        -webkit-transform: none;
+        -ms-transform: none;
         transform: none;
     }
     
-    .speck-block-link:active,
+    .speck-feature-item:active,
     .stat-card:active,
     .cta-improved:active {
+        -webkit-transform: scale(0.98);
+        -ms-transform: scale(0.98);
         transform: scale(0.98);
     }
     
+    .no-csstransforms .speck-feature-item:active,
+    .no-csstransforms .stat-card:active,
+    .no-csstransforms .cta-improved:active {
+        opacity: 0.8;
+    }
+    
     .btn-glow:active {
+        -webkit-transform: scale(0.95);
+        -ms-transform: scale(0.95);
         transform: scale(0.95);
     }
     
@@ -1428,25 +1533,6 @@
     
     .brand::after {
         display: none;
-    }
-}
-
-/* ===== FALLBACK FOR NO BACKDROP-FILTER SUPPORT ===== */
-@supports not (backdrop-filter: blur(15px)) {
-    .speck-block {
-        background: rgba(20, 20, 35, 0.95);
-    }
-    
-    .stat-card {
-        background: rgba(25, 25, 40, 0.95);
-    }
-    
-    .home-page .main-header {
-        background: rgba(0, 102, 255, 0.25);
-    }
-    
-    .home-page .main-header.header-minimized {
-        background: rgba(0, 102, 255, 0.35);
     }
 }
 
@@ -1467,37 +1553,63 @@
 }
 
 /* ===== LOADING ANIMATIONS ===== */
-@keyframes fadeInUp {
+@-webkit-keyframes fadeInUp {
     from {
         opacity: 0;
+        -webkit-transform: translateY(30px);
         transform: translateY(30px);
     }
     to {
         opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(30px);
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
         transform: translateY(0);
     }
 }
 
 .content-section {
+    -webkit-animation: fadeInUp 0.8s ease-out forwards;
     animation: fadeInUp 0.8s ease-out forwards;
 }
 
+.no-csstransforms .content-section {
+    -webkit-animation: none;
+    animation: none;
+    opacity: 1;
+}
+
 /* Delay animations for staggered effect */
-.hero { animation-delay: 0.1s; }
-.speck-blocks-section { animation-delay: 0.2s; }
-.clients-section { animation-delay: 0.3s; }
-.stats-improved { animation-delay: 0.4s; }
-.cta-improved { animation-delay: 0.5s; }
+.hero { -webkit-animation-delay: 0.1s; animation-delay: 0.1s; }
+.speck-vertical-section { -webkit-animation-delay: 0.2s; animation-delay: 0.2s; }
+.clients-section { -webkit-animation-delay: 0.3s; animation-delay: 0.3s; }
+.stats-improved { -webkit-animation-delay: 0.4s; animation-delay: 0.4s; }
+.cta-improved { -webkit-animation-delay: 0.5s; animation-delay: 0.5s; }
 
 /* Hide during loading */
 .content-section {
     opacity: 0;
 }
 
+.no-csstransforms .content-section {
+    opacity: 1;
+}
+
 /* ===== PRINT STYLES ===== */
 @media print {
     .hero,
-    .speck-blocks-section,
+    .speck-vertical-section,
     .clients-section,
     .stats-improved,
     .cta-improved {
@@ -1519,15 +1631,137 @@
     .hero-actions,
     .parallax-scroll-indicator,
     .marquee-track,
-    .btn-glow,
-    .speck-grid-bg {
+    .btn-glow {
         display: none !important;
     }
     
-    .speck-block,
+    .speck-block-right {
+        border-left: 1px solid #ccc !important;
+    }
+    
     .stat-card {
         box-shadow: none !important;
         border: 1px solid #ccc !important;
         break-inside: avoid;
     }
-             }
+}
+
+/* ===== IE SPECIFIC FIXES ===== */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE 10+ */
+    .hero {
+        display: block;
+    }
+    
+    .speck-vertical-block {
+        display: block;
+        overflow: hidden;
+    }
+    
+    .speck-block-left,
+    .speck-block-right {
+        float: left;
+        width: 50%;
+    }
+    
+    .speck-block-right {
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        padding-left: 80px;
+        box-sizing: border-box;
+    }
+    
+    .hero-actions {
+        display: block;
+    }
+    
+    .hero-actions .btn {
+        display: inline-block;
+        margin: 0 12.5px 25px 12.5px;
+    }
+    
+    .stats-grid-improved {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+    
+    .stat-card {
+        width: calc(25% - 30px);
+        margin: 15px;
+    }
+    
+    /* Убираем неработающие свойства */
+    .speck-vertical-block,
+    .stat-card,
+    .btn {
+        transition: none !important;
+    }
+    
+    .btn-glow::before,
+    .stat-card::before,
+    .cta-improved::after {
+        display: none;
+    }
+    
+    /* Фолбэк для backdrop-filter */
+    .main-header,
+    .stat-card,
+    .speck-vertical-block {
+        background: rgba(15, 20, 35, 0.95) !important;
+    }
+}
+
+/* ===== SAFARI SPECIFIC FIXES ===== */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    /* Safari 10.1+ */
+    .speck-block-number::after,
+    .clients-label::after,
+    .brand::after {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    
+    /* Исправление для flexbox gap в Safari */
+    @supports not (gap: 10px) {
+        .hero-actions {
+            margin: -12.5px;
+        }
+        
+        .hero-actions .btn {
+            margin: 12.5px;
+        }
+        
+        .speck-vertical-grid {
+            margin: -30px 0;
+        }
+        
+        .speck-vertical-block {
+            margin: 30px 0;
+        }
+        
+        .stats-grid-improved {
+            margin: -20px;
+        }
+        
+        .stat-card {
+            margin: 20px;
+        }
+    }
+}
+
+/* ===== FIREFOX SPECIFIC FIXES ===== */
+@-moz-document url-prefix() {
+    /* Firefox */
+    .speck-block-number::after,
+    .clients-label::after,
+    .brand::after {
+        -moz-transform: translateZ(0);
+    }
+    
+    /* Исправление для backdrop-filter в Firefox */
+    .main-header,
+    .stat-card {
+        background: rgba(15, 20, 35, 0.95);
+    }
+        }
