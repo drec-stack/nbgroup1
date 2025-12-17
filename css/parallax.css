@@ -54,25 +54,6 @@
     background-image: url('../assets/images/parallax/bg-4.jpg'); 
 }
 
-/* Overlay для лучшей читаемости текста */
-.parallax-layer::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.2) 0%,
-        rgba(0, 0, 0, 0.1) 30%,
-        rgba(0, 0, 0, 0) 50%,
-        rgba(0, 0, 0, 0.1) 70%,
-        rgba(0, 0, 0, 0.2) 100%
-    );
-    pointer-events: none;
-}
-
 /* Hero Section с параллаксом */
 .parallax-hero {
     height: 100vh;
@@ -448,13 +429,9 @@
     background: rgba(0, 0, 0, 0.5) !important;
 }
 
-.no-backdropfilter .parallax-layer::after {
-    background: rgba(0, 0, 0, 0.3) !important;
-}
-
 /* Firefox специфичные правки */
 @-moz-document url-prefix() {
     .parallax-bg {
         background-attachment: scroll;
     }
-}
+        }
