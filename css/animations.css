@@ -1252,16 +1252,8 @@
     animation: titlePulse 0.5s ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .speck-vertical-block.scroll-animated,
-    .speck-feature-column.stagger-animate,
-    .speck-feature-item:hover .speck-feature-icon,
-    .speck-feature-column:hover .speck-column-title {
-        animation: none !important;
-    }
-}
+/* ===== ENHANCED SPECK BLOCK ANIMATIONS (как на speckdesign.com) ===== */
 
-/* ===== ENHANCED SPECK BLOCK ANIMATIONS ===== */
 /* УЛУЧШЕННЫЕ АНИМАЦИИ ДЛЯ ЦИФР */
 @keyframes speckNumberAppear {
     0% {
@@ -1280,18 +1272,21 @@
 
 @keyframes speckNumberGlow {
     0%, 100% {
-        text-shadow: 0 0 15px rgba(0, 102, 255, 0.4),
-                     0 0 30px rgba(0, 102, 255, 0.2);
+        text-shadow: 
+            0 0 15px rgba(0, 102, 255, 0.4),
+            0 0 30px rgba(0, 102, 255, 0.2);
     }
     50% {
-        text-shadow: 0 0 25px rgba(0, 102, 255, 0.8),
-                     0 0 50px rgba(0, 102, 255, 0.4);
+        text-shadow: 
+            0 0 25px rgba(0, 102, 255, 0.8),
+            0 0 50px rgba(0, 102, 255, 0.4);
     }
 }
 
 .speck-block-number.animate-in {
-    animation: speckNumberAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
-               speckNumberGlow 3s ease-in-out infinite 0.8s;
+    animation: 
+        speckNumberAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+        speckNumberGlow 3s ease-in-out infinite 0.8s;
 }
 
 @keyframes speckTitleAppear {
@@ -1327,7 +1322,11 @@
 @keyframes speckFeatureItemAppear {
     0% {
         opacity: 0;
-        transform: translateX(-10px);
+        transform: translateX(-20px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateX(5px);
     }
     100% {
         opacity: 1;
@@ -1359,11 +1358,12 @@
     content: '';
     position: absolute;
     top: 0;
-    left: -2px;
-    width: 2px;
+    left: -3px;
+    width: 3px;
     height: 100%;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.2);
     animation: speckBorderAppear 1s ease forwards;
+    border-radius: 2px;
 }
 
 @keyframes speckDividerAppear {
@@ -1372,7 +1372,7 @@
         opacity: 0;
     }
     100% {
-        width: calc(100% - 280px);
+        width: calc(100% - 320px);
         opacity: 1;
     }
 }
@@ -1383,14 +1383,17 @@
 
 @keyframes speckColumnHover {
     0% {
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
+        box-shadow: 
+            0 5px 15px rgba(0, 0, 0, 0.1),
+            0 2px 8px rgba(0, 102, 255, 0.05);
     }
     100% {
+        transform: translateY(-15px) scale(1.02);
         box-shadow: 
-            0 20px 40px rgba(0, 0, 0, 0.3),
-            0 10px 20px rgba(0, 102, 255, 0.1);
-        transform: translateY(-8px);
+            0 30px 60px rgba(0, 0, 0, 0.4),
+            0 15px 30px rgba(0, 102, 255, 0.2),
+            0 0 40px rgba(0, 102, 255, 0.1);
     }
 }
 
@@ -1403,7 +1406,7 @@
         width: 0;
     }
     100% {
-        width: 80px;
+        width: 120px;
     }
 }
 
@@ -1416,7 +1419,7 @@
         transform: translateX(0);
     }
     50% {
-        transform: translateX(3px);
+        transform: translateX(5px);
     }
 }
 
@@ -1427,7 +1430,11 @@
 @keyframes speckBlockReveal {
     0% {
         opacity: 0;
-        transform: translateY(60px);
+        transform: translateY(80px);
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(-10px);
     }
     100% {
         opacity: 1;
@@ -1454,6 +1461,343 @@
     animation: speckBackgroundGlow 3s infinite;
 }
 
+@keyframes speckBlockClick {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.99);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.speck-vertical-block.block-clicked {
+    animation: speckBlockClick 0.5s ease;
+}
+
+/* Анимация для заголовков колонок */
+@keyframes speckColumnTitleHover {
+    0% {
+        transform: translateX(0);
+        color: inherit;
+    }
+    100% {
+        transform: translateX(10px);
+        color: #ffffff;
+    }
+}
+
+.speck-feature-column:hover .speck-column-title {
+    animation: speckColumnTitleHover 0.3s ease forwards;
+}
+
+/* Анимация для элементов списка при наведении */
+@keyframes speckListItemHover {
+    0% {
+        transform: translateX(0);
+        color: rgba(255, 255, 255, 0.9);
+    }
+    100% {
+        transform: translateX(15px);
+        color: #ffffff;
+    }
+}
+
+.speck-feature-item:hover {
+    animation: speckListItemHover 0.3s ease forwards;
+}
+
+/* Анимация для иконок при наведении */
+@keyframes speckIconHover {
+    0% {
+        transform: translateX(0) scale(1);
+        color: #0066ff;
+    }
+    100% {
+        transform: translateX(8px) scale(1.2);
+        color: #66b5ff;
+    }
+}
+
+.speck-feature-item:hover .speck-feature-icon {
+    animation: speckIconHover 0.3s ease forwards;
+}
+
+/* Плавная анимация появления цифры линии */
+.speck-block-number {
+    --line-width: 80px;
+    position: relative;
+}
+
+.speck-block-number::after {
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    width: var(--line-width);
+}
+
+.speck-vertical-block:hover .speck-block-number {
+    --line-width: 150px;
+}
+
+/* Анимация для видимого состояния */
+.speck-vertical-block.visible {
+    animation: speckBlockFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes speckBlockFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация для колонок при появлении */
+.speck-feature-column.scroll-animated {
+    animation: speckColumnStagger 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes speckColumnStagger {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Анимация для статистики */
+@keyframes statCardReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.stat-card.animate-in {
+    animation: statCardReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Анимация для CTA секции */
+@keyframes ctaPulseGlow {
+    0%, 100% {
+        box-shadow: 
+            0 15px 35px rgba(0, 102, 255, 0.4),
+            0 5px 15px rgba(0, 102, 255, 0.2);
+    }
+    50% {
+        box-shadow: 
+            0 20px 45px rgba(0, 102, 255, 0.6),
+            0 8px 25px rgba(0, 102, 255, 0.3),
+            0 0 80px rgba(0, 102, 255, 0.1);
+    }
+}
+
+.cta-improved.animate-glow {
+    animation: ctaPulseGlow 3s ease-in-out infinite;
+}
+
+/* Анимация для героя при загрузке */
+@keyframes heroContentReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero .parallax-content > * {
+    animation: heroContentReveal 0.8s ease forwards;
+}
+
+.hero h1 { animation-delay: 0.2s; }
+.hero-subtitle { animation-delay: 0.4s; }
+.hero-description { animation-delay: 0.6s; }
+.hero-actions { animation-delay: 0.8s; }
+
+/* Анимация для бегущей строки при загрузке */
+@keyframes marqueeFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.marquee-container {
+    animation: marqueeFadeIn 1s ease 1s forwards;
+    opacity: 0;
+}
+
+/* Плавная анимация для всего содержимого секции */
+.content-section.animate-section {
+    animation: sectionReveal 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes sectionReveal {
+    from {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация для стек эффекта в цифрах */
+@keyframes stackEffect {
+    0% {
+        transform: translateY(0);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(-5px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 0.8;
+    }
+}
+
+.speck-vertical-block:hover .speck-block-number {
+    animation: 
+        speckNumberGlow 2s infinite,
+        stackEffect 3s ease-in-out infinite;
+}
+
+/* Анимация плавающих элементов */
+@keyframes floatAnimation {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.float-element {
+    animation: floatAnimation 3s ease-in-out infinite;
+}
+
+/* Анимация градиентного фона */
+@keyframes gradientBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.gradient-animate {
+    background: linear-gradient(135deg, #0066ff, #66b5ff, #99ccff, #0066ff);
+    background-size: 400% 400%;
+    animation: gradientBackground 8s ease infinite;
+}
+
+/* Анимация для иконок при загрузке */
+@keyframes iconReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(-180deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+.stat-icon.animate-in {
+    animation: iconReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Плавное появление тени */
+@keyframes shadowReveal {
+    from {
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+    to {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.shadow-animate {
+    animation: shadowReveal 0.8s ease forwards;
+}
+
+/* Анимация волны для разделителей */
+@keyframes waveAnimation {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.wave-effect {
+    animation: waveAnimation 20s linear infinite;
+}
+
+/* Анимация для акцентных элементов */
+@keyframes accentPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.accent-pulse {
+    animation: accentPulse 2s ease-in-out infinite;
+}
+
+/* Анимация для текстовых выделений */
+@keyframes textHighlight {
+    0% {
+        background-position: -100% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.text-highlight {
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(0, 102, 255, 0.2) 25%, 
+        rgba(0, 102, 255, 0.4) 50%, 
+        rgba(0, 102, 255, 0.2) 75%, 
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: textHighlight 3s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .speck-block-number.animate-in,
     .speck-block-title.animate-in,
@@ -1465,8 +1809,28 @@
     .speck-block-subtitle.animate-underline::after,
     .speck-feature-icon.animate-pulse,
     .speck-vertical-block.full-reveal,
-    .speck-vertical-block.glow-animate::after {
+    .speck-vertical-block.glow-animate::after,
+    .speck-vertical-block.block-clicked,
+    .speck-feature-column:hover .speck-column-title,
+    .speck-feature-item:hover,
+    .speck-feature-item:hover .speck-feature-icon,
+    .speck-vertical-block.visible,
+    .speck-feature-column.scroll-animated,
+    .stat-card.animate-in,
+    .cta-improved.animate-glow,
+    .hero .parallax-content > *,
+    .marquee-container,
+    .content-section.animate-section,
+    .speck-vertical-block:hover .speck-block-number,
+    .float-element,
+    .gradient-animate,
+    .stat-icon.animate-in,
+    .shadow-animate,
+    .wave-effect,
+    .accent-pulse,
+    .text-highlight {
         animation: none !important;
+        transition: none !important;
     }
     
     .speck-block-number,
@@ -1475,8 +1839,376 @@
     .speck-feature-item,
     .speck-block-right,
     .speck-vertical-block,
-    .speck-feature-column {
+    .speck-feature-column,
+    .stat-card,
+    .cta-improved,
+    .hero .parallax-content > *,
+    .content-section {
         opacity: 1 !important;
         transform: none !important;
     }
+    
+    .speck-block-number::after {
+        width: 80px !important;
+        transition: none !important;
+    }
+    
+    .hero .parallax-content > *,
+    .marquee-container,
+    .content-section {
+        animation-delay: 0s !important;
+    }
 }
+
+/* Класс для активации всех анимаций Speck */
+.speck-animations-ready .speck-vertical-block,
+.speck-animations-ready .speck-feature-column,
+.speck-animations-ready .speck-feature-item {
+    will-change: transform, opacity;
+}
+
+.speck-animations-loaded .speck-feature-column {
+    animation-play-state: running;
+}
+
+/* Анимации для кнопок с градиентом */
+@keyframes gradientButton {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.btn-gradient {
+    background: linear-gradient(90deg, #0066ff, #66b5ff, #0066ff);
+    background-size: 200% 100%;
+    animation: gradientButton 3s ease infinite;
+}
+
+/* Анимация для ховера кнопок */
+@keyframes buttonHoverWave {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.btn-wave:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent
+    );
+    animation: buttonHoverWave 0.6s ease;
+}
+
+/* Анимация для успешного действия */
+@keyframes successCheckmark {
+    0% {
+        stroke-dashoffset: 100;
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    100% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.success-checkmark {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: successCheckmark 0.8s ease forwards;
+}
+
+/* Анимация для загрузки контента */
+@keyframes contentLoader {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.content-loader {
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.1) 25%, 
+        rgba(255, 255, 255, 0.2) 50%, 
+        rgba(255, 255, 255, 0.1) 75%
+    );
+    background-size: 200px 100%;
+    animation: contentLoader 1.5s ease-in-out infinite;
+}
+
+/* Анимация для фокуса элементов */
+@keyframes focusRing {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(0, 102, 255, 0);
+    }
+    50% {
+        box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.3);
+    }
+}
+
+.focus-ring:focus {
+    animation: focusRing 1.5s ease infinite;
+}
+
+/* Анимация для подсказок */
+@keyframes tooltipFade {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.tooltip-animate {
+    animation: tooltipFade 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Анимация для модальных окон */
+@keyframes modalBackdrop {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalContent {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-backdrop {
+    animation: modalBackdrop 0.3s ease forwards;
+}
+
+.modal-content {
+    animation: modalContent 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Анимация для перехода между страницами */
+@keyframes pageTransitionIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pageTransitionOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.page-transition-in {
+    animation: pageTransitionIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.page-transition-out {
+    animation: pageTransitionOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Анимация для баннеров уведомлений */
+@keyframes notificationSlide {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification-slide {
+    animation: notificationSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Анимация для счетчика */
+@keyframes counterTick {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.counter-tick {
+    animation: counterTick 0.3s ease;
+}
+
+/* Анимация для переключения вкладок */
+@keyframes tabSwitch {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-switch {
+    animation: tabSwitch 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Анимация для аккордеона */
+@keyframes accordionOpen {
+    from {
+        max-height: 0;
+        opacity: 0;
+    }
+    to {
+        max-height: 1000px;
+        opacity: 1;
+    }
+}
+
+.accordion-open {
+    animation: accordionOpen 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    overflow: hidden;
+}
+
+/* Анимация для слайдера */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Анимация для звездного рейтинга */
+@keyframes starRating {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.star-rating {
+    animation: starRating 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Анимация для хлебных крошек */
+@keyframes breadcrumbReveal {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.breadcrumb-item {
+    animation: breadcrumbReveal 0.4s ease forwards;
+}
+
+/* Анимация для прогресс-бара */
+@keyframes progressFill {
+    from {
+        width: 0;
+    }
+    to {
+        width: var(--progress-width, 100%);
+    }
+}
+
+.progress-fill {
+    animation: progressFill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Финальная анимация для завершения загрузки */
+@keyframes finishLoading {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+        visibility: hidden;
+    }
+}
+
+.finish-loading {
+    animation: finishLoading 0.5s ease forwards;
+    }
