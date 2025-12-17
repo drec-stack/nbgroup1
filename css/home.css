@@ -430,16 +430,65 @@ header, footer, section, nav {
     margin-bottom: 20px;
 }
 
+/* УВЕЛИЧЕННЫЕ И БОЛЕЕ ВИДНЫЕ ЦИФРЫ */
 .speck-block-number {
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: 1.4rem;
+    font-weight: 800;
     color: #0066ff;
-    margin-bottom: 25px;
-    letter-spacing: 4px;
+    margin-bottom: 30px;
+    letter-spacing: 5px;
     text-transform: uppercase;
     position: relative;
     display: inline-block;
-    padding-bottom: 15px;
+    padding-bottom: 20px;
+    line-height: 1;
+    text-shadow: 0 0 15px rgba(0, 102, 255, 0.4);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(135deg, #0066ff 0%, #66b5ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Фолбэк для браузеров без поддержки градиентов текста */
+.no-cssgradients .speck-block-number {
+    background: none;
+    -webkit-text-fill-color: #0066ff;
+    color: #0066ff;
+}
+
+/* Бэкграунд для цифр для лучшей видимости */
+.speck-block-number::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -15px;
+    right: -15px;
+    bottom: -10px;
+    background: rgba(0, 102, 255, 0.05);
+    border-radius: 8px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.speck-vertical-block:hover .speck-block-number::before {
+    opacity: 1;
+}
+
+/* Анимация пульсации для цифр */
+@keyframes speckNumberPulse {
+    0%, 100% {
+        text-shadow: 0 0 15px rgba(0, 102, 255, 0.4);
+    }
+    50% {
+        text-shadow: 0 0 25px rgba(0, 102, 255, 0.8);
+    }
+}
+
+.speck-vertical-block:hover .speck-block-number {
+    animation: speckNumberPulse 2s infinite;
 }
 
 .speck-block-number::after {
@@ -447,16 +496,17 @@ header, footer, section, nav {
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 50px;
-    height: 3px;
+    width: 60px;
+    height: 4px;
     background: #0066ff;
+    box-shadow: 0 0 10px rgba(0, 102, 255, 0.5);
     -webkit-transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     -o-transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .speck-vertical-block:hover .speck-block-number::after {
-    width: 80px;
+    width: 100px;
 }
 
 .speck-block-title {
@@ -1681,6 +1731,24 @@ header, footer, section, nav {
         margin-bottom: 20px;
     }
     
+    /* Делаем цифры еще больше на больших экранах */
+    @media (min-width: 1200px) {
+        .speck-block-number {
+            font-size: 1.6rem;
+            letter-spacing: 6px;
+            margin-bottom: 35px;
+        }
+        
+        .speck-block-number::after {
+            width: 70px;
+            height: 5px;
+        }
+        
+        .speck-vertical-block:hover .speck-block-number::after {
+            width: 120px;
+        }
+    }
+    
     /* Адаптивность для старых браузеров без CSS Grid */
     .no-cssgrid .stat-card {
         width: calc(50% - 40px);
@@ -1781,6 +1849,23 @@ header, footer, section, nav {
     .speck-feature-column .speck-feature-item {
         margin-bottom: 20px;
         font-size: 1.1rem;
+    }
+    
+    /* Адаптация цифр для средних экранов */
+    .speck-block-number {
+        font-size: 1.3rem;
+        letter-spacing: 4px;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+    }
+    
+    .speck-block-number::after {
+        width: 50px;
+        height: 3px;
+    }
+    
+    .speck-vertical-block:hover .speck-block-number::after {
+        width: 80px;
     }
     
     /* Для очень старых браузеров */
@@ -1914,6 +1999,25 @@ header, footer, section, nav {
         left: -15px;
         right: -15px;
         bottom: -15px;
+    }
+    
+    /* Адаптация цифр для мобильных */
+    .speck-block-number {
+        font-size: 1.2rem;
+        letter-spacing: 3px;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        text-align: left;
+    }
+    
+    .speck-block-number::after {
+        left: 0;
+        right: auto;
+        width: 40px;
+    }
+    
+    .speck-vertical-block:hover .speck-block-number::after {
+        width: 60px;
     }
     
     /* Адаптивность для старых браузеров без CSS Grid */
@@ -2229,6 +2333,10 @@ header, footer, section, nav {
         -webkit-transform: none;
         -ms-transform: none;
         transform: none;
+    }
+    
+    .speck-vertical-block:hover .speck-block-number {
+        animation: none !important;
     }
 }
 
@@ -2939,4 +3047,4 @@ html {
             transform: scale(1.02);
         }
     }
-}
+    }
