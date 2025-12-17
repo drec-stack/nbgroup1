@@ -3,260 +3,513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="home.title">NBGROUP.TECH | Industrial Design & Manufacturing</title>
+    <title>NBGROUP.TECH | Industrial Design & Manufacturing</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
-    <script src="https://cdn.jsdelivr.net/gh/dixonandmoe/rellax@master/rellax.min.js"></script>
+    
     <style>
-        /* ГАРАНТИРОВАННЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ */
-        .marquee-container {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 10px;
+        /* ОСНОВНЫЕ СТИЛИ БЕЗ ПАРАЛЛАКСА */
+        body {
+            background: linear-gradient(135deg, #0a0a14 0%, #1a1a2e 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
-
-        .marquee-track {
-            display: flex !important;
-            width: max-content !important;
-            padding: 25px 0 !important;
-            white-space: nowrap !important;
-            will-change: transform !important;
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-
-        .marquee-content {
-            display: flex !important;
-            align-items: center !important;
-            white-space: nowrap !important;
-            flex-shrink: 0 !important;
-        }
-
-        .brand {
-            font-size: 1.4rem !important;
-            font-weight: 700 !important;
-            color: white !important;
-            opacity: 0.8 !important;
-            padding: 0 30px !important;
-            white-space: nowrap !important;
-            flex-shrink: 0 !important;
-        }
-
-        .separator {
-            color: white !important;
-            font-size: 1.5rem !important;
-            opacity: 0.3 !important;
-            font-weight: 300 !important;
-            flex-shrink: 0 !important;
-        }
-
-        /* АНИМАЦИИ */
-        #marquee1 {
-            animation: marquee-scroll 40s linear infinite !important;
-        }
-
-        #marquee2 {
-            animation: marquee-scroll-reverse 40s linear infinite !important;
-        }
-
-        @keyframes marquee-scroll {
-            0% { transform: translateX(0) !important; }
-            100% { transform: translateX(-33.33%) !important; }
-        }
-
-        @keyframes marquee-scroll-reverse {
-            0% { transform: translateX(-33.33%) !important; }
-            100% { transform: translateX(0) !important; }
-        }
-
-        .marquee-track:hover {
-            animation-play-state: paused !important;
-        }
-
-        /* Стили для переключения языка */
-        .language-changing [data-i18n] {
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        @keyframes fadeInLanguage {
-            from {
-                opacity: 0.7;
-                transform: translateY(5px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Language switcher styles */
-        .language-switcher {
-            display: flex;
-            gap: 5px;
-            margin-right: 20px;
-        }
-
-        .lang-btn {
-            background: transparent;
+        
+        /* HEADER */
+        .main-header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1400px;
+            background: rgba(0, 102, 255, 0.15);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.7);
-            padding: 4px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            min-width: 40px;
-            text-align: center;
+            border-radius: 15px;
+            padding: 15px 30px;
+            z-index: 1000;
         }
-
-        .lang-btn:hover {
+        
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0066ff, #00aaff);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            color: white;
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 140px 0 60px;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero h1 span {
+            display: block;
+        }
+        
+        .hero h1 span:nth-child(2) {
+            font-size: 3rem;
+            opacity: 0.9;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin: 0 0 30px 0;
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 800px;
+            margin: 0 0 40px 0;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
+            color: white;
+            border: none;
+        }
+        
+        .btn-secondary {
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            border-color: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
-
-        .lang-btn.active {
-            background: rgba(255, 255, 255, 0.15);
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* SPECK DESIGN BLOCKS */
+        .speck-vertical-section {
+            padding: 100px 0;
+        }
+        
+        .speck-vertical-block {
+            background: rgba(20, 20, 40, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 60px;
+            margin: 50px 0;
+        }
+        
+        .speck-block-inner {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+        
+        .speck-block-content {
+            flex: 1;
+        }
+        
+        .speck-block-number {
+            font-size: 1rem;
+            color: #0066ff;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+        
+        .speck-block-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 0 0 15px 0;
             color: white;
-            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .speck-block-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0 0 25px 0;
+        }
+        
+        .speck-block-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            margin: 0 0 30px 0;
+        }
+        
+        .speck-feature-list {
+            margin: 0 0 40px 0;
+        }
+        
+        .speck-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .speck-feature-icon {
+            color: #0066ff;
+            font-weight: bold;
+        }
+        
+        .speck-block-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
             font-weight: 600;
         }
         
-        /* Параллакс индикаторы */
-        .parallax-indicators {
-            position: fixed;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
+        .speck-block-visual {
+            flex: 1;
+            height: 400px;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.05) 0%, 
+                rgba(255, 255, 255, 0.02) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            align-items: center;
+            justify-content: center;
         }
         
-        .parallax-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .speck-visual-placeholder i {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.15);
         }
         
-        .parallax-indicator.active {
-            background: white;
-            transform: scale(1.3);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        /* CLIENTS SECTION */
+        .clients-section {
+            padding: 100px 0;
         }
         
-        .parallax-indicator:hover {
-            transform: scale(1.2);
-            background: rgba(255, 255, 255, 0.4);
+        .clients-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        
+        .marquee-container {
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .marquee-track {
+            display: flex;
+            animation: marquee-scroll 40s linear infinite;
+            width: max-content;
+        }
+        
+        .marquee-content {
+            display: flex;
+            align-items: center;
+        }
+        
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            padding: 0 40px;
+            text-decoration: none;
+        }
+        
+        .separator {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.8rem;
+        }
+        
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-33.33%); }
+        }
+        
+        /* STATS SECTION */
+        .stats-improved {
+            padding: 100px 0;
+        }
+        
+        .stats-grid-improved {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #0066ff;
+        }
+        
+        .stat-number-improved {
+            font-size: 4rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label-improved {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+        
+        /* CTA SECTION */
+        .cta-improved {
+            padding: 100px 0;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .cta-content-improved {
+            background: linear-gradient(135deg, 
+                rgba(0, 102, 255, 0.2) 0%, 
+                rgba(0, 170, 255, 0.2) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 80px;
+            text-align: center;
+        }
+        
+        .cta-text h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .cta-text p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+        }
+        
+        .btn-large {
+            padding: 20px 40px;
+            font-size: 1.2rem;
+        }
+        
+        /* FOOTER */
+        .minimal-footer {
+            padding: 50px 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .speck-block-inner {
+                flex-direction: column;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero h1 span:nth-child(2) {
+                font-size: 2.5rem;
+            }
+            
+            .speck-block-title {
+                font-size: 2.8rem;
+            }
+            
+            .main-nav {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .speck-vertical-block {
+                padding: 40px;
+            }
+            
+            .stats-grid-improved {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-content-improved {
+                padding: 40px;
+            }
+            
+            .cta-text h2 {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
-<body class="home-page">
-    <!-- PARALLAX BACKGROUNDS (4 фона как на speckdesign.com) -->
-    <div class="parallax-bg-container">
-        <!-- Слои фонов как на speckdesign.com -->
-        <div class="parallax-layer layer-1 active">
-            <div class="parallax-bg" id="parallax-bg-1"></div>
-        </div>
-        <div class="parallax-layer layer-2">
-            <div class="parallax-bg" id="parallax-bg-2"></div>
-        </div>
-        <div class="parallax-layer layer-3">
-            <div class="parallax-bg" id="parallax-bg-3"></div>
-        </div>
-        <div class="parallax-layer layer-4">
-            <div class="parallax-bg" id="parallax-bg-4"></div>
-        </div>
-    </div>
-
-    <!-- Индикаторы параллакса -->
-    <div class="parallax-indicators">
-        <div class="parallax-indicator active" data-layer="1"></div>
-        <div class="parallax-indicator" data-layer="2"></div>
-        <div class="parallax-indicator" data-layer="3"></div>
-        <div class="parallax-indicator" data-layer="4"></div>
-    </div>
-
-    <!-- SCROLL PROGRESS BAR -->
-    <div class="scroll-progress">
-        <div class="scroll-progress-bar"></div>
-    </div>
-
-    <!-- Header Component -->
-    <div id="header-container"></div>
-
-    <!-- Hero Section -->
-    <section class="hero parallax-hero" data-layer="1">
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
         <div class="container">
-            <div class="parallax-content">
-                <!-- ЗАГОЛОВОК с data-i18n -->
-                <h1>
-                    <span data-i18n="home.hero.titleLine1">NB GROUP TECH</span><br>
-                    <span data-i18n="home.hero.subtitle">Industrial Design & Manufacturing</span>
-                </h1>
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <div class="logo-mark">NB</div>
+                    <span class="logo-text">NBGROUP.TECH</span>
+                </a>
                 
-                <!-- ПОДЗАГОЛОВОК с data-i18n -->
-                <p class="hero-subtitle" data-i18n="home.subtitle">Промышленная дизайн-студия полного цикла</p>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link active">Главная</a>
+                    <a href="services.html" class="nav-link">Услуги</a>
+                    <a href="portfolio.html" class="nav-link">Работы</a>
+                    <a href="brandbook.html" class="nav-link">Брендбук</a>
+                    <a href="about.html" class="nav-link">О нас</a>
+                    <a href="contacts.html" class="nav-link">Контакты</a>
+                </nav>
                 
-                <!-- ОПИСАНИЕ с data-i18n -->
-                <div class="hero-description">
-                    <p data-i18n="home.hero.description">
-                        Промышленная дизайн-студия полного цикла. Создаём продукты, которые сочетают эстетику, инженерную точность и производимую реализацию. Работаем системно: дизайн → инженерия → прототип → производство → упаковка → бренд-система. Наш подход основан на прозрачности, точности и ответственности за результат.
-                    </p>
-                </div>
-                
-                <div class="hero-actions">
-                    <a href="services.html" class="btn btn-primary">
-                        <span data-i18n="home.hero.ourServices">Наши Услуги</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="portfolio.html" class="btn btn-secondary">
-                        <span data-i18n="home.hero.viewWork">Смотреть Работы</span>
-                    </a>
+                <div class="header-actions">
+                    <a href="contacts.html" class="btn btn-primary">Начать проект</a>
                 </div>
             </div>
         </div>
-        <div class="parallax-scroll-indicator">
-            <div class="scroll-arrow"></div>
-            <span data-i18n="home.parallax.scrollHint">Прокрутите для просмотра</span>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <h1>
+                <span>NB GROUP TECH</span>
+                <span>Industrial Design & Manufacturing</span>
+            </h1>
+            
+            <p class="hero-subtitle">Промышленная дизайн-студия полного цикла</p>
+            
+            <div class="hero-description">
+                <p>Промышленная дизайн-студия полного цикла. Создаём продукты, которые сочетают эстетику, инженерную точность и производимую реализацию. Работаем системно: дизайн → инженерия → прототип → производство → упаковка → бренд-система.</p>
+            </div>
+            
+            <div class="hero-actions">
+                <a href="services.html" class="btn btn-primary">
+                    <span>Наши Услуги</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="portfolio.html" class="btn btn-secondary">
+                    <span>Смотреть Работы</span>
+                </a>
+            </div>
         </div>
     </section>
 
-    <!-- Speck Design Vertical Blocks -->
-    <section class="speck-vertical-section" data-layer="2">
-        <div class="speck-parallax-bg">
-            <!-- Фоновые цифры с параллаксом -->
-            <div class="speck-bg-number speck-bg-1" data-rellax-speed="0.5">01</div>
-            <div class="speck-bg-number speck-bg-2" data-rellax-speed="0.3">02</div>
-            <div class="speck-bg-number speck-bg-3" data-rellax-speed="0.4">03</div>
-            <div class="speck-bg-number speck-bg-4" data-rellax-speed="0.6">04</div>
-            
-            <!-- Фоновые абстрактные формы -->
-            <div class="speck-shape shape-1" data-rellax-speed="0.2"></div>
-            <div class="speck-shape shape-2" data-rellax-speed="0.1"></div>
-            <div class="speck-shape shape-3" data-rellax-speed="0.3"></div>
-        </div>
-
-        <!-- Блок 1: Strategy -->
-        <div class="speck-vertical-block" data-block-index="0">
-            <div class="container">
+    <!-- SPECK DESIGN BLOCKS -->
+    <section class="speck-vertical-section">
+        <div class="container">
+            <!-- BLOCK 1 -->
+            <div class="speck-vertical-block">
                 <div class="speck-block-inner">
                     <div class="speck-block-content">
                         <div class="speck-block-number">01</div>
                         <h3 class="speck-block-title">Strategy</h3>
                         <p class="speck-block-subtitle">Drive Innovation And Align Goals</p>
                         <p class="speck-block-description">
-                            We are Speck Design, an award-winning product design firm. Our principle is that Great industrial designs form a bond between the user and the product. It should be smooth at every touchpoint.
+                            We are Speck Design, an award-winning product design firm. Our principle is that Great industrial designs form a bond between the user and the product.
                         </p>
                         <div class="speck-feature-list">
                             <div class="speck-feature-item">
@@ -284,18 +537,21 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Блок 2: Design -->
-        <div class="speck-vertical-block" data-block-index="1">
-            <div class="container">
-                <div class="speck-block-inner alternate">
+            <!-- BLOCK 2 -->
+            <div class="speck-vertical-block">
+                <div class="speck-block-inner">
+                    <div class="speck-block-visual">
+                        <div class="speck-visual-placeholder">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                    </div>
                     <div class="speck-block-content">
                         <div class="speck-block-number">02</div>
                         <h3 class="speck-block-title">Design</h3>
                         <p class="speck-block-subtitle">Engage Audiences With Product Design</p>
                         <p class="speck-block-description">
-                            The digital age has transformed our world. Today, every product needs both digital and physical forms. More companies now partner with UX design agencies to meet this demand.
+                            The digital age has transformed our world. Today, every product needs both digital and physical forms.
                         </p>
                         <div class="speck-feature-list">
                             <div class="speck-feature-item">
@@ -316,25 +572,18 @@
                             <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
-                    <div class="speck-block-visual">
-                        <div class="speck-visual-placeholder">
-                            <i class="fas fa-palette"></i>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Блок 3: Hardware -->
-        <div class="speck-vertical-block" data-block-index="2">
-            <div class="container">
+            <!-- BLOCK 3 -->
+            <div class="speck-vertical-block">
                 <div class="speck-block-inner">
                     <div class="speck-block-content">
                         <div class="speck-block-number">03</div>
                         <h3 class="speck-block-title">Hardware</h3>
                         <p class="speck-block-subtitle">Engineer Robust And Reliable Hardware</p>
                         <p class="speck-block-description">
-                            Speck Design is a globally awarded and top-ranked product engineering and industrial design firm. They provide comprehensive and unique product engineering solutions.
+                            Speck Design is a globally awarded and top-ranked product engineering and industrial design firm.
                         </p>
                         <div class="speck-feature-list">
                             <div class="speck-feature-item">
@@ -350,7 +599,7 @@
                                 <span class="speck-feature-text">User-centered design approach</span>
                             </div>
                         </div>
-                        <a href="services.html#hardware" class="speck-block-cta">
+                        <a href="services.html" class="speck-block-cta">
                             <span>Our Process</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -362,18 +611,21 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Блок 4: Software -->
-        <div class="speck-vertical-block" data-block-index="3">
-            <div class="container">
-                <div class="speck-block-inner alternate">
+            <!-- BLOCK 4 -->
+            <div class="speck-vertical-block">
+                <div class="speck-block-inner">
+                    <div class="speck-block-visual">
+                        <div class="speck-visual-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                    </div>
                     <div class="speck-block-content">
                         <div class="speck-block-number">04</div>
                         <h3 class="speck-block-title">Software</h3>
                         <p class="speck-block-subtitle">Create Seamless, Scalable Software Solutions</p>
                         <p class="speck-block-description">
-                            A product's journey doesn't conclude with its design—it merely takes off. Speck Design offers robust product fulfillment services, transitioning designs into production with high-quality delivery.
+                            A product's journey doesn't conclude with its design—it merely takes off.
                         </p>
                         <div class="speck-feature-list">
                             <div class="speck-feature-item">
@@ -389,141 +641,58 @@
                                 <span class="speck-feature-text">Product fulfillment</span>
                             </div>
                         </div>
-                        <a href="services.html#software" class="speck-block-cta">
+                        <a href="services.html" class="speck-block-cta">
                             <span>Get Started</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
-                    <div class="speck-block-visual">
-                        <div class="speck-visual-placeholder">
-                            <i class="fas fa-code"></i>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Clients Section -->
-    <section class="clients-section content-section" data-layer="3">
+    <!-- CLIENTS SECTION -->
+    <section class="clients-section">
         <div class="container">
             <div class="clients-content">
-                <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
+                <p class="clients-label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
                 
                 <!-- Marquee 1 -->
                 <div class="marquee-container">
-                    <div class="marquee-track" id="marquee1">
+                    <div class="marquee-track">
                         <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
+                            <a href="portfolio.html" class="brand">dtronic</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
+                            <a href="portfolio.html" class="brand">BRITA</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
+                            <a href="portfolio.html" class="brand">Roku</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
+                            <a href="portfolio.html" class="brand">stryker</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
+                            <a href="portfolio.html" class="brand">Vocera V.</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
+                            <a href="portfolio.html" class="brand">PayPal</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
+                            <a href="portfolio.html" class="brand">Microsoft</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
+                            <a href="portfolio.html" class="brand">AC</a>
                         </div>
-                        <!-- ВТОРАЯ КОПИЯ -->
                         <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
+                            <a href="portfolio.html" class="brand">dtronic</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
+                            <a href="portfolio.html" class="brand">BRITA</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
+                            <a href="portfolio.html" class="brand">Roku</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
+                            <a href="portfolio.html" class="brand">stryker</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
+                            <a href="portfolio.html" class="brand">Vocera V.</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
+                            <a href="portfolio.html" class="brand">PayPal</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
+                            <a href="portfolio.html" class="brand">Microsoft</a>
                             <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                        </div>
-                        <!-- ТРЕТЬЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Marquee 2 (Reverse) -->
-                <div class="marquee-container">
-                    <div class="marquee-track" id="marquee2">
-                        <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
-                        </div>
-                        <!-- ВТОРАЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
-                        </div>
-                        <!-- ТРЕТЬЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
+                            <a href="portfolio.html" class="brand">AC</a>
                         </div>
                     </div>
                 </div>
@@ -531,68 +700,64 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats-improved content-section" data-layer="4">
+    <!-- STATS SECTION -->
+    <section class="stats-improved">
         <div class="container">
             <div class="stats-grid-improved">
-                <!-- Проекты завершено -->
-                <a href="portfolio.html" class="stat-card clickable-stat-card">
+                <a href="portfolio.html" class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-rocket"></i>
                     </div>
                     <div class="stat-content">
-                        <div class="stat-number-improved" data-target="150">0</div>
-                        <div class="stat-label-improved" data-i18n="home.stats.projects">Проектов завершено</div>
+                        <div class="stat-number-improved">150</div>
+                        <div class="stat-label-improved">Проектов завершено</div>
                     </div>
                 </a>
                 
-                <!-- Лет опыта -->
-                <a href="about.html" class="stat-card clickable-stat-card">
+                <a href="about.html" class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-calendar-alt"></i>
                     </div>
                     <div class="stat-content">
-                        <div class="stat-number-improved" data-target="12">0</div>
-                        <div class="stat-label-improved" data-i18n="home.stats.years">Лет опыта</div>
+                        <div class="stat-number-improved">12</div>
+                        <div class="stat-label-improved">Лет опыта</div>
                     </div>
                 </a>
                 
-                <!-- Довольных клиентов -->
-                <a href="about.html#clients" class="stat-card clickable-stat-card">
+                <a href="about.html" class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-heart"></i>
                     </div>
                     <div class="stat-content">
-                        <div class="stat-number-improved" data-target="98">0</div>
-                        <div class="stat-label-improved" data-i18n="home.stats.satisfaction">Довольных клиентов</div>
+                        <div class="stat-number-improved">98</div>
+                        <div class="stat-label-improved">Довольных клиентов</div>
                     </div>
                 </a>
                 
-                <!-- Наград -->
-                <a href="about.html#awards" class="stat-card clickable-stat-card">
+                <a href="about.html" class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-trophy"></i>
                     </div>
                     <div class="stat-content">
-                        <div class="stat-number-improved" data-target="25">0</div>
-                        <div class="stat-label-improved" data-i18n="home.stats.awards">Наград</div>
+                        <div class="stat-number-improved">25</div>
+                        <div class="stat-label-improved">Наград</div>
                     </div>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <a href="contacts.html" class="cta-improved content-section clickable-cta">
+    <!-- CTA SECTION -->
+    <a href="contacts.html" class="cta-improved">
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
-                    <h2 data-i18n="home.cta.title">Готовы начать проект?</h2>
-                    <p data-i18n="home.cta.description">Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
+                    <h2>Готовы начать проект?</h2>
+                    <p>Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
                 </div>
                 <div class="cta-action">
-                    <div class="btn btn-primary btn-large btn-glow">
-                        <span data-i18n="home.cta.button">Связаться с нами</span>
+                    <div class="btn btn-primary btn-large">
+                        <span>Связаться с нами</span>
                         <i class="fas fa-arrow-right"></i>
                     </div>
                 </div>
@@ -600,260 +765,42 @@
         </div>
     </a>
 
-    <!-- Footer Container -->
-    <div id="footer-container"></div>
+    <!-- FOOTER -->
+    <footer class="minimal-footer">
+        <div class="container">
+            <div class="copyright">© 2024 NBGROUP.TECH Все права защищены.</div>
+        </div>
+    </footer>
 
-    <!-- JavaScript -->
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/home.js"></script>
-    <script src="js/parallax.js"></script>
-
+    <!-- SCRIPTS -->
     <script>
-        // Проверка состояния i18n
-        console.log('📄 Page loading, initializing...');
-        
-        // Принудительное обновление переводов после загрузки
-        function applyTranslationsForce() {
-            setTimeout(() => {
-                if (window.i18n && window.i18n.refresh) {
-                    const count = window.i18n.refresh();
-                    console.log(`✅ Force applied ${count} translations`);
-                }
-            }, 1000);
-            
-            // Еще одна попытка через 3 секунды
-            setTimeout(() => {
-                if (window.i18n && window.i18n.refresh) {
-                    window.i18n.refresh();
-                }
-            }, 3000);
-        }
-        
-        // Проверка бегущей строки
-        function checkMarquee() {
-            console.log('🔍 Проверка бегущей строки...');
-            const track1 = document.getElementById('marquee1');
-            const track2 = document.getElementById('marquee2');
-            
-            if (track1 && track2) {
-                console.log('✅ Треки найдены');
-                
-                // Принудительно запускаем CSS анимации
-                track1.style.animation = 'marquee-scroll 40s linear infinite';
-                track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
-                
-                console.log('🚀 Бегущая строка запущена через CSS');
-            }
-        }
-        
-        // Load header component
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-container').innerHTML = html;
-                
-                // Инициализировать хедер
-                if (typeof initHeader === 'function') initHeader();
-                initHomeHeader();
-                
-                // Применить переводы к хедеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 500);
-            })
-            .catch(error => {
-                console.error('Error loading header:', error);
-                // Fallback header
-                document.getElementById('header-container').innerHTML = `
-                    <header class="main-header">
-                        <div class="container">
-                            <div class="header-inner">
-                                <a href="index.html" class="logo">
-                                    <div class="logo-mark">NB</div>
-                                    <span class="logo-text">NBGROUP.TECH</span>
-                                </a>
-                                <nav class="main-nav">
-                                    <a href="index.html" class="nav-link active" data-i18n="nav.home">Home</a>
-                                    <a href="services.html" class="nav-link" data-i18n="nav.services">Services</a>
-                                    <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Work</a>
-                                    <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Brandbook</a>
-                                    <a href="about.html" class="nav-link" data-i18n="nav.about">About</a>
-                                    <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Contact</a>
-                                </nav>
-                                <div class="header-actions">
-                                    <div class="language-switcher" data-current-lang="ru">
-                                        <button class="lang-btn" data-lang="ru">RU</button>
-                                        <button class="lang-btn" data-lang="en">EN</button>
-                                    </div>
-                                    <a href="contacts.html" class="btn btn-small btn-primary">
-                                        <span data-i18n="nav.startProject">Start Project</span>
-                                    </a>
-                                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mobile-menu-overlay"></div>
-                    </header>
-                `;
-                
-                // Применить переводы к fallback хедеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 300);
-            });
-
-        // Load footer component
-        fetch('components/footer.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('footer-container').innerHTML = html;
-                console.log('✅ Footer loaded successfully');
-                
-                // Применить переводы к футеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 500);
-            })
-            .catch(error => {
-                console.error('Error loading footer:', error);
-                // Fallback footer
-                document.getElementById('footer-container').innerHTML = `
-                    <footer class="minimal-footer">
-                        <div class="footer-container">
-                            <div class="footer-content">
-                                <div class="footer-bottom">
-                                    <div class="copyright" data-i18n="footer.copyright">
-                                        © 2024 NBGROUP.TECH Все права защищены.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
-                `;
-                
-                // Применить переводы к fallback футеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 300);
-            });
-
-        // Запустить проверки и инициализацию
+        // Простой скрипт для анимации чисел
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 DOM fully loaded');
-            checkMarquee();
-            applyTranslationsForce();
+            // Анимация чисел статистики
+            const statNumbers = document.querySelectorAll('.stat-number-improved');
+            statNumbers.forEach(stat => {
+                const finalValue = parseInt(stat.textContent);
+                let current = 0;
+                const increment = finalValue / 50;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= finalValue) {
+                        current = finalValue;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current);
+                }, 20);
+            });
             
-            // Резервная проверка через 5 секунд
-            setTimeout(() => {
-                if (window.i18n && window.i18n.refresh) {
-                    console.log('🔄 Final translation refresh...');
-                    window.i18n.refresh();
-                }
-            }, 5000);
-        });
-        
-        // Также проверять при полной загрузке страницы
-        window.addEventListener('load', function() {
-            console.log('📦 Page fully loaded');
-            applyTranslationsForce();
+            // Простая навигация
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
         });
     </script>
-    <script>
-// ДИАГНОСТИКА ИЗОБРАЖЕНИЙ
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🔍 Диагностика изображений...');
-    
-    // Проверяем все фоновые изображения
-    const bgElements = [
-        '#parallax-bg-1',
-        '#parallax-bg-2', 
-        '#parallax-bg-3',
-        '#parallax-bg-4'
-    ];
-    
-    bgElements.forEach(selector => {
-        const el = document.querySelector(selector);
-        if (el) {
-            const bg = getComputedStyle(el).backgroundImage;
-            console.log(`${selector}: ${bg}`);
-            
-            // Если изображение не загружено, показываем ошибку
-            const img = new Image();
-            const bgUrl = bg.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
-            img.onerror = () => {
-                console.error(`❌ Изображение не найдено: ${bgUrl}`);
-                // Создаем цветной фон вместо изображения
-                el.style.backgroundImage = 'none';
-                el.style.backgroundColor = getColorForLayer(selector);
-            };
-            img.src = bgUrl;
-        }
-    });
-    
-    function getColorForLayer(selector) {
-        // Цвета для каждого слоя как fallback
-        const colors = {
-            '#parallax-bg-1': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            '#parallax-bg-2': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-            '#parallax-bg-3': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-            '#parallax-bg-4': 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
-        };
-        return colors[selector] || '#1a1a2e';
-    }
-    
-    // Принудительно показываем все элементы если изображений нет
-    setTimeout(() => {
-        console.log('🛡️ Принудительное отображение контента...');
-        
-        // 1. Убираем все возможные затемнения
-        document.querySelectorAll('*').forEach(el => {
-            el.style.backgroundColor = 'transparent';
-            el.style.backgroundImage = 'none';
-        });
-        
-        // 2. Показываем все тексты
-        document.querySelectorAll('h1, h2, h3, p, span, div, a').forEach(el => {
-            el.style.color = '#ffffff';
-            el.style.textShadow = '0 2px 4px rgba(0,0,0,0.5)';
-            el.style.opacity = '1';
-            el.style.visibility = 'visible';
-            
-            // Заполняем пустые тексты
-            if (!el.textContent || el.textContent.trim() === '') {
-                if (el.classList.contains('brand')) el.textContent = 'КЛИЕНТ';
-                if (el.classList.contains('stat-number-improved')) el.textContent = el.getAttribute('data-target') || '100';
-                if (el.classList.contains('speck-block-title')) el.textContent = 'СЕРВИС';
-            }
-        });
-        
-        // 3. Делаем фон страницы темным для контраста
-        document.body.style.backgroundColor = '#0a0a14';
-        
-        // 4. Показываем все блоки
-        document.querySelectorAll('.parallax-layer, section, .speck-vertical-block').forEach(el => {
-            el.style.opacity = '1';
-            el.style.visibility = 'visible';
-            el.style.display = 'block';
-            el.style.backgroundColor = 'rgba(0,0,0,0.3)';
-            el.style.backdropFilter = 'blur(10px)';
-        });
-        
-        console.log('✅ Контент принудительно отображен');
-    }, 2000);
-});
-</script>
 </body>
-</html>
+    </html>
