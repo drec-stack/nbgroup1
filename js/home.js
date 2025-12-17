@@ -53,6 +53,12 @@
                 this.initSpeckVerticalBlocksLegacy();
             }
             
+            // Инициализируем улучшенные Speck блоки
+            this.initEnhancedSpeckBlocks();
+            
+            // Инициализируем анимации Speck блоков
+            this.initSpeckBlocksAnimations();
+            
             console.log('🏠 HomePage инициализирован (режим: ' + 
                        (this.useModernFeatures ? 'modern' : 'legacy') + ')');
         }
@@ -202,6 +208,202 @@
                     }
                 })(featureItems[i]);
             }
+        }
+
+        // ===== ENHANCED SPECK BLOCKS INTERACTIVITY =====
+        initEnhancedSpeckBlocks() {
+            console.log('🎨 Инициализация улучшенных Speck блоков...');
+            
+            var speckBlocks = document.querySelectorAll('.speck-vertical-block');
+            
+            if (!speckBlocks.length) {
+                console.warn('⚠️ Speck блоки не найдены');
+                return;
+            }
+            
+            // Добавляем класс clickable-column для интерактивности
+            var featureColumns = document.querySelectorAll('.speck-feature-column');
+            for (var i = 0; i < featureColumns.length; i++) {
+                featureColumns[i].classList.add('clickable-column');
+                
+                // Добавляем tabindex для доступности
+                if (!featureColumns[i].hasAttribute('tabindex')) {
+                    featureColumns[i].setAttribute('tabindex', '0');
+                }
+                
+                // Добавляем role для семантики
+                if (!featureColumns[i].hasAttribute('role')) {
+                    featureColumns[i].setAttribute('role', 'button');
+                }
+                
+                // Добавляем aria-label
+                var columnTitle = featureColumns[i].querySelector('.speck-column-title');
+                if (columnTitle && !featureColumns[i].hasAttribute('aria-label')) {
+                    var blockTitle = featureColumns[i].closest('.speck-vertical-block')?.querySelector('.speck-block-title')?.textContent || 'Секция';
+                    featureColumns[i].setAttribute('aria-label', 'Перейти к ' + columnTitle.textContent + ' в разделе ' + blockTitle);
+                }
+            }
+            
+            // Обработчики событий для блоков
+            for (var i = 0; i < speckBlocks.length; i++) {
+                var block = speckBlocks[i];
+                
+                // Hover эффект для всего блока
+                if (block.addEventListener) {
+                    block.addEventListener('mouseenter', (function(b) {
+                        return function() {
+                            if (!this.isReducedMotion && supports.classList) {
+                                b.classList.add('block-hovered');
+                            }
+                        };
+                    })(block));
+                    
+                    block.addEventListener('mouseleave', (function(b) {
+                        return function() {
+                            if (supports.classList) {
+                                b.classList.remove('block-hovered');
+                            }
+                        };
+                    })(block));
+                }
+            }
+            
+            // Обработчики для колонок
+            for (var i = 0; i < featureColumns.length; i++) {
+                (function(column) {
+                    // Клик по колонке
+                    if (column.addEventListener) {
+                        column.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            // Анимация клика
+                            if (supports.classList) {
+                                column.classList.add('column-clicked');
+                                setTimeout(function() {
+                                    column.classList.remove('column-clicked');
+                                }, 300);
+                            }
+                            
+                            // Определяем блок и колонку
+                            var block = column.closest('.speck-vertical-block');
+                            var blockIndex = block ? block.getAttribute('data-block-index') : '0';
+                            var columnTitle = column.querySelector('.speck-column-title')?.textContent || '';
+                            
+                            // Блоки и их соответствия
+                            var blockTitles = ['strategy', 'design', 'engineering', 'manufacturing'];
+                            var blockTitle = blockTitles[parseInt(blockIndex)] || 'services';
+                            
+                            // Логирование для отладки
+                            console.log('🔗 Навигация: Блок ' + blockIndex + ' (' + blockTitle + '), Колонка: ' + columnTitle);
+                            
+                            // Переход с задержкой для анимации
+                            setTimeout(function() {
+                                window.location.href = 'services.html#' + blockTitle;
+                            }, 350);
+                        });
+                        
+                        // Поддержка клавиатуры
+                        column.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+                                e.preventDefault();
+                                this.click();
+                            }
+                        });
+                        
+                        // Hover эффекты
+                        column.addEventListener('mouseenter', function() {
+                            if (!this.isReducedMotion && supports.classList) {
+                                var block = this.closest('.speck-vertical-block');
+                                if (block) {
+                                    block.classList.add('block-hovered');
+                                }
+                            }
+                        });
+                        
+                        column.addEventListener('mouseleave', function() {
+                            if (supports.classList) {
+                                var block = this.closest('.speck-vertical-block');
+                                if (block) {
+                                    block.classList.remove('block-hovered');
+                                }
+                            }
+                        });
+                        
+                        // Фокус для доступности
+                        column.addEventListener('focus', function() {
+                            if (supports.classList) {
+                                this.classList.add('column-focused');
+                                var block = this.closest('.speck-vertical-block');
+                                if (block) {
+                                    block.classList.add('block-hovered');
+                                }
+                            }
+                        });
+                        
+                        column.addEventListener('blur', function() {
+                            if (supports.classList) {
+                                this.classList.remove('column-focused');
+                                var block = this.closest('.speck-vertical-block');
+                                if (block) {
+                                    block.classList.remove('block-hovered');
+                                }
+                            }
+                        });
+                    }
+                })(featureColumns[i]);
+            }
+            
+            console.log('✅ Инициализировано ' + speckBlocks.length + ' блоков с ' + featureColumns.length + ' колонками');
+        }
+
+        // ===== SPECK BLOCKS ANIMATIONS =====
+        initSpeckBlocksAnimations() {
+            console.log('✨ Инициализация анимаций Speck блоков...');
+            
+            // Добавляем класс для активации анимаций после загрузки
+            setTimeout(() => {
+                document.body.classList.add('speck-animations-loaded');
+            }, 1000);
+            
+            // Настраиваем индексы для стрелок
+            var featureItems = document.querySelectorAll('.speck-feature-item');
+            for (var i = 0; i < featureItems.length; i++) {
+                featureItems[i].style.setProperty('--item-index', i);
+            }
+            
+            // Observer для анимаций при скролле
+            if (supports.intersectionObserver) {
+                var columnObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('scroll-animated');
+                        }
+                    });
+                }, {
+                    threshold: 0.2,
+                    rootMargin: '0px 0px -50px 0px'
+                });
+                
+                var columns = document.querySelectorAll('.speck-feature-column');
+                for (var i = 0; i < columns.length; i++) {
+                    columnObserver.observe(columns[i]);
+                }
+            }
+            
+            // Анимация появления колонок
+            setTimeout(function() {
+                var columns = document.querySelectorAll('.speck-feature-column');
+                for (var i = 0; i < columns.length; i++) {
+                    (function(index) {
+                        setTimeout(function() {
+                            columns[index].style.animationPlayState = 'running';
+                        }, index * 100);
+                    })(i);
+                }
+            }, 500);
+            
+            console.log('✅ Анимации Speck блоков инициализированы');
         }
 
         // ===== STATS COUNTER =====
