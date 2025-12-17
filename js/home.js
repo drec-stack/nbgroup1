@@ -10,7 +10,8 @@
         forEach: 'forEach' in NodeList.prototype,
         addEventListener: 'addEventListener' in window,
         requestAnimationFrame: 'requestAnimationFrame' in window,
-        fetch: 'fetch' in window
+        fetch: 'fetch' in window,
+        XMLHttpRequest: 'XMLHttpRequest' in window
     };
     
     class HomePage {
@@ -23,10 +24,14 @@
             this.scrollThreshold = 100;
             this.showThreshold = 10;
             
-            // Проверяем, можно ли использовать современные функции
+            // Проверяем, нужно ли использовать упрощенный режим
+            var hasNoCSS = document.documentElement.classList.contains('no-csstransforms') ||
+                          document.documentElement.classList.contains('no-cssgradients');
+            
             this.useModernFeatures = supports.intersectionObserver && 
                                     supports.classList && 
-                                    supports.addEventListener;
+                                    supports.addEventListener &&
+                                    !hasNoCSS;
             
             // Initialize everything
             this.init();
@@ -99,20 +104,27 @@
             if (!speckBlocks.length) return;
             
             // Показываем все блоки сразу для старых браузеров
+            var self = this;
             setTimeout(function() {
-                speckBlocks.forEach(function(block, index) {
-                    setTimeout(function() {
-                        block.classList.add('visible');
-                    }, index * 200);
-                });
+                for (var i = 0; i < speckBlocks.length; i++) {
+                    (function(index) {
+                        setTimeout(function() {
+                            speckBlocks[index].classList.add('visible');
+                        }, index * 200);
+                    })(i);
+                }
             }, 500);
             
             // Простая анимация при скролле для старых браузеров
             var checkScroll = function() {
-                var windowHeight = window.innerHeight;
+                var windowHeight = window.innerHeight || 
+                                 document.documentElement.clientHeight || 
+                                 document.body.clientHeight;
                 
-                speckBlocks.forEach(function(block) {
+                for (var i = 0; i < speckBlocks.length; i++) {
+                    var block = speckBlocks[i];
                     var rect = block.getBoundingClientRect();
+                    
                     var isVisible = (
                         rect.top <= windowHeight * 0.8 &&
                         rect.bottom >= 0
@@ -121,13 +133,13 @@
                     if (isVisible && !block.classList.contains('visible')) {
                         block.classList.add('visible');
                     }
-                });
+                }
             };
             
             // Используем старый синтаксис для совместимости
             if (window.addEventListener) {
-                window.addEventListener('scroll', checkScroll);
-                window.addEventListener('resize', checkScroll);
+                window.addEventListener('scroll', checkScroll, false);
+                window.addEventListener('resize', checkScroll, false);
             } else if (window.attachEvent) {
                 window.attachEvent('onscroll', checkScroll);
                 window.attachEvent('onresize', checkScroll);
@@ -146,46 +158,50 @@
             
             if (!featureItems.length) return;
             
-            featureItems.forEach(function(item) {
-                // Добавляем обработчик клика
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Анимация нажатия
-                    if (supports.classList) {
-                        item.classList.add('active');
-                        setTimeout(function() {
-                            item.classList.remove('active');
-                        }, 150);
-                    }
-                    
-                    // Переход на соответствующую страницу
-                    var block = item.closest('.speck-vertical-block');
-                    if (block) {
-                        var blockIndex = block.getAttribute('data-block-index');
-                        var blockTitles = ['strategy', 'design', 'engineering', 'manufacturing'];
+            for (var i = 0; i < featureItems.length; i++) {
+                (function(item) {
+                    // Добавляем обработчик клика
+                    if (item.addEventListener) {
+                        item.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            
+                            // Анимация нажатия
+                            if (supports.classList) {
+                                item.classList.add('active');
+                                setTimeout(function() {
+                                    item.classList.remove('active');
+                                }, 150);
+                            }
+                            
+                            // Переход на соответствующую страницу
+                            var block = item.closest('.speck-vertical-block');
+                            if (block) {
+                                var blockIndex = block.getAttribute('data-block-index');
+                                var blockTitles = ['strategy', 'design', 'engineering', 'manufacturing'];
+                                
+                                if (blockTitles[blockIndex]) {
+                                    setTimeout(function() {
+                                        window.location.href = 'services.html#' + blockTitles[blockIndex];
+                                    }, 200);
+                                }
+                            }
+                        });
                         
-                        if (blockTitles[blockIndex]) {
-                            setTimeout(function() {
-                                window.location.href = 'services.html#' + blockTitles[blockIndex];
-                            }, 200);
+                        // Добавляем tabindex для доступности
+                        if (!item.hasAttribute('tabindex')) {
+                            item.setAttribute('tabindex', '0');
                         }
+                        
+                        // Обработчик нажатия клавиши Enter
+                        item.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter' || e.keyCode === 13) {
+                                e.preventDefault();
+                                this.click();
+                            }
+                        });
                     }
-                });
-                
-                // Добавляем tabindex для доступности
-                if (!item.hasAttribute('tabindex')) {
-                    item.setAttribute('tabindex', '0');
-                }
-                
-                // Обработчик нажатия клавиши Enter
-                item.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.keyCode === 13) {
-                        e.preventDefault();
-                        this.click();
-                    }
-                });
-            });
+                })(featureItems[i]);
+            }
         }
 
         // ===== STATS COUNTER =====
@@ -194,11 +210,26 @@
             
             if (!statNumbers.length) return;
             
+            // Проверяем, если старый браузер - показываем сразу финальные значения
+            var hasNoCSS = document.documentElement.classList.contains('no-csstransforms');
+            if (hasNoCSS) {
+                for (var i = 0; i < statNumbers.length; i++) {
+                    var stat = statNumbers[i];
+                    var target = parseInt(stat.getAttribute('data-target')) || 0;
+                    stat.textContent = target;
+                    stat.classList.add('animated');
+                }
+                return;
+            }
+            
             // Простая проверка видимости для старых браузеров
             var checkVisibility = function() {
-                var windowHeight = window.innerHeight;
+                var windowHeight = window.innerHeight || 
+                                 document.documentElement.clientHeight || 
+                                 document.body.clientHeight;
                 
-                statNumbers.forEach(function(stat) {
+                for (var i = 0; i < statNumbers.length; i++) {
+                    var stat = statNumbers[i];
                     var rect = stat.getBoundingClientRect();
                     var isVisible = (
                         rect.top <= windowHeight * 0.8 &&
@@ -213,7 +244,7 @@
                             stat.classList.add('animated');
                         }
                     }
-                });
+                }
             };
             
             // Функция анимации числа
@@ -249,7 +280,16 @@
                 if (supports.requestAnimationFrame) {
                     requestAnimationFrame(updateNumber);
                 } else {
-                    updateNumber();
+                    // Fallback для очень старых браузеров
+                    var interval = setInterval(function() {
+                        current += Math.ceil(target / 50);
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(interval);
+                            element.classList.add('counter-animate');
+                        }
+                        element.textContent = current;
+                    }, 40);
                 }
             };
             
@@ -269,20 +309,26 @@
         initClickableStats() {
             var statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
             
-            statCards.forEach(function(card) {
+            for (var i = 0; i < statCards.length; i++) {
+                var card = statCards[i];
+                
                 // Добавляем tabindex для доступности
                 if (!card.hasAttribute('tabindex')) {
                     card.setAttribute('tabindex', '0');
                 }
                 
                 // Обработчик нажатия клавиши Enter
-                card.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.keyCode === 13) {
-                        e.preventDefault();
-                        window.location.href = this.href;
-                    }
-                });
-            });
+                if (card.addEventListener) {
+                    card.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.keyCode === 13) {
+                            e.preventDefault();
+                            if (this.href) {
+                                window.location.href = this.href;
+                            }
+                        }
+                    });
+                }
+            }
         }
 
         // ===== CLICKABLE CTA SECTION =====
@@ -296,12 +342,16 @@
             }
             
             // Обработчик нажатия клавиши Enter
-            ctaSection.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.keyCode === 13) {
-                    e.preventDefault();
-                    window.location.href = this.href;
-                }
-            });
+            if (ctaSection.addEventListener) {
+                ctaSection.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.keyCode === 13) {
+                        e.preventDefault();
+                        if (this.href) {
+                            window.location.href = this.href;
+                        }
+                    }
+                });
+            }
         }
 
         // ===== БАЗОВЫЕ АНИМАЦИИ =====
@@ -310,10 +360,14 @@
             var sections = document.querySelectorAll('.content-section');
             
             var checkSections = function() {
-                var windowHeight = window.innerHeight;
+                var windowHeight = window.innerHeight || 
+                                 document.documentElement.clientHeight || 
+                                 document.body.clientHeight;
                 
-                sections.forEach(function(section) {
+                for (var i = 0; i < sections.length; i++) {
+                    var section = sections[i];
                     var rect = section.getBoundingClientRect();
+                    
                     var isVisible = (
                         rect.top <= windowHeight * 0.8 &&
                         rect.bottom >= 0
@@ -322,7 +376,7 @@
                     if (isVisible && !section.classList.contains('animated')) {
                         section.classList.add('animated');
                     }
-                });
+                }
             };
             
             if (supports.addEventListener) {
@@ -340,10 +394,13 @@
             if (!contentSections.length) return;
             
             var checkBackgrounds = function() {
-                var windowHeight = window.innerHeight;
+                var windowHeight = window.innerHeight || 
+                                 document.documentElement.clientHeight || 
+                                 document.body.clientHeight;
                 var activeIndex = 0;
                 
-                contentSections.forEach(function(section, index) {
+                for (var i = 0; i < contentSections.length; i++) {
+                    var section = contentSections[i];
                     var rect = section.getBoundingClientRect();
                     var isVisible = (
                         rect.top <= windowHeight * 0.5 &&
@@ -352,14 +409,15 @@
                     
                     if (isVisible) {
                         activeIndex = parseInt(section.getAttribute('data-bg-index')) || 0;
+                        break;
                     }
-                });
+                }
                 
                 // Переключаем фон
                 var backgrounds = document.querySelectorAll('.parallax-bg');
-                backgrounds.forEach(function(bg) {
-                    bg.classList.remove('active');
-                });
+                for (var i = 0; i < backgrounds.length; i++) {
+                    backgrounds[i].classList.remove('active');
+                }
                 
                 var targetBg = document.getElementById('parallax-bg-' + (parseInt(activeIndex) + 1));
                 if (targetBg) {
@@ -386,15 +444,18 @@
                 var isWorking = false;
                 
                 // Проверяем, работает ли CSS анимация
-                marqueeTracks.forEach(function(track) {
-                    var transform = track.style.transform || 
-                                   track.currentStyle && track.currentStyle.transform ||
-                                   getComputedStyle(track).transform;
+                for (var i = 0; i < marqueeTracks.length; i++) {
+                    var track = marqueeTracks[i];
+                    var style = track.currentStyle || window.getComputedStyle(track);
+                    var transform = style.transform || style.webkitTransform || style.mozTransform;
                     
-                    if (transform && transform !== 'none' && transform !== 'matrix(1, 0, 0, 1, 0, 0)') {
+                    if (transform && transform !== 'none' && 
+                        transform !== 'matrix(1, 0, 0, 1, 0, 0)' &&
+                        transform !== 'matrix(1, 0, 0, 1, 0, 0, 0)') {
                         isWorking = true;
+                        break;
                     }
-                });
+                }
                 
                 if (!isWorking) {
                     console.log('🎯 Бегущая строка не работает через CSS, запускаем JS fallback...');
@@ -408,64 +469,89 @@
             function initMarqueeJSFallback() {
                 console.log('🚀 Запуск JavaScript fallback для бегущей строки...');
                 
-                marqueeTracks.forEach(function(track, index) {
-                    var isReverse = index === 1;
-                    
-                    // Убираем CSS анимации если они есть
-                    track.style.animation = 'none';
-                    track.style.webkitAnimation = 'none';
-                    
-                    var position = 0;
-                    var speed = isReverse ? 2 : -2;
-                    var contentWidth = track.scrollWidth / 3;
-                    var animationId = null;
-                    var isPaused = false;
-                    
-                    function animate() {
-                        if (isPaused) {
+                for (var i = 0; i < marqueeTracks.length; i++) {
+                    (function(index) {
+                        var track = marqueeTracks[index];
+                        var isReverse = index === 1;
+                        
+                        // Убираем CSS анимации если они есть
+                        track.style.animation = 'none';
+                        track.style.webkitAnimation = 'none';
+                        track.style.mozAnimation = 'none';
+                        track.style.oAnimation = 'none';
+                        
+                        var position = 0;
+                        var speed = isReverse ? 2 : -2;
+                        var contentWidth = track.scrollWidth / 3;
+                        var animationId = null;
+                        var isPaused = false;
+                        
+                        function animate() {
+                            if (isPaused) {
+                                if (supports.requestAnimationFrame) {
+                                    animationId = requestAnimationFrame(animate);
+                                } else {
+                                    animationId = setTimeout(animate, 16);
+                                }
+                                return;
+                            }
+                            
+                            position += speed;
+                            
+                            if (position <= -contentWidth) {
+                                position = 0;
+                            } else if (position >= 0) {
+                                position = -contentWidth;
+                            }
+                            
+                            // Используем transform если доступен
+                            if ('transform' in track.style || 
+                                'webkitTransform' in track.style ||
+                                'mozTransform' in track.style) {
+                                track.style.transform = 'translateX(' + position + 'px)';
+                                track.style.webkitTransform = 'translateX(' + position + 'px)';
+                                track.style.mozTransform = 'translateX(' + position + 'px)';
+                            } else {
+                                // Fallback для очень старых браузеров
+                                track.style.position = 'relative';
+                                track.style.left = position + 'px';
+                            }
+                            
                             if (supports.requestAnimationFrame) {
                                 animationId = requestAnimationFrame(animate);
                             } else {
                                 animationId = setTimeout(animate, 16);
                             }
-                            return;
                         }
                         
-                        position += speed;
+                        // Запускаем анимацию
+                        animate();
                         
-                        if (position <= -contentWidth) {
-                            position = 0;
-                        } else if (position >= 0) {
-                            position = -contentWidth;
+                        // Пауза при наведении
+                        if (track.addEventListener) {
+                            track.addEventListener('mouseenter', function() {
+                                isPaused = true;
+                            });
+                            
+                            track.addEventListener('mouseleave', function() {
+                                isPaused = false;
+                            });
+                        } else if (track.attachEvent) {
+                            track.attachEvent('onmouseenter', function() {
+                                isPaused = true;
+                            });
+                            
+                            track.attachEvent('onmouseleave', function() {
+                                isPaused = false;
+                            });
                         }
                         
-                        track.style.transform = 'translateX(' + position + 'px)';
-                        track.style.webkitTransform = 'translateX(' + position + 'px)';
+                        // Сохраняем ID для очистки
+                        track._animationId = animationId;
                         
-                        if (supports.requestAnimationFrame) {
-                            animationId = requestAnimationFrame(animate);
-                        } else {
-                            animationId = setTimeout(animate, 16);
-                        }
-                    }
-                    
-                    // Запускаем анимацию
-                    animate();
-                    
-                    // Пауза при наведении
-                    track.addEventListener('mouseenter', function() {
-                        isPaused = true;
-                    });
-                    
-                    track.addEventListener('mouseleave', function() {
-                        isPaused = false;
-                    });
-                    
-                    // Сохраняем ID для очистки
-                    track._animationId = animationId;
-                    
-                    console.log('✅ Трек ' + (index + 1) + ' запущен через JS fallback');
-                });
+                        console.log('✅ Трек ' + (index + 1) + ' запущен через JS fallback');
+                    })(i);
+                }
             }
         }
     }
@@ -473,6 +559,11 @@
     // ===== GLOBAL INITIALIZATION =====
     // Инициализация при загрузке DOM
     function initHomePage() {
+        // Проверяем, на главной ли мы странице
+        if (!document.body || !document.body.classList.contains('home-page')) {
+            return;
+        }
+        
         // Ждем полной загрузки DOM
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
@@ -489,19 +580,22 @@
             var tracks = document.querySelectorAll('.marquee-track');
             var isWorking = false;
             
-            tracks.forEach(function(track) {
-                var transform = track.style.transform || 
-                               track.currentStyle && track.currentStyle.transform ||
-                               getComputedStyle(track).transform;
+            for (var i = 0; i < tracks.length; i++) {
+                var track = tracks[i];
+                var style = track.currentStyle || window.getComputedStyle(track);
+                var transform = style.transform || style.webkitTransform || style.mozTransform;
                 
-                if (transform && transform !== 'none' && transform !== 'matrix(1, 0, 0, 1, 0, 0)') {
+                if (transform && transform !== 'none' && 
+                    transform !== 'matrix(1, 0, 0, 1, 0, 0)' &&
+                    transform !== 'matrix(1, 0, 0, 1, 0, 0, 0)') {
                     isWorking = true;
+                    break;
                 }
-            });
+            }
             
             if (!isWorking && window.homePage) {
                 console.warn('⚠️ Бегущая строка не работает, запускаем fallback...');
-                // Можно вызвать fallback функцию здесь
+                window.homePage.initMarqueeAnimations();
             }
         }, 2000);
     }
@@ -557,10 +651,11 @@
                 if (isHidden) {
                     header.classList.remove('header-hidden');
                     setTimeout(function() {
-                        if (isHidden && (window.pageYOffset || 
-                                        document.documentElement.scrollTop || 
-                                        document.body.scrollTop || 
-                                        0) > hideThreshold) {
+                        var scrollY = window.pageYOffset || 
+                                     document.documentElement.scrollTop || 
+                                     document.body.scrollTop || 
+                                     0;
+                        if (isHidden && scrollY > hideThreshold) {
                             header.classList.add('header-hidden');
                         }
                     }, 2000);
@@ -576,10 +671,9 @@
         if (window.addEventListener) {
             window.addEventListener('load', function() {
                 setTimeout(function() {
-                    if (window.homePage && window.homePage.initSpeckVerticalBlocksModern) {
-                        window.homePage.initSpeckVerticalBlocksModern();
+                    if (window.homePage) {
+                        initHomeHeader();
                     }
-                    initHomeHeader();
                 }, 500);
             });
         }
