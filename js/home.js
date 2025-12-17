@@ -1,490 +1,589 @@
-// home.js - Complete Home Page Functionality
+// home.js - Complete Home Page Functionality with Full Browser Support
 
-class HomePage {
-    constructor() {
-        this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        this.header = null;
-        this.isHeaderHidden = false;
-        this.lastScrollTop = 0;
-        this.scrollThreshold = 100;
-        this.showThreshold = 10;
-        
-        // Initialize everything
-        this.init();
+(function() {
+    'use strict';
+    
+    // Проверяем поддержку современных функций
+    var supports = {
+        intersectionObserver: 'IntersectionObserver' in window,
+        classList: 'classList' in document.documentElement,
+        forEach: 'forEach' in NodeList.prototype,
+        addEventListener: 'addEventListener' in window,
+        requestAnimationFrame: 'requestAnimationFrame' in window,
+        fetch: 'fetch' in window
+    };
+    
+    class HomePage {
+        constructor() {
+            this.isReducedMotion = window.matchMedia ? 
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+            this.header = null;
+            this.isHeaderHidden = false;
+            this.lastScrollTop = 0;
+            this.scrollThreshold = 100;
+            this.showThreshold = 10;
+            
+            // Проверяем, можно ли использовать современные функции
+            this.useModernFeatures = supports.intersectionObserver && 
+                                    supports.classList && 
+                                    supports.addEventListener;
+            
+            // Initialize everything
+            this.init();
+        }
+
+        init() {
+            // Всегда инициализируем базовые функции
+            this.initBasicAnimations();
+            this.initStatsCounter();
+            this.initParallaxBackgrounds();
+            this.initMarqueeAnimations();
+            this.initClickableStats();
+            this.initCTAClickable();
+            
+            // Инициализируем вертикальные блоки в зависимости от поддержки браузера
+            if (this.useModernFeatures) {
+                this.initSpeckVerticalBlocksModern();
+            } else {
+                this.initSpeckVerticalBlocksLegacy();
+            }
+            
+            console.log('🏠 HomePage инициализирован (режим: ' + 
+                       (this.useModernFeatures ? 'modern' : 'legacy') + ')');
+        }
+
+        // ===== SPECK VERTICAL BLOCKS (Modern) =====
+        initSpeckVerticalBlocksModern() {
+            console.log('🎨 Инициализация вертикальных блоков (modern)...');
+            
+            var speckBlocks = document.querySelectorAll('.speck-vertical-block');
+            
+            if (!speckBlocks.length) {
+                console.log('⚠️ Вертикальные блоки не найдены');
+                return;
+            }
+            
+            // Используем Intersection Observer если поддерживается
+            var blockObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry, index) {
+                    if (entry.isIntersecting) {
+                        // Активируем блок с задержкой (staggered animation)
+                        setTimeout(function() {
+                            entry.target.classList.add('visible');
+                        }, index * 200);
+                        
+                        blockObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            // Наблюдаем за всеми блоками
+            speckBlocks.forEach(function(block) {
+                blockObserver.observe(block);
+            });
+            
+            this.initFeatureItemsInteractivity();
+            
+            console.log('✅ Инициализировано ' + speckBlocks.length + ' вертикальных блоков');
+        }
+
+        // ===== SPECK VERTICAL BLOCKS (Legacy для старых браузеров) =====
+        initSpeckVerticalBlocksLegacy() {
+            console.log('🎨 Инициализация вертикальных блоков (legacy для старых браузеров)...');
+            
+            var speckBlocks = document.querySelectorAll('.speck-vertical-block');
+            
+            if (!speckBlocks.length) return;
+            
+            // Показываем все блоки сразу для старых браузеров
+            setTimeout(function() {
+                speckBlocks.forEach(function(block, index) {
+                    setTimeout(function() {
+                        block.classList.add('visible');
+                    }, index * 200);
+                });
+            }, 500);
+            
+            // Простая анимация при скролле для старых браузеров
+            var checkScroll = function() {
+                var windowHeight = window.innerHeight;
+                
+                speckBlocks.forEach(function(block) {
+                    var rect = block.getBoundingClientRect();
+                    var isVisible = (
+                        rect.top <= windowHeight * 0.8 &&
+                        rect.bottom >= 0
+                    );
+                    
+                    if (isVisible && !block.classList.contains('visible')) {
+                        block.classList.add('visible');
+                    }
+                });
+            };
+            
+            // Используем старый синтаксис для совместимости
+            if (window.addEventListener) {
+                window.addEventListener('scroll', checkScroll);
+                window.addEventListener('resize', checkScroll);
+            } else if (window.attachEvent) {
+                window.attachEvent('onscroll', checkScroll);
+                window.attachEvent('onresize', checkScroll);
+            }
+            
+            checkScroll(); // Проверить сразу
+            
+            this.initFeatureItemsInteractivity();
+            
+            console.log('✅ Инициализировано ' + speckBlocks.length + ' вертикальных блоков (legacy)');
+        }
+
+        // ===== ИНТЕРАКТИВНОСТЬ ДЛЯ ЭЛЕМЕНТОВ СПИСКА =====
+        initFeatureItemsInteractivity() {
+            var featureItems = document.querySelectorAll('.speck-feature-item');
+            
+            if (!featureItems.length) return;
+            
+            featureItems.forEach(function(item) {
+                // Добавляем обработчик клика
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Анимация нажатия
+                    if (supports.classList) {
+                        item.classList.add('active');
+                        setTimeout(function() {
+                            item.classList.remove('active');
+                        }, 150);
+                    }
+                    
+                    // Переход на соответствующую страницу
+                    var block = item.closest('.speck-vertical-block');
+                    if (block) {
+                        var blockIndex = block.getAttribute('data-block-index');
+                        var blockTitles = ['strategy', 'design', 'engineering', 'manufacturing'];
+                        
+                        if (blockTitles[blockIndex]) {
+                            setTimeout(function() {
+                                window.location.href = 'services.html#' + blockTitles[blockIndex];
+                            }, 200);
+                        }
+                    }
+                });
+                
+                // Добавляем tabindex для доступности
+                if (!item.hasAttribute('tabindex')) {
+                    item.setAttribute('tabindex', '0');
+                }
+                
+                // Обработчик нажатия клавиши Enter
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.keyCode === 13) {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+        }
+
+        // ===== STATS COUNTER =====
+        initStatsCounter() {
+            var statNumbers = document.querySelectorAll('.stat-number-improved');
+            
+            if (!statNumbers.length) return;
+            
+            // Простая проверка видимости для старых браузеров
+            var checkVisibility = function() {
+                var windowHeight = window.innerHeight;
+                
+                statNumbers.forEach(function(stat) {
+                    var rect = stat.getBoundingClientRect();
+                    var isVisible = (
+                        rect.top <= windowHeight * 0.8 &&
+                        rect.bottom >= 0
+                    );
+                    
+                    if (isVisible && !stat.classList.contains('animated')) {
+                        var target = parseInt(stat.getAttribute('data-target')) || 0;
+                        
+                        if (target > 0) {
+                            animateNumber(stat, target);
+                            stat.classList.add('animated');
+                        }
+                    }
+                });
+            };
+            
+            // Функция анимации числа
+            var animateNumber = function(element, target) {
+                var current = 0;
+                var duration = 2000;
+                var startTime = Date.now ? Date.now() : new Date().getTime();
+                
+                var updateNumber = function() {
+                    var elapsed = (Date.now ? Date.now() : new Date().getTime()) - startTime;
+                    var progress = Math.min(elapsed / duration, 1);
+                    var easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                    current = Math.floor(easeOutQuart * target);
+                    
+                    element.textContent = current.toLocaleString ? 
+                        current.toLocaleString() : 
+                        current.toString();
+                    
+                    if (progress < 1) {
+                        if (supports.requestAnimationFrame) {
+                            requestAnimationFrame(updateNumber);
+                        } else {
+                            setTimeout(updateNumber, 16);
+                        }
+                    } else {
+                        element.textContent = target.toLocaleString ? 
+                            target.toLocaleString() : 
+                            target.toString();
+                        element.classList.add('counter-animate');
+                    }
+                };
+                
+                if (supports.requestAnimationFrame) {
+                    requestAnimationFrame(updateNumber);
+                } else {
+                    updateNumber();
+                }
+            };
+            
+            // Запускаем проверку
+            if (supports.addEventListener) {
+                window.addEventListener('scroll', checkVisibility);
+                window.addEventListener('resize', checkVisibility);
+            } else if (window.attachEvent) {
+                window.attachEvent('onscroll', checkVisibility);
+                window.attachEvent('onresize', checkVisibility);
+            }
+            
+            checkVisibility(); // Проверить сразу
+        }
+
+        // ===== CLICKABLE STATS CARDS =====
+        initClickableStats() {
+            var statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
+            
+            statCards.forEach(function(card) {
+                // Добавляем tabindex для доступности
+                if (!card.hasAttribute('tabindex')) {
+                    card.setAttribute('tabindex', '0');
+                }
+                
+                // Обработчик нажатия клавиши Enter
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.keyCode === 13) {
+                        e.preventDefault();
+                        window.location.href = this.href;
+                    }
+                });
+            });
+        }
+
+        // ===== CLICKABLE CTA SECTION =====
+        initCTAClickable() {
+            var ctaSection = document.querySelector('.cta-improved.clickable-cta');
+            if (!ctaSection) return;
+            
+            // Добавляем tabindex для доступности
+            if (!ctaSection.hasAttribute('tabindex')) {
+                ctaSection.setAttribute('tabindex', '0');
+            }
+            
+            // Обработчик нажатия клавиши Enter
+            ctaSection.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    e.preventDefault();
+                    window.location.href = this.href;
+                }
+            });
+        }
+
+        // ===== БАЗОВЫЕ АНИМАЦИИ =====
+        initBasicAnimations() {
+            // Простая анимация для всех секций
+            var sections = document.querySelectorAll('.content-section');
+            
+            var checkSections = function() {
+                var windowHeight = window.innerHeight;
+                
+                sections.forEach(function(section) {
+                    var rect = section.getBoundingClientRect();
+                    var isVisible = (
+                        rect.top <= windowHeight * 0.8 &&
+                        rect.bottom >= 0
+                    );
+                    
+                    if (isVisible && !section.classList.contains('animated')) {
+                        section.classList.add('animated');
+                    }
+                });
+            };
+            
+            if (supports.addEventListener) {
+                window.addEventListener('scroll', checkSections);
+                window.addEventListener('resize', checkSections);
+            }
+            
+            checkSections(); // Проверить сразу
+        }
+
+        // ===== PARALLAX BACKGROUNDS =====
+        initParallaxBackgrounds() {
+            var contentSections = document.querySelectorAll('.content-section[data-bg-index]');
+            
+            if (!contentSections.length) return;
+            
+            var checkBackgrounds = function() {
+                var windowHeight = window.innerHeight;
+                var activeIndex = 0;
+                
+                contentSections.forEach(function(section, index) {
+                    var rect = section.getBoundingClientRect();
+                    var isVisible = (
+                        rect.top <= windowHeight * 0.5 &&
+                        rect.bottom >= windowHeight * 0.5
+                    );
+                    
+                    if (isVisible) {
+                        activeIndex = parseInt(section.getAttribute('data-bg-index')) || 0;
+                    }
+                });
+                
+                // Переключаем фон
+                var backgrounds = document.querySelectorAll('.parallax-bg');
+                backgrounds.forEach(function(bg) {
+                    bg.classList.remove('active');
+                });
+                
+                var targetBg = document.getElementById('parallax-bg-' + (parseInt(activeIndex) + 1));
+                if (targetBg) {
+                    targetBg.classList.add('active');
+                }
+            };
+            
+            if (supports.addEventListener) {
+                window.addEventListener('scroll', checkBackgrounds);
+                window.addEventListener('resize', checkBackgrounds);
+            }
+            
+            checkBackgrounds(); // Проверить сразу
+        }
+
+        // ===== MARQUEE ANIMATIONS =====
+        initMarqueeAnimations() {
+            var marqueeTracks = document.querySelectorAll('.marquee-track');
+            
+            if (!marqueeTracks.length) return;
+
+            // Простая проверка через 1 секунду
+            setTimeout(function() {
+                var isWorking = false;
+                
+                // Проверяем, работает ли CSS анимация
+                marqueeTracks.forEach(function(track) {
+                    var transform = track.style.transform || 
+                                   track.currentStyle && track.currentStyle.transform ||
+                                   getComputedStyle(track).transform;
+                    
+                    if (transform && transform !== 'none' && transform !== 'matrix(1, 0, 0, 1, 0, 0)') {
+                        isWorking = true;
+                    }
+                });
+                
+                if (!isWorking) {
+                    console.log('🎯 Бегущая строка не работает через CSS, запускаем JS fallback...');
+                    initMarqueeJSFallback();
+                } else {
+                    console.log('✅ Бегущая строка работает через CSS');
+                }
+            }, 1000);
+            
+            // JavaScript fallback для старых браузеров
+            function initMarqueeJSFallback() {
+                console.log('🚀 Запуск JavaScript fallback для бегущей строки...');
+                
+                marqueeTracks.forEach(function(track, index) {
+                    var isReverse = index === 1;
+                    
+                    // Убираем CSS анимации если они есть
+                    track.style.animation = 'none';
+                    track.style.webkitAnimation = 'none';
+                    
+                    var position = 0;
+                    var speed = isReverse ? 2 : -2;
+                    var contentWidth = track.scrollWidth / 3;
+                    var animationId = null;
+                    var isPaused = false;
+                    
+                    function animate() {
+                        if (isPaused) {
+                            if (supports.requestAnimationFrame) {
+                                animationId = requestAnimationFrame(animate);
+                            } else {
+                                animationId = setTimeout(animate, 16);
+                            }
+                            return;
+                        }
+                        
+                        position += speed;
+                        
+                        if (position <= -contentWidth) {
+                            position = 0;
+                        } else if (position >= 0) {
+                            position = -contentWidth;
+                        }
+                        
+                        track.style.transform = 'translateX(' + position + 'px)';
+                        track.style.webkitTransform = 'translateX(' + position + 'px)';
+                        
+                        if (supports.requestAnimationFrame) {
+                            animationId = requestAnimationFrame(animate);
+                        } else {
+                            animationId = setTimeout(animate, 16);
+                        }
+                    }
+                    
+                    // Запускаем анимацию
+                    animate();
+                    
+                    // Пауза при наведении
+                    track.addEventListener('mouseenter', function() {
+                        isPaused = true;
+                    });
+                    
+                    track.addEventListener('mouseleave', function() {
+                        isPaused = false;
+                    });
+                    
+                    // Сохраняем ID для очистки
+                    track._animationId = animationId;
+                    
+                    console.log('✅ Трек ' + (index + 1) + ' запущен через JS fallback');
+                });
+            }
+        }
     }
 
-    init() {
-        this.initSpeckVerticalBlocks();
-        this.initScrollAnimations();
-        this.initStatsCounter();
-        this.initParallaxBackgrounds();
-        this.initMarqueeAnimations();
-        this.initClickableStats();
-        this.initCTAClickable();
-        
-        console.log('🏠 HomePage инициализирован');
+    // ===== GLOBAL INITIALIZATION =====
+    // Инициализация при загрузке DOM
+    function initHomePage() {
+        // Ждем полной загрузки DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                window.homePage = new HomePage();
+            });
+        } else {
+            window.homePage = new HomePage();
+        }
     }
-
-    // ===== SPECK VERTICAL BLOCKS INITIALIZATION =====
-    initSpeckVerticalBlocks() {
-        console.log('🎨 Инициализация вертикальных блоков Speck Design...');
-        
-        const speckBlocks = document.querySelectorAll('.speck-vertical-block');
-        
-        if (!speckBlocks.length) {
-            console.log('⚠️ Вертикальные блоки Speck не найдены');
+    
+    // Проверка работы бегущей строки
+    function checkMarqueeWorking() {
+        setTimeout(function() {
+            var tracks = document.querySelectorAll('.marquee-track');
+            var isWorking = false;
+            
+            tracks.forEach(function(track) {
+                var transform = track.style.transform || 
+                               track.currentStyle && track.currentStyle.transform ||
+                               getComputedStyle(track).transform;
+                
+                if (transform && transform !== 'none' && transform !== 'matrix(1, 0, 0, 1, 0, 0)') {
+                    isWorking = true;
+                }
+            });
+            
+            if (!isWorking && window.homePage) {
+                console.warn('⚠️ Бегущая строка не работает, запускаем fallback...');
+                // Можно вызвать fallback функцию здесь
+            }
+        }, 2000);
+    }
+    
+    // Экспорт функций для глобального доступа
+    window.initHomePage = initHomePage;
+    window.checkMarqueeWorking = checkMarqueeWorking;
+    
+    // Автоматическая инициализация
+    initHomePage();
+    
+    // Проверяем после полной загрузки
+    if (window.addEventListener) {
+        window.addEventListener('load', checkMarqueeWorking);
+    }
+    
+    // Резервный запуск через 5 секунд
+    setTimeout(checkMarqueeWorking, 5000);
+    
+    // ===== ИНИЦИАЛИЗАЦИЯ ХЕДЕРА ДЛЯ ГЛАВНОЙ СТРАНИЦЫ =====
+    function initHomeHeader() {
+        var header = document.querySelector('.main-header');
+        if (!header) {
+            setTimeout(initHomeHeader, 100);
             return;
         }
-        
-        // Инициализируем Intersection Observer для блоков
-        const blockObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    // Активируем блок с задержкой (staggered animation)
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, index * 200);
-                    
-                    blockObserver.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-        
-        // Наблюдаем за всеми блоками
-        speckBlocks.forEach(block => {
-            blockObserver.observe(block);
-        });
-        
-        // Enhanced hover effects для элементов списка
-        const featureItems = document.querySelectorAll('.speck-feature-item');
-        featureItems.forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                if (!this.isReducedMotion) {
-                    const icon = item.querySelector('.speck-feature-icon');
-                    if (icon) {
-                        icon.style.transform = 'translateX(5px)';
-                        icon.style.color = '#3399ff';
-                    }
-                }
-            });
-            
-            item.addEventListener('mouseleave', () => {
-                if (!this.isReducedMotion) {
-                    const icon = item.querySelector('.speck-feature-icon');
-                    if (icon) {
-                        icon.style.transform = '';
-                        icon.style.color = '';
-                    }
-                }
-            });
-            
-            // Клик по элементам списка
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // Pulse animation
-                item.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    item.style.transform = '';
-                }, 150);
-                
-                // Можно добавить логику перехода на конкретную страницу
-                // Например, если это элемент из блока Strategy, то вести на services.html#strategy
-                const blockIndex = item.closest('.speck-vertical-block').getAttribute('data-block-index');
-                const blockTitles = ['strategy', 'design', 'engineering', 'manufacturing'];
-                
-                if (blockTitles[blockIndex]) {
-                    setTimeout(() => {
-                        window.location.href = `services.html#${blockTitles[blockIndex]}`;
-                    }, 200);
-                }
-            });
-        });
-        
-        console.log(`✅ Инициализировано ${speckBlocks.length} вертикальных блоков`);
-    }
 
-    // ===== STATS COUNTER =====
-    initStatsCounter() {
-        const statNumbers = document.querySelectorAll('.stat-number-improved');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const statNumber = entry.target;
-                    const target = parseInt(statNumber.getAttribute('data-target')) || 0;
-                    
-                    if (target > 0) {
-                        this.animateNumber(statNumber, target);
-                        observer.unobserve(statNumber);
-                    }
-                }
-            });
-        }, { threshold: 0.5 });
+        var isHidden = false;
+        var hideThreshold = 100;
 
-        statNumbers.forEach(stat => observer.observe(stat));
-    }
-
-    animateNumber(element, target) {
-        let current = 0;
-        const duration = 2000;
-        const startTime = Date.now();
-        
-        const updateNumber = () => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-            current = Math.floor(easeOutQuart * target);
+        function handleScroll() {
+            var scrollY = window.pageYOffset || 
+                         document.documentElement.scrollTop || 
+                         document.body.scrollTop || 
+                         0;
             
-            element.textContent = current.toLocaleString();
-            
-            if (progress < 1) {
-                requestAnimationFrame(updateNumber);
-            } else {
-                element.textContent = target.toLocaleString();
-                element.classList.add('counter-animate');
+            if (scrollY > hideThreshold && !isHidden) {
+                header.classList.add('header-hidden');
+                isHidden = true;
+            } else if (scrollY <= hideThreshold && isHidden) {
+                header.classList.remove('header-hidden');
+                isHidden = false;
             }
-        };
-        requestAnimationFrame(updateNumber);
-    }
+        }
 
-    // ===== CLICKABLE STATS CARDS =====
-    initClickableStats() {
-        const statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
-        
-        statCards.forEach(card => {
-            // Enhanced hover effects
-            card.addEventListener('mouseenter', () => {
-                if (!this.isReducedMotion) {
-                    card.style.transform = 'translateY(-10px)';
-                    const icon = card.querySelector('.stat-icon');
-                    if (icon) {
-                        icon.style.transform = 'scale(1.1)';
-                        icon.style.color = '#3399ff';
-                    }
+        if (window.addEventListener) {
+            handleScroll();
+            window.addEventListener('scroll', handleScroll, false);
+        }
+
+        if (header.addEventListener) {
+            header.addEventListener('mouseenter', function() {
+                if (isHidden) {
+                    header.classList.remove('header-hidden');
+                    setTimeout(function() {
+                        if (isHidden && (window.pageYOffset || 
+                                        document.documentElement.scrollTop || 
+                                        document.body.scrollTop || 
+                                        0) > hideThreshold) {
+                            header.classList.add('header-hidden');
+                        }
+                    }, 2000);
                 }
             });
-            
-            card.addEventListener('mouseleave', () => {
-                if (!this.isReducedMotion) {
-                    card.style.transform = '';
-                    const icon = card.querySelector('.stat-icon');
-                    if (icon) {
-                        icon.style.transform = '';
-                        icon.style.color = '';
-                    }
-                }
-            });
-            
-            // Touch/click effect
-            card.addEventListener('click', (e) => {
-                if (!this.isReducedMotion) {
-                    card.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        card.style.transform = '';
-                    }, 150);
-                }
-            });
-        });
-    }
-
-    // ===== CLICKABLE CTA SECTION =====
-    initCTAClickable() {
-        const ctaSection = document.querySelector('.cta-improved.clickable-cta');
-        if (!ctaSection) return;
-        
-        // Enhanced hover effects
-        ctaSection.addEventListener('mouseenter', () => {
-            if (!this.isReducedMotion) {
-                ctaSection.style.transform = 'translateY(-5px)';
-                const button = ctaSection.querySelector('.btn-glow');
-                if (button) {
-                    button.style.boxShadow = '0 12px 35px rgba(0, 102, 255, 0.4)';
-                    button.style.transform = 'translateY(-3px)';
-                }
-            }
-        });
-        
-        ctaSection.addEventListener('mouseleave', () => {
-            if (!this.isReducedMotion) {
-                ctaSection.style.transform = '';
-                const button = ctaSection.querySelector('.btn-glow');
-                if (button) {
-                    button.style.boxShadow = '';
-                    button.style.transform = '';
-                }
-            }
-        });
-    }
-
-    // ===== SCROLL ANIMATIONS =====
-    initScrollAnimations() {
-        const elementsToAnimate = document.querySelectorAll('.reveal-element, .slide-up');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed', 'animate-in');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        elementsToAnimate.forEach(el => observer.observe(el));
-    }
-
-    // ===== PARALLAX BACKGROUNDS =====
-    initParallaxBackgrounds() {
-        const contentSections = document.querySelectorAll('.content-section');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const bgIndex = entry.target.getAttribute('data-bg-index');
-                    this.switchBackground(bgIndex);
-                }
-            });
-        }, { threshold: 0.3 });
-
-        contentSections.forEach(section => observer.observe(section));
-    }
-
-    switchBackground(bgIndex) {
-        const backgrounds = document.querySelectorAll('.parallax-bg');
-        backgrounds.forEach(bg => bg.classList.remove('active'));
-        
-        const targetBg = document.getElementById(`parallax-bg-${parseInt(bgIndex) + 1}`);
-        if (targetBg) {
-            targetBg.classList.add('active');
         }
     }
-
-    // ===== MARQUEE ANIMATIONS =====
-    initMarqueeAnimations() {
-        const marqueeTracks = document.querySelectorAll('.marquee-track');
-        
-        if (!marqueeTracks.length) return;
-
-        // Проверяем, есть ли уже анимация через CSS
-        setTimeout(() => {
-            const isWorking = Array.from(marqueeTracks).some(track => {
-                const transform = window.getComputedStyle(track).transform;
-                return transform !== 'none' && transform !== 'matrix(1, 0, 0, 1, 0, 0)';
-            });
-            
-            if (!isWorking) {
-                console.log('🎯 Бегущая строка не работает через CSS, запускаем JS...');
-                this.initMarqueeJS();
-            } else {
-                console.log('✅ Бегущая строка работает через CSS');
-            }
-        }, 1000);
-    }
-
-    // JavaScript анимация как fallback
-    initMarqueeJS() {
-        console.log('🚀 Запуск JavaScript бегущей строки...');
-        
-        const tracks = document.querySelectorAll('.marquee-track');
-        
-        tracks.forEach((track, index) => {
-            const isReverse = index === 1;
-            
-            // Убираем CSS анимации
-            track.style.animation = 'none';
-            
-            let position = 0;
-            const speed = isReverse ? 2 : -2;
-            const contentWidth = track.scrollWidth / 3;
-            let animationId = null;
-            let isPaused = false;
-            
-            function animate() {
-                if (isPaused) {
-                    animationId = requestAnimationFrame(animate);
-                    return;
-                }
-                
-                position += speed;
-                
-                if (position <= -contentWidth) {
-                    position = 0;
-                } else if (position >= 0) {
-                    position = -contentWidth;
-                }
-                
-                track.style.transform = `translateX(${position}px)`;
-                animationId = requestAnimationFrame(animate);
-            }
-            
-            // Запускаем анимацию
-            animate();
-            
-            // Пауза при наведении
-            track.addEventListener('mouseenter', () => {
-                isPaused = true;
-            });
-            
-            track.addEventListener('mouseleave', () => {
-                isPaused = false;
-            });
-            
-            // Сохраняем ID для очистки
-            track._animationId = animationId;
-            
-            console.log(`✅ Трек ${index + 1} запущен через JS`);
-        });
-    }
-
-    // Cleanup
-    destroy() {
-        const tracks = document.querySelectorAll('.marquee-track');
-        tracks.forEach(track => {
-            if (track._animationId) {
-                cancelAnimationFrame(track._animationId);
-            }
-        });
-    }
-}
-
-// ===== GLOBAL INITIALIZATION =====
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.homePage = new HomePage();
-});
-
-// Проверка работы бегущей строки
-function checkMarqueeWorking() {
-    setTimeout(() => {
-        const tracks = document.querySelectorAll('.marquee-track');
-        let isWorking = false;
-        
-        tracks.forEach(track => {
-            const transform = window.getComputedStyle(track).transform;
-            if (transform !== 'none' && transform !== 'matrix(1, 0, 0, 1, 0, 0)') {
-                isWorking = true;
-            }
-        });
-        
-        if (!isWorking && window.homePage) {
-            console.warn('⚠️ Бегущая строка не работает, принудительный запуск...');
-            window.homePage.initMarqueeJS();
-        }
-    }, 2000);
-}
-
-// Проверяем после полной загрузки
-window.addEventListener('load', checkMarqueeWorking);
-
-// Резервный запуск через 5 секунд
-setTimeout(checkMarqueeWorking, 5000);
-
-// ===== UTILITY FUNCTIONS =====
-// Simple header hide function for quick integration
-window.initSimpleHeaderHide = function() {
-    const header = document.querySelector('.main-header');
-    if (!header || !document.body.classList.contains('home-page')) return;
     
-    let lastScroll = 0;
-    const hideHeight = 100;
-    let isHidden = false;
+    window.initHomeHeader = initHomeHeader;
     
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-        
-        if (currentScroll <= 50) {
-            // Вверху страницы - показываем
-            header.style.transform = 'translateY(0)';
-            header.style.opacity = '1';
-            header.style.pointerEvents = 'auto';
-            header.style.transition = 'transform 0.4s ease, opacity 0.3s ease';
-            isHidden = false;
-        } 
-        else if (currentScroll > lastScroll && currentScroll > hideHeight && !isHidden) {
-            // Скроллим вниз - скрываем
-            header.style.transform = 'translateY(-100%)';
-            header.style.opacity = '0';
-            header.style.pointerEvents = 'none';
-            header.style.transition = 'transform 0.5s ease, opacity 0.4s ease';
-            isHidden = true;
-        } 
-        else if (currentScroll < lastScroll && isHidden) {
-            // Скроллим вверх - показываем
-            header.style.transform = 'translateY(0)';
-            header.style.opacity = '1';
-            header.style.pointerEvents = 'auto';
-            header.style.transition = 'transform 0.4s ease, opacity 0.3s ease';
-            isHidden = false;
+    // Автоматическая инициализация при загрузке
+    if (document.body && document.body.classList.contains('home-page')) {
+        if (window.addEventListener) {
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    if (window.homePage && window.homePage.initSpeckVerticalBlocksModern) {
+                        window.homePage.initSpeckVerticalBlocksModern();
+                    }
+                    initHomeHeader();
+                }, 500);
+            });
         }
-        
-        lastScroll = currentScroll;
-    });
+    }
     
-    // Показываем при наведении
-    header.addEventListener('mouseenter', () => {
-        if (isHidden) {
-            header.style.transform = 'translateY(0)';
-            header.style.opacity = '1';
-            header.style.pointerEvents = 'auto';
-            isHidden = false;
-        }
-    });
-};
-
-// Export для глобального доступа
-window.initHomePage = function() {
-    if (!window.homePage) {
-        window.homePage = new HomePage();
-    }
-};
-
-// Инициализация хедера для главной страницы
-function initHomeHeader() {
-    const header = document.querySelector('.main-header');
-    if (!header) {
-        setTimeout(initHomeHeader, 100);
-        return;
-    }
-
-    let isHidden = false;
-    const hideThreshold = 100;
-
-    function handleScroll() {
-        const scrollY = window.pageYOffset;
-        
-        if (scrollY > hideThreshold && !isHidden) {
-            header.classList.add('header-hidden');
-            isHidden = true;
-        } else if (scrollY <= hideThreshold && isHidden) {
-            header.classList.remove('header-hidden');
-            isHidden = false;
-        }
-    }
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    header.addEventListener('mouseenter', function() {
-        if (isHidden) {
-            header.classList.remove('header-hidden');
-            setTimeout(function() {
-                if (isHidden && window.pageYOffset > hideThreshold) {
-                    header.classList.add('header-hidden');
-                }
-            }, 2000);
-        }
-    });
-}
-
-// Автоматическая инициализация при загрузке
-if (document.body.classList.contains('home-page')) {
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            if (window.homePage) {
-                window.homePage.initSpeckVerticalBlocks();
-            }
-        }, 500);
-    });
-    }
+    console.log('✅ home.js загружен и готов к работе');
+})();
