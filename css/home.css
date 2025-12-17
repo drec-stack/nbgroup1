@@ -1133,17 +1133,6 @@ header, footer, section, nav {
     overflow: hidden;
 }
 
-.clients-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.03);
-    pointer-events: none;
-}
-
 .clients-content {
     text-align: center;
     position: relative;
@@ -1186,27 +1175,6 @@ header, footer, section, nav {
     overflow: hidden;
     position: relative;
     margin-bottom: 15px;
-}
-
-.marquee-container::before,
-.marquee-container::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 150px;
-    height: 100%;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.marquee-container::before {
-    left: 0;
-    background: rgba(10, 10, 15, 0.8);
-}
-
-.marquee-container::after {
-    right: 0;
-    background: rgba(10, 10, 15, 0.8);
 }
 
 .marquee-track {
@@ -1324,17 +1292,6 @@ header, footer, section, nav {
     position: relative;
     overflow: hidden;
     z-index: 2;
-}
-
-.stats-improved::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 102, 255, 0.1);
-    pointer-events: none;
 }
 
 /* Фолбэк для CSS Grid */
@@ -1521,7 +1478,7 @@ header, footer, section, nav {
 /* ===== CTA SECTION ===== */
 .cta-improved {
     padding: 140px 0;
-    background: rgba(0, 102, 255, 0.15);
+    background: transparent;
     position: relative;
     z-index: 2;
     cursor: pointer;
@@ -1529,36 +1486,6 @@ header, footer, section, nav {
     color: inherit;
     display: block;
     overflow: hidden;
-}
-
-.cta-improved::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.cta-improved::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    -webkit-transition: left 0.7s ease;
-    -o-transition: left 0.7s ease;
-    transition: left 0.7s ease;
-    z-index: 1;
-}
-
-.cta-improved:hover::after {
-    left: 100%;
 }
 
 .cta-content-improved {
@@ -2976,3 +2903,82 @@ button,
         padding: 20px;
     }
 }
+
+/* ====================================== */
+/* УДАЛЕНИЕ СИНИХ И ЧЕРНЫХ ПЛЕНОК/ОВЕРЛЕЕВ */
+/* ====================================== */
+
+/* 1. Убираем ВСЕ пленки в секции клиентов (бегущая строка) */
+.clients-section {
+    background: transparent !important;
+}
+
+.clients-section::before,
+.clients-section::after {
+    display: none !important;
+    content: none !important;
+    background: transparent !important;
+    opacity: 0 !important;
+}
+
+/* 2. Убираем градиенты по бокам бегущей строки */
+.marquee-container::before,
+.marquee-container::after {
+    display: none !important;
+    background: transparent !important;
+}
+
+/* 3. Убираем синюю пленку в секции статистики */
+.stats-improved {
+    background: transparent !important;
+}
+
+.stats-improved::before,
+.stats-improved::after {
+    display: none !important;
+    background: transparent !important;
+}
+
+/* 4. Убираем синие пленки в CTA секции */
+.cta-improved {
+    background: transparent !important;
+}
+
+.cta-improved::before,
+.cta-improved::after {
+    display: none !important;
+    background: transparent !important;
+}
+
+/* 5. Убираем все дополнительные overlay эффекты */
+.speck-vertical-block:hover::after,
+.speck-block-number::before,
+.speck-feature-item::before,
+.speck-feature-column::before {
+    display: none !important;
+    opacity: 0 !important;
+    background: transparent !important;
+}
+
+/* 6. Убираем фоновые слои для параллакса на мобильных */
+@media (max-width: 768px) {
+    .content-section,
+    .hero.parallax-hero,
+    .speck-service-card-enhanced,
+    .stat-card,
+    .cta-improved,
+    .clients-section,
+    .stats-improved {
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .content-section::before,
+    .hero.parallax-hero::before,
+    .content-section::after,
+    .hero.parallax-hero::after {
+        display: none !important;
+        background: transparent !important;
+    }
+    }
