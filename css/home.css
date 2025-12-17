@@ -1,25 +1,14 @@
-/* home.css - УПРОЩЕННАЯ ВЕРСИЯ БЕЗ ПАРАЛЛАКСА */
-
-/* ===== ОСНОВНЫЕ СТИЛИ ДЛЯ ТЕЛА ===== */
-body.home-page {
-    background: linear-gradient(135deg, #0a0a14 0%, #1a1a2e 100%) !important;
-    color: #ffffff !important;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
+/* home.css - Main Styles for Home Page */
 
 /* ===== HERO SECTION ===== */
 .hero {
     padding: 180px 0 120px;
     position: relative;
+    overflow: hidden;
+    background: transparent;
     min-height: 100vh;
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hero .container {
@@ -31,20 +20,16 @@ body.home-page {
     text-align: center;
     max-width: 1000px;
     margin: 0 auto;
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 30px;
-    padding: 60px 40px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .hero h1 {
-    font-size: 4rem;
+    font-size: 4.5rem;
     font-weight: 900;
     color: white;
     margin-bottom: 1.5rem;
     line-height: 1.1;
     letter-spacing: -0.02em;
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    text-transform: uppercase;
 }
 
 .hero h1 span {
@@ -52,17 +37,17 @@ body.home-page {
 }
 
 .hero h1 span:first-child {
-    background: linear-gradient(135deg, #ffffff 0%, #66b5ff 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: 4.5rem;
+    font-size: 5rem;
 }
 
 .hero h1 span:nth-child(2) {
-    font-size: 3.5rem;
+    font-size: 4rem;
     opacity: 0.9;
-    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -70,11 +55,10 @@ body.home-page {
 
 .hero-subtitle {
     font-size: 1.8rem;
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 2.5rem;
     font-weight: 500;
     letter-spacing: 0.5px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-description {
@@ -86,11 +70,10 @@ body.home-page {
     font-size: 1.3rem;
     line-height: 1.8;
     margin-bottom: 1.2rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.85);
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .hero-actions {
@@ -106,8 +89,7 @@ body.home-page {
     font-size: 1.1rem;
     font-weight: 600;
     border-radius: 50px;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .hero-actions .btn-primary {
@@ -124,13 +106,14 @@ body.home-page {
 }
 
 .hero-actions .btn-secondary {
-    background: rgba(255, 255, 255, 0.1);
+    background: transparent;
     color: white;
     border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
 }
 
 .hero-actions .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
     border-color: white;
     transform: translateY(-5px);
 }
@@ -144,46 +127,129 @@ body.home-page {
     transform: translateX(5px);
 }
 
-/* Убрать параллакс индикатор */
 .parallax-scroll-indicator {
-    display: none;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: white;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    z-index: 3;
 }
 
-/* ===== SPECK DESIGN VERTICAL BLOCKS ===== */
+.parallax-scroll-indicator:hover {
+    opacity: 1;
+}
+
+.scroll-arrow {
+    width: 30px;
+    height: 30px;
+    border: 2px solid white;
+    border-left: none;
+    border-top: none;
+    transform: rotate(45deg);
+    margin: 0 auto 10px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: rotate(45deg) translateY(0);
+    }
+    40% {
+        transform: rotate(45deg) translateY(-10px);
+    }
+    60% {
+        transform: rotate(45deg) translateY(-5px);
+    }
+}
+
+.parallax-scroll-indicator span {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+/* ===== SPECK DESIGN VERTICAL BLOCKS (ТОЧНО КАК НА SPECKDESIGN.COM) ===== */
+
 .speck-vertical-section {
     position: relative;
     width: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 100px 0;
-    min-height: auto;
-    display: block;
+    overflow: hidden;
+    background: transparent;
+    padding: 0;
 }
 
-/* Убрать параллакс фон */
-.speck-parallax-bg,
-.speck-bg-number,
-.speck-shape {
-    display: none !important;
+/* Фоновый слой с параллаксом */
+.speck-parallax-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
 }
+
+/* Гигантские цифры как на Speck */
+.speck-bg-number {
+    position: absolute;
+    font-size: 35vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.02);
+    line-height: 1;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    user-select: none;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.speck-bg-number.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.speck-bg-1 { top: 10%; left: -5%; }
+.speck-bg-2 { top: 25%; right: -10%; }
+.speck-bg-3 { top: 60%; left: -8%; }
+.speck-bg-4 { top: 75%; right: -5%; }
+
+/* Абстрактные формы как на Speck */
+.speck-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 102, 255, 0.05) 0%, transparent 70%);
+    filter: blur(60px);
+    opacity: 0.5;
+}
+
+.shape-1 { width: 500px; height: 500px; top: 15%; left: 15%; }
+.shape-2 { width: 300px; height: 300px; bottom: 20%; right: 20%; }
+.shape-3 { width: 400px; height: 400px; top: 50%; left: 5%; }
 
 /* Вертикальные блоки */
 .speck-vertical-block {
-    min-height: auto;
-    display: block;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
     position: relative;
     z-index: 2;
-    padding: 100px 0;
-    opacity: 1;
-    transform: translateY(0);
-    background: rgba(20, 20, 40, 0.6);
-    margin: 40px 0;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
+    padding: 120px 0;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.speck-vertical-block:nth-child(even) {
-    background: rgba(30, 30, 50, 0.6);
+.speck-vertical-block.active {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .speck-block-inner {
@@ -216,30 +282,28 @@ body.home-page {
 }
 
 .speck-block-title {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     font-weight: 800;
     color: white;
     margin: 0 0 20px 0;
     line-height: 1.1;
     letter-spacing: -0.02em;
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    text-transform: uppercase;
 }
 
 .speck-block-subtitle {
-    font-size: 1.6rem;
-    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.8rem;
+    color: rgba(255, 255, 255, 0.9);
     margin: 0 0 30px 0;
     line-height: 1.4;
     font-weight: 400;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .speck-block-description {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     line-height: 1.8;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.7);
     margin: 0 0 40px 0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* Список особенностей */
@@ -254,7 +318,7 @@ body.home-page {
     gap: 15px;
     margin-bottom: 20px;
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .speck-feature-icon {
@@ -273,7 +337,7 @@ body.home-page {
     display: inline-flex;
     align-items: center;
     gap: 15px;
-    background: rgba(255, 255, 255, 0.1);
+    background: transparent;
     color: white;
     border: 2px solid rgba(255, 255, 255, 0.3);
     padding: 18px 35px;
@@ -281,12 +345,12 @@ body.home-page {
     font-size: 1.1rem;
     font-weight: 600;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     backdrop-filter: blur(10px);
 }
 
 .speck-block-cta:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
     border-color: white;
     transform: translateX(10px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -300,7 +364,7 @@ body.home-page {
     transform: translateX(5px);
 }
 
-/* Визуальная часть */
+/* Визуальная часть (заглушка для изображений) */
 .speck-block-visual {
     flex: 1;
     max-width: 600px;
@@ -308,12 +372,12 @@ body.home-page {
 
 .speck-visual-placeholder {
     width: 100%;
-    height: 400px;
+    height: 500px;
     background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.05) 0%, 
-        rgba(255, 255, 255, 0.02) 100%);
+        rgba(255, 255, 255, 0.03) 0%, 
+        rgba(255, 255, 255, 0.01) 100%);
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
     display: flex;
     align-items: center;
@@ -339,38 +403,39 @@ body.home-page {
 }
 
 .speck-visual-placeholder i {
-    font-size: 5rem;
-    color: rgba(255, 255, 255, 0.15);
+    font-size: 6rem;
+    color: rgba(255, 255, 255, 0.1);
     z-index: 1;
 }
 
 /* ===== CLIENTS SECTION ===== */
 .clients-section {
     padding: 120px 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: transparent;
     position: relative;
-    min-height: auto;
-    display: block;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
-    margin: 40px 20px;
+    overflow: hidden;
 }
 
 .clients-section::before {
-    display: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .clients-content {
     text-align: center;
     position: relative;
     z-index: 2;
-    width: 100%;
 }
 
 .clients-label {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.6);
     text-transform: uppercase;
     letter-spacing: 3px;
     margin-bottom: 50px;
@@ -403,7 +468,7 @@ body.home-page {
     content: '';
     position: absolute;
     top: 0;
-    width: 100px;
+    width: 150px;
     height: 100%;
     z-index: 2;
     pointer-events: none;
@@ -411,20 +476,20 @@ body.home-page {
 
 .marquee-container::before {
     left: 0;
-    background: linear-gradient(90deg, rgba(10, 10, 20, 0.9) 0%, transparent 100%);
+    background: linear-gradient(90deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
 }
 
 .marquee-container::after {
     right: 0;
-    background: linear-gradient(270deg, rgba(10, 10, 20, 0.9) 0%, transparent 100%);
+    background: linear-gradient(270deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
 }
 
 .marquee-track {
     display: flex;
     width: max-content;
-    padding: 30px 0;
+    padding: 35px 0;
     white-space: nowrap;
-    animation: marquee-scroll 30s linear infinite;
+    will-change: transform;
 }
 
 .marquee-content {
@@ -434,25 +499,19 @@ body.home-page {
     flex-shrink: 0;
 }
 
-@keyframes marquee-scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-33.33%); }
-}
-
 .brand {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: white;
-    opacity: 0.9;
-    transition: all 0.3s ease;
-    padding: 0 30px;
+    opacity: 0.7;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 0 40px;
     white-space: nowrap;
     flex-shrink: 0;
     text-decoration: none;
     position: relative;
     text-transform: uppercase;
     letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .brand:hover {
@@ -461,48 +520,76 @@ body.home-page {
     transform: translateY(-3px);
 }
 
+.brand::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #0066ff, transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.brand:hover::after {
+    transform: scaleX(1);
+}
+
 .separator {
-    color: rgba(255, 255, 255, 0.3);
-    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 1.8rem;
     font-weight: 300;
     flex-shrink: 0;
+    opacity: 0.5;
+}
+
+/* Marquee animations - управляются через inline стили в index.html */
+.marquee-track:hover {
+    animation-play-state: paused !important;
 }
 
 /* ===== STATS SECTION ===== */
 .stats-improved {
-    padding: 120px 0;
-    background: rgba(0, 0, 0, 0.3);
+    padding: 140px 0;
+    background: transparent;
     position: relative;
+    overflow: hidden;
     z-index: 2;
-    min-height: auto;
-    display: block;
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
-    margin: 40px 20px;
 }
 
 .stats-improved::before {
-    display: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 30% 50%, rgba(0, 102, 255, 0.1) 0%, transparent 70%),
+        radial-gradient(circle at 70% 30%, rgba(255, 100, 100, 0.05) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .stats-grid-improved {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
     position: relative;
     z-index: 2;
-    width: 100%;
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 40px 30px;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    padding: 50px 35px;
     text-align: center;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     overflow: hidden;
     cursor: pointer;
@@ -510,25 +597,49 @@ body.home-page {
     color: inherit;
 }
 
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.1), 
+        transparent);
+    transition: left 0.7s ease;
+    z-index: 1;
+}
+
+.stat-card:hover::before {
+    left: 100%;
+}
+
 .stat-card:hover {
-    transform: translateY(-10px);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-15px);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 
+        0 25px 50px rgba(255, 255, 255, 0.15),
+        0 10px 30px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.08) 0%, 
+        rgba(255, 255, 255, 0.04) 100%);
 }
 
 .stat-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: #66b5ff;
-    transition: all 0.3s ease;
+    font-size: 3.5rem;
+    margin-bottom: 25px;
+    color: white;
+    transition: all 0.4s ease;
     position: relative;
     z-index: 2;
 }
 
 .stat-card:hover .stat-icon {
-    transform: scale(1.1);
-    color: #3399ff;
+    transform: scale(1.15);
+    color: #66b5ff;
+    text-shadow: 0 0 20px rgba(102, 181, 255, 0.5);
 }
 
 .stat-content {
@@ -537,52 +648,86 @@ body.home-page {
 }
 
 .stat-number-improved {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     font-weight: 900;
     color: white;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     line-height: 1;
-    background: linear-gradient(135deg, #ffffff 0%, #66b5ff 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+}
+
+.stat-card:hover .stat-number-improved {
+    background: linear-gradient(135deg, #66b5ff 0%, #3399ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: scale(1.05);
 }
 
 .stat-label-improved {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     transition: all 0.3s ease;
 }
 
+.stat-card:hover .stat-label-improved {
+    color: white;
+    letter-spacing: 2px;
+}
+
 /* ===== CTA SECTION ===== */
 .cta-improved {
-    padding: 120px 0;
+    padding: 140px 0;
     background: linear-gradient(135deg, 
-        rgba(0, 102, 255, 0.3) 0%, 
-        rgba(0, 170, 255, 0.2) 100%);
+        rgba(0, 102, 255, 0.15) 0%, 
+        rgba(0, 170, 255, 0.15) 100%);
     position: relative;
     z-index: 2;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
     display: block;
-    min-height: auto;
-    display: flex;
-    align-items: center;
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 30px;
-    margin: 40px 20px;
+    overflow: hidden;
 }
 
-.cta-improved:hover {
-    background: linear-gradient(135deg, 
-        rgba(0, 102, 255, 0.4) 0%, 
-        rgba(0, 170, 255, 0.3) 100%);
+.cta-improved::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.cta-improved::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.1), 
+        transparent);
+    transition: left 0.7s ease;
+    z-index: 1;
+}
+
+.cta-improved:hover::after {
+    left: 100%;
 }
 
 .cta-content-improved {
@@ -592,11 +737,10 @@ body.home-page {
     position: relative;
     z-index: 2;
     padding: 0 20px;
-    width: 100%;
 }
 
 .cta-text h2 {
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 900;
     margin-bottom: 25px;
     color: white;
@@ -606,18 +750,30 @@ body.home-page {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s ease;
+}
+
+.cta-improved:hover .cta-text h2 {
+    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: scale(1.02);
 }
 
 .cta-text p {
-    font-size: 1.3rem;
-    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 50px;
     line-height: 1.6;
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.cta-improved:hover .cta-text p {
+    color: white;
 }
 
 .cta-action {
@@ -627,58 +783,120 @@ body.home-page {
 
 .btn-glow {
     position: relative;
+    overflow: hidden;
     background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     color: white;
     border: none;
-    padding: 20px 40px;
+    padding: 22px 45px;
     font-size: 1.2rem;
     font-weight: 600;
     border-radius: 50px;
     display: inline-flex;
     align-items: center;
     gap: 15px;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0, 102, 255, 0.4);
-    min-width: 250px;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 
+        0 15px 35px rgba(0, 102, 255, 0.4),
+        0 5px 15px rgba(0, 102, 255, 0.2);
+    min-width: 280px;
     justify-content: center;
-    backdrop-filter: blur(10px);
+}
+
+.btn-glow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    transition: left 0.7s ease;
+    border-radius: 50px;
+}
+
+.btn-glow:hover::before {
+    left: 100%;
 }
 
 .btn-glow:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 20px 50px rgba(0, 102, 255, 0.5);
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 
+        0 25px 50px rgba(0, 102, 255, 0.5),
+        0 10px 30px rgba(0, 102, 255, 0.3),
+        0 0 100px rgba(0, 102, 255, 0.2);
     background: linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
 }
 
 .btn-glow i {
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
 }
 
 .btn-glow:hover i {
-    transform: translateX(5px);
+    transform: translateX(8px) rotate(-15deg);
 }
 
 .btn-large {
     font-size: 1.3rem;
-    padding: 22px 45px;
+    padding: 25px 50px;
 }
 
-/* ===== УБИРАЕМ ВСЕ СТИЛИ PARALLAX ===== */
-.parallax-layer,
-.parallax-bg-container,
-.parallax-indicators,
-.parallax-bg,
-[data-layer] {
-    display: none !important;
-}
-
-.content-section {
-    min-height: auto;
+/* ===== GLASS HEADER FOR HOME PAGE ===== */
+.home-page .main-header {
+    position: fixed !important;
+    top: 30px !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(0) !important;
+    width: calc(100% - 60px) !important;
+    max-width: 1400px !important;
+    z-index: 1000 !important;
     opacity: 1 !important;
-    transform: none !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 25px !important;
+    background: rgba(0, 102, 255, 0.12) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        0 4px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
-/* ===== АДАПТИВНОСТЬ ===== */
+/* Состояние скрытого хедера */
+.home-page .main-header.header-hidden {
+    transform: translateX(-50%) translateY(-150%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Минимизированный хедер при скролле */
+.home-page .main-header.header-minimized {
+    padding: 15px 0 !important;
+    background: rgba(0, 102, 255, 0.25) !important;
+    backdrop-filter: blur(25px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.25),
+        0 5px 20px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    top: 20px !important;
+}
+
+/* Увеличение отступа для контента под хедером */
+.home-page .hero {
+    padding-top: 140px !important;
+    transition: padding-top 0.4s ease !important;
+}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ VERTICAL BLOCKS ===== */
+
 @media (max-width: 1200px) {
     .speck-block-inner {
         gap: 60px;
@@ -686,31 +904,31 @@ body.home-page {
     }
     
     .speck-block-title {
-        font-size: 3rem;
-    }
-    
-    .speck-block-subtitle {
-        font-size: 1.4rem;
-    }
-    
-    .speck-visual-placeholder {
-        height: 350px;
-    }
-    
-    .hero h1 {
-        font-size: 3.5rem;
-    }
-    
-    .hero h1 span:first-child {
         font-size: 4rem;
     }
     
-    .hero h1 span:nth-child(2) {
-        font-size: 3rem;
+    .speck-block-subtitle {
+        font-size: 1.6rem;
     }
     
-    .cta-text h2 {
-        font-size: 3rem;
+    .speck-visual-placeholder {
+        height: 450px;
+    }
+    
+    .hero h1 {
+        font-size: 4rem;
+    }
+    
+    .hero h1 span:first-child {
+        font-size: 4.5rem;
+    }
+    
+    .hero h1 span:nth-child(2) {
+        font-size: 3.5rem;
+    }
+    
+    .hero h1 span:last-child {
+        font-size: 4rem;
     }
 }
 
@@ -731,19 +949,23 @@ body.home-page {
     }
     
     .speck-block-title {
-        font-size: 2.8rem;
+        font-size: 3.5rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
     }
     
     .speck-block-description {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
     
     .speck-visual-placeholder {
-        height: 300px;
+        height: 400px;
+    }
+    
+    .speck-bg-number {
+        font-size: 30vw;
     }
     
     .hero {
@@ -752,23 +974,27 @@ body.home-page {
     }
     
     .hero h1 {
-        font-size: 3rem;
-    }
-    
-    .hero h1 span:first-child {
         font-size: 3.5rem;
     }
     
+    .hero h1 span:first-child {
+        font-size: 4rem;
+    }
+    
     .hero h1 span:nth-child(2) {
-        font-size: 2.5rem;
+        font-size: 3rem;
+    }
+    
+    .hero h1 span:last-child {
+        font-size: 3.5rem;
     }
     
     .hero-subtitle {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
     
     .hero-description p {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
     
     .clients-section,
@@ -778,22 +1004,32 @@ body.home-page {
     }
     
     .cta-text h2 {
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
     
     .cta-text p {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
     
     .brand {
-        font-size: 1.3rem;
-        padding: 0 25px;
+        font-size: 1.4rem;
+        padding: 0 30px;
+    }
+    
+    .home-page .main-header {
+        width: calc(100% - 40px) !important;
+        top: 20px !important;
+    }
+    
+    .home-page .hero {
+        padding-top: 120px !important;
     }
 }
 
 @media (max-width: 768px) {
     .speck-vertical-block {
         padding: 80px 0;
+        min-height: 90vh;
     }
     
     .speck-block-inner {
@@ -802,15 +1038,15 @@ body.home-page {
     }
     
     .speck-block-title {
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
     
     .speck-block-description {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     
     .speck-feature-item {
@@ -818,11 +1054,15 @@ body.home-page {
     }
     
     .speck-visual-placeholder {
-        height: 250px;
+        height: 350px;
     }
     
     .speck-visual-placeholder i {
-        font-size: 3.5rem;
+        font-size: 4rem;
+    }
+    
+    .speck-bg-number {
+        font-size: 25vw;
     }
     
     .hero {
@@ -830,19 +1070,23 @@ body.home-page {
     }
     
     .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
     }
     
     .hero h1 span:first-child {
-        font-size: 3rem;
+        font-size: 3.2rem;
     }
     
     .hero h1 span:nth-child(2) {
-        font-size: 2rem;
+        font-size: 2.5rem;
+    }
+    
+    .hero h1 span:last-child {
+        font-size: 2.8rem;
     }
     
     .hero-subtitle {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         margin-bottom: 2rem;
     }
     
@@ -851,7 +1095,7 @@ body.home-page {
     }
     
     .hero-description p {
-        font-size: 1rem;
+        font-size: 1.1rem;
         line-height: 1.6;
     }
     
@@ -869,7 +1113,6 @@ body.home-page {
     
     .clients-section {
         padding: 80px 0;
-        margin: 20px 10px;
     }
     
     .clients-label {
@@ -879,89 +1122,105 @@ body.home-page {
     }
     
     .brand {
-        font-size: 1.1rem;
-        padding: 0 20px;
+        font-size: 1.2rem;
+        padding: 0 25px;
     }
     
     .separator {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
     }
     
     .marquee-track {
-        padding: 20px 0;
+        padding: 25px 0;
     }
     
     .stats-improved {
         padding: 80px 0;
-        margin: 20px 10px;
     }
     
     .stats-grid-improved {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        gap: 30px;
     }
     
     .stat-card {
-        padding: 30px 20px;
+        padding: 40px 25px;
     }
     
     .stat-icon {
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
     
     .stat-number-improved {
-        font-size: 2.8rem;
+        font-size: 3.5rem;
     }
     
     .stat-label-improved {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     
     .cta-improved {
         padding: 80px 0;
-        margin: 20px 10px;
     }
     
     .cta-text h2 {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
     }
     
     .cta-text p {
-        font-size: 1rem;
+        font-size: 1.1rem;
         margin-bottom: 40px;
     }
     
     .btn-glow {
-        padding: 18px 30px;
+        padding: 20px 35px;
         font-size: 1.1rem;
-        min-width: 220px;
+        min-width: 250px;
+    }
+    
+    .home-page .main-header {
+        width: calc(100% - 30px) !important;
+        top: 15px !important;
+    }
+    
+    .home-page .hero {
+        padding-top: 100px !important;
     }
 }
 
 @media (max-width: 576px) {
     .speck-vertical-block {
         padding: 60px 0;
+        min-height: 80vh;
     }
     
     .speck-block-title {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
     }
     
     .speck-block-description {
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
     
     .speck-block-cta {
-        padding: 15px 25px;
+        padding: 15px 30px;
         font-size: 1rem;
     }
     
     .speck-visual-placeholder {
-        height: 200px;
+        height: 300px;
+    }
+    
+    .speck-bg-number {
+        font-size: 20vw;
+    }
+    
+    .speck-shape {
+        display: none;
     }
     
     .hero {
@@ -969,7 +1228,7 @@ body.home-page {
     }
     
     .hero h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
     .hero h1 span:first-child {
@@ -977,6 +1236,89 @@ body.home-page {
     }
     
     .hero h1 span:nth-child(2) {
+        font-size: 2rem;
+    }
+    
+    .hero h1 span:last-child {
+        font-size: 2.2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .hero-description p {
+        font-size: 1rem;
+    }
+    
+    .stats-grid-improved {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .stat-card {
+        padding: 35px 20px;
+    }
+    
+    .brand {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+    
+    .separator {
+        font-size: 1.2rem;
+    }
+    
+    .cta-text h2 {
+        font-size: 2rem;
+    }
+    
+    .cta-text p {
+        font-size: 1rem;
+    }
+    
+    .btn-glow {
+        padding: 18px 30px;
+        font-size: 1rem;
+        min-width: 220px;
+    }
+    
+    .home-page .main-header {
+        width: calc(100% - 20px) !important;
+        top: 10px !important;
+    }
+    
+    .home-page .hero {
+        padding-top: 80px !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .speck-block-title {
+        font-size: 2rem;
+    }
+    
+    .speck-block-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .speck-visual-placeholder {
+        height: 250px;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .hero h1 span:first-child {
+        font-size: 2rem;
+    }
+    
+    .hero h1 span:nth-child(2) {
+        font-size: 1.6rem;
+    }
+    
+    .hero h1 span:last-child {
         font-size: 1.8rem;
     }
     
@@ -988,44 +1330,130 @@ body.home-page {
         font-size: 0.95rem;
     }
     
-    .stats-grid-improved {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .stat-card {
-        padding: 25px 20px;
-    }
-    
     .brand {
-        font-size: 1rem;
+        font-size: 0.9rem;
         padding: 0 15px;
-    }
-    
-    .separator {
-        font-size: 1rem;
-    }
-    
-    .cta-text h2 {
-        font-size: 1.8rem;
-    }
-    
-    .cta-text p {
-        font-size: 0.95rem;
-    }
-    
-    .btn-glow {
-        padding: 15px 25px;
-        font-size: 1rem;
-        min-width: 200px;
     }
 }
 
-/* ===== ПРОСТЫЕ АНИМАЦИИ ===== */
+/* ===== REDUCED MOTION SUPPORT ===== */
+@media (prefers-reduced-motion: reduce) {
+    .speck-bg-number,
+    .speck-vertical-block,
+    .stat-card,
+    .cta-improved,
+    .hero-actions .btn,
+    .btn-glow {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .speck-bg-number:hover,
+    .speck-vertical-block:hover,
+    .stat-card:hover,
+    .cta-improved:hover,
+    .hero-actions .btn:hover,
+    .btn-glow:hover {
+        transform: none !important;
+    }
+    
+    .btn-glow:hover i,
+    .hero-actions .btn:hover i,
+    .speck-block-cta:hover i {
+        transform: none !important;
+    }
+    
+    .stat-card::before,
+    .cta-improved::after,
+    .btn-glow::before {
+        transition: none !important;
+    }
+    
+    .marquee-track {
+        animation: none !important;
+    }
+    
+    .scroll-arrow {
+        animation: none;
+    }
+    
+    .parallax-scroll-indicator span {
+        opacity: 0.5;
+    }
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATION ===== */
+@media (hover: none) {
+    .speck-block-cta:hover,
+    .stat-card:hover,
+    .cta-improved:hover,
+    .hero-actions .btn:hover,
+    .btn-glow:hover,
+    .brand:hover {
+        transform: none;
+    }
+    
+    .speck-block-cta:active,
+    .stat-card:active,
+    .cta-improved:active {
+        transform: scale(0.98);
+    }
+    
+    .btn-glow:active {
+        transform: scale(0.95);
+    }
+    
+    .stat-card::before,
+    .cta-improved::after,
+    .btn-glow::before {
+        display: none;
+    }
+    
+    .brand::after {
+        display: none;
+    }
+}
+
+/* ===== FALLBACK FOR NO BACKDROP-FILTER SUPPORT ===== */
+@supports not (backdrop-filter: blur(15px)) {
+    .speck-visual-placeholder {
+        background: rgba(20, 20, 35, 0.95);
+    }
+    
+    .stat-card {
+        background: rgba(25, 25, 40, 0.95);
+    }
+    
+    .home-page .main-header {
+        background: rgba(0, 102, 255, 0.25);
+    }
+    
+    .home-page .main-header.header-minimized {
+        background: rgba(0, 102, 255, 0.35);
+    }
+}
+
+/* ===== CLICKABLE ELEMENTS ENHANCEMENT ===== */
+.clickable-stat-card,
+.clickable-cta,
+.clickable-brand {
+    cursor: pointer;
+    outline: none;
+}
+
+.clickable-stat-card:focus-visible,
+.clickable-cta:focus-visible,
+.clickable-brand:focus-visible {
+    outline: 3px solid #0066ff;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* ===== LOADING ANIMATIONS ===== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -1033,36 +1461,62 @@ body.home-page {
     }
 }
 
-.hero,
-.speck-vertical-section,
-.clients-section,
-.stats-improved,
-.cta-improved {
+.content-section {
     animation: fadeInUp 0.8s ease-out forwards;
 }
 
-/* Задержки для плавного появления */
+/* Delay animations for staggered effect */
 .hero { animation-delay: 0.1s; }
 .speck-vertical-section { animation-delay: 0.2s; }
 .clients-section { animation-delay: 0.3s; }
 .stats-improved { animation-delay: 0.4s; }
 .cta-improved { animation-delay: 0.5s; }
 
-/* ===== УЛУЧШЕНИЯ ДЛЯ ЧИТАЕМОСТИ ===== */
-* {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+/* Hide during loading */
+.content-section {
+    opacity: 0;
 }
 
-/* Гарантированный цвет текста */
-h1, h2, h3, h4, h5, h6, p, span, a, div, li {
-    color: #ffffff !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
-}
-
-/* Убираем все возможные скрытия */
-section, div, .content-section, .speck-vertical-block {
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
+/* ===== PRINT STYLES ===== */
+@media print {
+    .hero,
+    .speck-vertical-section,
+    .clients-section,
+    .stats-improved,
+    .cta-improved {
+        background: white !important;
+        color: black !important;
+        padding: 40px 0 !important;
     }
+    
+    .hero h1,
+    .hero-subtitle,
+    .speck-block-title,
+    .stat-number-improved,
+    .cta-text h2 {
+        color: black !important;
+        background: none !important;
+        -webkit-text-fill-color: black !important;
+    }
+    
+    .hero-actions,
+    .parallax-scroll-indicator,
+    .marquee-track,
+    .btn-glow,
+    .speck-parallax-bg {
+        display: none !important;
+    }
+    
+    .speck-visual-placeholder,
+    .stat-card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+    }
+}
+
+/* ===== УБИРАЕМ ФОНОВЫЕ ЦИФРЫ В СЕКЦИИ SPECK ===== */
+/* Добавляем этот код в самый конец файла */
+.speck-bg-number {
+    display: none !important;
+          }
