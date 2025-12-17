@@ -3312,3 +3312,50 @@ html {
         }
     }
 }
+
+/* Убираем градиентные overlay с фона */
+.parallax-hero::before,
+.parallax-hero::after {
+    display: none !important;
+}
+
+/* Убираем синий overlay с хедера на главной */
+.home-page .main-header::before,
+.home-page .main-header::after {
+    display: none !important;
+}
+
+/* Чистим футер от overlay эффектов */
+.main-footer::before,
+.main-footer::after {
+    display: none !important;
+}
+
+/* Убираем все дополнительные псевдоэлементы с фонами */
+*::before,
+*::after {
+    background: none !important;
+    box-shadow: none !important;
+}
+
+/* Чистый фон для всех секций */
+.content-section {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Фикс для параллакс контейнера */
+.parallax-bg-container {
+    background: transparent !important;
+}
+
+/* Убираем все затемнения и наложения */
+.speck-vertical-section,
+.clients-section,
+.stats-improved,
+.cta-improved,
+.hero {
+    background: transparent !important;
+}
+
