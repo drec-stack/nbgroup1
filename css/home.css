@@ -65,31 +65,21 @@ header, footer, section, nav {
 }
 
 .hero h1 span:first-child {
-    background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#a0a0ff));
-    background: -o-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
-    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: none;
+    color: white;
     font-size: 5rem;
 }
 
 .hero h1 span:nth-child(2) {
     font-size: 4rem;
     opacity: 0.9;
-    background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ccccff));
-    background: -o-linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
-    background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ccccff;
 }
 
 /* Фолбэк для градиентов текста */
 .no-cssgradients .hero h1 span:first-child,
 .no-cssgradients .hero h1 span:nth-child(2) {
     background: none !important;
-    -webkit-text-fill-color: white !important;
     color: white !important;
 }
 
@@ -170,9 +160,7 @@ header, footer, section, nav {
 }
 
 .hero-actions .btn-primary {
-    background: -webkit-gradient(linear, left top, right bottom, from(#0066ff), to(#00aaff));
-    background: -o-linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
-    background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
+    background: #0066ff;
     color: white;
     border: none;
     box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
@@ -188,9 +176,7 @@ header, footer, section, nav {
     -ms-transform: translateY(-5px);
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
-    background: -webkit-gradient(linear, left top, right bottom, from(#0052cc), to(#0088cc));
-    background: -o-linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
-    background: linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
+    background: #0052cc;
 }
 
 .no-cssgradients .hero-actions .btn-primary:hover {
@@ -329,15 +315,18 @@ header, footer, section, nav {
     opacity: 0.7;
 }
 
-/* ===== SPECK DESIGN VERTICAL BLOCKS ===== */
+/* ===== SPECK DESIGN VERTICAL BLOCKS - УЛУЧШЕННАЯ ВЕРСИЯ ===== */
 .speck-vertical-section {
-    padding: 120px 0;
+    padding: 180px 0 120px;
     position: relative;
     background: transparent;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
 }
 
 .speck-vertical-grid {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -346,16 +335,16 @@ header, footer, section, nav {
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-    gap: 60px;
+    gap: 120px !important;
 }
 
 /* Фолбэк для flexbox gap */
 .no-flexgap .speck-vertical-grid {
-    margin: -30px 0;
+    margin: -60px 0;
 }
 
 .no-flexgap .speck-vertical-block {
-    margin: 30px 0;
+    margin: 60px 0;
 }
 
 /* Фолбэк для старых браузеров без flexbox */
@@ -365,10 +354,8 @@ header, footer, section, nav {
 
 .no-flexbox .speck-vertical-block {
     display: block;
-    margin-bottom: 60px;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
+    margin-bottom: 120px;
+    padding: 40px 0;
 }
 
 .speck-vertical-block {
@@ -378,16 +365,27 @@ header, footer, section, nav {
     -webkit-box-align: start;
     -ms-flex-align: start;
     align-items: flex-start;
-    gap: 80px;
+    gap: 120px !important;
     opacity: 0;
-    -webkit-transform: translateY(30px);
-    -ms-transform: translateY(30px);
-    transform: translateY(30px);
-    -webkit-transition: opacity 0.8s ease, -webkit-transform 0.8s ease;
-    transition: opacity 0.8s ease, -webkit-transform 0.8s ease;
-    -o-transition: opacity 0.8s ease, transform 0.8s ease;
-    transition: opacity 0.8s ease, transform 0.8s ease;
-    transition: opacity 0.8s ease, transform 0.8s ease, -webkit-transform 0.8s ease;
+    -webkit-transform: translateY(40px);
+    -ms-transform: translateY(40px);
+    transform: translateY(40px);
+    -webkit-transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    -o-transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 50px 0;
+    position: relative;
+}
+
+.no-flexgap .speck-vertical-block {
+    margin-right: -120px;
+}
+
+.no-flexgap .speck-block-left,
+.no-flexgap .speck-block-right {
+    margin-right: 120px;
 }
 
 /* Фолбэк для CSS transforms */
@@ -396,15 +394,6 @@ header, footer, section, nav {
     -webkit-transition: opacity 0.8s ease;
     -o-transition: opacity 0.8s ease;
     transition: opacity 0.8s ease;
-}
-
-.no-flexgap .speck-vertical-block {
-    margin-right: -80px;
-}
-
-.no-flexgap .speck-block-left,
-.no-flexgap .speck-block-right {
-    margin-right: 80px;
 }
 
 .speck-vertical-block.visible {
@@ -420,16 +409,21 @@ header, footer, section, nav {
 
 .speck-block-left {
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 200px;
-    flex: 0 0 200px;
+    -ms-flex: 0 0 280px;
+    flex: 0 0 280px;
     text-align: right;
-    padding-top: 10px;
+    padding-top: 20px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 120px;
+    -ms-flex-item-align: start;
+    align-self: flex-start;
 }
 
 /* Фолбэк для старых браузеров без flexbox */
 .no-flexbox .speck-block-left {
     float: left;
-    width: 200px;
+    width: 280px;
     text-align: left;
     padding-right: 40px;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -437,90 +431,163 @@ header, footer, section, nav {
 }
 
 .speck-block-number {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #0066ff;
-    margin-bottom: 15px;
-    letter-spacing: 3px;
+    margin-bottom: 25px;
+    letter-spacing: 4px;
     text-transform: uppercase;
     position: relative;
     display: inline-block;
+    padding-bottom: 15px;
 }
 
 .speck-block-number::after {
     content: '';
     position: absolute;
-    bottom: -6px;
+    bottom: 0;
     right: 0;
-    width: 30px;
-    height: 2px;
+    width: 50px;
+    height: 3px;
     background: #0066ff;
-    -webkit-transition: width 0.3s ease;
-    -o-transition: width 0.3s ease;
-    transition: width 0.3s ease;
+    -webkit-transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -o-transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .speck-vertical-block:hover .speck-block-number::after {
-    width: 40px;
+    width: 80px;
 }
 
 .speck-block-title {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 3.5rem;
+    font-weight: 800;
     color: white;
-    line-height: 1.1;
+    line-height: 1;
     margin: 0;
+    letter-spacing: -1px;
 }
 
 .speck-block-right {
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-    padding-left: 80px;
-    padding-top: 10px;
+    border-left: 2px solid rgba(255, 255, 255, 0.15);
+    padding-left: 120px;
+    padding-top: 20px;
+    min-height: 400px;
 }
 
 /* Фолбэк для старых браузеров без flexbox */
 .no-flexbox .speck-block-right {
-    margin-left: 240px;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    margin-left: 320px;
+    border-left: 2px solid rgba(255, 255, 255, 0.15);
     padding-left: 40px;
     clear: both;
+    min-height: 400px;
 }
 
 .speck-block-subtitle {
-    font-size: 1.8rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0 0 30px 0;
-    line-height: 1.4;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0 0 60px 0;
+    line-height: 1.3;
+    position: relative;
+    padding-bottom: 25px;
+}
+
+.speck-block-subtitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: #0066ff;
+    border-radius: 2px;
 }
 
 /* ===== SPECK DESIGN TWO-COLUMN STRUCTURE ===== */
 
 /* Двухколоночная структура как на speckdesign.com */
 .speck-feature-columns {
+    display: -ms-grid;
     display: grid;
+    -ms-grid-columns: 1fr 100px 1fr;
     grid-template-columns: repeat(2, 1fr);
-    gap: 60px;
-    margin-top: 25px;
+    gap: 100px !important;
+    margin-top: 40px;
 }
 
 .speck-feature-column {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    padding: 30px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    -webkit-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    -o-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    min-height: 220px;
+}
+
+.speck-feature-column::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(0, 102, 255, 0.5);
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+
+.speck-feature-column:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    -webkit-transform: translateY(-8px);
+    -ms-transform: translateY(-8px);
+    transform: translateY(-8px);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 10px 20px rgba(0, 102, 255, 0.1);
+}
+
+.no-csstransforms .speck-feature-column:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 10px 20px rgba(0, 102, 255, 0.1);
+}
+
+.speck-feature-column:hover::before {
+    opacity: 1;
 }
 
 .speck-column-title {
-    font-size: 1.3rem;
-    font-weight: 600;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: white;
-    margin-bottom: 22px;
-    padding-bottom: 12px;
+    margin-bottom: 30px;
     position: relative;
+    padding-bottom: 20px;
+    line-height: 1.3;
     letter-spacing: 0.5px;
-    line-height: 1.4;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
@@ -529,11 +596,13 @@ header, footer, section, nav {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 40px;
-    height: 2px;
+    width: 50px;
+    height: 3px;
     background: #0066ff;
-    transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform-origin: left center;
+    border-radius: 2px;
+    -webkit-transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    -o-transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .speck-vertical-block:hover .speck-column-title::after {
@@ -547,7 +616,13 @@ header, footer, section, nav {
 /* Эффект при наведении на колонку */
 .speck-feature-column:hover .speck-column-title {
     color: white;
+    -webkit-transform: translateX(5px);
+    -ms-transform: translateX(5px);
     transform: translateX(5px);
+}
+
+.no-csstransforms .speck-feature-column:hover .speck-column-title {
+    color: white;
 }
 
 .speck-feature-column:hover .speck-column-title::after {
@@ -561,22 +636,44 @@ header, footer, section, nav {
 }
 
 .speck-feature-column .speck-feature-item {
-    margin-bottom: 18px;
+    margin-bottom: 28px;
     padding-left: 5px;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
 .speck-feature-column:hover .speck-feature-item {
+    -webkit-transform: translateX(8px);
+    -ms-transform: translateX(8px);
     transform: translateX(8px);
+}
+
+.no-csstransforms .speck-feature-column:hover .speck-feature-item {
+    padding-left: 13px;
 }
 
 .speck-feature-column .speck-feature-item:hover {
     color: white;
+    -webkit-transform: translateX(12px);
+    -ms-transform: translateX(12px);
     transform: translateX(12px);
 }
 
+.no-csstransforms .speck-feature-column .speck-feature-item:hover {
+    color: white;
+    padding-left: 17px;
+}
+
 .speck-feature-column .speck-feature-item:hover .speck-feature-icon {
+    -webkit-transform: translateX(5px);
+    -ms-transform: translateX(5px);
     transform: translateX(5px);
+    color: #66b5ff;
+}
+
+.no-csstransforms .speck-feature-column .speck-feature-item:hover .speck-feature-icon {
+    margin-left: 5px;
     color: #66b5ff;
 }
 
@@ -584,38 +681,67 @@ header, footer, section, nav {
 .speck-feature-column.clickable-column {
     cursor: pointer;
     position: relative;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
 .speck-feature-column.clickable-column:hover {
     background: rgba(255, 255, 255, 0.03);
     border-radius: 8px;
-    padding: 15px;
-    margin: -15px;
+    padding: 30px;
+    margin: 0;
+    -webkit-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
     transform: translateY(-5px);
 }
 
+.no-csstransforms .speck-feature-column.clickable-column:hover {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 30px;
+}
+
 .speck-feature-column.clickable-column:active {
+    -webkit-transform: translateY(-2px) scale(0.995);
+    -ms-transform: translateY(-2px) scale(0.995);
     transform: translateY(-2px) scale(0.995);
+}
+
+.no-csstransforms .speck-feature-column.clickable-column:active {
+    opacity: 0.9;
 }
 
 /* Анимация для активного состояния */
 .speck-feature-column.column-clicked {
+    -webkit-animation: columnClick 0.3s ease;
     animation: columnClick 0.3s ease;
 }
 
+@-webkit-keyframes columnClick {
+    0% { -webkit-transform: scale(1); transform: scale(1); }
+    50% { -webkit-transform: scale(0.98); transform: scale(0.98); }
+    100% { -webkit-transform: scale(1); transform: scale(1); }
+}
+
 @keyframes columnClick {
-    0% { transform: scale(1); }
-    50% { transform: scale(0.98); }
-    100% { transform: scale(1); }
+    0% { -webkit-transform: scale(1); transform: scale(1); }
+    50% { -webkit-transform: scale(0.98); transform: scale(0.98); }
+    100% { -webkit-transform: scale(1); transform: scale(1); }
+}
+
+.no-csstransforms .speck-feature-column.column-clicked {
+    -webkit-animation: none;
+    animation: none;
 }
 
 /* Эффект для всего блока при наведении */
 .speck-vertical-block.block-hovered {
     background: rgba(255, 255, 255, 0.02);
     border-radius: 12px;
-    padding: 20px;
+    padding: 50px 20px;
     margin: -20px;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
 }
 
@@ -638,48 +764,48 @@ header, footer, section, nav {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    font-size: 1.1rem;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 28px;
+    font-size: 1.2rem;
     color: rgba(255, 255, 255, 0.85);
     -webkit-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
-    padding: 8px 0;
+    padding: 12px 0;
     position: relative;
     cursor: pointer;
 }
 
 .no-flexgap .speck-feature-item {
-    margin-right: -15px;
+    margin-right: -18px;
 }
 
 .no-flexgap .speck-feature-icon,
 .no-flexgap .speck-feature-text {
-    margin-right: 15px;
+    margin-right: 18px;
 }
 
 /* Фолбэк для старых браузеров без flexbox */
 .no-flexbox .speck-feature-item {
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: 28px;
 }
 
 .no-flexbox .speck-feature-icon {
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 18px;
 }
 
 .speck-feature-item::before {
     content: '';
     position: absolute;
-    left: -15px;
+    left: -30px;
     top: 0;
     bottom: 0;
-    width: 2px;
+    width: 3px;
     background: #0066ff;
     opacity: 0;
     -webkit-transition: opacity 0.3s ease;
@@ -693,39 +819,43 @@ header, footer, section, nav {
 
 .speck-feature-item:hover {
     color: white;
-    -webkit-transform: translateX(10px);
-    -ms-transform: translateX(10px);
-    transform: translateX(10px);
+    -webkit-transform: translateX(15px);
+    -ms-transform: translateX(15px);
+    transform: translateX(15px);
 }
 
 .no-csstransforms .speck-feature-item:hover {
-    padding-left: 10px;
+    padding-left: 15px;
 }
 
 .speck-feature-icon {
     color: #0066ff;
     font-weight: bold;
-    font-size: 1.3rem;
-    min-width: 20px;
-    -webkit-transition: -webkit-transform 0.3s ease;
-    transition: -webkit-transform 0.3s ease;
-    -o-transition: transform 0.3s ease;
-    transition: transform 0.3s ease;
-    transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+    font-size: 1.6rem;
+    min-width: 24px;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    margin-top: 2px;
 }
 
 .speck-feature-item:hover .speck-feature-icon {
-    -webkit-transform: translateX(5px);
-    -ms-transform: translateX(5px);
-    transform: translateX(5px);
+    -webkit-transform: translateX(8px) scale(1.2);
+    -ms-transform: translateX(8px) scale(1.2);
+    transform: translateX(8px) scale(1.2);
+    color: #66b5ff;
 }
 
 .no-csstransforms .speck-feature-item:hover .speck-feature-icon {
-    margin-left: 5px;
+    margin-left: 8px;
+    color: #66b5ff;
 }
 
 .speck-feature-text {
-    line-height: 1.5;
+    line-height: 1.6;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
 }
 
 /* Анимация при наведении на весь блок */
@@ -735,6 +865,98 @@ header, footer, section, nav {
 
 .speck-vertical-block:hover .speck-block-subtitle {
     color: white;
+}
+
+/* Эффект свечения при наведении на весь блок */
+.speck-vertical-block:hover {
+    position: relative;
+}
+
+.speck-vertical-block:hover::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background: rgba(0, 102, 255, 0.1);
+    border-radius: 24px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Линия-разделитель между блоками */
+.speck-vertical-block:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: 280px;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Анимация появления колонок */
+.speck-feature-column {
+    opacity: 0;
+    -webkit-transform: translateY(30px);
+    -ms-transform: translateY(30px);
+    transform: translateY(30px);
+    -webkit-animation: speckColumnFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: speckColumnFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@-webkit-keyframes speckColumnFadeIn {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(30px);
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@keyframes speckColumnFadeIn {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(30px);
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+/* Задержки для анимации колонок */
+.speck-feature-column:nth-child(1) {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+}
+
+.speck-feature-column:nth-child(2) {
+    -webkit-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+}
+
+/* Анимация при скролле */
+.speck-vertical-block {
+    -webkit-transition: opacity 0.8s ease, -webkit-transform 0.8s ease;
+    transition: opacity 0.8s ease, -webkit-transform 0.8s ease;
+    -o-transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 0.8s ease, transform 0.8s ease, -webkit-transform 0.8s ease;
+}
+
+.speck-vertical-block.scroll-animated {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
 }
 
 /* ===== CLIENTS SECTION ===== */
@@ -752,7 +974,7 @@ header, footer, section, nav {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+    background: rgba(255, 255, 255, 0.03);
     pointer-events: none;
 }
 
@@ -784,9 +1006,7 @@ header, footer, section, nav {
     transform: translateX(-50%);
     width: 40px;
     height: 2px;
-    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(#0066ff), to(transparent));
-    background: -o-linear-gradient(left, transparent, #0066ff, transparent);
-    background: linear-gradient(90deg, transparent, #0066ff, transparent);
+    background: #0066ff;
 }
 
 .no-csstransforms .clients-label::after {
@@ -815,16 +1035,12 @@ header, footer, section, nav {
 
 .marquee-container::before {
     left: 0;
-    background: -webkit-gradient(linear, left top, right top, from(rgba(10, 10, 15, 0.8)), to(transparent));
-    background: -o-linear-gradient(left, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
-    background: linear-gradient(90deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
+    background: rgba(10, 10, 15, 0.8);
 }
 
 .marquee-container::after {
     right: 0;
-    background: -webkit-gradient(linear, right top, left top, from(rgba(10, 10, 15, 0.8)), to(transparent));
-    background: -o-linear-gradient(right, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
-    background: linear-gradient(270deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
+    background: rgba(10, 10, 15, 0.8);
 }
 
 .marquee-track {
@@ -899,9 +1115,7 @@ header, footer, section, nav {
     left: 40px;
     right: 40px;
     height: 2px;
-    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(#0066ff), to(transparent));
-    background: -o-linear-gradient(left, transparent, #0066ff, transparent);
-    background: linear-gradient(90deg, transparent, #0066ff, transparent);
+    background: #0066ff;
     -webkit-transform: scaleX(0);
     -ms-transform: scaleX(0);
     transform: scaleX(0);
@@ -953,9 +1167,7 @@ header, footer, section, nav {
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-        radial-gradient(circle at 30% 50%, rgba(0, 102, 255, 0.1) 0%, transparent 70%),
-        radial-gradient(circle at 70% 30%, rgba(255, 100, 100, 0.05) 0%, transparent 70%);
+    background: rgba(0, 102, 255, 0.1);
     pointer-events: none;
 }
 
@@ -991,7 +1203,9 @@ header, footer, section, nav {
 }
 
 .stats-grid-improved {
+    display: -ms-grid;
     display: grid;
+    -ms-grid-columns: (minmax(280px, 1fr))[auto-fit];
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 40px;
     position: relative;
@@ -1008,9 +1222,7 @@ header, footer, section, nav {
 }
 
 .stat-card {
-    background: -webkit-gradient(linear, left top, right bottom, from(rgba(255, 255, 255, 0.05)), to(rgba(255, 255, 255, 0.02)));
-    background: -o-linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 24px;
     padding: 50px 35px;
@@ -1033,11 +1245,6 @@ header, footer, section, nav {
     border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Фолбэк для градиентов */
-.no-cssgradients .stat-card {
-    background: rgba(20, 25, 40, 0.95);
-}
-
 .stat-card::before {
     content: '';
     position: absolute;
@@ -1045,9 +1252,7 @@ header, footer, section, nav {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(rgba(255, 255, 255, 0.1)), to(transparent));
-    background: -o-linear-gradient(left, transparent, rgba(255, 255, 255, 0.1), transparent);
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background: rgba(255, 255, 255, 0.1);
     -webkit-transition: left 0.7s ease;
     -o-transition: left 0.7s ease;
     transition: left 0.7s ease;
@@ -1066,9 +1271,7 @@ header, footer, section, nav {
     box-shadow: 
         0 25px 50px rgba(255, 255, 255, 0.15),
         0 10px 30px rgba(0, 0, 0, 0.3);
-    background: -webkit-gradient(linear, left top, right bottom, from(rgba(255, 255, 255, 0.08)), to(rgba(255, 255, 255, 0.04)));
-    background: -o-linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .no-csstransforms .stat-card:hover {
@@ -1079,10 +1282,6 @@ header, footer, section, nav {
 }
 
 .no-backdropfilter .stat-card:hover {
-    background: rgba(25, 30, 45, 0.95);
-}
-
-.no-cssgradients .stat-card:hover {
     background: rgba(25, 30, 45, 0.95);
 }
 
@@ -1121,37 +1320,19 @@ header, footer, section, nav {
     color: white;
     margin-bottom: 15px;
     line-height: 1;
-    background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#a0a0ff));
-    background: -o-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
-    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
     -webkit-transition: all 0.4s ease;
     -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
 }
 
-.no-cssgradients .stat-number-improved {
-    background: none !important;
-    -webkit-text-fill-color: white !important;
-    color: white !important;
-}
-
 .stat-card:hover .stat-number-improved {
-    background: -webkit-gradient(linear, left top, right bottom, from(#66b5ff), to(#3399ff));
-    background: -o-linear-gradient(135deg, #66b5ff 0%, #3399ff 100%);
-    background: linear-gradient(135deg, #66b5ff 0%, #3399ff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #66b5ff;
     -webkit-transform: scale(1.05);
     -ms-transform: scale(1.05);
     transform: scale(1.05);
 }
 
-.no-csstransforms .stat-card:hover .stat-number-improved,
-.no-cssgradients .stat-card:hover .stat-number-improved {
+.no-csstransforms .stat-card:hover .stat-number-improved {
     color: #66b5ff;
 }
 
@@ -1174,9 +1355,7 @@ header, footer, section, nav {
 /* ===== CTA SECTION ===== */
 .cta-improved {
     padding: 140px 0;
-    background: -webkit-gradient(linear, left top, right bottom, from(rgba(0, 102, 255, 0.15)), to(rgba(0, 170, 255, 0.15)));
-    background: -o-linear-gradient(135deg, rgba(0, 102, 255, 0.15) 0%, rgba(0, 170, 255, 0.15) 100%);
-    background: linear-gradient(135deg, rgba(0, 102, 255, 0.15) 0%, rgba(0, 170, 255, 0.15) 100%);
+    background: rgba(0, 102, 255, 0.15);
     position: relative;
     z-index: 2;
     cursor: pointer;
@@ -1186,10 +1365,6 @@ header, footer, section, nav {
     overflow: hidden;
 }
 
-.no-cssgradients .cta-improved {
-    background: rgba(0, 102, 255, 0.15);
-}
-
 .cta-improved::before {
     content: '';
     position: absolute;
@@ -1197,9 +1372,7 @@ header, footer, section, nav {
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    background: rgba(255, 255, 255, 0.1);
     pointer-events: none;
     z-index: 1;
 }
@@ -1211,9 +1384,7 @@ header, footer, section, nav {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(rgba(255, 255, 255, 0.1)), to(transparent));
-    background: -o-linear-gradient(left, transparent, rgba(255, 255, 255, 0.1), transparent);
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background: rgba(255, 255, 255, 0.1);
     -webkit-transition: left 0.7s ease;
     -o-transition: left 0.7s ease;
     transition: left 0.7s ease;
@@ -1240,37 +1411,19 @@ header, footer, section, nav {
     color: white;
     line-height: 1.1;
     letter-spacing: -0.02em;
-    background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#ccccff));
-    background: -o-linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
-    background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
     -webkit-transition: all 0.4s ease;
     -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
 }
 
-.no-cssgradients .cta-text h2 {
-    background: none !important;
-    -webkit-text-fill-color: white !important;
-    color: white !important;
-}
-
 .cta-improved:hover .cta-text h2 {
-    background: -webkit-gradient(linear, left top, right bottom, from(#ffffff), to(#a0a0ff));
-    background: -o-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
-    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #a0a0ff;
     -webkit-transform: scale(1.02);
     -ms-transform: scale(1.02);
     transform: scale(1.02);
 }
 
-.no-csstransforms .cta-improved:hover .cta-text h2,
-.no-cssgradients .cta-improved:hover .cta-text h2 {
+.no-csstransforms .cta-improved:hover .cta-text h2 {
     color: #a0a0ff;
 }
 
@@ -1299,9 +1452,7 @@ header, footer, section, nav {
 .btn-glow {
     position: relative;
     overflow: hidden;
-    background: -webkit-gradient(linear, left top, right bottom, from(#0066ff), to(#00aaff));
-    background: -o-linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
-    background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
+    background: #0066ff;
     color: white;
     border: none;
     padding: 22px 45px;
@@ -1329,10 +1480,6 @@ header, footer, section, nav {
     cursor: pointer;
 }
 
-.no-cssgradients .btn-glow {
-    background: #0066ff !important;
-}
-
 .no-flexgap .btn-glow {
     margin-right: -15px;
 }
@@ -1348,9 +1495,7 @@ header, footer, section, nav {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(rgba(255, 255, 255, 0.3)), to(transparent));
-    background: -o-linear-gradient(left, transparent, rgba(255, 255, 255, 0.3), transparent);
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: rgba(255, 255, 255, 0.3);
     -webkit-transition: left 0.7s ease;
     -o-transition: left 0.7s ease;
     transition: left 0.7s ease;
@@ -1369,13 +1514,7 @@ header, footer, section, nav {
         0 25px 50px rgba(0, 102, 255, 0.5),
         0 10px 30px rgba(0, 102, 255, 0.3),
         0 0 100px rgba(0, 102, 255, 0.2);
-    background: -webkit-gradient(linear, left top, right bottom, from(#0052cc), to(#0088cc));
-    background: -o-linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
-    background: linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
-}
-
-.no-cssgradients .btn-glow:hover {
-    background: #0052cc !important;
+    background: #0052cc;
 }
 
 .no-csstransforms .btn-glow:hover {
@@ -1498,42 +1637,43 @@ header, footer, section, nav {
 
 @media (max-width: 1200px) {
     .speck-vertical-grid {
-        max-width: 900px;
+        max-width: 1000px;
+        gap: 80px !important;
     }
     
     .speck-vertical-block {
-        gap: 60px;
+        gap: 80px !important;
     }
     
     .no-flexgap .speck-vertical-block {
-        margin-right: -60px;
+        margin-right: -80px;
     }
     
     .no-flexgap .speck-block-left,
     .no-flexgap .speck-block-right {
-        margin-right: 60px;
+        margin-right: 80px;
     }
     
     .speck-block-left {
         -webkit-box-flex: 0;
-        -ms-flex: 0 0 180px;
-        flex: 0 0 180px;
+        -ms-flex: 0 0 220px;
+        flex: 0 0 220px;
     }
     
     .speck-block-right {
-        padding-left: 60px;
+        padding-left: 80px;
     }
     
     .speck-block-title {
-        font-size: 2.2rem;
+        font-size: 2.8rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
     
     .speck-feature-columns {
-        gap: 45px;
+        gap: 60px !important;
     }
     
     .speck-column-title {
@@ -1547,7 +1687,7 @@ header, footer, section, nav {
     }
     
     .no-cssgrid .speck-feature-column {
-        width: calc(50% - 30px);
+        width: calc(50% - 50px);
         margin-bottom: 40px;
     }
     
@@ -1557,14 +1697,14 @@ header, footer, section, nav {
     }
     
     .no-flexbox .speck-feature-column:nth-child(odd) {
-        width: 48%;
-        margin-right: 2%;
+        width: calc(50% - 50px);
+        margin-right: 50px;
         float: left;
     }
     
     .no-flexbox .speck-feature-column:nth-child(even) {
-        width: 48%;
-        margin-left: 2%;
+        width: calc(50% - 50px);
+        margin-left: 50px;
         margin-right: 0;
         float: right;
     }
@@ -1572,24 +1712,24 @@ header, footer, section, nav {
 
 @media (max-width: 992px) {
     .speck-vertical-section {
-        padding: 80px 0;
+        padding: 120px 0 80px;
     }
     
     .speck-vertical-grid {
         max-width: 700px;
-        gap: 50px;
+        gap: 60px !important;
     }
     
     .no-flexgap .speck-vertical-grid {
-        margin: -25px 0;
+        margin: -30px 0;
     }
     
     .no-flexgap .speck-vertical-block {
-        margin: 25px 0;
+        margin: 30px 0;
     }
     
     .speck-vertical-block {
-        gap: 40px;
+        gap: 40px !important;
     }
     
     .no-flexgap .speck-vertical-block {
@@ -1603,8 +1743,9 @@ header, footer, section, nav {
     
     .speck-block-left {
         -webkit-box-flex: 0;
-        -ms-flex: 0 0 150px;
-        flex: 0 0 150px;
+        -ms-flex: 0 0 180px;
+        flex: 0 0 180px;
+        position: static;
     }
     
     .speck-block-right {
@@ -1612,15 +1753,16 @@ header, footer, section, nav {
     }
     
     .speck-block-title {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
+        margin-bottom: 40px;
     }
     
     .speck-feature-columns {
-        gap: 35px;
+        gap: 40px !important;
     }
     
     .speck-column-title {
@@ -1629,26 +1771,27 @@ header, footer, section, nav {
     }
     
     .speck-feature-item {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     
     .speck-feature-icon {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
     
     .speck-feature-column .speck-feature-item {
-        margin-bottom: 16px;
-        font-size: 1rem;
+        margin-bottom: 20px;
+        font-size: 1.1rem;
     }
     
     /* Для очень старых браузеров */
     .no-flexbox .speck-block-left {
-        width: 150px;
+        width: 180px;
         padding-right: 20px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .no-flexbox .speck-block-right {
-        margin-left: 170px;
+        margin-left: 200px;
         padding-left: 20px;
     }
     
@@ -1656,15 +1799,21 @@ header, footer, section, nav {
         width: calc(50% - 20px);
         margin-bottom: 35px;
     }
+    
+    .speck-vertical-block:not(:last-child)::before {
+        left: 180px;
+        bottom: -30px;
+    }
 }
 
 @media (max-width: 768px) {
     .speck-vertical-section {
-        padding: 60px 0;
+        padding: 100px 0 60px;
+        min-height: auto;
     }
     
     .speck-vertical-grid {
-        gap: 40px;
+        gap: 40px !important;
     }
     
     .no-flexgap .speck-vertical-grid {
@@ -1680,10 +1829,11 @@ header, footer, section, nav {
         -webkit-box-direction: normal;
         -ms-flex-direction: column;
         flex-direction: column;
-        gap: 20px;
+        gap: 20px !important;
         -webkit-box-align: start;
         -ms-flex-align: start;
         align-items: flex-start;
+        padding: 30px 0;
     }
     
     .no-flexgap .speck-vertical-block {
@@ -1711,6 +1861,7 @@ header, footer, section, nav {
         border-left: none;
         padding-left: 0;
         width: 100%;
+        min-height: auto;
     }
     
     .speck-block-number::after {
@@ -1719,17 +1870,18 @@ header, footer, section, nav {
     }
     
     .speck-block-title {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.3rem;
-        margin-bottom: 20px;
+        font-size: 1.4rem;
+        margin-bottom: 30px;
     }
     
     .speck-feature-columns {
+        -ms-grid-columns: 1fr;
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 30px !important;
         margin-top: 30px;
     }
     
@@ -1743,18 +1895,25 @@ header, footer, section, nav {
     }
     
     .speck-feature-item {
-        font-size: 1rem;
-        margin-bottom: 15px;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
     }
     
     .speck-feature-column.clickable-column:hover {
-        padding: 12px;
-        margin: -12px;
+        padding: 25px;
+        margin: 0;
     }
     
     .speck-vertical-block.block-hovered {
-        padding: 15px;
+        padding: 30px 15px;
         margin: -15px;
+    }
+    
+    .speck-vertical-block:hover::after {
+        top: -15px;
+        left: -15px;
+        right: -15px;
+        bottom: -15px;
     }
     
     /* Адаптивность для старых браузеров без CSS Grid */
@@ -1764,20 +1923,20 @@ header, footer, section, nav {
     
     .no-cssgrid .speck-feature-column {
         width: 100%;
-        margin-bottom: 35px;
+        margin-bottom: 30px;
     }
     
     .no-flexgap .speck-feature-columns {
-        margin: -10px;
+        margin: -15px;
     }
     
     .no-flexgap .speck-feature-column {
-        margin: 10px;
+        margin: 15px;
     }
     
     /* Для очень старых браузеров */
     .no-flexbox .speck-vertical-block {
-        padding: 20px;
+        padding: 25px;
     }
     
     .no-flexbox .speck-block-left {
@@ -1799,8 +1958,13 @@ header, footer, section, nav {
     
     .no-flexbox .speck-feature-column {
         width: 100% !important;
-        margin: 0 0 30px 0 !important;
+        margin: 0 0 25px 0 !important;
         float: none;
+    }
+    
+    .speck-vertical-block:not(:last-child)::before {
+        left: 0;
+        bottom: -20px;
     }
 }
 
@@ -1832,70 +1996,76 @@ header, footer, section, nav {
     }
     
     .speck-vertical-section {
-        padding: 50px 0;
+        padding: 80px 0 40px;
     }
     
     .speck-vertical-grid {
-        gap: 35px;
+        gap: 30px !important;
     }
     
     .no-flexgap .speck-vertical-grid {
-        margin: -17.5px 0;
+        margin: -15px 0;
     }
     
     .no-flexgap .speck-vertical-block {
-        margin: 17.5px 0;
+        margin: 15px 0;
     }
     
     .speck-block-title {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
     
     .speck-feature-columns {
-        gap: 35px;
+        gap: 25px !important;
     }
     
     .speck-column-title {
         font-size: 1.2rem;
         margin-bottom: 18px;
-        padding-bottom: 10px;
+        padding-bottom: 15px;
     }
     
     .speck-feature-item {
-        font-size: 0.95rem;
-        gap: 10px;
+        font-size: 1.05rem;
+        gap: 15px;
     }
     
     .no-flexgap .speck-feature-item {
-        margin-right: -10px;
+        margin-right: -15px;
     }
     
     .no-flexgap .speck-feature-icon,
     .no-flexgap .speck-feature-text {
-        margin-right: 10px;
+        margin-right: 15px;
     }
     
     .speck-feature-icon {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
     }
     
     .speck-feature-column .speck-feature-item {
-        margin-bottom: 15px;
-        font-size: 0.95rem;
+        margin-bottom: 18px;
+        font-size: 1.05rem;
     }
     
     .speck-feature-column.clickable-column:hover {
-        padding: 10px;
-        margin: -10px;
+        padding: 20px;
     }
     
     .speck-vertical-block.block-hovered {
-        padding: 12px;
-        margin: -12px;
+        padding: 25px 10px;
+        margin: -10px;
+    }
+    
+    .speck-vertical-block:hover::after {
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
     }
     
     .brand {
@@ -1946,15 +2116,15 @@ header, footer, section, nav {
     }
     
     .speck-block-title {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
     
     .speck-feature-columns {
-        gap: 30px;
+        gap: 20px !important;
     }
     
     .speck-column-title {
@@ -1963,12 +2133,12 @@ header, footer, section, nav {
     }
     
     .speck-feature-item {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
     
     .speck-feature-column .speck-feature-item {
-        margin-bottom: 14px;
-        font-size: 0.9rem;
+        margin-bottom: 16px;
+        font-size: 1rem;
     }
     
     .brand {
@@ -2050,6 +2220,15 @@ header, footer, section, nav {
     
     .parallax-scroll-indicator span {
         opacity: 0.5;
+    }
+    
+    .speck-feature-column {
+        -webkit-animation: none !important;
+        animation: none !important;
+        opacity: 1;
+        -webkit-transform: none;
+        -ms-transform: none;
+        transform: none;
     }
 }
 
@@ -2223,7 +2402,6 @@ header, footer, section, nav {
     .cta-text h2 {
         color: black !important;
         background: none !important;
-        -webkit-text-fill-color: black !important;
     }
     
     .hero-actions,
@@ -2246,6 +2424,8 @@ header, footer, section, nav {
     .speck-feature-column {
         margin-bottom: 20px !important;
         break-inside: avoid;
+        background: white !important;
+        border: 1px solid #ccc !important;
     }
     
     .stat-card {
@@ -2261,7 +2441,7 @@ header, footer, section, nav {
     /* IE 10+ */
     .hero {
         display: block;
-        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
+        background: rgba(0, 0, 0, 0.7);
     }
     
     .speck-vertical-block {
@@ -2294,8 +2474,10 @@ header, footer, section, nav {
     }
     
     .speck-feature-column {
-        width: calc(50% - 30px);
+        width: calc(50% - 50px);
         margin-bottom: 40px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
     }
     
     .hero-actions {
@@ -2387,11 +2569,11 @@ header, footer, section, nav {
         }
         
         .speck-vertical-grid {
-            margin: -30px 0;
+            margin: -60px 0;
         }
         
         .speck-vertical-block {
-            margin: 30px 0;
+            margin: 60px 0;
         }
         
         .stats-grid-improved {
@@ -2403,11 +2585,11 @@ header, footer, section, nav {
         }
         
         .speck-feature-columns {
-            margin: -30px;
+            margin: -50px;
         }
         
         .speck-feature-column {
-            margin: 30px;
+            margin: 50px;
         }
     }
 }
@@ -2593,12 +2775,11 @@ button,
     }
     
     .speck-feature-column.clickable-column:hover {
-        padding: 8px;
-        margin: -8px;
+        padding: 20px;
     }
     
     .speck-vertical-block.block-hovered {
-        padding: 10px;
+        padding: 20px 10px;
         margin: -10px;
     }
 }
@@ -2606,80 +2787,105 @@ button,
 /* ===== АНИМАЦИЯ ПОЯВЛЕНИЯ КОЛОНОК SPECK ===== */
 .speck-feature-column {
     opacity: 0;
+    -webkit-transform: translateY(20px);
+    -ms-transform: translateY(20px);
     transform: translateY(20px);
+    -webkit-animation: speckColumnFadeIn 0.6s ease forwards;
     animation: speckColumnFadeIn 0.6s ease forwards;
 }
 
 .speck-feature-column:nth-child(1) {
+    -webkit-animation-delay: 0.1s;
     animation-delay: 0.1s;
 }
 
 .speck-feature-column:nth-child(2) {
+    -webkit-animation-delay: 0.2s;
     animation-delay: 0.2s;
+}
+
+@-webkit-keyframes speckColumnFadeIn {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(20px);
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
 }
 
 @keyframes speckColumnFadeIn {
     from {
         opacity: 0;
+        -webkit-transform: translateY(20px);
         transform: translateY(20px);
     }
     to {
         opacity: 1;
+        -webkit-transform: translateY(0);
         transform: translateY(0);
     }
 }
 
 /* Анимация для правой колонки */
 .speck-feature-column:nth-child(2) {
+    -webkit-animation-name: speckColumnFadeInRight;
     animation-name: speckColumnFadeInRight;
+}
+
+@-webkit-keyframes speckColumnFadeInRight {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(20px) translateX(20px);
+        transform: translateY(20px) translateX(20px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0) translateX(0);
+        transform: translateY(0) translateX(0);
+    }
 }
 
 @keyframes speckColumnFadeInRight {
     from {
         opacity: 0;
+        -webkit-transform: translateY(20px) translateX(20px);
         transform: translateY(20px) translateX(20px);
     }
     to {
         opacity: 1;
+        -webkit-transform: translateY(0) translateX(0);
         transform: translateY(0) translateX(0);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .speck-feature-column {
+        -webkit-animation: none;
         animation: none;
         opacity: 1;
+        -webkit-transform: none;
+        -ms-transform: none;
         transform: none;
     }
 }
 
 /* Анимация при скролле */
 .speck-feature-column.scroll-animated {
+    -webkit-animation-play-state: running;
     animation-play-state: running;
 }
 
 /* Класс для активации анимаций */
 .speck-animations-loaded .speck-feature-column {
+    -webkit-animation-play-state: running;
     animation-play-state: running;
 }
 
 /* ===== ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ SPECK БЛОКОВ ===== */
-
-/* Градиент для заголовков колонок на широких экранах */
-@media (min-width: 1200px) {
-    .speck-column-title {
-        background: linear-gradient(90deg, #ffffff 0%, #a0a0ff 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .no-cssgradients .speck-column-title {
-        background: none;
-        -webkit-text-fill-color: white;
-        color: white;
-    }
-}
 
 /* Плавный скролл для якорных ссылок */
 html {
@@ -2701,20 +2907,36 @@ html {
         left: 0;
         right: 0;
         bottom: 0;
-        background: radial-gradient(circle at center, rgba(102, 181, 255, 0.1) 0%, transparent 70%);
+        background: rgba(102, 181, 255, 0.1);
         border-radius: 8px;
         z-index: -1;
+        -webkit-animation: pulseGlow 2s infinite;
         animation: pulseGlow 2s infinite;
+    }
+    
+    @-webkit-keyframes pulseGlow {
+        0%, 100% {
+            opacity: 0.5;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.8;
+            -webkit-transform: scale(1.02);
+            transform: scale(1.02);
+        }
     }
     
     @keyframes pulseGlow {
         0%, 100% {
             opacity: 0.5;
+            -webkit-transform: scale(1);
             transform: scale(1);
         }
         50% {
             opacity: 0.8;
+            -webkit-transform: scale(1.02);
             transform: scale(1.02);
         }
     }
-    }
+}
