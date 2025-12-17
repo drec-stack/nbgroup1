@@ -771,5 +771,89 @@
             applyTranslationsForce();
         });
     </script>
+    <script>
+// ДИАГНОСТИКА ИЗОБРАЖЕНИЙ
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔍 Диагностика изображений...');
+    
+    // Проверяем все фоновые изображения
+    const bgElements = [
+        '#parallax-bg-1',
+        '#parallax-bg-2', 
+        '#parallax-bg-3',
+        '#parallax-bg-4'
+    ];
+    
+    bgElements.forEach(selector => {
+        const el = document.querySelector(selector);
+        if (el) {
+            const bg = getComputedStyle(el).backgroundImage;
+            console.log(`${selector}: ${bg}`);
+            
+            // Если изображение не загружено, показываем ошибку
+            const img = new Image();
+            const bgUrl = bg.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
+            img.onerror = () => {
+                console.error(`❌ Изображение не найдено: ${bgUrl}`);
+                // Создаем цветной фон вместо изображения
+                el.style.backgroundImage = 'none';
+                el.style.backgroundColor = getColorForLayer(selector);
+            };
+            img.src = bgUrl;
+        }
+    });
+    
+    function getColorForLayer(selector) {
+        // Цвета для каждого слоя как fallback
+        const colors = {
+            '#parallax-bg-1': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            '#parallax-bg-2': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            '#parallax-bg-3': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            '#parallax-bg-4': 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
+        };
+        return colors[selector] || '#1a1a2e';
+    }
+    
+    // Принудительно показываем все элементы если изображений нет
+    setTimeout(() => {
+        console.log('🛡️ Принудительное отображение контента...');
+        
+        // 1. Убираем все возможные затемнения
+        document.querySelectorAll('*').forEach(el => {
+            el.style.backgroundColor = 'transparent';
+            el.style.backgroundImage = 'none';
+        });
+        
+        // 2. Показываем все тексты
+        document.querySelectorAll('h1, h2, h3, p, span, div, a').forEach(el => {
+            el.style.color = '#ffffff';
+            el.style.textShadow = '0 2px 4px rgba(0,0,0,0.5)';
+            el.style.opacity = '1';
+            el.style.visibility = 'visible';
+            
+            // Заполняем пустые тексты
+            if (!el.textContent || el.textContent.trim() === '') {
+                if (el.classList.contains('brand')) el.textContent = 'КЛИЕНТ';
+                if (el.classList.contains('stat-number-improved')) el.textContent = el.getAttribute('data-target') || '100';
+                if (el.classList.contains('speck-block-title')) el.textContent = 'СЕРВИС';
+            }
+        });
+        
+        // 3. Делаем фон страницы темным для контраста
+        document.body.style.backgroundColor = '#0a0a14';
+        
+        // 4. Показываем все блоки
+        document.querySelectorAll('.parallax-layer, section, .speck-vertical-block').forEach(el => {
+            el.style.opacity = '1';
+            el.style.visibility = 'visible';
+            el.style.display = 'block';
+            el.style.backgroundColor = 'rgba(0,0,0,0.3)';
+            el.style.backdropFilter = 'blur(10px)';
+        });
+        
+        console.log('✅ Контент принудительно отображен');
+    }, 2000);
+});
+</script>
 </body>
 </html>
