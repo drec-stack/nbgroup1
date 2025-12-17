@@ -12,7 +12,6 @@
 }
 
 /* ===== SMOOTH HEADER HIDE ANIMATIONS ===== */
-/* Плавное скрытие хедера при скролле */
 .header-hide-smooth {
     transform: translateY(-100%);
     opacity: 0;
@@ -24,7 +23,6 @@
     box-shadow: none !important;
 }
 
-/* Плавное появление хедера */
 .header-show-smooth {
     transform: translateY(0);
     opacity: 1;
@@ -35,7 +33,6 @@
     pointer-events: auto;
 }
 
-/* Эффект при скролле - мини версия хедера */
 .header-minimized {
     padding: 12px 0 !important;
     background: rgba(0, 102, 255, 0.25) !important;
@@ -46,7 +43,6 @@
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
-/* Анимация появления при скролле вверх */
 @keyframes headerSlideDown {
     from {
         transform: translateY(-100%);
@@ -62,7 +58,6 @@
     animation: headerSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Эффект свечения при появлении */
 .header-glow-appear {
     animation: headerGlowAppear 0.6s ease forwards;
 }
@@ -126,7 +121,6 @@
     }
 }
 
-/* Header glass animations */
 .header-glass-enter {
     animation: headerGlassEnter 0.6s ease forwards;
 }
@@ -161,7 +155,6 @@
     }
 }
 
-/* Frost effect */
 .frost-effect {
     position: relative;
     overflow: hidden;
@@ -180,7 +173,6 @@
     pointer-events: none;
 }
 
-/* Glass morphism animation */
 .glass-morph {
     animation: glassMorph 6s ease-in-out infinite;
     background: rgba(255, 255, 255, 0.1);
@@ -783,13 +775,11 @@
     }
 }
 
-/* Пауза при наведении */
 .marquee-container:hover .marquee-animate-left,
 .marquee-container:hover .marquee-animate-right {
     animation-play-state: paused;
 }
 
-/* Оптимизация для плавности */
 .marquee-infinite-wrapper {
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
@@ -797,7 +787,6 @@
     will-change: transform;
 }
 
-/* Мобильная версия для бегущей строки */
 @media (max-width: 768px) {
     .marquee-animate-left {
         animation: marqueeLeft 30s linear infinite;
@@ -838,7 +827,6 @@
         animation: none !important;
     }
     
-    /* Отключаем анимации хедера при reduced motion */
     .header-hide-smooth,
     .header-show-smooth,
     .header-minimized,
@@ -849,7 +837,6 @@
     }
 }
 
-/* High contrast mode support */
 @media (prefers-contrast: high) {
     .pulse-glow,
     .glow {
@@ -885,7 +872,6 @@
     will-change: transform, opacity;
 }
 
-/* Hardware acceleration */
 .hardware-accelerate {
     transform: translate3d(0, 0, 0);
     -webkit-backface-visibility: hidden;
@@ -906,7 +892,6 @@
     transition: all 0.4s ease-in-out;
 }
 
-/* Enhanced language switcher animations */
 .language-switcher {
     position: relative;
     transition: all 0.3s ease;
@@ -927,7 +912,6 @@
     opacity: 0.8;
 }
 
-/* Smooth fade-in for translated content */
 [data-i18n] {
     transition: opacity 0.3s ease;
 }
@@ -940,14 +924,12 @@
     opacity: 1;
 }
 
-/* Staggered animation for multiple elements */
 .language-changed [data-i18n]:nth-child(1) { transition-delay: 0.05s; }
 .language-changed [data-i18n]:nth-child(2) { transition-delay: 0.1s; }
 .language-changed [data-i18n]:nth-child(3) { transition-delay: 0.15s; }
 .language-changed [data-i18n]:nth-child(4) { transition-delay: 0.2s; }
 .language-changed [data-i18n]:nth-child(5) { transition-delay: 0.25s; }
 
-/* Page transition overlay */
 .language-transition-overlay {
     position: fixed;
     top: 0;
@@ -966,7 +948,6 @@
     pointer-events: all;
 }
 
-/* CSS для плавной смены языка */
 .language-changing main,
 .language-changing body > *:not(.parallax-bg-container):not(.scroll-progress) {
     opacity: 0.4;
@@ -982,7 +963,6 @@
     transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-/* Анимация для переключателя языка */
 .language-switcher {
     position: relative;
     display: inline-flex;
@@ -1042,8 +1022,6 @@
 }
 
 /* ===== АНИМАЦИИ ДЛЯ КЛИКАБЕЛЬНЫХ ЭЛЕМЕНТОВ ===== */
-
-/* Анимация ripple эффекта при клике */
 .ripple {
     position: relative;
     overflow: hidden;
@@ -1078,7 +1056,6 @@
     }
 }
 
-/* Анимация пульсации для призыва к действию */
 .pulse-attention {
     animation: pulse-attention 2s infinite;
 }
@@ -1092,7 +1069,6 @@
     }
 }
 
-/* Анимация поднятия при hover */
 .lift-on-hover {
     transition: transform 0.3s var(--ease-out-back);
 }
@@ -1101,7 +1077,6 @@
     transform: translateY(-5px);
 }
 
-/* Анимация нажатия */
 .press-animation {
     transition: transform 0.1s ease;
 }
@@ -1110,7 +1085,6 @@
     transform: scale(0.95);
 }
 
-/* Анимация появления ссылки */
 .link-reveal {
     position: relative;
     overflow: hidden;
@@ -1132,7 +1106,6 @@
     transform: translateX(0);
 }
 
-/* Анимация иконки стрелки */
 .arrow-animate i {
     transition: transform 0.3s ease;
 }
@@ -1141,7 +1114,6 @@
     transform: translateX(5px);
 }
 
-/* Анимация для карточек при загрузке */
 .card-stagger {
     opacity: 0;
     transform: translateY(20px);
@@ -1155,7 +1127,6 @@
     }
 }
 
-/* Задержки для staggered анимации */
 .card-stagger:nth-child(1) { animation-delay: 0.1s; }
 .card-stagger:nth-child(2) { animation-delay: 0.2s; }
 .card-stagger:nth-child(3) { animation-delay: 0.3s; }
@@ -1163,7 +1134,6 @@
 .card-stagger:nth-child(5) { animation-delay: 0.5s; }
 .card-stagger:nth-child(6) { animation-delay: 0.6s; }
 
-/* Анимация подсветки при переходе */
 .highlight-transition {
     animation: highlightTransition 2s ease;
 }
@@ -1177,13 +1147,11 @@
     }
 }
 
-/* Анимация для бегущей строки при hover */
 .marquee-hover-pause:hover .marquee-animate-left,
 .marquee-hover-pause:hover .marquee-animate-right {
     animation-play-state: paused;
 }
 
-/* Анимация для progress bar */
 .progress-grow {
     animation: progressGrow 0.3s ease;
 }
@@ -1197,12 +1165,10 @@
     }
 }
 
-/* Анимация для переключателя языка */
 .lang-slider {
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Анимация для мобильного меню */
 .mobile-menu-toggle span {
     transition: all 0.3s ease;
 }
@@ -1219,12 +1185,10 @@
     transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* Анимация для overlay */
 .mobile-menu-overlay {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* Анимация для секций при скролле */
 .reveal-on-scroll {
     opacity: 0;
     transform: translateY(30px);
@@ -1267,11 +1231,9 @@
     }
 }
 
-/* Задержки для staggered анимации */
 .speck-feature-column:nth-child(1) { animation-delay: 0.1s; }
 .speck-feature-column:nth-child(2) { animation-delay: 0.2s; }
 
-/* Анимация для иконок при hover */
 @keyframes iconBounce {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateX(5px); }
@@ -1281,7 +1243,6 @@
     animation: iconBounce 0.3s ease;
 }
 
-/* Анимация для заголовков колонок */
 @keyframes titlePulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.05); }
@@ -1291,7 +1252,6 @@
     animation: titlePulse 0.5s ease;
 }
 
-/* Поддержка reduced motion для новых анимаций */
 @media (prefers-reduced-motion: reduce) {
     .speck-vertical-block.scroll-animated,
     .speck-feature-column.stagger-animate,
@@ -1302,19 +1262,36 @@
 }
 
 /* ===== ENHANCED SPECK BLOCK ANIMATIONS ===== */
+/* УЛУЧШЕННЫЕ АНИМАЦИИ ДЛЯ ЦИФР */
 @keyframes speckNumberAppear {
     0% {
         opacity: 0;
-        transform: translateX(-20px);
+        transform: translateX(-30px) scale(0.8);
+    }
+    60% {
+        opacity: 1;
+        transform: translateX(10px) scale(1.1);
     }
     100% {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes speckNumberGlow {
+    0%, 100% {
+        text-shadow: 0 0 15px rgba(0, 102, 255, 0.4),
+                     0 0 30px rgba(0, 102, 255, 0.2);
+    }
+    50% {
+        text-shadow: 0 0 25px rgba(0, 102, 255, 0.8),
+                     0 0 50px rgba(0, 102, 255, 0.4);
     }
 }
 
 .speck-block-number.animate-in {
-    animation: speckNumberAppear 0.6s ease forwards;
+    animation: speckNumberAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+               speckNumberGlow 3s ease-in-out infinite 0.8s;
 }
 
 @keyframes speckTitleAppear {
@@ -1362,13 +1339,11 @@
     animation: speckFeatureItemAppear 0.6s ease forwards;
 }
 
-/* Stagger для feature items */
 .speck-feature-item:nth-child(1) { animation-delay: 0.1s; }
 .speck-feature-item:nth-child(2) { animation-delay: 0.2s; }
 .speck-feature-item:nth-child(3) { animation-delay: 0.3s; }
 .speck-feature-item:nth-child(4) { animation-delay: 0.4s; }
 
-/* Анимация для левой границы блока */
 @keyframes speckBorderAppear {
     0% {
         height: 0;
@@ -1391,7 +1366,6 @@
     animation: speckBorderAppear 1s ease forwards;
 }
 
-/* Анимация для разделительной линии между блоками */
 @keyframes speckDividerAppear {
     0% {
         width: 0;
@@ -1407,7 +1381,6 @@
     animation: speckDividerAppear 0.8s ease 0.6s forwards;
 }
 
-/* Анимация для hover эффекта колонок */
 @keyframes speckColumnHover {
     0% {
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -1425,7 +1398,6 @@
     animation: speckColumnHover 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Анимация для подчеркивания заголовков */
 @keyframes speckUnderlineExpand {
     0% {
         width: 0;
@@ -1439,7 +1411,6 @@
     animation: speckUnderlineExpand 0.8s ease 0.8s forwards;
 }
 
-/* Анимация для стрелок */
 @keyframes speckArrowPulse {
     0%, 100% {
         transform: translateX(0);
@@ -1453,7 +1424,6 @@
     animation: speckArrowPulse 1s infinite;
 }
 
-/* Анимация для появления всего блока */
 @keyframes speckBlockReveal {
     0% {
         opacity: 0;
@@ -1469,7 +1439,6 @@
     animation: speckBlockReveal 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Анимация для background glow */
 @keyframes speckBackgroundGlow {
     0%, 100% {
         opacity: 0.1;
@@ -1485,7 +1454,6 @@
     animation: speckBackgroundGlow 3s infinite;
 }
 
-/* Поддержка reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .speck-block-number.animate-in,
     .speck-block-title.animate-in,
@@ -1511,4 +1479,4 @@
         opacity: 1 !important;
         transform: none !important;
     }
-        }
+}
