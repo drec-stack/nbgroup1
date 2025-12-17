@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
-    <!-- Полифилл для старых браузеров -->
-    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=default,es6,es7,IntersectionObserver,fetch,Array.prototype.includes,NodeList.prototype.forEach,Object.assign"></script>
+    <!-- Полифиллы для старых браузеров -->
+    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=default,es6,es7,IntersectionObserver,fetch"></script>
     <script src="https://cdn.jsdelivr.net/gh/dixonandmoe/rellax@master/rellax.min.js"></script>
     
     <style>
@@ -103,39 +103,6 @@
             animation-play-state: paused !important;
         }
 
-        /* Стили для переключения языка */
-        .language-changing [data-i18n] {
-            opacity: 0.7;
-            -webkit-transition: opacity 0.3s ease;
-            transition: opacity 0.3s ease;
-        }
-
-        @-webkit-keyframes fadeInLanguage {
-            from {
-                opacity: 0.7;
-                -webkit-transform: translateY(5px);
-                transform: translateY(5px);
-            }
-            to {
-                opacity: 1;
-                -webkit-transform: translateY(0);
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInLanguage {
-            from {
-                opacity: 0.7;
-                -webkit-transform: translateY(5px);
-                transform: translateY(5px);
-            }
-            to {
-                opacity: 1;
-                -webkit-transform: translateY(0);
-                transform: translateY(0);
-            }
-        }
-
         /* Language switcher styles */
         .language-switcher {
             display: -webkit-box;
@@ -172,30 +139,6 @@
             border-color: rgba(255, 255, 255, 0.4);
             font-weight: 600;
         }
-
-        /* Фолбэк для backdrop-filter */
-        .no-backdropfilter .speck-vertical-block,
-        .no-backdropfilter .stat-card,
-        .no-backdropfilter .main-header {
-            background: rgba(10, 15, 30, 0.95) !important;
-        }
-
-        /* Фолбэк для flexbox gap */
-        .no-flexgap .speck-vertical-grid {
-            margin: -30px 0;
-        }
-        
-        .no-flexgap .speck-vertical-block {
-            margin: 30px 0;
-        }
-        
-        .no-flexgap .hero-actions {
-            margin: -12.5px;
-        }
-        
-        .no-flexgap .hero-actions .btn {
-            margin: 12.5px;
-        }
     </style>
 </head>
 <body class="home-page">
@@ -217,16 +160,13 @@
     <section class="hero parallax-hero">
         <div class="container">
             <div class="parallax-content">
-                <!-- ЗАГОЛОВОК с data-i18n -->
                 <h1>
                     <span data-i18n="home.hero.titleLine1">NB GROUP TECH</span><br>
                     <span data-i18n="home.hero.subtitle">Industrial Design & Manufacturing</span>
                 </h1>
                 
-                <!-- ПОДЗАГОЛОВОК с data-i18n -->
                 <p class="hero-subtitle" data-i18n="home.subtitle">Промышленная дизайн-студия полного цикла</p>
                 
-                <!-- ОПИСАНИЕ с data-i18n -->
                 <div class="hero-description">
                     <p data-i18n="home.hero.description">
                         Промышленная дизайн-студия полного цикла. Создаём продукты, которые сочетают эстетику, инженерную точность и производимую реализацию. Работаем системно: дизайн → инженерия → прототип → производство → упаковка → бренд-система. Наш подход основан на прозрачности, точности и ответственности за результат.
@@ -557,32 +497,12 @@
     <div id="footer-container"></div>
 
     <!-- JavaScript -->
-    <script src="js/compatibility.js"></script> <!-- Добавляем файл совместимости -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/home.js"></script>
     <script src="js/parallax.js"></script>
 
     <script>
-        // Проверка совместимости браузера
-        (function() {
-            // Проверяем поддержку backdrop-filter
-            if (!CSS.supports('backdrop-filter', 'blur(10px)') && 
-                !CSS.supports('-webkit-backdrop-filter', 'blur(10px)')) {
-                document.body.classList.add('no-backdropfilter');
-            }
-            
-            // Проверяем поддержку flexbox gap
-            if (!CSS.supports('gap', '0')) {
-                document.body.classList.add('no-flexgap');
-            }
-            
-            // Проверяем поддержку CSS Grid
-            if (!CSS.supports('display', 'grid')) {
-                document.body.classList.add('no-cssgrid');
-            }
-        })();
-
         // Проверка состояния i18n
         console.log('📄 Page loading, initializing...');
         
@@ -745,4 +665,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
