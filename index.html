@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
-    <!-- Полифиллы для старых браузеров -->
-    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=default,es6,es7,IntersectionObserver,fetch"></script>
-    <script src="https://cdn.jsdelivr.net/gh/dixonandmoe/rellax@master/rellax.min.js"></script>
+    
+    <!-- ЗАМЕНЕН polyfill.io на polyfill.app -->
+    <script src="https://polyfill.app/v3/polyfill.min.js?features=default,es6,es7,IntersectionObserver,fetch,Promise,Array.from,NodeList.prototype.forEach,Element.prototype.classList,requestAnimationFrame"></script>
     
     <style>
         /* ГАРАНТИРОВАННЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ */
@@ -71,11 +71,15 @@
         #marquee1 {
             -webkit-animation: marquee-scroll 40s linear infinite !important;
             animation: marquee-scroll 40s linear infinite !important;
+            -moz-animation: marquee-scroll 40s linear infinite !important;
+            -o-animation: marquee-scroll 40s linear infinite !important;
         }
 
         #marquee2 {
             -webkit-animation: marquee-scroll-reverse 40s linear infinite !important;
             animation: marquee-scroll-reverse 40s linear infinite !important;
+            -moz-animation: marquee-scroll-reverse 40s linear infinite !important;
+            -o-animation: marquee-scroll-reverse 40s linear infinite !important;
         }
 
         @-webkit-keyframes marquee-scroll {
@@ -88,6 +92,11 @@
             100% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
         }
 
+        @-moz-keyframes marquee-scroll {
+            0% { -moz-transform: translateX(0) !important; transform: translateX(0) !important; }
+            100% { -moz-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
+        }
+
         @-webkit-keyframes marquee-scroll-reverse {
             0% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
             100% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
@@ -98,9 +107,22 @@
             100% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
         }
 
+        @-moz-keyframes marquee-scroll-reverse {
+            0% { -moz-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
+            100% { -moz-transform: translateX(0) !important; transform: translateX(0) !important; }
+        }
+
         .marquee-track:hover {
             -webkit-animation-play-state: paused !important;
             animation-play-state: paused !important;
+            -moz-animation-play-state: paused !important;
+        }
+
+        /* Фолбэк для старых браузеров */
+        .no-cssanimations .marquee-track {
+            animation: none !important;
+            -webkit-animation: none !important;
+            -moz-animation: none !important;
         }
 
         /* Language switcher styles */
@@ -139,7 +161,92 @@
             border-color: rgba(255, 255, 255, 0.4);
             font-weight: 600;
         }
+
+        /* Стили для старых браузеров */
+        .no-cssgradients .hero h1 span,
+        .no-cssgradients .stat-number-improved,
+        .no-cssgradients .cta-text h2 {
+            background: none !important;
+            -webkit-background-clip: initial !important;
+            background-clip: initial !important;
+            -webkit-text-fill-color: white !important;
+            color: white !important;
+        }
+
+        .no-backdropfilter .main-header,
+        .no-backdropfilter .stat-card,
+        .no-backdropfilter .hero-actions .btn-secondary {
+            background: rgba(15, 20, 35, 0.95) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        .no-csstransforms .speck-vertical-block,
+        .no-csstransforms .stat-card:hover,
+        .no-csstransforms .btn:hover,
+        .no-csstransforms .brand:hover {
+            transform: none !important;
+            -webkit-transform: none !important;
+            -moz-transform: none !important;
+        }
+
+        .no-flexgap .hero-actions,
+        .no-flexgap .speck-vertical-grid,
+        .no-flexgap .stats-grid-improved {
+            margin: -10px;
+        }
+
+        .no-flexgap .hero-actions .btn,
+        .no-flexgap .speck-vertical-block,
+        .no-flexgap .stat-card {
+            margin: 10px;
+        }
     </style>
+    
+    <!-- Добавляем простой Modernizr для определения возможностей браузера -->
+    <script>
+        (function(d){
+            var tests = {
+                csstransforms: function() {
+                    var e = d.createElement('div');
+                    return 'transform' in e.style || 
+                           'webkitTransform' in e.style || 
+                           'msTransform' in e.style;
+                },
+                cssgrid: function() {
+                    var e = d.createElement('div');
+                    return 'grid' in e.style;
+                },
+                cssgradients: function() {
+                    var e = d.createElement('div');
+                    e.style.cssText = 'background:linear-gradient(45deg,#000,#fff)';
+                    return e.style.background && e.style.background.indexOf('gradient') !== -1;
+                },
+                backdropfilter: function() {
+                    var e = d.createElement('div');
+                    return 'backdropFilter' in e.style || 
+                           'webkitBackdropFilter' in e.style;
+                },
+                flexgap: function() {
+                    var e = d.createElement('div');
+                    e.style.cssText = 'display:flex;gap:10px';
+                    return e.style.gap !== undefined || 
+                           e.style.gridGap !== undefined;
+                }
+            };
+            
+            var classes = [];
+            for (var test in tests) {
+                if (!tests[test]()) {
+                    classes.push('no-' + test);
+                }
+            }
+            
+            if (classes.length) {
+                d.documentElement.className += ' ' + classes.join(' ');
+            }
+        })(document);
+    </script>
 </head>
 <body class="home-page">
     <!-- PARALLAX BACKGROUNDS -->
@@ -540,12 +647,43 @@
             }
         }
         
-        // Load header component
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-container').innerHTML = html;
+        // Загрузка компонентов с поддержкой старых браузеров
+        function loadComponents() {
+            // Проверяем поддержку fetch
+            var hasFetch = 'fetch' in window;
+            var hasXMLHttpRequest = 'XMLHttpRequest' in window;
+            
+            // Функция для загрузки через XMLHttpRequest (IE7+)
+            function loadWithXHR(url, containerId, callback) {
+                if (!hasXMLHttpRequest) {
+                    // Самый старый браузер
+                    loadFallbackComponents();
+                    return;
+                }
                 
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        var container = document.getElementById(containerId);
+                        if (xhr.status === 200 && container) {
+                            container.innerHTML = xhr.responseText;
+                            if (callback) callback();
+                        } else if (container) {
+                            // Fallback
+                            if (containerId === 'header-container') {
+                                container.innerHTML = getFallbackHeader();
+                            } else if (containerId === 'footer-container') {
+                                container.innerHTML = getFallbackFooter();
+                            }
+                        }
+                    }
+                };
+                xhr.send();
+            }
+            
+            // Загрузка header
+            loadWithXHR('components/header.html', 'header-container', function() {
                 // Инициализировать хедер
                 if (typeof initHeader === 'function') initHeader();
                 initHomeHeader();
@@ -556,59 +694,10 @@
                         window.i18n.refresh();
                     }
                 }, 500);
-            })
-            .catch(error => {
-                console.error('Error loading header:', error);
-                // Fallback header
-                document.getElementById('header-container').innerHTML = `
-                    <header class="main-header">
-                        <div class="container">
-                            <div class="header-inner">
-                                <a href="index.html" class="logo">
-                                    <div class="logo-mark">NB</div>
-                                    <span class="logo-text">NBGROUP.TECH</span>
-                                </a>
-                                <nav class="main-nav">
-                                    <a href="index.html" class="nav-link active" data-i18n="nav.home">Home</a>
-                                    <a href="services.html" class="nav-link" data-i18n="nav.services">Services</a>
-                                    <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Work</a>
-                                    <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Brandbook</a>
-                                    <a href="about.html" class="nav-link" data-i18n="nav.about">About</a>
-                                    <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Contact</a>
-                                </nav>
-                                <div class="header-actions">
-                                    <div class="language-switcher" data-current-lang="ru">
-                                        <button class="lang-btn" data-lang="ru">RU</button>
-                                        <button class="lang-btn" data-lang="en">EN</button>
-                                    </div>
-                                    <a href="contacts.html" class="btn btn-small btn-primary">
-                                        <span data-i18n="nav.startProject">Start Project</span>
-                                    </a>
-                                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mobile-menu-overlay"></div>
-                    </header>
-                `;
-                
-                // Применить переводы к fallback хедеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 300);
             });
-
-        // Load footer component
-        fetch('components/footer.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('footer-container').innerHTML = html;
+            
+            // Загрузка footer
+            loadWithXHR('components/footer.html', 'footer-container', function() {
                 console.log('✅ Footer loaded successfully');
                 
                 // Применить переводы к футеру
@@ -617,16 +706,59 @@
                         window.i18n.refresh();
                     }
                 }, 500);
-            })
-            .catch(error => {
-                console.error('Error loading footer:', error);
-                // Fallback footer
-                document.getElementById('footer-container').innerHTML = `
-                    <footer class="minimal-footer">
+            });
+            
+            // Фолбэк компоненты для самых старых браузеров
+            function loadFallbackComponents() {
+                var headerContainer = document.getElementById('header-container');
+                var footerContainer = document.getElementById('footer-container');
+                
+                if (headerContainer) {
+                    headerContainer.innerHTML = getFallbackHeader();
+                }
+                
+                if (footerContainer) {
+                    footerContainer.innerHTML = getFallbackFooter();
+                }
+            }
+            
+            function getFallbackHeader() {
+                return `
+                    <header class="main-header" style="background: rgba(15, 20, 35, 0.95); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 15px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <div class="container">
+                            <div class="header-inner" style="display: flex; justify-content: space-between; align-items: center;">
+                                <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none; color: white;">
+                                    <div class="logo-mark" style="background: #0066ff; color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; font-size: 18px; margin-right: 10px;">NB</div>
+                                    <span class="logo-text" style="font-size: 18px; font-weight: bold;">NBGROUP.TECH</span>
+                                </a>
+                                <nav class="main-nav" style="display: flex; gap: 30px;">
+                                    <a href="index.html" class="nav-link active" style="color: white; text-decoration: none; font-weight: 500;">Home</a>
+                                    <a href="services.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Services</a>
+                                    <a href="portfolio.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Work</a>
+                                    <a href="brandbook.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Brandbook</a>
+                                    <a href="about.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">About</a>
+                                    <a href="contacts.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Contact</a>
+                                </nav>
+                                <div class="header-actions" style="display: flex; align-items: center; gap: 15px;">
+                                    <div class="language-switcher" style="display: flex; gap: 5px;">
+                                        <button class="lang-btn" data-lang="ru" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer;">RU</button>
+                                        <button class="lang-btn" data-lang="en" style="background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.7); padding: 5px 10px; border-radius: 4px; cursor: pointer;">EN</button>
+                                    </div>
+                                    <a href="contacts.html" class="btn btn-small btn-primary" style="background: #0066ff; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 500;">Start Project</a>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                `;
+            }
+            
+            function getFallbackFooter() {
+                return `
+                    <footer class="minimal-footer" style="background: rgba(10, 15, 30, 0.95); padding: 40px 0; margin-top: 100px;">
                         <div class="footer-container">
                             <div class="footer-content">
-                                <div class="footer-bottom">
-                                    <div class="copyright" data-i18n="footer.copyright">
+                                <div class="footer-bottom" style="text-align: center;">
+                                    <div class="copyright" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">
                                         © 2024 NBGROUP.TECH Все права защищены.
                                     </div>
                                 </div>
@@ -634,20 +766,46 @@
                         </div>
                     </footer>
                 `;
-                
-                // Применить переводы к fallback футеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 300);
-            });
+            }
+        }
 
         // Запустить проверки и инициализацию
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 DOM fully loaded');
+            
+            // Загружаем компоненты
+            loadComponents();
+            
             checkMarquee();
             applyTranslationsForce();
+            
+            // Упрощаем для старых браузеров
+            setTimeout(function() {
+                var hasNoCSS = document.documentElement.classList.contains('no-csstransforms') ||
+                              document.documentElement.classList.contains('no-cssgradients');
+                
+                if (hasNoCSS) {
+                    console.log('🔄 Упрощаем для старых браузеров');
+                    
+                    // Показываем все элементы сразу
+                    var hiddenElements = document.querySelectorAll('.content-section, .speck-vertical-block');
+                    for (var i = 0; i < hiddenElements.length; i++) {
+                        hiddenElements[i].style.opacity = '1';
+                        hiddenElements[i].style.visibility = 'visible';
+                    }
+                    
+                    // Показываем финальные числа в статистике
+                    var statNumbers = document.querySelectorAll('.stat-number-improved');
+                    for (var i = 0; i < statNumbers.length; i++) {
+                        var target = statNumbers[i].getAttribute('data-target');
+                        if (target) {
+                            statNumbers[i].textContent = target;
+                            statNumbers[i].style.background = 'none';
+                            statNumbers[i].style.color = 'white';
+                        }
+                    }
+                }
+            }, 1000);
             
             // Резервная проверка через 5 секунд
             setTimeout(() => {
@@ -665,4 +823,4 @@
         });
     </script>
 </body>
-</html>
+                                </html>
