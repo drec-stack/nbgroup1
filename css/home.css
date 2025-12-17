@@ -459,94 +459,6 @@ header, footer, section, nav {
     color: #0066ff;
 }
 
-/* БОЛЬШАЯ ПОДЛОЖКА ДЛЯ ЦИФР */
-.speck-block-number::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: -25px;
-    right: -25px;
-    bottom: -15px;
-    background: rgba(0, 102, 255, 0.1);
-    border-radius: 12px;
-    z-index: -1;
-    opacity: 0.7;
-    -webkit-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    -o-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-}
-
-.no-backdropfilter .speck-block-number::before {
-    background: rgba(0, 102, 255, 0.2);
-}
-
-.speck-vertical-block:hover .speck-block-number::before {
-    opacity: 1;
-    background: rgba(0, 102, 255, 0.15);
-    -webkit-transform: scale(1.05);
-    -ms-transform: scale(1.05);
-    transform: scale(1.05);
-}
-
-/* Анимация пульсации для цифр */
-@-webkit-keyframes speckNumberPulse {
-    0%, 100% {
-        text-shadow: 0 0 20px rgba(0, 102, 255, 0.6),
-                     0 0 40px rgba(0, 102, 255, 0.3);
-    }
-    50% {
-        text-shadow: 0 0 40px rgba(0, 102, 255, 0.9),
-                     0 0 80px rgba(0, 102, 255, 0.5);
-    }
-}
-
-@keyframes speckNumberPulse {
-    0%, 100% {
-        text-shadow: 0 0 20px rgba(0, 102, 255, 0.6),
-                     0 0 40px rgba(0, 102, 255, 0.3);
-    }
-    50% {
-        text-shadow: 0 0 40px rgba(0, 102, 255, 0.9),
-                     0 0 80px rgba(0, 102, 255, 0.5);
-    }
-}
-
-.speck-vertical-block:hover .speck-block-number {
-    -webkit-animation: speckNumberPulse 2s infinite;
-    animation: speckNumberPulse 2s infinite;
-}
-
-/* ТОЛСТАЯ ЛИНИЯ ПОД ЦИФРОЙ */
-.speck-block-number::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 80px;
-    height: 6px;
-    background: linear-gradient(90deg, #0066ff, #66b5ff);
-    border-radius: 3px;
-    box-shadow: 0 0 15px rgba(0, 102, 255, 0.8);
-    -webkit-transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    -o-transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.no-cssgradients .speck-block-number::after {
-    background: #0066ff;
-}
-
-.speck-vertical-block:hover .speck-block-number::after {
-    width: 150px;
-    background: linear-gradient(90deg, #66b5ff, #99ccff);
-}
-
-.no-cssgradients .speck-vertical-block:hover .speck-block-number::after {
-    background: #66b5ff;
-}
-
 .speck-block-title {
     font-size: 4rem;
     font-weight: 900;
@@ -665,47 +577,6 @@ header, footer, section, nav {
     position: relative;
     overflow: hidden;
     min-height: 250px;
-}
-
-.speck-feature-column::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #0066ff, #66b5ff);
-    opacity: 0;
-    -webkit-transition: opacity 0.4s ease;
-    -o-transition: opacity 0.4s ease;
-    transition: opacity 0.4s ease;
-}
-
-.no-cssgradients .speck-feature-column::before {
-    background: #0066ff;
-}
-
-.speck-feature-column:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-    -webkit-transform: translateY(-15px);
-    -ms-transform: translateY(-15px);
-    transform: translateY(-15px);
-    box-shadow: 
-        0 30px 60px rgba(0, 0, 0, 0.4),
-        0 15px 30px rgba(0, 102, 255, 0.2);
-}
-
-.no-csstransforms .speck-feature-column:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 
-        0 30px 60px rgba(0, 0, 0, 0.4),
-        0 15px 30px rgba(0, 102, 255, 0.2);
-}
-
-.speck-feature-column:hover::before {
-    opacity: 1;
 }
 
 .speck-column-title {
@@ -919,40 +790,6 @@ header, footer, section, nav {
     margin-right: 25px;
 }
 
-.speck-feature-item::before {
-    content: '';
-    position: absolute;
-    left: -40px;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(to bottom, #0066ff, #66b5ff);
-    opacity: 0;
-    -webkit-transition: opacity 0.4s ease;
-    -o-transition: opacity 0.4s ease;
-    transition: opacity 0.4s ease;
-    border-radius: 2px;
-}
-
-.no-cssgradients .speck-feature-item::before {
-    background: #0066ff;
-}
-
-.speck-feature-item:hover::before {
-    opacity: 1;
-}
-
-.speck-feature-item:hover {
-    color: white;
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-}
-
-.no-csstransforms .speck-feature-item:hover {
-    padding-left: 20px;
-}
-
 .speck-feature-icon {
     color: #0066ff;
     font-weight: 900;
@@ -1012,38 +849,6 @@ header, footer, section, nav {
 
 .no-cssgradients .speck-vertical-block:hover .speck-block-subtitle::after {
     background: #66b5ff;
-}
-
-/* Эффект свечения при наведении на весь блок */
-.speck-vertical-block:hover {
-    position: relative;
-}
-
-.speck-vertical-block:hover::after {
-    content: '';
-    position: absolute;
-    top: -30px;
-    left: -30px;
-    right: -30px;
-    bottom: -30px;
-    background: radial-gradient(
-        ellipse at center,
-        rgba(0, 102, 255, 0.15) 0%,
-        rgba(0, 102, 255, 0.05) 50%,
-        transparent 70%
-    );
-    border-radius: 30px;
-    z-index: -1;
-    pointer-events: none;
-}
-
-.no-backdropfilter .speck-vertical-block:hover::after {
-    background: radial-gradient(
-        ellipse at center,
-        rgba(0, 102, 255, 0.2) 0%,
-        rgba(0, 102, 255, 0.1) 50%,
-        transparent 70%
-    );
 }
 
 /* УЛУЧШЕННАЯ ЛИНИЯ-РАЗДЕЛИТЕЛЬ МЕЖДУ БЛОКАМИ */
@@ -1170,6 +975,7 @@ header, footer, section, nav {
     margin: 0 auto;
 }
 
+/* БЕГУЩАЯ СТРОКА - ОСНОВНЫЕ СТИЛИ */
 .marquee-container {
     width: 100%;
     overflow: hidden;
@@ -2348,10 +2154,6 @@ header, footer, section, nav {
         transform: none;
     }
     
-    .speck-vertical-block:hover .speck-block-number {
-        animation: none !important;
-    }
-    
     .speck-block-number::after,
     .speck-block-subtitle::after,
     .speck-column-title::after {
@@ -2921,7 +2723,7 @@ button,
     opacity: 0 !important;
 }
 
-/* 2. Убираем градиенты по бокам бегущей строки */
+/* 2. Убираем градиенты по бокам бегущей строки (эти стили могут мешать) */
 .marquee-container::before,
 .marquee-container::after {
     display: none !important;
