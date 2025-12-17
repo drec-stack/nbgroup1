@@ -159,6 +159,50 @@
             transform: scale(1.2);
             background: rgba(255, 255, 255, 0.4);
         }
+        
+        /* ФИНАЛЬНЫЙ ФИКС ЧЕРНОГО ФОНА */
+        .parallax-layer::before,
+        .parallax-layer::after,
+        .parallax-bg::before,
+        .parallax-bg::after {
+            display: none !important;
+            background: transparent !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            content: none !important;
+        }
+        
+        /* Ярче фоновые изображения */
+        #parallax-bg-1,
+        #parallax-bg-2,
+        #parallax-bg-3,
+        #parallax-bg-4 {
+            filter: brightness(1.35) contrast(1.2) saturate(1.15) !important;
+        }
+        
+        /* Делаем все слои прозрачными */
+        .layer-1,
+        .layer-2,
+        .layer-3,
+        .layer-4 {
+            background: transparent !important;
+        }
+        
+        /* Усиливаем тени текста */
+        .hero h1,
+        .hero-subtitle,
+        .hero-description p {
+            text-shadow: 
+                0 3px 12px rgba(0, 0, 0, 0.9),
+                0 5px 20px rgba(0, 0, 0, 0.7) !important;
+        }
+        
+        /* Убираем все темные градиенты */
+        *::before,
+        *::after {
+            background-image: none !important;
+        }
     </style>
 </head>
 <body class="home-page">
@@ -772,4 +816,4 @@
         });
     </script>
 </body>
-</html>
+                                </html>
