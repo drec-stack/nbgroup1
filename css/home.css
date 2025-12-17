@@ -7,9 +7,14 @@
     box-sizing: border-box;
 }
 
-/* Для IE11 */
+/* Для IE11 и старых браузеров */
 main, section, article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+/* Для очень старых браузеров без HTML5 поддержки */
+header, footer, section, nav {
     display: block;
 }
 
@@ -26,6 +31,12 @@ footer, header, hgroup, menu, nav, section {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+}
+
+/* Фолбэк для старых браузеров без flexbox */
+.no-flexbox .hero {
+    display: block;
+    padding-top: 220px;
 }
 
 .hero .container {
@@ -58,8 +69,8 @@ footer, header, hgroup, menu, nav, section {
     background: -o-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-size: 5rem;
 }
 
@@ -70,15 +81,21 @@ footer, header, hgroup, menu, nav, section {
     background: -o-linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* Фолбэк для градиентов текста */
 .no-cssgradients .hero h1 span:first-child,
 .no-cssgradients .hero h1 span:nth-child(2) {
-    background: none;
-    -webkit-text-fill-color: white;
+    background: none !important;
+    -webkit-text-fill-color: white !important;
+    color: white !important;
+}
+
+/* Фолбэк для очень старых браузеров */
+.hero h1 span:first-child,
+.hero h1 span:nth-child(2) {
     color: white;
 }
 
@@ -126,6 +143,17 @@ footer, header, hgroup, menu, nav, section {
     margin: 12.5px;
 }
 
+/* Фолбэк для старых браузеров без flexbox */
+.no-flexbox .hero-actions {
+    display: block;
+    text-align: center;
+}
+
+.no-flexbox .hero-actions .btn {
+    display: inline-block;
+    margin: 0 12.5px 25px 12.5px;
+}
+
 .hero-actions .btn {
     min-width: 200px;
     padding: 18px 35px;
@@ -135,6 +163,10 @@ footer, header, hgroup, menu, nav, section {
     -webkit-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     -o-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
 }
 
 .hero-actions .btn-primary {
@@ -146,6 +178,11 @@ footer, header, hgroup, menu, nav, section {
     box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
 }
 
+/* Фолбэк для градиентов в кнопках */
+.no-cssgradients .hero-actions .btn-primary {
+    background: #0066ff !important;
+}
+
 .hero-actions .btn-primary:hover {
     -webkit-transform: translateY(-5px);
     -ms-transform: translateY(-5px);
@@ -154,6 +191,18 @@ footer, header, hgroup, menu, nav, section {
     background: -webkit-gradient(linear, left top, right bottom, from(#0052cc), to(#0088cc));
     background: -o-linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
     background: linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
+}
+
+.no-cssgradients .hero-actions .btn-primary:hover {
+    background: #0052cc !important;
+}
+
+/* Фолбэк для transform */
+.no-csstransforms .hero-actions .btn-primary:hover {
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+    background: #0052cc;
 }
 
 .hero-actions .btn-secondary {
@@ -177,6 +226,11 @@ footer, header, hgroup, menu, nav, section {
     transform: translateY(-5px);
 }
 
+.no-csstransforms .hero-actions .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+}
+
 .hero-actions .btn i {
     margin-left: 10px;
     -webkit-transition: -webkit-transform 0.3s ease;
@@ -190,6 +244,10 @@ footer, header, hgroup, menu, nav, section {
     -webkit-transform: translateX(5px);
     -ms-transform: translateX(5px);
     transform: translateX(5px);
+}
+
+.no-csstransforms .hero-actions .btn:hover i {
+    margin-left: 15px;
 }
 
 .parallax-scroll-indicator {
@@ -207,6 +265,13 @@ footer, header, hgroup, menu, nav, section {
     -o-transition: opacity 0.3s ease;
     transition: opacity 0.3s ease;
     z-index: 3;
+}
+
+.no-csstransforms .parallax-scroll-indicator {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .parallax-scroll-indicator:hover {
@@ -293,6 +358,19 @@ footer, header, hgroup, menu, nav, section {
     margin: 30px 0;
 }
 
+/* Фолбэк для старых браузеров без flexbox */
+.no-flexbox .speck-vertical-grid {
+    display: block;
+}
+
+.no-flexbox .speck-vertical-block {
+    display: block;
+    margin-bottom: 60px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
 .speck-vertical-block {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -348,6 +426,16 @@ footer, header, hgroup, menu, nav, section {
     padding-top: 10px;
 }
 
+/* Фолбэк для старых браузеров без flexbox */
+.no-flexbox .speck-block-left {
+    float: left;
+    width: 200px;
+    text-align: left;
+    padding-right: 40px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+}
+
 .speck-block-number {
     font-size: 0.9rem;
     font-weight: 700;
@@ -393,6 +481,14 @@ footer, header, hgroup, menu, nav, section {
     padding-top: 10px;
 }
 
+/* Фолбэк для старых браузеров без flexbox */
+.no-flexbox .speck-block-right {
+    margin-left: 240px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    padding-left: 40px;
+    clear: both;
+}
+
 .speck-block-subtitle {
     font-size: 1.8rem;
     font-weight: 500;
@@ -433,6 +529,17 @@ footer, header, hgroup, menu, nav, section {
 .no-flexgap .speck-feature-icon,
 .no-flexgap .speck-feature-text {
     margin-right: 15px;
+}
+
+/* Фолбэк для старых браузеров без flexbox */
+.no-flexbox .speck-feature-item {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.no-flexbox .speck-feature-icon {
+    display: inline-block;
+    margin-right: 10px;
 }
 
 .speck-feature-item::before {
@@ -551,6 +658,12 @@ footer, header, hgroup, menu, nav, section {
     background: linear-gradient(90deg, transparent, #0066ff, transparent);
 }
 
+.no-csstransforms .clients-label::after {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+
 .marquee-container {
     width: 100%;
     overflow: hidden;
@@ -593,6 +706,16 @@ footer, header, hgroup, menu, nav, section {
     padding: 35px 0;
     white-space: nowrap;
     will-change: transform;
+}
+
+/* Фолбэк для старых браузеров без flexbox */
+.no-flexbox .marquee-track {
+    display: block;
+    white-space: nowrap;
+}
+
+.no-flexbox .marquee-content {
+    display: inline-block;
 }
 
 .marquee-content {
@@ -723,6 +846,19 @@ footer, header, hgroup, menu, nav, section {
     margin: 20px;
 }
 
+/* Дополнительный фолбэк для очень старых браузеров */
+.no-flexbox .stats-grid-improved {
+    display: block;
+    text-align: center;
+}
+
+.no-flexbox .stat-card {
+    display: inline-block;
+    width: 280px;
+    margin: 20px;
+    vertical-align: top;
+}
+
 .stats-grid-improved {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -764,6 +900,11 @@ footer, header, hgroup, menu, nav, section {
 .no-backdropfilter .stat-card {
     background: rgba(20, 25, 40, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Фолбэк для градиентов */
+.no-cssgradients .stat-card {
+    background: rgba(20, 25, 40, 0.95);
 }
 
 .stat-card::before {
@@ -810,6 +951,10 @@ footer, header, hgroup, menu, nav, section {
     background: rgba(25, 30, 45, 0.95);
 }
 
+.no-cssgradients .stat-card:hover {
+    background: rgba(25, 30, 45, 0.95);
+}
+
 .stat-icon {
     font-size: 3.5rem;
     margin-bottom: 25px;
@@ -849,17 +994,17 @@ footer, header, hgroup, menu, nav, section {
     background: -o-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
     -webkit-transition: all 0.4s ease;
     -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
 }
 
 .no-cssgradients .stat-number-improved {
-    background: none;
-    -webkit-text-fill-color: white;
-    color: white;
+    background: none !important;
+    -webkit-text-fill-color: white !important;
+    color: white !important;
 }
 
 .stat-card:hover .stat-number-improved {
@@ -867,8 +1012,8 @@ footer, header, hgroup, menu, nav, section {
     background: -o-linear-gradient(135deg, #66b5ff 0%, #3399ff 100%);
     background: linear-gradient(135deg, #66b5ff 0%, #3399ff 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
     -webkit-transform: scale(1.05);
     -ms-transform: scale(1.05);
     transform: scale(1.05);
@@ -908,6 +1053,10 @@ footer, header, hgroup, menu, nav, section {
     color: inherit;
     display: block;
     overflow: hidden;
+}
+
+.no-cssgradients .cta-improved {
+    background: rgba(0, 102, 255, 0.15);
 }
 
 .cta-improved::before {
@@ -964,17 +1113,17 @@ footer, header, hgroup, menu, nav, section {
     background: -o-linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
     -webkit-transition: all 0.4s ease;
     -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
 }
 
 .no-cssgradients .cta-text h2 {
-    background: none;
-    -webkit-text-fill-color: white;
-    color: white;
+    background: none !important;
+    -webkit-text-fill-color: white !important;
+    color: white !important;
 }
 
 .cta-improved:hover .cta-text h2 {
@@ -982,8 +1131,8 @@ footer, header, hgroup, menu, nav, section {
     background: -o-linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
     -webkit-transform: scale(1.02);
     -ms-transform: scale(1.02);
     transform: scale(1.02);
@@ -1045,6 +1194,12 @@ footer, header, hgroup, menu, nav, section {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.no-cssgradients .btn-glow {
+    background: #0066ff !important;
 }
 
 .no-flexgap .btn-glow {
@@ -1086,6 +1241,10 @@ footer, header, hgroup, menu, nav, section {
     background: -webkit-gradient(linear, left top, right bottom, from(#0052cc), to(#0088cc));
     background: -o-linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
     background: linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
+}
+
+.no-cssgradients .btn-glow:hover {
+    background: #0052cc !important;
 }
 
 .no-csstransforms .btn-glow:hover {
@@ -1151,6 +1310,17 @@ footer, header, hgroup, menu, nav, section {
 .no-backdropfilter .home-page .main-header {
     background: rgba(0, 102, 255, 0.3) !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Фолбэк для transform */
+.no-csstransforms .home-page .main-header {
+    position: fixed !important;
+    top: 30px !important;
+    left: 30px !important;
+    right: 30px !important;
+    width: auto !important;
+    margin: 0 auto !important;
+    text-align: center !important;
 }
 
 /* Состояние скрытого хедера */
@@ -1235,6 +1405,11 @@ footer, header, hgroup, menu, nav, section {
     .no-cssgrid .stat-card {
         width: calc(50% - 40px);
     }
+    
+    /* Для очень старых браузеров */
+    .no-flexbox .stat-card {
+        width: 280px;
+    }
 }
 
 @media (max-width: 992px) {
@@ -1292,6 +1467,17 @@ footer, header, hgroup, menu, nav, section {
     
     .speck-feature-icon {
         font-size: 1.2rem;
+    }
+    
+    /* Для очень старых браузеров */
+    .no-flexbox .speck-block-left {
+        width: 150px;
+        padding-right: 20px;
+    }
+    
+    .no-flexbox .speck-block-right {
+        margin-left: 170px;
+        padding-left: 20px;
     }
 }
 
@@ -1373,9 +1559,57 @@ footer, header, hgroup, menu, nav, section {
     .no-cssgrid .stat-card {
         width: calc(100% - 40px);
     }
+    
+    /* Для очень старых браузеров */
+    .no-flexbox .speck-vertical-block {
+        padding: 20px;
+    }
+    
+    .no-flexbox .speck-block-left {
+        float: none;
+        width: 100%;
+        border-right: none;
+        padding-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+    
+    .no-flexbox .speck-block-right {
+        margin-left: 0;
+        border-left: none;
+        padding-left: 0;
+        clear: both;
+    }
 }
 
 @media (max-width: 576px) {
+    .hero h1 {
+        font-size: 3rem !important;
+    }
+    
+    .hero h1 span:first-child {
+        font-size: 3.5rem !important;
+    }
+    
+    .hero h1 span:nth-child(2) {
+        font-size: 2.5rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.4rem !important;
+    }
+    
+    .hero-description p {
+        font-size: 1.1rem !important;
+    }
+    
+    .hero-actions .btn {
+        min-width: 160px !important;
+        padding: 15px 25px !important;
+        font-size: 1rem !important;
+    }
+    
     .speck-vertical-section {
         padding: 50px 0;
     }
@@ -1417,9 +1651,54 @@ footer, header, hgroup, menu, nav, section {
     .speck-feature-icon {
         font-size: 1.1rem;
     }
+    
+    .brand {
+        font-size: 1.2rem !important;
+        padding: 0 20px !important;
+    }
+    
+    .stat-number-improved {
+        font-size: 3.5rem !important;
+    }
+    
+    .stat-label-improved {
+        font-size: 1rem !important;
+    }
+    
+    .cta-text h2 {
+        font-size: 2.5rem !important;
+    }
+    
+    .cta-text p {
+        font-size: 1.1rem !important;
+    }
+    
+    .btn-glow {
+        min-width: 220px !important;
+        padding: 18px 35px !important;
+        font-size: 1rem !important;
+    }
 }
 
 @media (max-width: 400px) {
+    .hero h1 {
+        font-size: 2.5rem !important;
+    }
+    
+    .hero h1 span:first-child {
+        font-size: 3rem !important;
+    }
+    
+    .hero h1 span:nth-child(2) {
+        font-size: 2rem !important;
+    }
+    
+    .hero-actions .btn {
+        min-width: 140px !important;
+        padding: 12px 20px !important;
+        font-size: 0.9rem !important;
+    }
+    
     .speck-block-title {
         font-size: 1.4rem;
     }
@@ -1430,6 +1709,24 @@ footer, header, hgroup, menu, nav, section {
     
     .speck-feature-item {
         font-size: 0.9rem;
+    }
+    
+    .brand {
+        font-size: 1rem !important;
+        padding: 0 15px !important;
+    }
+    
+    .stat-card {
+        padding: 30px 20px !important;
+    }
+    
+    .stat-number-improved {
+        font-size: 3rem !important;
+    }
+    
+    .btn-glow {
+        min-width: 200px !important;
+        padding: 15px 25px !important;
     }
 }
 
@@ -1631,7 +1928,9 @@ footer, header, hgroup, menu, nav, section {
     .hero-actions,
     .parallax-scroll-indicator,
     .marquee-track,
-    .btn-glow {
+    .btn-glow,
+    .main-header,
+    .minimal-footer {
         display: none !important;
     }
     
@@ -1643,6 +1942,7 @@ footer, header, hgroup, menu, nav, section {
         box-shadow: none !important;
         border: 1px solid #ccc !important;
         break-inside: avoid;
+        background: white !important;
     }
 }
 
@@ -1651,23 +1951,28 @@ footer, header, hgroup, menu, nav, section {
     /* IE 10+ */
     .hero {
         display: block;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
     }
     
     .speck-vertical-block {
         display: block;
         overflow: hidden;
+        background: rgba(255, 255, 255, 0.05);
+        margin-bottom: 30px;
+        padding: 30px;
+        border-radius: 10px;
     }
     
     .speck-block-left,
     .speck-block-right {
         float: left;
         width: 50%;
+        box-sizing: border-box;
     }
     
     .speck-block-right {
         border-left: 1px solid rgba(255, 255, 255, 0.1);
-        padding-left: 80px;
-        box-sizing: border-box;
+        padding-left: 40px;
     }
     
     .hero-actions {
@@ -1677,6 +1982,8 @@ footer, header, hgroup, menu, nav, section {
     .hero-actions .btn {
         display: inline-block;
         margin: 0 12.5px 25px 12.5px;
+        background: #0066ff;
+        color: white;
     }
     
     .stats-grid-improved {
@@ -1684,11 +1991,13 @@ footer, header, hgroup, menu, nav, section {
         display: flex;
         -ms-flex-wrap: wrap;
         flex-wrap: wrap;
+        justify-content: center;
     }
     
     .stat-card {
-        width: calc(25% - 30px);
+        width: 280px;
         margin: 15px;
+        background: rgba(20, 25, 40, 0.95);
     }
     
     /* Убираем неработающие свойства */
@@ -1710,6 +2019,24 @@ footer, header, hgroup, menu, nav, section {
     .speck-vertical-block {
         background: rgba(15, 20, 35, 0.95) !important;
     }
+    
+    .hero h1 span:first-child,
+    .hero h1 span:nth-child(2),
+    .stat-number-improved,
+    .cta-text h2 {
+        background: none !important;
+        color: white !important;
+    }
+    
+    /* Исправление для бегущей строки в IE */
+    .marquee-track {
+        display: block;
+        white-space: nowrap;
+    }
+    
+    .marquee-content {
+        display: inline-block;
+    }
 }
 
 /* ===== SAFARI SPECIFIC FIXES ===== */
@@ -1722,7 +2049,7 @@ footer, header, hgroup, menu, nav, section {
         backface-visibility: hidden;
     }
     
-    /* Исправление для flexbox gap в Safari */
+    /* Исправление для flexbox gap в старых Safari */
     @supports not (gap: 10px) {
         .hero-actions {
             margin: -12.5px;
@@ -1759,9 +2086,150 @@ footer, header, hgroup, menu, nav, section {
         -moz-transform: translateZ(0);
     }
     
-    /* Исправление для backdrop-filter в Firefox */
+    /* Исправление для backdrop-filter в старом Firefox */
     .main-header,
     .stat-card {
         background: rgba(15, 20, 35, 0.95);
+    }
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ ФОЛБЭКИ ДЛЯ ОЧЕНЬ СТАРЫХ БРАУЗЕРОВ ===== */
+
+/* Для браузеров без border-radius */
+.no-borderradius .hero-actions .btn,
+.no-borderradius .stat-card,
+.no-borderradius .btn-glow {
+    border-radius: 0 !important;
+}
+
+/* Для браузеров без box-shadow */
+.no-boxshadow .hero-actions .btn-primary,
+.no-boxshadow .btn-glow,
+.no-boxshadow .stat-card:hover {
+    box-shadow: none !important;
+}
+
+/* Для браузеров без opacity */
+.no-opacity .brand,
+.no-opacity .separator,
+.no-opacity .hero-subtitle {
+    opacity: 1 !important;
+}
+
+/* Для браузеров без CSS transitions */
+.no-csstransitions .speck-vertical-block,
+.no-csstransitions .stat-card,
+.no-csstransitions .btn,
+.no-csstransitions .brand {
+    transition: none !important;
+}
+
+/* ===== УНИВЕРСАЛЬНЫЕ ИСПРАВЛЕНИЯ ДЛЯ ВСЕХ БРАУЗЕРОВ ===== */
+
+/* Гарантированная читаемость текста */
+.hero h1,
+.hero-subtitle,
+.speck-block-title,
+.speck-block-subtitle,
+.speck-feature-text,
+.brand,
+.stat-number-improved,
+.stat-label-improved,
+.cta-text h2,
+.cta-text p {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Гарантированная контрастность для кнопок */
+.hero-actions .btn-primary,
+.btn-glow {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Гарантированная видимость разделителей */
+.speck-block-right,
+.clients-label::after {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Гарантированная работа ссылок */
+a,
+button {
+    cursor: pointer;
+}
+
+/* Гарантированное переполнение контента */
+.container {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Гарантированная поддержка мобильных устройств */
+@media (max-width: 767px) {
+    .hero {
+        padding: 120px 0 80px !important;
+        min-height: auto !important;
+    }
+    
+    .speck-vertical-section,
+    .clients-section,
+    .stats-improved,
+    .cta-improved {
+        padding: 60px 0 !important;
+    }
+    
+    .no-flexbox .stat-card {
+        width: 100% !important;
+        margin: 10px 0 !important;
+        display: block !important;
+    }
+    
+    .no-cssgrid .stat-card {
+        width: 100% !important;
+        margin: 10px 0 !important;
+    }
+}
+
+/* Гарантированная работа на очень маленьких экранах */
+@media (max-width: 320px) {
+    .hero h1 {
+        font-size: 2rem !important;
+    }
+    
+    .hero h1 span:first-child {
+        font-size: 2.5rem !important;
+    }
+    
+    .hero h1 span:nth-child(2) {
+        font-size: 1.8rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem !important;
+    }
+    
+    .hero-description p {
+        font-size: 1rem !important;
+    }
+    
+    .hero-actions .btn {
+        min-width: 120px !important;
+        padding: 10px 15px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .speck-block-title {
+        font-size: 1.2rem !important;
+    }
+    
+    .brand {
+        font-size: 0.9rem !important;
+        padding: 0 10px !important;
+    }
+    
+    .btn-glow {
+        min-width: 180px !important;
+        padding: 12px 20px !important;
+        font-size: 0.9rem !important;
     }
         }
