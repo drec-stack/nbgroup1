@@ -1,14 +1,25 @@
-/* home.css - Main Styles for Home Page */
+/* home.css - УПРОЩЕННАЯ ВЕРСИЯ БЕЗ ПАРАЛЛАКСА */
+
+/* ===== ОСНОВНЫЕ СТИЛИ ДЛЯ ТЕЛА ===== */
+body.home-page {
+    background: linear-gradient(135deg, #0a0a14 0%, #1a1a2e 100%) !important;
+    color: #ffffff !important;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
 
 /* ===== HERO SECTION ===== */
 .hero {
     padding: 180px 0 120px;
     position: relative;
-    overflow: hidden;
-    background: transparent;
     min-height: 100vh;
     display: flex;
     align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hero .container {
@@ -20,17 +31,20 @@
     text-align: center;
     max-width: 1000px;
     margin: 0 auto;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 30px;
+    padding: 60px 40px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .hero h1 {
-    font-size: 4.5rem;
+    font-size: 4rem;
     font-weight: 900;
     color: white;
     margin-bottom: 1.5rem;
     line-height: 1.1;
     letter-spacing: -0.02em;
-    text-transform: uppercase;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
 }
 
 .hero h1 span {
@@ -38,17 +52,17 @@
 }
 
 .hero h1 span:first-child {
-    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #66b5ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: 5rem;
+    font-size: 4.5rem;
 }
 
 .hero h1 span:nth-child(2) {
-    font-size: 4rem;
+    font-size: 3.5rem;
     opacity: 0.9;
-    background: linear-gradient(135deg, #ffffff 0%, #ccccff 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -60,7 +74,7 @@
     margin-bottom: 2.5rem;
     font-weight: 500;
     letter-spacing: 0.5px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-description {
@@ -76,7 +90,7 @@
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .hero-actions {
@@ -92,7 +106,7 @@
     font-size: 1.1rem;
     font-weight: 600;
     border-radius: 50px;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s ease;
     backdrop-filter: blur(10px);
 }
 
@@ -130,132 +144,46 @@
     transform: translateX(5px);
 }
 
+/* Убрать параллакс индикатор */
 .parallax-scroll-indicator {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    color: white;
-    opacity: 0.8;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-    z-index: 3;
-}
-
-.parallax-scroll-indicator:hover {
-    opacity: 1;
-}
-
-.scroll-arrow {
-    width: 30px;
-    height: 30px;
-    border: 2px solid white;
-    border-left: none;
-    border-top: none;
-    transform: rotate(45deg);
-    margin: 0 auto 10px;
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: rotate(45deg) translateY(0);
-    }
-    40% {
-        transform: rotate(45deg) translateY(-10px);
-    }
-    60% {
-        transform: rotate(45deg) translateY(-5px);
-    }
-}
-
-.parallax-scroll-indicator span {
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    opacity: 0.7;
+    display: none;
 }
 
 /* ===== SPECK DESIGN VERTICAL BLOCKS ===== */
-
 .speck-vertical-section {
     position: relative;
     width: 100%;
-    overflow: hidden;
-    background: transparent;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 100px 0;
+    min-height: auto;
+    display: block;
 }
 
-/* Фоновый слой с параллаксом */
-.speck-parallax-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-}
-
-/* Гигантские цифры как на Speck */
-.speck-bg-number {
-    position: absolute;
-    font-size: 35vw;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.02);
-    line-height: 1;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    user-select: none;
-    opacity: 0;
-    transform: translateY(100px);
-    transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.speck-bg-number.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.speck-bg-1 { top: 10%; left: -5%; }
-.speck-bg-2 { top: 25%; right: -10%; }
-.speck-bg-3 { top: 60%; left: -8%; }
-.speck-bg-4 { top: 75%; right: -5%; }
-
-/* Абстрактные формы как на Speck */
+/* Убрать параллакс фон */
+.speck-parallax-bg,
+.speck-bg-number,
 .speck-shape {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 102, 255, 0.05) 0%, transparent 70%);
-    filter: blur(60px);
-    opacity: 0.5;
+    display: none !important;
 }
-
-.shape-1 { width: 500px; height: 500px; top: 15%; left: 15%; }
-.shape-2 { width: 300px; height: 300px; bottom: 20%; right: 20%; }
-.shape-3 { width: 400px; height: 400px; top: 50%; left: 5%; }
 
 /* Вертикальные блоки */
 .speck-vertical-block {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+    min-height: auto;
+    display: block;
     position: relative;
     z-index: 2;
-    padding: 120px 0;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.speck-vertical-block.active {
+    padding: 100px 0;
     opacity: 1;
     transform: translateY(0);
+    background: rgba(20, 20, 40, 0.6);
+    margin: 40px 0;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+}
+
+.speck-vertical-block:nth-child(even) {
+    background: rgba(30, 30, 50, 0.6);
 }
 
 .speck-block-inner {
@@ -288,31 +216,30 @@
 }
 
 .speck-block-title {
-    font-size: 4.5rem;
+    font-size: 3.5rem;
     font-weight: 800;
     color: white;
     margin: 0 0 20px 0;
     line-height: 1.1;
     letter-spacing: -0.02em;
-    text-transform: uppercase;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
 .speck-block-subtitle {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: rgba(255, 255, 255, 0.95);
     margin: 0 0 30px 0;
     line-height: 1.4;
     font-weight: 400;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .speck-block-description {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     line-height: 1.8;
     color: rgba(255, 255, 255, 0.85);
     margin: 0 0 40px 0;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* Список особенностей */
@@ -354,7 +281,7 @@
     font-size: 1.1rem;
     font-weight: 600;
     text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s ease;
     backdrop-filter: blur(10px);
 }
 
@@ -381,7 +308,7 @@
 
 .speck-visual-placeholder {
     width: 100%;
-    height: 500px;
+    height: 400px;
     background: linear-gradient(135deg, 
         rgba(255, 255, 255, 0.05) 0%, 
         rgba(255, 255, 255, 0.02) 100%);
@@ -412,7 +339,7 @@
 }
 
 .speck-visual-placeholder i {
-    font-size: 6rem;
+    font-size: 5rem;
     color: rgba(255, 255, 255, 0.15);
     z-index: 1;
 }
@@ -420,23 +347,18 @@
 /* ===== CLIENTS SECTION ===== */
 .clients-section {
     padding: 120px 0;
-    background: transparent;
+    background: rgba(0, 0, 0, 0.3);
     position: relative;
-    overflow: hidden;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+    min-height: auto;
+    display: block;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    margin: 40px 20px;
 }
 
 .clients-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
-    pointer-events: none;
+    display: none;
 }
 
 .clients-content {
@@ -481,7 +403,7 @@
     content: '';
     position: absolute;
     top: 0;
-    width: 150px;
+    width: 100px;
     height: 100%;
     z-index: 2;
     pointer-events: none;
@@ -489,20 +411,20 @@
 
 .marquee-container::before {
     left: 0;
-    background: linear-gradient(90deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
+    background: linear-gradient(90deg, rgba(10, 10, 20, 0.9) 0%, transparent 100%);
 }
 
 .marquee-container::after {
     right: 0;
-    background: linear-gradient(270deg, rgba(10, 10, 15, 0.8) 0%, transparent 100%);
+    background: linear-gradient(270deg, rgba(10, 10, 20, 0.9) 0%, transparent 100%);
 }
 
 .marquee-track {
     display: flex;
     width: max-content;
-    padding: 35px 0;
+    padding: 30px 0;
     white-space: nowrap;
-    will-change: transform;
+    animation: marquee-scroll 30s linear infinite;
 }
 
 .marquee-content {
@@ -512,20 +434,25 @@
     flex-shrink: 0;
 }
 
+@keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.33%); }
+}
+
 .brand {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: white;
-    opacity: 0.85;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    padding: 0 40px;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    padding: 0 30px;
     white-space: nowrap;
     flex-shrink: 0;
     text-decoration: none;
     position: relative;
     text-transform: uppercase;
     letter-spacing: 1px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .brand:hover {
@@ -534,79 +461,48 @@
     transform: translateY(-3px);
 }
 
-.brand::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 40px;
-    right: 40px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #0066ff, transparent);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
-}
-
-.brand:hover::after {
-    transform: scaleX(1);
-}
-
 .separator {
     color: rgba(255, 255, 255, 0.3);
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 300;
     flex-shrink: 0;
 }
 
-/* Marquee animations - управляются через inline стили в index.html */
-.marquee-track:hover {
-    animation-play-state: paused !important;
-}
-
 /* ===== STATS SECTION ===== */
 .stats-improved {
-    padding: 140px 0;
-    background: transparent;
+    padding: 120px 0;
+    background: rgba(0, 0, 0, 0.3);
     position: relative;
-    overflow: hidden;
     z-index: 2;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+    min-height: auto;
+    display: block;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    margin: 40px 20px;
 }
 
 .stats-improved::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 30% 50%, rgba(0, 102, 255, 0.1) 0%, transparent 70%),
-        radial-gradient(circle at 70% 30%, rgba(255, 100, 100, 0.05) 0%, transparent 70%);
-    pointer-events: none;
+    display: none;
 }
 
 .stats-grid-improved {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
     position: relative;
     z-index: 2;
     width: 100%;
 }
 
 .stat-card {
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.08) 0%, 
-        rgba(255, 255, 255, 0.03) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 24px;
-    padding: 50px 35px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px 30px;
     text-align: center;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     cursor: pointer;
@@ -614,49 +510,25 @@
     color: inherit;
 }
 
-.stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.1), 
-        transparent);
-    transition: left 0.7s ease;
-    z-index: 1;
-}
-
-.stat-card:hover::before {
-    left: 100%;
-}
-
 .stat-card:hover {
-    transform: translateY(-15px);
-    border-color: rgba(255, 255, 255, 0.25);
-    box-shadow: 
-        0 25px 50px rgba(255, 255, 255, 0.15),
-        0 10px 30px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.12) 0%, 
-        rgba(255, 255, 255, 0.06) 100%);
+    transform: translateY(-10px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .stat-icon {
-    font-size: 3.5rem;
-    margin-bottom: 25px;
-    color: white;
-    transition: all 0.4s ease;
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #66b5ff;
+    transition: all 0.3s ease;
     position: relative;
     z-index: 2;
 }
 
 .stat-card:hover .stat-icon {
-    transform: scale(1.15);
-    color: #66b5ff;
-    text-shadow: 0 0 20px rgba(102, 181, 255, 0.5);
+    transform: scale(1.1);
+    color: #3399ff;
 }
 
 .stat-content {
@@ -665,47 +537,32 @@
 }
 
 .stat-number-improved {
-    font-size: 4.5rem;
+    font-size: 3.5rem;
     font-weight: 900;
     color: white;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     line-height: 1;
-    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #66b5ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    transition: all 0.4s ease;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-}
-
-.stat-card:hover .stat-number-improved {
-    background: linear-gradient(135deg, #66b5ff 0%, #3399ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    transform: scale(1.05);
+    transition: all 0.3s ease;
 }
 
 .stat-label-improved {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     transition: all 0.3s ease;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-}
-
-.stat-card:hover .stat-label-improved {
-    color: white;
-    letter-spacing: 2px;
 }
 
 /* ===== CTA SECTION ===== */
 .cta-improved {
-    padding: 140px 0;
+    padding: 120px 0;
     background: linear-gradient(135deg, 
-        rgba(0, 102, 255, 0.2) 0%, 
+        rgba(0, 102, 255, 0.3) 0%, 
         rgba(0, 170, 255, 0.2) 100%);
     position: relative;
     z-index: 2;
@@ -713,43 +570,19 @@
     text-decoration: none;
     color: inherit;
     display: block;
-    overflow: hidden;
-    min-height: 100vh;
+    min-height: auto;
     display: flex;
     align-items: center;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    margin: 40px 20px;
 }
 
-.cta-improved::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.cta-improved::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.15), 
-        transparent);
-    transition: left 0.7s ease;
-    z-index: 1;
-}
-
-.cta-improved:hover::after {
-    left: 100%;
+.cta-improved:hover {
+    background: linear-gradient(135deg, 
+        rgba(0, 102, 255, 0.4) 0%, 
+        rgba(0, 170, 255, 0.3) 100%);
 }
 
 .cta-content-improved {
@@ -763,7 +596,7 @@
 }
 
 .cta-text h2 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 900;
     margin-bottom: 25px;
     color: white;
@@ -773,32 +606,18 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    transition: all 0.4s ease;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.cta-improved:hover .cta-text h2 {
-    background: linear-gradient(135deg, #ffffff 0%, #a0a0ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    transform: scale(1.02);
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .cta-text p {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: rgba(255, 255, 255, 0.95);
     margin-bottom: 50px;
     line-height: 1.6;
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
-    transition: all 0.3s ease;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.cta-improved:hover .cta-text p {
-    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .cta-action {
@@ -808,240 +627,58 @@
 
 .btn-glow {
     position: relative;
-    overflow: hidden;
     background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
     color: white;
     border: none;
-    padding: 22px 45px;
+    padding: 20px 40px;
     font-size: 1.2rem;
     font-weight: 600;
     border-radius: 50px;
     display: inline-flex;
     align-items: center;
     gap: 15px;
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 
-        0 15px 35px rgba(0, 102, 255, 0.4),
-        0 5px 15px rgba(0, 102, 255, 0.2);
-    min-width: 280px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 102, 255, 0.4);
+    min-width: 250px;
     justify-content: center;
     backdrop-filter: blur(10px);
 }
 
-.btn-glow::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.3), 
-        transparent);
-    transition: left 0.7s ease;
-    border-radius: 50px;
-}
-
-.btn-glow:hover::before {
-    left: 100%;
-}
-
 .btn-glow:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 
-        0 25px 50px rgba(0, 102, 255, 0.5),
-        0 10px 30px rgba(0, 102, 255, 0.3),
-        0 0 100px rgba(0, 102, 255, 0.2);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 20px 50px rgba(0, 102, 255, 0.5);
     background: linear-gradient(135deg, #0052cc 0%, #0088cc 100%);
 }
 
 .btn-glow i {
-    transition: transform 0.4s ease;
+    transition: transform 0.3s ease;
 }
 
 .btn-glow:hover i {
-    transform: translateX(8px) rotate(-15deg);
+    transform: translateX(5px);
 }
 
 .btn-large {
     font-size: 1.3rem;
-    padding: 25px 50px;
+    padding: 22px 45px;
 }
 
-/* ===== GLASS HEADER FOR HOME PAGE ===== */
-.home-page .main-header {
-    position: fixed !important;
-    top: 30px !important;
-    left: 50% !important;
-    transform: translateX(-50%) translateY(0) !important;
-    width: calc(100% - 60px) !important;
-    max-width: 1400px !important;
-    z-index: 1000 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border-radius: 25px !important;
-    background: rgba(0, 102, 255, 0.15) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.2),
-        0 4px 16px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Состояние скрытого хедера */
-.home-page .main-header.header-hidden {
-    transform: translateX(-50%) translateY(-150%) !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
-
-/* Минимизированный хедер при скролле */
-.home-page .main-header.header-minimized {
-    padding: 15px 0 !important;
-    background: rgba(0, 102, 255, 0.25) !important;
-    backdrop-filter: blur(25px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
-    box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.25),
-        0 5px 20px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    top: 20px !important;
-}
-
-/* Увеличение отступа для контента под хедером */
-.home-page .hero {
-    padding-top: 140px !important;
-    transition: padding-top 0.4s ease !important;
-}
-
-/* ===== СПЕЦИАЛЬНЫЕ СТИЛИ ДЛЯ PARALLAX КАК НА SPECKDESIGN.COM ===== */
-
-/* Убедимся, что все секции имеют минимальную высоту */
-.content-section {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-}
-
-/* Стили для параллакс слоев */
-.parallax-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
-}
-
-.parallax-layer.active {
-    opacity: 1;
-    z-index: 1;
-}
-
-/* Плавная смена фонов */
-.parallax-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-}
-
-/* Индикаторы параллакса */
-.parallax-indicators {
-    position: fixed;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.parallax-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.parallax-indicator.active {
-    background: white;
-    transform: scale(1.3);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-
-.parallax-indicator:hover {
-    transform: scale(1.2);
-    background: rgba(255, 255, 255, 0.4);
-}
-
-/* Анимация появления секций */
+/* ===== УБИРАЕМ ВСЕ СТИЛИ PARALLAX ===== */
+.parallax-layer,
+.parallax-bg-container,
+.parallax-indicators,
+.parallax-bg,
 [data-layer] {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    display: none !important;
 }
 
-[data-layer].visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Стили для hero секции */
-.parallax-hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-}
-
-/* Для темных фонов - усиление теней текста */
-.layer-3 .hero h1,
-.layer-3 .hero-subtitle,
-.layer-3 .hero-description p,
-.layer-3 .clients-label,
-.layer-3 .brand,
-.layer-4 .stat-number-improved,
-.layer-4 .stat-label-improved,
-.layer-4 .cta-text h2,
-.layer-4 .cta-text p {
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-/* Усиление контраста для текста на темных фонах */
-.layer-3 .brand,
-.layer-4 .stat-card {
-    opacity: 0.95;
-}
-
-.layer-3 .brand:hover,
-.layer-4 .stat-card:hover {
-    opacity: 1;
+.content-section {
+    min-height: auto;
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
-
 @media (max-width: 1200px) {
     .speck-block-inner {
         gap: 60px;
@@ -1049,35 +686,31 @@
     }
     
     .speck-block-title {
-        font-size: 4rem;
+        font-size: 3rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
     
     .speck-visual-placeholder {
-        height: 450px;
+        height: 350px;
     }
     
     .hero h1 {
-        font-size: 4rem;
+        font-size: 3.5rem;
     }
     
     .hero h1 span:first-child {
-        font-size: 4.5rem;
+        font-size: 4rem;
     }
     
     .hero h1 span:nth-child(2) {
-        font-size: 3.5rem;
+        font-size: 3rem;
     }
     
     .cta-text h2 {
-        font-size: 3.5rem;
-    }
-    
-    .parallax-indicators {
-        right: 25px;
+        font-size: 3rem;
     }
 }
 
@@ -1098,23 +731,19 @@
     }
     
     .speck-block-title {
-        font-size: 3.5rem;
+        font-size: 2.8rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
     
     .speck-block-description {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     
     .speck-visual-placeholder {
-        height: 400px;
-    }
-    
-    .speck-bg-number {
-        font-size: 30vw;
+        height: 300px;
     }
     
     .hero {
@@ -1123,23 +752,23 @@
     }
     
     .hero h1 {
-        font-size: 3.5rem;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 4rem;
-    }
-    
-    .hero h1 span:nth-child(2) {
         font-size: 3rem;
     }
     
+    .hero h1 span:first-child {
+        font-size: 3.5rem;
+    }
+    
+    .hero h1 span:nth-child(2) {
+        font-size: 2.5rem;
+    }
+    
     .hero-subtitle {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
     
     .hero-description p {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     
     .clients-section,
@@ -1149,36 +778,22 @@
     }
     
     .cta-text h2 {
-        font-size: 3rem;
+        font-size: 2.5rem;
     }
     
     .cta-text p {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     
     .brand {
-        font-size: 1.4rem;
-        padding: 0 30px;
-    }
-    
-    .home-page .main-header {
-        width: calc(100% - 40px) !important;
-        top: 20px !important;
-    }
-    
-    .home-page .hero {
-        padding-top: 120px !important;
-    }
-    
-    .parallax-indicators {
-        right: 20px;
+        font-size: 1.3rem;
+        padding: 0 25px;
     }
 }
 
 @media (max-width: 768px) {
     .speck-vertical-block {
         padding: 80px 0;
-        min-height: 90vh;
     }
     
     .speck-block-inner {
@@ -1187,15 +802,15 @@
     }
     
     .speck-block-title {
-        font-size: 3rem;
+        font-size: 2.5rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
     
     .speck-block-description {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
     
     .speck-feature-item {
@@ -1203,20 +818,11 @@
     }
     
     .speck-visual-placeholder {
-        height: 350px;
+        height: 250px;
     }
     
     .speck-visual-placeholder i {
-        font-size: 4rem;
-    }
-    
-    .speck-bg-number {
-        font-size: 25vw;
-    }
-    
-    /* Скрываем индикаторы на мобильных */
-    .parallax-indicators {
-        display: none;
+        font-size: 3.5rem;
     }
     
     .hero {
@@ -1224,19 +830,19 @@
     }
     
     .hero h1 {
-        font-size: 2.8rem;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 3.2rem;
-    }
-    
-    .hero h1 span:nth-child(2) {
         font-size: 2.5rem;
     }
     
+    .hero h1 span:first-child {
+        font-size: 3rem;
+    }
+    
+    .hero h1 span:nth-child(2) {
+        font-size: 2rem;
+    }
+    
     .hero-subtitle {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
         margin-bottom: 2rem;
     }
     
@@ -1245,7 +851,7 @@
     }
     
     .hero-description p {
-        font-size: 1.1rem;
+        font-size: 1rem;
         line-height: 1.6;
     }
     
@@ -1263,6 +869,7 @@
     
     .clients-section {
         padding: 80px 0;
+        margin: 20px 10px;
     }
     
     .clients-label {
@@ -1272,153 +879,7 @@
     }
     
     .brand {
-        font-size: 1.2rem;
-        padding: 0 25px;
-    }
-    
-    .separator {
-        font-size: 1.5rem;
-    }
-    
-    .marquee-track {
-        padding: 25px 0;
-    }
-    
-    .stats-improved {
-        padding: 80px 0;
-    }
-    
-    .stats-grid-improved {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
-    }
-    
-    .stat-card {
-        padding: 40px 25px;
-    }
-    
-    .stat-icon {
-        font-size: 3rem;
-    }
-    
-    .stat-number-improved {
-        font-size: 3.5rem;
-    }
-    
-    .stat-label-improved {
         font-size: 1.1rem;
-    }
-    
-    .cta-improved {
-        padding: 80px 0;
-    }
-    
-    .cta-text h2 {
-        font-size: 2.5rem;
-    }
-    
-    .cta-text p {
-        font-size: 1.1rem;
-        margin-bottom: 40px;
-    }
-    
-    .btn-glow {
-        padding: 20px 35px;
-        font-size: 1.1rem;
-        min-width: 250px;
-    }
-    
-    .home-page .main-header {
-        width: calc(100% - 30px) !important;
-        top: 15px !important;
-    }
-    
-    .home-page .hero {
-        padding-top: 100px !important;
-    }
-    
-    /* Мобильная оптимизация параллакса */
-    .parallax-bg {
-        background-attachment: scroll !important;
-    }
-    
-    /* Удален черный оверлей для мобильных */
-    
-    .content-section {
-        min-height: 90vh;
-    }
-}
-
-@media (max-width: 576px) {
-    .speck-vertical-block {
-        padding: 60px 0;
-        min-height: 80vh;
-    }
-    
-    .speck-block-title {
-        font-size: 2.5rem;
-    }
-    
-    .speck-block-subtitle {
-        font-size: 1.3rem;
-    }
-    
-    .speck-block-description {
-        font-size: 1rem;
-    }
-    
-    .speck-block-cta {
-        padding: 15px 30px;
-        font-size: 1rem;
-    }
-    
-    .speck-visual-placeholder {
-        height: 300px;
-    }
-    
-    .speck-bg-number {
-        font-size: 20vw;
-    }
-    
-    .speck-shape {
-        display: none;
-    }
-    
-    .hero {
-        padding: 100px 0 60px;
-    }
-    
-    .hero h1 {
-        font-size: 2.2rem;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 2.5rem;
-    }
-    
-    .hero h1 span:nth-child(2) {
-        font-size: 2rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.2rem;
-    }
-    
-    .hero-description p {
-        font-size: 1rem;
-    }
-    
-    .stats-grid-improved {
-        grid-template-columns: 1fr;
-        gap: 25px;
-    }
-    
-    .stat-card {
-        padding: 35px 20px;
-    }
-    
-    .brand {
-        font-size: 1rem;
         padding: 0 20px;
     }
     
@@ -1426,57 +887,97 @@
         font-size: 1.2rem;
     }
     
+    .marquee-track {
+        padding: 20px 0;
+    }
+    
+    .stats-improved {
+        padding: 80px 0;
+        margin: 20px 10px;
+    }
+    
+    .stats-grid-improved {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .stat-card {
+        padding: 30px 20px;
+    }
+    
+    .stat-icon {
+        font-size: 2.5rem;
+    }
+    
+    .stat-number-improved {
+        font-size: 2.8rem;
+    }
+    
+    .stat-label-improved {
+        font-size: 1rem;
+    }
+    
+    .cta-improved {
+        padding: 80px 0;
+        margin: 20px 10px;
+    }
+    
     .cta-text h2 {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
     .cta-text p {
         font-size: 1rem;
+        margin-bottom: 40px;
     }
     
     .btn-glow {
         padding: 18px 30px;
-        font-size: 1rem;
+        font-size: 1.1rem;
         min-width: 220px;
-    }
-    
-    .home-page .main-header {
-        width: calc(100% - 20px) !important;
-        top: 10px !important;
-    }
-    
-    .home-page .hero {
-        padding-top: 80px !important;
-    }
-    
-    .content-section {
-        min-height: 85vh;
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 576px) {
+    .speck-vertical-block {
+        padding: 60px 0;
+    }
+    
     .speck-block-title {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
     .speck-block-subtitle {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+    }
+    
+    .speck-block-description {
+        font-size: 0.95rem;
+    }
+    
+    .speck-block-cta {
+        padding: 15px 25px;
+        font-size: 1rem;
     }
     
     .speck-visual-placeholder {
-        height: 250px;
+        height: 200px;
+    }
+    
+    .hero {
+        padding: 100px 0 60px;
     }
     
     .hero h1 {
-        font-size: 1.8rem;
-    }
-    
-    .hero h1 span:first-child {
         font-size: 2rem;
     }
     
+    .hero h1 span:first-child {
+        font-size: 2.5rem;
+    }
+    
     .hero h1 span:nth-child(2) {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
     
     .hero-subtitle {
@@ -1487,157 +988,44 @@
         font-size: 0.95rem;
     }
     
-    .brand {
-        font-size: 0.9rem;
-        padding: 0 15px;
-    }
-    
-    .content-section {
-        min-height: 80vh;
-        padding: 40px 0 !important;
-    }
-}
-
-/* ===== REDUCED MOTION SUPPORT ===== */
-@media (prefers-reduced-motion: reduce) {
-    .speck-bg-number,
-    .speck-vertical-block,
-    .stat-card,
-    .cta-improved,
-    .hero-actions .btn,
-    .btn-glow,
-    .parallax-layer,
-    [data-layer],
-    .parallax-indicator {
-        animation: none !important;
-        transition: none !important;
-    }
-    
-    .speck-bg-number:hover,
-    .speck-vertical-block:hover,
-    .stat-card:hover,
-    .cta-improved:hover,
-    .hero-actions .btn:hover,
-    .btn-glow:hover,
-    .parallax-indicator:hover {
-        transform: none !important;
-    }
-    
-    .btn-glow:hover i,
-    .hero-actions .btn:hover i,
-    .speck-block-cta:hover i {
-        transform: none !important;
-    }
-    
-    .stat-card::before,
-    .cta-improved::after,
-    .btn-glow::before {
-        transition: none !important;
-    }
-    
-    .marquee-track {
-        animation: none !important;
-    }
-    
-    .scroll-arrow {
-        animation: none;
-    }
-    
-    .parallax-scroll-indicator span {
-        opacity: 0.5;
-    }
-    
-    .parallax-bg {
-        background-attachment: scroll;
-    }
-}
-
-/* ===== TOUCH DEVICE OPTIMIZATION ===== */
-@media (hover: none) {
-    .speck-block-cta:hover,
-    .stat-card:hover,
-    .cta-improved:hover,
-    .hero-actions .btn:hover,
-    .btn-glow:hover,
-    .brand:hover,
-    .parallax-indicator:hover {
-        transform: none;
-    }
-    
-    .speck-block-cta:active,
-    .stat-card:active,
-    .cta-improved:active {
-        transform: scale(0.98);
-    }
-    
-    .btn-glow:active {
-        transform: scale(0.95);
-    }
-    
-    .stat-card::before,
-    .cta-improved::after,
-    .btn-glow::before {
-        display: none;
-    }
-    
-    .brand::after {
-        display: none;
-    }
-    
-    .parallax-indicator:hover {
-        transform: none;
-    }
-}
-
-/* ===== FALLBACK FOR NO BACKDROP-FILTER SUPPORT ===== */
-@supports not (backdrop-filter: blur(15px)) {
-    .speck-visual-placeholder {
-        background: rgba(20, 20, 35, 0.95);
+    .stats-grid-improved {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
     
     .stat-card {
-        background: rgba(25, 25, 40, 0.95);
+        padding: 25px 20px;
     }
     
-    .home-page .main-header {
-        background: rgba(0, 102, 255, 0.25);
+    .brand {
+        font-size: 1rem;
+        padding: 0 15px;
     }
     
-    .home-page .main-header.header-minimized {
-        background: rgba(0, 102, 255, 0.35);
+    .separator {
+        font-size: 1rem;
     }
     
-    .hero-actions .btn-secondary,
-    .speck-block-cta {
-        background: rgba(255, 255, 255, 0.15);
+    .cta-text h2 {
+        font-size: 1.8rem;
     }
     
-    .parallax-content {
-        background: rgba(0, 0, 0, 0.4);
+    .cta-text p {
+        font-size: 0.95rem;
+    }
+    
+    .btn-glow {
+        padding: 15px 25px;
+        font-size: 1rem;
+        min-width: 200px;
     }
 }
 
-/* ===== CLICKABLE ELEMENTS ENHANCEMENT ===== */
-.clickable-stat-card,
-.clickable-cta,
-.clickable-brand {
-    cursor: pointer;
-    outline: none;
-}
-
-.clickable-stat-card:focus-visible,
-.clickable-cta:focus-visible,
-.clickable-brand:focus-visible {
-    outline: 3px solid #0066ff;
-    outline-offset: 3px;
-    border-radius: 4px;
-}
-
-/* ===== LOADING ANIMATIONS ===== */
+/* ===== ПРОСТЫЕ АНИМАЦИИ ===== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
@@ -1645,63 +1033,36 @@
     }
 }
 
-.content-section {
+.hero,
+.speck-vertical-section,
+.clients-section,
+.stats-improved,
+.cta-improved {
     animation: fadeInUp 0.8s ease-out forwards;
 }
 
-/* Delay animations for staggered effect */
+/* Задержки для плавного появления */
 .hero { animation-delay: 0.1s; }
 .speck-vertical-section { animation-delay: 0.2s; }
 .clients-section { animation-delay: 0.3s; }
 .stats-improved { animation-delay: 0.4s; }
 .cta-improved { animation-delay: 0.5s; }
 
-/* Hide during loading */
-.content-section {
-    opacity: 0;
+/* ===== УЛУЧШЕНИЯ ДЛЯ ЧИТАЕМОСТИ ===== */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* ===== PRINT STYLES ===== */
-@media print {
-    .hero,
-    .speck-vertical-section,
-    .clients-section,
-    .stats-improved,
-    .cta-improved {
-        background: white !important;
-        color: black !important;
-        padding: 40px 0 !important;
-        min-height: auto !important;
+/* Гарантированный цвет текста */
+h1, h2, h3, h4, h5, h6, p, span, a, div, li {
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Убираем все возможные скрытия */
+section, div, .content-section, .speck-vertical-block {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
     }
-    
-    .hero h1,
-    .hero-subtitle,
-    .speck-block-title,
-    .stat-number-improved,
-    .cta-text h2 {
-        color: black !important;
-        background: none !important;
-        -webkit-text-fill-color: black !important;
-    }
-    
-    .hero-actions,
-    .parallax-scroll-indicator,
-    .marquee-track,
-    .btn-glow,
-    .speck-parallax-bg,
-    .parallax-indicators {
-        display: none !important;
-    }
-    
-    .speck-visual-placeholder,
-    .stat-card {
-        box-shadow: none !important;
-        border: 1px solid #ccc !important;
-        break-inside: avoid;
-    }
-    
-    .parallax-layer,
-    .parallax-bg-container {
-        display: none !important;
-    }
-        }
