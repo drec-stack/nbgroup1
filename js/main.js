@@ -2,7 +2,8 @@
 
 class DaehaaApp {
     constructor() {
-        this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        this.isReducedMotion = window.matchMedia ? 
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
         this.init();
     }
 
@@ -1390,10 +1391,160 @@ window.loadComponentWithInit = function(url, containerId, fallbackHtml = '', ini
         });
 };
 
+// ===== SPECK BLOCKS ANIMATION INITIALIZATION =====
+function initSpeckBlocksAnimations() {
+    console.log('✨ Инициализация анимаций Speck блоков...');
+    
+    // Добавляем класс для активации анимаций после загрузки
+    setTimeout(() => {
+        document.body.classList.add('speck-animations-loaded');
+    }, 1000);
+    
+    // Настраиваем индексы для стрелок
+    const featureItems = document.querySelectorAll('.speck-feature-item');
+    featureItems.forEach((item, index) => {
+        item.style.setProperty('--item-index', index);
+    });
+    
+    // Observer для анимаций при скролле
+    if ('IntersectionObserver' in window) {
+        const columnObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('scroll-animated');
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        const columns = document.querySelectorAll('.speck-feature-column');
+        columns.forEach(column => {
+            columnObserver.observe(column);
+        });
+    }
+    
+    // Анимация появления колонок
+    setTimeout(() => {
+        const columns = document.querySelectorAll('.speck-feature-column');
+        columns.forEach((column, index) => {
+            setTimeout(() => {
+                column.style.animationPlayState = 'running';
+            }, index * 100);
+        });
+    }, 500);
+    
+    console.log('✅ Анимации Speck блоков инициализированы');
+}
+
+// ===== SPECK BLOCKS ENHANCED INTERACTIVITY =====
+function initEnhancedSpeckBlocks() {
+    console.log('🎨 Инициализация улучшенных Speck блоков...');
+    
+    const speckBlocks = document.querySelectorAll('.speck-vertical-block');
+    if (!speckBlocks.length) return;
+    
+    // Инициализируем каждую колонку
+    const featureColumns = document.querySelectorAll('.speck-feature-column');
+    featureColumns.forEach(column => {
+        if (!column.classList.contains('clickable-column')) {
+            column.classList.add('clickable-column');
+        }
+        
+        // Добавляем атрибуты доступности
+        if (!column.hasAttribute('tabindex')) {
+            column.setAttribute('tabindex', '0');
+        }
+        
+        if (!column.hasAttribute('role')) {
+            column.setAttribute('role', 'button');
+        }
+        
+        // Добавляем aria-label
+        const columnTitle = column.querySelector('.speck-column-title');
+        if (columnTitle && !column.hasAttribute('aria-label')) {
+            const blockTitle = column.closest('.speck-vertical-block')?.querySelector('.speck-block-title')?.textContent || 'Секция';
+            column.setAttribute('aria-label', `Перейти к ${columnTitle.textContent} в разделе ${blockTitle}`);
+        }
+        
+        // Обработчики событий
+        column.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Анимация клика
+            this.classList.add('column-clicked');
+            setTimeout(() => {
+                this.classList.remove('column-clicked');
+            }, 300);
+            
+            // Определяем целевой раздел
+            const block = this.closest('.speck-vertical-block');
+            const blockIndex = block ? block.getAttribute('data-block-index') : '0';
+            const blockTitles = ['strategy', 'design', 'engineering', 'manufacturing'];
+            const blockTitle = blockTitles[parseInt(blockIndex)] || 'services';
+            
+            // Переход через 350ms
+            setTimeout(() => {
+                window.location.href = `services.html#${blockTitle}`;
+            }, 350);
+        });
+        
+        // Поддержка клавиатуры
+        column.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+                e.preventDefault();
+                this.click();
+            }
+        });
+        
+        // Hover эффекты
+        column.addEventListener('mouseenter', function() {
+            const block = this.closest('.speck-vertical-block');
+            if (block) {
+                block.classList.add('block-hovered');
+            }
+        });
+        
+        column.addEventListener('mouseleave', function() {
+            const block = this.closest('.speck-vertical-block');
+            if (block) {
+                block.classList.remove('block-hovered');
+            }
+        });
+        
+        // Фокус для доступности
+        column.addEventListener('focus', function() {
+            this.classList.add('column-focused');
+            const block = this.closest('.speck-vertical-block');
+            if (block) {
+                block.classList.add('block-hovered');
+            }
+        });
+        
+        column.addEventListener('blur', function() {
+            this.classList.remove('column-focused');
+            const block = this.closest('.speck-vertical-block');
+            if (block) {
+                block.classList.remove('block-hovered');
+            }
+        });
+    });
+    
+    console.log(`✅ Инициализировано ${speckBlocks.length} блоков с ${featureColumns.length} колонками`);
+}
+
 // Initialize application
 document.addEventListener('DOMContentLoaded', () => {
     window.DaehaaApp = new DaehaaApp();
     console.log('🚀 Daehaa application initialized');
+    
+    // Инициализируем анимации Speck блоков если они есть на странице
+    if (document.querySelector('.speck-vertical-section')) {
+        initSpeckBlocksAnimations();
+        initEnhancedSpeckBlocks();
+    }
 });
 
 // Global header initialization
@@ -1431,28 +1582,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // Экспортируем функции для глобального использования
 window.initGlassHeader = initGlassHeader;
 window.updateActiveNav = updateActiveNav;
+window.initSpeckBlocksAnimations = initSpeckBlocksAnimations;
+window.initEnhancedSpeckBlocks = initEnhancedSpeckBlocks;
 
-// Visibility change handler
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && window.DaehaaApp) {
-        window.DaehaaApp.setupCurrentPage();
-    }
-});
-
-// Service Worker registration
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then((registration) => {
-                console.log('SW registered: ', registration);
-            })
-            .catch((registrationError) => {
-                console.log('SW registration failed: ', registrationError);
-            });
-    });
-}
+// Экспортируем класс DaehaaApp для использования в других модулях
+window.DaehaaApp = DaehaaApp;
 
 // Module exports
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = DaehaaApp;
-                                        }
+                                    }
