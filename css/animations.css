@@ -174,12 +174,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.1) 0%,
-        rgba(255, 255, 255, 0.05) 50%,
-        rgba(255, 255, 255, 0.1) 100%
-    );
+    background: rgba(255, 255, 255, 0.1);
     border-radius: inherit;
     z-index: -1;
     pointer-events: none;
@@ -188,21 +183,15 @@
 /* Glass morphism animation */
 .glass-morph {
     animation: glassMorph 6s ease-in-out infinite;
-    background: linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.1),
-        rgba(255, 255, 255, 0.05),
-        rgba(255, 255, 255, 0.1)
-    );
-    background-size: 400% 400%;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 @keyframes glassMorph {
     0%, 100% {
-        background-position: 0% 50%;
+        opacity: 0.8;
     }
     50% {
-        background-position: 100% 50%;
+        opacity: 1;
     }
 }
 
@@ -562,7 +551,7 @@
 /* ===== TYPEWRITER EFFECT ===== */
 .typewriter {
     overflow: hidden;
-    border-right: 2px solid var(--accent);
+    border-right: 2px solid #0066ff;
     white-space: nowrap;
     animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
 }
@@ -574,7 +563,7 @@
 
 @keyframes blink-caret {
     from, to { border-color: transparent }
-    50% { border-color: var(--accent) }
+    50% { border-color: #0066ff }
 }
 
 /* ===== COUNTER ANIMATIONS ===== */
@@ -627,7 +616,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: rgba(255,255,255,0.2);
     animation: loadingShimmer 1.5s infinite;
 }
 
@@ -664,31 +653,30 @@
 
 .card-hover-glow:hover {
     box-shadow: 0 10px 30px rgba(0, 102, 255, 0.2);
-    border-color: var(--accent);
+    border-color: #0066ff;
 }
 
 /* ===== GRADIENT ANIMATIONS ===== */
 .gradient-shift {
-    background: linear-gradient(-45deg, #0066ff, #00aaff, #0066ff, #00aaff);
-    background-size: 400% 400%;
+    background: rgba(0, 102, 255, 0.8);
     animation: gradientShift 8s ease infinite;
 }
 
 @keyframes gradientShift {
-    0% { background-position: 0% 50% }
-    50% { background-position: 100% 50% }
-    100% { background-position: 0% 50% }
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
 }
 
 .gradient-flow {
-    background: linear-gradient(90deg, #0066ff, #00aaff, #0066ff);
-    background-size: 200% 100%;
+    background: rgba(0, 102, 255, 0.8);
     animation: gradientFlow 3s linear infinite;
 }
 
 @keyframes gradientFlow {
-    0% { background-position: 200% 0% }
-    100% { background-position: -200% 0% }
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
 }
 
 /* ===== LOADING ANIMATIONS ===== */
@@ -701,7 +689,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--accent);
+    background: #0066ff;
     animation: loadingDots 1.4s ease-in-out infinite both;
 }
 
@@ -724,7 +712,7 @@
     width: 40px;
     height: 40px;
     border: 3px solid rgba(0, 102, 255, 0.2);
-    border-top: 3px solid var(--accent);
+    border-top: 3px solid #0066ff;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -931,7 +919,7 @@
 
 .lang-btn.active {
     font-weight: 600;
-    color: var(--primary-color);
+    color: #0066ff;
 }
 
 .lang-btn:hover:not(.active) {
@@ -966,7 +954,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--primary);
+    background: #0066ff;
     z-index: 9999;
     opacity: 0;
     pointer-events: none;
@@ -1043,7 +1031,7 @@
     left: 4px;
     width: calc(50% - 4px);
     height: calc(100% - 8px);
-    background: linear-gradient(135deg, rgba(0, 122, 255, 0.3), rgba(0, 200, 255, 0.3));
+    background: rgba(0, 122, 255, 0.3);
     border-radius: 20px;
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 0;
@@ -1246,4 +1234,281 @@
 .reveal-on-scroll.revealed {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* ===== ENHANCED SPECK ANIMATIONS ===== */
+.speck-vertical-block.scroll-animated {
+    animation: speckBlockFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes speckBlockFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.speck-feature-column.stagger-animate {
+    animation: speckColumnStagger 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes speckColumnStagger {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Задержки для staggered анимации */
+.speck-feature-column:nth-child(1) { animation-delay: 0.1s; }
+.speck-feature-column:nth-child(2) { animation-delay: 0.2s; }
+
+/* Анимация для иконок при hover */
+@keyframes iconBounce {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+}
+
+.speck-feature-item:hover .speck-feature-icon {
+    animation: iconBounce 0.3s ease;
+}
+
+/* Анимация для заголовков колонок */
+@keyframes titlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.speck-feature-column:hover .speck-column-title {
+    animation: titlePulse 0.5s ease;
+}
+
+/* Поддержка reduced motion для новых анимаций */
+@media (prefers-reduced-motion: reduce) {
+    .speck-vertical-block.scroll-animated,
+    .speck-feature-column.stagger-animate,
+    .speck-feature-item:hover .speck-feature-icon,
+    .speck-feature-column:hover .speck-column-title {
+        animation: none !important;
+    }
+}
+
+/* ===== ENHANCED SPECK BLOCK ANIMATIONS ===== */
+@keyframes speckNumberAppear {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.speck-block-number.animate-in {
+    animation: speckNumberAppear 0.6s ease forwards;
+}
+
+@keyframes speckTitleAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.speck-block-title.animate-in {
+    animation: speckTitleAppear 0.8s ease 0.2s forwards;
+}
+
+@keyframes speckSubtitleAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.speck-block-subtitle.animate-in {
+    animation: speckSubtitleAppear 0.8s ease 0.4s forwards;
+}
+
+@keyframes speckFeatureItemAppear {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.speck-feature-item.animate-in {
+    animation: speckFeatureItemAppear 0.6s ease forwards;
+}
+
+/* Stagger для feature items */
+.speck-feature-item:nth-child(1) { animation-delay: 0.1s; }
+.speck-feature-item:nth-child(2) { animation-delay: 0.2s; }
+.speck-feature-item:nth-child(3) { animation-delay: 0.3s; }
+.speck-feature-item:nth-child(4) { animation-delay: 0.4s; }
+
+/* Анимация для левой границы блока */
+@keyframes speckBorderAppear {
+    0% {
+        height: 0;
+        opacity: 0;
+    }
+    100% {
+        height: 100%;
+        opacity: 1;
+    }
+}
+
+.speck-block-right.animate-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -2px;
+    width: 2px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    animation: speckBorderAppear 1s ease forwards;
+}
+
+/* Анимация для разделительной линии между блоками */
+@keyframes speckDividerAppear {
+    0% {
+        width: 0;
+        opacity: 0;
+    }
+    100% {
+        width: calc(100% - 280px);
+        opacity: 1;
+    }
+}
+
+.speck-vertical-block:not(:last-child)::before {
+    animation: speckDividerAppear 0.8s ease 0.6s forwards;
+}
+
+/* Анимация для hover эффекта колонок */
+@keyframes speckColumnHover {
+    0% {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transform: translateY(0);
+    }
+    100% {
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.3),
+            0 10px 20px rgba(0, 102, 255, 0.1);
+        transform: translateY(-8px);
+    }
+}
+
+.speck-feature-column.hover-animate {
+    animation: speckColumnHover 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Анимация для подчеркивания заголовков */
+@keyframes speckUnderlineExpand {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 80px;
+    }
+}
+
+.speck-block-subtitle.animate-underline::after {
+    animation: speckUnderlineExpand 0.8s ease 0.8s forwards;
+}
+
+/* Анимация для стрелок */
+@keyframes speckArrowPulse {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(3px);
+    }
+}
+
+.speck-feature-icon.animate-pulse {
+    animation: speckArrowPulse 1s infinite;
+}
+
+/* Анимация для появления всего блока */
+@keyframes speckBlockReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.speck-vertical-block.full-reveal {
+    animation: speckBlockReveal 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Анимация для background glow */
+@keyframes speckBackgroundGlow {
+    0%, 100% {
+        opacity: 0.1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.2;
+        transform: scale(1.02);
+    }
+}
+
+.speck-vertical-block.glow-animate::after {
+    animation: speckBackgroundGlow 3s infinite;
+}
+
+/* Поддержка reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .speck-block-number.animate-in,
+    .speck-block-title.animate-in,
+    .speck-block-subtitle.animate-in,
+    .speck-feature-item.animate-in,
+    .speck-block-right.animate-border::before,
+    .speck-vertical-block:not(:last-child)::before,
+    .speck-feature-column.hover-animate,
+    .speck-block-subtitle.animate-underline::after,
+    .speck-feature-icon.animate-pulse,
+    .speck-vertical-block.full-reveal,
+    .speck-vertical-block.glow-animate::after {
+        animation: none !important;
+    }
+    
+    .speck-block-number,
+    .speck-block-title,
+    .speck-block-subtitle,
+    .speck-feature-item,
+    .speck-block-right,
+    .speck-vertical-block,
+    .speck-feature-column {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+        }
