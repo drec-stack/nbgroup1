@@ -1,6 +1,6 @@
-// services.js - Simplified version without conflicts
+// services.js - Fixed version with proper header handling
 
-console.log('🎯 services.js loaded - SIMPLIFIED VERSION');
+console.log('🎯 services.js loaded - FIXED VERSION');
 
 function initServices() {
     console.log('🎯 Initializing services page functionality...');
