@@ -415,7 +415,7 @@
             if (!window.IntersectionObserver) {
                 // Fallback для браузеров без IntersectionObserver
                 setTimeout(() => {
-                    speckBlocks.forEach((block, index) => {
+                    speckBlocks.forEach((block, index) {
                         setTimeout(() => {
                             block.classList.add('visible', 'full-reveal');
                             
@@ -433,14 +433,14 @@
                                 if (subtitle) subtitle.classList.add('animate-in', 'animate-underline');
                             }, 400);
                             
-                            featureItems.forEach((item, itemIndex) => {
+                            featureItems.forEach((item, itemIndex) {
                                 setTimeout(() => {
                                     item.classList.add('animate-in');
                                 }, 600 + itemIndex * 100);
                             });
                             
                             const columns = block.querySelectorAll('.speck-feature-column');
-                            columns.forEach((col, colIndex) => {
+                            columns.forEach((col, colIndex) {
                                 setTimeout(() => {
                                     col.classList.add('stagger-animate');
                                 }, colIndex * 200);
@@ -489,7 +489,7 @@
                                 }, 800);
                             }
                             
-                            featureItems.forEach((item, itemIndex) => {
+                            featureItems.forEach((item, itemIndex) {
                                 setTimeout(() => {
                                     item.classList.add('animate-in');
                                 }, 1000 + itemIndex * 100);
@@ -497,7 +497,7 @@
                             
                             // Анимация колонок
                             const columns = entry.target.querySelectorAll('.speck-feature-column');
-                            columns.forEach((col, colIndex) => {
+                            columns.forEach((col, colIndex) {
                                 setTimeout(() => {
                                     col.classList.add('stagger-animate');
                                     col.style.animationDelay = `${colIndex * 0.2}s`;
@@ -926,7 +926,7 @@
             if (!window.IntersectionObserver) {
                 // Fallback для браузеров без IntersectionObserver
                 setTimeout(() => {
-                    speckBlocks.forEach((block, index) => {
+                    speckBlocks.forEach((block, index) {
                         setTimeout(() => {
                             block.classList.add('full-reveal');
                             
@@ -995,7 +995,7 @@
             
             // Анимация элементов списка
             const featureItems = block.querySelectorAll('.speck-feature-item');
-            featureItems.forEach((item, itemIndex) => {
+            featureItems.forEach((item, itemIndex) {
                 setTimeout(() => {
                     item.classList.add('animate-in');
                 }, 1000 + itemIndex * 100);
@@ -1003,7 +1003,7 @@
             
             // Анимация колонок
             const columns = block.querySelectorAll('.speck-feature-column');
-            columns.forEach((col, colIndex) => {
+            columns.forEach((col, colIndex) {
                 setTimeout(() => {
                     col.classList.add('stagger-animate');
                     col.style.animationDelay = `${colIndex * 0.2}s`;
@@ -1020,7 +1020,7 @@
             // Инициализация анимации для всех колонок при загрузке
             const columns = document.querySelectorAll('.speck-feature-column');
             
-            columns.forEach((column, index) => {
+            columns.forEach((column, index) {
                 column.style.animationDelay = `${index * 0.1 + 0.3}s`;
             });
             
@@ -1195,4 +1195,98 @@
     }
     
     console.log('✅ home.js загружен и готов к работе');
+    
+    // ===== HEADER INITIALIZATION FOR CONTACTS PAGE =====
+    function initContactsPageHeader() {
+        console.log('📞 Initializing header for contacts page...');
+        
+        const header = document.querySelector('.main-header');
+        if (!header) {
+            console.warn('⚠️ No header found on contacts page');
+            return;
+        }
+        
+        // Проверяем, что мы на странице контактов
+        if (!document.body.classList.contains('contact-page')) {
+            return;
+        }
+        
+        // Добавляем анимацию появления
+        setTimeout(() => {
+            header.classList.add('header-glass-enter');
+            
+            setTimeout(() => {
+                header.classList.remove('header-glass-enter');
+            }, 600);
+        }, 100);
+        
+        // Логика скролла как на главной странице
+        let lastScrollY = window.scrollY;
+        const scrollThreshold = 50;
+        
+        function handleScroll() {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY <= scrollThreshold) {
+                header.style.opacity = '1';
+                header.style.transform = 'translateY(0)';
+                header.classList.remove('header-hidden', 'header-glass-exit');
+                header.classList.add('header-glass-enter');
+            } else {
+                const opacity = Math.max(0, Math.min(1, 1 - (currentScrollY - scrollThreshold) / 100));
+                header.style.opacity = opacity.toString();
+                
+                if (opacity <= 0.1) {
+                    header.classList.add('header-hidden');
+                    header.classList.add('header-glass-exit');
+                    header.classList.remove('header-glass-enter');
+                } else {
+                    header.classList.remove('header-hidden');
+                }
+            }
+            
+            lastScrollY = currentScrollY;
+        }
+        
+        // Применяем начальное состояние
+        handleScroll();
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Показываем хедер при наведении
+        header.addEventListener('mouseenter', () => {
+            if (header.classList.contains('header-hidden')) {
+                header.classList.remove('header-hidden', 'header-glass-exit');
+                header.classList.add('header-glass-enter');
+                header.style.opacity = '1';
+            }
+        });
+        
+        // Скрываем через 2 секунды если мы все еще скроллим вниз
+        header.addEventListener('mouseleave', () => {
+            if (window.scrollY > 150) {
+                setTimeout(() => {
+                    if (window.scrollY > 150 && !header.matches(':hover')) {
+                        header.classList.add('header-hidden');
+                        header.classList.add('header-glass-exit');
+                        header.classList.remove('header-glass-enter');
+                    }
+                }, 2000);
+            }
+        });
+        
+        console.log('✅ Contacts page header initialized');
+    }
+    
+    // Автоматически инициализировать хедер для страницы контактов
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.body.classList.contains('contact-page')) {
+            setTimeout(() => {
+                initContactsPageHeader();
+            }, 500);
+        }
+    });
+    
+    // Экспорт функции для использования в contacts.html
+    window.initContactsPageHeader = initContactsPageHeader;
 })();
