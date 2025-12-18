@@ -916,3 +916,178 @@
     outline: 3px solid var(--accent);
     outline-offset: 3px;
 }
+
+/* ===== СТИЛИ ДЛЯ СТЕКЛЯННОГО ХЕДЕРА НА КОНТАКТАХ ===== */
+
+/* Контейнер хедера */
+#header-container {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+#header-container > * {
+    pointer-events: all;
+}
+
+/* Стеклянный хедер */
+.glass-header {
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 18px 0 !important;
+    background: rgba(0, 102, 255, 0.12) !important;
+    z-index: 1000 !important;
+    border-radius: 20px !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 102, 255, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.glass-header:hover {
+    background: rgba(0, 102, 255, 0.15) !important;
+    box-shadow: 
+        0 12px 40px rgba(0, 102, 255, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 0 30px rgba(0, 102, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.28) !important;
+}
+
+.glass-header.header-scrolled {
+    background: rgba(0, 102, 255, 0.2) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+    box-shadow: 
+        0 4px 20px rgba(0, 102, 255, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    padding: 15px 0 !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Анимации */
+.header-glass-enter {
+    animation: headerGlassEnter 0.6s ease forwards;
+}
+
+.header-glass-exit {
+    animation: headerGlassExit 0.4s ease forwards;
+}
+
+@keyframes headerGlassEnter {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+        backdrop-filter: blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        backdrop-filter: blur(16px);
+    }
+}
+
+@keyframes headerGlassExit {
+    0% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+}
+
+/* Эффект морфы при наведении */
+.glass-morph {
+    background: rgba(0, 102, 255, 0.18) !important;
+    backdrop-filter: blur(24px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+    box-shadow: 
+        0 12px 40px rgba(0, 102, 255, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 40px rgba(0, 102, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .glass-header {
+        top: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        padding: 14px 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        background: rgba(0, 102, 255, 0.22) !important;
+        backdrop-filter: blur(20px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    @keyframes headerGlassEnter {
+        0% {
+            opacity: 0;
+            transform: translateY(-20px);
+            backdrop-filter: blur(0);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+            backdrop-filter: blur(20px);
+        }
+    }
+    
+    @keyframes headerGlassExit {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+    }
+}
+
+/* Отступ для контента */
+.contact-hero {
+    padding-top: 180px !important;
+}
+
+@media (max-width: 768px) {
+    .contact-hero {
+        padding-top: 140px !important;
+    }
+}
+
+/* Убеждаемся, что хедер всегда виден на контактах */
+.contact-page .glass-header {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0) !important;
+}
+
+.contact-page .glass-header.header-hidden {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0) !important;
+}
