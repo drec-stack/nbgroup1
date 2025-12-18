@@ -92,114 +92,141 @@
             margin: 10px;
         }
 
-        /* ГАРАНТИРОВАННЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ */
-        .marquee-container {
+        /* SPECK DESIGN MARQUEE STYLES */
+        .speck-marquee-section {
+            padding: 60px 0;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .speck-marquee-mask {
+            position: relative;
             width: 100%;
             overflow: hidden;
+            mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+        }
+
+        .speck-marquee-container {
             position: relative;
-            margin-bottom: 10px;
+            width: 100%;
+            overflow: visible;
         }
 
-        .marquee-track {
-            display: -webkit-box !important;
-            display: -ms-flexbox !important;
-            display: flex !important;
-            width: -webkit-max-content !important;
-            width: -moz-max-content !important;
-            width: max-content !important;
-            padding: 25px 0 !important;
-            white-space: nowrap !important;
-            will-change: transform !important;
+        .speck-marquee-track {
+            display: flex;
+            width: max-content;
+            will-change: transform;
+            animation: speckMarqueeScroll 45s linear infinite;
+            padding: 12px 0;
         }
 
-        .marquee-content {
-            display: -webkit-box !important;
-            display: -ms-flexbox !important;
-            display: flex !important;
-            -webkit-box-align: center !important;
-            -ms-flex-align: center !important;
-            align-items: center !important;
-            white-space: nowrap !important;
-            -ms-flex-negative: 0 !important;
-            flex-shrink: 0 !important;
+        .speck-marquee-track:hover {
+            animation-play-state: paused;
         }
 
-        .brand {
-            font-size: 1.4rem !important;
-            font-weight: 700 !important;
-            color: white !important;
-            opacity: 0.8 !important;
-            padding: 0 30px !important;
-            white-space: nowrap !important;
-            -ms-flex-negative: 0 !important;
-            flex-shrink: 0 !important;
+        .speck-marquee-content {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            gap: 0;
         }
 
-        .separator {
-            color: white !important;
-            font-size: 1.5rem !important;
-            opacity: 0.3 !important;
-            font-weight: 300 !important;
-            -ms-flex-negative: 0 !important;
-            flex-shrink: 0 !important;
+        .speck-brand {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            padding: 0 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        /* АНИМАЦИИ с префиксами */
-        #marquee1 {
-            -webkit-animation: marquee-scroll 40s linear infinite !important;
-            animation: marquee-scroll 40s linear infinite !important;
-            -moz-animation: marquee-scroll 40s linear infinite !important;
-            -o-animation: marquee-scroll 40s linear infinite !important;
+        .speck-brand:hover {
+            color: #ffffff;
+            opacity: 1;
+            transform: translateY(-2px);
         }
 
-        #marquee2 {
-            -webkit-animation: marquee-scroll-reverse 40s linear infinite !important;
-            animation: marquee-scroll-reverse 40s linear infinite !important;
-            -moz-animation: marquee-scroll-reverse 40s linear infinite !important;
-            -o-animation: marquee-scroll-reverse 40s linear infinite !important;
+        .speck-brand::before {
+            content: "•";
+            position: absolute;
+            left: -5px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
         }
 
-        @-webkit-keyframes marquee-scroll {
-            0% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
-            100% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
+        .speck-brand:first-child::before {
+            display: none;
         }
 
-        @keyframes marquee-scroll {
-            0% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
-            100% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
+        @keyframes speckMarqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
-        @-moz-keyframes marquee-scroll {
-            0% { -moz-transform: translateX(0) !important; transform: translateX(0) !important; }
-            100% { -moz-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
+        /* Градиентные края */
+        .speck-marquee-mask::before,
+        .speck-marquee-mask::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 150px;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
         }
 
-        @-webkit-keyframes marquee-scroll-reverse {
-            0% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
-            100% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
+        .speck-marquee-mask::before {
+            left: 0;
+            background: linear-gradient(90deg, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 0.8) 50%, rgba(10, 10, 10, 0) 100%);
         }
 
-        @keyframes marquee-scroll-reverse {
-            0% { -webkit-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
-            100% { -webkit-transform: translateX(0) !important; transform: translateX(0) !important; }
+        .speck-marquee-mask::after {
+            right: 0;
+            background: linear-gradient(270deg, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 0.8) 50%, rgba(10, 10, 10, 0) 100%);
         }
 
-        @-moz-keyframes marquee-scroll-reverse {
-            0% { -moz-transform: translateX(-33.33%) !important; transform: translateX(-33.33%) !important; }
-            100% { -moz-transform: translateX(0) !important; transform: translateX(0) !important; }
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .speck-marquee-section { padding: 40px 0; }
+            .speck-brand { font-size: 1.1rem; padding: 0 20px; }
+            .speck-marquee-mask::before,
+            .speck-marquee-mask::after { width: 80px; }
+            .speck-marquee-track { animation: speckMarqueeScroll 30s linear infinite; }
         }
 
-        .marquee-track:hover {
-            -webkit-animation-play-state: paused !important;
-            animation-play-state: paused !important;
-            -moz-animation-play-state: paused !important;
+        @media (max-width: 480px) {
+            .speck-brand { font-size: 0.9rem; padding: 0 15px; }
+            .speck-marquee-mask::before,
+            .speck-marquee-mask::after { width: 50px; }
+            .speck-marquee-track { animation: speckMarqueeScroll 25s linear infinite; }
         }
 
         /* Фолбэк для старых браузеров */
-        .no-cssanimations .marquee-track {
+        .no-cssanimations .speck-marquee-track {
             animation: none !important;
-            -webkit-animation: none !important;
-            -moz-animation: none !important;
+        }
+
+        .no-cssgradients .speck-marquee-mask::before,
+        .no-cssgradients .speck-marquee-mask::after {
+            display: none !important;
+        }
+
+        .no-flexbox .speck-marquee-content {
+            display: block !important;
+            white-space: nowrap !important;
+        }
+
+        .no-flexbox .speck-brand {
+            display: inline-block !important;
+            margin-right: 50px !important;
         }
     </style>
     
@@ -297,7 +324,7 @@
         </div>
     </section>
 
-    <!-- Speck Design Vertical Blocks (точь в точь как speckdesign.com) -->
+    <!-- Speck Design Vertical Blocks -->
     <section class="speck-vertical-section">
         <div class="container">
             <div class="speck-vertical-grid">
@@ -460,126 +487,46 @@
         </div>
     </section>
 
-    <!-- Clients Section -->
-    <section class="clients-section content-section" data-bg-index="0">
+    <!-- ===== SPECK DESIGN MARQUEE SECTION (точная копия speckdesign.com) ===== -->
+    <section class="clients-section content-section speck-marquee-section" data-bg-index="0">
         <div class="container">
             <div class="clients-content">
                 <p class="clients-label" data-i18n="home.clients.label">ДОВЕРЯЮТ ЛИДЕРЫ ОТРАСЛИ</p>
                 
-                <!-- Marquee 1 -->
-                <div class="marquee-container">
-                    <div class="marquee-track" id="marquee1">
-                        <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                        </div>
-                        <!-- ВТОРАЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                        </div>
-                        <!-- ТРЕТЬЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Marquee 2 (Reverse) -->
-                <div class="marquee-container">
-                    <div class="marquee-track" id="marquee2">
-                        <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
-                        </div>
-                        <!-- ВТОРАЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
-                        </div>
-                        <!-- ТРЕТЬЯ КОПИЯ -->
-                        <div class="marquee-content">
-                            <a href="portfolio.html" class="brand clickable-brand">AC</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Microsoft</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">PayPal</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Vocera V.</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">stryker</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">Roku</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">BRITA</a>
-                            <span class="separator">·</span>
-                            <a href="portfolio.html" class="brand clickable-brand">dtronic</a>
+                <!-- Маска для градиентных краев -->
+                <div class="speck-marquee-mask">
+                    <!-- Основной контейнер -->
+                    <div class="speck-marquee-container">
+                        <!-- Движущийся трек -->
+                        <div class="speck-marquee-track" id="speckMarqueeTrack">
+                            <div class="speck-marquee-content">
+                                <a href="portfolio.html" class="speck-brand">dtronic</a>
+                                <a href="portfolio.html" class="speck-brand">BRITA</a>
+                                <a href="portfolio.html" class="speck-brand">Roku</a>
+                                <a href="portfolio.html" class="speck-brand">stryker</a>
+                                <a href="portfolio.html" class="speck-brand">Vocera V.</a>
+                                <a href="portfolio.html" class="speck-brand">PayPal</a>
+                                <a href="portfolio.html" class="speck-brand">Microsoft</a>
+                                <a href="portfolio.html" class="speck-brand">AC</a>
+                                <a href="portfolio.html" class="speck-brand">Mozilla</a>
+                                <a href="portfolio.html" class="speck-brand">NVIDIA</a>
+                                <a href="portfolio.html" class="speck-brand">Logitech</a>
+                                <a href="portfolio.html" class="speck-brand">Siemens</a>
+                                
+                                <!-- Дубликаты для бесконечного эффекта -->
+                                <a href="portfolio.html" class="speck-brand">dtronic</a>
+                                <a href="portfolio.html" class="speck-brand">BRITA</a>
+                                <a href="portfolio.html" class="speck-brand">Roku</a>
+                                <a href="portfolio.html" class="speck-brand">stryker</a>
+                                <a href="portfolio.html" class="speck-brand">Vocera V.</a>
+                                <a href="portfolio.html" class="speck-brand">PayPal</a>
+                                <a href="portfolio.html" class="speck-brand">Microsoft</a>
+                                <a href="portfolio.html" class="speck-brand">AC</a>
+                                <a href="portfolio.html" class="speck-brand">Mozilla</a>
+                                <a href="portfolio.html" class="speck-brand">NVIDIA</a>
+                                <a href="portfolio.html" class="speck-brand">Logitech</a>
+                                <a href="portfolio.html" class="speck-brand">Siemens</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -686,21 +633,91 @@
             }, 3000);
         }
         
-        // Проверка бегущей строки
-        function checkMarquee() {
-            console.log('🔍 Проверка бегущей строки...');
-            const track1 = document.getElementById('marquee1');
-            const track2 = document.getElementById('marquee2');
+        // Проверка бегущей строки Speck
+        function checkSpeckMarquee() {
+            console.log('🎯 Проверка Speck бегущей строки...');
+            const track = document.getElementById('speckMarqueeTrack');
             
-            if (track1 && track2) {
-                console.log('✅ Треки найдены');
+            if (track) {
+                console.log('✅ Speck трек найден');
                 
-                // Принудительно запускаем CSS анимации
-                track1.style.animation = 'marquee-scroll 40s linear infinite';
-                track2.style.animation = 'marquee-scroll-reverse 40s linear infinite';
-                
-                console.log('🚀 Бегущая строка запущена через CSS');
+                // Проверяем через 2 секунды
+                setTimeout(() => {
+                    const style = getComputedStyle(track);
+                    const transform = style.transform || style.webkitTransform;
+                    
+                    if (!transform || transform === 'none' || transform === 'matrix(1, 0, 0, 1, 0, 0)') {
+                        console.log('⚠️ CSS анимация не работает, запускаем JavaScript fallback');
+                        startSpeckMarqueeJS();
+                    } else {
+                        console.log('✅ Speck бегущая строка работает через CSS');
+                    }
+                }, 2000);
             }
+        }
+        
+        // JavaScript fallback для Speck бегущей строки
+        function startSpeckMarqueeJS() {
+            const track = document.getElementById('speckMarqueeTrack');
+            if (!track) return;
+            
+            console.log('🚀 Запуск JavaScript fallback для Speck бегущей строки');
+            
+            // Убираем CSS анимацию
+            track.style.animation = 'none';
+            
+            let position = 0;
+            let animationId = null;
+            let isPaused = false;
+            const speed = -1.5; // пикселей за кадр
+            const content = track.querySelector('.speck-marquee-content');
+            const contentWidth = content.scrollWidth / 2;
+            
+            function animate() {
+                if (isPaused) {
+                    animationId = requestAnimationFrame(animate);
+                    return;
+                }
+                
+                position += speed;
+                
+                // Сбрасываем позицию когда уходим за границу
+                if (position <= -contentWidth) {
+                    position = 0;
+                }
+                
+                // Применяем transform
+                track.style.transform = `translateX(${position}px)`;
+                track.style.webkitTransform = `translateX(${position}px)`;
+                
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            // Запускаем анимацию
+            animate();
+            
+            // Пауза при наведении
+            track.addEventListener('mouseenter', () => {
+                isPaused = true;
+            });
+            
+            track.addEventListener('mouseleave', () => {
+                isPaused = false;
+            });
+            
+            // Доступность
+            const brands = track.querySelectorAll('.speck-brand');
+            brands.forEach((brand, index) => {
+                brand.setAttribute('tabindex', '0');
+                brand.setAttribute('aria-label', `Посмотреть проекты для ${brand.textContent}`);
+                
+                brand.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        brand.click();
+                    }
+                });
+            });
         }
         
         // Загрузка компонентов с поддержкой старых браузеров
@@ -832,7 +849,7 @@
             // Загружаем компоненты
             loadComponents();
             
-            checkMarquee();
+            checkSpeckMarquee();
             applyTranslationsForce();
             
             // Упрощаем для старых браузеров
@@ -879,4 +896,4 @@
         });
     </script>
 </body>
-                                </html>
+</html>
