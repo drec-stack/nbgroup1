@@ -3359,3 +3359,37 @@ html {
     background: transparent !important;
 }
 
+/* ===== FIX FOR SERVICES PAGE ===== */
+body.services-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body.services-page .services-hero {
+    flex-grow: 1;
+}
+
+.main-footer {
+    margin-top: auto;
+}
+
+/* FIX: Prevent header from hiding on services page */
+body.services-page .main-header {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+}
+
+body.services-page .main-header.header-hidden {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Mobile fix for services navigation */
+@media (max-width: 768px) {
+    body.services-page .services-nav {
+        position: static !important;
+        top: auto !important;
+    }
+}
