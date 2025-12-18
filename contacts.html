@@ -7,6 +7,7 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css"> <!-- ДОБАВЛЕНО -->
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/contacts.css">
     <style>
@@ -22,53 +23,6 @@
             }
         }
         
-        /* Glass header styles - EXACTLY LIKE ABOUT.HTML */
-        .main-header {
-            position: fixed !important;
-            top: 20px !important;
-            left: 0 !important;
-            right: 0 !important;
-            width: calc(100% - 40px) !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            z-index: 1000 !important;
-            transform: translateY(0) !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-            transition: all 0.4s ease !important;
-            border-radius: 20px !important;
-            background: rgba(0, 102, 255, 0.12) !important;
-            backdrop-filter: blur(16px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.22) !important;
-        }
-        
-        .main-header.header-hidden {
-            transform: translateY(-100%) !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-        
-        .main-header.header-scrolled {
-            background: rgba(0, 102, 255, 0.2) !important;
-            backdrop-filter: blur(20px) saturate(200%) !important;
-            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
-        }
-        
-        @media (max-width: 768px) {
-            .main-header {
-                top: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                border-radius: 0 !important;
-                margin: 0 !important;
-                padding: 14px 0 !important;
-                background: rgba(0, 102, 255, 0.22) !important;
-                border: none !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-            }
-        }
-        
         /* Отступ для контента */
         .contact-hero {
             padding-top: 180px !important;
@@ -80,38 +34,11 @@
             }
         }
         
-        /* Анимация для хедера - EXACTLY LIKE ABOUT.HTML */
-        .header-glass-enter {
-            animation: glassEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
-        }
-        
-        @keyframes glassEnter {
-            from {
-                opacity: 0 !important;
-                transform: translateY(-30px) !important;
-            }
-            to {
-                opacity: 1 !important;
-                transform: translateY(0) !important;
-            }
-        }
-        
-        .glass-morph {
-            animation: glassMorph 6s ease-in-out infinite alternate !important;
-        }
-        
-        @keyframes glassMorph {
-            0% {
-                backdrop-filter: blur(16px) saturate(180%) !important;
-            }
-            100% {
-                backdrop-filter: blur(20px) saturate(200%) !important;
-            }
-        }
+        /* Убираем лишние стили - все берется из home.css */
     </style>
 </head>
-<body class="contact-page internal-page">
-    <!-- Header Container - EXACTLY LIKE ABOUT.HTML -->
+<body class="contact-page internal-page home-page"> <!-- ДОБАВЛЕНО home-page -->
+    <!-- Header Container -->
     <div id="header-container"></div>
     
     <!-- Hero Section -->
@@ -401,30 +328,34 @@
         </div>
     </section>
 
-    <!-- Footer Container - EXACTLY LIKE ABOUT.HTML -->
+    <!-- Footer Container -->
     <div id="footer-container"></div>
     
     <!-- JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/home.js"></script> <!-- ДОБАВЛЕНО -->
     <script src="js/animations.js"></script>
     <script src="js/contacts.js"></script>
     
     <script>
-        // Component loader for contacts page - EXACTLY LIKE ABOUT.HTML
+        // Component loader for contacts page
         function loadComponents() {
             console.log('🔄 Loading components for contacts page...');
             
             // Load header
             fetch('components/header.html')
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
                 .then(html => {
                     document.getElementById('header-container').innerHTML = html;
-                    initializeHeader();
+                    initializeHeaderForContacts();
                 })
                 .catch(error => {
                     console.error('Error loading header:', error);
-                    // Fallback header - EXACTLY LIKE IN ABOUT.HTML
+                    // Fallback header
                     document.getElementById('header-container').innerHTML = `
                         <header class="main-header">
                             <div class="container">
@@ -467,12 +398,15 @@
                         </header>
                         <div class="mobile-menu-overlay"></div>
                     `;
-                    initializeHeader();
+                    initializeHeaderForContacts();
                 });
             
             // Load footer
             fetch('components/footer.html')
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
                 .then(html => {
                     document.getElementById('footer-container').innerHTML = html;
                     if (typeof window.initFooter === 'function') {
@@ -497,164 +431,191 @@
                 });
         }
         
-        function initializeHeader() {
+        // Специальная инициализация хедера для страницы контактов
+        function initializeHeaderForContacts() {
             console.log('🔵 Initializing header for contacts page...');
             
             const header = document.querySelector('.main-header');
-            const isHomePage = false; // Это не главная страница
+            if (!header) {
+                console.warn('⚠️ Header not found');
+                return;
+            }
             
-            // Инициализация мобильного меню
+            // 1. Добавляем анимацию появления (как на главной)
+            setTimeout(() => {
+                header.classList.add('header-glass-enter');
+                
+                setTimeout(() => {
+                    header.classList.remove('header-glass-enter');
+                }, 600);
+            }, 100);
+            
+            // 2. Логика скролла как на главной странице
+            let lastScrollY = window.scrollY;
+            const scrollThreshold = 50;
+            
+            function handleScroll() {
+                const currentScrollY = window.scrollY;
+                
+                if (currentScrollY <= scrollThreshold) {
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateY(0)';
+                    header.classList.remove('header-hidden', 'header-glass-exit');
+                    header.classList.add('header-glass-enter');
+                } else {
+                    const opacity = Math.max(0, Math.min(1, 1 - (currentScrollY - scrollThreshold) / 100));
+                    header.style.opacity = opacity.toString();
+                    
+                    if (opacity <= 0.1) {
+                        header.classList.add('header-hidden');
+                        header.classList.add('header-glass-exit');
+                        header.classList.remove('header-glass-enter');
+                    } else {
+                        header.classList.remove('header-hidden');
+                    }
+                }
+                
+                lastScrollY = currentScrollY;
+            }
+            
+            // Применяем начальное состояние
+            handleScroll();
+            
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // 3. Показываем хедер при наведении (как на главной)
+            header.addEventListener('mouseenter', () => {
+                if (header.classList.contains('header-hidden')) {
+                    header.classList.remove('header-hidden', 'header-glass-exit');
+                    header.classList.add('header-glass-enter');
+                    header.style.opacity = '1';
+                }
+            });
+            
+            // 4. Скрываем через 2 секунды если мы все еще скроллим вниз
+            header.addEventListener('mouseleave', () => {
+                if (window.scrollY > 150) {
+                    setTimeout(() => {
+                        if (window.scrollY > 150 && !header.matches(':hover')) {
+                            header.classList.add('header-hidden');
+                            header.classList.add('header-glass-exit');
+                            header.classList.remove('header-glass-enter');
+                        }
+                    }, 2000);
+                }
+            });
+            
+            // 5. Эффект при наведении
+            header.addEventListener('mouseenter', () => {
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    header.classList.add('glass-morph');
+                }
+            });
+            
+            header.addEventListener('mouseleave', () => {
+                header.classList.remove('glass-morph');
+            });
+            
+            // 6. Инициализация мобильного меню
             setupMobileMenu();
             
-            // Установка активной ссылки
+            // 7. Установка активной ссылки
             setActiveNavLink();
             
-            // Обновление UI переключателя языка (синхронизация с i18n.js)
+            // 8. Обновление UI переключателя языка
             updateLanguageSwitcherUI();
             
-            // Установка логики скролла
-            setupHeaderScroll();
-            
-            // Добавляем стеклянный эффект
-            if (header) {
-                setTimeout(() => {
-                    header.classList.add('header-glass-enter');
-                    
-                    setTimeout(() => {
-                        header.classList.remove('header-glass-enter');
-                    }, 600);
-                }, 100);
-                
-                // Эффект при наведении
-                header.addEventListener('mouseenter', () => {
-                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                        header.classList.add('glass-morph');
-                    }
-                });
-                
-                header.addEventListener('mouseleave', () => {
-                    header.classList.remove('glass-morph');
-                });
+            console.log('✅ Header initialized successfully for contacts page');
+        }
+        
+        // Функции для хедера
+        function setupMobileMenu() {
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            const nav = document.querySelector('.main-nav');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+
+            if (!toggle || !nav) return;
+
+            const toggleMenu = () => {
+                const isActive = nav.classList.contains('active');
+                toggle.classList.toggle('active');
+                nav.classList.toggle('active');
+                if (overlay) overlay.classList.toggle('active');
+                document.body.style.overflow = isActive ? '' : 'hidden';
+            };
+
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            if (overlay) {
+                overlay.addEventListener('click', toggleMenu);
             }
-            
-            function setupMobileMenu() {
-                const toggle = document.querySelector('.mobile-menu-toggle');
-                const nav = document.querySelector('.main-nav');
-                const overlay = document.querySelector('.mobile-menu-overlay');
 
-                if (!toggle || !nav) return;
+            const navLinks = nav.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
 
-                const toggleMenu = () => {
-                    const isActive = nav.classList.contains('active');
-                    toggle.classList.toggle('active');
-                    nav.classList.toggle('active');
-                    if (overlay) overlay.classList.toggle('active');
-                    document.body.style.overflow = isActive ? '' : 'hidden';
-                };
-
-                toggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && nav.classList.contains('active')) {
                     toggleMenu();
-                });
-
-                if (overlay) {
-                    overlay.addEventListener('click', toggleMenu);
                 }
+            });
 
-                const navLinks = nav.querySelectorAll('.nav-link');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', toggleMenu);
-                });
-
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && nav.classList.contains('active')) {
-                        toggleMenu();
-                    }
-                });
-
-                window.addEventListener('resize', () => {
-                    if (window.innerWidth > 768 && nav.classList.contains('active')) {
-                        toggleMenu();
-                    }
-                });
-            }
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && nav.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        }
+        
+        function setActiveNavLink() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
             
-            function setActiveNavLink() {
-                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-                const navLinks = document.querySelectorAll('.nav-link');
-                
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href === currentPage || 
-                        (currentPage === '' && href === 'index.html') ||
-                        (currentPage === 'index.html' && href === 'index.html')) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
-                    }
-                });
-            }
-            
-            function updateLanguageSwitcherUI() {
-                // Синхронизация с i18n.js если он доступен
-                if (window.i18n && window.i18n.getCurrentLang) {
-                    const currentLang = window.i18n.getCurrentLang();
-                    const langButtons = document.querySelectorAll('.lang-btn');
-                    
-                    langButtons.forEach(btn => {
-                        const btnLang = btn.getAttribute('data-lang');
-                        btn.classList.toggle('active', btnLang === currentLang);
-                    });
-                    
-                    const switcher = document.querySelector('.language-switcher');
-                    if (switcher) {
-                        switcher.setAttribute('data-current-lang', currentLang);
-                    }
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || 
+                    (currentPage === '' && href === 'index.html') ||
+                    (currentPage === 'index.html' && href === 'index.html')) {
+                    link.classList.add('active');
                 } else {
-                    // Fallback на localStorage
-                    const currentLang = localStorage.getItem('preferredLang') || 'ru';
-                    const langButtons = document.querySelectorAll('.lang-btn');
-                    
-                    langButtons.forEach(btn => {
-                        const btnLang = btn.getAttribute('data-lang');
-                        btn.classList.toggle('active', btnLang === currentLang);
-                    });
-                    
-                    const switcher = document.querySelector('.language-switcher');
-                    if (switcher) {
-                        switcher.setAttribute('data-current-lang', currentLang);
-                    }
+                    link.classList.remove('active');
                 }
-            }
-            
-            function setupHeaderScroll() {
-                const header = document.querySelector('.main-header');
-                if (!header) return;
+            });
+        }
+        
+        function updateLanguageSwitcherUI() {
+            // Синхронизация с i18n если доступен
+            if (window.i18n && window.i18n.getCurrentLang) {
+                const currentLang = window.i18n.getCurrentLang();
+                const langButtons = document.querySelectorAll('.lang-btn');
                 
-                let lastScrollY = window.scrollY;
-                const scrollThreshold = 100;
+                langButtons.forEach(btn => {
+                    const btnLang = btn.getAttribute('data-lang');
+                    btn.classList.toggle('active', btnLang === currentLang);
+                });
                 
-                window.addEventListener('scroll', () => {
-                    const currentScrollY = window.scrollY;
-                    
-                    if (currentScrollY <= 0) {
-                        header.classList.remove('header-hidden', 'header-scrolled');
-                        header.style.opacity = '1';
-                        return;
-                    }
-                    
-                    if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                        // Scrolling down
-                        header.classList.remove('header-hidden');
-                        header.classList.add('header-scrolled');
-                    } else if (currentScrollY < lastScrollY) {
-                        // Scrolling up
-                        header.classList.remove('header-hidden');
-                        header.classList.remove('header-scrolled');
-                    }
-                    
-                    lastScrollY = currentScrollY;
-                }, { passive: true });
+                const switcher = document.querySelector('.language-switcher');
+                if (switcher) {
+                    switcher.setAttribute('data-current-lang', currentLang);
+                }
+            } else {
+                // Fallback на localStorage
+                const currentLang = localStorage.getItem('preferredLang') || 'ru';
+                const langButtons = document.querySelectorAll('.lang-btn');
+                
+                langButtons.forEach(btn => {
+                    const btnLang = btn.getAttribute('data-lang');
+                    btn.classList.toggle('active', btnLang === currentLang);
+                });
+                
+                const switcher = document.querySelector('.language-switcher');
+                if (switcher) {
+                    switcher.setAttribute('data-current-lang', currentLang);
+                }
             }
         }
         
@@ -694,6 +655,20 @@
                 window.initContact();
             }
         }, 1500);
+        
+        // Вызов функции инициализации хедера из home.js
+        setTimeout(() => {
+            if (typeof initHomeHeader === 'function') {
+                console.log('🏠 Calling initHomeHeader from home.js');
+                initHomeHeader();
+            }
+            
+            // Также вызываем глобальную инициализацию
+            if (typeof initGlassHeader === 'function') {
+                console.log('🔵 Calling initGlassHeader from main.js');
+                initGlassHeader();
+            }
+        }, 2000);
         
         // Smooth scrolling for anchor links
         document.addEventListener('click', function(e) {
