@@ -2,6 +2,7 @@
 .services-hero {
     padding: 160px 0 80px;
     background: var(--secondary);
+    flex-grow: 1;
 }
 
 .services-hero-content {
@@ -341,6 +342,54 @@
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* ===== FIXES FOR HEADER AND FOOTER ===== */
+
+/* FIX: Ensure footer stays at bottom */
+body.services-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* FIX: Footer positioning */
+.main-footer {
+    margin-top: auto;
+    position: relative;
+    z-index: 100;
+    width: 100%;
+}
+
+/* FIX: Remove problematic sticky behavior for mobile */
+@media (max-width: 768px) {
+    .services-nav {
+        position: static !important;
+        top: auto !important;
+        transform: none !important;
+        opacity: 1 !important;
+        background: var(--primary) !important;
+        border-bottom: 1px solid var(--border);
+    }
+    
+    .services-nav.hidden {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+    
+    .internal-page .services-nav {
+        position: static !important;
+        margin-top: 0 !important;
+        top: auto !important;
+        background: var(--primary) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .internal-page .main-header.header-scrolled ~ .services-nav {
+        top: auto !important;
+        background: var(--primary) !important;
+    }
+}
+
 /* ===== МОБИЛЬНАЯ ВЕРСИЯ СТРАНИЦЫ УСЛУГ ===== */
 @media (max-width: 1024px) {
     .service-content {
@@ -372,19 +421,6 @@
     /* Glass header mobile adjustments */
     .internal-page .services-hero {
         padding-top: 120px !important;
-    }
-    
-    .internal-page .services-nav {
-        position: static;
-        margin-top: 0;
-        top: 0 !important;
-        background: var(--primary);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-    }
-    
-    .internal-page .main-header.header-scrolled ~ .services-nav {
-        top: 0 !important;
     }
     
     /* Navigation Mobile */
