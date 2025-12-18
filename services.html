@@ -590,6 +590,13 @@
                 padding-bottom: 40px;
             }
         }
+        
+        /* FIX: Ensure body has full height */
+        body.services-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 </head>
 <body class="services-page">
@@ -966,14 +973,71 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Full Footer -->
     <footer class="main-footer">
-        <div class="footer-container">
+        <div class="container">
             <div class="footer-content">
-                <div class="footer-bottom">
-                    <div class="copyright" data-i18n="footer.copyright">
-                        © 2024 NBGROUP.TECH Все права защищены.
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-mark">NB</div>
+                        <span class="logo-text" data-i18n="nav.brand">NBGROUP.TECH</span>
                     </div>
+                    <p class="footer-description" data-i18n="footer.description">
+                        Industrial design and product development studio creating 
+                        meaningful products for global markets.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://t.me/NB_GROUP_TECH" class="social-link telegram" aria-label="Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://instagram.com/nb_group_tech" class="social-link instagram" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link linkedin" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link behance" aria-label="Behance">
+                            <i class="fab fa-behance"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.services">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="services.html#strategy" data-i18n="servicesPreview.strategy.title">Product Strategy</a></li>
+                        <li><a href="services.html#design" data-i18n="servicesPreview.design.title">Industrial Design</a></li>
+                        <li><a href="services.html#engineering" data-i18n="servicesPreview.engineering.title">Engineering</a></li>
+                        <li><a href="services.html#production" data-i18n="services.production.title">Manufacturing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.company">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html" data-i18n="nav.about">About</a></li>
+                        <li><a href="portfolio.html" data-i18n="nav.portfolio">Work</a></li>
+                        <li><a href="contacts.html" data-i18n="nav.contact">Contact</a></li>
+                        <li><a href="#" data-i18n="footer.links.careers">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.contact.title">Contact</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="footer.contact.address">Moscow, Russia</span></p>
+                        <p><i class="fas fa-phone"></i> +7 (495) 123-4567</p>
+                        <p><i class="fas fa-envelope"></i> info@nbgroup.tech</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 NBGROUP.TECH. <span data-i18n="footer.rights">All rights reserved.</span></p>
+                <div class="footer-legal">
+                    <a href="#" data-i18n="footer.links.privacy">Privacy Policy</a>
+                    <a href="#" data-i18n="footer.links.terms">Terms of Service</a>
+                    <a href="#" data-i18n="footer.links.cookies">Cookie Policy</a>
                 </div>
             </div>
         </div>
@@ -1040,13 +1104,18 @@
             });
         }
         
-        // Header scroll behavior for services page
+        // Header scroll behavior for services page - FIXED VERSION
         function setupHeaderScroll() {
             const header = document.querySelector('.main-header');
-            if (!header) return;
+            const isHomePage = window.location.pathname.includes('index.html') || 
+                              window.location.pathname === '/' || 
+                              window.location.pathname.endsWith('/');
             
+            if (!header || isHomePage) return;
+            
+            // Логика для страницы услуг - хедер всегда видим, но меняет размер
             let lastScrollY = window.scrollY;
-            const scrollThreshold = 100;
+            const scrollThreshold = 50;
             
             const handleScroll = () => {
                 const currentScrollY = window.scrollY;
@@ -1057,10 +1126,10 @@
                 }
                 
                 if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                    // Scrolling down
+                    // Scrolling down - делаем компактным
                     header.classList.add('header-scrolled');
                 } else if (currentScrollY < lastScrollY) {
-                    // Scrolling up
+                    // Scrolling up - возвращаем нормальный размер
                     header.classList.remove('header-scrolled');
                 }
                 
@@ -1214,7 +1283,7 @@
             
             // Setup functionality
             setupMobileMenu();
-            setupHeaderScroll();
+            setupHeaderScroll(); // Используем исправленную версию
             setupLanguageSwitcher();
             setupServicesNavigation();
             adjustHeroPadding();
@@ -1247,4 +1316,4 @@
         });
     </script>
 </body>
-            </html>
+</html>
