@@ -1535,6 +1535,869 @@ function initEnhancedSpeckBlocks() {
     console.log(`✅ Инициализировано ${speckBlocks.length} блоков с ${featureColumns.length} колонками`);
 }
 
+// ===== ADVANCED ANIMATIONS AND EFFECTS =====
+
+function initAdvancedAnimations() {
+    console.log('🎬 Инициализация продвинутых анимаций...');
+    
+    // Параллакс для фоновых элементов
+    const parallaxElements = document.querySelectorAll('.parallax-layer');
+    if (parallaxElements.length > 0) {
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            parallaxElements.forEach(element => {
+                const speed = element.dataset.speed || 0.5;
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        }, { passive: true });
+    }
+    
+    // Анимация появления элементов при скролле
+    const scrollAnimateElements = document.querySelectorAll('.scroll-animate');
+    if (scrollAnimateElements.length > 0 && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                    
+                    // Анимация с задержкой для дочерних элементов
+                    const childElements = entry.target.querySelectorAll('.animate-child');
+                    childElements.forEach((child, index) => {
+                        setTimeout(() => {
+                            child.classList.add('animated');
+                        }, index * 100);
+                    });
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        scrollAnimateElements.forEach(el => observer.observe(el));
+    }
+    
+    // Анимация волны (wave effect)
+    const waveElements = document.querySelectorAll('.wave-effect');
+    waveElements.forEach(wave => {
+        wave.addEventListener('mouseenter', (e) => {
+            const rect = wave.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const ripple = document.createElement('span');
+            ripple.className = 'wave-ripple';
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            
+            wave.appendChild(ripple);
+            
+            setTimeout(() => {
+                if (ripple.parentNode === wave) {
+                    wave.removeChild(ripple);
+                }
+            }, 600);
+        });
+    });
+    
+    console.log('✅ Продвинутые анимации инициализированы');
+}
+
+// ===== DYNAMIC BACKGROUND EFFECTS =====
+
+function initDynamicBackgrounds() {
+    console.log('🌈 Инициализация динамических фонов...');
+    
+    // Градиентные анимации
+    const gradientElements = document.querySelectorAll('.gradient-animate');
+    gradientElements.forEach(element => {
+        if (!element.hasAttribute('data-gradient-original')) {
+            element.setAttribute('data-gradient-original', 
+                getComputedStyle(element).backgroundImage);
+        }
+        
+        element.addEventListener('mouseenter', () => {
+            if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+                element.style.backgroundImage = `
+                    radial-gradient(circle at 30% 20%, 
+                    rgba(var(--primary-rgb), 0.2) 0%,
+                    transparent 50%),
+                    ${element.getAttribute('data-gradient-original')}
+                `;
+            }
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            element.style.backgroundImage = 
+                element.getAttribute('data-gradient-original');
+        });
+    });
+    
+    // Динамические тени
+    const shadowElements = document.querySelectorAll('.dynamic-shadow');
+    shadowElements.forEach(element => {
+        element.addEventListener('mousemove', (e) => {
+            const rect = element.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            element.style.setProperty('--shadow-x', `${x}%`);
+            element.style.setProperty('--shadow-y', `${y}%`);
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            element.style.removeProperty('--shadow-x');
+            element.style.removeProperty('--shadow-y');
+        });
+    });
+    
+    console.log('✅ Динамические фоны инициализированы');
+}
+
+// ===== REAL-TIME UI UPDATES =====
+
+function initRealTimeUI() {
+    console.log('🔄 Инициализация real-time UI обновлений...');
+    
+    // Обновление времени в реальном времени
+    const timeElements = document.querySelectorAll('.real-time');
+    if (timeElements.length > 0) {
+        function updateTimes() {
+            const now = new Date();
+            timeElements.forEach(element => {
+                if (element.classList.contains('time-local')) {
+                    element.textContent = now.toLocaleTimeString('ru-RU', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                } else if (element.classList.contains('date-local')) {
+                    element.textContent = now.toLocaleDateString('ru-RU', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+                }
+            });
+        }
+        
+        updateTimes();
+        setInterval(updateTimes, 60000); // Обновлять каждую минуту
+    }
+    
+    // Счетчики в реальном времени
+    const liveCounters = document.querySelectorAll('.live-counter');
+    liveCounters.forEach(counter => {
+        const target = parseInt(counter.dataset.target) || 100;
+        const duration = parseInt(counter.dataset.duration) || 2000;
+        const start = Date.now();
+        
+        function updateCounter() {
+            const elapsed = Date.now() - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeProgress = 1 - Math.pow(1 - progress, 3); // Кубическое замедление
+            
+            const value = Math.floor(easeProgress * target);
+            counter.textContent = value.toLocaleString();
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.textContent = target.toLocaleString();
+                counter.classList.add('completed');
+            }
+        }
+        
+        // Запускаем при появлении в viewport
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        updateCounter();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(counter);
+        } else {
+            updateCounter();
+        }
+    });
+    
+    console.log('✅ Real-time UI обновления инициализированы');
+}
+
+// ===== ADVANCED TOUCH INTERACTIONS =====
+
+function initAdvancedTouch() {
+    console.log('👆 Инициализация продвинутых touch-интеракций...');
+    
+    // Swipe detection для мобильных устройств
+    let touchStartX = 0;
+    let touchStartY = 0;
+    
+    document.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    
+    document.addEventListener('touchend', (e) => {
+        if (!touchStartX || !touchStartY) return;
+        
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        
+        const diffX = touchStartX - touchEndX;
+        const diffY = touchStartY - touchEndY;
+        
+        // Определяем направление свайпа
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            // Горизонтальный свайп
+            if (diffX > 50) {
+                // Свайп влево
+                document.dispatchEvent(new CustomEvent('swipeLeft'));
+            } else if (diffX < -50) {
+                // Свайп вправо
+                document.dispatchEvent(new CustomEvent('swipeRight'));
+            }
+        } else {
+            // Вертикальный свайп
+            if (diffY > 50) {
+                // Свайп вверх
+                document.dispatchEvent(new CustomEvent('swipeUp'));
+            } else if (diffY < -50) {
+                // Свайп вниз
+                document.dispatchEvent(new CustomEvent('swipeDown'));
+            }
+        }
+        
+        touchStartX = 0;
+        touchStartY = 0;
+    }, { passive: true });
+    
+    // Обработчики свайпов
+    document.addEventListener('swipeLeft', () => {
+        console.log('👈 Swipe left detected');
+        // Можно использовать для навигации вперед
+    });
+    
+    document.addEventListener('swipeRight', () => {
+        console.log('👉 Swipe right detected');
+        // Можно использовать для навигации назад
+        if (window.history.length > 1) {
+            window.history.back();
+        }
+    });
+    
+    // Long press detection
+    const pressableElements = document.querySelectorAll('.long-press');
+    pressableElements.forEach(element => {
+        let pressTimer;
+        
+        element.addEventListener('touchstart', (e) => {
+            pressTimer = setTimeout(() => {
+                element.dispatchEvent(new CustomEvent('longpress', {
+                    bubbles: true,
+                    detail: { x: e.touches[0].clientX, y: e.touches[0].clientY }
+                }));
+            }, 500);
+        }, { passive: true });
+        
+        element.addEventListener('touchend', () => {
+            clearTimeout(pressTimer);
+        });
+        
+        element.addEventListener('touchmove', () => {
+            clearTimeout(pressTimer);
+        }, { passive: true });
+        
+        element.addEventListener('longpress', (e) => {
+            console.log('⏱️ Long press detected', e.detail);
+            element.classList.add('long-pressed');
+            
+            setTimeout(() => {
+                element.classList.remove('long-pressed');
+            }, 300);
+        });
+    });
+    
+    console.log('✅ Продвинутые touch-интеракции инициализированы');
+}
+
+// ===== PERFORMANCE MONITORING =====
+
+function initPerformanceMonitoring() {
+    console.log('📊 Инициализация мониторинга производительности...');
+    
+    // Мониторинг FPS
+    let frameCount = 0;
+    let lastTime = performance.now();
+    let fps = 60;
+    
+    function monitorFPS() {
+        frameCount++;
+        const currentTime = performance.now();
+        
+        if (currentTime >= lastTime + 1000) {
+            fps = frameCount;
+            frameCount = 0;
+            lastTime = currentTime;
+            
+            // Логируем низкий FPS
+            if (fps < 30) {
+                console.warn(`⚠️ Low FPS detected: ${fps}`);
+                
+                // Автоматически уменьшаем анимации при низком FPS
+                if (!document.documentElement.classList.contains('reduced-animations')) {
+                    document.documentElement.classList.add('reduced-animations');
+                    console.log('🎬 Automatically reducing animations due to low FPS');
+                }
+            } else if (fps >= 50 && document.documentElement.classList.contains('reduced-animations')) {
+                // Восстанавливаем анимации если FPS улучшился
+                document.documentElement.classList.remove('reduced-animations');
+            }
+        }
+        
+        requestAnimationFrame(monitorFPS);
+    }
+    
+    // Запускаем мониторинг только если включен debug режим
+    if (window.location.search.includes('debug=performance') || 
+        localStorage.getItem('performanceMonitoring') === 'true') {
+        monitorFPS();
+        
+        // Мониторинг использования памяти
+        if ('memory' in performance) {
+            setInterval(() => {
+                const memory = performance.memory;
+                console.log('💾 Memory usage:', {
+                    usedJSHeapSize: Math.round(memory.usedJSHeapSize / 1024 / 1024) + 'MB',
+                    totalJSHeapSize: Math.round(memory.totalJSHeapSize / 1024 / 1024) + 'MB',
+                    jsHeapSizeLimit: Math.round(memory.jsHeapSizeLimit / 1024 / 1024) + 'MB'
+                });
+            }, 10000);
+        }
+    }
+    
+    // Мониторинг загрузки ресурсов
+    window.addEventListener('load', () => {
+        const timing = performance.timing;
+        const loadTime = timing.loadEventEnd - timing.navigationStart;
+        const domReadyTime = timing.domComplete - timing.domLoading;
+        
+        console.log('📈 Performance metrics:', {
+            pageLoadTime: Math.round(loadTime) + 'ms',
+            domReadyTime: Math.round(domReadyTime) + 'ms',
+            totalResources: performance.getEntriesByType('resource').length
+        });
+        
+        // Сохраняем метрики для аналитики
+        if (loadTime > 3000) {
+            console.warn('🐌 Page load time is high:', loadTime + 'ms');
+        }
+    });
+    
+    // Мониторинг изменения размера окна
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            console.log('📱 Window resized to:', {
+                width: window.innerWidth,
+                height: window.innerHeight,
+                devicePixelRatio: window.devicePixelRatio
+            });
+        }, 250);
+    });
+    
+    console.log('✅ Мониторинг производительности инициализирован');
+}
+
+// ===== ACCESSIBILITY ENHANCEMENTS =====
+
+function initAccessibilityEnhancements() {
+    console.log('♿ Инициализация улучшений доступности...');
+    
+    // Keyboard navigation improvements
+    document.addEventListener('keydown', (e) => {
+        // Skip navigation (переход к основному контенту)
+        if (e.key === 'Tab' && e.shiftKey && e.keyCode === 9) {
+            const skipLink = document.querySelector('.skip-to-content');
+            if (skipLink && document.activeElement === skipLink) {
+                e.preventDefault();
+                const mainContent = document.querySelector('main');
+                if (mainContent) {
+                    mainContent.setAttribute('tabindex', '-1');
+                    mainContent.focus();
+                }
+            }
+        }
+        
+        // Escape key closes modals and dropdowns
+        if (e.key === 'Escape') {
+            const openModals = document.querySelectorAll('.modal.open, .dropdown.open');
+            openModals.forEach(modal => {
+                modal.classList.remove('open');
+                modal.dispatchEvent(new Event('close'));
+            });
+            
+            // Закрываем мобильное меню
+            const mobileMenu = document.querySelector('.main-nav.active');
+            if (mobileMenu) {
+                const toggle = document.querySelector('.mobile-menu-toggle');
+                if (toggle) toggle.click();
+            }
+        }
+        
+        // Space bar для кнопок и ссылок
+        if (e.key === ' ' && !e.target.matches('input, textarea, [contenteditable]')) {
+            const activeElement = document.activeElement;
+            if (activeElement.matches('button, a, [role="button"]')) {
+                e.preventDefault();
+                activeElement.click();
+            }
+        }
+    });
+    
+    // Focus traps для модальных окон
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        const focusableElements = modal.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+        
+        modal.addEventListener('keydown', (e) => {
+            if (e.key !== 'Tab') return;
+            
+            if (e.shiftKey) {
+                // Shift + Tab
+                if (document.activeElement === firstFocusable) {
+                    e.preventDefault();
+                    lastFocusable.focus();
+                }
+            } else {
+                // Tab
+                if (document.activeElement === lastFocusable) {
+                    e.preventDefault();
+                    firstFocusable.focus();
+                }
+            }
+        });
+    });
+    
+    // Автоматическое объявление изменений для скринридеров
+    const liveRegions = document.createElement('div');
+    liveRegions.id = 'live-regions';
+    liveRegions.setAttribute('aria-live', 'polite');
+    liveRegions.setAttribute('aria-atomic', 'true');
+    liveRegions.style.cssText = `
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    `;
+    document.body.appendChild(liveRegions);
+    
+    window.announceToScreenReader = function(message, priority = 'polite') {
+        const region = document.getElementById('live-regions');
+        if (region) {
+            region.setAttribute('aria-live', priority);
+            region.textContent = message;
+            
+            // Очищаем через 1 секунду
+            setTimeout(() => {
+                region.textContent = '';
+            }, 1000);
+        }
+    };
+    
+    // Динамическое обновление заголовков страниц
+    const updatePageTitle = (newTitle) => {
+        document.title = newTitle;
+        announceToScreenReader(`Заголовок страницы изменен на: ${newTitle}`);
+    };
+    
+    window.updatePageTitle = updatePageTitle;
+    
+    // High contrast mode detection
+    const contrastMediaQuery = window.matchMedia('(prefers-contrast: high)');
+    const updateContrastMode = (e) => {
+        if (e.matches) {
+            document.documentElement.classList.add('high-contrast');
+            console.log('🎨 High contrast mode enabled');
+        } else {
+            document.documentElement.classList.remove('high-contrast');
+        }
+    };
+    
+    updateContrastMode(contrastMediaQuery);
+    contrastMediaQuery.addEventListener('change', updateContrastMode);
+    
+    // Reduce motion detection
+    const motionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateMotionPreference = (e) => {
+        if (e.matches) {
+            document.documentElement.classList.add('reduced-motion');
+            console.log('🎬 Reduced motion preference detected');
+        } else {
+            document.documentElement.classList.remove('reduced-motion');
+        }
+    };
+    
+    updateMotionPreference(motionMediaQuery);
+    motionMediaQuery.addEventListener('change', updateMotionPreference);
+    
+    console.log('✅ Улучшения доступности инициализированы');
+}
+
+// ===== NETWORK STATUS MONITORING =====
+
+function initNetworkStatus() {
+    console.log('📡 Инициализация мониторинга сети...');
+    
+    // Проверка онлайн/офлайн статуса
+    function updateOnlineStatus() {
+        if (navigator.onLine) {
+            document.documentElement.classList.remove('offline');
+            document.documentElement.classList.add('online');
+            
+            // Показываем уведомление о восстановлении соединения
+            if (window.DaehaaApp && window.DaehaaApp.showNotification) {
+                window.DaehaaApp.showNotification(
+                    'Соединение восстановлено',
+                    'success'
+                );
+            }
+        } else {
+            document.documentElement.classList.remove('online');
+            document.documentElement.classList.add('offline');
+            
+            // Показываем предупреждение о потере соединения
+            if (window.DaehaaApp && window.DaehaaApp.showNotification) {
+                window.DaehaaApp.showNotification(
+                    'Отсутствует интернет-соединение. Некоторые функции могут быть недоступны.',
+                    'warning'
+                );
+            }
+        }
+    }
+    
+    // Слушаем события изменения статуса сети
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    
+    // Устанавливаем начальный статус
+    updateOnlineStatus();
+    
+    // Мониторинг скорости соединения
+    if ('connection' in navigator) {
+        const connection = navigator.connection;
+        
+        function updateConnectionInfo() {
+            const info = {
+                effectiveType: connection.effectiveType,
+                downlink: connection.downlink + ' Mbps',
+                rtt: connection.rtt + ' ms',
+                saveData: connection.saveData ? 'enabled' : 'disabled'
+            };
+            
+            console.log('📶 Connection info:', info);
+            
+            // Адаптируем качество контента в зависимости от скорости
+            if (connection.effectiveType.includes('2g') || connection.downlink < 1) {
+                document.documentElement.classList.add('slow-connection');
+                document.documentElement.classList.remove('fast-connection');
+            } else if (connection.downlink > 5) {
+                document.documentElement.classList.add('fast-connection');
+                document.documentElement.classList.remove('slow-connection');
+            }
+        }
+        
+        if (connection.addEventListener) {
+            connection.addEventListener('change', updateConnectionInfo);
+        }
+        updateConnectionInfo();
+    }
+    
+    // Retry failed requests
+    window.retryWithBackoff = async function(fn, maxRetries = 3) {
+        for (let i = 0; i < maxRetries; i++) {
+            try {
+                return await fn();
+            } catch (error) {
+                if (i === maxRetries - 1) throw error;
+                
+                // Exponential backoff
+                const delay = Math.pow(2, i) * 1000;
+                console.log(`Retry ${i + 1}/${maxRetries} after ${delay}ms`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
+    };
+    
+    // Очередь запросов при офлайн режиме
+    if ('serviceWorker' in navigator && 'SyncManager' in window) {
+        // Используем Background Sync API
+        navigator.serviceWorker.ready.then(registration => {
+            window.syncQueue = {
+                add: async (tag, data) => {
+                    await registration.sync.register(tag);
+                    // Сохраняем данные в IndexedDB для последующей синхронизации
+                    if (window.queueStore) {
+                        await window.queueStore.add(data);
+                    }
+                }
+            };
+        });
+    }
+    
+    console.log('✅ Мониторинг сети инициализирован');
+}
+
+// ===== LAZY INITIALIZATION HELPER =====
+
+function lazyInit(selector, callback, options = {}) {
+    const {
+        rootMargin = '0px 0px 100px 0px',
+        threshold = 0.1,
+        once = true
+    } = options;
+    
+    if (!('IntersectionObserver' in window)) {
+        // Fallback: инициализируем все сразу
+        document.querySelectorAll(selector).forEach(callback);
+        return;
+    }
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                callback(entry.target);
+                if (once) {
+                    observer.unobserve(entry.target);
+                }
+            }
+        });
+    }, { rootMargin, threshold });
+    
+    document.querySelectorAll(selector).forEach(el => observer.observe(el));
+}
+
+// ===== UTILITY FUNCTIONS =====
+
+// Дебаунс функция
+window.debounce = function(func, wait, immediate) {
+    let timeout;
+    return function executedFunction() {
+        const context = this;
+        const args = arguments;
+        
+        const later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        
+        if (callNow) func.apply(context, args);
+    };
+};
+
+// Троттлинг функция
+window.throttle = function(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+};
+
+// Генератор уникальных ID
+window.generateId = function(prefix = 'id') {
+    return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+};
+
+// Форматирование чисел
+window.formatNumber = function(num, options = {}) {
+    const defaults = {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+        useGrouping: true
+    };
+    
+    return new Intl.NumberFormat('ru-RU', { ...defaults, ...options }).format(num);
+};
+
+// Форматирование даты
+window.formatDate = function(date, options = {}) {
+    const defaults = {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    };
+    
+    const d = date instanceof Date ? date : new Date(date);
+    return new Intl.DateTimeFormat('ru-RU', { ...defaults, ...options }).format(d);
+};
+
+// Копирование в буфер обмена
+window.copyToClipboard = async function(text) {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return true;
+        } else {
+            // Fallback для старых браузеров
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            return true;
+        }
+    } catch (err) {
+        console.error('Failed to copy:', err);
+        return false;
+    }
+};
+
+// Проверка видимости элемента
+window.isElementVisible = function(element) {
+    if (!element) return false;
+    
+    const rect = element.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+    
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= windowHeight &&
+        rect.right <= windowWidth
+    );
+};
+
+// Получение параметров URL
+window.getUrlParams = function() {
+    const params = new URLSearchParams(window.location.search);
+    const result = {};
+    
+    for (const [key, value] of params.entries()) {
+        result[key] = value;
+    }
+    
+    return result;
+};
+
+// Установка параметров URL
+window.setUrlParam = function(key, value) {
+    const url = new URL(window.location);
+    
+    if (value === null || value === undefined) {
+        url.searchParams.delete(key);
+    } else {
+        url.searchParams.set(key, value);
+    }
+    
+    window.history.replaceState({}, '', url.toString());
+};
+
+// ===== EXPORT ALL FUNCTIONS =====
+
+window.DaehaaApp = window.DaehaaApp || {};
+window.DaehaaApp.utils = {
+    debounce: window.debounce,
+    throttle: window.throttle,
+    generateId: window.generateId,
+    formatNumber: window.formatNumber,
+    formatDate: window.formatDate,
+    copyToClipboard: window.copyToClipboard,
+    isElementVisible: window.isElementVisible,
+    getUrlParams: window.getUrlParams,
+    setUrlParam: window.setUrlParam,
+    lazyInit: lazyInit,
+    announceToScreenReader: window.announceToScreenReader,
+    updatePageTitle: window.updatePageTitle,
+    retryWithBackoff: window.retryWithBackoff
+};
+
+// Инициализация всех расширенных функций
+window.DaehaaApp.initExtendedFeatures = function() {
+    initAdvancedAnimations();
+    initDynamicBackgrounds();
+    initRealTimeUI();
+    initAccessibilityEnhancements();
+    initNetworkStatus();
+    
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        initAdvancedTouch();
+    }
+    
+    console.log('🚀 Все расширенные функции DaehaaApp инициализированы');
+};
+
+// ===== GLOBAL ERROR HANDLER =====
+
+window.addEventListener('error', function(e) {
+    console.error('Global error caught:', e.error);
+    
+    // Отправка ошибок на сервер (если нужно)
+    if (window.location.hostname !== 'localhost') {
+        const errorData = {
+            message: e.error?.message || e.message,
+            stack: e.error?.stack,
+            url: window.location.href,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent
+        };
+        
+        // Можно отправить через Beacon API
+        if (navigator.sendBeacon) {
+            const blob = new Blob([JSON.stringify(errorData)], { type: 'application/json' });
+            navigator.sendBeacon('/api/log-error', blob);
+        }
+    }
+    
+    // Показываем пользователю friendly сообщение
+    if (window.DaehaaApp && window.DaehaaApp.showNotification) {
+        window.DaehaaApp.showNotification(
+            'Произошла ошибка. Пожалуйста, обновите страницу или попробуйте позже.',
+            'error'
+        );
+    }
+    
+    return false;
+});
+
+window.addEventListener('unhandledrejection', function(e) {
+    console.error('Unhandled promise rejection:', e.reason);
+    
+    // Аналогичная обработка для промисов
+    if (window.DaehaaApp && window.DaehaaApp.showNotification) {
+        window.DaehaaApp.showNotification(
+            'Произошла ошибка при выполнении операции.',
+            'error'
+        );
+    }
+});
+
 // Initialize application
 document.addEventListener('DOMContentLoaded', () => {
     window.DaehaaApp = new DaehaaApp();
@@ -1579,16 +2442,74 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 2000);
 });
 
+// Автоматическая инициализация всех расширенных функций
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        // Инициализируем все модули с задержками для предотвращения блокировки
+        setTimeout(() => {
+            if (window.DaehaaApp.initExtendedFeatures) {
+                window.DaehaaApp.initExtendedFeatures();
+            }
+            
+            // Lazy initialization для тяжелых компонентов
+            setTimeout(() => {
+                // Инициализируем компоненты при их появлении в viewport
+                lazyInit('.lazy-component', (element) => {
+                    console.log('Lazy loading component:', element);
+                    element.classList.add('loaded');
+                });
+                
+                // Lazy load images with better priority
+                lazyInit('img[data-src]', (img) => {
+                    const src = img.getAttribute('data-src');
+                    if (src) {
+                        img.src = src;
+                        img.removeAttribute('data-src');
+                    }
+                }, { rootMargin: '200px 0px' });
+            }, 500);
+        }, 100);
+    });
+} else {
+    setTimeout(() => {
+        if (window.DaehaaApp.initExtendedFeatures) {
+            window.DaehaaApp.initExtendedFeatures();
+        }
+    }, 100);
+}
+
 // Экспортируем функции для глобального использования
 window.initGlassHeader = initGlassHeader;
 window.updateActiveNav = updateActiveNav;
 window.initSpeckBlocksAnimations = initSpeckBlocksAnimations;
 window.initEnhancedSpeckBlocks = initEnhancedSpeckBlocks;
+window.initAdvancedAnimations = initAdvancedAnimations;
+window.initDynamicBackgrounds = initDynamicBackgrounds;
+window.initRealTimeUI = initRealTimeUI;
+window.initAdvancedTouch = initAdvancedTouch;
+window.initPerformanceMonitoring = initPerformanceMonitoring;
+window.initAccessibilityEnhancements = initAccessibilityEnhancements;
+window.initNetworkStatus = initNetworkStatus;
+window.lazyInit = lazyInit;
 
 // Экспортируем класс DaehaaApp для использования в других модулях
 window.DaehaaApp = DaehaaApp;
 
 // Module exports
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = DaehaaApp;
-                                    }
+    module.exports = {
+        DaehaaApp: window.DaehaaApp,
+        initGlassHeader,
+        updateActiveNav,
+        initSpeckBlocksAnimations,
+        initEnhancedSpeckBlocks,
+        initAdvancedAnimations,
+        initDynamicBackgrounds,
+        initRealTimeUI,
+        initAdvancedTouch,
+        initPerformanceMonitoring,
+        initAccessibilityEnhancements,
+        initNetworkStatus,
+        lazyInit
+    };
+                }
