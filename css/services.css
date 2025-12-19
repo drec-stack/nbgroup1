@@ -1,8 +1,11 @@
+/* ===== SERVICES PAGE STYLES ===== */
+
 /* Services Hero */
 .services-hero {
     padding: 160px 0 80px;
     background: var(--secondary);
     flex-grow: 1;
+    transition: padding-top 0.3s ease;
 }
 
 .services-hero-content {
@@ -11,7 +14,7 @@
     margin: 0 auto;
 }
 
-/* Services Navigation - Hide on Scroll */
+/* Services Navigation */
 .services-nav {
     padding: 40px 0;
     background: var(--primary);
@@ -23,31 +26,11 @@
                 opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Состояния для скрытия/показа */
-.services-nav.visible {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.services-nav.hidden {
-    transform: translateY(-100%);
-    opacity: 0;
-}
-
-/* Плавное появление при скролле вверх */
-.services-nav.visible {
-    animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+/* Скрытая навигация */
+.services-nav.nav-hidden {
+    transform: translateY(-100%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 .services-navigation {
@@ -170,7 +153,7 @@
     letter-spacing: 1px;
 }
 
-/* Process Overview - ИСПРАВЛЕННАЯ СЕКЦИЯ */
+/* Process Overview */
 .process-overview {
     padding: 120px 0;
     background: var(--secondary);
@@ -220,7 +203,6 @@
     border-color: var(--accent);
 }
 
-/* ИСПРАВЛЕНИЕ: Цифры теперь всегда видны */
 .phase-number {
     font-size: 2.5rem;
     font-weight: 800;
@@ -230,17 +212,11 @@
     -webkit-text-fill-color: transparent;
     margin-bottom: 20px;
     transition: var(--transition);
-    display: block; /* Убедимся, что цифра отображается */
+    display: block;
 }
 
-/* Убираем проблемные стили, которые скрывали цифры */
 .process-phase:hover .phase-number {
-    transform: scale(1.1); /* Только легкое увеличение */
-    background: var(--accent-gradient); /* Сохраняем градиент */
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent; /* Явно указываем прозрачность текста */
+    transform: scale(1.1);
 }
 
 .process-phase h3 {
@@ -282,11 +258,10 @@
     margin-right: auto;
 }
 
-/* ===== GLASS HEADER ADJUSTMENTS FOR SERVICES PAGE ===== */
+/* ===== GLASS HEADER ADJUSTMENTS ===== */
 
 .internal-page .services-hero {
     padding-top: 180px !important;
-    transition: padding-top 0.3s ease !important;
 }
 
 .internal-page .services-nav {
@@ -301,124 +276,115 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.internal-page .main-header.header-scrolled ~ .services-nav {
+.internal-page .main-header.header-hidden ~ .services-nav {
     top: 80px;
-    background: rgba(var(--primary-rgb, 13, 13, 18), 0.95);
 }
 
-/* Active link highlighting for glass header */
-.internal-page .nav-link[href="services.html"] {
-    position: relative;
-    background: rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 10px;
-    padding: 10px 20px !important;
-    color: white !important;
-    font-weight: 600 !important;
+/* ===== HEADER HIDE ON SCROLL STYLES ===== */
+
+/* Анимация для плавного скрытия/показа */
+@keyframes headerSlideIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-.internal-page .nav-link[href="services.html"]::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8));
-    transition: width 0.3s ease;
-    border-radius: 1px;
+@keyframes headerSlideOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
 }
 
-.internal-page .nav-link[href="services.html"]:hover::after {
-    width: 70%;
+/* Основные стили для скрытого хедера */
+.main-header {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                padding 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: transform, opacity;
 }
 
-/* Smooth transitions */
-.internal-page .main-header,
-.internal-page .services-nav {
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.main-header.header-hidden {
+    animation: headerSlideOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+    pointer-events: none !important;
 }
 
-/* ===== FIXES FOR HEADER AND FOOTER ===== */
-
-/* FIX: Ensure footer stays at bottom */
-body.services-page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+.main-header:not(.header-hidden) {
+    animation: headerSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+    pointer-events: all !important;
 }
 
-/* FIX: Footer positioning */
-.main-footer {
-    margin-top: auto;
-    position: relative;
-    z-index: 100;
-    width: 100%;
+/* Навигация услуг скрывается вместе с хедером */
+.services-nav {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* FIX: Remove problematic sticky behavior for mobile */
-@media (max-width: 768px) {
-    .services-nav {
-        position: static !important;
-        top: auto !important;
-        transform: none !important;
+.services-nav.nav-hidden {
+    transform: translateY(-100%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Показываем хедер при наведении (только на десктопе) */
+@media (min-width: 769px) {
+    .main-header:hover:not(.mobile-menu-active) {
+        transform: translateY(0) !important;
         opacity: 1 !important;
-        background: var(--primary) !important;
-        border-bottom: 1px solid var(--border);
+        pointer-events: all !important;
+        animation: none !important;
     }
     
-    .services-nav.hidden {
-        transform: none !important;
+    .main-header:hover:not(.mobile-menu-active) ~ .services-nav {
+        transform: translateY(0) !important;
         opacity: 1 !important;
-    }
-    
-    .internal-page .services-nav {
-        position: static !important;
-        margin-top: 0 !important;
-        top: auto !important;
-        background: var(--primary) !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-    }
-    
-    .internal-page .main-header.header-scrolled ~ .services-nav {
-        top: auto !important;
-        background: var(--primary) !important;
+        pointer-events: all !important;
     }
 }
 
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ СТРАНИЦЫ УСЛУГ ===== */
-@media (max-width: 1024px) {
-    .service-content {
-        grid-template-columns: 1fr;
-        gap: 60px;
-    }
-    
-    .service-stats {
-        flex-direction: row;
-        justify-content: center;
-        gap: 20px;
-    }
-    
-    .stat {
-        flex: 1;
-        min-width: 120px;
-    }
-}
+/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
 
 @media (max-width: 768px) {
+    /* Хедер на мобильных не скрывается */
+    .main-header.header-hidden {
+        animation: none !important;
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+        pointer-events: all !important;
+        background: rgba(0, 102, 255, 0.25) !important;
+        backdrop-filter: blur(25px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+        padding: 12px 0 !important;
+        top: 0 !important;
+        border-radius: 0 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .services-nav.nav-hidden {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+        pointer-events: all !important;
+    }
+    
+    /* Отключаем hover на мобильных */
+    .main-header:hover {
+        transform: none !important;
+    }
+    
     .services-hero {
         padding: 140px 0 60px !important;
     }
     
-    .services-hero-content {
-        text-align: center;
-    }
-    
-    /* Glass header mobile adjustments */
     .internal-page .services-hero {
         padding-top: 120px !important;
     }
@@ -427,15 +393,8 @@ body.services-page {
     .services-nav {
         padding: 25px 0;
         position: static;
-        transform: none !important;
-        opacity: 1 !important;
         background: var(--primary);
         border-bottom: 1px solid var(--border);
-    }
-    
-    .services-nav.hidden {
-        transform: none !important;
-        opacity: 1 !important;
     }
     
     .services-navigation {
@@ -468,18 +427,6 @@ body.services-page {
         display: none;
     }
     
-    /* Glass header active link mobile */
-    .internal-page .nav-link[href="services.html"] {
-        padding: 10px 16px !important;
-        background: var(--accent-gradient) !important;
-        color: white !important;
-        border: none !important;
-    }
-    
-    .internal-page .nav-link[href="services.html"]::after {
-        display: none;
-    }
-
     /* Service Detail Mobile */
     .service-detail {
         padding: 80px 0 !important;
@@ -600,8 +547,25 @@ body.services-page {
     }
 }
 
+@media (max-width: 1024px) {
+    .service-content {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+    
+    .service-stats {
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .stat {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+
 @media (max-width: 480px) {
-    /* Extra Small Devices */
     .services-hero {
         padding: 100px 0 40px !important;
     }
@@ -673,8 +637,8 @@ body.services-page {
         color: white;
     }
     
-    .internal-page .nav-link[href="services.html"]:hover {
-        transform: none;
+    .main-header:hover {
+        transform: none !important;
     }
 }
 
@@ -718,7 +682,8 @@ body.services-page {
     }
 }
 
-/* ===== GLASS HEADER COMPATIBILITY ===== */
+/* ===== COMPATIBILITY ===== */
+
 .internal-page {
     --primary-rgb: 13, 13, 18;
 }
@@ -738,3 +703,18 @@ body.services-page {
         scroll-margin-top: 120px;
     }
 }
+
+/* FIX: Ensure footer stays at bottom */
+body.services-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* FIX: Footer positioning */
+.main-footer {
+    margin-top: auto;
+    position: relative;
+    z-index: 100;
+    width: 100%;
+    }
