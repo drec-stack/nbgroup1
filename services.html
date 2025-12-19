@@ -65,17 +65,13 @@
             border-color: rgba(255, 255, 255, 0.28);
         }
 
-        /* Хедер при скролле (для services page) */
-        .main-header.header-scrolled {
-            background: rgba(0, 102, 255, 0.2);
-            backdrop-filter: blur(20px) saturate(200%);
-            -webkit-backdrop-filter: blur(20px) saturate(200%);
-            box-shadow: 
-                0 4px 20px rgba(0, 102, 255, 0.22),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
-            padding: 15px 0;
-            border-color: rgba(255, 255, 255, 0.25);
-            top: 10px;
+        /* Скрытый хедер при скролле */
+        .main-header.header-hidden {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
         /* Active link for services page */
@@ -431,6 +427,17 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             }
             
+            /* На мобильных не скрываем полностью */
+            .main-header.header-hidden {
+                transform: translateY(0) !important;
+                opacity: 1 !important;
+                pointer-events: all !important;
+                background: rgba(0, 102, 255, 0.25) !important;
+                backdrop-filter: blur(25px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+                padding: 12px 0 !important;
+            }
+            
             .main-header .header-inner {
                 padding: 0 15px;
             }
@@ -575,6 +582,7 @@
             padding-top: 180px;
             padding-bottom: 80px;
             background: var(--secondary);
+            transition: padding-top 0.3s ease;
         }
 
         @media (max-width: 768px) {
@@ -596,6 +604,29 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+        
+        /* Анимации для скрытия/показа хедера */
+        @keyframes headerSlideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .main-header:not(.header-hidden) {
+            animation: headerSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        /* Показываем хедер при наведении */
+        .main-header:hover:not(.mobile-menu-active) {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: all !important;
         }
     </style>
 </head>
@@ -1068,6 +1099,13 @@
                 mainNav.classList.toggle('active');
                 if (mobileOverlay) mobileOverlay.classList.toggle('active');
                 document.body.style.overflow = isActive ? '' : 'hidden';
+                
+                // Добавляем класс для мобильного меню
+                if (isActive) {
+                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
+                } else {
+                    document.querySelector('.main-header').classList.add('mobile-menu-active');
+                }
             };
 
             mobileToggle.addEventListener('click', (e) => {
@@ -1081,6 +1119,7 @@
                     mainNav.classList.remove('active');
                     mobileOverlay.classList.remove('active');
                     document.body.style.overflow = '';
+                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
                 });
             }
 
@@ -1091,6 +1130,7 @@
                     mainNav.classList.remove('active');
                     if (mobileOverlay) mobileOverlay.classList.remove('active');
                     document.body.style.overflow = '';
+                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
                 });
             });
 
@@ -1100,47 +1140,96 @@
                     mainNav.classList.remove('active');
                     if (mobileOverlay) mobileOverlay.classList.remove('active');
                     document.body.style.overflow = '';
+                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
                 }
             });
         }
         
-        // Header scroll behavior for services page - FIXED VERSION
+        // Header scroll behavior - скрытие хедера при скролле
         function setupHeaderScroll() {
             const header = document.querySelector('.main-header');
-            const isHomePage = window.location.pathname.includes('index.html') || 
-                              window.location.pathname === '/' || 
-                              window.location.pathname.endsWith('/');
+            const servicesNav = document.querySelector('.services-nav');
             
-            if (!header || isHomePage) return;
+            if (!header) return;
             
-            // Логика для страницы услуг - хедер всегда видим, но меняет размер
             let lastScrollY = window.scrollY;
-            const scrollThreshold = 50;
+            const scrollThreshold = 100;
+            let ticking = false;
+            let isMobile = window.innerWidth <= 768;
             
-            const handleScroll = () => {
+            const updateScroll = () => {
                 const currentScrollY = window.scrollY;
                 
-                if (currentScrollY <= 0) {
-                    header.classList.remove('header-scrolled');
+                // На мобильных не скрываем полностью, только меняем фон
+                if (isMobile) {
+                    if (currentScrollY > 50) {
+                        header.style.background = 'rgba(0, 102, 255, 0.25)';
+                        header.style.backdropFilter = 'blur(25px) saturate(200%)';
+                        header.style.webkitBackdropFilter = 'blur(25px) saturate(200%)';
+                        header.style.padding = '12px 0';
+                        header.style.top = '0';
+                        header.style.borderRadius = '0';
+                    } else {
+                        header.style.background = 'rgba(0, 102, 255, 0.22)';
+                        header.style.backdropFilter = 'blur(20px) saturate(200%)';
+                        header.style.webkitBackdropFilter = 'blur(20px) saturate(200%)';
+                        header.style.padding = '14px 0';
+                        header.style.top = '0';
+                        header.style.borderRadius = '0';
+                    }
+                    ticking = false;
                     return;
                 }
                 
-                if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                    // Scrolling down - делаем компактным
-                    header.classList.add('header-scrolled');
+                // На десктопе: скрываем при скролле вниз, показываем при скролле вверх
+                if (currentScrollY <= 50) {
+                    // Вверху страницы - всегда показываем
+                    header.classList.remove('header-hidden');
+                    if (servicesNav) servicesNav.classList.remove('nav-hidden');
+                } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                    // Скроллим вниз - скрываем
+                    header.classList.add('header-hidden');
+                    if (servicesNav) servicesNav.classList.add('nav-hidden');
                 } else if (currentScrollY < lastScrollY) {
-                    // Scrolling up - возвращаем нормальный размер
-                    header.classList.remove('header-scrolled');
+                    // Скроллим вверх - показываем
+                    header.classList.remove('header-hidden');
+                    if (servicesNav) servicesNav.classList.remove('nav-hidden');
                 }
                 
                 lastScrollY = currentScrollY;
+                ticking = false;
+            };
+            
+            const handleScroll = () => {
+                if (!ticking) {
+                    requestAnimationFrame(updateScroll);
+                    ticking = true;
+                }
             };
             
             window.addEventListener('scroll', handleScroll, { passive: true });
             
-            // Initial state
-            if (window.scrollY > scrollThreshold) {
-                header.classList.add('header-scrolled');
+            // Обновляем isMobile при изменении размера окна
+            window.addEventListener('resize', () => {
+                isMobile = window.innerWidth <= 768;
+                
+                // Сбрасываем стили при переходе с мобильного на десктоп
+                if (!isMobile && header.classList.contains('header-hidden')) {
+                    header.classList.remove('header-hidden');
+                    if (servicesNav) servicesNav.classList.remove('nav-hidden');
+                    header.style.background = '';
+                    header.style.backdropFilter = '';
+                    header.style.webkitBackdropFilter = '';
+                    header.style.padding = '';
+                    header.style.top = '';
+                    header.style.borderRadius = '';
+                }
+            });
+            
+            // Инициализация состояния при загрузке
+            if (window.scrollY > scrollThreshold && !isMobile) {
+                header.classList.add('header-hidden');
+                if (servicesNav) servicesNav.classList.add('nav-hidden');
             }
         }
         
@@ -1216,6 +1305,20 @@
                         const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
                         const offset = headerHeight + navHeight + 20;
                         
+                        // Временно показываем хедер для навигации
+                        if (header.classList.contains('header-hidden')) {
+                            header.classList.remove('header-hidden');
+                            if (servicesNav) servicesNav.classList.remove('nav-hidden');
+                            
+                            // Снова скрываем через 3 секунды
+                            setTimeout(() => {
+                                if (window.scrollY > 100) {
+                                    header.classList.add('header-hidden');
+                                    if (servicesNav) servicesNav.classList.add('nav-hidden');
+                                }
+                            }, 3000);
+                        }
+                        
                         // Smooth scroll
                         window.scrollTo({
                             top: targetSection.offsetTop - offset,
@@ -1268,6 +1371,33 @@
             window.addEventListener('resize', updatePadding);
         }
         
+        // Показываем хедер при наведении (только на десктопе)
+        function setupHeaderHover() {
+            const header = document.querySelector('.main-header');
+            if (!header) return;
+            
+            header.addEventListener('mouseenter', () => {
+                if (window.innerWidth > 768 && header.classList.contains('header-hidden')) {
+                    header.classList.remove('header-hidden');
+                    const servicesNav = document.querySelector('.services-nav');
+                    if (servicesNav) servicesNav.classList.remove('nav-hidden');
+                }
+            });
+            
+            // Скрываем через 2 секунды после ухода курсора
+            header.addEventListener('mouseleave', () => {
+                if (window.innerWidth > 768 && window.scrollY > 100) {
+                    setTimeout(() => {
+                        if (!header.matches(':hover') && window.scrollY > 100) {
+                            header.classList.add('header-hidden');
+                            const servicesNav = document.querySelector('.services-nav');
+                            if (servicesNav) servicesNav.classList.add('nav-hidden');
+                        }
+                    }, 2000);
+                }
+            });
+        }
+        
         // Initialize everything when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 Services page DOM loaded');
@@ -1283,10 +1413,11 @@
             
             // Setup functionality
             setupMobileMenu();
-            setupHeaderScroll(); // Используем исправленную версию
+            setupHeaderScroll();
             setupLanguageSwitcher();
             setupServicesNavigation();
             adjustHeroPadding();
+            setupHeaderHover();
             
             // Listen for language changes
             window.addEventListener('languageChanged', (e) => {
@@ -1316,4 +1447,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
