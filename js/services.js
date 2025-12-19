@@ -1,6 +1,6 @@
-// services.js - Fixed version with proper header handling
+// services.js - Enhanced version with header hide functionality
 
-console.log('🎯 services.js loaded - FIXED VERSION');
+console.log('🎯 services.js loaded - ENHANCED VERSION');
 
 function initServices() {
     console.log('🎯 Initializing services page functionality...');
@@ -10,6 +10,9 @@ function initServices() {
     
     // Setup process interactions
     setupProcessInteractions();
+    
+    // Setup optimized header scroll
+    setupOptimizedHeaderScroll();
     
     console.log('✅ Services page functionality initialized');
 }
@@ -116,7 +119,80 @@ function setupProcessInteractions() {
     });
 }
 
-// Анимация секций услуг
+// Оптимизированный скролл хедера
+function setupOptimizedHeaderScroll() {
+    const header = document.querySelector('.main-header');
+    const servicesNav = document.querySelector('.services-nav');
+    
+    if (!header) return;
+    
+    let lastScrollY = window.scrollY;
+    const scrollThreshold = 100;
+    let ticking = false;
+    let isMobile = window.innerWidth <= 768;
+    
+    const updateScroll = () => {
+        const currentScrollY = window.scrollY;
+        
+        // На мобильных - не скрываем полностью
+        if (isMobile) {
+            ticking = false;
+            return;
+        }
+        
+        // На десктопе: логика скрытия/показа
+        if (currentScrollY <= 50) {
+            // Вверху страницы - показываем
+            header.classList.remove('header-hidden');
+            if (servicesNav) servicesNav.classList.remove('nav-hidden');
+        } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+            // Скроллим вниз - скрываем
+            header.classList.add('header-hidden');
+            if (servicesNav) servicesNav.classList.add('nav-hidden');
+        } else if (currentScrollY < lastScrollY) {
+            // Скроллим вверх - показываем
+            header.classList.remove('header-hidden');
+            if (servicesNav) servicesNav.classList.remove('nav-hidden');
+        }
+        
+        lastScrollY = currentScrollY;
+        ticking = false;
+    };
+    
+    const handleScroll = () => {
+        if (!ticking) {
+            requestAnimationFrame(updateScroll);
+            ticking = true;
+        }
+    };
+    
+    // Удаляем старый обработчик если есть
+    if (window._servicesScrollHandler) {
+        window.removeEventListener('scroll', window._servicesScrollHandler);
+    }
+    
+    window._servicesScrollHandler = handleScroll;
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Обновляем isMobile при ресайзе
+    window.addEventListener('resize', () => {
+        isMobile = window.innerWidth <= 768;
+        
+        // При переходе с мобильного на десктоп сбрасываем состояние
+        if (!isMobile && header.classList.contains('header-hidden')) {
+            header.classList.remove('header-hidden');
+            if (servicesNav) servicesNav.classList.remove('nav-hidden');
+        }
+    });
+    
+    // Инициализация состояния
+    if (window.scrollY > scrollThreshold && !isMobile) {
+        header.classList.add('header-hidden');
+        if (servicesNav) servicesNav.classList.add('nav-hidden');
+    }
+}
+
+// Анимация секций услуг с учетом хедера
 function animateServiceSections() {
     const serviceSections = document.querySelectorAll('.service-detail');
     const isMobile = window.innerWidth <= 768;
@@ -125,6 +201,25 @@ function animateServiceSections() {
         entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
                 const delay = index * 200;
+                
+                // Временно показываем хедер при скролле к секции
+                if (!isMobile) {
+                    const header = document.querySelector('.main-header');
+                    const servicesNav = document.querySelector('.services-nav');
+                    
+                    if (header && header.classList.contains('header-hidden')) {
+                        header.classList.remove('header-hidden');
+                        if (servicesNav) servicesNav.classList.remove('nav-hidden');
+                        
+                        // Снова скрываем через 3 секунды
+                        setTimeout(() => {
+                            if (window.scrollY > 100) {
+                                header.classList.add('header-hidden');
+                                if (servicesNav) servicesNav.classList.add('nav-hidden');
+                            }
+                        }, 3000);
+                    }
+                }
                 
                 setTimeout(() => {
                     entry.target.style.opacity = '1';
@@ -147,6 +242,27 @@ function animateServiceSections() {
     });
 }
 
+// Функция для временного показа хедера
+function showHeaderTemporarily(duration = 3000) {
+    const header = document.querySelector('.main-header');
+    const servicesNav = document.querySelector('.services-nav');
+    const isMobile = window.innerWidth <= 768;
+    
+    if (!header || isMobile) return;
+    
+    // Показываем хедер
+    header.classList.remove('header-hidden');
+    if (servicesNav) servicesNav.classList.remove('nav-hidden');
+    
+    // Скрываем через указанное время
+    setTimeout(() => {
+        if (window.scrollY > 100) {
+            header.classList.add('header-hidden');
+            if (servicesNav) servicesNav.classList.add('nav-hidden');
+        }
+    }, duration);
+}
+
 // Auto-initialization
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
@@ -165,3 +281,5 @@ if (document.readyState === 'loading') {
 // Export functions
 window.initServices = initServices;
 window.animateServiceSections = animateServiceSections;
+window.setupOptimizedHeaderScroll = setupOptimizedHeaderScroll;
+window.showHeaderTemporarily = showHeaderTemporarily;
