@@ -91,7 +91,7 @@ class DaehaaApp {
     }
 
     setupHomeHeaderAnimation(header) {
-        console.log('🏠 Home page glass header logic');
+        console.log('🏠 Home page glass header logic - simplified');
         
         let lastScrollY = window.scrollY;
         const scrollThreshold = 50;
@@ -101,20 +101,13 @@ class DaehaaApp {
             
             if (currentScrollY <= scrollThreshold) {
                 header.style.opacity = '1';
-                header.style.transform = 'translateY(0)';
-                header.classList.remove('header-hidden', 'header-glass-exit');
-                header.classList.add('header-glass-enter');
-            } else {
-                const opacity = Math.max(0, Math.min(1, 1 - (currentScrollY - scrollThreshold) / 100));
-                header.style.opacity = opacity.toString();
-                
-                if (opacity <= 0.1) {
-                    header.classList.add('header-hidden');
-                    header.classList.add('header-glass-exit');
-                    header.classList.remove('header-glass-enter');
-                } else {
-                    header.classList.remove('header-hidden');
-                }
+                header.classList.remove('header-hidden');
+            } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                // Scrolling down - hide header
+                header.classList.add('header-hidden');
+            } else if (currentScrollY < lastScrollY) {
+                // Scrolling up - show header
+                header.classList.remove('header-hidden');
             }
             
             lastScrollY = currentScrollY;
@@ -127,11 +120,8 @@ class DaehaaApp {
         
         // Показываем хедер при наведении
         header.addEventListener('mouseenter', () => {
-            if (header.classList.contains('header-hidden')) {
-                header.classList.remove('header-hidden', 'header-glass-exit');
-                header.classList.add('header-glass-enter');
-                header.style.opacity = '1';
-            }
+            header.classList.remove('header-hidden');
+            header.style.opacity = '1';
         });
         
         // Скрываем через 2 секунды если мы все еще скроллим вниз
@@ -140,8 +130,6 @@ class DaehaaApp {
                 setTimeout(() => {
                     if (window.scrollY > 150 && !header.matches(':hover')) {
                         header.classList.add('header-hidden');
-                        header.classList.add('header-glass-exit');
-                        header.classList.remove('header-glass-enter');
                     }
                 }, 2000);
             }
@@ -1267,7 +1255,7 @@ function initGlassHeader() {
 
 // Логика для главной страницы
 function initHomeGlassHeader(header) {
-    console.log('🏠 Home page glass header logic');
+    console.log('🏠 Home page glass header logic - simplified');
     
     let lastScrollY = window.scrollY;
     const scrollThreshold = 50;
@@ -1277,20 +1265,13 @@ function initHomeGlassHeader(header) {
         
         if (currentScrollY <= scrollThreshold) {
             header.style.opacity = '1';
-            header.style.transform = 'translateY(0)';
-            header.classList.remove('header-hidden', 'header-glass-exit');
-            header.classList.add('header-glass-enter');
-        } else {
-            const opacity = Math.max(0, Math.min(1, 1 - (currentScrollY - scrollThreshold) / 100));
-            header.style.opacity = opacity.toString();
-            
-            if (opacity <= 0.1) {
-                header.classList.add('header-hidden');
-                header.classList.add('header-glass-exit');
-                header.classList.remove('header-glass-enter');
-            } else {
-                header.classList.remove('header-hidden');
-            }
+            header.classList.remove('header-hidden');
+        } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+            // Scrolling down - hide header
+            header.classList.add('header-hidden');
+        } else if (currentScrollY < lastScrollY) {
+            // Scrolling up - show header
+            header.classList.remove('header-hidden');
         }
         
         lastScrollY = currentScrollY;
@@ -1303,11 +1284,8 @@ function initHomeGlassHeader(header) {
     
     // Показываем хедер при наведении
     header.addEventListener('mouseenter', () => {
-        if (header.classList.contains('header-hidden')) {
-            header.classList.remove('header-hidden', 'header-glass-exit');
-            header.classList.add('header-glass-enter');
-            header.style.opacity = '1';
-        }
+        header.classList.remove('header-hidden');
+        header.style.opacity = '1';
     });
     
     // Скрываем через 2 секунды если мы все еще скроллим вниз
@@ -1316,8 +1294,6 @@ function initHomeGlassHeader(header) {
             setTimeout(() => {
                 if (window.scrollY > 150 && !header.matches(':hover')) {
                     header.classList.add('header-hidden');
-                    header.classList.add('header-glass-exit');
-                    header.classList.remove('header-glass-enter');
                 }
             }, 2000);
         }
@@ -1371,7 +1347,6 @@ function initDefaultGlassHeader(header) {
         
         if (currentScrollY <= scrollThreshold) {
             header.style.opacity = '1';
-            header.style.transform = 'translateY(0)';
             header.classList.remove('header-hidden');
         } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
             // Scrolling down - hide header
