@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/services.css">
     <style>
-        /* Exact header styles from main page */
+        /* ===== HEADER STYLES - FIXED VERSION ===== */
         .main-header {
             position: fixed;
             top: 20px;
@@ -32,10 +32,12 @@
             border: 1px solid rgba(255, 255, 255, 0.22);
             transform: translateY(0);
             opacity: 1;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: none !important;
+            -webkit-animation: none !important;
         }
 
-        /* Стеклянный слой */
         .main-header::before {
             content: '';
             position: absolute;
@@ -55,7 +57,6 @@
             pointer-events: none;
         }
 
-        /* Эффект при наведении */
         .main-header:hover {
             background: rgba(0, 102, 255, 0.15);
             box-shadow: 
@@ -65,16 +66,12 @@
             border-color: rgba(255, 255, 255, 0.28);
         }
 
-        /* Скрытый хедер при скролле */
         .main-header.header-hidden {
             transform: translateY(-100%) !important;
             opacity: 0 !important;
             pointer-events: none !important;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
-        /* Active link for services page */
         .nav-link[href="services.html"] {
             position: relative;
             background: rgba(255, 255, 255, 0.15) !important;
@@ -87,7 +84,6 @@
             font-weight: 600 !important;
         }
 
-        /* Container adjustments */
         .main-header .container {
             padding: 0;
             max-width: 100%;
@@ -108,7 +104,6 @@
             width: 100%;
         }
 
-        /* Логотип */
         .logo {
             display: flex;
             align-items: center;
@@ -161,7 +156,6 @@
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
-        /* Навигация */
         .main-nav {
             display: flex;
             gap: 22px;
@@ -217,7 +211,6 @@
             width: 70%;
         }
 
-        /* Действия */
         .header-actions {
             display: flex;
             align-items: center;
@@ -265,7 +258,6 @@
             border-radius: 9px;
         }
 
-        /* Переключатель языка */
         .language-switcher {
             display: flex;
             align-items: center;
@@ -352,7 +344,6 @@
             background: rgba(255, 255, 255, 0.12);
         }
 
-        /* Мобильное меню */
         .mobile-menu-toggle {
             display: none;
             background: none;
@@ -409,7 +400,6 @@
             visibility: visible;
         }
 
-        /* Мобильные стили */
         @media (max-width: 768px) {
             .main-header {
                 top: 0;
@@ -427,15 +417,10 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             }
             
-            /* На мобильных не скрываем полностью */
             .main-header.header-hidden {
                 transform: translateY(0) !important;
                 opacity: 1 !important;
                 pointer-events: all !important;
-                background: rgba(0, 102, 255, 0.25) !important;
-                backdrop-filter: blur(25px) saturate(200%) !important;
-                -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
-                padding: 12px 0 !important;
             }
             
             .main-header .header-inner {
@@ -577,7 +562,6 @@
             }
         }
 
-        /* Services page specific adjustments */
         .services-hero {
             padding-top: 180px;
             padding-bottom: 80px;
@@ -599,49 +583,22 @@
             }
         }
         
-        /* FIX: Ensure body has full height */
         body.services-page {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
-        
-        /* Анимации для скрытия/показа хедера */
-        @keyframes headerSlideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        .main-header:not(.header-hidden) {
-            animation: headerSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-        
-        /* Показываем хедер при наведении */
-        .main-header:hover:not(.mobile-menu-active) {
-            transform: translateY(0) !important;
-            opacity: 1 !important;
-            pointer-events: all !important;
-        }
     </style>
 </head>
 <body class="services-page">
-    <!-- Glass Header - Exact copy from main page -->
     <header class="main-header">
         <div class="container">
             <div class="header-inner">
-                <!-- Логотип NB Group -->
                 <a href="index.html" class="logo">
                     <div class="logo-mark">NB</div>
                     <span class="logo-text" data-i18n="nav.brand">NB Group</span>
                 </a>
                 
-                <!-- Навигация -->
                 <nav class="main-nav">
                     <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
                     <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
@@ -651,9 +608,7 @@
                     <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
                 </nav>
                 
-                <!-- Действия -->
                 <div class="header-actions">
-                    <!-- Переключатель языка -->
                     <div class="language-switcher" data-current-lang="ru">
                         <div class="lang-slider"></div>
                         <button class="lang-btn" data-lang="ru">
@@ -666,12 +621,10 @@
                         </button>
                     </div>
                     
-                    <!-- Кнопка Начать проект -->
                     <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject">
                         Начать проект
                     </a>
                     
-                    <!-- Мобильное меню -->
                     <button class="mobile-menu-toggle" aria-label="Toggle menu">
                         <span></span>
                         <span></span>
@@ -708,7 +661,6 @@
         </div>
     </section>
 
-    <!-- Design Section -->
     <section id="design" class="service-detail">
         <div class="container">
             <div class="service-header">
@@ -749,7 +701,6 @@
         </div>
     </section>
 
-    <!-- Engineering Section -->
     <section id="engineering" class="service-detail">
         <div class="container">
             <div class="service-header">
@@ -790,7 +741,6 @@
         </div>
     </section>
 
-    <!-- Production Section -->
     <section id="production" class="service-detail">
         <div class="container">
             <div class="service-header">
@@ -831,7 +781,6 @@
         </div>
     </section>
 
-    <!-- Brand Section -->
     <section id="brand" class="service-detail">
         <div class="container">
             <div class="service-header">
@@ -872,7 +821,6 @@
         </div>
     </section>
 
-    <!-- Brandbook Section -->
     <section id="brandbook" class="service-detail">
         <div class="container">
             <div class="service-header">
@@ -919,7 +867,6 @@
         </div>
     </section>
 
-    <!-- Strategy Section -->
     <section id="strategy" class="service-detail">
         <div class="container">
             <div class="service-header">
@@ -1004,7 +951,6 @@
         </div>
     </section>
 
-    <!-- Full Footer -->
     <footer class="main-footer">
         <div class="container">
             <div class="footer-content">
@@ -1074,249 +1020,267 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/services.js"></script>
     
     <script>
-        // Services Page Specific JavaScript - УПРОЩЕННАЯ ВЕРСИЯ
-        console.log('🚀 Services page initialization started...');
-        
-        // Mobile menu functionality
-        function setupMobileMenu() {
-            const mobileToggle = document.querySelector('.mobile-menu-toggle');
-            const mainNav = document.querySelector('.main-nav');
-            const mobileOverlay = document.querySelector('.mobile-menu-overlay');
+        // ===== GUARANTEED HEADER HIDE SCRIPT =====
+        (function() {
+            'use strict';
             
-            if (!mobileToggle || !mainNav) return;
+            console.log('🎯 Initializing guaranteed header hide...');
             
-            const toggleMenu = () => {
-                const isActive = mainNav.classList.contains('active');
-                
-                mobileToggle.classList.toggle('active');
-                mainNav.classList.toggle('active');
-                if (mobileOverlay) mobileOverlay.classList.toggle('active');
-                document.body.style.overflow = isActive ? '' : 'hidden';
-                
-                // Добавляем класс для мобильного меню
-                if (isActive) {
-                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
-                } else {
-                    document.querySelector('.main-header').classList.add('mobile-menu-active');
-                }
-            };
-
-            mobileToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                toggleMenu();
-            });
-
-            if (mobileOverlay) {
-                mobileOverlay.addEventListener('click', () => {
-                    mobileToggle.classList.remove('active');
-                    mainNav.classList.remove('active');
-                    mobileOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
-                });
+            const header = document.querySelector('.main-header');
+            if (!header) {
+                console.error('❌ Header not found');
+                return;
             }
-
-            const navLinks = mainNav.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileToggle.classList.remove('active');
-                    mainNav.classList.remove('active');
-                    if (mobileOverlay) mobileOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
-                });
-            });
-
-            window.addEventListener('resize', () => {
-                if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
-                    mobileToggle.classList.remove('active');
-                    mainNav.classList.remove('active');
-                    if (mobileOverlay) mobileOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
-                }
-            });
-        }
-        
-        // Language switcher functionality
-        function setupLanguageSwitcher() {
-            const langButtons = document.querySelectorAll('.lang-btn');
-            const switcher = document.querySelector('.language-switcher');
             
-            if (!langButtons.length || !switcher) return;
+            console.log('✅ Header found:', header);
             
-            // Set initial state
-            const currentLang = localStorage.getItem('preferredLang') || 'ru';
-            updateLanguageSwitcherState(currentLang);
+            let lastScrollY = window.scrollY;
+            const scrollThreshold = 100;
+            let isMobile = window.innerWidth <= 768;
+            let ticking = false;
             
-            langButtons.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const lang = btn.getAttribute('data-lang');
-                    if (lang && window.i18n && lang !== window.i18n.getCurrentLang()) {
-                        window.i18n.switchLanguage(lang);
-                    }
-                });
-            });
-        }
-        
-        function updateLanguageSwitcherState(lang) {
-            const langBtns = document.querySelectorAll('.lang-btn');
-            const switcher = document.querySelector('.language-switcher');
+            // Убедимся, что хедер имеет правильные стили
+            header.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            header.style.animation = 'none';
+            header.style.webkitAnimation = 'none';
             
-            langBtns.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-lang') === lang) {
-                    btn.classList.add('active');
-                }
-            });
-            
-            if (switcher) {
-                switcher.setAttribute('data-current-lang', lang);
-            }
-        }
-        
-        // Services navigation
-        function setupServicesNavigation() {
-            const navItems = document.querySelectorAll('.nav-item');
-            const sections = document.querySelectorAll('.service-detail');
-            
-            if (!navItems.length) return;
-            
-            // Click handlers
-            navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    
-                    // Handle brandbook link
-                    if (targetId === '#brandbook') {
-                        window.location.href = 'brandbook.html';
-                        return;
-                    }
-                    
-                    const targetSection = document.querySelector(targetId);
-                    if (targetSection) {
-                        // Update active state
-                        navItems.forEach(navItem => navItem.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        // Calculate scroll position
-                        const header = document.querySelector('.main-header');
-                        const headerHeight = header?.offsetHeight || 0;
-                        const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
-                        const offset = headerHeight + navHeight + 20;
-                        
-                        // Smooth scroll
-                        window.scrollTo({
-                            top: targetSection.offsetTop - offset,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            
-            // Update active state on scroll
-            const updateActiveNav = () => {
-                const scrollPosition = window.scrollY + 150;
+            function updateHeaderState() {
+                const currentScrollY = window.scrollY;
                 
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionBottom = sectionTop + section.offsetHeight;
-                    const sectionId = section.getAttribute('id');
-                    
-                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                        navItems.forEach(item => {
-                            item.classList.remove('active');
-                            if (item.getAttribute('href') === `#${sectionId}`) {
-                                item.classList.add('active');
+                if (isMobile) {
+                    header.classList.remove('header-hidden');
+                    lastScrollY = currentScrollY;
+                    ticking = false;
+                    return;
+                }
+                
+                if (currentScrollY <= 50) {
+                    header.classList.remove('header-hidden');
+                } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                    header.classList.add('header-hidden');
+                } else if (currentScrollY < lastScrollY) {
+                    header.classList.remove('header-hidden');
+                }
+                
+                lastScrollY = currentScrollY;
+                ticking = false;
+            }
+            
+            function handleScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(updateHeaderState);
+                    ticking = true;
+                }
+            }
+            
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            if (!isMobile) {
+                header.addEventListener('mouseenter', function() {
+                    this.classList.remove('header-hidden');
+                });
+                
+                header.addEventListener('mouseleave', function() {
+                    if (window.scrollY > scrollThreshold) {
+                        setTimeout(() => {
+                            if (window.scrollY > scrollThreshold) {
+                                this.classList.add('header-hidden');
                             }
-                        });
+                        }, 2000);
                     }
                 });
-            };
-            
-            window.addEventListener('scroll', updateActiveNav, { passive: true });
-        }
-        
-        // Adjust hero padding based on header height
-        function adjustHeroPadding() {
-            const header = document.querySelector('.main-header');
-            const hero = document.querySelector('.services-hero');
-            
-            if (!header || !hero) return;
-            
-            const updatePadding = () => {
-                const headerHeight = header.offsetHeight;
-                if (window.innerWidth <= 768) {
-                    hero.style.paddingTop = Math.max(120, headerHeight + 40) + 'px';
-                } else {
-                    hero.style.paddingTop = (headerHeight + 80) + 'px';
-                }
-            };
-            
-            updatePadding();
-            window.addEventListener('resize', updatePadding);
-        }
-        
-        // Initialize everything when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 Services page DOM loaded');
-            
-            // Activate services link in header
-            const servicesLink = document.querySelector('.nav-link[href="services.html"]');
-            if (servicesLink) {
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                servicesLink.classList.add('active');
             }
             
-            // Setup functionality
-            setupMobileMenu();
-            setupLanguageSwitcher();
-            setupServicesNavigation();
-            adjustHeroPadding();
-            
-            // Listen for language changes
-            window.addEventListener('languageChanged', (e) => {
-                updateLanguageSwitcherState(e.detail.lang);
+            window.addEventListener('resize', function() {
+                const wasMobile = isMobile;
+                isMobile = window.innerWidth <= 768;
+                
+                if (wasMobile !== isMobile) {
+                    if (isMobile) {
+                        header.classList.remove('header-hidden');
+                    } else {
+                        if (window.scrollY > scrollThreshold) {
+                            header.classList.add('header-hidden');
+                        }
+                    }
+                }
             });
             
-            // Initialize services specific functionality from services.js
-            setTimeout(() => {
-                if (typeof initServices === 'function') {
-                    initServices();
-                }
-                if (typeof animateServiceSections === 'function') {
-                    animateServiceSections();
-                }
-                if (typeof setupOptimizedHeaderScroll === 'function') {
-                    setupOptimizedHeaderScroll();
-                }
-            }, 300);
-            
-            console.log('✅ Services page fully initialized');
-        });
-        
-        // Fallback for header animation on load
-        window.addEventListener('load', function() {
-            const header = document.querySelector('.main-header');
-            if (header) {
-                header.style.opacity = '1';
-                header.style.transform = 'translateY(0)';
+            if (window.scrollY > scrollThreshold && !isMobile) {
+                header.classList.add('header-hidden');
             }
-        });
+            
+            // Mobile menu
+            function setupMobileMenu() {
+                const mobileToggle = document.querySelector('.mobile-menu-toggle');
+                const mainNav = document.querySelector('.main-nav');
+                const mobileOverlay = document.querySelector('.mobile-menu-overlay');
+                
+                if (!mobileToggle || !mainNav) return;
+                
+                const toggleMenu = () => {
+                    const isActive = mainNav.classList.contains('active');
+                    
+                    mobileToggle.classList.toggle('active');
+                    mainNav.classList.toggle('active');
+                    if (mobileOverlay) mobileOverlay.classList.toggle('active');
+                    document.body.style.overflow = isActive ? '' : 'hidden';
+                };
+
+                mobileToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleMenu();
+                });
+
+                if (mobileOverlay) {
+                    mobileOverlay.addEventListener('click', () => {
+                        mobileToggle.classList.remove('active');
+                        mainNav.classList.remove('active');
+                        mobileOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                }
+
+                const navLinks = mainNav.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileToggle.classList.remove('active');
+                        mainNav.classList.remove('active');
+                        if (mobileOverlay) mobileOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
+                        mobileToggle.classList.remove('active');
+                        mainNav.classList.remove('active');
+                        if (mobileOverlay) mobileOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+            
+            // Language switcher
+            function setupLanguageSwitcher() {
+                const langButtons = document.querySelectorAll('.lang-btn');
+                const switcher = document.querySelector('.language-switcher');
+                
+                if (!langButtons.length || !switcher) return;
+                
+                const currentLang = localStorage.getItem('preferredLang') || 'ru';
+                updateLanguageSwitcherState(currentLang);
+                
+                langButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const lang = btn.getAttribute('data-lang');
+                        if (lang && window.i18n && lang !== window.i18n.getCurrentLang()) {
+                            window.i18n.switchLanguage(lang);
+                        }
+                    });
+                });
+            }
+            
+            function updateLanguageSwitcherState(lang) {
+                const langBtns = document.querySelectorAll('.lang-btn');
+                const switcher = document.querySelector('.language-switcher');
+                
+                langBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-lang') === lang) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                if (switcher) {
+                    switcher.setAttribute('data-current-lang', lang);
+                }
+            }
+            
+            // Services navigation
+            function setupServicesNavigation() {
+                const navItems = document.querySelectorAll('.nav-item');
+                const sections = document.querySelectorAll('.service-detail');
+                
+                if (!navItems.length) return;
+                
+                navItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        
+                        if (targetId === '#brandbook') {
+                            window.location.href = 'brandbook.html';
+                            return;
+                        }
+                        
+                        const targetSection = document.querySelector(targetId);
+                        if (targetSection) {
+                            navItems.forEach(navItem => navItem.classList.remove('active'));
+                            this.classList.add('active');
+                            
+                            const headerHeight = header?.offsetHeight || 0;
+                            const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
+                            const offset = headerHeight + navHeight + 20;
+                            
+                            if (!isMobile && header.classList.contains('header-hidden')) {
+                                header.classList.remove('header-hidden');
+                            }
+                            
+                            window.scrollTo({
+                                top: targetSection.offsetTop - offset,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+            }
+            
+            // Initialize everything
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('📄 Services page DOM loaded');
+                
+                const servicesLink = document.querySelector('.nav-link[href="services.html"]');
+                if (servicesLink) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    servicesLink.classList.add('active');
+                }
+                
+                setupMobileMenu();
+                setupLanguageSwitcher();
+                setupServicesNavigation();
+                
+                window.addEventListener('languageChanged', (e) => {
+                    updateLanguageSwitcherState(e.detail.lang);
+                });
+                
+                console.log('✅ Services page fully initialized');
+            });
+            
+            console.log('✅ Header hide script loaded successfully');
+            
+            // Test function
+            window.testHeaderHide = function() {
+                console.log('🔍 Testing header hide:');
+                console.log('- Scroll Y:', window.scrollY);
+                console.log('- Is mobile:', isMobile);
+                console.log('- Header hidden:', header.classList.contains('header-hidden'));
+                console.log('- Header transform:', getComputedStyle(header).transform);
+            };
+            
+        })();
     </script>
 </body>
 </html>
