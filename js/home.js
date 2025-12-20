@@ -452,7 +452,7 @@
             }
             
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
+                entries.forEach((entry, index) {
                     if (entry.isIntersecting) {
                         setTimeout(() => {
                             entry.target.classList.add('visible', 'full-reveal');
@@ -939,7 +939,7 @@
             }
             
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
+                entries.forEach((entry, index) {
                     if (entry.isIntersecting) {
                         setTimeout(() => {
                             entry.target.classList.add('full-reveal');
@@ -1161,16 +1161,25 @@
             window.addEventListener('scroll', handleScroll, false);
         }
 
+        // УПРОЩЕННАЯ логика при наведении - только показываем хедер
         if (header.addEventListener) {
             header.addEventListener('mouseenter', function() {
                 if (isHidden) {
                     header.classList.remove('header-hidden');
+                }
+            });
+        }
+        
+        // Скрываем через 2 секунды если мышь ушла
+        if (header.addEventListener) {
+            header.addEventListener('mouseleave', function() {
+                var scrollY = window.pageYOffset || 
+                             document.documentElement.scrollTop || 
+                             document.body.scrollTop || 
+                             0;
+                if (scrollY > hideThreshold && !header.matches(':hover')) {
                     setTimeout(function() {
-                        var scrollY = window.pageYOffset || 
-                                     document.documentElement.scrollTop || 
-                                     document.body.scrollTop || 
-                                     0;
-                        if (isHidden && scrollY > hideThreshold) {
+                        if (scrollY > hideThreshold && !header.matches(':hover')) {
                             header.classList.add('header-hidden');
                         }
                     }, 2000);
