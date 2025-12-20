@@ -66,11 +66,12 @@
             border-color: rgba(255, 255, 255, 0.28);
         }
 
-        .main-header.header-hidden {
+        /* УБИРАЕМ ЭТОТ КЛАСС - хедер не скрывается на services */
+        /* .main-header.header-hidden {
             transform: translateY(-100%) !important;
             opacity: 0 !important;
             pointer-events: none !important;
-        }
+        } */
 
         .nav-link[href="services.html"] {
             position: relative;
@@ -417,11 +418,12 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             }
             
-            .main-header.header-hidden {
+            /* УБИРАЕМ МОБИЛЬНЫЙ ОВЕРРАЙД ДЛЯ .header-hidden */
+            /* .main-header.header-hidden {
                 transform: translateY(0) !important;
                 opacity: 1 !important;
                 pointer-events: all !important;
-            }
+            } */
             
             .main-header .header-inner {
                 padding: 0 15px;
@@ -588,9 +590,42 @@
             display: flex;
             flex-direction: column;
         }
+
+        /* ===== ФИКС: Хедер всегда видим на странице услуг ===== */
+        body.services-page .main-header {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            transition: none !important;
+            animation: none !important;
+            -webkit-animation: none !important;
+        }
+
+        body.services-page .main-header.header-hidden {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        /* На десктопе фиксированное положение */
+        @media (min-width: 769px) {
+            body.services-page .main-header {
+                position: fixed !important;
+                top: 20px !important;
+            }
+        }
+
+        /* На мобильных тоже фиксированный */
+        @media (max-width: 768px) {
+            body.services-page .main-header {
+                position: fixed !important;
+                top: 0 !important;
+                transform: translateY(0) !important;
+            }
+        }
     </style>
 </head>
 <body class="services-page">
+    <!-- Остальной код без изменений -->
     <header class="main-header">
         <div class="container">
             <div class="header-inner">
@@ -1026,94 +1061,19 @@
     <script src="js/services.js"></script>
     
     <script>
-        // ===== GUARANTEED HEADER HIDE SCRIPT =====
+        // ===== SERVICES PAGE INITIALIZATION (без скрытия хедера) =====
         (function() {
             'use strict';
             
-            console.log('🎯 Initializing guaranteed header hide...');
+            console.log('🎯 Initializing services page (header hiding DISABLED)...');
             
+            // Гарантируем что хедер видим
             const header = document.querySelector('.main-header');
-            if (!header) {
-                console.error('❌ Header not found');
-                return;
-            }
-            
-            console.log('✅ Header found:', header);
-            
-            let lastScrollY = window.scrollY;
-            const scrollThreshold = 100;
-            let isMobile = window.innerWidth <= 768;
-            let ticking = false;
-            
-            // Убедимся, что хедер имеет правильные стили
-            header.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-            header.style.animation = 'none';
-            header.style.webkitAnimation = 'none';
-            
-            function updateHeaderState() {
-                const currentScrollY = window.scrollY;
-                
-                if (isMobile) {
-                    header.classList.remove('header-hidden');
-                    lastScrollY = currentScrollY;
-                    ticking = false;
-                    return;
-                }
-                
-                if (currentScrollY <= 50) {
-                    header.classList.remove('header-hidden');
-                } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                    header.classList.add('header-hidden');
-                } else if (currentScrollY < lastScrollY) {
-                    header.classList.remove('header-hidden');
-                }
-                
-                lastScrollY = currentScrollY;
-                ticking = false;
-            }
-            
-            function handleScroll() {
-                if (!ticking) {
-                    requestAnimationFrame(updateHeaderState);
-                    ticking = true;
-                }
-            }
-            
-            window.addEventListener('scroll', handleScroll, { passive: true });
-            
-            if (!isMobile) {
-                header.addEventListener('mouseenter', function() {
-                    this.classList.remove('header-hidden');
-                });
-                
-                header.addEventListener('mouseleave', function() {
-                    if (window.scrollY > scrollThreshold) {
-                        setTimeout(() => {
-                            if (window.scrollY > scrollThreshold) {
-                                this.classList.add('header-hidden');
-                            }
-                        }, 2000);
-                    }
-                });
-            }
-            
-            window.addEventListener('resize', function() {
-                const wasMobile = isMobile;
-                isMobile = window.innerWidth <= 768;
-                
-                if (wasMobile !== isMobile) {
-                    if (isMobile) {
-                        header.classList.remove('header-hidden');
-                    } else {
-                        if (window.scrollY > scrollThreshold) {
-                            header.classList.add('header-hidden');
-                        }
-                    }
-                }
-            });
-            
-            if (window.scrollY > scrollThreshold && !isMobile) {
-                header.classList.add('header-hidden');
+            if (header) {
+                header.classList.remove('header-hidden');
+                header.style.transform = 'translateY(0)';
+                header.style.opacity = '1';
+                console.log('✅ Header visibility enforced');
             }
             
             // Mobile menu
@@ -1233,10 +1193,6 @@
                             const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
                             const offset = headerHeight + navHeight + 20;
                             
-                            if (!isMobile && header.classList.contains('header-hidden')) {
-                                header.classList.remove('header-hidden');
-                            }
-                            
                             window.scrollTo({
                                 top: targetSection.offsetTop - offset,
                                 behavior: 'smooth'
@@ -1266,19 +1222,8 @@
                     updateLanguageSwitcherState(e.detail.lang);
                 });
                 
-                console.log('✅ Services page fully initialized');
+                console.log('✅ Services page fully initialized (header hiding disabled)');
             });
-            
-            console.log('✅ Header hide script loaded successfully');
-            
-            // Test function
-            window.testHeaderHide = function() {
-                console.log('🔍 Testing header hide:');
-                console.log('- Scroll Y:', window.scrollY);
-                console.log('- Is mobile:', isMobile);
-                console.log('- Header hidden:', header.classList.contains('header-hidden'));
-                console.log('- Header transform:', getComputedStyle(header).transform);
-            };
             
         })();
     </script>
