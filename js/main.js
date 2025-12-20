@@ -17,7 +17,7 @@ class DaehaaApp {
         this.setupFormHandling();
         this.setupLazyLoading();
         this.setupPerformanceOptimizations();
-        this.setupHeaderSupport();
+        this.setupHeaderSupport(); // ← Важно! Вызываем настройку хедера
         this.setupFooterSupport();
         this.setupGlassHeaderEffects();
         this.setupClickableElements();
@@ -29,378 +29,83 @@ class DaehaaApp {
         console.log('🚀 Daehaa application initialized');
     }
 
-    setupGlassHeaderEffects() {
-        const header = document.querySelector('.main-header');
-        if (!header) return;
-
-        // Add glass animation on load
-        setTimeout(() => {
-            header.classList.add('header-glass-enter');
-            
-            // Remove animation class after it completes
-            setTimeout(() => {
-                header.classList.remove('header-glass-enter');
-            }, 600);
-        }, 100);
-
-        // Add hover effect for glass morphism
-        header.addEventListener('mouseenter', () => {
-            if (!this.isReducedMotion) {
-                header.classList.add('glass-morph');
-            }
-        });
-
-        header.addEventListener('mouseleave', () => {
-            header.classList.remove('glass-morph');
-        });
-
-        // Smooth scroll behavior for home page
+    setupHeaderSupport() {
+        console.log('🔧 Setting up header support...');
+        
+        // Проверяем на какой странице мы находимся
         const isHomePage = document.body.classList.contains('home-page');
-        if (isHomePage) {
-            let lastScroll = 0;
-            const scrollThreshold = 50;
-            
-            window.addEventListener('scroll', () => {
-                const currentScroll = window.pageYOffset;
-                const opacity = Math.max(0, Math.min(1, 1 - (currentScroll - scrollThreshold) / 100));
-                
-                header.style.opacity = opacity.toString();
-                
-                if (currentScroll > 150 && currentScroll > lastScroll) {
-                    header.classList.add('header-glass-exit');
-                } else if (currentScroll < lastScroll || currentScroll <= scrollThreshold) {
-                    header.classList.remove('header-glass-exit');
-                    header.classList.add('header-glass-enter');
-                }
-                
-                lastScroll = currentScroll;
-            }, { passive: true });
-        }
-    }
-
-    setupClickableElements() {
-        console.log('🖱️ Setting up clickable elements...');
+        const isServicesPage = document.body.classList.contains('services-page');
+        const isInternalPage = document.body.classList.contains('internal-page') || 
+                               isServicesPage || 
+                               document.body.classList.contains('about-page') ||
+                               document.body.classList.contains('portfolio-page') ||
+                               document.body.classList.contains('brandbook-page') ||
+                               document.body.classList.contains('contacts-page');
         
-        // 1. Добавляем класс всем ссылкам для улучшения обратной связи
-        document.querySelectorAll('a:not(.btn)').forEach(link => {
-            if (!link.classList.contains('clickable-element')) {
-                link.classList.add('clickable-element');
-            }
-        });
-        
-        // 2. Инициализируем все кликабельные элементы
-        document.querySelectorAll('[role="link"], .clickable-element').forEach(element => {
-            this.setupClickFeedback(element);
-        });
-        
-        // 3. Настройка плавных переходов между страницами
-        this.setupPageTransitions();
-        
-        // 4. Инициализация кликабельных карточек услуг на главной
-        if (document.body.classList.contains('home-page')) {
-            this.setupHomeClickableCards();
-        }
-    }
-
-    setupClickFeedback(element) {
-        // Проверяем, является ли элемент действительно кликабельным
-        if (!element.hasAttribute('href') && !element.hasAttribute('onclick')) {
+        const header = document.querySelector('.main-header');
+        if (!header) {
+            console.warn('⚠️ No header found');
             return;
         }
         
-        // Добавляем keyboard navigation
-        element.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                element.click();
-            }
-        });
-        
-        // Добавляем атрибуты доступности
-        if (!element.hasAttribute('role')) {
-            element.setAttribute('role', 'link');
+        // Для страницы услуг - НЕ скрываем хедер
+        if (isServicesPage) {
+            console.log('📄 Services page detected - disabling header hide');
+            this.disableHeaderHiding(header);
+            return;
         }
         
-        if (!element.hasAttribute('tabindex')) {
-            element.setAttribute('tabindex', '0');
-        }
-        
-        // Добавляем aria-label если его нет
-        this.enhanceAccessibility(element);
-        
-        // Ripple эффект при клике (только для элементов без запрета)
-        if (!element.classList.contains('no-ripple')) {
-            element.addEventListener('click', (e) => {
-                this.createRippleEffect(element, e);
-            });
-        }
-    }
-
-    createRippleEffect(element, event) {
-        // Создаем ripple эффект
-        const ripple = document.createElement('span');
-        const rect = element.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = event.clientX - rect.left - size / 2;
-        const y = event.clientY - rect.top - size / 2;
-        
-        ripple.style.cssText = `
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.6);
-            transform: scale(0);
-            animation: ripple-animation 0.6s ease-out;
-            width: ${size}px;
-            height: ${size}px;
-            top: ${y}px;
-            left: ${x}px;
-            pointer-events: none;
-            z-index: 1;
-        `;
-        
-        element.style.position = 'relative';
-        element.style.overflow = 'hidden';
-        element.appendChild(ripple);
-        
-        // Удаляем ripple после анимации
-        setTimeout(() => {
-            if (ripple.parentNode === element) {
-                element.removeChild(ripple);
-            }
-        }, 600);
-    }
-
-    enhanceAccessibility(element) {
-        if (!element.hasAttribute('aria-label') && element.hasAttribute('href')) {
-            const href = element.getAttribute('href');
-            let label = '';
-            
-            if (href === 'index.html' || href === '/' || href === '' || href === '#') {
-                label = 'Перейти на главную страницу';
-            } else if (href.includes('services.html')) {
-                if (href.includes('#')) {
-                    const section = href.split('#')[1];
-                    label = `Перейти к разделу ${section} на странице услуг`;
-                } else {
-                    label = 'Перейти на страницу услуг';
-                }
-            } else if (href.includes('portfolio.html')) {
-                label = 'Перейти в портфолио';
-            } else if (href.includes('about.html')) {
-                label = 'Перейти на страницу о нас';
-            } else if (href.includes('contacts.html')) {
-                label = 'Перейти на страницу контактов';
-            } else if (href.includes('brandbook.html')) {
-                label = 'Перейти в брендбук';
-            } else if (href.startsWith('#')) {
-                label = 'Прокрутить к разделу на этой странице';
-            } else if (href.startsWith('http')) {
-                label = 'Перейти по внешней ссылке';
-            } else {
-                label = 'Перейти по ссылке';
-            }
-            
-            element.setAttribute('aria-label', label);
-        }
-    }
-
-    setupPageTransitions() {
-        // Создаем overlay для transition между страницами
-        let transitionOverlay = document.querySelector('.page-transition');
-        
-        if (!transitionOverlay) {
-            transitionOverlay = document.createElement('div');
-            transitionOverlay.className = 'page-transition';
-            document.body.appendChild(transitionOverlay);
-        }
-        
-        // Обработка кликов на внутренние ссылки
-        document.querySelectorAll('a[href^="/"], a[href^="."]').forEach(link => {
-            if (link.href && !link.href.includes('#') && !link.target) {
-                link.addEventListener('click', (e) => {
-                    const href = link.getAttribute('href');
-                    
-                    // Исключаем внешние ссылки и якоря
-                    if (href.startsWith('http') && !href.includes(window.location.hostname)) {
-                        return;
-                    }
-                    
-                    if (href.includes('#')) {
-                        return;
-                    }
-                    
-                    e.preventDefault();
-                    
-                    // Показываем overlay
-                    transitionOverlay.classList.add('active');
-                    
-                    // Переходим через 300ms
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 300);
-                });
-            }
-        });
-    }
-
-    setupHomeClickableCards() {
-        // Специальная обработка для карточек услуг на главной
-        const serviceCards = document.querySelectorAll('.speck-service-card-enhanced.clickable-service-card');
-        
-        serviceCards.forEach(card => {
-            // Добавляем улучшенную анимацию при hover
-            card.addEventListener('mouseenter', () => {
-                if (!this.isReducedMotion) {
-                    card.style.transform = 'translateY(-15px)';
-                }
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                if (!this.isReducedMotion) {
-                    card.style.transform = '';
-                }
-            });
-            
-            // Анимация при клике
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // Анимация нажатия
-                card.style.transform = 'translateY(-10px) scale(0.98)';
-                
-                // Восстанавливаем через 300ms
-                setTimeout(() => {
-                    card.style.transform = '';
-                }, 300);
-                
-                // Переход через 350ms
-                setTimeout(() => {
-                    const href = card.getAttribute('href');
-                    if (href) {
-                        window.location.href = href;
-                    }
-                }, 350);
-            });
-            
-            // Keyboard support
-            card.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    card.click();
-                }
-            });
-        });
-    }
-
-    setupNavigationTracking() {
-        // Отслеживание кликов по навигации для аналитики
-        document.querySelectorAll('a[href]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
-                console.log(`🔗 Navigation: ${href}`);
-                
-                // Можно добавить Google Analytics здесь
-                // if (typeof gtag === 'function') {
-                //     gtag('event', 'navigation_click', {
-                //         'event_category': 'engagement',
-                //         'event_label': href
-                //     });
-                // }
-            });
-        });
-    }
-
-    initializeExistingFooter() {
-        // Немедленная инициализация подвала если он уже есть в DOM
-        const existingFooter = document.querySelector('.main-footer');
-        if (existingFooter && typeof window.initFooter === 'function') {
-            console.log('🦶 Found existing footer, initializing...');
-            window.initFooter();
-        }
-    }
-
-    setupFooterSupport() {
-        console.log('🦶 Setting up footer support...');
-        
-        // Автоматическая инициализация подвала при его загрузке
-        if ('MutationObserver' in window) {
-            const footerObserver = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    mutation.addedNodes.forEach((node) => {
-                        if (node.nodeType === 1) {
-                            // Проверяем сам элемент или его детей
-                            if (node.classList && node.classList.contains('.main-footer')) {
-                                console.log('🦶 Footer added to DOM, initializing...');
-                                this.initializeFooter(node);
-                            } else if (node.querySelector) {
-                                const footer = node.querySelector('.main-footer');
-                                if (footer) {
-                                    console.log('🦶 Footer found in added node, initializing...');
-                                    this.initializeFooter(footer);
-                                }
-                            }
-                        }
-                    });
-                });
-            });
-
-            footerObserver.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        }
-
-        // Также проверяем при полной загрузке DOM
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const footer = document.querySelector('.main-footer');
-                if (footer && typeof window.initFooter === 'function') {
-                    console.log('🦶 DOM loaded, initializing footer...');
-                    window.initFooter();
-                }
-            }, 500);
-        });
-    }
-
-    initializeFooter(footerElement) {
-        if (typeof window.initFooter === 'function') {
-            setTimeout(() => {
-                window.initFooter();
-            }, 100);
-        }
-    }
-
-    setupHeaderSupport() {
-        // Для главной страницы - специальная логика скрытия/показа
-        const isHomePage = document.body.classList.contains('home-page');
+        // Для главной страницы - специальная логика
         if (isHomePage) {
             console.log('🏠 Home page - enabling glass header hide on scroll');
-            this.setupHomeHeaderAnimation();
+            this.setupHomeHeaderAnimation(header);
             return;
         }
         
-        // Для остальных страниц используем базовую логику
-        if (document.querySelector('.main-header')) {
-            this.setupBasicHeaderAnimation();
+        // Для остальных внутренних страниц - базовая логика
+        if (isInternalPage) {
+            console.log('📄 Internal page - enabling basic header animation');
+            this.setupBasicHeaderAnimation(header);
+            return;
         }
+        
+        // По умолчанию - базовая логика
+        console.log('📄 Default page - enabling basic header animation');
+        this.setupBasicHeaderAnimation(header);
     }
 
-    setupHomeHeaderAnimation() {
-        const header = document.querySelector('.main-header');
-        if (!header) return;
+    disableHeaderHiding(header) {
+        // Убираем класс hidden если он есть
+        header.classList.remove('header-hidden');
+        
+        // Гарантируем видимость
+        header.style.transform = 'translateY(0)';
+        header.style.opacity = '1';
+        
+        // Отключаем transition для скрытия/показа
+        header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+        
+        // Убираем обработчики скролла для скрытия
+        // (они будут добавлены в setupBasicHeaderAnimation, но с условием isServicesPage)
+        console.log('✅ Header hiding disabled for services page');
+    }
 
+    setupHomeHeaderAnimation(header) {
+        console.log('🏠 Home page glass header logic');
+        
+        let lastScrollY = window.scrollY;
         const scrollThreshold = 50;
         
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
+        function handleScroll() {
+            const currentScrollY = window.scrollY;
             
-            if (currentScroll <= scrollThreshold) {
+            if (currentScrollY <= scrollThreshold) {
                 header.style.opacity = '1';
                 header.style.transform = 'translateY(0)';
                 header.classList.remove('header-hidden', 'header-glass-exit');
                 header.classList.add('header-glass-enter');
             } else {
-                const opacity = Math.max(0, Math.min(1, 1 - (currentScroll - scrollThreshold) / 100));
+                const opacity = Math.max(0, Math.min(1, 1 - (currentScrollY - scrollThreshold) / 100));
                 header.style.opacity = opacity.toString();
                 
                 if (opacity <= 0.1) {
@@ -411,46 +116,80 @@ class DaehaaApp {
                     header.classList.remove('header-hidden');
                 }
             }
-        }, { passive: true });
-
-        if (window.pageYOffset > scrollThreshold) {
-            const opacity = Math.max(0, Math.min(1, 1 - (window.pageYOffset - scrollThreshold) / 100));
-            header.style.opacity = opacity.toString();
             
-            if (opacity <= 0.1) {
-                header.classList.add('header-hidden');
-                header.classList.add('header-glass-exit');
-                header.classList.remove('header-glass-enter');
-            }
+            lastScrollY = currentScrollY;
         }
+        
+        // Применяем начальное состояние
+        handleScroll();
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Показываем хедер при наведении
+        header.addEventListener('mouseenter', () => {
+            if (header.classList.contains('header-hidden')) {
+                header.classList.remove('header-hidden', 'header-glass-exit');
+                header.classList.add('header-glass-enter');
+                header.style.opacity = '1';
+            }
+        });
+        
+        // Скрываем через 2 секунды если мы все еще скроллим вниз
+        header.addEventListener('mouseleave', () => {
+            if (window.scrollY > 150) {
+                setTimeout(() => {
+                    if (window.scrollY > 150 && !header.matches(':hover')) {
+                        header.classList.add('header-hidden');
+                        header.classList.add('header-glass-exit');
+                        header.classList.remove('header-glass-enter');
+                    }
+                }, 2000);
+            }
+        });
     }
 
-    setupBasicHeaderAnimation() {
-        const header = document.querySelector('.main-header');
-        if (!header) return;
-
-        let lastScroll = 0;
+    setupBasicHeaderAnimation(header) {
+        console.log('📄 Basic header animation logic');
+        
+        const isServicesPage = document.body.classList.contains('services-page');
+        
+        // Для страницы услуг - ничего не делаем
+        if (isServicesPage) {
+            console.log('📄 Services page - skipping basic header animation');
+            return;
+        }
+        
+        let lastScrollY = window.scrollY;
         const scrollThreshold = 100;
         
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
+        function handleScroll() {
+            const currentScrollY = window.scrollY;
             
-            if (currentScroll <= 0) {
+            if (currentScrollY <= 0) {
                 header.style.transform = 'translateY(0px)';
                 header.classList.remove('header-hidden', 'header-scrolled');
                 return;
             }
             
-            if (currentScroll > lastScroll && currentScroll > scrollThreshold) {
-                header.classList.remove('header-hidden');
+            if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                // Scrolling down - hide header
+                header.classList.add('header-hidden');
                 header.classList.add('header-scrolled');
-            } else if (currentScroll < lastScroll) {
+            } else if (currentScrollY < lastScrollY) {
+                // Scrolling up - show header
                 header.classList.remove('header-hidden');
                 header.classList.remove('header-scrolled');
             }
             
-            lastScroll = currentScroll;
-        }, { passive: true });
+            lastScrollY = currentScrollY;
+        }
+        
+        // Применяем начальное состояние
+        handleScroll();
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        console.log('✅ Basic header animation enabled');
     }
 
     setupMobileMenu() {
@@ -1132,6 +871,347 @@ class DaehaaApp {
 
     handleError(error) {
         console.error('Application error:', error);
+    }
+
+    setupFooterSupport() {
+        console.log('🦶 Setting up footer support...');
+        
+        // Автоматическая инициализация подвала при его загрузке
+        if ('MutationObserver' in window) {
+            const footerObserver = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === 1) {
+                            // Проверяем сам элемент или его детей
+                            if (node.classList && node.classList.contains('.main-footer')) {
+                                console.log('🦶 Footer added to DOM, initializing...');
+                                this.initializeFooter(node);
+                            } else if (node.querySelector) {
+                                const footer = node.querySelector('.main-footer');
+                                if (footer) {
+                                    console.log('🦶 Footer found in added node, initializing...');
+                                    this.initializeFooter(footer);
+                                }
+                            }
+                        }
+                    });
+                });
+            });
+
+            footerObserver.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        // Также проверяем при полной загрузке DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const footer = document.querySelector('.main-footer');
+                if (footer && typeof window.initFooter === 'function') {
+                    console.log('🦶 DOM loaded, initializing footer...');
+                    window.initFooter();
+                }
+            }, 500);
+        });
+    }
+
+    initializeFooter(footerElement) {
+        if (typeof window.initFooter === 'function') {
+            setTimeout(() => {
+                window.initFooter();
+            }, 100);
+        }
+    }
+
+    setupGlassHeaderEffects() {
+        const header = document.querySelector('.main-header');
+        if (!header) return;
+
+        // Add glass animation on load
+        setTimeout(() => {
+            header.classList.add('header-glass-enter');
+            
+            // Remove animation class after it completes
+            setTimeout(() => {
+                header.classList.remove('header-glass-enter');
+            }, 600);
+        }, 100);
+
+        // Add hover effect for glass morphism
+        header.addEventListener('mouseenter', () => {
+            if (!this.isReducedMotion) {
+                header.classList.add('glass-morph');
+            }
+        });
+
+        header.addEventListener('mouseleave', () => {
+            header.classList.remove('glass-morph');
+        });
+
+        // Smooth scroll behavior for home page
+        const isHomePage = document.body.classList.contains('home-page');
+        if (isHomePage) {
+            let lastScroll = 0;
+            const scrollThreshold = 50;
+            
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const opacity = Math.max(0, Math.min(1, 1 - (currentScroll - scrollThreshold) / 100));
+                
+                header.style.opacity = opacity.toString();
+                
+                if (currentScroll > 150 && currentScroll > lastScroll) {
+                    header.classList.add('header-glass-exit');
+                } else if (currentScroll < lastScroll || currentScroll <= scrollThreshold) {
+                    header.classList.remove('header-glass-exit');
+                    header.classList.add('header-glass-enter');
+                }
+                
+                lastScroll = currentScroll;
+            }, { passive: true });
+        }
+    }
+
+    setupClickableElements() {
+        console.log('🖱️ Setting up clickable elements...');
+        
+        // 1. Добавляем класс всем ссылкам для улучшения обратной связи
+        document.querySelectorAll('a:not(.btn)').forEach(link => {
+            if (!link.classList.contains('clickable-element')) {
+                link.classList.add('clickable-element');
+            }
+        });
+        
+        // 2. Инициализируем все кликабельные элементы
+        document.querySelectorAll('[role="link"], .clickable-element').forEach(element => {
+            this.setupClickFeedback(element);
+        });
+        
+        // 3. Настройка плавных переходов между страницами
+        this.setupPageTransitions();
+        
+        // 4. Инициализация кликабельных карточек услуг на главной
+        if (document.body.classList.contains('home-page')) {
+            this.setupHomeClickableCards();
+        }
+    }
+
+    setupClickFeedback(element) {
+        // Проверяем, является ли элемент действительно кликабельным
+        if (!element.hasAttribute('href') && !element.hasAttribute('onclick')) {
+            return;
+        }
+        
+        // Добавляем keyboard navigation
+        element.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                element.click();
+            }
+        });
+        
+        // Добавляем атрибуты доступности
+        if (!element.hasAttribute('role')) {
+            element.setAttribute('role', 'link');
+        }
+        
+        if (!element.hasAttribute('tabindex')) {
+            element.setAttribute('tabindex', '0');
+        }
+        
+        // Добавляем aria-label если его нет
+        this.enhanceAccessibility(element);
+        
+        // Ripple эффект при клике (только для элементов без запрета)
+        if (!element.classList.contains('no-ripple')) {
+            element.addEventListener('click', (e) => {
+                this.createRippleEffect(element, e);
+            });
+        }
+    }
+
+    createRippleEffect(element, event) {
+        // Создаем ripple эффект
+        const ripple = document.createElement('span');
+        const rect = element.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = event.clientX - rect.left - size / 2;
+        const y = event.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s ease-out;
+            width: ${size}px;
+            height: ${size}px;
+            top: ${y}px;
+            left: ${x}px;
+            pointer-events: none;
+            z-index: 1;
+        `;
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        // Удаляем ripple после анимации
+        setTimeout(() => {
+            if (ripple.parentNode === element) {
+                element.removeChild(ripple);
+            }
+        }, 600);
+    }
+
+    enhanceAccessibility(element) {
+        if (!element.hasAttribute('aria-label') && element.hasAttribute('href')) {
+            const href = element.getAttribute('href');
+            let label = '';
+            
+            if (href === 'index.html' || href === '/' || href === '' || href === '#') {
+                label = 'Перейти на главную страницу';
+            } else if (href.includes('services.html')) {
+                if (href.includes('#')) {
+                    const section = href.split('#')[1];
+                    label = `Перейти к разделу ${section} на странице услуг`;
+                } else {
+                    label = 'Перейти на страницу услуг';
+                }
+            } else if (href.includes('portfolio.html')) {
+                label = 'Перейти в портфолио';
+            } else if (href.includes('about.html')) {
+                label = 'Перейти на страницу о нас';
+            } else if (href.includes('contacts.html')) {
+                label = 'Перейти на страницу контактов';
+            } else if (href.includes('brandbook.html')) {
+                label = 'Перейти в брендбук';
+            } else if (href.startsWith('#')) {
+                label = 'Прокрутить к разделу на этой странице';
+            } else if (href.startsWith('http')) {
+                label = 'Перейти по внешней ссылке';
+            } else {
+                label = 'Перейти по ссылке';
+            }
+            
+            element.setAttribute('aria-label', label);
+        }
+    }
+
+    setupPageTransitions() {
+        // Создаем overlay для transition между страницами
+        let transitionOverlay = document.querySelector('.page-transition');
+        
+        if (!transitionOverlay) {
+            transitionOverlay = document.createElement('div');
+            transitionOverlay.className = 'page-transition';
+            document.body.appendChild(transitionOverlay);
+        }
+        
+        // Обработка кликов на внутренние ссылки
+        document.querySelectorAll('a[href^="/"], a[href^="."]').forEach(link => {
+            if (link.href && !link.href.includes('#') && !link.target) {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    
+                    // Исключаем внешние ссылки и якоря
+                    if (href.startsWith('http') && !href.includes(window.location.hostname)) {
+                        return;
+                    }
+                    
+                    if (href.includes('#')) {
+                        return;
+                    }
+                    
+                    e.preventDefault();
+                    
+                    // Показываем overlay
+                    transitionOverlay.classList.add('active');
+                    
+                    // Переходим через 300ms
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 300);
+                });
+            }
+        });
+    }
+
+    setupHomeClickableCards() {
+        // Специальная обработка для карточек услуг на главной
+        const serviceCards = document.querySelectorAll('.speck-service-card-enhanced.clickable-service-card');
+        
+        serviceCards.forEach(card => {
+            // Добавляем улучшенную анимацию при hover
+            card.addEventListener('mouseenter', () => {
+                if (!this.isReducedMotion) {
+                    card.style.transform = 'translateY(-15px)';
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                if (!this.isReducedMotion) {
+                    card.style.transform = '';
+                }
+            });
+            
+            // Анимация при клике
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Анимация нажатия
+                card.style.transform = 'translateY(-10px) scale(0.98)';
+                
+                // Восстанавливаем через 300ms
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 300);
+                
+                // Переход через 350ms
+                setTimeout(() => {
+                    const href = card.getAttribute('href');
+                    if (href) {
+                        window.location.href = href;
+                    }
+                }, 350);
+            });
+            
+            // Keyboard support
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    card.click();
+                }
+            });
+        });
+    }
+
+    setupNavigationTracking() {
+        // Отслеживание кликов по навигации для аналитики
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                console.log(`🔗 Navigation: ${href}`);
+                
+                // Можно добавить Google Analytics здесь
+                // if (typeof gtag === 'function') {
+                //     gtag('event', 'navigation_click', {
+                //         'event_category': 'engagement',
+                //         'event_label': href
+                //     });
+                // }
+            });
+        });
+    }
+
+    initializeExistingFooter() {
+        // Немедленная инициализация подвала если он уже есть в DOM
+        const existingFooter = document.querySelector('.main-footer');
+        if (existingFooter && typeof window.initFooter === 'function') {
+            console.log('🦶 Found existing footer, initializing...');
+            window.initFooter();
+        }
     }
 }
 
@@ -2512,4 +2592,4 @@ if (typeof module !== 'undefined' && module.exports) {
         initNetworkStatus,
         lazyInit
     };
-                }
+}
