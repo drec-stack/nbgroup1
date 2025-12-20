@@ -1452,8 +1452,6 @@ header, footer, section, nav {
     position: fixed !important;
     top: 30px !important;
     left: 50% !important;
-    -webkit-transform: translateX(-50%) translateY(0) !important;
-    -ms-transform: translateX(-50%) translateY(0) !important;
     transform: translateX(-50%) translateY(0) !important;
     width: calc(100% - 60px) !important;
     max-width: 1400px !important;
@@ -1461,12 +1459,9 @@ header, footer, section, nav {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    -webkit-transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    -o-transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
     border-radius: 25px !important;
     background: rgba(0, 102, 255, 0.12) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     border: 1px solid rgba(255, 255, 255, 0.25) !important;
     box-shadow: 
@@ -1478,7 +1473,6 @@ header, footer, section, nav {
 /* Фолбэк для backdrop-filter */
 .no-backdropfilter .home-page .main-header {
     background: rgba(0, 102, 255, 0.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 /* Фолбэк для transform */
@@ -1492,14 +1486,28 @@ header, footer, section, nav {
     text-align: center !important;
 }
 
-/* Состояние скрытого хедера */
+/* ===== FIXED: HEADER HIDDEN STATE - УБИРАЕМ "УЕЗЖАНИЕ" ===== */
 .home-page .main-header.header-hidden {
-    -webkit-transform: translateX(-50%) translateY(-150%) !important;
-    -ms-transform: translateX(-50%) translateY(-150%) !important;
-    transform: translateX(-50%) translateY(-150%) !important;
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
+    transform: translateX(-50%) !important; /* УБРАЛИ translateY(-150%) */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* ===== FIX: HEADER HOVER BEHAVIOR - ПРИ НАВЕДЕНИИ НЕ ДВИГАЕМ ===== */
+.home-page .main-header:hover {
+    transform: translateX(-50%) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+}
+
+.home-page .main-header.header-hidden:hover {
+    transform: translateX(-50%) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
 }
 
 .no-csstransforms .home-page .main-header.header-hidden {
@@ -1510,7 +1518,6 @@ header, footer, section, nav {
 .home-page .main-header.header-minimized {
     padding: 15px 0 !important;
     background: rgba(0, 102, 255, 0.25) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
     backdrop-filter: blur(25px) saturate(200%) !important;
     box-shadow: 
         0 10px 40px rgba(0, 0, 0, 0.25),
@@ -1911,6 +1918,30 @@ header, footer, section, nav {
     .no-flexbox .speck-vertical-block {
         padding: 30px;
     }
+    
+    /* ===== HEADER MOBILE FIXES ===== */
+    .home-page .main-header {
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        background: rgba(0, 102, 255, 0.22) !important;
+        backdrop-filter: blur(20px) saturate(200%) !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .home-page .main-header.header-hidden {
+        transform: none !important;
+        opacity: 1 !important;
+        pointer-events: all !important;
+    }
+    
+    .home-page .hero {
+        padding-top: 120px !important;
+    }
 }
 
 @media (max-width: 576px) {
@@ -2157,6 +2188,19 @@ header, footer, section, nav {
     .speck-block-number::after,
     .speck-block-subtitle::after,
     .speck-column-title::after {
+        -webkit-transition: none !important;
+        -o-transition: none !important;
+        transition: none !important;
+    }
+    
+    /* Header reduced motion */
+    .home-page .main-header {
+        -webkit-transition: none !important;
+        -o-transition: none !important;
+        transition: none !important;
+    }
+    
+    .home-page .main-header.header-hidden {
         -webkit-transition: none !important;
         -o-transition: none !important;
         transition: none !important;
@@ -2539,41 +2583,6 @@ header, footer, section, nav {
     }
 }
 
-/* ===== ДОПОЛНИТЕЛЬНЫЕ ФОЛБЭКИ ДЛЯ ОЧЕНЬ СТАРЫХ БРАУЗЕРОВ ===== */
-
-/* Для браузеров без border-radius */
-.no-borderradius .hero-actions .btn,
-.no-borderradius .stat-card,
-.no-borderradius .btn-glow,
-.no-borderradius .speck-feature-column.clickable-column:hover {
-    border-radius: 0 !important;
-}
-
-/* Для браузеров без box-shadow */
-.no-boxshadow .hero-actions .btn-primary,
-.no-boxshadow .btn-glow,
-.no-boxshadow .stat-card:hover,
-.no-boxshadow .speck-feature-column.clickable-column:hover {
-    box-shadow: none !important;
-}
-
-/* Для браузеров без opacity */
-.no-opacity .brand,
-.no-opacity .separator,
-.no-opacity .hero-subtitle,
-.no-opacity .speck-column-title {
-    opacity: 1 !important;
-}
-
-/* Для браузеров без CSS transitions */
-.no-csstransitions .speck-vertical-block,
-.no-csstransitions .speck-feature-column,
-.no-csstransitions .stat-card,
-.no-csstransitions .btn,
-.no-csstransitions .brand {
-    transition: none !important;
-}
-
 /* ===== УНИВЕРСАЛЬНЫЕ ИСПРАВЛЕНИЯ ДЛЯ ВСЕХ БРАУЗЕРОВ ===== */
 
 /* Гарантированная читаемость текста */
@@ -2615,95 +2624,6 @@ button,
 .container {
     max-width: 100%;
     overflow-x: hidden;
-}
-
-/* Гарантированная поддержка мобильных устройств */
-@media (max-width: 767px) {
-    .hero {
-        padding: 120px 0 80px !important;
-        min-height: auto !important;
-    }
-    
-    .speck-vertical-section,
-    .clients-section,
-    .stats-improved,
-    .cta-improved {
-        padding: 60px 0 !important;
-    }
-    
-    .no-flexbox .stat-card {
-        width: 100% !important;
-        margin: 10px 0 !important;
-        display: block !important;
-    }
-    
-    .no-cssgrid .stat-card {
-        width: 100% !important;
-        margin: 10px 0 !important;
-    }
-    
-    .no-cssgrid .speck-feature-column {
-        width: 100% !important;
-        margin: 10px 0 !important;
-    }
-    
-    .no-flexbox .speck-feature-column {
-        width: 100% !important;
-        margin: 10px 0 !important;
-        float: none !important;
-    }
-}
-
-/* Гарантированная работа на очень маленьких экранах */
-@media (max-width: 320px) {
-    .hero h1 {
-        font-size: 2rem !important;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 2.5rem !important;
-    }
-    
-    .hero h1 span:nth-child(2) {
-        font-size: 1.8rem !important;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.2rem !important;
-    }
-    
-    .hero-description p {
-        font-size: 1rem !important;
-    }
-    
-    .hero-actions .btn {
-        min-width: 120px !important;
-        padding: 10px 15px !important;
-        font-size: 0.8rem !important;
-    }
-    
-    .speck-block-title {
-        font-size: 1.2rem !important;
-    }
-    
-    .speck-column-title {
-        font-size: 1.1rem !important;
-    }
-    
-    .brand {
-        font-size: 0.9rem !important;
-        padding: 0 10px !important;
-    }
-    
-    .btn-glow {
-        min-width: 180px !important;
-        padding: 12px 20px !important;
-        font-size: 0.9rem !important;
-    }
-    
-    .speck-feature-column.clickable-column:hover {
-        padding: 20px;
-    }
 }
 
 /* ====================================== */
@@ -2760,29 +2680,6 @@ button,
     display: none !important;
     opacity: 0 !important;
     background: transparent !important;
-}
-
-/* 6. Убираем фоновые слои для параллакса на мобильных */
-@media (max-width: 768px) {
-    .content-section,
-    .hero.parallax-hero,
-    .speck-service-card-enhanced,
-    .stat-card,
-    .cta-improved,
-    .clients-section,
-    .stats-improved {
-        background: transparent !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-    }
-    
-    .content-section::before,
-    .hero.parallax-hero::before,
-    .content-section::after,
-    .hero.parallax-hero::after {
-        display: none !important;
-        background: transparent !important;
-    }
 }
 
 /* ===== SPECK DESIGN MARQUEE MOBILE ENHANCEMENTS ===== */
@@ -2957,4 +2854,63 @@ button,
 
 .no-backdropfilter .contact-page .main-header.header-minimized {
     background: rgba(0, 102, 255, 0.35) !important;
+}
+
+/* ===== FIX: FINAL HEADER BEHAVIOR FIXES ===== */
+/* Гарантируем что хедер на главной странице ведет себя правильно */
+.home-page .main-header {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+/* При наведении на скрытый хедер - плавно показываем */
+.home-page .main-header.header-hidden:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+    transform: translateX(-50%) !important;
+}
+
+/* Убираем все лишние трансформации при hover */
+.home-page .main-header:hover:not(.mobile-menu-active) {
+    transform: translateX(-50%) !important;
+}
+
+/* Для внутренних страниц используем базовую логику */
+.internal-page .main-header {
+    transform: translateX(-50%) !important;
+}
+
+.internal-page .main-header.header-hidden {
+    transform: translateX(-50%) translateY(-100%) !important;
+}
+
+/* Для мобильных устройств - отключаем сложные анимации */
+@media (max-width: 768px) {
+    .home-page .main-header,
+    .contact-page .main-header,
+    .internal-page .main-header {
+        transform: none !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
     }
+    
+    .home-page .main-header.header-hidden,
+    .contact-page .main-header.header-hidden,
+    .internal-page .main-header.header-hidden {
+        transform: none !important;
+        opacity: 1 !important;
+        pointer-events: all !important;
+    }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+.home-page .main-header,
+.contact-page .main-header,
+.internal-page .main-header {
+    contain: layout style paint;
+}
