@@ -3393,3 +3393,54 @@ body.services-page .main-header.header-hidden {
         top: auto !important;
     }
 }
+
+/* Добавьте в конец файла style.css эти стили: */
+
+/* ===== ФИНАЛЬНЫЙ ФИКС: ХЕДЕР НА СТРАНИЦЕ УСЛУГ ===== */
+body.services-page .main-header {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: none !important;
+    animation: none !important;
+    -webkit-animation: none !important;
+}
+
+body.services-page .main-header.header-hidden {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Гарантируем фиксированное положение */
+body.services-page .main-header {
+    position: fixed !important;
+    top: 20px !important;
+}
+
+@media (max-width: 768px) {
+    body.services-page .main-header {
+        top: 0 !important;
+        border-radius: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+}
+
+/* Отключаем все эффекты скрытия для страницы услуг */
+body.services-page .main-header,
+body.services-page .main-header:hover,
+body.services-page .main-header.header-scrolled {
+    background: rgba(0, 102, 255, 0.12) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 102, 255, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+}
+
+body.services-page .main-header:hover {
+    background: rgba(0, 102, 255, 0.15) !important;
+}
