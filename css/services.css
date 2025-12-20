@@ -718,3 +718,60 @@ body.services-page {
     z-index: 100;
     width: 100%;
 }
+
+/* ===== HEADER HIDE FIXES ===== */
+
+/* Убираем все анимации */
+.main-header {
+    animation: none !important;
+    -webkit-animation: none !important;
+}
+
+.main-header.header-hidden {
+    animation: none !important;
+    -webkit-animation: none !important;
+}
+
+/* Гарантируем правильную анимацию */
+.main-header {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.main-header.header-hidden {
+    transform: translateY(-100%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.main-header:hover:not(.mobile-menu-active) {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+}
+
+/* Services nav скрывается вместе с хедером */
+.services-nav {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.services-nav.nav-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* На мобильных не скрываем */
+@media (max-width: 768px) {
+    .main-header.header-hidden {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+        pointer-events: all !important;
+    }
+    
+    .services-nav.nav-hidden {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+        pointer-events: all !important;
+    }
+}
