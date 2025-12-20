@@ -32,8 +32,7 @@
             border: 1px solid rgba(255, 255, 255, 0.22);
             transform: translateY(0);
             opacity: 1;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         /* Стеклянный слой */
@@ -66,18 +65,13 @@
             border-color: rgba(255, 255, 255, 0.28);
         }
 
-        /* Скрытый хедер */
-        .main-header.hidden {
+        /* Скрытый хедер при скролле */
+        .main-header.header-hidden {
             transform: translateY(-100%) !important;
             opacity: 0 !important;
             pointer-events: none !important;
-        }
-
-        /* Показать при наведении */
-        .main-header:hover.hidden {
-            transform: translateY(0) !important;
-            opacity: 1 !important;
-            pointer-events: all !important;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
         /* Active link for services page */
@@ -433,11 +427,15 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             }
             
-            /* На мобильных не скрываем */
-            .main-header.hidden {
+            /* На мобильных не скрываем полностью */
+            .main-header.header-hidden {
                 transform: translateY(0) !important;
                 opacity: 1 !important;
                 pointer-events: all !important;
+                background: rgba(0, 102, 255, 0.25) !important;
+                backdrop-filter: blur(25px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+                padding: 12px 0 !important;
             }
             
             .main-header .header-inner {
@@ -584,6 +582,7 @@
             padding-top: 180px;
             padding-bottom: 80px;
             background: var(--secondary);
+            transition: padding-top 0.3s ease;
         }
 
         @media (max-width: 768px) {
@@ -605,6 +604,29 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+        
+        /* Анимации для скрытия/показа хедера */
+        @keyframes headerSlideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .main-header:not(.header-hidden) {
+            animation: headerSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        /* Показываем хедер при наведении */
+        .main-header:hover:not(.mobile-menu-active) {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: all !important;
         }
     </style>
 </head>
@@ -661,7 +683,396 @@
         <div class="mobile-menu-overlay"></div>
     </header>
 
-    <!-- ... остальной HTML контент ... -->
+    <section class="services-hero">
+        <div class="container">
+            <div class="services-hero-content">
+                <h1 class="page-title" data-i18n="services.title">Our Services</h1>
+                <p class="page-subtitle" data-i18n="services.subtitle">
+                    End-to-end product development from initial concept to mass production. 
+                    We combine design thinking with engineering excellence.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-nav">
+        <div class="container">
+            <nav class="services-navigation">
+                <a href="#design" class="nav-item active" data-i18n="services.nav.design">Design</a>
+                <a href="#engineering" class="nav-item" data-i18n="services.nav.engineering">Engineering</a>
+                <a href="#production" class="nav-item" data-i18n="services.nav.production">Production</a>
+                <a href="#brand" class="nav-item" data-i18n="services.nav.brand">Brand</a>
+                <a href="#brandbook" class="nav-item" data-i18n="services.nav.brandbook">Brandbook</a>
+                <a href="#strategy" class="nav-item" data-i18n="services.nav.strategy">Strategy</a>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Design Section -->
+    <section id="design" class="service-detail">
+        <div class="container">
+            <div class="service-header">
+                <span class="service-number">01</span>
+                <h2 class="service-title" data-i18n="services.design.title">Industrial Design</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p data-i18n="services.design.description">Human-centered design approach that balances aesthetics, ergonomics, 
+                    and brand identity to create products people love to use.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4 data-i18n="services.design.features.conceptDevelopment.title">Concept Development</h4>
+                            <p data-i18n="services.design.features.conceptDevelopment.description">Sketching, mood boards, and concept exploration</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.design.features.modeling.title">3D Modeling</h4>
+                            <p data-i18n="services.design.features.modeling.description">Detailed CAD modeling and visualization</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.design.features.prototyping.title">Prototyping</h4>
+                            <p data-i18n="services.design.features.prototyping.description">Rapid prototyping and user testing</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">500+</div>
+                        <div class="stat-label" data-i18n="services.design.stats.products">Products Designed</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">25</div>
+                        <div class="stat-label" data-i18n="services.design.stats.awards">Design Awards</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Engineering Section -->
+    <section id="engineering" class="service-detail">
+        <div class="container">
+            <div class="service-header">
+                <span class="service-number">02</span>
+                <h2 class="service-title" data-i18n="services.engineering.title">Engineering & Development</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p data-i18n="services.engineering.description">Technical engineering solutions that transform designs into manufacturable 
+                    products with focus on quality, cost, and scalability.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4 data-i18n="services.engineering.features.mechanical.title">Mechanical Engineering</h4>
+                            <p data-i18n="services.engineering.features.mechanical.description">Structural analysis and mechanism design</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.engineering.features.dfm.title">DFM Optimization</h4>
+                            <p data-i18n="services.engineering.features.dfm.description">Design for manufacturing and assembly</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.engineering.features.materials.title">Material Selection</h4>
+                            <p data-i18n="services.engineering.features.materials.description">Optimal material choices for performance and cost</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">99.7%</div>
+                        <div class="stat-label" data-i18n="services.engineering.stats.quality">Quality Rate</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">50%</div>
+                        <div class="stat-label" data-i18n="services.engineering.stats.costReduction">Cost Reduction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Production Section -->
+    <section id="production" class="service-detail">
+        <div class="container">
+            <div class="service-header">
+                <span class="service-number">03</span>
+                <h2 class="service-title" data-i18n="services.production.title">Manufacturing & Production</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p data-i18n="services.production.description">Scalable manufacturing solutions with rigorous quality control 
+                    and supply chain management for reliable product delivery.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4 data-i18n="services.production.features.factory.title">Factory Sourcing</h4>
+                            <p data-i18n="services.production.features.factory.description">Partner selection and manufacturing setup</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.production.features.quality.title">Quality Assurance</h4>
+                            <p data-i18n="services.production.features.quality.description">Comprehensive QC processes and testing</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.production.features.supply.title">Supply Chain</h4>
+                            <p data-i18n="services.production.features.supply.description">Material sourcing and logistics management</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">1M+</div>
+                        <div class="stat-label" data-i18n="services.production.stats.units">Units Produced</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">48h</div>
+                        <div class="stat-label" data-i18n="services.production.stats.leadTime">Avg. Lead Time</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Section -->
+    <section id="brand" class="service-detail">
+        <div class="container">
+            <div class="service-header">
+                <span class="service-number">04</span>
+                <h2 class="service-title">Brand Development</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p>Comprehensive brand identity development including logo design, visual language, 
+                    and brand positioning to create memorable and impactful brands.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4>Brand Strategy</h4>
+                            <p>Market positioning and competitive analysis</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Visual Identity</h4>
+                            <p>Logo, color palette, and typography development</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Brand Assets</h4>
+                            <p>Complete set of brand elements and applications</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">100+</div>
+                        <div class="stat-label">Brands Created</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">360°</div>
+                        <div class="stat-label">Full Brand Coverage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brandbook Section -->
+    <section id="brandbook" class="service-detail">
+        <div class="container">
+            <div class="service-header">
+                <span class="service-number">05</span>
+                <h2 class="service-title">Brandbook Development</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p>Complete brand guideline systems that ensure consistent brand representation 
+                    across all platforms and touchpoints with detailed usage rules.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4>Brand Guidelines</h4>
+                            <p>Comprehensive usage rules and specifications</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Visual Standards</h4>
+                            <p>Logo usage, color systems, and typography</p>
+                        </div>
+                        <div class="feature">
+                            <h4>Application Examples</h4>
+                            <p>Real-world usage across various media</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">50+</div>
+                        <div class="stat-label">Brandbooks</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Consistency</div>
+                    </div>
+                </div>
+                <div class="service-cta">
+                    <a href="brandbook.html" class="btn btn-primary">
+                        View Brandbook Examples
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy Section -->
+    <section id="strategy" class="service-detail">
+        <div class="container">
+            <div class="service-header">
+                <span class="service-number">06</span>
+                <h2 class="service-title" data-i18n="services.strategy.title">Product Strategy & Research</h2>
+            </div>
+            <div class="service-content">
+                <div class="service-description">
+                    <p data-i18n="services.strategy.description">We begin with deep market analysis and user research to define product vision, 
+                    positioning, and business objectives that ensure market success.</p>
+                    
+                    <div class="service-features">
+                        <div class="feature">
+                            <h4 data-i18n="services.strategy.features.marketAnalysis.title">Market Analysis</h4>
+                            <p data-i18n="services.strategy.features.marketAnalysis.description">Competitive landscape and opportunity assessment</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.strategy.features.userResearch.title">User Research</h4>
+                            <p data-i18n="services.strategy.features.userResearch.description">In-depth understanding of user needs and behaviors</p>
+                        </div>
+                        <div class="feature">
+                            <h4 data-i18n="services.strategy.features.productPlanning.title">Product Planning</h4>
+                            <p data-i18n="services.strategy.features.productPlanning.description">Roadmap development and feature prioritization</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-value">150+</div>
+                        <div class="stat-label" data-i18n="services.strategy.stats.studies">Market Studies</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">95%</div>
+                        <div class="stat-label" data-i18n="services.strategy.stats.successRate">Success Rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-overview">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="services.process.title">Our Process</h2>
+                <p data-i18n="services.process.subtitle">Structured approach to product development</p>
+            </div>
+            <div class="process-timeline">
+                <div class="process-phase">
+                    <div class="phase-number">01</div>
+                    <h3 data-i18n="services.process.discover.title">Discover</h3>
+                    <p data-i18n="services.process.discover.description">Research and strategy definition</p>
+                </div>
+                <div class="process-phase">
+                    <div class="phase-number">02</div>
+                    <h3 data-i18n="services.process.design.title">Design</h3>
+                    <p data-i18n="services.process.design.description">Concept development and validation</p>
+                </div>
+                <div class="process-phase">
+                    <div class="phase-number">03</div>
+                    <h3 data-i18n="services.process.develop.title">Develop</h3>
+                    <p data-i18n="services.process.develop.description">Engineering and prototyping</p>
+                </div>
+                <div class="process-phase">
+                    <div class="phase-number">04</div>
+                    <h3 data-i18n="services.process.deliver.title">Deliver</h3>
+                    <p data-i18n="services.process.deliver.description">Production and launch</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 data-i18n="services.cta.title">Start Your Project</h2>
+                <p data-i18n="services.cta.description">Ready to bring your product idea to life? Let's discuss your project requirements.</p>
+                <a href="contacts.html" class="btn btn-primary btn-large">
+                    <span data-i18n="services.cta.button">Get Quote</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-mark">NB</div>
+                        <span class="logo-text" data-i18n="nav.brand">NBGROUP.TECH</span>
+                    </div>
+                    <p class="footer-description" data-i18n="footer.description">
+                        Industrial design and product development studio creating 
+                        meaningful products for global markets.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://t.me/NB_GROUP_TECH" class="social-link telegram" aria-label="Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://instagram.com/nb_group_tech" class="social-link instagram" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link linkedin" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link behance" aria-label="Behance">
+                            <i class="fab fa-behance"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.services">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="services.html#strategy" data-i18n="servicesPreview.strategy.title">Product Strategy</a></li>
+                        <li><a href="services.html#design" data-i18n="servicesPreview.design.title">Industrial Design</a></li>
+                        <li><a href="services.html#engineering" data-i18n="servicesPreview.engineering.title">Engineering</a></li>
+                        <li><a href="services.html#production" data-i18n="services.production.title">Manufacturing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.company">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html" data-i18n="nav.about">About</a></li>
+                        <li><a href="portfolio.html" data-i18n="nav.portfolio">Work</a></li>
+                        <li><a href="contacts.html" data-i18n="nav.contact">Contact</a></li>
+                        <li><a href="#" data-i18n="footer.links.careers">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-i18n="footer.contact.title">Contact</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="footer.contact.address">Moscow, Russia</span></p>
+                        <p><i class="fas fa-phone"></i> +7 (495) 123-4567</p>
+                        <p><i class="fas fa-envelope"></i> info@nbgroup.tech</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 NBGROUP.TECH. <span data-i18n="footer.rights">All rights reserved.</span></p>
+                <div class="footer-legal">
+                    <a href="#" data-i18n="footer.links.privacy">Privacy Policy</a>
+                    <a href="#" data-i18n="footer.links.terms">Terms of Service</a>
+                    <a href="#" data-i18n="footer.links.cookies">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- JavaScript -->
     <script src="js/i18n.js"></script>
@@ -670,134 +1081,369 @@
     <script src="js/services.js"></script>
     
     <script>
-        // ПРОСТАЯ И ЭФФЕКТИВНАЯ ЛОГИКА СКРЫТИЯ ХЕДЕРА
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Инициализация скрытия хедера...');
+        // Services Page Specific JavaScript
+        console.log('🚀 Services page initialization started...');
+        
+        // Mobile menu functionality
+        function setupMobileMenu() {
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+            const mobileOverlay = document.querySelector('.mobile-menu-overlay');
             
+            if (!mobileToggle || !mainNav) return;
+            
+            const toggleMenu = () => {
+                const isActive = mainNav.classList.contains('active');
+                
+                mobileToggle.classList.toggle('active');
+                mainNav.classList.toggle('active');
+                if (mobileOverlay) mobileOverlay.classList.toggle('active');
+                document.body.style.overflow = isActive ? '' : 'hidden';
+                
+                // Добавляем класс для мобильного меню
+                if (isActive) {
+                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
+                } else {
+                    document.querySelector('.main-header').classList.add('mobile-menu-active');
+                }
+            };
+
+            mobileToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', () => {
+                    mobileToggle.classList.remove('active');
+                    mainNav.classList.remove('active');
+                    mobileOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
+                });
+            }
+
+            const navLinks = mainNav.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileToggle.classList.remove('active');
+                    mainNav.classList.remove('active');
+                    if (mobileOverlay) mobileOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
+                    mobileToggle.classList.remove('active');
+                    mainNav.classList.remove('active');
+                    if (mobileOverlay) mobileOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.querySelector('.main-header').classList.remove('mobile-menu-active');
+                }
+            });
+        }
+        
+        // Header scroll behavior - скрытие хедера при скролле
+        function setupHeaderScroll() {
             const header = document.querySelector('.main-header');
             const servicesNav = document.querySelector('.services-nav');
             
-            if (!header) {
-                console.error('❌ Хедер не найден!');
-                return;
-            }
+            if (!header) return;
             
-            let lastScrollTop = 0;
+            let lastScrollY = window.scrollY;
             const scrollThreshold = 100;
+            let ticking = false;
             let isMobile = window.innerWidth <= 768;
             
-            // Простая функция для скрытия/показа
-            function handleHeaderScroll() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const updateScroll = () => {
+                const currentScrollY = window.scrollY;
                 
-                // На мобильных не скрываем
-                if (isMobile) return;
+                // На мобильных не скрываем полностью, только меняем фон
+                if (isMobile) {
+                    if (currentScrollY > 50) {
+                        header.style.background = 'rgba(0, 102, 255, 0.25)';
+                        header.style.backdropFilter = 'blur(25px) saturate(200%)';
+                        header.style.webkitBackdropFilter = 'blur(25px) saturate(200%)';
+                        header.style.padding = '12px 0';
+                        header.style.top = '0';
+                        header.style.borderRadius = '0';
+                    } else {
+                        header.style.background = 'rgba(0, 102, 255, 0.22)';
+                        header.style.backdropFilter = 'blur(20px) saturate(200%)';
+                        header.style.webkitBackdropFilter = 'blur(20px) saturate(200%)';
+                        header.style.padding = '14px 0';
+                        header.style.top = '0';
+                        header.style.borderRadius = '0';
+                    }
+                    ticking = false;
+                    return;
+                }
                 
-                if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
-                    // Скролл вниз - скрываем
-                    header.classList.add('hidden');
+                // На десктопе: скрываем при скролле вниз, показываем при скролле вверх
+                if (currentScrollY <= 50) {
+                    // Вверху страницы - всегда показываем
+                    header.classList.remove('header-hidden');
+                    if (servicesNav) servicesNav.classList.remove('nav-hidden');
+                } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                    // Скроллим вниз - скрываем
+                    header.classList.add('header-hidden');
                     if (servicesNav) servicesNav.classList.add('nav-hidden');
-                } else {
-                    // Скролл вверх или в начале страницы - показываем
-                    header.classList.remove('hidden');
+                } else if (currentScrollY < lastScrollY) {
+                    // Скроллим вверх - показываем
+                    header.classList.remove('header-hidden');
                     if (servicesNav) servicesNav.classList.remove('nav-hidden');
                 }
                 
-                lastScrollTop = scrollTop;
-            }
+                lastScrollY = currentScrollY;
+                ticking = false;
+            };
             
-            // Слушаем скролл
-            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+            const handleScroll = () => {
+                if (!ticking) {
+                    requestAnimationFrame(updateScroll);
+                    ticking = true;
+                }
+            };
             
-            // Обновляем при ресайзе
-            window.addEventListener('resize', function() {
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // Обновляем isMobile при изменении размера окна
+            window.addEventListener('resize', () => {
                 isMobile = window.innerWidth <= 768;
-                // На мобильных всегда показываем
-                if (isMobile) {
-                    header.classList.remove('hidden');
+                
+                // Сбрасываем стили при переходе с мобильного на десктоп
+                if (!isMobile && header.classList.contains('header-hidden')) {
+                    header.classList.remove('header-hidden');
                     if (servicesNav) servicesNav.classList.remove('nav-hidden');
+                    header.style.background = '';
+                    header.style.backdropFilter = '';
+                    header.style.webkitBackdropFilter = '';
+                    header.style.padding = '';
+                    header.style.top = '';
+                    header.style.borderRadius = '';
                 }
             });
             
-            // Показываем хедер при наведении (только на десктопе)
-            header.addEventListener('mouseenter', function() {
-                if (!isMobile) {
-                    this.classList.remove('hidden');
+            // Инициализация состояния при загрузке
+            if (window.scrollY > scrollThreshold && !isMobile) {
+                header.classList.add('header-hidden');
+                if (servicesNav) servicesNav.classList.add('nav-hidden');
+            }
+        }
+        
+        // Language switcher functionality
+        function setupLanguageSwitcher() {
+            const langButtons = document.querySelectorAll('.lang-btn');
+            const switcher = document.querySelector('.language-switcher');
+            
+            if (!langButtons.length || !switcher) return;
+            
+            // Set initial state
+            const currentLang = localStorage.getItem('preferredLang') || 'ru';
+            updateLanguageSwitcherState(currentLang);
+            
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const lang = btn.getAttribute('data-lang');
+                    if (lang && window.i18n && lang !== window.i18n.getCurrentLang()) {
+                        window.i18n.switchLanguage(lang);
+                    }
+                });
+            });
+        }
+        
+        function updateLanguageSwitcherState(lang) {
+            const langBtns = document.querySelectorAll('.lang-btn');
+            const switcher = document.querySelector('.language-switcher');
+            
+            langBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            if (switcher) {
+                switcher.setAttribute('data-current-lang', lang);
+            }
+        }
+        
+        // Services navigation
+        function setupServicesNavigation() {
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.service-detail');
+            
+            if (!navItems.length) return;
+            
+            // Click handlers
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    
+                    // Handle brandbook link
+                    if (targetId === '#brandbook') {
+                        window.location.href = 'brandbook.html';
+                        return;
+                    }
+                    
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        // Update active state
+                        navItems.forEach(navItem => navItem.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Calculate scroll position
+                        const header = document.querySelector('.main-header');
+                        const headerHeight = header?.offsetHeight || 0;
+                        const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
+                        const offset = headerHeight + navHeight + 20;
+                        
+                        // Временно показываем хедер для навигации
+                        if (header.classList.contains('header-hidden')) {
+                            header.classList.remove('header-hidden');
+                            if (servicesNav) servicesNav.classList.remove('nav-hidden');
+                            
+                            // Снова скрываем через 3 секунды
+                            setTimeout(() => {
+                                if (window.scrollY > 100) {
+                                    header.classList.add('header-hidden');
+                                    if (servicesNav) servicesNav.classList.add('nav-hidden');
+                                }
+                            }, 3000);
+                        }
+                        
+                        // Smooth scroll
+                        window.scrollTo({
+                            top: targetSection.offsetTop - offset,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Update active state on scroll
+            const updateActiveNav = () => {
+                const scrollPosition = window.scrollY + 150;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                        navItems.forEach(item => {
+                            item.classList.remove('active');
+                            if (item.getAttribute('href') === `#${sectionId}`) {
+                                item.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', updateActiveNav, { passive: true });
+        }
+        
+        // Adjust hero padding based on header height
+        function adjustHeroPadding() {
+            const header = document.querySelector('.main-header');
+            const hero = document.querySelector('.services-hero');
+            
+            if (!header || !hero) return;
+            
+            const updatePadding = () => {
+                const headerHeight = header.offsetHeight;
+                if (window.innerWidth <= 768) {
+                    hero.style.paddingTop = Math.max(120, headerHeight + 40) + 'px';
+                } else {
+                    hero.style.paddingTop = (headerHeight + 80) + 'px';
+                }
+            };
+            
+            updatePadding();
+            window.addEventListener('resize', updatePadding);
+        }
+        
+        // Показываем хедер при наведении (только на десктопе)
+        function setupHeaderHover() {
+            const header = document.querySelector('.main-header');
+            if (!header) return;
+            
+            header.addEventListener('mouseenter', () => {
+                if (window.innerWidth > 768 && header.classList.contains('header-hidden')) {
+                    header.classList.remove('header-hidden');
+                    const servicesNav = document.querySelector('.services-nav');
                     if (servicesNav) servicesNav.classList.remove('nav-hidden');
                 }
             });
             
             // Скрываем через 2 секунды после ухода курсора
-            header.addEventListener('mouseleave', function() {
-                if (!isMobile && window.pageYOffset > scrollThreshold) {
+            header.addEventListener('mouseleave', () => {
+                if (window.innerWidth > 768 && window.scrollY > 100) {
                     setTimeout(() => {
-                        if (!this.matches(':hover')) {
-                            this.classList.add('hidden');
+                        if (!header.matches(':hover') && window.scrollY > 100) {
+                            header.classList.add('header-hidden');
+                            const servicesNav = document.querySelector('.services-nav');
                             if (servicesNav) servicesNav.classList.add('nav-hidden');
                         }
                     }, 2000);
                 }
             });
+        }
+        
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Services page DOM loaded');
             
-            // Инициализация при загрузке
-            handleHeaderScroll();
-            
-            console.log('✅ Логика скрытия хедера инициализирована');
-            
-            // Мобильное меню
-            const mobileToggle = document.querySelector('.mobile-menu-toggle');
-            const mainNav = document.querySelector('.main-nav');
-            const mobileOverlay = document.querySelector('.mobile-menu-overlay');
-            
-            if (mobileToggle && mainNav) {
-                mobileToggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    this.classList.toggle('active');
-                    mainNav.classList.toggle('active');
-                    if (mobileOverlay) mobileOverlay.classList.toggle('active');
-                    document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+            // Activate services link in header
+            const servicesLink = document.querySelector('.nav-link[href="services.html"]');
+            if (servicesLink) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
                 });
-                
-                if (mobileOverlay) {
-                    mobileOverlay.addEventListener('click', function() {
-                        mobileToggle.classList.remove('active');
-                        mainNav.classList.remove('active');
-                        this.classList.remove('active');
-                        document.body.style.overflow = '';
-                    });
-                }
-                
-                const navLinks = mainNav.querySelectorAll('.nav-link');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        mobileToggle.classList.remove('active');
-                        mainNav.classList.remove('active');
-                        if (mobileOverlay) mobileOverlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    });
-                });
+                servicesLink.classList.add('active');
             }
+            
+            // Setup functionality
+            setupMobileMenu();
+            setupHeaderScroll();
+            setupLanguageSwitcher();
+            setupServicesNavigation();
+            adjustHeroPadding();
+            setupHeaderHover();
+            
+            // Listen for language changes
+            window.addEventListener('languageChanged', (e) => {
+                updateLanguageSwitcherState(e.detail.lang);
+            });
+            
+            // Initialize services specific functionality
+            setTimeout(() => {
+                if (typeof initServices === 'function') {
+                    initServices();
+                }
+                if (typeof animateServiceSections === 'function') {
+                    animateServiceSections();
+                }
+            }, 300);
+            
+            console.log('✅ Services page fully initialized');
         });
         
-        // Временно показываем хедер при клике на якорь
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function() {
-                const header = document.querySelector('.main-header');
-                const servicesNav = document.querySelector('.services-nav');
-                
-                if (header && header.classList.contains('hidden')) {
-                    header.classList.remove('hidden');
-                    if (servicesNav) servicesNav.classList.remove('nav-hidden');
-                    
-                    // Скрываем через 3 секунды
-                    setTimeout(() => {
-                        if (window.pageYOffset > 100 && window.innerWidth > 768) {
-                            header.classList.add('hidden');
-                            if (servicesNav) servicesNav.classList.add('nav-hidden');
-                        }
-                    }, 3000);
-                }
-            });
+        // Fallback for header animation on load
+        window.addEventListener('load', function() {
+            const header = document.querySelector('.main-header');
+            if (header) {
+                header.style.opacity = '1';
+                header.style.transform = 'translateY(0)';
+            }
         });
     </script>
 </body>
