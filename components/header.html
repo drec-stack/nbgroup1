@@ -25,10 +25,16 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.12),
                 inset 0 0 20px rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.22);
-            transform: translateY(0) translateX(-50%);
             opacity: 1;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: 
+                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                background-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                border-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: transform, opacity;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
         }
 
         /* Стеклянный слой */
@@ -51,7 +57,7 @@
             pointer-events: none;
         }
 
-        /* Эффект при наведении на хедер - ТОЛЬКО внешний вид, не двигаем! */
+        /* Эффект при наведении на хедер - БЕЗ scale(), только визуальные изменения */
         .main-header:hover {
             background: rgba(0, 102, 255, 0.15);
             box-shadow: 
@@ -59,15 +65,19 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.18),
                 0 0 30px rgba(0, 102, 255, 0.12);
             border-color: rgba(255, 255, 255, 0.28);
-            transform: translateX(-50%) scale(1.02);
+            /* УБРАНО: transform: translateX(-50%) scale(1.02); */
+            will-change: background-color, box-shadow, border-color; /* Оптимизация */
         }
 
-        /* Скрытый хедер - используем только opacity, не transform! */
+        /* Скрытый хедер */
         .main-header.header-hidden {
             opacity: 0 !important;
             pointer-events: none !important;
-            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            transform: translateX(-50%) !important;
+            transform: translateX(-50%) translateY(-20px) !important;
+            transition: 
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important,
+                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            will-change: opacity, transform;
         }
 
         /* Хедер при скролле для внутренних страниц */
@@ -86,6 +96,7 @@
         .main-header:hover:not(.mobile-menu-active) {
             opacity: 1 !important;
             pointer-events: all !important;
+            transform: translateX(-50%) !important;
             transition-delay: 0s !important;
         }
 
@@ -118,9 +129,12 @@
             font-weight: 700;
             font-size: 24px;
             gap: 12px;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: 
+                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             backface-visibility: hidden;
             -webkit-font-smoothing: antialiased;
+            will-change: transform;
         }
 
         .logo:hover {
@@ -147,6 +161,7 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.8);
             transform: translateZ(0);
             backface-visibility: hidden;
+            will-change: transform, background-color, box-shadow;
         }
 
         .logo:hover .logo-mark {
@@ -181,6 +196,7 @@
             transition: 
                 color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 background-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 border-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 backdrop-filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
@@ -193,6 +209,7 @@
             backface-visibility: hidden;
             transform: translateZ(0);
             -webkit-font-smoothing: antialiased;
+            will-change: transform, background-color, color;
         }
 
         .nav-link:hover {
@@ -201,7 +218,7 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-1px) translateZ(0);
+            transform: translateY(-1px);
         }
 
         .nav-link.active {
@@ -211,7 +228,6 @@
             -webkit-backdrop-filter: blur(10px);
             border-color: rgba(255, 255, 255, 0.12);
             font-weight: 600;
-            transform: translateZ(0);
         }
 
         .nav-link::after {
@@ -225,6 +241,7 @@
             background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8));
             transition: width 0.3s ease;
             border-radius: 1px;
+            will-change: width;
         }
 
         .nav-link:hover::after {
@@ -250,6 +267,7 @@
             cursor: pointer;
             transition: 
                 background-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 border-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             gap: 8px;
@@ -258,6 +276,7 @@
             backface-visibility: hidden;
             transform: translateZ(0);
             -webkit-font-smoothing: antialiased;
+            will-change: transform, background-color;
         }
 
         .btn-primary {
@@ -273,7 +292,7 @@
         .btn-primary:hover {
             background: white;
             color: #0066ff !important;
-            transform: translateY(-2px) translateZ(0);
+            transform: translateY(-2px);
             box-shadow: 
                 0 8px 25px rgba(255, 255, 255, 0.3),
                 0 0 0 1px rgba(255, 255, 255, 0.6);
@@ -305,6 +324,7 @@
             backface-visibility: hidden;
             transform: translateZ(0);
             -webkit-font-smoothing: antialiased;
+            will-change: transform;
         }
 
         .lang-btn {
@@ -331,6 +351,7 @@
             backface-visibility: hidden;
             transform: translateZ(0);
             -webkit-font-smoothing: antialiased;
+            will-change: color, background-color;
         }
 
         .lang-btn.active {
@@ -356,14 +377,15 @@
                 0 0 0 1px rgba(255, 255, 255, 0.3);
             transform: translateZ(0);
             backface-visibility: hidden;
+            will-change: transform;
         }
 
         .language-switcher[data-current-lang="en"] .lang-slider {
-            transform: translateX(100%) translateZ(0);
+            transform: translateX(100%);
         }
 
         .language-switcher[data-current-lang="ru"] .lang-slider {
-            transform: translateX(0) translateZ(0);
+            transform: translateX(0);
         }
 
         .lang-flag {
@@ -371,10 +393,11 @@
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             transform: translateZ(0);
             backface-visibility: hidden;
+            will-change: transform;
         }
 
         .lang-btn:hover .lang-flag {
-            transform: scale(1.15) translateZ(0);
+            transform: scale(1.15);
         }
 
         .lang-btn:hover:not(.active) {
@@ -399,6 +422,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             transform: translateZ(0);
             backface-visibility: hidden;
+            will-change: transform, background-color;
         }
 
         .mobile-menu-toggle:hover {
@@ -417,6 +441,7 @@
             border-radius: 1px;
             transform: translateZ(0);
             backface-visibility: hidden;
+            will-change: transform;
         }
 
         .mobile-menu-toggle span:nth-child(1) { top: 10px; }
@@ -525,7 +550,7 @@
             .main-nav .nav-link:hover {
                 color: white;
                 background: rgba(255, 255, 255, 0.2);
-                transform: translateY(-1px) translateZ(0);
+                transform: translateY(-1px);
             }
             
             .main-nav .nav-link:last-child {
@@ -728,7 +753,7 @@
         setupMobileMenu();
         setActiveNavLink();
         setupLanguageSwitcher();
-        setupHeaderScrollLogic(); // Упрощенная логика скролла
+        setupHeaderScrollLogic();
         
         // Добавляем анимацию появления
         const header = document.querySelector('.main-header');
@@ -773,12 +798,15 @@
                 // Вверху страницы - всегда показываем
                 header.classList.remove('header-hidden');
                 header.style.opacity = '1';
+                header.style.transform = 'translateX(-50%) translateY(0)';
             } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
                 // Скроллим вниз - плавно скрываем
                 header.classList.add('header-hidden');
             } else if (currentScrollY < lastScrollY) {
                 // Скроллим вверх - показываем
                 header.classList.remove('header-hidden');
+                header.style.opacity = '1';
+                header.style.transform = 'translateX(-50%) translateY(0)';
             }
             
             lastScrollY = currentScrollY;
@@ -800,13 +828,17 @@
         
         // Показываем хедер при наведении (только на десктопе)
         if (!isMobile) {
-            header.addEventListener('mouseenter', () => {
+            header.addEventListener('mouseenter', (e) => {
+                e.stopPropagation();
                 header.classList.remove('header-hidden');
                 header.style.opacity = '1';
+                header.style.transform = 'translateX(-50%) translateY(0)';
+                header.style.transition = 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
             });
             
             // Скрываем через 2 секунды если мы все еще скроллим вниз
-            header.addEventListener('mouseleave', () => {
+            header.addEventListener('mouseleave', (e) => {
+                e.stopPropagation();
                 if (window.scrollY > 150) {
                     setTimeout(() => {
                         if (window.scrollY > 150 && !header.matches(':hover')) {
@@ -825,6 +857,7 @@
             if (!isMobile && header.classList.contains('header-hidden')) {
                 header.classList.remove('header-hidden');
                 header.style.opacity = '1';
+                header.style.transform = 'translateX(-50%) translateY(0)';
             }
         });
         
@@ -850,6 +883,7 @@
 
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
+            e.preventDefault();
             toggleMenu();
         });
 
