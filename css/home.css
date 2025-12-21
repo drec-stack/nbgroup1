@@ -44,9 +44,8 @@ header, footer, section, nav {
         0 8px 32px rgba(0, 0, 0, 0.2),
         0 4px 16px rgba(0, 0, 0, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-    will-change: transform, opacity !important;
+    will-change: opacity !important;
     backface-visibility: hidden !important;
-    transform-style: preserve-3d !important;
 }
 
 /* FIX: HOVER EFFECT WITHOUT JITTER */
@@ -57,7 +56,6 @@ header, footer, section, nav {
         inset 0 1px 0 rgba(255, 255, 255, 0.15),
         0 0 0 1px rgba(255, 255, 255, 0.2) !important;
     border-color: rgba(255, 255, 255, 0.3) !important;
-    /* ТОЛЬКО ВИЗУАЛЬНЫЕ ИЗМЕНЕНИЯ, БЕЗ ТРАНСФОРМАЦИЙ */
     transform: translateX(-50%) translateY(0) !important;
     will-change: background-color, box-shadow, border-color !important;
 }
@@ -262,9 +260,6 @@ header, footer, section, nav {
 }
 
 .hero-actions .btn-primary:hover {
-    -webkit-transform: translateY(-5px);
-    -ms-transform: translateY(-5px);
-    transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
     background: #0052cc;
 }
@@ -275,9 +270,6 @@ header, footer, section, nav {
 
 /* Фолбэк для transform */
 .no-csstransforms .hero-actions .btn-primary:hover {
-    -webkit-transform: none;
-    -ms-transform: none;
-    transform: none;
     background: #0052cc;
 }
 
@@ -297,9 +289,6 @@ header, footer, section, nav {
 .hero-actions .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: white;
-    -webkit-transform: translateY(-5px);
-    -ms-transform: translateY(-5px);
-    transform: translateY(-5px);
 }
 
 .no-csstransforms .hero-actions .btn-secondary:hover {
@@ -712,13 +701,6 @@ header, footer, section, nav {
 /* Эффект при наведении на колонку */
 .speck-feature-column:hover .speck-column-title {
     color: white;
-    -webkit-transform: translateX(10px);
-    -ms-transform: translateX(10px);
-    transform: translateX(10px);
-}
-
-.no-csstransforms .speck-feature-column:hover .speck-column-title {
-    color: white;
 }
 
 .speck-feature-column:hover .speck-column-title::after {
@@ -744,36 +726,18 @@ header, footer, section, nav {
 }
 
 .speck-feature-column:hover .speck-feature-item {
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-}
-
-.no-csstransforms .speck-feature-column:hover .speck-feature-item {
-    padding-left: 25px;
+    color: white;
 }
 
 .speck-feature-column .speck-feature-item:hover {
     color: white;
-    -webkit-transform: translateX(25px);
-    -ms-transform: translateX(25px);
-    transform: translateX(25px);
-}
-
-.no-csstransforms .speck-feature-column .speck-feature-item:hover {
-    color: white;
-    padding-left: 30px;
 }
 
 .speck-feature-column .speck-feature-item:hover .speck-feature-icon {
-    -webkit-transform: translateX(12px) scale(1.3);
-    -ms-transform: translateX(12px) scale(1.3);
-    transform: translateX(12px) scale(1.3);
     color: #66b5ff;
 }
 
 .no-csstransforms .speck-feature-column .speck-feature-item:hover .speck-feature-icon {
-    margin-left: 12px;
     color: #66b5ff;
 }
 
@@ -791,9 +755,6 @@ header, footer, section, nav {
     border-radius: 8px;
     padding: 40px;
     margin: 0;
-    -webkit-transform: translateY(-15px);
-    -ms-transform: translateY(-15px);
-    transform: translateY(-15px);
 }
 
 .no-csstransforms .speck-feature-column.clickable-column:hover {
@@ -802,12 +763,6 @@ header, footer, section, nav {
 }
 
 .speck-feature-column.clickable-column:active {
-    -webkit-transform: translateY(-10px) scale(0.995);
-    -ms-transform: translateY(-10px) scale(0.995);
-    transform: translateY(-10px) scale(0.995);
-}
-
-.no-csstransforms .speck-feature-column.clickable-column:active {
     opacity: 0.9;
 }
 
@@ -892,14 +847,6 @@ header, footer, section, nav {
 }
 
 .speck-feature-item:hover .speck-feature-icon {
-    -webkit-transform: translateX(12px) scale(1.3);
-    -ms-transform: translateX(12px) scale(1.3);
-    transform: translateX(12px) scale(1.3);
-    color: #66b5ff;
-}
-
-.no-csstransforms .speck-feature-item:hover .speck-feature-icon {
-    margin-left: 12px;
     color: #66b5ff;
 }
 
@@ -914,9 +861,6 @@ header, footer, section, nav {
 /* Анимация при наведении на весь блок */
 .speck-vertical-block:hover .speck-block-title {
     color: #99ccff;
-    -webkit-transform: translateX(5px);
-    -ms-transform: translateX(5px);
-    transform: translateX(5px);
 }
 
 .no-csstransforms .speck-vertical-block:hover .speck-block-title {
@@ -1128,9 +1072,6 @@ header, footer, section, nav {
 .brand:hover {
     color: white;
     opacity: 1;
-    -webkit-transform: translateY(-3px);
-    -ms-transform: translateY(-3px);
-    transform: translateY(-3px);
 }
 
 .no-csstransforms .brand:hover {
@@ -1283,9 +1224,6 @@ header, footer, section, nav {
 }
 
 .stat-card:hover {
-    -webkit-transform: translateY(-15px);
-    -ms-transform: translateY(-15px);
-    transform: translateY(-15px);
     border-color: rgba(255, 255, 255, 0.25);
     box-shadow: 
         0 25px 50px rgba(255, 255, 255, 0.15),
@@ -1316,9 +1254,6 @@ header, footer, section, nav {
 }
 
 .stat-card:hover .stat-icon {
-    -webkit-transform: scale(1.15);
-    -ms-transform: scale(1.15);
-    transform: scale(1.15);
     color: #66b5ff;
     text-shadow: 0 0 20px rgba(102, 181, 255, 0.5);
 }
@@ -1346,9 +1281,6 @@ header, footer, section, nav {
 
 .stat-card:hover .stat-number-improved {
     color: #66b5ff;
-    -webkit-transform: scale(1.05);
-    -ms-transform: scale(1.05);
-    transform: scale(1.05);
 }
 
 .no-csstransforms .stat-card:hover .stat-number-improved {
@@ -1407,9 +1339,6 @@ header, footer, section, nav {
 
 .cta-improved:hover .cta-text h2 {
     color: #a0a0ff;
-    -webkit-transform: scale(1.02);
-    -ms-transform: scale(1.02);
-    transform: scale(1.02);
 }
 
 .no-csstransforms .cta-improved:hover .cta-text h2 {
@@ -1496,9 +1425,6 @@ header, footer, section, nav {
 }
 
 .btn-glow:hover {
-    -webkit-transform: translateY(-8px) scale(1.05);
-    -ms-transform: translateY(-8px) scale(1.05);
-    transform: translateY(-8px) scale(1.05);
     box-shadow: 
         0 25px 50px rgba(0, 102, 255, 0.5),
         0 10px 30px rgba(0, 102, 255, 0.3),
@@ -2877,9 +2803,8 @@ button,
 /* ===== FIX: FINAL HEADER BEHAVIOR FIXES ===== */
 /* Гарантируем что хедер на главной странице ведет себя правильно */
 .home-page .main-header {
-    will-change: transform, opacity;
+    will-change: opacity;
     backface-visibility: hidden;
-    transform-style: preserve-3d;
 }
 
 /* При наведении на скрытый хедер - плавно показываем */
@@ -2947,14 +2872,85 @@ button,
 .btn:hover,
 .logo:hover {
     transition: 
-        transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
         background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
         color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-    will-change: transform, background-color, color;
+    will-change: background-color, color;
 }
 
 /* Оптимизация для GPU */
 * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== FIX: HIDE MOBILE MENU ON DESKTOP FOR HOME PAGE ===== */
+.home-page .mobile-menu-toggle {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    pointer-events: none !important;
+}
+
+/* Ensure header actions spacing is correct */
+.home-page .header-actions {
+    gap: 20px !important;
+}
+
+/* ===== FIX: REMOVE HEADER JITTER COMPLETELY ===== */
+.home-page .main-header .nav-link,
+.home-page .main-header .btn,
+.home-page .main-header .logo,
+.home-page .main-header .lang-btn {
+    transition: 
+        color 0.3s ease,
+        background-color 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease !important;
+}
+
+.home-page .main-header .nav-link:hover,
+.home-page .main-header .btn:hover,
+.home-page .main-header .logo:hover,
+.home-page .main-header .lang-btn:hover {
+    transform: none !important;
+}
+
+/* ===== FIX: SPECIFICALLY TARGET MOBILE TOGGLE ===== */
+.home-page .header-actions .mobile-menu-toggle {
+    display: none !important;
+}
+
+/* Ensure mobile toggle doesn't affect layout */
+@media (min-width: 769px) {
+    .home-page .mobile-menu-toggle {
+        display: none !important;
+    }
+    
+    .home-page .header-actions {
+        gap: 20px !important;
+        margin-right: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+/* ===== COMPLETE FIX FOR BURGER MENU VISIBILITY ===== */
+.home-page .main-header .mobile-menu-toggle {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .home-page .main-header .mobile-menu-toggle {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 32px !important;
+        height: 32px !important;
+        margin: 0 !important;
+        pointer-events: auto !important;
+    }
 }
