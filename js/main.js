@@ -47,6 +47,29 @@ class DaehaaApp {
         // Optimize header for performance
         this.optimizeHeaderPerformance(header);
         
+        // УБИРАЕМ БУРГЕР-МЕНЮ НА ДЕСКТОПЕ СРАЗУ
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        if (mobileToggle) {
+            if (window.innerWidth > 768) {
+                // На десктопе полностью скрываем
+                mobileToggle.style.display = 'none';
+                mobileToggle.style.visibility = 'hidden';
+                mobileToggle.style.opacity = '0';
+                mobileToggle.style.width = '0';
+                mobileToggle.style.height = '0';
+                mobileToggle.style.margin = '0';
+                mobileToggle.style.padding = '0';
+                mobileToggle.style.border = 'none';
+                mobileToggle.style.pointerEvents = 'none';
+                
+                // Убираем отступ, который мог занимать скрытый бургер
+                const headerActions = document.querySelector('.header-actions');
+                if (headerActions) {
+                    headerActions.style.gap = '20px';
+                }
+            }
+        }
+        
         // Set initial state
         this.headerState.isMobile = window.innerWidth <= 768;
         this.headerState.lastScrollY = window.scrollY;
@@ -74,9 +97,8 @@ class DaehaaApp {
     optimizeHeaderPerformance(header) {
         // Apply performance optimizations
         header.style.transform = 'translateX(-50%) translateY(0)';
-        header.style.willChange = 'transform, opacity';
+        header.style.willChange = 'opacity';
         header.style.backfaceVisibility = 'hidden';
-        header.style.transformStyle = 'preserve-3d';
         header.style.contain = 'layout style paint';
         
         // Optimize transitions
@@ -171,6 +193,28 @@ class DaehaaApp {
         // Handle resize
         window.addEventListener('resize', () => {
             self.headerState.isMobile = window.innerWidth <= 768;
+            
+            // Управляем видимостью бургер-меню
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            if (mobileToggle) {
+                if (self.headerState.isMobile) {
+                    // На мобильных показываем
+                    mobileToggle.style.display = 'flex';
+                    mobileToggle.style.visibility = 'visible';
+                    mobileToggle.style.opacity = '1';
+                    mobileToggle.style.width = '32px';
+                    mobileToggle.style.height = '32px';
+                    mobileToggle.style.pointerEvents = 'auto';
+                } else {
+                    // На десктопе скрываем
+                    mobileToggle.style.display = 'none';
+                    mobileToggle.style.visibility = 'hidden';
+                    mobileToggle.style.opacity = '0';
+                    mobileToggle.style.width = '0';
+                    mobileToggle.style.height = '0';
+                    mobileToggle.style.pointerEvents = 'none';
+                }
+            }
             
             // Reset state on desktop
             if (!self.headerState.isMobile && self.headerState.isHidden) {
@@ -817,6 +861,15 @@ class DaehaaApp {
                 mobileToggle.classList.remove('active');
                 document.body.style.overflow = '';
             }
+            
+            // Скрываем бургер-меню на десктопе
+            if (mobileToggle) {
+                mobileToggle.style.display = 'none';
+                mobileToggle.style.visibility = 'hidden';
+                mobileToggle.style.opacity = '0';
+                mobileToggle.style.width = '0';
+                mobileToggle.style.height = '0';
+            }
         }
     }
 
@@ -1210,9 +1263,8 @@ function initOptimizedGlassHeader() {
     
     // Apply performance optimizations
     header.style.transform = 'translateX(-50%) translateY(0)';
-    header.style.willChange = 'transform, opacity';
+    header.style.willChange = 'opacity';
     header.style.backfaceVisibility = 'hidden';
-    header.style.transformStyle = 'preserve-3d';
     
     // Add enter animation
     setTimeout(() => {
