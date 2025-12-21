@@ -32,7 +32,7 @@
                 background-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 border-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform, opacity;
+            will-change: opacity, background-color;
             transform-style: preserve-3d;
             backface-visibility: hidden;
         }
@@ -57,7 +57,7 @@
             pointer-events: none;
         }
 
-        /* Эффект при наведении на хедер - БЕЗ scale(), только визуальные изменения */
+        /* Эффект при наведении на хедер */
         .main-header:hover {
             background: rgba(0, 102, 255, 0.15);
             box-shadow: 
@@ -65,8 +65,7 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.18),
                 0 0 30px rgba(0, 102, 255, 0.12);
             border-color: rgba(255, 255, 255, 0.28);
-            /* УБРАНО: transform: translateX(-50%) scale(1.02); */
-            will-change: background-color, box-shadow, border-color; /* Оптимизация */
+            will-change: background-color, box-shadow, border-color;
         }
 
         /* Скрытый хедер */
@@ -130,15 +129,14 @@
             font-size: 24px;
             gap: 12px;
             transition: 
-                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             backface-visibility: hidden;
             -webkit-font-smoothing: antialiased;
-            will-change: transform;
+            will-change: opacity;
         }
 
         .logo:hover {
-            transform: translateY(-2px);
+            opacity: 0.9;
         }
 
         .logo-mark {
@@ -159,9 +157,8 @@
             box-shadow: 
                 0 4px 12px rgba(0, 102, 255, 0.15),
                 inset 0 1px 0 rgba(255, 255, 255, 0.8);
-            transform: translateZ(0);
             backface-visibility: hidden;
-            will-change: transform, background-color, box-shadow;
+            will-change: background-color, box-shadow;
         }
 
         .logo:hover .logo-mark {
@@ -196,7 +193,6 @@
             transition: 
                 color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 background-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 border-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 backdrop-filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
@@ -207,9 +203,8 @@
             -webkit-backdrop-filter: blur(5px);
             border: 1px solid transparent;
             backface-visibility: hidden;
-            transform: translateZ(0);
             -webkit-font-smoothing: antialiased;
-            will-change: transform, background-color, color;
+            will-change: background-color, color;
         }
 
         .nav-link:hover {
@@ -218,7 +213,6 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-1px);
         }
 
         .nav-link.active {
@@ -267,16 +261,14 @@
             cursor: pointer;
             transition: 
                 background-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 border-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             gap: 8px;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             backface-visibility: hidden;
-            transform: translateZ(0);
             -webkit-font-smoothing: antialiased;
-            will-change: transform, background-color;
+            will-change: background-color;
         }
 
         .btn-primary {
@@ -292,7 +284,6 @@
         .btn-primary:hover {
             background: white;
             color: #0066ff !important;
-            transform: translateY(-2px);
             box-shadow: 
                 0 8px 25px rgba(255, 255, 255, 0.3),
                 0 0 0 1px rgba(255, 255, 255, 0.6);
@@ -322,9 +313,7 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.1),
                 0 2px 8px rgba(0, 0, 0, 0.1);
             backface-visibility: hidden;
-            transform: translateZ(0);
             -webkit-font-smoothing: antialiased;
-            will-change: transform;
         }
 
         .lang-btn {
@@ -349,7 +338,6 @@
             flex: 1;
             outline: none;
             backface-visibility: hidden;
-            transform: translateZ(0);
             -webkit-font-smoothing: antialiased;
             will-change: color, background-color;
         }
@@ -375,7 +363,6 @@
                 0 4px 12px rgba(0, 102, 255, 0.25),
                 inset 0 1px 0 rgba(255, 255, 255, 0.9),
                 0 0 0 1px rgba(255, 255, 255, 0.3);
-            transform: translateZ(0);
             backface-visibility: hidden;
             will-change: transform;
         }
@@ -391,7 +378,6 @@
         .lang-flag {
             font-size: 15px;
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform: translateZ(0);
             backface-visibility: hidden;
             will-change: transform;
         }
@@ -420,9 +406,8 @@
             -webkit-backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            transform: translateZ(0);
             backface-visibility: hidden;
-            will-change: transform, background-color;
+            will-change: background-color;
         }
 
         .mobile-menu-toggle:hover {
@@ -439,7 +424,6 @@
             left: 7px;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             border-radius: 1px;
-            transform: translateZ(0);
             backface-visibility: hidden;
             will-change: transform;
         }
@@ -526,7 +510,6 @@
                 transition: right 0.4s ease;
                 z-index: 999;
                 border-radius: 0;
-                transform: translateZ(0);
             }
             
             .main-nav.active {
@@ -544,19 +527,18 @@
                 margin-bottom: 5px;
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px);
-                transform: translateZ(0);
             }
             
             .main-nav .nav-link:hover {
                 color: white;
                 background: rgba(255, 255, 255, 0.2);
-                transform: translateY(-1px);
             }
             
             .main-nav .nav-link:last-child {
                 border-bottom: none;
             }
             
+            /* Бургер-меню показываем ТОЛЬКО на мобильных */
             .mobile-menu-toggle {
                 display: flex;
             }
@@ -681,6 +663,27 @@
                 background: rgba(255, 255, 255, 0.95);
             }
         }
+        
+        /* ===== FIX: УБИРАЕМ БУРГЕР-МЕНЮ НА ДЕСКТОПЕ ===== */
+        /* Это самое важное исправление! */
+        @media (min-width: 769px) {
+            .mobile-menu-toggle {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                width: 0 !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                pointer-events: none !important;
+            }
+            
+            /* Убираем отступ, который мог занимать скрытый бургер */
+            .header-actions {
+                gap: 20px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -724,7 +727,7 @@
                         Начать проект
                     </a>
                     
-                    <!-- Мобильное меню -->
+                    <!-- Мобильное меню - ВАЖНО: display: none на десктопе -->
                     <button class="mobile-menu-toggle" aria-label="Toggle menu">
                         <span></span>
                         <span></span>
@@ -852,6 +855,28 @@
         // Обновляем isMobile при изменении размера окна
         window.addEventListener('resize', () => {
             isMobile = window.innerWidth <= 768;
+            
+            // Важное исправление: скрываем бургер-меню на десктопе
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            if (mobileToggle) {
+                if (!isMobile) {
+                    // На десктопе полностью скрываем
+                    mobileToggle.style.display = 'none';
+                    mobileToggle.style.visibility = 'hidden';
+                    mobileToggle.style.opacity = '0';
+                    mobileToggle.style.width = '0';
+                    mobileToggle.style.height = '0';
+                    mobileToggle.style.margin = '0';
+                    mobileToggle.style.padding = '0';
+                } else {
+                    // На мобильных показываем
+                    mobileToggle.style.display = 'flex';
+                    mobileToggle.style.visibility = 'visible';
+                    mobileToggle.style.opacity = '1';
+                    mobileToggle.style.width = '32px';
+                    mobileToggle.style.height = '32px';
+                }
+            }
             
             // При переходе с мобильного на десктоп сбрасываем состояние
             if (!isMobile && header.classList.contains('header-hidden')) {
