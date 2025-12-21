@@ -1,9 +1,16 @@
 // Main JavaScript file - Common functionality across all pages
+// Optimized to eliminate header jitter and improve performance
 
 class DaehaaApp {
     constructor() {
         this.isReducedMotion = window.matchMedia ? 
             window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+        this.headerState = {
+            isHidden: false,
+            lastScrollY: 0,
+            scrollThreshold: 50,
+            isMobile: false
+        };
         this.init();
     }
 
@@ -17,30 +24,19 @@ class DaehaaApp {
         this.setupFormHandling();
         this.setupLazyLoading();
         this.setupPerformanceOptimizations();
-        this.setupHeaderSupport(); // ← Важно! Вызываем настройку хедера
+        this.setupHeaderSupport(); // Optimized header logic
         this.setupFooterSupport();
         this.setupGlassHeaderEffects();
         this.setupClickableElements();
         this.setupNavigationTracking();
         
-        // Принудительная инициализация подвала при загрузке
         this.initializeExistingFooter();
         
         console.log('🚀 Daehaa application initialized');
     }
 
     setupHeaderSupport() {
-        console.log('🔧 Setting up header support...');
-        
-        // Проверяем на какой странице мы находимся
-        const isHomePage = document.body.classList.contains('home-page');
-        const isServicesPage = document.body.classList.contains('services-page');
-        const isInternalPage = document.body.classList.contains('internal-page') || 
-                               isServicesPage || 
-                               document.body.classList.contains('about-page') ||
-                               document.body.classList.contains('portfolio-page') ||
-                               document.body.classList.contains('brandbook-page') ||
-                               document.body.classList.contains('contacts-page');
+        console.log('🔧 Setting up optimized header support...');
         
         const header = document.querySelector('.main-header');
         if (!header) {
@@ -48,136 +44,195 @@ class DaehaaApp {
             return;
         }
         
-        // Для страницы услуг - НЕ скрываем хедер
+        // Optimize header for performance
+        this.optimizeHeaderPerformance(header);
+        
+        // Set initial state
+        this.headerState.isMobile = window.innerWidth <= 768;
+        this.headerState.lastScrollY = window.scrollY;
+        
+        // Check page type and setup appropriate animation
+        const isHomePage = document.body.classList.contains('home-page');
+        const isServicesPage = document.body.classList.contains('services-page');
+        
         if (isServicesPage) {
-            console.log('📄 Services page detected - disabling header hide');
+            console.log('📄 Services page - disabling header hide');
             this.disableHeaderHiding(header);
             return;
         }
         
-        // Для главной страницы - специальная логика
         if (isHomePage) {
-            console.log('🏠 Home page - enabling glass header hide on scroll');
-            this.setupHomeHeaderAnimation(header);
+            console.log('🏠 Home page - setting up optimized animation');
+            this.setupOptimizedHomeHeader(header);
             return;
         }
         
-        // Для остальных внутренних страниц - базовая логика
-        if (isInternalPage) {
-            console.log('📄 Internal page - enabling basic header animation');
-            this.setupBasicHeaderAnimation(header);
-            return;
-        }
+        console.log('📄 Internal page - setting up basic animation');
+        this.setupOptimizedInternalHeader(header);
+    }
+
+    optimizeHeaderPerformance(header) {
+        // Apply performance optimizations
+        header.style.transform = 'translateX(-50%) translateY(0)';
+        header.style.willChange = 'transform, opacity';
+        header.style.backfaceVisibility = 'hidden';
+        header.style.transformStyle = 'preserve-3d';
+        header.style.contain = 'layout style paint';
         
-        // По умолчанию - базовая логика
-        console.log('📄 Default page - enabling basic header animation');
-        this.setupBasicHeaderAnimation(header);
+        // Optimize transitions
+        header.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
     }
 
     disableHeaderHiding(header) {
-        // Убираем класс hidden если он есть
+        // Ensure header is always visible
         header.classList.remove('header-hidden');
-        
-        // Гарантируем видимость
-        header.style.transform = 'translateY(0)';
+        header.style.transform = 'translateX(-50%) translateY(0)';
         header.style.opacity = '1';
-        
-        // Отключаем transition для скрытия/показа
         header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-        
-        // Убираем обработчики скролла для скрытия
-        // (они будут добавлены в setupBasicHeaderAnimation, но с условием isServicesPage)
-        console.log('✅ Header hiding disabled for services page');
     }
 
-    setupHomeHeaderAnimation(header) {
-        console.log('🏠 Home page glass header logic - simplified');
-        
-        let lastScrollY = window.scrollY;
-        const scrollThreshold = 50;
+    setupOptimizedHomeHeader(header) {
+        const self = this;
         
         function handleScroll() {
             const currentScrollY = window.scrollY;
             
-            if (currentScrollY <= scrollThreshold) {
+            // For mobile - never hide
+            if (self.headerState.isMobile) {
+                header.classList.remove('header-hidden');
                 header.style.opacity = '1';
-                header.classList.remove('header-hidden');
-            } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                // Scrolling down - hide header
-                header.classList.add('header-hidden');
-            } else if (currentScrollY < lastScrollY) {
-                // Scrolling up - show header
-                header.classList.remove('header-hidden');
+                header.style.transform = 'translateX(-50%) translateY(0)';
+                self.headerState.lastScrollY = currentScrollY;
+                return;
             }
             
-            lastScrollY = currentScrollY;
+            // Desktop logic
+            if (currentScrollY <= self.headerState.scrollThreshold) {
+                // At top of page - always show
+                if (self.headerState.isHidden) {
+                    header.classList.remove('header-hidden');
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateX(-50%) translateY(0)';
+                    self.headerState.isHidden = false;
+                }
+            } else if (currentScrollY > self.headerState.lastScrollY && 
+                       currentScrollY > self.headerState.scrollThreshold) {
+                // Scrolling down - hide
+                if (!self.headerState.isHidden) {
+                    header.classList.add('header-hidden');
+                    self.headerState.isHidden = true;
+                }
+            } else if (currentScrollY < self.headerState.lastScrollY) {
+                // Scrolling up - show
+                if (self.headerState.isHidden) {
+                    header.classList.remove('header-hidden');
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateX(-50%) translateY(0)';
+                    self.headerState.isHidden = false;
+                }
+            }
+            
+            self.headerState.lastScrollY = currentScrollY;
         }
         
-        // Применяем начальное состояние
+        // Initial state
         handleScroll();
         
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Optimized scroll handler with debouncing
+        let scrollTimeout;
+        const optimizedScrollHandler = () => {
+            if (!scrollTimeout) {
+                scrollTimeout = setTimeout(() => {
+                    handleScroll();
+                    scrollTimeout = null;
+                }, 10);
+            }
+        };
         
-        // Показываем хедер при наведении
-        header.addEventListener('mouseenter', () => {
-            header.classList.remove('header-hidden');
-            header.style.opacity = '1';
+        window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
+        
+        // Hover handler - optimized
+        header.addEventListener('mouseenter', (e) => {
+            e.stopPropagation();
+            if (self.headerState.isHidden) {
+                header.classList.remove('header-hidden');
+                header.style.opacity = '1';
+                header.style.transform = 'translateX(-50%) translateY(0)';
+                self.headerState.isHidden = false;
+            }
         });
         
-        // Скрываем через 2 секунды если мы все еще скроллим вниз
-        header.addEventListener('mouseleave', () => {
-            if (window.scrollY > 150) {
-                setTimeout(() => {
-                    if (window.scrollY > 150 && !header.matches(':hover')) {
-                        header.classList.add('header-hidden');
-                    }
-                }, 2000);
+        // Mouse leave - don't auto-hide on hover leave
+        header.addEventListener('mouseleave', (e) => {
+            e.stopPropagation();
+            // No auto-hiding on mouse leave - only on scroll
+        });
+        
+        // Handle resize
+        window.addEventListener('resize', () => {
+            self.headerState.isMobile = window.innerWidth <= 768;
+            
+            // Reset state on desktop
+            if (!self.headerState.isMobile && self.headerState.isHidden) {
+                header.classList.remove('header-hidden');
+                header.style.opacity = '1';
+                header.style.transform = 'translateX(-50%) translateY(0)';
+                self.headerState.isHidden = false;
             }
         });
     }
 
-    setupBasicHeaderAnimation(header) {
-        console.log('📄 Basic header animation logic');
-        
-        const isServicesPage = document.body.classList.contains('services-page');
-        
-        // Для страницы услуг - ничего не делаем
-        if (isServicesPage) {
-            console.log('📄 Services page - skipping basic header animation');
-            return;
-        }
-        
-        let lastScrollY = window.scrollY;
-        const scrollThreshold = 100;
+    setupOptimizedInternalHeader(header) {
+        const self = this;
         
         function handleScroll() {
             const currentScrollY = window.scrollY;
             
             if (currentScrollY <= 0) {
-                header.style.transform = 'translateY(0px)';
+                header.style.transform = 'translateX(-50%) translateY(0)';
                 header.classList.remove('header-hidden', 'header-scrolled');
+                if (self.headerState.isHidden) {
+                    header.style.opacity = '1';
+                    self.headerState.isHidden = false;
+                }
                 return;
             }
             
-            if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                // Scrolling down - hide header
-                header.classList.add('header-hidden');
-                header.classList.add('header-scrolled');
-            } else if (currentScrollY < lastScrollY) {
-                // Scrolling up - show header
-                header.classList.remove('header-hidden');
+            if (currentScrollY > self.headerState.lastScrollY && 
+                currentScrollY > self.headerState.scrollThreshold) {
+                // Scrolling down - show minimized header
+                if (!self.headerState.isHidden) {
+                    header.classList.add('header-scrolled');
+                }
+            } else if (currentScrollY < self.headerState.lastScrollY) {
+                // Scrolling up - show normal header
                 header.classList.remove('header-scrolled');
+                if (self.headerState.isHidden) {
+                    header.classList.remove('header-hidden');
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateX(-50%) translateY(0)';
+                    self.headerState.isHidden = false;
+                }
             }
             
-            lastScrollY = currentScrollY;
+            self.headerState.lastScrollY = currentScrollY;
         }
         
-        // Применяем начальное состояние
+        // Initial state
         handleScroll();
         
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Optimized scroll handler
+        let scrollTimeout;
+        const optimizedScrollHandler = () => {
+            if (!scrollTimeout) {
+                scrollTimeout = setTimeout(() => {
+                    handleScroll();
+                    scrollTimeout = null;
+                }, 10);
+            }
+        };
         
-        console.log('✅ Basic header animation enabled');
+        window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
     }
 
     setupMobileMenu() {
@@ -204,6 +259,7 @@ class DaehaaApp {
 
             mobileToggle.addEventListener('click', (e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 toggleMenu();
             });
 
@@ -228,8 +284,11 @@ class DaehaaApp {
                 });
             }
 
+            // Close on click outside
             document.addEventListener('click', (e) => {
-                if (!mainNav.contains(e.target) && !mobileToggle.contains(e.target) && mainNav.classList.contains('active')) {
+                if (!mainNav.contains(e.target) && 
+                    !mobileToggle.contains(e.target) && 
+                    mainNav.classList.contains('active')) {
                     mobileToggle.classList.remove('active');
                     mainNav.classList.remove('active');
                     if (mobileOverlay) mobileOverlay.classList.remove('active');
@@ -238,16 +297,18 @@ class DaehaaApp {
                 }
             });
 
-            window.addEventListener('orientationchange', () => {
-                setTimeout(() => {
+            // Close on escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mainNav.classList.contains('active')) {
                     mobileToggle.classList.remove('active');
                     mainNav.classList.remove('active');
                     if (mobileOverlay) mobileOverlay.classList.remove('active');
                     body.style.overflow = '';
                     document.documentElement.style.overflow = '';
-                }, 300);
+                }
             });
 
+            // Close on resize
             window.addEventListener('resize', () => {
                 if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
                     mobileToggle.classList.remove('active');
@@ -263,27 +324,24 @@ class DaehaaApp {
     setupSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                // Обработка ссылок на services.html#section
                 const href = this.getAttribute('href');
                 
-                // Если ссылка ведет на другую страницу с якорем
+                // Handle links to other pages with anchors
                 if (href.includes('.html#')) {
                     const [page, section] = href.split('#');
                     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
                     const targetPage = page.split('/').pop();
                     
-                    // Если мы уже на нужной странице
+                    // If we're already on the target page
                     if (currentPage === targetPage || (currentPage === '' && targetPage === 'index.html')) {
                         e.preventDefault();
                         
-                        // Скроллим к секции на текущей странице
                         setTimeout(() => {
                             const targetElement = document.querySelector(`#${section}`);
                             if (targetElement) {
                                 const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
                                 let additionalOffset = 20;
                                 
-                                // Для страницы услуг учитываем навигацию
                                 if (currentPage === 'services.html' || currentPage === 'services') {
                                     const servicesNav = document.querySelector('.services-nav');
                                     if (servicesNav) {
@@ -298,22 +356,21 @@ class DaehaaApp {
                                     behavior: 'smooth'
                                 });
                                 
-                                // Подсветка секции
+                                // Highlight section
                                 targetElement.classList.add('highlighted');
                                 setTimeout(() => {
                                     targetElement.classList.remove('highlighted');
                                 }, 2000);
                                 
-                                // Обновляем URL
+                                // Update URL
                                 history.pushState(null, null, `#${section}`);
                             }
                         }, 100);
                     }
-                    // Если это переход на другую страницу, позволить браузеру обработать
                     return;
                 }
                 
-                // Обработка обычных якорей на текущей странице
+                // Handle regular anchors
                 e.preventDefault();
                 
                 const targetId = this.getAttribute('href');
@@ -324,7 +381,6 @@ class DaehaaApp {
                     const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
                     let additionalOffset = 20;
                     
-                    // Для страницы услуг учитываем навигацию
                     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
                     if (currentPage === 'services.html' || currentPage === 'services') {
                         const servicesNav = document.querySelector('.services-nav');
@@ -340,7 +396,7 @@ class DaehaaApp {
                         behavior: 'smooth'
                     });
 
-                    // Подсветка секции
+                    // Highlight section
                     targetElement.classList.add('highlighted');
                     setTimeout(() => {
                         targetElement.classList.remove('highlighted');
@@ -377,7 +433,6 @@ class DaehaaApp {
     }
 
     setupLanguageSwitcherUI() {
-        // ТОЛЬКО обновление UI, переключение языка делает i18n.js
         const currentLang = localStorage.getItem('preferredLang') || 'ru';
         this.updateLanguageSwitcherUI(currentLang);
     }
@@ -864,13 +919,11 @@ class DaehaaApp {
     setupFooterSupport() {
         console.log('🦶 Setting up footer support...');
         
-        // Автоматическая инициализация подвала при его загрузке
         if ('MutationObserver' in window) {
             const footerObserver = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
                     mutation.addedNodes.forEach((node) => {
                         if (node.nodeType === 1) {
-                            // Проверяем сам элемент или его детей
                             if (node.classList && node.classList.contains('.main-footer')) {
                                 console.log('🦶 Footer added to DOM, initializing...');
                                 this.initializeFooter(node);
@@ -892,7 +945,6 @@ class DaehaaApp {
             });
         }
 
-        // Также проверяем при полной загрузке DOM
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const footer = document.querySelector('.main-footer');
@@ -916,17 +968,14 @@ class DaehaaApp {
         const header = document.querySelector('.main-header');
         if (!header) return;
 
-        // Add glass animation on load
         setTimeout(() => {
             header.classList.add('header-glass-enter');
             
-            // Remove animation class after it completes
             setTimeout(() => {
                 header.classList.remove('header-glass-enter');
             }, 600);
         }, 100);
 
-        // Add hover effect for glass morphism
         header.addEventListener('mouseenter', () => {
             if (!this.isReducedMotion) {
                 header.classList.add('glass-morph');
@@ -936,62 +985,33 @@ class DaehaaApp {
         header.addEventListener('mouseleave', () => {
             header.classList.remove('glass-morph');
         });
-
-        // Smooth scroll behavior for home page
-        const isHomePage = document.body.classList.contains('home-page');
-        if (isHomePage) {
-            let lastScroll = 0;
-            const scrollThreshold = 50;
-            
-            window.addEventListener('scroll', () => {
-                const currentScroll = window.pageYOffset;
-                const opacity = Math.max(0, Math.min(1, 1 - (currentScroll - scrollThreshold) / 100));
-                
-                header.style.opacity = opacity.toString();
-                
-                if (currentScroll > 150 && currentScroll > lastScroll) {
-                    header.classList.add('header-glass-exit');
-                } else if (currentScroll < lastScroll || currentScroll <= scrollThreshold) {
-                    header.classList.remove('header-glass-exit');
-                    header.classList.add('header-glass-enter');
-                }
-                
-                lastScroll = currentScroll;
-            }, { passive: true });
-        }
     }
 
     setupClickableElements() {
         console.log('🖱️ Setting up clickable elements...');
         
-        // 1. Добавляем класс всем ссылкам для улучшения обратной связи
         document.querySelectorAll('a:not(.btn)').forEach(link => {
             if (!link.classList.contains('clickable-element')) {
                 link.classList.add('clickable-element');
             }
         });
         
-        // 2. Инициализируем все кликабельные элементы
         document.querySelectorAll('[role="link"], .clickable-element').forEach(element => {
             this.setupClickFeedback(element);
         });
         
-        // 3. Настройка плавных переходов между страницами
         this.setupPageTransitions();
         
-        // 4. Инициализация кликабельных карточек услуг на главной
         if (document.body.classList.contains('home-page')) {
             this.setupHomeClickableCards();
         }
     }
 
     setupClickFeedback(element) {
-        // Проверяем, является ли элемент действительно кликабельным
         if (!element.hasAttribute('href') && !element.hasAttribute('onclick')) {
             return;
         }
         
-        // Добавляем keyboard navigation
         element.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -999,7 +1019,6 @@ class DaehaaApp {
             }
         });
         
-        // Добавляем атрибуты доступности
         if (!element.hasAttribute('role')) {
             element.setAttribute('role', 'link');
         }
@@ -1008,10 +1027,8 @@ class DaehaaApp {
             element.setAttribute('tabindex', '0');
         }
         
-        // Добавляем aria-label если его нет
         this.enhanceAccessibility(element);
         
-        // Ripple эффект при клике (только для элементов без запрета)
         if (!element.classList.contains('no-ripple')) {
             element.addEventListener('click', (e) => {
                 this.createRippleEffect(element, e);
@@ -1020,7 +1037,6 @@ class DaehaaApp {
     }
 
     createRippleEffect(element, event) {
-        // Создаем ripple эффект
         const ripple = document.createElement('span');
         const rect = element.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
@@ -1045,7 +1061,6 @@ class DaehaaApp {
         element.style.overflow = 'hidden';
         element.appendChild(ripple);
         
-        // Удаляем ripple после анимации
         setTimeout(() => {
             if (ripple.parentNode === element) {
                 element.removeChild(ripple);
@@ -1088,7 +1103,6 @@ class DaehaaApp {
     }
 
     setupPageTransitions() {
-        // Создаем overlay для transition между страницами
         let transitionOverlay = document.querySelector('.page-transition');
         
         if (!transitionOverlay) {
@@ -1097,13 +1111,11 @@ class DaehaaApp {
             document.body.appendChild(transitionOverlay);
         }
         
-        // Обработка кликов на внутренние ссылки
         document.querySelectorAll('a[href^="/"], a[href^="."]').forEach(link => {
             if (link.href && !link.href.includes('#') && !link.target) {
                 link.addEventListener('click', (e) => {
                     const href = link.getAttribute('href');
                     
-                    // Исключаем внешние ссылки и якоря
                     if (href.startsWith('http') && !href.includes(window.location.hostname)) {
                         return;
                     }
@@ -1114,10 +1126,8 @@ class DaehaaApp {
                     
                     e.preventDefault();
                     
-                    // Показываем overlay
                     transitionOverlay.classList.add('active');
                     
-                    // Переходим через 300ms
                     setTimeout(() => {
                         window.location.href = href;
                     }, 300);
@@ -1127,11 +1137,9 @@ class DaehaaApp {
     }
 
     setupHomeClickableCards() {
-        // Специальная обработка для карточек услуг на главной
         const serviceCards = document.querySelectorAll('.speck-service-card-enhanced.clickable-service-card');
         
         serviceCards.forEach(card => {
-            // Добавляем улучшенную анимацию при hover
             card.addEventListener('mouseenter', () => {
                 if (!this.isReducedMotion) {
                     card.style.transform = 'translateY(-15px)';
@@ -1144,19 +1152,15 @@ class DaehaaApp {
                 }
             });
             
-            // Анимация при клике
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 
-                // Анимация нажатия
                 card.style.transform = 'translateY(-10px) scale(0.98)';
                 
-                // Восстанавливаем через 300ms
                 setTimeout(() => {
                     card.style.transform = '';
                 }, 300);
                 
-                // Переход через 350ms
                 setTimeout(() => {
                     const href = card.getAttribute('href');
                     if (href) {
@@ -1165,7 +1169,6 @@ class DaehaaApp {
                 }, 350);
             });
             
-            // Keyboard support
             card.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -1176,25 +1179,15 @@ class DaehaaApp {
     }
 
     setupNavigationTracking() {
-        // Отслеживание кликов по навигации для аналитики
         document.querySelectorAll('a[href]').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
                 console.log(`🔗 Navigation: ${href}`);
-                
-                // Можно добавить Google Analytics здесь
-                // if (typeof gtag === 'function') {
-                //     gtag('event', 'navigation_click', {
-                //         'event_category': 'engagement',
-                //         'event_label': href
-                //     });
-                // }
             });
         });
     }
 
     initializeExistingFooter() {
-        // Немедленная инициализация подвала если он уже есть в DOM
         const existingFooter = document.querySelector('.main-footer');
         if (existingFooter && typeof window.initFooter === 'function') {
             console.log('🦶 Found existing footer, initializing...');
@@ -1203,11 +1196,9 @@ class DaehaaApp {
     }
 }
 
-// ===== GLASS HEADER FUNCTIONS =====
-
-// Функция для инициализации стеклянного хедера
-function initGlassHeader() {
-    console.log('🔵 Initializing glass header...');
+// Optimized glass header initialization
+function initOptimizedGlassHeader() {
+    console.log('🔵 Initializing optimized glass header...');
     
     const header = document.querySelector('.main-header');
     if (!header) {
@@ -1216,30 +1207,23 @@ function initGlassHeader() {
     }
     
     const isHomePage = document.body.classList.contains('home-page');
-    const isInternalPage = document.body.classList.contains('internal-page');
     
-    if (isHomePage) {
-        // Логика для главной страницы
-        initHomeGlassHeader(header);
-    } else if (isInternalPage) {
-        // Логика для внутренних страниц (services.html, about.html и т.д.)
-        initInternalGlassHeader(header);
-    } else {
-        // Базовая логика для других страниц
-        initDefaultGlassHeader(header);
-    }
+    // Apply performance optimizations
+    header.style.transform = 'translateX(-50%) translateY(0)';
+    header.style.willChange = 'transform, opacity';
+    header.style.backfaceVisibility = 'hidden';
+    header.style.transformStyle = 'preserve-3d';
     
-    // Добавляем анимацию появления
+    // Add enter animation
     setTimeout(() => {
         header.classList.add('header-glass-enter');
         
-        // Убираем класс после завершения анимации
         setTimeout(() => {
             header.classList.remove('header-glass-enter');
         }, 600);
     }, 100);
     
-    // Эффект морфинга при наведении
+    // Morph effect on hover
     header.addEventListener('mouseenter', () => {
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             header.classList.add('glass-morph');
@@ -1250,120 +1234,10 @@ function initGlassHeader() {
         header.classList.remove('glass-morph');
     });
     
-    console.log('✅ Glass header initialized');
+    console.log('✅ Optimized glass header initialized');
 }
 
-// Логика для главной страницы
-function initHomeGlassHeader(header) {
-    console.log('🏠 Home page glass header logic - simplified');
-    
-    let lastScrollY = window.scrollY;
-    const scrollThreshold = 50;
-    
-    function handleScroll() {
-        const currentScrollY = window.scrollY;
-        
-        if (currentScrollY <= scrollThreshold) {
-            header.style.opacity = '1';
-            header.classList.remove('header-hidden');
-        } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-            // Scrolling down - hide header
-            header.classList.add('header-hidden');
-        } else if (currentScrollY < lastScrollY) {
-            // Scrolling up - show header
-            header.classList.remove('header-hidden');
-        }
-        
-        lastScrollY = currentScrollY;
-    }
-    
-    // Применяем начальное состояние
-    handleScroll();
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    // Показываем хедер при наведении
-    header.addEventListener('mouseenter', () => {
-        header.classList.remove('header-hidden');
-        header.style.opacity = '1';
-    });
-    
-    // Скрываем через 2 секунды если мы все еще скроллим вниз
-    header.addEventListener('mouseleave', () => {
-        if (window.scrollY > 150) {
-            setTimeout(() => {
-                if (window.scrollY > 150 && !header.matches(':hover')) {
-                    header.classList.add('header-hidden');
-                }
-            }, 2000);
-        }
-    });
-}
-
-// Логика для внутренних страниц
-function initInternalGlassHeader(header) {
-    console.log('📄 Internal page glass header logic');
-    
-    let lastScrollY = window.scrollY;
-    const scrollThreshold = 100;
-    
-    function handleScroll() {
-        const currentScrollY = window.scrollY;
-        
-        if (currentScrollY <= 0) {
-            header.style.transform = 'translateY(0px)';
-            header.classList.remove('header-hidden', 'header-scrolled');
-            return;
-        }
-        
-        if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-            // Scrolling down - show minimized header
-            header.classList.remove('header-hidden');
-            header.classList.add('header-scrolled');
-        } else if (currentScrollY < lastScrollY) {
-            // Scrolling up - show normal header
-            header.classList.remove('header-hidden');
-            header.classList.remove('header-scrolled');
-        }
-        
-        lastScrollY = currentScrollY;
-    }
-    
-    // Применяем начальное состояние
-    handleScroll();
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-}
-
-// Базовая логика для других страниц
-function initDefaultGlassHeader(header) {
-    console.log('📄 Default glass header logic');
-    
-    let lastScrollY = window.scrollY;
-    const scrollThreshold = 50;
-    
-    function handleScroll() {
-        const currentScrollY = window.scrollY;
-        
-        if (currentScrollY <= scrollThreshold) {
-            header.style.opacity = '1';
-            header.classList.remove('header-hidden');
-        } else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-            // Scrolling down - hide header
-            header.classList.add('header-hidden');
-        } else if (currentScrollY < lastScrollY) {
-            // Scrolling up - show header
-            header.classList.remove('header-hidden');
-        }
-        
-        lastScrollY = currentScrollY;
-    }
-    
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-}
-
-// Функция для обновления активного состояния навигации
+// Update active navigation
 function updateActiveNav() {
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     const navLinks = document.querySelectorAll('.nav-link');
@@ -1380,16 +1254,14 @@ function updateActiveNav() {
     });
 }
 
-// Global footer initialization function
+// Global footer initialization
 window.initFooter = function() {
     console.log('🦶 Footer component initialized');
     
-    // Check if footer exists and initialize its functionality
     const footer = document.querySelector('.main-footer');
     if (footer) {
         console.log('🦶 Found footer element, setting up functionality...');
         
-        // Setup Intersection Observer for footer animations
         if ('IntersectionObserver' in window) {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -1415,7 +1287,7 @@ window.initFooter = function() {
     }
 };
 
-// Enhanced component loading with auto-initialization
+// Enhanced component loading
 window.loadComponentWithInit = function(url, containerId, fallbackHtml = '', initFunctionName = null) {
     return fetch(url)
         .then(response => {
@@ -1425,12 +1297,10 @@ window.loadComponentWithInit = function(url, containerId, fallbackHtml = '', ini
         .then(html => {
             document.getElementById(containerId).innerHTML = html;
             
-            // Auto-initialize footer if it's a footer component
             if (containerId === 'footer-container' && typeof window.initFooter === 'function') {
                 setTimeout(window.initFooter, 50);
             }
             
-            // Call specific init function if provided
             if (initFunctionName && typeof window[initFunctionName] === 'function') {
                 setTimeout(window[initFunctionName], 100);
             }
@@ -1446,22 +1316,19 @@ window.loadComponentWithInit = function(url, containerId, fallbackHtml = '', ini
         });
 };
 
-// ===== SPECK BLOCKS ANIMATION INITIALIZATION =====
+// Speck blocks animation initialization
 function initSpeckBlocksAnimations() {
     console.log('✨ Инициализация анимаций Speck блоков...');
     
-    // Добавляем класс для активации анимаций после загрузки
     setTimeout(() => {
         document.body.classList.add('speck-animations-loaded');
     }, 1000);
     
-    // Настраиваем индексы для стрелок
     const featureItems = document.querySelectorAll('.speck-feature-item');
     featureItems.forEach((item, index) => {
         item.style.setProperty('--item-index', index);
     });
     
-    // Observer для анимаций при скролле
     if ('IntersectionObserver' in window) {
         const columnObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1480,7 +1347,6 @@ function initSpeckBlocksAnimations() {
         });
     }
     
-    // Анимация появления колонок
     setTimeout(() => {
         const columns = document.querySelectorAll('.speck-feature-column');
         columns.forEach((column, index) => {
@@ -1493,21 +1359,19 @@ function initSpeckBlocksAnimations() {
     console.log('✅ Анимации Speck блоков инициализированы');
 }
 
-// ===== SPECK BLOCKS ENHANCED INTERACTIVITY =====
+// Speck blocks enhanced interactivity
 function initEnhancedSpeckBlocks() {
     console.log('🎨 Инициализация улучшенных Speck блоков...');
     
     const speckBlocks = document.querySelectorAll('.speck-vertical-block');
     if (!speckBlocks.length) return;
     
-    // Инициализируем каждую колонку
     const featureColumns = document.querySelectorAll('.speck-feature-column');
     featureColumns.forEach(column => {
         if (!column.classList.contains('clickable-column')) {
             column.classList.add('clickable-column');
         }
         
-        // Добавляем атрибуты доступности
         if (!column.hasAttribute('tabindex')) {
             column.setAttribute('tabindex', '0');
         }
@@ -1516,37 +1380,31 @@ function initEnhancedSpeckBlocks() {
             column.setAttribute('role', 'button');
         }
         
-        // Добавляем aria-label
         const columnTitle = column.querySelector('.speck-column-title');
         if (columnTitle && !column.hasAttribute('aria-label')) {
             const blockTitle = column.closest('.speck-vertical-block')?.querySelector('.speck-block-title')?.textContent || 'Секция';
             column.setAttribute('aria-label', `Перейти к ${columnTitle.textContent} в разделе ${blockTitle}`);
         }
         
-        // Обработчики событий
         column.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             
-            // Анимация клика
             this.classList.add('column-clicked');
             setTimeout(() => {
                 this.classList.remove('column-clicked');
             }, 300);
             
-            // Определяем целевой раздел
             const block = this.closest('.speck-vertical-block');
             const blockIndex = block ? block.getAttribute('data-block-index') : '0';
             const blockTitles = ['strategy', 'design', 'engineering', 'manufacturing'];
             const blockTitle = blockTitles[parseInt(blockIndex)] || 'services';
             
-            // Переход через 350ms
             setTimeout(() => {
                 window.location.href = `services.html#${blockTitle}`;
             }, 350);
         });
         
-        // Поддержка клавиатуры
         column.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
                 e.preventDefault();
@@ -1554,7 +1412,6 @@ function initEnhancedSpeckBlocks() {
             }
         });
         
-        // Hover эффекты
         column.addEventListener('mouseenter', function() {
             const block = this.closest('.speck-vertical-block');
             if (block) {
@@ -1569,7 +1426,6 @@ function initEnhancedSpeckBlocks() {
             }
         });
         
-        // Фокус для доступности
         column.addEventListener('focus', function() {
             this.classList.add('column-focused');
             const block = this.closest('.speck-vertical-block');
@@ -1590,12 +1446,10 @@ function initEnhancedSpeckBlocks() {
     console.log(`✅ Инициализировано ${speckBlocks.length} блоков с ${featureColumns.length} колонками`);
 }
 
-// ===== ADVANCED ANIMATIONS AND EFFECTS =====
-
+// Advanced animations and effects
 function initAdvancedAnimations() {
     console.log('🎬 Инициализация продвинутых анимаций...');
     
-    // Параллакс для фоновых элементов
     const parallaxElements = document.querySelectorAll('.parallax-layer');
     if (parallaxElements.length > 0) {
         window.addEventListener('scroll', () => {
@@ -1608,7 +1462,6 @@ function initAdvancedAnimations() {
         }, { passive: true });
     }
     
-    // Анимация появления элементов при скролле
     const scrollAnimateElements = document.querySelectorAll('.scroll-animate');
     if (scrollAnimateElements.length > 0 && 'IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries) => {
@@ -1616,7 +1469,6 @@ function initAdvancedAnimations() {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('animated');
                     
-                    // Анимация с задержкой для дочерних элементов
                     const childElements = entry.target.querySelectorAll('.animate-child');
                     childElements.forEach((child, index) => {
                         setTimeout(() => {
@@ -1630,7 +1482,6 @@ function initAdvancedAnimations() {
         scrollAnimateElements.forEach(el => observer.observe(el));
     }
     
-    // Анимация волны (wave effect)
     const waveElements = document.querySelectorAll('.wave-effect');
     waveElements.forEach(wave => {
         wave.addEventListener('mouseenter', (e) => {
@@ -1656,566 +1507,7 @@ function initAdvancedAnimations() {
     console.log('✅ Продвинутые анимации инициализированы');
 }
 
-// ===== DYNAMIC BACKGROUND EFFECTS =====
-
-function initDynamicBackgrounds() {
-    console.log('🌈 Инициализация динамических фонов...');
-    
-    // Градиентные анимации
-    const gradientElements = document.querySelectorAll('.gradient-animate');
-    gradientElements.forEach(element => {
-        if (!element.hasAttribute('data-gradient-original')) {
-            element.setAttribute('data-gradient-original', 
-                getComputedStyle(element).backgroundImage);
-        }
-        
-        element.addEventListener('mouseenter', () => {
-            if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-                element.style.backgroundImage = `
-                    radial-gradient(circle at 30% 20%, 
-                    rgba(var(--primary-rgb), 0.2) 0%,
-                    transparent 50%),
-                    ${element.getAttribute('data-gradient-original')}
-                `;
-            }
-        });
-        
-        element.addEventListener('mouseleave', () => {
-            element.style.backgroundImage = 
-                element.getAttribute('data-gradient-original');
-        });
-    });
-    
-    // Динамические тени
-    const shadowElements = document.querySelectorAll('.dynamic-shadow');
-    shadowElements.forEach(element => {
-        element.addEventListener('mousemove', (e) => {
-            const rect = element.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            
-            element.style.setProperty('--shadow-x', `${x}%`);
-            element.style.setProperty('--shadow-y', `${y}%`);
-        });
-        
-        element.addEventListener('mouseleave', () => {
-            element.style.removeProperty('--shadow-x');
-            element.style.removeProperty('--shadow-y');
-        });
-    });
-    
-    console.log('✅ Динамические фоны инициализированы');
-}
-
-// ===== REAL-TIME UI UPDATES =====
-
-function initRealTimeUI() {
-    console.log('🔄 Инициализация real-time UI обновлений...');
-    
-    // Обновление времени в реальном времени
-    const timeElements = document.querySelectorAll('.real-time');
-    if (timeElements.length > 0) {
-        function updateTimes() {
-            const now = new Date();
-            timeElements.forEach(element => {
-                if (element.classList.contains('time-local')) {
-                    element.textContent = now.toLocaleTimeString('ru-RU', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
-                } else if (element.classList.contains('date-local')) {
-                    element.textContent = now.toLocaleDateString('ru-RU', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                    });
-                }
-            });
-        }
-        
-        updateTimes();
-        setInterval(updateTimes, 60000); // Обновлять каждую минуту
-    }
-    
-    // Счетчики в реальном времени
-    const liveCounters = document.querySelectorAll('.live-counter');
-    liveCounters.forEach(counter => {
-        const target = parseInt(counter.dataset.target) || 100;
-        const duration = parseInt(counter.dataset.duration) || 2000;
-        const start = Date.now();
-        
-        function updateCounter() {
-            const elapsed = Date.now() - start;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 3); // Кубическое замедление
-            
-            const value = Math.floor(easeProgress * target);
-            counter.textContent = value.toLocaleString();
-            
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
-            } else {
-                counter.textContent = target.toLocaleString();
-                counter.classList.add('completed');
-            }
-        }
-        
-        // Запускаем при появлении в viewport
-        if ('IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        updateCounter();
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-            
-            observer.observe(counter);
-        } else {
-            updateCounter();
-        }
-    });
-    
-    console.log('✅ Real-time UI обновления инициализированы');
-}
-
-// ===== ADVANCED TOUCH INTERACTIONS =====
-
-function initAdvancedTouch() {
-    console.log('👆 Инициализация продвинутых touch-интеракций...');
-    
-    // Swipe detection для мобильных устройств
-    let touchStartX = 0;
-    let touchStartY = 0;
-    
-    document.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-    }, { passive: true });
-    
-    document.addEventListener('touchend', (e) => {
-        if (!touchStartX || !touchStartY) return;
-        
-        const touchEndX = e.changedTouches[0].clientX;
-        const touchEndY = e.changedTouches[0].clientY;
-        
-        const diffX = touchStartX - touchEndX;
-        const diffY = touchStartY - touchEndY;
-        
-        // Определяем направление свайпа
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            // Горизонтальный свайп
-            if (diffX > 50) {
-                // Свайп влево
-                document.dispatchEvent(new CustomEvent('swipeLeft'));
-            } else if (diffX < -50) {
-                // Свайп вправо
-                document.dispatchEvent(new CustomEvent('swipeRight'));
-            }
-        } else {
-            // Вертикальный свайп
-            if (diffY > 50) {
-                // Свайп вверх
-                document.dispatchEvent(new CustomEvent('swipeUp'));
-            } else if (diffY < -50) {
-                // Свайп вниз
-                document.dispatchEvent(new CustomEvent('swipeDown'));
-            }
-        }
-        
-        touchStartX = 0;
-        touchStartY = 0;
-    }, { passive: true });
-    
-    // Обработчики свайпов
-    document.addEventListener('swipeLeft', () => {
-        console.log('👈 Swipe left detected');
-        // Можно использовать для навигации вперед
-    });
-    
-    document.addEventListener('swipeRight', () => {
-        console.log('👉 Swipe right detected');
-        // Можно использовать для навигации назад
-        if (window.history.length > 1) {
-            window.history.back();
-        }
-    });
-    
-    // Long press detection
-    const pressableElements = document.querySelectorAll('.long-press');
-    pressableElements.forEach(element => {
-        let pressTimer;
-        
-        element.addEventListener('touchstart', (e) => {
-            pressTimer = setTimeout(() => {
-                element.dispatchEvent(new CustomEvent('longpress', {
-                    bubbles: true,
-                    detail: { x: e.touches[0].clientX, y: e.touches[0].clientY }
-                }));
-            }, 500);
-        }, { passive: true });
-        
-        element.addEventListener('touchend', () => {
-            clearTimeout(pressTimer);
-        });
-        
-        element.addEventListener('touchmove', () => {
-            clearTimeout(pressTimer);
-        }, { passive: true });
-        
-        element.addEventListener('longpress', (e) => {
-            console.log('⏱️ Long press detected', e.detail);
-            element.classList.add('long-pressed');
-            
-            setTimeout(() => {
-                element.classList.remove('long-pressed');
-            }, 300);
-        });
-    });
-    
-    console.log('✅ Продвинутые touch-интеракции инициализированы');
-}
-
-// ===== PERFORMANCE MONITORING =====
-
-function initPerformanceMonitoring() {
-    console.log('📊 Инициализация мониторинга производительности...');
-    
-    // Мониторинг FPS
-    let frameCount = 0;
-    let lastTime = performance.now();
-    let fps = 60;
-    
-    function monitorFPS() {
-        frameCount++;
-        const currentTime = performance.now();
-        
-        if (currentTime >= lastTime + 1000) {
-            fps = frameCount;
-            frameCount = 0;
-            lastTime = currentTime;
-            
-            // Логируем низкий FPS
-            if (fps < 30) {
-                console.warn(`⚠️ Low FPS detected: ${fps}`);
-                
-                // Автоматически уменьшаем анимации при низком FPS
-                if (!document.documentElement.classList.contains('reduced-animations')) {
-                    document.documentElement.classList.add('reduced-animations');
-                    console.log('🎬 Automatically reducing animations due to low FPS');
-                }
-            } else if (fps >= 50 && document.documentElement.classList.contains('reduced-animations')) {
-                // Восстанавливаем анимации если FPS улучшился
-                document.documentElement.classList.remove('reduced-animations');
-            }
-        }
-        
-        requestAnimationFrame(monitorFPS);
-    }
-    
-    // Запускаем мониторинг только если включен debug режим
-    if (window.location.search.includes('debug=performance') || 
-        localStorage.getItem('performanceMonitoring') === 'true') {
-        monitorFPS();
-        
-        // Мониторинг использования памяти
-        if ('memory' in performance) {
-            setInterval(() => {
-                const memory = performance.memory;
-                console.log('💾 Memory usage:', {
-                    usedJSHeapSize: Math.round(memory.usedJSHeapSize / 1024 / 1024) + 'MB',
-                    totalJSHeapSize: Math.round(memory.totalJSHeapSize / 1024 / 1024) + 'MB',
-                    jsHeapSizeLimit: Math.round(memory.jsHeapSizeLimit / 1024 / 1024) + 'MB'
-                });
-            }, 10000);
-        }
-    }
-    
-    // Мониторинг загрузки ресурсов
-    window.addEventListener('load', () => {
-        const timing = performance.timing;
-        const loadTime = timing.loadEventEnd - timing.navigationStart;
-        const domReadyTime = timing.domComplete - timing.domLoading;
-        
-        console.log('📈 Performance metrics:', {
-            pageLoadTime: Math.round(loadTime) + 'ms',
-            domReadyTime: Math.round(domReadyTime) + 'ms',
-            totalResources: performance.getEntriesByType('resource').length
-        });
-        
-        // Сохраняем метрики для аналитики
-        if (loadTime > 3000) {
-            console.warn('🐌 Page load time is high:', loadTime + 'ms');
-        }
-    });
-    
-    // Мониторинг изменения размера окна
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            console.log('📱 Window resized to:', {
-                width: window.innerWidth,
-                height: window.innerHeight,
-                devicePixelRatio: window.devicePixelRatio
-            });
-        }, 250);
-    });
-    
-    console.log('✅ Мониторинг производительности инициализирован');
-}
-
-// ===== ACCESSIBILITY ENHANCEMENTS =====
-
-function initAccessibilityEnhancements() {
-    console.log('♿ Инициализация улучшений доступности...');
-    
-    // Keyboard navigation improvements
-    document.addEventListener('keydown', (e) => {
-        // Skip navigation (переход к основному контенту)
-        if (e.key === 'Tab' && e.shiftKey && e.keyCode === 9) {
-            const skipLink = document.querySelector('.skip-to-content');
-            if (skipLink && document.activeElement === skipLink) {
-                e.preventDefault();
-                const mainContent = document.querySelector('main');
-                if (mainContent) {
-                    mainContent.setAttribute('tabindex', '-1');
-                    mainContent.focus();
-                }
-            }
-        }
-        
-        // Escape key closes modals and dropdowns
-        if (e.key === 'Escape') {
-            const openModals = document.querySelectorAll('.modal.open, .dropdown.open');
-            openModals.forEach(modal => {
-                modal.classList.remove('open');
-                modal.dispatchEvent(new Event('close'));
-            });
-            
-            // Закрываем мобильное меню
-            const mobileMenu = document.querySelector('.main-nav.active');
-            if (mobileMenu) {
-                const toggle = document.querySelector('.mobile-menu-toggle');
-                if (toggle) toggle.click();
-            }
-        }
-        
-        // Space bar для кнопок и ссылок
-        if (e.key === ' ' && !e.target.matches('input, textarea, [contenteditable]')) {
-            const activeElement = document.activeElement;
-            if (activeElement.matches('button, a, [role="button"]')) {
-                e.preventDefault();
-                activeElement.click();
-            }
-        }
-    });
-    
-    // Focus traps для модальных окон
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
-        const focusableElements = modal.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        const firstFocusable = focusableElements[0];
-        const lastFocusable = focusableElements[focusableElements.length - 1];
-        
-        modal.addEventListener('keydown', (e) => {
-            if (e.key !== 'Tab') return;
-            
-            if (e.shiftKey) {
-                // Shift + Tab
-                if (document.activeElement === firstFocusable) {
-                    e.preventDefault();
-                    lastFocusable.focus();
-                }
-            } else {
-                // Tab
-                if (document.activeElement === lastFocusable) {
-                    e.preventDefault();
-                    firstFocusable.focus();
-                }
-            }
-        });
-    });
-    
-    // Автоматическое объявление изменений для скринридеров
-    const liveRegions = document.createElement('div');
-    liveRegions.id = 'live-regions';
-    liveRegions.setAttribute('aria-live', 'polite');
-    liveRegions.setAttribute('aria-atomic', 'true');
-    liveRegions.style.cssText = `
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    `;
-    document.body.appendChild(liveRegions);
-    
-    window.announceToScreenReader = function(message, priority = 'polite') {
-        const region = document.getElementById('live-regions');
-        if (region) {
-            region.setAttribute('aria-live', priority);
-            region.textContent = message;
-            
-            // Очищаем через 1 секунду
-            setTimeout(() => {
-                region.textContent = '';
-            }, 1000);
-        }
-    };
-    
-    // Динамическое обновление заголовков страниц
-    const updatePageTitle = (newTitle) => {
-        document.title = newTitle;
-        announceToScreenReader(`Заголовок страницы изменен на: ${newTitle}`);
-    };
-    
-    window.updatePageTitle = updatePageTitle;
-    
-    // High contrast mode detection
-    const contrastMediaQuery = window.matchMedia('(prefers-contrast: high)');
-    const updateContrastMode = (e) => {
-        if (e.matches) {
-            document.documentElement.classList.add('high-contrast');
-            console.log('🎨 High contrast mode enabled');
-        } else {
-            document.documentElement.classList.remove('high-contrast');
-        }
-    };
-    
-    updateContrastMode(contrastMediaQuery);
-    contrastMediaQuery.addEventListener('change', updateContrastMode);
-    
-    // Reduce motion detection
-    const motionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const updateMotionPreference = (e) => {
-        if (e.matches) {
-            document.documentElement.classList.add('reduced-motion');
-            console.log('🎬 Reduced motion preference detected');
-        } else {
-            document.documentElement.classList.remove('reduced-motion');
-        }
-    };
-    
-    updateMotionPreference(motionMediaQuery);
-    motionMediaQuery.addEventListener('change', updateMotionPreference);
-    
-    console.log('✅ Улучшения доступности инициализированы');
-}
-
-// ===== NETWORK STATUS MONITORING =====
-
-function initNetworkStatus() {
-    console.log('📡 Инициализация мониторинга сети...');
-    
-    // Проверка онлайн/офлайн статуса
-    function updateOnlineStatus() {
-        if (navigator.onLine) {
-            document.documentElement.classList.remove('offline');
-            document.documentElement.classList.add('online');
-            
-            // Показываем уведомление о восстановлении соединения
-            if (window.DaehaaApp && window.DaehaaApp.showNotification) {
-                window.DaehaaApp.showNotification(
-                    'Соединение восстановлено',
-                    'success'
-                );
-            }
-        } else {
-            document.documentElement.classList.remove('online');
-            document.documentElement.classList.add('offline');
-            
-            // Показываем предупреждение о потере соединения
-            if (window.DaehaaApp && window.DaehaaApp.showNotification) {
-                window.DaehaaApp.showNotification(
-                    'Отсутствует интернет-соединение. Некоторые функции могут быть недоступны.',
-                    'warning'
-                );
-            }
-        }
-    }
-    
-    // Слушаем события изменения статуса сети
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-    
-    // Устанавливаем начальный статус
-    updateOnlineStatus();
-    
-    // Мониторинг скорости соединения
-    if ('connection' in navigator) {
-        const connection = navigator.connection;
-        
-        function updateConnectionInfo() {
-            const info = {
-                effectiveType: connection.effectiveType,
-                downlink: connection.downlink + ' Mbps',
-                rtt: connection.rtt + ' ms',
-                saveData: connection.saveData ? 'enabled' : 'disabled'
-            };
-            
-            console.log('📶 Connection info:', info);
-            
-            // Адаптируем качество контента в зависимости от скорости
-            if (connection.effectiveType.includes('2g') || connection.downlink < 1) {
-                document.documentElement.classList.add('slow-connection');
-                document.documentElement.classList.remove('fast-connection');
-            } else if (connection.downlink > 5) {
-                document.documentElement.classList.add('fast-connection');
-                document.documentElement.classList.remove('slow-connection');
-            }
-        }
-        
-        if (connection.addEventListener) {
-            connection.addEventListener('change', updateConnectionInfo);
-        }
-        updateConnectionInfo();
-    }
-    
-    // Retry failed requests
-    window.retryWithBackoff = async function(fn, maxRetries = 3) {
-        for (let i = 0; i < maxRetries; i++) {
-            try {
-                return await fn();
-            } catch (error) {
-                if (i === maxRetries - 1) throw error;
-                
-                // Exponential backoff
-                const delay = Math.pow(2, i) * 1000;
-                console.log(`Retry ${i + 1}/${maxRetries} after ${delay}ms`);
-                await new Promise(resolve => setTimeout(resolve, delay));
-            }
-        }
-    };
-    
-    // Очередь запросов при офлайн режиме
-    if ('serviceWorker' in navigator && 'SyncManager' in window) {
-        // Используем Background Sync API
-        navigator.serviceWorker.ready.then(registration => {
-            window.syncQueue = {
-                add: async (tag, data) => {
-                    await registration.sync.register(tag);
-                    // Сохраняем данные в IndexedDB для последующей синхронизации
-                    if (window.queueStore) {
-                        await window.queueStore.add(data);
-                    }
-                }
-            };
-        });
-    }
-    
-    console.log('✅ Мониторинг сети инициализирован');
-}
-
-// ===== LAZY INITIALIZATION HELPER =====
-
+// Lazy initialization helper
 function lazyInit(selector, callback, options = {}) {
     const {
         rootMargin = '0px 0px 100px 0px',
@@ -2224,7 +1516,6 @@ function lazyInit(selector, callback, options = {}) {
     } = options;
     
     if (!('IntersectionObserver' in window)) {
-        // Fallback: инициализируем все сразу
         document.querySelectorAll(selector).forEach(callback);
         return;
     }
@@ -2243,9 +1534,7 @@ function lazyInit(selector, callback, options = {}) {
     document.querySelectorAll(selector).forEach(el => observer.observe(el));
 }
 
-// ===== UTILITY FUNCTIONS =====
-
-// Дебаунс функция
+// Utility functions
 window.debounce = function(func, wait, immediate) {
     let timeout;
     return function executedFunction() {
@@ -2265,7 +1554,6 @@ window.debounce = function(func, wait, immediate) {
     };
 };
 
-// Троттлинг функция
 window.throttle = function(func, limit) {
     let inThrottle;
     return function() {
@@ -2279,12 +1567,10 @@ window.throttle = function(func, limit) {
     };
 };
 
-// Генератор уникальных ID
 window.generateId = function(prefix = 'id') {
     return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 };
 
-// Форматирование чисел
 window.formatNumber = function(num, options = {}) {
     const defaults = {
         minimumFractionDigits: 0,
@@ -2295,7 +1581,6 @@ window.formatNumber = function(num, options = {}) {
     return new Intl.NumberFormat('ru-RU', { ...defaults, ...options }).format(num);
 };
 
-// Форматирование даты
 window.formatDate = function(date, options = {}) {
     const defaults = {
         day: 'numeric',
@@ -2307,14 +1592,12 @@ window.formatDate = function(date, options = {}) {
     return new Intl.DateTimeFormat('ru-RU', { ...defaults, ...options }).format(d);
 };
 
-// Копирование в буфер обмена
 window.copyToClipboard = async function(text) {
     try {
         if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(text);
             return true;
         } else {
-            // Fallback для старых браузеров
             const textArea = document.createElement('textarea');
             textArea.value = text;
             textArea.style.position = 'fixed';
@@ -2333,7 +1616,6 @@ window.copyToClipboard = async function(text) {
     }
 };
 
-// Проверка видимости элемента
 window.isElementVisible = function(element) {
     if (!element) return false;
     
@@ -2349,7 +1631,6 @@ window.isElementVisible = function(element) {
     );
 };
 
-// Получение параметров URL
 window.getUrlParams = function() {
     const params = new URLSearchParams(window.location.search);
     const result = {};
@@ -2361,7 +1642,6 @@ window.getUrlParams = function() {
     return result;
 };
 
-// Установка параметров URL
 window.setUrlParam = function(key, value) {
     const url = new URL(window.location);
     
@@ -2374,8 +1654,7 @@ window.setUrlParam = function(key, value) {
     window.history.replaceState({}, '', url.toString());
 };
 
-// ===== EXPORT ALL FUNCTIONS =====
-
+// Export all functions
 window.DaehaaApp = window.DaehaaApp || {};
 window.DaehaaApp.utils = {
     debounce: window.debounce,
@@ -2387,50 +1666,21 @@ window.DaehaaApp.utils = {
     isElementVisible: window.isElementVisible,
     getUrlParams: window.getUrlParams,
     setUrlParam: window.setUrlParam,
-    lazyInit: lazyInit,
-    announceToScreenReader: window.announceToScreenReader,
-    updatePageTitle: window.updatePageTitle,
-    retryWithBackoff: window.retryWithBackoff
+    lazyInit: lazyInit
 };
 
-// Инициализация всех расширенных функций
+// Extended features initialization
 window.DaehaaApp.initExtendedFeatures = function() {
     initAdvancedAnimations();
-    initDynamicBackgrounds();
-    initRealTimeUI();
-    initAccessibilityEnhancements();
-    initNetworkStatus();
-    
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-        initAdvancedTouch();
-    }
-    
+    initSpeckBlocksAnimations();
+    initEnhancedSpeckBlocks();
     console.log('🚀 Все расширенные функции DaehaaApp инициализированы');
 };
 
-// ===== GLOBAL ERROR HANDLER =====
-
+// Global error handler
 window.addEventListener('error', function(e) {
     console.error('Global error caught:', e.error);
     
-    // Отправка ошибок на сервер (если нужно)
-    if (window.location.hostname !== 'localhost') {
-        const errorData = {
-            message: e.error?.message || e.message,
-            stack: e.error?.stack,
-            url: window.location.href,
-            timestamp: new Date().toISOString(),
-            userAgent: navigator.userAgent
-        };
-        
-        // Можно отправить через Beacon API
-        if (navigator.sendBeacon) {
-            const blob = new Blob([JSON.stringify(errorData)], { type: 'application/json' });
-            navigator.sendBeacon('/api/log-error', blob);
-        }
-    }
-    
-    // Показываем пользователю friendly сообщение
     if (window.DaehaaApp && window.DaehaaApp.showNotification) {
         window.DaehaaApp.showNotification(
             'Произошла ошибка. Пожалуйста, обновите страницу или попробуйте позже.',
@@ -2444,7 +1694,6 @@ window.addEventListener('error', function(e) {
 window.addEventListener('unhandledrejection', function(e) {
     console.error('Unhandled promise rejection:', e.reason);
     
-    // Аналогичная обработка для промисов
     if (window.DaehaaApp && window.DaehaaApp.showNotification) {
         window.DaehaaApp.showNotification(
             'Произошла ошибка при выполнении операции.',
@@ -2458,7 +1707,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.DaehaaApp = new DaehaaApp();
     console.log('🚀 Daehaa application initialized');
     
-    // Инициализируем анимации Speck блоков если они есть на странице
     if (document.querySelector('.speck-vertical-section')) {
         initSpeckBlocksAnimations();
         initEnhancedSpeckBlocks();
@@ -2474,47 +1722,41 @@ window.initHeader = function() {
     }
 };
 
-// Автоматическая инициализация стеклянного хедера при загрузке
+// Automatic optimized glass header initialization
 document.addEventListener('DOMContentLoaded', function() {
-    // Проверяем наличие хедера и инициализируем
     const checkHeaderInterval = setInterval(() => {
         const header = document.querySelector('.main-header');
         if (header) {
             clearInterval(checkHeaderInterval);
-            initGlassHeader();
+            initOptimizedGlassHeader();
             updateActiveNav();
         }
     }, 100);
     
-    // Также проверяем через 2 секунды на всякий случай
     setTimeout(() => {
         const header = document.querySelector('.main-header');
         if (header && !header.classList.contains('header-initialized')) {
-            initGlassHeader();
+            initOptimizedGlassHeader();
             updateActiveNav();
             header.classList.add('header-initialized');
         }
     }, 2000);
 });
 
-// Автоматическая инициализация всех расширенных функций
+// Automatic extended features initialization
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        // Инициализируем все модули с задержками для предотвращения блокировки
         setTimeout(() => {
             if (window.DaehaaApp.initExtendedFeatures) {
                 window.DaehaaApp.initExtendedFeatures();
             }
             
-            // Lazy initialization для тяжелых компонентов
             setTimeout(() => {
-                // Инициализируем компоненты при их появлении в viewport
                 lazyInit('.lazy-component', (element) => {
                     console.log('Lazy loading component:', element);
                     element.classList.add('loaded');
                 });
                 
-                // Lazy load images with better priority
                 lazyInit('img[data-src]', (img) => {
                     const src = img.getAttribute('data-src');
                     if (src) {
@@ -2533,38 +1775,23 @@ if (document.readyState === 'loading') {
     }, 100);
 }
 
-// Экспортируем функции для глобального использования
-window.initGlassHeader = initGlassHeader;
+// Export functions for global use
+window.initOptimizedGlassHeader = initOptimizedGlassHeader;
 window.updateActiveNav = updateActiveNav;
 window.initSpeckBlocksAnimations = initSpeckBlocksAnimations;
 window.initEnhancedSpeckBlocks = initEnhancedSpeckBlocks;
 window.initAdvancedAnimations = initAdvancedAnimations;
-window.initDynamicBackgrounds = initDynamicBackgrounds;
-window.initRealTimeUI = initRealTimeUI;
-window.initAdvancedTouch = initAdvancedTouch;
-window.initPerformanceMonitoring = initPerformanceMonitoring;
-window.initAccessibilityEnhancements = initAccessibilityEnhancements;
-window.initNetworkStatus = initNetworkStatus;
 window.lazyInit = lazyInit;
-
-// Экспортируем класс DaehaaApp для использования в других модулях
-window.DaehaaApp = DaehaaApp;
 
 // Module exports
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         DaehaaApp: window.DaehaaApp,
-        initGlassHeader,
+        initOptimizedGlassHeader,
         updateActiveNav,
         initSpeckBlocksAnimations,
         initEnhancedSpeckBlocks,
         initAdvancedAnimations,
-        initDynamicBackgrounds,
-        initRealTimeUI,
-        initAdvancedTouch,
-        initPerformanceMonitoring,
-        initAccessibilityEnhancements,
-        initNetworkStatus,
         lazyInit
     };
 }
