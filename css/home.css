@@ -18,6 +18,96 @@ header, footer, section, nav {
     display: block;
 }
 
+/* ===== FIX: HEADER HOVER STABILITY ===== */
+.home-page .main-header {
+    position: fixed !important;
+    top: 30px !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(0) !important;
+    width: calc(100% - 60px) !important;
+    max-width: 1400px !important;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transition: 
+        transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important,
+        opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important,
+        background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important,
+        box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important,
+        border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 25px !important;
+    background: rgba(0, 102, 255, 0.12) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        0 4px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    will-change: transform, opacity !important;
+    backface-visibility: hidden !important;
+    transform-style: preserve-3d !important;
+}
+
+/* FIX: HOVER EFFECT WITHOUT JITTER */
+.home-page .main-header:hover {
+    background: rgba(0, 102, 255, 0.18) !important;
+    box-shadow: 
+        0 12px 40px rgba(0, 102, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    /* ТОЛЬКО ВИЗУАЛЬНЫЕ ИЗМЕНЕНИЯ, БЕЗ ТРАНСФОРМАЦИЙ */
+    transform: translateX(-50%) translateY(0) !important;
+    will-change: background-color, box-shadow, border-color !important;
+}
+
+/* FIX: HIDDEN STATE WITHOUT JITTER */
+.home-page .main-header.header-hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateX(-50%) translateY(-20px) !important;
+    transition: 
+        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important,
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: opacity, transform !important;
+}
+
+/* FIX: SHOW ON HOVER SMOOTHLY */
+.home-page .main-header.header-hidden:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+    transform: translateX(-50%) translateY(0) !important;
+    transition: 
+        opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important,
+        transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* Минимизированный хедер при скролле */
+.home-page .main-header.header-minimized {
+    padding: 15px 0 !important;
+    background: rgba(0, 102, 255, 0.25) !important;
+    backdrop-filter: blur(25px) saturate(200%) !important;
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.25),
+        0 5px 20px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    top: 20px !important;
+}
+
+.no-backdropfilter .home-page .main-header.header-minimized {
+    background: rgba(0, 102, 255, 0.35) !important;
+}
+
+/* Увеличение отступа для контента под хедером */
+.home-page .hero {
+    padding-top: 140px !important;
+    transition: padding-top 0.4s ease !important;
+}
+
 /* ===== HERO SECTION ===== */
 .hero {
     padding: 180px 0 120px;
@@ -1447,34 +1537,6 @@ header, footer, section, nav {
     padding: 25px 50px;
 }
 
-/* ===== GLASS HEADER FOR HOME PAGE ===== */
-.home-page .main-header {
-    position: fixed !important;
-    top: 30px !important;
-    left: 50% !important;
-    transform: translateX(-50%) translateY(0) !important;
-    width: calc(100% - 60px) !important;
-    max-width: 1400px !important;
-    z-index: 1000 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border-radius: 25px !important;
-    background: rgba(0, 102, 255, 0.12) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.2),
-        0 4px 16px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Фолбэк для backdrop-filter */
-.no-backdropfilter .home-page .main-header {
-    background: rgba(0, 102, 255, 0.3) !important;
-}
-
 /* Фолбэк для transform */
 .no-csstransforms .home-page .main-header {
     position: fixed !important;
@@ -1486,57 +1548,13 @@ header, footer, section, nav {
     text-align: center !important;
 }
 
-/* ===== FIXED: HEADER HIDDEN STATE - УБИРАЕМ "УЕЗЖАНИЕ" ===== */
-.home-page .main-header.header-hidden {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: translateX(-50%) !important; /* УБРАЛИ translateY(-150%) */
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-/* ===== FIX: HEADER HOVER BEHAVIOR - ПРИ НАВЕДЕНИИ НЕ ДВИГАЕМ ===== */
-.home-page .main-header:hover {
-    transform: translateX(-50%) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: all !important;
-}
-
-.home-page .main-header.header-hidden:hover {
-    transform: translateX(-50%) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: all !important;
+/* Фолбэк для backdrop-filter */
+.no-backdropfilter .home-page .main-header {
+    background: rgba(0, 102, 255, 0.3) !important;
 }
 
 .no-csstransforms .home-page .main-header.header-hidden {
     display: none !important;
-}
-
-/* Минимизированный хедер при скролле */
-.home-page .main-header.header-minimized {
-    padding: 15px 0 !important;
-    background: rgba(0, 102, 255, 0.25) !important;
-    backdrop-filter: blur(25px) saturate(200%) !important;
-    box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.25),
-        0 5px 20px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    top: 20px !important;
-}
-
-.no-backdropfilter .home-page .main-header.header-minimized {
-    background: rgba(0, 102, 255, 0.35) !important;
-}
-
-/* Увеличение отступа для контента под хедером */
-.home-page .hero {
-    padding-top: 140px !important;
-    -webkit-transition: padding-top 0.4s ease !important;
-    -o-transition: padding-top 0.4s ease !important;
-    transition: padding-top 0.4s ease !important;
 }
 
 /* ===== АДАПТИВНОСТЬ ДЛЯ SPECK BLOCKS ===== */
@@ -1805,6 +1823,30 @@ header, footer, section, nav {
 }
 
 @media (max-width: 768px) {
+    /* ===== HEADER MOBILE FIXES ===== */
+    .home-page .main-header {
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        background: rgba(0, 102, 255, 0.22) !important;
+        backdrop-filter: blur(20px) saturate(200%) !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .home-page .main-header.header-hidden {
+        transform: none !important;
+        opacity: 1 !important;
+        pointer-events: all !important;
+    }
+    
+    .home-page .hero {
+        padding-top: 120px !important;
+    }
+    
     .speck-vertical-section {
         padding: 120px 0 80px;
     }
@@ -1917,30 +1959,6 @@ header, footer, section, nav {
     /* Для очень старых браузеров */
     .no-flexbox .speck-vertical-block {
         padding: 30px;
-    }
-    
-    /* ===== HEADER MOBILE FIXES ===== */
-    .home-page .main-header {
-        top: 0 !important;
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        background: rgba(0, 102, 255, 0.22) !important;
-        backdrop-filter: blur(20px) saturate(200%) !important;
-        border: none !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    .home-page .main-header.header-hidden {
-        transform: none !important;
-        opacity: 1 !important;
-        pointer-events: all !important;
-    }
-    
-    .home-page .hero {
-        padding-top: 120px !important;
     }
 }
 
@@ -2806,7 +2824,7 @@ button,
 
 /* Состояние скрытого хедера для контактов */
 .contact-page .main-header.header-hidden {
-    transform: translateX(-50%) translateY(-150%) !important;
+    transform: translateX(-50%) translateY(-20px) !important;
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
@@ -2869,12 +2887,12 @@ button,
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: all !important;
-    transform: translateX(-50%) !important;
+    transform: translateX(-50%) translateY(0) !important;
 }
 
 /* Убираем все лишние трансформации при hover */
 .home-page .main-header:hover:not(.mobile-menu-active) {
-    transform: translateX(-50%) !important;
+    transform: translateX(-50%) translateY(0) !important;
 }
 
 /* Для внутренних страниц используем базовую логику */
@@ -2883,7 +2901,7 @@ button,
 }
 
 .internal-page .main-header.header-hidden {
-    transform: translateX(-50%) translateY(-100%) !important;
+    transform: translateX(-50%) translateY(-20px) !important;
 }
 
 /* Для мобильных устройств - отключаем сложные анимации */
@@ -2913,4 +2931,30 @@ button,
 .contact-page .main-header,
 .internal-page .main-header {
     contain: layout style paint;
+}
+
+/* ===== FIX: ANTI-JITTER STYLES ===== */
+.main-header {
+    transform: translateX(-50%) !important;
+}
+
+.main-header:hover {
+    transform: translateX(-50%) !important;
+}
+
+/* Убираем все сложные трансформации на hover, оставляем только визуальные изменения */
+.nav-link:hover,
+.btn:hover,
+.logo:hover {
+    transition: 
+        transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    will-change: transform, background-color, color;
+}
+
+/* Оптимизация для GPU */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
