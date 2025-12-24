@@ -365,7 +365,7 @@ function setupImageLoading() {
 // АНИМАЦИИ ДЛЯ CTA КНОПКИ
 function setupCTAAnimations() {
     const ctaButton = document.querySelector('.about-cta .btn');
-    if (!ctaButton) return;
+    if (!cttaButton) return;
     
     const arrowIcon = ctaButton.querySelector('.fa-arrow-right');
     
@@ -516,6 +516,11 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
             
             .member-photo img.loaded {
                 opacity: 1;
+            }
+            
+            /* Улучшенная плавность для хедера */
+            .main-header {
+                transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
             }
         `;
         document.head.appendChild(style);
