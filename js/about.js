@@ -362,10 +362,13 @@ function setupImageLoading() {
     });
 }
 
-// АНИМАЦИИ ДЛЯ CTA КНОПКИ
+// АНИМАЦИИ ДЛЯ CTA КНОПКИ (ИСПРАВЛЕНО - убрана опечатка cttaButton)
 function setupCTAAnimations() {
     const ctaButton = document.querySelector('.about-cta .btn');
-    if (!cttaButton) return;
+    if (!ctaButton) {
+        console.log('⚠️ CTA button not found in about section');
+        return;
+    }
     
     const arrowIcon = ctaButton.querySelector('.fa-arrow-right');
     
