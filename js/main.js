@@ -77,9 +77,10 @@ class DaehaaApp {
         // Check page type and setup appropriate animation
         const isHomePage = document.body.classList.contains('home-page');
         const isServicesPage = document.body.classList.contains('services-page');
+        const isAboutPage = document.body.classList.contains('about-page'); // НОВОЕ: проверка страницы "О нас"
         
-        if (isServicesPage) {
-            console.log('📄 Services page - disabling header hide');
+        if (isServicesPage || isAboutPage) { // ИЗМЕНЕНИЕ: добавляем about-page
+            console.log('📄 Services/About page - disabling header hide');
             this.disableHeaderHiding(header);
             return;
         }
@@ -228,6 +229,42 @@ class DaehaaApp {
 
     setupOptimizedInternalHeader(header) {
         const self = this;
+        
+        // ===== ВАЖНЫЙ ФИКС: ДЛЯ ABOUT-PAGE ОТКЛЮЧАЕМ ВСЕ АНИМАЦИИ =====
+        if (document.body.classList.contains('about-page')) {
+            console.log('ℹ️ Страница "О нас" - фиксируем позицию хедера');
+            
+            // Принудительно фиксируем позицию
+            header.style.position = 'fixed';
+            header.style.left = '50%';
+            header.style.transform = 'translateX(-50%) translateY(0)';
+            header.style.right = 'auto';
+            header.style.width = 'calc(100% - 40px)';
+            header.style.maxWidth = '1400px';
+            header.style.margin = '0 auto';
+            header.style.top = '20px';
+            header.style.zIndex = '1000';
+            header.style.opacity = '1';
+            header.style.pointerEvents = 'auto';
+            header.style.transition = 'none';
+            
+            // Убираем все классы, которые могут скрывать хедер
+            header.classList.remove('header-hidden', 'header-scrolled');
+            
+            // На мобильных
+            if (window.innerWidth <= 768) {
+                header.style.left = '0';
+                header.style.transform = 'none';
+                header.style.width = '100%';
+                header.style.maxWidth = '100%';
+                header.style.borderRadius = '0';
+                header.style.top = '0';
+                header.style.margin = '0';
+            }
+            
+            // Отключаем все обработчики для about-page
+            return;
+        }
         
         function handleScroll() {
             const currentScrollY = window.scrollY;
@@ -1260,11 +1297,19 @@ function initOptimizedGlassHeader() {
     }
     
     const isHomePage = document.body.classList.contains('home-page');
+    const isAboutPage = document.body.classList.contains('about-page'); // НОВОЕ
     
     // Apply performance optimizations
     header.style.transform = 'translateX(-50%) translateY(0)';
     header.style.willChange = 'opacity';
     header.style.backfaceVisibility = 'hidden';
+    
+    // Для about-page отключаем анимации
+    if (isAboutPage) {
+        console.log('ℹ️ About page - disabling glass header animations');
+        header.style.transition = 'none';
+        return;
+    }
     
     // Add enter animation
     setTimeout(() => {
