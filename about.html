@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/about.css">
+    
+    <!-- ЕДИНЫЙ СКРИПТ КОМПОНЕНТОВ -->
+    <script src="js/components.js"></script>
+    
     <style>
         /* Ensure content starts below header */
         body {
@@ -125,7 +129,7 @@
     </style>
 </head>
 <body class="about-page">
-    <!-- Header Container -->
+    <!-- Header Container (загрузится автоматически через components.js) -->
     <div id="header-container"></div>
     
     <!-- Hero Section -->
@@ -445,7 +449,7 @@
         </div>
     </section>
     
-    <!-- Footer Container -->
+    <!-- Footer Container (загрузится автоматически через components.js) -->
     <div id="footer-container"></div>
     
     <!-- JavaScript -->
@@ -483,272 +487,6 @@
         // Глобальная функция для обработки ошибок
         window.handleTeamPhotoError = handleTeamPhotoError;
 
-        // Component loader for about page
-        function loadComponents() {
-            console.log('🔄 Loading components for about page...');
-            
-            // Load header
-            fetch('components/header.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('header-container').innerHTML = html;
-                    initializeHeader();
-                })
-                .catch(error => {
-                    console.error('Error loading header:', error);
-                    document.getElementById('header-container').innerHTML = `
-                        <header class="main-header">
-                            <div class="container">
-                                <div class="header-inner">
-                                    <a href="index.html" class="logo">
-                                        <div class="logo-mark">NB</div>
-                                        <span class="logo-text">NB Group</span>
-                                    </a>
-                                    <nav class="main-nav">
-                                        <a href="index.html" class="nav-link">Главная</a>
-                                        <a href="about.html" class="nav-link active">О нас</a>
-                                        <a href="services.html" class="nav-link">Услуги</a>
-                                        <a href="portfolio.html" class="nav-link">Портфолио</a>
-                                        <a href="brandbook.html" class="nav-link">Брендбук</a>
-                                        <a href="contacts.html" class="nav-link">Контакты</a>
-                                    </nav>
-                                    <div class="header-actions">
-                                        <div class="language-switcher" data-current-lang="ru">
-                                            <div class="lang-slider"></div>
-                                            <button class="lang-btn" data-lang="ru">
-                                                <span class="lang-text">RU</span>
-                                                <span class="lang-flag">🇷🇺</span>
-                                            </button>
-                                            <button class="lang-btn active" data-lang="en">
-                                                <span class="lang-text">EN</span>
-                                                <span class="lang-flag">🇺🇸</span>
-                                            </button>
-                                        </div>
-                                        <a href="contacts.html" class="btn btn-primary btn-small">
-                                            Начать проект
-                                        </a>
-                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </header>
-                        <div class="mobile-menu-overlay"></div>
-                    `;
-                    initializeHeader();
-                });
-            
-            // Load footer
-            fetch('components/footer.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('footer-container').innerHTML = html;
-                    if (typeof window.initFooter === 'function') {
-                        setTimeout(window.initFooter, 100);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading footer:', error);
-                    document.getElementById('footer-container').innerHTML = `
-                        <footer class="minimal-footer">
-                            <div class="footer-container">
-                                <div class="footer-content">
-                                    <div class="footer-bottom">
-                                        <div class="copyright" data-i18n="footer.copyright">
-                                            © 2024 NBGROUP.TECH Все права защищены.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </footer>
-                    `;
-                });
-        }
-        
-        function initializeHeader() {
-            console.log('🔵 Initializing header for about page...');
-            
-            const header = document.querySelector('.main-header');
-            const isHomePage = false; // Это не главная страница
-            
-            // Инициализация мобильного меню
-            setupMobileMenu();
-            
-            // Установка активной ссылки
-            setActiveNavLink();
-            
-            // Обновление UI переключателя языка (синхронизация с i18n.js)
-            updateLanguageSwitcherUI();
-            
-            // Установка логики скролла
-            setupHeaderScroll();
-            
-            // Добавляем стеклянный эффект
-            if (header) {
-                setTimeout(() => {
-                    header.classList.add('header-glass-enter');
-                    
-                    setTimeout(() => {
-                        header.classList.remove('header-glass-enter');
-                    }, 600);
-                }, 100);
-                
-                // Эффект при наведении
-                header.addEventListener('mouseenter', () => {
-                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                        header.classList.add('glass-morph');
-                    }
-                });
-                
-                header.addEventListener('mouseleave', () => {
-                    header.classList.remove('glass-morph');
-                });
-            }
-            
-            function setupMobileMenu() {
-                const toggle = document.querySelector('.mobile-menu-toggle');
-                const nav = document.querySelector('.main-nav');
-                const overlay = document.querySelector('.mobile-menu-overlay');
-
-                if (!toggle || !nav) return;
-
-                const toggleMenu = () => {
-                    const isActive = nav.classList.contains('active');
-                    toggle.classList.toggle('active');
-                    nav.classList.toggle('active');
-                    if (overlay) overlay.classList.toggle('active');
-                    document.body.style.overflow = isActive ? '' : 'hidden';
-                };
-
-                toggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    toggleMenu();
-                });
-
-                if (overlay) {
-                    overlay.addEventListener('click', toggleMenu);
-                }
-
-                const navLinks = nav.querySelectorAll('.nav-link');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', toggleMenu);
-                });
-
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && nav.classList.contains('active')) {
-                        toggleMenu();
-                    }
-                });
-
-                window.addEventListener('resize', () => {
-                    if (window.innerWidth > 768 && nav.classList.contains('active')) {
-                        toggleMenu();
-                    }
-                });
-            }
-            
-            function setActiveNavLink() {
-                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-                const navLinks = document.querySelectorAll('.nav-link');
-                
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href === currentPage || 
-                        (currentPage === '' && href === 'index.html') ||
-                        (currentPage === 'index.html' && href === 'index.html')) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
-                    }
-                });
-            }
-            
-            function updateLanguageSwitcherUI() {
-                // Синхронизация с i18n.js если он доступен
-                if (window.i18n && window.i18n.getCurrentLang) {
-                    const currentLang = window.i18n.getCurrentLang();
-                    const langButtons = document.querySelectorAll('.lang-btn');
-                    
-                    langButtons.forEach(btn => {
-                        const btnLang = btn.getAttribute('data-lang');
-                        btn.classList.toggle('active', btnLang === currentLang);
-                    });
-                    
-                    const switcher = document.querySelector('.language-switcher');
-                    if (switcher) {
-                        switcher.setAttribute('data-current-lang', currentLang);
-                    }
-                } else {
-                    // Fallback на localStorage
-                    const currentLang = localStorage.getItem('preferredLang') || 'ru';
-                    const langButtons = document.querySelectorAll('.lang-btn');
-                    
-                    langButtons.forEach(btn => {
-                        const btnLang = btn.getAttribute('data-lang');
-                        btn.classList.toggle('active', btnLang === currentLang);
-                    });
-                    
-                    const switcher = document.querySelector('.language-switcher');
-                    if (switcher) {
-                        switcher.setAttribute('data-current-lang', currentLang);
-                    }
-                }
-            }
-            
-            function setupHeaderScroll() {
-                const header = document.querySelector('.main-header');
-                if (!header) return;
-                
-                let lastScrollY = window.scrollY;
-                const scrollThreshold = 100;
-                
-                window.addEventListener('scroll', () => {
-                    const currentScrollY = window.scrollY;
-                    
-                    if (currentScrollY <= 0) {
-                        header.classList.remove('header-hidden', 'header-scrolled');
-                        header.style.opacity = '1';
-                        return;
-                    }
-                    
-                    if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                        // Scrolling down
-                        header.classList.remove('header-hidden');
-                        header.classList.add('header-scrolled');
-                    } else if (currentScrollY < lastScrollY) {
-                        // Scrolling up
-                        header.classList.remove('header-hidden');
-                        header.classList.remove('header-scrolled');
-                    }
-                    
-                    lastScrollY = currentScrollY;
-                }, { passive: true });
-            }
-        }
-        
-        // Обработчик события смены языка
-        window.addEventListener('languageChanged', function(event) {
-            console.log('🌐 Language changed to:', event.detail.lang);
-            
-            // Обновляем переключатель
-            const switcher = document.querySelector('.language-switcher');
-            if (switcher) {
-                switcher.setAttribute('data-current-lang', event.detail.lang);
-            }
-            
-            // Обновляем кнопки
-            const langBtns = document.querySelectorAll('.lang-btn');
-            langBtns.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-lang') === event.detail.lang) {
-                    btn.classList.add('active');
-                }
-            });
-        });
-        
         // Проверка наличия изображений команды
         function checkTeamPhotos() {
             const photoUrls = [
@@ -771,9 +509,6 @@
                     });
             });
         }
-        
-        // Load components when DOM is ready
-        document.addEventListener('DOMContentLoaded', loadComponents);
         
         // Initialize i18n with delay
         setTimeout(() => {
@@ -833,30 +568,6 @@
                 }
             }
         });
-        
-        // Lazy load images with Intersection Observer
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        if (img.dataset.src) {
-                            img.src = img.dataset.src;
-                            img.removeAttribute('data-src');
-                        }
-                        observer.unobserve(img);
-                    }
-                });
-            }, {
-                rootMargin: '100px',
-                threshold: 0.1
-            });
-            
-            // Observe all team images
-            document.querySelectorAll('.member-photo img[data-src]').forEach(img => {
-                imageObserver.observe(img);
-            });
-        }
     </script>
 </body>
-    </html>
+</html>
