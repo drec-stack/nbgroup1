@@ -14,6 +14,13 @@
     <!-- ЗАМЕНЕН polyfill.io на polyfill.app -->
     <script src="https://polyfill.app/v3/polyfill.min.js?features=default,es6,es7,IntersectionObserver,fetch,Promise,Array.from,NodeList.prototype.forEach,Element.prototype.classList,requestAnimationFrame"></script>
     
+    <!-- Подключаем скрипт компонентов ПЕРЕД другими скриптами -->
+    <script src="js/components.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/parallax.js"></script>
+    
     <style>
         /* Language switcher styles */
         .language-switcher {
@@ -287,7 +294,7 @@
         <div class="scroll-progress-bar"></div>
     </div>
 
-    <!-- Header Component -->
+    <!-- Header Container (загрузится автоматически через components.js) -->
     <div id="header-container"></div>
 
     <!-- Hero Section -->
@@ -603,14 +610,8 @@
         </div>
     </a>
 
-    <!-- Footer Container -->
+    <!-- Footer Container (загрузится автоматически через components.js) -->
     <div id="footer-container"></div>
-
-    <!-- JavaScript -->
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/home.js"></script>
-    <script src="js/parallax.js"></script>
 
     <script>
         // Проверка состояния i18n
@@ -624,13 +625,6 @@
                     console.log(`✅ Force applied ${count} translations`);
                 }
             }, 1000);
-            
-            // Еще одна попытка через 3 секунды
-            setTimeout(() => {
-                if (window.i18n && window.i18n.refresh) {
-                    window.i18n.refresh();
-                }
-            }, 3000);
         }
         
         // Проверка бегущей строки Speck
@@ -720,135 +714,11 @@
             });
         }
         
-        // Загрузка компонентов с поддержкой старых браузеров
-        function loadComponents() {
-            // Проверяем поддержку fetch
-            var hasFetch = 'fetch' in window;
-            var hasXMLHttpRequest = 'XMLHttpRequest' in window;
-            
-            // Функция для загрузки через XMLHttpRequest (IE7+)
-            function loadWithXHR(url, containerId, callback) {
-                if (!hasXMLHttpRequest) {
-                    // Самый старый браузер
-                    loadFallbackComponents();
-                    return;
-                }
-                
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', url, true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4) {
-                        var container = document.getElementById(containerId);
-                        if (xhr.status === 200 && container) {
-                            container.innerHTML = xhr.responseText;
-                            if (callback) callback();
-                        } else if (container) {
-                            // Fallback
-                            if (containerId === 'header-container') {
-                                container.innerHTML = getFallbackHeader();
-                            } else if (containerId === 'footer-container') {
-                                container.innerHTML = getFallbackFooter();
-                            }
-                        }
-                    }
-                };
-                xhr.send();
-            }
-            
-            // Загрузка header
-            loadWithXHR('components/header.html', 'header-container', function() {
-                // Инициализировать хедер
-                if (typeof initHeader === 'function') initHeader();
-                initHomeHeader();
-                
-                // Применить переводы к хедеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 500);
-            });
-            
-            // Загрузка footer
-            loadWithXHR('components/footer.html', 'footer-container', function() {
-                console.log('✅ Footer loaded successfully');
-                
-                // Применить переводы к футеру
-                setTimeout(() => {
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 500);
-            });
-            
-            // Фолбэк компоненты для самых старых браузеров
-            function loadFallbackComponents() {
-                var headerContainer = document.getElementById('header-container');
-                var footerContainer = document.getElementById('footer-container');
-                
-                if (headerContainer) {
-                    headerContainer.innerHTML = getFallbackHeader();
-                }
-                
-                if (footerContainer) {
-                    footerContainer.innerHTML = getFallbackFooter();
-                }
-            }
-            
-            function getFallbackHeader() {
-                return `
-                    <header class="main-header" style="background: rgba(15, 20, 35, 0.95); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 15px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                        <div class="container">
-                            <div class="header-inner" style="display: flex; justify-content: space-between; align-items: center;">
-                                <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none; color: white;">
-                                    <div class="logo-mark" style="background: #0066ff; color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; font-size: 18px; margin-right: 10px;">NB</div>
-                                    <span class="logo-text" style="font-size: 18px; font-weight: bold;">NBGROUP.TECH</span>
-                                </a>
-                                <nav class="main-nav" style="display: flex; gap: 30px;">
-                                    <a href="index.html" class="nav-link active" style="color: white; text-decoration: none; font-weight: 500;">Home</a>
-                                    <a href="services.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Services</a>
-                                    <a href="portfolio.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Work</a>
-                                    <a href="brandbook.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Brandbook</a>
-                                    <a href="about.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">About</a>
-                                    <a href="contacts.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Contact</a>
-                                </nav>
-                                <div class="header-actions" style="display: flex; align-items: center; gap: 15px;">
-                                    <div class="language-switcher" style="display: flex; gap: 5px;">
-                                        <button class="lang-btn" data-lang="ru" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer;">RU</button>
-                                        <button class="lang-btn" data-lang="en" style="background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.7); padding: 5px 10px; border-radius: 4px; cursor: pointer;">EN</button>
-                                    </div>
-                                    <a href="contacts.html" class="btn btn-small btn-primary" style="background: #0066ff; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 500;">Start Project</a>
-                                </div>
-                            </div>
-                        </div>
-                    </header>
-                `;
-            }
-            
-            function getFallbackFooter() {
-                return `
-                    <footer class="minimal-footer" style="background: rgba(10, 15, 30, 0.95); padding: 40px 0; margin-top: 100px;">
-                        <div class="footer-container">
-                            <div class="footer-content">
-                                <div class="footer-bottom" style="text-align: center;">
-                                    <div class="copyright" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">
-                                        © 2024 NBGROUP.TECH Все права защищены.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
-                `;
-            }
-        }
-
         // Запустить проверки и инициализацию
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 DOM fully loaded');
             
-            // Загружаем компоненты
-            loadComponents();
-            
+            // Проверки специфичные для страницы
             checkSpeckMarquee();
             applyTranslationsForce();
             
