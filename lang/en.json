@@ -728,5 +728,16 @@
     "phone": "Please enter a valid phone number",
     "minLength": "Minimum {length} characters required",
     "maxLength": "Maximum {length} characters allowed"
-  }
+  },
+  "servicesPreview": {
+    "strategy": {
+      "title": "Product Strategy"
+    },
+    "design": {
+      "title": "Industrial Design"
+    },
+    "engineering": {
+      "title": "Engineering"
     }
+  }
+}
