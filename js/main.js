@@ -77,9 +77,9 @@ class DaehaaApp {
         // Check page type and setup appropriate animation
         const isHomePage = document.body.classList.contains('home-page');
         const isServicesPage = document.body.classList.contains('services-page');
-        const isAboutPage = document.body.classList.contains('about-page'); // НОВОЕ: проверка страницы "О нас"
+        const isAboutPage = document.body.classList.contains('about-page');
         
-        if (isServicesPage || isAboutPage) { // ИЗМЕНЕНИЕ: добавляем about-page
+        if (isServicesPage || isAboutPage) {
             console.log('📄 Services/About page - disabling header hide');
             this.disableHeaderHiding(header);
             return;
@@ -230,9 +230,10 @@ class DaehaaApp {
     setupOptimizedInternalHeader(header) {
         const self = this;
         
-        // ===== ВАЖНЫЙ ФИКС: ДЛЯ ABOUT-PAGE ОТКЛЮЧАЕМ ВСЕ АНИМАЦИИ =====
-        if (document.body.classList.contains('about-page')) {
-            console.log('ℹ️ Страница "О нас" - фиксируем позицию хедера');
+        // ===== ВАЖНЫЙ ФИКС: ОТКЛЮЧАЕМ АНИМАЦИИ ДЛЯ SERVICES-PAGE И ABOUT-PAGE =====
+        if (document.body.classList.contains('services-page') || 
+            document.body.classList.contains('about-page')) {
+            console.log('📄 Services/About page - отключаем анимации хедера');
             
             // Принудительно фиксируем позицию
             header.style.position = 'fixed';
@@ -262,7 +263,7 @@ class DaehaaApp {
                 header.style.margin = '0';
             }
             
-            // Отключаем все обработчики для about-page
+            // Отключаем все обработчики для этих страниц
             return;
         }
         
@@ -1297,16 +1298,16 @@ function initOptimizedGlassHeader() {
     }
     
     const isHomePage = document.body.classList.contains('home-page');
-    const isAboutPage = document.body.classList.contains('about-page'); // НОВОЕ
+    const isAboutPage = document.body.classList.contains('about-page');
     
     // Apply performance optimizations
     header.style.transform = 'translateX(-50%) translateY(0)';
     header.style.willChange = 'opacity';
     header.style.backfaceVisibility = 'hidden';
     
-    // Для about-page отключаем анимации
-    if (isAboutPage) {
-        console.log('ℹ️ About page - disabling glass header animations');
+    // Для about-page и services-page отключаем анимации
+    if (isAboutPage || document.body.classList.contains('services-page')) {
+        console.log('ℹ️ Services/About page - disabling glass header animations');
         header.style.transition = 'none';
         return;
     }
@@ -1892,3 +1893,5 @@ if (typeof module !== 'undefined' && module.exports) {
         lazyInit
     };
 }
+
+console.log('✅ main.js loaded with services/about page header fix');
