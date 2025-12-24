@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="css/brandbook.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- ЕДИНЫЙ СКРИПТ КОМПОНЕНТОВ -->
+    <script src="js/components.js"></script>
+    
     <style>
         /* Ensure content starts below header */
         body.brandbook-page {
@@ -71,7 +75,7 @@
     </style>
 </head>
 <body class="brandbook-page">
-    <!-- Header Container -->
+    <!-- Header Container (загрузится автоматически через components.js) -->
     <div id="header-container"></div>
     
     <!-- HERO -->
@@ -229,7 +233,7 @@
         </div>
     </section>
 
-    <!-- Footer Container -->
+    <!-- Footer Container (загрузится автоматически через components.js) -->
     <div id="footer-container"></div>
     
     <!-- JavaScript -->
@@ -239,208 +243,6 @@
     <script src="js/animations.js"></script>
     
     <script>
-        // Component loader for brandbook page - идентично about.html
-        function loadComponents() {
-            console.log('🔄 Loading components for brandbook page...');
-            
-            // Load header
-            fetch('components/header.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('header-container').innerHTML = html;
-                    initializeBrandbookHeader();
-                })
-                .catch(error => {
-                    console.error('Error loading header:', error);
-                    // Fallback header
-                    document.getElementById('header-container').innerHTML = `
-                        <header class="main-header">
-                            <div class="container">
-                                <div class="header-inner">
-                                    <a href="index.html" class="logo">
-                                        <div class="logo-mark">NB</div>
-                                        <span class="logo-text">NB Group</span>
-                                    </a>
-                                    <nav class="main-nav">
-                                        <a href="index.html" class="nav-link">Главная</a>
-                                        <a href="about.html" class="nav-link">О нас</a>
-                                        <a href="services.html" class="nav-link">Услуги</a>
-                                        <a href="portfolio.html" class="nav-link">Портфолио</a>
-                                        <a href="brandbook.html" class="nav-link active">Брендбук</a>
-                                        <a href="contacts.html" class="nav-link">Контакты</a>
-                                    </nav>
-                                    <div class="header-actions">
-                                        <div class="language-switcher" data-current-lang="ru">
-                                            <div class="lang-slider"></div>
-                                            <button class="lang-btn" data-lang="ru">
-                                                <span class="lang-text">RU</span>
-                                                <span class="lang-flag">🇷🇺</span>
-                                            </button>
-                                            <button class="lang-btn active" data-lang="en">
-                                                <span class="lang-text">EN</span>
-                                                <span class="lang-flag">🇺🇸</span>
-                                            </button>
-                                        </div>
-                                        <a href="contacts.html" class="btn btn-primary btn-small">
-                                            Начать проект
-                                        </a>
-                                        <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mobile-menu-overlay"></div>
-                        </header>
-                    `;
-                    initializeBrandbookHeader();
-                });
-            
-            // Load footer
-            fetch('components/footer.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('footer-container').innerHTML = html;
-                    if (typeof window.initFooter === 'function') {
-                        setTimeout(window.initFooter, 100);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading footer:', error);
-                    // Fallback footer
-                    document.getElementById('footer-container').innerHTML = `
-                        <footer class="minimal-footer">
-                            <div class="footer-container">
-                                <div class="footer-content">
-                                    <div class="footer-bottom">
-                                        <div class="copyright" data-i18n="footer.copyright">
-                                            © 2024 NBGROUP.TECH Все права защищены.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </footer>
-                    `;
-                });
-        }
-        
-        function initializeBrandbookHeader() {
-            console.log('🔵 Initializing header for brandbook page...');
-            
-            const header = document.querySelector('.main-header');
-            
-            // Инициализация мобильного меню через main.js
-            if (typeof window.initHeader === 'function') {
-                window.initHeader();
-            } else if (typeof window.DaehaaApp !== 'undefined') {
-                window.DaehaaApp.setupMobileMenu();
-            }
-            
-            // Установка активной ссылки
-            setActiveNavLink();
-            
-            // Инициализация стеклянного хедера
-            if (typeof window.initGlassHeader === 'function') {
-                window.initGlassHeader();
-            }
-            
-            // Установка логики скролла для внутренней страницы
-            setupBrandbookHeaderScroll();
-            
-            // Добавляем стеклянный эффект
-            if (header) {
-                setTimeout(() => {
-                    header.classList.add('header-glass-enter');
-                    
-                    setTimeout(() => {
-                        header.classList.remove('header-glass-enter');
-                    }, 600);
-                }, 100);
-                
-                // Эффект при наведении
-                header.addEventListener('mouseenter', () => {
-                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                        header.classList.add('glass-morph');
-                    }
-                });
-                
-                header.addEventListener('mouseleave', () => {
-                    header.classList.remove('glass-morph');
-                });
-            }
-            
-            function setActiveNavLink() {
-                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-                const navLinks = document.querySelectorAll('.nav-link');
-                
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href === currentPage || 
-                        (currentPage === '' && href === 'index.html') ||
-                        (currentPage === 'index.html' && href === 'index.html')) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
-                    }
-                });
-            }
-            
-            function setupBrandbookHeaderScroll() {
-                const header = document.querySelector('.main-header');
-                if (!header) return;
-                
-                let lastScrollY = window.scrollY;
-                const scrollThreshold = 100;
-                
-                window.addEventListener('scroll', () => {
-                    const currentScrollY = window.scrollY;
-                    
-                    if (currentScrollY <= 0) {
-                        header.classList.remove('header-hidden', 'header-scrolled');
-                        header.style.opacity = '1';
-                        return;
-                    }
-                    
-                    if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                        // Scrolling down
-                        header.classList.remove('header-hidden');
-                        header.classList.add('header-scrolled');
-                    } else if (currentScrollY < lastScrollY) {
-                        // Scrolling up
-                        header.classList.remove('header-hidden');
-                        header.classList.remove('header-scrolled');
-                    }
-                    
-                    lastScrollY = currentScrollY;
-                }, { passive: true });
-            }
-        }
-        
-        // Обработчик события смены языка
-        window.addEventListener('languageChanged', function(event) {
-            console.log('🌐 Language changed to:', event.detail.lang);
-            
-            // Обновляем переключатель
-            const switcher = document.querySelector('.language-switcher');
-            if (switcher) {
-                switcher.setAttribute('data-current-lang', event.detail.lang);
-            }
-            
-            // Обновляем кнопки
-            const langBtns = document.querySelectorAll('.lang-btn');
-            langBtns.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-lang') === event.detail.lang) {
-                    btn.classList.add('active');
-                }
-            });
-        });
-        
-        // Load components when DOM is ready
-        document.addEventListener('DOMContentLoaded', loadComponents);
-        
         // Initialize i18n with delay
         setTimeout(() => {
             if (window.i18n && window.i18n.init) {
@@ -454,21 +256,6 @@
                 window.initBrandbook();
             }
         }, 1500);
-        
-        // Ensure header is initialized after all scripts
-        setTimeout(() => {
-            const header = document.querySelector('.main-header');
-            if (header && !header.classList.contains('header-initialized')) {
-                console.log('🔄 Final header initialization check...');
-                if (typeof window.initGlassHeader === 'function') {
-                    window.initGlassHeader();
-                }
-                if (typeof window.updateActiveNav === 'function') {
-                    window.updateActiveNav();
-                }
-                header.classList.add('header-initialized');
-            }
-        }, 2000);
         
         // Smooth scrolling for anchor links
         document.addEventListener('click', function(e) {
@@ -488,4 +275,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
