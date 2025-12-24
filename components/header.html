@@ -677,6 +677,19 @@
             gap: 20px !important;
         }
     }
+    
+    /* Улучшенная плавность на мобильных устройствах */
+    @media (hover: none) and (pointer: coarse) {
+        .main-header {
+            transition: all 0.2s ease !important;
+        }
+        
+        .nav-link:hover,
+        .btn:hover,
+        .logo:hover .logo-mark {
+            transform: none !important;
+        }
+    }
 </style>
 
 <!-- Header Component -->
