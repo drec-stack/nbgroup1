@@ -20,7 +20,7 @@
     background: var(--primary);
     border-bottom: 1px solid var(--border);
     position: sticky;
-    top: 80px;
+    top: 100px;
     z-index: 100;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
                 opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -774,4 +774,45 @@ body.services-page {
         opacity: 1 !important;
         pointer-events: all !important;
     }
+}
+
+/* ===== CRITICAL FIX: SERVICES PAGE HEADER POSITION ===== */
+body.services-page .main-header {
+    left: 50% !important;
+    transform: translateX(-50%) translateY(0) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    position: fixed !important;
+    top: 20px !important;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+body.services-page .main-header.header-hidden {
+    transform: translateX(-50%) translateY(0) !important;
+    opacity: 1 !important;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+    body.services-page .main-header {
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+    }
+    
+    body.services-page .services-hero {
+        padding-top: 120px !important;
+    }
+}
+
+/* Фикс для отступа контента */
+body.services-page .services-hero {
+    padding-top: 180px !important;
 }
