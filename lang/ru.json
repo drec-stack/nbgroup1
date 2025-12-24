@@ -728,5 +728,16 @@
     "phone": "Пожалуйста, введите корректный номер телефона",
     "minLength": "Минимум {length} символов",
     "maxLength": "Максимум {length} символов"
+  },
+  "servicesPreview": {
+    "strategy": {
+      "title": "Стратегия Продукта"
+    },
+    "design": {
+      "title": "Промышленный Дизайн"
+    },
+    "engineering": {
+      "title": "Инжиниринг"
+    }
   }
 }
