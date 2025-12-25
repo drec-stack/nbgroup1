@@ -18,6 +18,20 @@ function initBrandbook() {
     // Setup language integration
     setupBrandbookLanguageIntegration();
     
+    // Initialize header properly
+    setTimeout(() => {
+        if (window.initHeader) {
+            window.initHeader();
+        }
+        
+        // Ensure header is properly centered
+        const header = document.querySelector('.main-header');
+        if (header) {
+            header.style.left = '50%';
+            header.style.transform = 'translateX(-50%) translateY(0)';
+        }
+    }, 500);
+    
     console.log('✅ Brandbook functionality initialized');
 }
 
