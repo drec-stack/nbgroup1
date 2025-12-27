@@ -690,6 +690,40 @@
             transform: none !important;
         }
     }
+    
+    /* ===== КРИТИЧЕСКИЙ ФИКС: УБИРАЕМ БУРГЕР НА ГЛАВНОЙ СТРАНИЦЕ ===== */
+    /* Это самый важный блок - он полностью убирает бургер-меню на главной странице на десктопе */
+    .home-page .main-header .mobile-menu-toggle {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        pointer-events: none !important;
+    }
+    
+    /* На мобильных устройствах для главной страницы все равно показываем бургер */
+    @media (max-width: 768px) {
+        .home-page .main-header .mobile-menu-toggle {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            width: 32px !important;
+            height: 32px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            pointer-events: auto !important;
+        }
+    }
+    
+    /* Гарантируем правильные отступы для header-actions на главной странице */
+    .home-page .main-header .header-actions {
+        gap: 20px !important;
+    }
 </style>
 
 <!-- Header Component -->
