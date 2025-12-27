@@ -14,13 +14,18 @@
     --glass-border: rgba(255, 255, 255, 0.1);
 }
 
-/* УБРАЛИ ВСЕ СТИЛИ ДЛЯ .main-header - они уже в header.html */
-
-/* Body adjustments for fixed header */
+/* УБИРАЕМ ВСЕ СТИЛИ .main-header - они в HTML и header.html */
+/* Только стили для body */
 body.brandbook-page {
     padding-top: 80px;
     background: var(--secondary);
     overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    body.brandbook-page {
+        padding-top: 60px;
+    }
 }
 
 /* ===== BRANDBOOK HERO ===== */
