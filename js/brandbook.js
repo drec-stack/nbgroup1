@@ -1,9 +1,112 @@
 // brandbook.js - Complete functionality for brandbook page with language support
 console.log('🎨 Brandbook page script loaded with language support');
 
+// CRITICAL FIX: Apply header positioning immediately
+(function applyHeaderFixImmediately() {
+    console.log('🔧 Applying immediate header positioning fix...');
+    
+    // Create style element immediately
+    const style = document.createElement('style');
+    style.textContent = `
+        .main-header {
+            position: fixed !important;
+            top: 20px !important;
+            left: 50% !important;
+            transform: translateX(-50%) translateY(0) !important;
+            width: calc(100% - 40px) !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            z-index: 1000 !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transition: all 0.4s ease !important;
+            border-radius: 20px !important;
+            background: rgba(0, 102, 255, 0.12) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        }
+        
+        .main-header.header-hidden {
+            transform: translateX(-50%) translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
+        .main-header.header-scrolled {
+            background: rgba(0, 102, 255, 0.2) !important;
+            backdrop-filter: blur(20px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+        }
+        
+        @media (max-width: 768px) {
+            .main-header {
+                top: 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 14px 0 !important;
+                background: rgba(0, 102, 255, 0.22) !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            .main-header.header-hidden {
+                transform: translateY(-100%) !important;
+            }
+        }
+    `;
+    
+    // Insert style immediately before any other scripts run
+    if (document.head) {
+        document.head.insertBefore(style, document.head.firstChild);
+    } else {
+        document.addEventListener('DOMContentLoaded', () => {
+            document.head.insertBefore(style, document.head.firstChild);
+        });
+    }
+    
+    // Also apply directly to any existing header
+    document.addEventListener('DOMContentLoaded', () => {
+        const header = document.querySelector('.main-header');
+        if (header) {
+            console.log('🎯 Applying header fix to existing element');
+            header.style.position = 'fixed';
+            header.style.top = '20px';
+            header.style.left = '50%';
+            header.style.transform = 'translateX(-50%) translateY(0)';
+            header.style.width = 'calc(100% - 40px)';
+            header.style.maxWidth = '1400px';
+            header.style.margin = '0 auto';
+            header.style.zIndex = '1000';
+            
+            if (window.innerWidth <= 768) {
+                header.style.top = '0';
+                header.style.left = '0';
+                header.style.transform = 'none';
+                header.style.width = '100%';
+                header.style.maxWidth = '100%';
+                header.style.borderRadius = '0';
+                header.style.margin = '0';
+                header.style.padding = '14px 0';
+            }
+        }
+    });
+})();
+
 // Main initialization function
 function initBrandbook() {
     console.log('🚀 Initializing brandbook functionality...');
+    
+    // Apply header positioning one more time for safety
+    const header = document.querySelector('.main-header');
+    if (header) {
+        header.style.left = '50%';
+        header.style.transform = 'translateX(-50%) translateY(0)';
+    }
     
     // Initialize all modules
     setupCaseStudies();
@@ -24,11 +127,11 @@ function initBrandbook() {
             window.initHeader();
         }
         
-        // Ensure header is properly centered
-        const header = document.querySelector('.main-header');
-        if (header) {
-            header.style.left = '50%';
-            header.style.transform = 'translateX(-50%) translateY(0)';
+        // Final header positioning check
+        const finalHeader = document.querySelector('.main-header');
+        if (finalHeader) {
+            finalHeader.style.left = '50%';
+            finalHeader.style.transform = 'translateX(-50%) translateY(0)';
         }
     }, 500);
     
@@ -450,6 +553,13 @@ function getNotificationColor(type) {
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', function() {
+    // Apply immediate header positioning
+    const header = document.querySelector('.main-header');
+    if (header) {
+        header.style.left = '50%';
+        header.style.transform = 'translateX(-50%) translateY(0)';
+    }
+    
     setTimeout(() => {
         initBrandbook();
     }, 300);
@@ -465,6 +575,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize if page already loaded
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    const header = document.querySelector('.main-header');
+    if (header) {
+        header.style.left = '50%';
+        header.style.transform = 'translateX(-50%) translateY(0)';
+    }
+    
     setTimeout(() => {
         initBrandbook();
     }, 100);
