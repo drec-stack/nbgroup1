@@ -13,7 +13,61 @@
     <script src="js/components.js"></script>
     
     <style>
-        /* УБРАЛИ ВСЕ ПЕРЕОПРЕДЕЛЕНИЯ ХЕДЕРА - они уже в header.html */
+        /* КРИТИЧЕСКИЕ СТИЛИ для хедера - загружаются сразу */
+        .main-header {
+            position: fixed !important;
+            top: 20px !important;
+            left: 50% !important;
+            transform: translateX(-50%) translateY(0) !important;
+            width: calc(100% - 40px) !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            z-index: 1000 !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transition: all 0.4s ease !important;
+            border-radius: 20px !important;
+            background: rgba(0, 102, 255, 0.12) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        }
+        
+        .main-header.header-hidden {
+            transform: translateX(-50%) translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
+        .main-header.header-scrolled {
+            background: rgba(0, 102, 255, 0.2) !important;
+            backdrop-filter: blur(20px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+        }
+        
+        @media (max-width: 768px) {
+            body.brandbook-page {
+                padding-top: 60px;
+            }
+            
+            .main-header {
+                top: 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 14px 0 !important;
+                background: rgba(0, 102, 255, 0.22) !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            .main-header.header-hidden {
+                transform: translateY(-100%) !important;
+            }
+        }
         
         /* Ensure content starts below header */
         body.brandbook-page {
@@ -198,36 +252,79 @@
     <script src="js/animations.js"></script>
     
     <script>
-        // Initialize i18n with delay
-        setTimeout(() => {
-            if (window.i18n && window.i18n.init) {
-                window.i18n.init();
-            }
-        }, 300);
-        
-        // Initialize brandbook page animations
-        setTimeout(() => {
-            if (typeof window.initBrandbook === 'function') {
-                window.initBrandbook();
-            }
-        }, 1500);
-        
-        // Smooth scrolling for anchor links
-        document.addEventListener('click', function(e) {
-            if (e.target.matches('a[href^="#"]')) {
-                e.preventDefault();
-                const id = e.target.getAttribute('href');
-                if (id === '#') return;
-                
-                const element = document.querySelector(id);
-                if (element) {
-                    window.scrollTo({
-                        top: element.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
+        // CRITICAL FIX: Apply header positioning immediately
+        (function() {
+            // Apply header styles immediately to prevent FOUC (Flash of Unstyled Content)
+            const style = document.createElement('style');
+            style.textContent = `
+                .main-header {
+                    position: fixed !important;
+                    top: 20px !important;
+                    left: 50% !important;
+                    transform: translateX(-50%) translateY(0) !important;
+                    width: calc(100% - 40px) !important;
+                    max-width: 1400px !important;
+                    margin: 0 auto !important;
+                    z-index: 1000 !important;
+                    opacity: 1 !important;
+                    pointer-events: auto !important;
+                    transition: all 0.4s ease !important;
+                    border-radius: 20px !important;
+                    background: rgba(0, 102, 255, 0.12) !important;
+                    backdrop-filter: blur(16px) saturate(180%) !important;
+                    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.22) !important;
                 }
-            }
-        });
+                
+                @media (max-width: 768px) {
+                    .main-header {
+                        top: 0 !important;
+                        left: 0 !important;
+                        transform: none !important;
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        border-radius: 0 !important;
+                        margin: 0 !important;
+                        padding: 14px 0 !important;
+                        background: rgba(0, 102, 255, 0.22) !important;
+                        border: none !important;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Initialize i18n with delay
+            setTimeout(() => {
+                if (window.i18n && window.i18n.init) {
+                    window.i18n.init();
+                }
+            }, 300);
+            
+            // Initialize brandbook page animations
+            setTimeout(() => {
+                if (typeof window.initBrandbook === 'function') {
+                    window.initBrandbook();
+                }
+            }, 1500);
+            
+            // Smooth scrolling for anchor links
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('a[href^="#"]')) {
+                    e.preventDefault();
+                    const id = e.target.getAttribute('href');
+                    if (id === '#') return;
+                    
+                    const element = document.querySelector(id);
+                    if (element) {
+                        window.scrollTo({
+                            top: element.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        })();
     </script>
 </body>
 </html>
