@@ -1,13 +1,145 @@
-// services.js - Simplified version without header scroll logic
-console.log('🎯 Services.js loaded - Simplified version');
+// services.js - Simplified version with HEADER FIX for Services page
+console.log('🎯 Services.js loaded - With header fix');
 
 function initServices() {
-    console.log('🎯 Initializing services page animations...');
+    console.log('🎯 Initializing services page animations with header fix...');
+    
+    // ВАЖНО: Применяем фикс для хедера
+    fixServicesHeader();
     
     setupServiceAnimations();
     setupProcessInteractions();
     
     console.log('✅ Services animations initialized');
+}
+
+// ВАЖНЫЙ ФИКС: Исправление позиции хедера на странице услуг
+function fixServicesHeader() {
+    console.log('🔧 Applying header fix for Services page...');
+    
+    const header = document.querySelector('.main-header');
+    if (!header) {
+        console.warn('⚠️ Header not found on Services page');
+        return;
+    }
+    
+    // Гарантируем, что это Services страница
+    document.body.classList.add('services-page');
+    
+    // Функция для фиксации позиции хедера
+    const applyHeaderFix = () => {
+        const isMobile = window.innerWidth <= 768;
+        
+        // Отключаем все анимации для хедера на Services странице
+        header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+        
+        if (isMobile) {
+            // Мобильная версия
+            header.style.position = 'fixed';
+            header.style.left = '0';
+            header.style.transform = 'translateY(0)';
+            header.style.right = '0';
+            header.style.width = '100%';
+            header.style.maxWidth = '100%';
+            header.style.margin = '0';
+            header.style.borderRadius = '0';
+            header.style.top = '0';
+        } else {
+            // Десктопная версия - ВСЕГДА центрируем
+            header.style.position = 'fixed';
+            header.style.left = '50%';
+            header.style.transform = 'translateX(-50%) translateY(0)';
+            header.style.right = 'auto';
+            header.style.width = 'calc(100% - 40px)';
+            header.style.maxWidth = '1400px';
+            header.style.margin = '0 auto';
+            header.style.top = '20px';
+            header.style.borderRadius = '20px';
+        }
+        
+        // Гарантируем видимость
+        header.style.opacity = '1';
+        header.style.zIndex = '1000';
+        header.style.pointerEvents = 'auto';
+        
+        // Убираем все классы, которые могут скрывать хедер
+        header.classList.remove('header-hidden', 'header-scrolled');
+        
+        console.log('✅ Services header position fixed');
+    };
+    
+    // Применяем фикс сразу
+    applyHeaderFix();
+    
+    // Применяем фикс при изменении размера окна
+    window.addEventListener('resize', applyHeaderFix);
+    
+    // Применяем фикс при полной загрузке страницы
+    window.addEventListener('load', () => {
+        setTimeout(applyHeaderFix, 300);
+    });
+    
+    // Дополнительный фикс через 1 секунду
+    setTimeout(applyHeaderFix, 1000);
+    
+    // ФИКС: Предотвращаем сдвиг при наведении
+    preventHeaderShiftOnHover();
+}
+
+// ФИКС: Предотвращение сдвига хедера при наведении
+function preventHeaderShiftOnHover() {
+    const header = document.querySelector('.main-header');
+    if (!header) return;
+    
+    console.log('🔧 Preventing header shift on hover...');
+    
+    // Сохраняем исходную позицию
+    const originalTransform = header.style.transform;
+    
+    // Обработчики для предотвращения сдвига
+    header.addEventListener('mouseenter', (e) => {
+        e.stopPropagation();
+        
+        // Восстанавливаем правильную позицию
+        const isMobile = window.innerWidth <= 768;
+        header.style.transform = isMobile ? 'translateY(0)' : 'translateX(-50%) translateY(0)';
+        
+        // Отключаем переходы на время наведения
+        header.style.transition = 'none';
+    });
+    
+    header.addEventListener('mouseleave', (e) => {
+        e.stopPropagation();
+        
+        // Восстанавливаем правильную позицию
+        const isMobile = window.innerWidth <= 768;
+        header.style.transform = isMobile ? 'translateY(0)' : 'translateX(-50%) translateY(0)';
+        
+        // Восстанавливаем переходы
+        setTimeout(() => {
+            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+        }, 50);
+    });
+    
+    // Также предотвращаем сдвиг при наведении на навигацию услуг
+    const servicesNav = document.querySelector('.services-nav');
+    if (servicesNav) {
+        servicesNav.addEventListener('mouseenter', () => {
+            const isMobile = window.innerWidth <= 768;
+            header.style.transform = isMobile ? 'translateY(0)' : 'translateX(-50%) translateY(0)';
+            header.style.transition = 'none';
+        });
+        
+        servicesNav.addEventListener('mouseleave', () => {
+            const isMobile = window.innerWidth <= 768;
+            header.style.transform = isMobile ? 'translateY(0)' : 'translateX(-50%) translateY(0)';
+            setTimeout(() => {
+                header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+            }, 50);
+        });
+    }
+    
+    console.log('✅ Header shift prevention enabled');
 }
 
 function setupServiceAnimations() {
@@ -155,5 +287,6 @@ if (document.readyState === 'loading') {
 // Export functions
 window.initServices = initServices;
 window.animateServiceSections = animateServiceSections;
+window.fixServicesHeader = fixServicesHeader;
 
-console.log('✅ services.js loaded');
+console.log('✅ services.js loaded with header fix');
