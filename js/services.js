@@ -1,147 +1,261 @@
-// services.js - Simplified version with HEADER FIX for Services page
-console.log('🎯 Services.js loaded - With header fix');
+// services.js - Complete fixed version for Services page with HEADER FIX
+console.log('🎯 Services.js loaded - With COMPLETE header stabilization fix');
 
+// Main initialization function
 function initServices() {
-    console.log('🎯 Initializing services page animations with header fix...');
+    console.log('🎯 Initializing services page with STABLE header...');
     
-    // ВАЖНО: Применяем фикс для хедера
-    fixServicesHeader();
+    // CRITICAL: Apply complete header fix FIRST
+    applyCompleteHeaderStabilization();
     
+    // Set body class
+    document.body.classList.add('services-page');
+    
+    // Initialize other functionality
     setupServiceAnimations();
     setupProcessInteractions();
+    animateServiceSections();
+    setupServicesNavigation();
     
-    console.log('✅ Services animations initialized');
+    console.log('✅ Services page initialized with stable header');
 }
 
-// ВАЖНЫЙ ФИКС: Исправление позиции хедера на странице услуг
-function fixServicesHeader() {
-    console.log('🔧 Applying header fix for Services page...');
+// COMPLETE HEADER STABILIZATION - FIXES ALL MOVEMENT ISSUES
+function applyCompleteHeaderStabilization() {
+    console.log('🔧 Applying COMPLETE header stabilization...');
     
     const header = document.querySelector('.main-header');
     if (!header) {
-        console.warn('⚠️ Header not found on Services page');
+        console.warn('⚠️ Header not found');
         return;
     }
     
-    // Гарантируем, что это Services страница
+    // MARK: This is a Services page - add specific class
     document.body.classList.add('services-page');
     
-    // Функция для фиксации позиции хедера
-    const applyHeaderFix = () => {
+    // 1. REMOVE ALL ANIMATIONS AND TRANSITIONS
+    header.style.transition = 'none !important';
+    header.style.webkitTransition = 'none !important';
+    header.style.transitionProperty = 'none !important';
+    header.style.animation = 'none !important';
+    header.style.webkitAnimation = 'none !important';
+    header.style.transitionDuration = '0s !important';
+    header.style.transitionDelay = '0s !important';
+    
+    // 2. Apply correct position IMMEDIATELY
+    const enforceHeaderPosition = () => {
         const isMobile = window.innerWidth <= 768;
         
-        // Отключаем все анимации для хедера на Services странице
-        header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-        
         if (isMobile) {
-            // Мобильная версия
+            // Mobile - fixed at top
             header.style.position = 'fixed';
+            header.style.top = '0';
             header.style.left = '0';
-            header.style.transform = 'translateY(0)';
             header.style.right = '0';
             header.style.width = '100%';
             header.style.maxWidth = '100%';
             header.style.margin = '0';
+            header.style.transform = 'translateY(0) !important';
             header.style.borderRadius = '0';
-            header.style.top = '0';
+            header.style.zIndex = '1000';
         } else {
-            // Десктопная версия - ВСЕГДА центрируем
+            // Desktop - centered
             header.style.position = 'fixed';
+            header.style.top = '20px';
             header.style.left = '50%';
-            header.style.transform = 'translateX(-50%) translateY(0)';
             header.style.right = 'auto';
             header.style.width = 'calc(100% - 40px)';
             header.style.maxWidth = '1400px';
             header.style.margin = '0 auto';
-            header.style.top = '20px';
+            header.style.transform = 'translateX(-50%) !important';
             header.style.borderRadius = '20px';
+            header.style.zIndex = '1000';
         }
         
-        // Гарантируем видимость
+        // Ensure visibility
         header.style.opacity = '1';
-        header.style.zIndex = '1000';
         header.style.pointerEvents = 'auto';
+        header.style.visibility = 'visible';
         
-        // Убираем все классы, которые могут скрывать хедер
-        header.classList.remove('header-hidden', 'header-scrolled');
+        // Remove problematic classes
+        header.classList.remove('header-hidden');
+        header.classList.add('scrolled'); // Always show as scrolled
         
-        console.log('✅ Services header position fixed');
+        console.log('📐 Header position enforced for:', isMobile ? 'mobile' : 'desktop');
     };
     
-    // Применяем фикс сразу
-    applyHeaderFix();
+    // 3. Apply position immediately
+    enforceHeaderPosition();
     
-    // Применяем фикс при изменении размера окна
-    window.addEventListener('resize', applyHeaderFix);
-    
-    // Применяем фикс при полной загрузке страницы
-    window.addEventListener('load', () => {
-        setTimeout(applyHeaderFix, 300);
-    });
-    
-    // Дополнительный фикс через 1 секунду
-    setTimeout(applyHeaderFix, 1000);
-    
-    // ФИКС: Предотвращаем сдвиг при наведении
-    preventHeaderShiftOnHover();
-}
-
-// ФИКС: Предотвращение сдвига хедера при наведении
-function preventHeaderShiftOnHover() {
-    const header = document.querySelector('.main-header');
-    if (!header) return;
-    
-    console.log('🔧 Preventing header shift on hover...');
-    
-    // Сохраняем исходную позицию
-    const originalTransform = header.style.transform;
-    
-    // Обработчики для предотвращения сдвига
-    header.addEventListener('mouseenter', (e) => {
-        e.stopPropagation();
-        
-        // Восстанавливаем правильную позицию
-        const isMobile = window.innerWidth <= 768;
-        header.style.transform = isMobile ? 'translateY(0)' : 'translateX(-50%) translateY(0)';
-        
-        // Отключаем переходы на время наведения
-        header.style.transition = 'none';
-    });
-    
-    header.addEventListener('mouseleave', (e) => {
-        e.stopPropagation();
-        
-        // Восстанавливаем правильную позицию
-        const isMobile = window.innerWidth <= 768;
-        header.style.transform = isMobile ? 'translateY(0)' : 'translateX(-50%) translateY(0)';
-        
-        // Восстанавливаем переходы
-        setTimeout(() => {
-            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-        }, 50);
-    });
-    
-    // Также предотвращаем сдвиг при наведении на навигацию услуг
-    const servicesNav = document.querySelector('.services-nav');
-    if (servicesNav) {
-        servicesNav.addEventListener('mouseenter', () => {
-            const isMobile = window.innerWidth <= 768;
-            header.style.transform = isMobile ? 'translateY(0)' : 'translateX(-50%) translateY(0)';
-            header.style.transition = 'none';
+    // 4. PREVENT ALL SHIFTING - disable transitions on all header children
+    const disableChildTransitions = () => {
+        const allElements = header.querySelectorAll('*');
+        allElements.forEach(element => {
+            element.style.transition = 'none';
+            element.style.transform = 'none';
+            element.style.transitionProperty = 'none';
         });
         
-        servicesNav.addEventListener('mouseleave', () => {
-            const isMobile = window.innerWidth <= 768;
-            header.style.transform = isMobile ? 'translateY(0)' : 'translateX(-50%) translateY(0)';
-            setTimeout(() => {
-                header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-            }, 50);
+        // Re-enforce position
+        enforceHeaderPosition();
+    };
+    
+    // 5. INTERCEPT ALL HOVER EVENTS - prevent any movement
+    const preventHoverShifts = (e) => {
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+        
+        // Force position immediately
+        enforceHeaderPosition();
+        disableChildTransitions();
+        
+        // Cancel any pending animations
+        cancelAnimationFrame(window.headerFixFrame);
+    };
+    
+    // 6. Add event listeners for ALL possible interaction events
+    const interactionEvents = [
+        'mouseenter', 'mouseleave', 'mouseover', 'mouseout',
+        'mousemove', 'mousewheel', 'wheel', 'scroll',
+        'touchstart', 'touchend', 'touchmove',
+        'pointerenter', 'pointerleave', 'pointermove'
+    ];
+    
+    interactionEvents.forEach(eventType => {
+        header.addEventListener(eventType, preventHoverShifts, { passive: false });
+        
+        // Also for document to catch any bubbling events
+        document.addEventListener(eventType, (e) => {
+            if (e.target.closest('.main-header')) {
+                preventHoverShifts(e);
+            }
+        }, { passive: false });
+    });
+    
+    // 7. Services navigation fix
+    const servicesNav = document.querySelector('.services-nav');
+    if (servicesNav) {
+        interactionEvents.forEach(eventType => {
+            servicesNav.addEventListener(eventType, preventHoverShifts, { passive: false });
         });
     }
     
-    console.log('✅ Header shift prevention enabled');
+    // 8. Handle window resize
+    window.addEventListener('resize', () => {
+        setTimeout(enforceHeaderPosition, 10);
+        setTimeout(disableChildTransitions, 20);
+    }, { passive: true });
+    
+    // 9. Handle scroll - just add scrolled class
+    window.addEventListener('scroll', () => {
+        header.classList.add('scrolled');
+        enforceHeaderPosition();
+    }, { passive: true });
+    
+    // 10. Mutation observer to catch any style changes
+    if ('MutationObserver' in window) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && 
+                    (mutation.attributeName === 'style' || 
+                     mutation.attributeName === 'class')) {
+                    enforceHeaderPosition();
+                    disableChildTransitions();
+                }
+            });
+        });
+        
+        observer.observe(header, {
+            attributes: true,
+            attributeFilter: ['style', 'class', 'transform']
+        });
+        
+        // Also observe all children
+        const headerChildren = header.querySelectorAll('*');
+        headerChildren.forEach(child => {
+            observer.observe(child, {
+                attributes: true,
+                attributeFilter: ['style', 'class', 'transform']
+            });
+        });
+    }
+    
+    // 11. Periodic reinforcement
+    const reinforcementInterval = setInterval(() => {
+        enforceHeaderPosition();
+        disableChildTransitions();
+    }, 1000);
+    
+    // Store interval ID for cleanup
+    window.headerReinforcementInterval = reinforcementInterval;
+    
+    // 12. Delayed fixes
+    setTimeout(enforceHeaderPosition, 50);
+    setTimeout(disableChildTransitions, 100);
+    setTimeout(enforceHeaderPosition, 500);
+    setTimeout(enforceHeaderPosition, 1000);
+    
+    console.log('✅ COMPLETE header stabilization applied');
+    
+    // Return cleanup function
+    return () => {
+        clearInterval(reinforcementInterval);
+        interactionEvents.forEach(eventType => {
+            header.removeEventListener(eventType, preventHoverShifts);
+        });
+    };
 }
 
+// Services navigation setup
+function setupServicesNavigation() {
+    const servicesNav = document.querySelector('.services-nav');
+    if (!servicesNav) return;
+    
+    const navItems = servicesNav.querySelectorAll('.nav-item');
+    const serviceSections = document.querySelectorAll('.service-detail');
+    
+    // Highlight active section on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const sectionId = entry.target.id;
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href') === `#${sectionId}`) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    serviceSections.forEach(section => observer.observe(section));
+    
+    // Smooth scroll to sections
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = item.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                const header = document.querySelector('.main-header');
+                const headerHeight = header ? header.offsetHeight : 0;
+                const navHeight = servicesNav.offsetHeight;
+                const offset = headerHeight + navHeight + 20;
+                
+                window.scrollTo({
+                    top: targetSection.offsetTop - offset,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// Service animations
 function setupServiceAnimations() {
     const serviceFeatures = document.querySelectorAll('.feature');
     const serviceStats = document.querySelectorAll('.stat');
@@ -185,6 +299,7 @@ function setupServiceAnimations() {
     }
 }
 
+// Process interactions
 function setupProcessInteractions() {
     const processPhases = document.querySelectorAll('.process-phase');
     const isMobile = window.innerWidth <= 768;
@@ -239,6 +354,7 @@ function setupProcessInteractions() {
     });
 }
 
+// Animate service sections
 function animateServiceSections() {
     const serviceSections = document.querySelectorAll('.service-detail');
     const isMobile = window.innerWidth <= 768;
@@ -269,24 +385,54 @@ function animateServiceSections() {
     });
 }
 
-// Auto-initialization
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => {
-            initServices();
-            animateServiceSections();
-        }, 500);
-    });
-} else {
-    setTimeout(() => {
-        initServices();
-        animateServiceSections();
-    }, 500);
+// ===== AUTO-INITIALIZATION =====
+
+// Primary initialization
+function initializeServicesPage() {
+    console.log('🚀 Starting Services page initialization...');
+    
+    // CRITICAL: Apply header fix BEFORE anything else
+    const cleanupHeaderFix = applyCompleteHeaderStabilization();
+    
+    // Set body class for CSS targeting
+    document.body.classList.add('services-page');
+    
+    // Initialize other components
+    initServices();
+    
+    // Store cleanup function
+    window.cleanupServicesPage = () => {
+        if (cleanupHeaderFix) cleanupHeaderFix();
+        if (window.headerReinforcementInterval) {
+            clearInterval(window.headerReinforcementInterval);
+        }
+        document.body.classList.remove('services-page');
+    };
+    
+    console.log('✅ Services page fully initialized');
 }
 
-// Export functions
-window.initServices = initServices;
-window.animateServiceSections = animateServiceSections;
-window.fixServicesHeader = fixServicesHeader;
+// DOM ready initialization
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('📄 DOM loaded, initializing Services page...');
+        setTimeout(initializeServicesPage, 100);
+    });
+} else {
+    console.log('📄 DOM already loaded, initializing Services page...');
+    setTimeout(initializeServicesPage, 100);
+}
 
-console.log('✅ services.js loaded with header fix');
+// Handle page unload
+window.addEventListener('beforeunload', () => {
+    if (window.cleanupServicesPage) {
+        window.cleanupServicesPage();
+    }
+});
+
+// Export functions for global use
+window.initServices = initServices;
+window.applyCompleteHeaderStabilization = applyCompleteHeaderStabilization;
+window.initializeServicesPage = initializeServicesPage;
+
+console.log('✅ services.js loaded with COMPLETE header stabilization');
