@@ -504,13 +504,6 @@ body.services-page .main-header * {
     transition-delay: 0s !important;
     transition-timing-function: none !important;
     
-    /* БЛОКИРУЕМ ВСЕ TRANSFORM */
-    transform: none !important;
-    -webkit-transform: none !important;
-    -moz-transform: none !important;
-    -o-transform: none !important;
-    transform-style: flat !important;
-    
     /* ОТКЛЮЧАЕМ ВСЕ ЭФФЕКТЫ */
     will-change: auto !important;
     backface-visibility: visible !important;
@@ -678,4 +671,33 @@ body.services-page main {
 
 body.services-page .main-footer {
     flex-shrink: 0;
+}
+
+/* ===== КРИТИЧЕСКИЙ ФИКС - ПРИНУДИТЕЛЬНАЯ ФИКСАЦИЯ ===== */
+/* Добавлено для гарантии что хедер не сьезжает */
+body.services-page .main-header {
+    /* Гарантированная центровка */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    /* Блокируем любое изменение позиции */
+    position: fixed !important;
+    /* Фиксируем отступы */
+    margin: 0 auto !important;
+    /* Фиксируем размеры */
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    /* Фиксируем вертикальную позицию */
+    top: 20px !important;
+}
+
+@media (max-width: 768px) {
+    body.services-page .main-header {
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        top: 0 !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+    }
 }
