@@ -66,6 +66,9 @@ function lockHeaderPosition() {
         // Убираем все проблемные классы
         header.classList.remove('header-hidden');
         header.classList.add('scrolled');
+        
+        // КРИТИЧЕСКИЙ ФИКС: Принудительная установка inline стилей
+        header.setAttribute('data-header-fixed', 'true');
     };
     
     // 4. ПРИМЕНЯЕМ СРАЗУ
@@ -82,16 +85,34 @@ function lockHeaderPosition() {
         });
     });
     
-    // 6. РЕСАЙЗ ОКНА
+    // 6. РЕСАЙЗ ОКНА - мгновенное обновление
+    let resizeTimeout;
     window.addEventListener('resize', () => {
-        setTimeout(setFixedPosition, 10);
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            console.log('📱 Window resized - updating header position');
+            setFixedPosition();
+        }, 10);
     });
     
     // 7. СКРОЛЛ - НИКАКИХ ИЗМЕНЕНИЙ!
     window.addEventListener('scroll', () => {
         header.classList.add('scrolled');
-        // НИКАКИХ ИЗМЕНЕНИЙ ПОЗИЦИИ ПРИ СКРОЛЛЕ!
+        // Принудительно возвращаем позицию на случай любых изменений
+        setFixedPosition();
     }, { passive: true });
+    
+    // 8. ОТСЛЕЖИВАНИЕ ЛЮБЫХ ИЗМЕНЕНИЙ В DOM
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.target === header) {
+                // Если кто-то пытается изменить стили хедера - блокируем
+                setFixedPosition();
+            }
+        });
+    });
+    
+    observer.observe(header, { attributes: true });
     
     console.log('✅ Header position LOCKED permanently');
 }
