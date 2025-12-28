@@ -1,4 +1,4 @@
-/* home.css - Main Styles for Home Page with Full Browser Support */
+/* home.css - Main Styles for Home Page with Simplified Header */
 
 /* ===== RESET AND BASE STYLES ===== */
 * {
@@ -18,92 +18,42 @@ header, footer, section, nav {
     display: block;
 }
 
-/* ===== FIX: HEADER HOVER STABILITY ===== */
+/* ===== SIMPLIFIED HEADER FOR HOME PAGE ===== */
+/* Удаляем все сложные стили хедера и используем базовые из header.html */
 .home-page .main-header {
+    /* Используем базовые стили из header.html без модификаций */
     position: fixed !important;
-    top: 30px !important;
+    top: 20px !important;
     left: 50% !important;
     transform: translateX(-50%) translateY(0) !important;
-    width: calc(100% - 60px) !important;
+    width: calc(100% - 40px) !important;
     max-width: 1400px !important;
+    margin: 0 auto !important;
     z-index: 1000 !important;
     opacity: 1 !important;
-    visibility: visible !important;
     pointer-events: auto !important;
-    transition: 
-        transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important,
-        opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important,
-        background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important,
-        box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important,
-        border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border-radius: 25px !important;
-    background: rgba(0, 102, 255, 0.12) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.2),
-        0 4px 16px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-    will-change: opacity !important;
-    backface-visibility: hidden !important;
+    transition: none !important;
 }
 
-/* FIX: HOVER EFFECT WITHOUT JITTER */
-.home-page .main-header:hover {
-    background: rgba(0, 102, 255, 0.18) !important;
-    box-shadow: 
-        0 12px 40px rgba(0, 102, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        0 0 0 1px rgba(255, 255, 255, 0.2) !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
-    transform: translateX(-50%) translateY(0) !important;
-    will-change: background-color, box-shadow, border-color !important;
-}
-
-/* FIX: HIDDEN STATE WITHOUT JITTER */
-.home-page .main-header.header-hidden {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: translateX(-50%) translateY(-20px) !important;
-    transition: 
-        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important,
-        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    will-change: opacity, transform !important;
-}
-
-/* FIX: SHOW ON HOVER SMOOTHLY */
-.home-page .main-header.header-hidden:hover {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: all !important;
-    transform: translateX(-50%) translateY(0) !important;
-    transition: 
-        opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important,
-        transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-}
-
-/* Минимизированный хедер при скролле */
+/* Убираем все классы скрытия */
+.home-page .main-header.header-hidden,
 .home-page .main-header.header-minimized {
-    padding: 15px 0 !important;
-    background: rgba(0, 102, 255, 0.25) !important;
-    backdrop-filter: blur(25px) saturate(200%) !important;
-    box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.25),
-        0 5px 20px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    top: 20px !important;
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(0) !important;
+    pointer-events: auto !important;
 }
 
-.no-backdropfilter .home-page .main-header.header-minimized {
-    background: rgba(0, 102, 255, 0.35) !important;
-}
-
-/* Увеличение отступа для контента под хедером */
-.home-page .hero {
-    padding-top: 140px !important;
-    transition: padding-top 0.4s ease !important;
+/* Мобильная версия */
+@media (max-width: 768px) {
+    .home-page .main-header {
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+    }
 }
 
 /* ===== HERO SECTION ===== */
@@ -1751,22 +1701,13 @@ header, footer, section, nav {
 @media (max-width: 768px) {
     /* ===== HEADER MOBILE FIXES ===== */
     .home-page .main-header {
-        top: 0 !important;
         left: 0 !important;
         transform: none !important;
         width: 100% !important;
         max-width: 100% !important;
         border-radius: 0 !important;
-        background: rgba(0, 102, 255, 0.22) !important;
-        backdrop-filter: blur(20px) saturate(200%) !important;
-        border: none !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    .home-page .main-header.header-hidden {
-        transform: none !important;
-        opacity: 1 !important;
-        pointer-events: all !important;
+        top: 0 !important;
+        margin: 0 !important;
     }
     
     .home-page .hero {
@@ -2139,12 +2080,6 @@ header, footer, section, nav {
     
     /* Header reduced motion */
     .home-page .main-header {
-        -webkit-transition: none !important;
-        -o-transition: none !important;
-        transition: none !important;
-    }
-    
-    .home-page .main-header.header-hidden {
         -webkit-transition: none !important;
         -o-transition: none !important;
         transition: none !important;
@@ -2725,344 +2660,13 @@ button,
     }
 }
 
-/* ===== HEADER STYLES FOR CONTACTS PAGE ===== */
-.contact-page .main-header {
-    position: fixed !important;
-    top: 30px !important;
-    left: 50% !important;
-    transform: translateX(-50%) translateY(0) !important;
-    width: calc(100% - 60px) !important;
-    max-width: 1400px !important;
-    z-index: 1000 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border-radius: 25px !important;
-    background: rgba(0, 102, 255, 0.12) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.2),
-        0 4px 16px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+/* Улучшенные стили для доступности */
+.speck-feature-column[tabindex="0"]:focus-visible {
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.5);
 }
 
-/* Состояние скрытого хедера для контактов */
-.contact-page .main-header.header-hidden {
-    transform: translateX(-50%) translateY(-20px) !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
-
-/* Минимизированный хедер при скролле */
-.contact-page .main-header.header-minimized {
-    padding: 15px 0 !important;
-    background: rgba(0, 102, 255, 0.25) !important;
-    backdrop-filter: blur(25px) saturate(200%) !important;
-    box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.25),
-        0 5px 20px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    top: 20px !important;
-}
-
-/* Мобильная версия для контактов */
-@media (max-width: 768px) {
-    .contact-page .main-header {
-        top: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        margin: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        transform: none !important;
-        background: rgba(0, 102, 255, 0.22) !important;
-        backdrop-filter: blur(20px) saturate(200%) !important;
-        border: none !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    .contact-page .main-header.header-hidden {
-        transform: translateY(-100%) !important;
-    }
-}
-
-/* Фолбэк для браузеров без backdrop-filter */
-.no-backdropfilter .contact-page .main-header {
-    background: rgba(0, 102, 255, 0.3) !important;
-}
-
-.no-backdropfilter .contact-page .main-header.header-minimized {
-    background: rgba(0, 102, 255, 0.35) !important;
-}
-
-/* ===== FIX: FINAL HEADER BEHAVIOR FIXES ===== */
-/* Гарантируем что хедер на главной странице ведет себя правильно */
-.home-page .main-header {
-    will-change: opacity;
-    backface-visibility: hidden;
-}
-
-/* При наведении на скрытый хедер - плавно показываем */
-.home-page .main-header.header-hidden:hover {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: all !important;
-    transform: translateX(-50%) translateY(0) !important;
-}
-
-/* Убираем все лишние трансформации при hover */
-.home-page .main-header:hover:not(.mobile-menu-active) {
-    transform: translateX(-50%) translateY(0) !important;
-}
-
-/* Для внутренних страниц используем базовую логику */
-.internal-page .main-header {
-    transform: translateX(-50%) !important;
-}
-
-.internal-page .main-header.header-hidden {
-    transform: translateX(-50%) translateY(-20px) !important;
-}
-
-/* Для мобильных устройств - отключаем сложные анимации */
-@media (max-width: 768px) {
-    .home-page .main-header,
-    .contact-page .main-header,
-    .internal-page .main-header {
-        transform: none !important;
-        left: 0 !important;
-        top: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-    }
-    
-    .home-page .main-header.header-hidden,
-    .contact-page .main-header.header-hidden,
-    .internal-page .main-header.header-hidden {
-        transform: none !important;
-        opacity: 1 !important;
-        pointer-events: all !important;
-    }
-}
-
-/* ===== PERFORMANCE OPTIMIZATIONS ===== */
-.home-page .main-header,
-.contact-page .main-header,
-.internal-page .main-header {
-    contain: layout style paint;
-}
-
-/* ===== FIX: ANTI-JITTER STYLES ===== */
-.main-header {
-    transform: translateX(-50%) !important;
-}
-
-.main-header:hover {
-    transform: translateX(-50%) !important;
-}
-
-/* Убираем все сложные трансформации на hover, оставляем только визуальные изменения */
-.nav-link:hover,
-.btn:hover,
-.logo:hover {
-    transition: 
-        background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-        color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-    will-change: background-color, color;
-}
-
-/* Оптимизация для GPU */
-* {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-/* ===== FIX: HIDE MOBILE MENU ON DESKTOP FOR HOME PAGE ===== */
-/* КРИТИЧЕСКИЙ ФИКС: Скрываем бургер-меню на главной странице на десктопе */
-.home-page .main-header .mobile-menu-toggle {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    pointer-events: none !important;
-}
-
-/* Ensure header actions spacing is correct */
-.home-page .main-header .header-actions {
-    gap: 20px !important;
-}
-
-/* ===== FIX: REMOVE HEADER JITTER COMPLETELY ===== */
-.home-page .main-header .nav-link,
-.home-page .main-header .btn,
-.home-page .main-header .logo,
-.home-page .main-header .lang-btn {
-    transition: 
-        color 0.3s ease,
-        background-color 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease !important;
-}
-
-.home-page .main-header .nav-link:hover,
-.home-page .main-header .btn:hover,
-.home-page .main-header .logo:hover,
-.home-page .main-header .lang-btn:hover {
-    transform: none !important;
-}
-
-/* ===== FIX: SPECIFICALLY TARGET MOBILE TOGGLE ===== */
-.home-page .header-actions .mobile-menu-toggle {
-    display: none !important;
-}
-
-/* Ensure mobile toggle doesn't affect layout */
-@media (min-width: 769px) {
-    .home-page .mobile-menu-toggle {
-        display: none !important;
-    }
-    
-    .home-page .header-actions {
-        gap: 20px !important;
-        margin-right: 0 !important;
-        padding-right: 0 !important;
-    }
-}
-
-/* ===== COMPLETE FIX FOR BURGER MENU VISIBILITY ===== */
-/* На мобильных устройствах показываем бургер-меню */
-@media (max-width: 768px) {
-    .home-page .main-header .mobile-menu-toggle {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        width: 32px !important;
-        height: 32px !important;
-        margin: 0 !important;
-        pointer-events: auto !important;
-    }
-}
-
-/* ===== ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ ===== */
-/* Гарантируем, что на главной странице бургер скрыт на всех устройствах с шириной больше 768px */
-@media (min-width: 769px) {
-    .home-page .main-header .mobile-menu-toggle {
-        display: none !important;
-        position: absolute !important;
-        left: -9999px !important;
-    }
-    
-    .home-page .main-header .header-actions {
-        gap: 20px !important;
-        padding-right: 0 !important;
-    }
-}
-
-/* Гарантируем, что на мобильных бургер виден */
-@media (max-width: 768px) {
-    .home-page .main-header .mobile-menu-toggle {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-}
-
-/* ===== FINAL FIX: COMPLETE BURGER MENU HIDING FOR HOME PAGE ===== */
-/* Этот блок полностью решает проблему с "вылазющей штукой" */
-.home-page .main-header .mobile-menu-toggle {
-    /* Скрываем по умолчанию */
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-}
-
-/* Показываем ТОЛЬКО на мобильных устройствах */
-@media screen and (max-width: 768px) {
-    .home-page .main-header .mobile-menu-toggle {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        width: 32px !important;
-        height: 32px !important;
-        position: relative !important;
-        cursor: pointer !important;
-        background: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 8px !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-        pointer-events: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    .home-page .main-header .mobile-menu-toggle span {
-        display: block !important;
-        width: 18px !important;
-        height: 2px !important;
-        background: white !important;
-        position: absolute !important;
-        left: 7px !important;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-        border-radius: 1px !important;
-    }
-    
-    .home-page .main-header .mobile-menu-toggle span:nth-child(1) { top: 10px !important; }
-    .home-page .main-header .mobile-menu-toggle span:nth-child(2) { top: 15px !important; }
-    .home-page .main-header .mobile-menu-toggle span:nth-child(3) { top: 20px !important; }
-    
-    .home-page .main-header .mobile-menu-toggle:hover {
-        background: rgba(255, 255, 255, 0.18) !important;
-        border-color: rgba(255, 255, 255, 0.3) !important;
-    }
-}
-
-/* ===== EXTRA SAFETY: HIDE ON ALL DESKTOP SIZES ===== */
-@media screen and (min-width: 769px) {
-    .home-page .main-header .mobile-menu-toggle {
-        display: none !important;
-        position: absolute !important;
-        left: -9999px !important;
-        width: 0 !important;
-        height: 0 !important;
-        overflow: hidden !important;
-        clip: rect(0, 0, 0, 0) !important;
-    }
-}
-
-/* ===== FINAL HEADER ACTIONS FIX ===== */
-.home-page .main-header .header-actions {
-    gap: 20px !important;
-    position: relative !important;
-}
-
-@media (max-width: 768px) {
-    .home-page .main-header .header-actions {
-        gap: 15px !important;
-    }
-}
-
-/* ===== CROSS-BROWSER COMPATIBILITY ===== */
-/* Для старых браузеров без поддержки media queries */
-@media all and (max-width: 768px) {
-    .home-page .main-header .mobile-menu-toggle {
-        display: flex !important;
-    }
-}
-
-@media all and (min-width: 769px) {
-    .home-page .main-header .mobile-menu-toggle {
-        display: none !important;
-    }
+/* Анимация для активного состояния */
+.speck-feature-column.column-clicked {
+    -webkit-animation: columnClick 0.3s ease;
+    animation: columnClick 0.3s ease;
 }
