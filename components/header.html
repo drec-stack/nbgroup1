@@ -1,13 +1,12 @@
 <!-- components/header.html -->
 <!-- ===== УНИВЕРСАЛЬНЫЙ ПРОЗРАЧНЫЙ ХЕДЕР С ФИКСОМ ДЛЯ SERVICES/ABOUT ===== -->
 <style>
-    /* ===== ВАЖНЫЙ ФИКС: ПРАВИЛЬНОЕ ПОЗИЦИОНИРОВАНИЕ ДЛЯ ВСЕХ СТРАНИЦ ===== */
+    /* ===== ОСНОВНЫЕ СТИЛИ ХЕДЕРА - ДЛЯ ВСЕХ СТРАНИЦ ===== */
     .main-header {
         position: fixed;
         top: 20px;
         left: 50%;
-        transform: translateX(-50%) !important; /* ВАЖНО: translateX(-50%) всегда */
-        right: auto;
+        transform: translateX(-50%);
         width: calc(100% - 40px);
         max-width: 1400px;
         margin: 0 auto;
@@ -15,9 +14,9 @@
         padding: 20px 0;
         border-radius: 20px;
         transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        background: rgba(255, 255, 255, 0.05) !important;
-        backdrop-filter: blur(25px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(25px) saturate(180%);
+        -webkit-backdrop-filter: blur(25px) saturate(180%);
         box-shadow: 
             0 8px 32px rgba(0, 0, 0, 0.3),
             inset 0 1px 0 rgba(255, 255, 255, 0.1),
@@ -25,39 +24,78 @@
         border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    /* ОСОБЫЙ ФИКС ДЛЯ SERVICES И ABOUT СТРАНИЦ */
+    /* ===== КРИТИЧЕСКИЙ ФИКС ДЛЯ SERVICES И ABOUT СТРАНИЦ ===== */
     body.services-page .main-header,
     body.about-page .main-header {
+        /* ПОЛНОСТЬЮ ОТКЛЮЧАЕМ АНИМАЦИИ */
+        animation: none !important;
+        -webkit-animation: none !important;
+        transition: none !important;
+        -webkit-transition: none !important;
+        transition-property: none !important;
+        
+        /* ФИКСИРУЕМ ПОЗИЦИЮ */
         position: fixed !important;
         left: 50% !important;
-        transform: translateX(-50%) translateY(0) !important;
+        transform: translateX(-50%) !important;
         right: auto !important;
         width: calc(100% - 40px) !important;
         max-width: 1400px !important;
         margin: 0 auto !important;
         top: 20px !important;
         z-index: 1000 !important;
+        
+        /* ГАРАНТИРУЕМ ВИДИМОСТЬ */
         opacity: 1 !important;
         pointer-events: auto !important;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
-        animation: none !important;
-        -webkit-animation: none !important;
+        visibility: visible !important;
     }
 
-    /* УБИРАЕМ ВСЕ ЭФФЕКТЫ СКРЫТИЯ ДЛЯ SERVICES/ABOUT */
+    /* ОТКЛЮЧАЕМ СКРЫТИЕ ХЕДЕРА ДЛЯ SERVICES/ABOUT */
     body.services-page .main-header.header-hidden,
     body.about-page .main-header.header-hidden {
-        transform: translateX(-50%) translateY(0) !important;
+        transform: translateX(-50%) !important;
         opacity: 1 !important;
         pointer-events: auto !important;
     }
 
-    /* Эффект при скролле */
+    /* ОТКЛЮЧАЕМ HOVER-ЭФФЕКТЫ ДЛЯ SERVICES/ABOUT */
+    body.services-page .main-header:hover,
+    body.about-page .main-header:hover,
+    body.services-page .main-header .nav-link:hover,
+    body.about-page .main-header .nav-link:hover,
+    body.services-page .main-header .logo:hover,
+    body.about-page .main-header .logo:hover {
+        transform: none !important;
+        transition: none !important;
+    }
+
+    /* ===== МОБИЛЬНАЯ ВЕРСИЯ - SERVICES/ABOUT ===== */
+    @media (max-width: 768px) {
+        body.services-page .main-header,
+        body.about-page .main-header {
+            left: 0 !important;
+            transform: translateY(0) !important;
+            right: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            border-radius: 0 !important;
+            top: 0 !important;
+            margin: 0 !important;
+        }
+        
+        body.services-page .main-header.header-hidden,
+        body.about-page .main-header.header-hidden {
+            transform: translateY(0) !important;
+        }
+    }
+
+    /* ===== ОСНОВНЫЕ ЭФФЕКТЫ ===== */
     .main-header.scrolled {
-        background: rgba(255, 255, 255, 0.08) !important;
-        backdrop-filter: blur(30px) saturate(200%) !important;
-        -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(30px) saturate(200%);
+        -webkit-backdrop-filter: blur(30px) saturate(200%);
+        border: 1px solid rgba(255, 255, 255, 0.15);
         padding: 15px 0;
         box-shadow: 
             0 12px 40px rgba(0, 0, 0, 0.4),
@@ -65,28 +103,20 @@
             inset 0 0 25px rgba(255, 255, 255, 0.08);
     }
 
-    /* ГЛАВНАЯ СТРАНИЦА - ЕЩЕ БОЛЕЕ ПРОЗРАЧНЫЙ */
     body.home-page .main-header {
-        background: rgba(255, 255, 255, 0.03) !important;
+        background: rgba(255, 255, 255, 0.03);
     }
 
     body.home-page .main-header.scrolled {
-        background: rgba(255, 255, 255, 0.06) !important;
+        background: rgba(255, 255, 255, 0.06);
     }
 
-    /* ВНУТРЕННИЕ СТРАНИЦЫ */
-    body.internal-page .main-header {
-        background: rgba(255, 255, 255, 0.05) !important;
-        backdrop-filter: blur(25px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-    }
-
-    /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ФИКС ===== */
+    /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ОБЩАЯ ===== */
     @media (max-width: 768px) {
         .main-header {
             position: fixed !important;
             left: 0 !important;
-            transform: translateY(0) !important; /* ТОЛЬКО translateY для мобильных */
+            transform: translateY(0) !important;
             right: 0 !important;
             width: 100% !important;
             max-width: 100% !important;
@@ -101,21 +131,6 @@
                 0 8px 32px rgba(0, 0, 0, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.05);
             padding: 16px 0 !important;
-        }
-        
-        /* SERVICES/ABOUT НА МОБИЛЬНЫХ */
-        body.services-page .main-header,
-        body.about-page .main-header {
-            position: fixed !important;
-            left: 0 !important;
-            transform: translateY(0) !important;
-            right: 0 !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 0 !important;
-            border-radius: 0 !important;
-            top: 0 !important;
-            background: rgba(10, 10, 20, 0.95) !important;
         }
         
         .main-header.scrolled {
@@ -801,7 +816,44 @@
     const isAboutPage = currentPage === 'about.html';
     const isHomePage = currentPage === 'index.html' || currentPage === '' || currentPage === '/';
     
-    // ===== ОСНОВНЫЕ ФУНКЦИИ =====
+    // ===== КРИТИЧЕСКИЙ ФИКС: ДЛЯ SERVICES/ABOUT СТРАНИЦ =====
+    if (isServicesPage || isAboutPage) {
+        console.log('📄 Services/About page detected - applying minimal header setup');
+        
+        // Добавляем класс к body
+        if (isServicesPage) document.body.classList.add('services-page');
+        if (isAboutPage) document.body.classList.add('about-page');
+        
+        // Минимальная настройка хедера
+        const header = document.querySelector('.main-header');
+        if (header) {
+            // Отключаем все анимации
+            header.style.transition = 'none';
+            header.classList.remove('header-hidden');
+            
+            // Устанавливаем правильную позицию
+            if (window.innerWidth > 768) {
+                header.style.left = '50%';
+                header.style.transform = 'translateX(-50%)';
+                header.style.top = '20px';
+            } else {
+                header.style.left = '0';
+                header.style.transform = 'translateY(0)';
+                header.style.top = '0';
+            }
+            
+            // Добавляем scrolled класс если нужно
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            }
+        }
+        
+        // НЕ запускаем остальную логику хедера
+        console.log('✅ Services/About header setup complete (minimal)');
+        return;
+    }
+    
+    // ===== ОСНОВНЫЕ ФУНКЦИИ ДЛЯ ДРУГИХ СТРАНИЦ =====
     
     /**
      * Настройка мобильного меню
@@ -994,11 +1046,6 @@
         
         console.log('🔧 Применение фикса позиции хедера для:', currentPage);
         
-        // Отключаем все анимации для Services/About страниц
-        if (isServicesPage || isAboutPage) {
-            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-        }
-        
         const isMobile = window.innerWidth <= 768;
         
         if (isMobile) {
@@ -1033,11 +1080,6 @@
         // Убираем все классы, которые могут скрывать хедер
         header.classList.remove('header-hidden', 'header-scrolled');
         
-        // Для Services/About страниц гарантируем отсутствие анимаций
-        if (isServicesPage || isAboutPage) {
-            header.setAttribute('data-fixed-header', 'true');
-        }
-        
         console.log('✅ Позиция хедера исправлена');
     }
 
@@ -1047,12 +1089,6 @@
     function setupScrollEffect() {
         const header = document.querySelector('.main-header');
         if (!header) return;
-        
-        // Для Services/About страниц отключаем скрытие
-        if (isServicesPage || isAboutPage) {
-            console.log('📄 Services/About page - отключаем скрытие хедера');
-            return;
-        }
         
         let lastScrollY = window.scrollY;
         let ticking = false;
