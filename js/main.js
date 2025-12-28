@@ -1,5 +1,7 @@
-// Main JavaScript file - Common functionality across all pages
-// Optimized for transparent glass header with FIXES for Services/About pages
+// main.js - ОБНОВЛЕННАЯ ВЕРСИЯ с фиксами для Services/About страниц
+// Оптимизирован для прозрачного glass хедера
+
+console.log('🚀 main.js loaded with Services/About fixes');
 
 class DaehaaApp {
     constructor() {
@@ -12,33 +14,56 @@ class DaehaaApp {
             isMobile: false,
             ticking: false
         };
+        
+        // Определяем тип страницы ДО инициализации
+        this.isServicesPage = document.body.classList.contains('services-page') || 
+                              window.location.pathname.includes('services.html');
+        this.isAboutPage = document.body.classList.contains('about-page') || 
+                           window.location.pathname.includes('about.html');
+        
+        this.isHomePage = !this.isServicesPage && !this.isAboutPage && 
+                          (window.location.pathname.endsWith('index.html') || 
+                           window.location.pathname === '/' || 
+                           window.location.pathname === '');
+        
+        console.log(`📄 Page type detected: ${this.isServicesPage ? 'Services' : this.isAboutPage ? 'About' : this.isHomePage ? 'Home' : 'Internal'}`);
+        
         this.init();
     }
 
     init() {
-        console.log('🚀 Daehaa App initializing with transparent glass header...');
+        console.log('🚀 Daehaa App initializing with Services/About awareness...');
+        
+        // Базовые функции которые работают на всех страницах
         this.setupMobileMenu();
         this.setupSmoothScroll();
         this.setupCurrentPage();
         this.setupLanguageSupport();
-        this.setupAnimations();
         this.setupMobileOptimizations();
         this.setupFormHandling();
         this.setupLazyLoading();
-        this.setupPerformanceOptimizations();
-        this.setupHeaderSupport(); // Optimized header logic with FIXES
-        this.setupFooterSupport();
-        this.setupGlassHeaderEffects();
         this.setupClickableElements();
         this.setupNavigationTracking();
         
+        // Функции которые зависят от типа страницы
+        if (!this.isServicesPage && !this.isAboutPage) {
+            this.setupAnimations();
+            this.setupPerformanceOptimizations();
+            this.setupGlassHeaderEffects();
+        }
+        
+        // Настройка хедера (с учетом типа страницы)
+        this.setupHeaderSupport();
+        
+        // Футер
+        this.setupFooterSupport();
         this.initializeExistingFooter();
         
         console.log('✅ Daehaa application initialized');
     }
 
     setupHeaderSupport() {
-        console.log('🔧 Setting up optimized transparent header support with FIXES...');
+        console.log('🔧 Setting up optimized header support...');
         
         const header = document.querySelector('.main-header');
         if (!header) {
@@ -46,52 +71,69 @@ class DaehaaApp {
             return;
         }
         
-        // ===== КРИТИЧЕСКИЙ ФИКС: НЕ ВМЕШИВАЕМСЯ В SERVICES/ABOUT СТРАНИЦЫ =====
-        const isServicesPage = document.body.classList.contains('services-page');
-        const isAboutPage = document.body.classList.contains('about-page');
-        
-        if (isServicesPage || isAboutPage) {
-            console.log('📄 Services/About page detected - SKIPPING main.js header animations');
+        // ===== КРИТИЧЕСКИЙ ФИКС: МИНИМАЛЬНАЯ НАСТРОЙКА ДЛЯ SERVICES/ABOUT =====
+        if (this.isServicesPage || this.isAboutPage) {
+            console.log('ℹ️ Services/About page detected - applying MINIMAL header setup');
             
-            // Минимальная настройка - только позиция
-            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-            header.classList.remove('header-hidden');
+            // ОТКЛЮЧАЕМ ВСЕ АНИМАЦИИ И ПЕРЕХОДЫ
+            header.style.transition = 'none';
+            header.style.animation = 'none';
+            header.style.webkitTransition = 'none';
+            header.style.webkitAnimation = 'none';
             
+            // Убираем классы которые могут мешать
+            header.classList.remove('header-hidden', 'header-glass-enter', 'glass-morph');
+            
+            // Устанавливаем статическую позицию
             if (window.innerWidth > 768) {
+                // Десктоп
+                header.style.position = 'fixed';
+                header.style.top = '20px';
                 header.style.left = '50%';
                 header.style.transform = 'translateX(-50%)';
-                header.style.top = '20px';
                 header.style.width = 'calc(100% - 40px)';
                 header.style.maxWidth = '1400px';
                 header.style.margin = '0 auto';
+                header.style.borderRadius = '20px';
             } else {
-                header.style.left = '0';
-                header.style.transform = 'translateY(0)';
+                // Мобильный
+                header.style.position = 'fixed';
                 header.style.top = '0';
+                header.style.left = '0';
+                header.style.transform = 'none';
                 header.style.width = '100%';
                 header.style.maxWidth = '100%';
                 header.style.margin = '0';
                 header.style.borderRadius = '0';
             }
             
-            // Добавляем scrolled класс
+            // Гарантируем видимость
+            header.style.opacity = '1';
+            header.style.visibility = 'visible';
+            header.style.zIndex = '1000';
+            
+            // Добавляем scrolled класс если нужно
             if (window.scrollY > 50) {
                 header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
             
-            // Без обработчиков скролла
-            console.log('✅ Services/About header setup complete (static)');
-            return;
+            // ОТКЛЮЧАЕМ ВСЕ ОБРАБОТЧИКИ СКРОЛЛА
+            // Ничего не добавляем!
+            
+            console.log('✅ Services/About header setup complete (static, no animations)');
+            return; // ВАЖНО: выходим из функции!
         }
         
-        // Для остальных страниц - оригинальная логика
+        // ===== ДЛЯ ОСТАЛЬНЫХ СТРАНИЦ - ПОЛНАЯ НАСТРОЙКА =====
         
-        // Установка начальных классов для body
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        if (currentPage === 'index.html' || currentPage === '' || currentPage === '/') {
+        // Устанавливаем классы для body
+        if (this.isHomePage) {
             document.body.classList.add('home-page');
         } else {
             document.body.classList.add('internal-page');
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
             document.body.classList.add(`${currentPage.replace('.html', '')}-page`);
         }
         
@@ -105,20 +147,16 @@ class DaehaaApp {
         this.headerState.isMobile = window.innerWidth <= 768;
         this.headerState.lastScrollY = window.scrollY;
         
-        // Проверяем тип страницы и настраиваем соответствующую анимацию
-        const isHomePage = document.body.classList.contains('home-page');
-        
-        if (isHomePage) {
-            console.log('🏠 Home page - setting up optimized animation');
+        if (this.isHomePage) {
+            console.log('🏠 Home page - setting up full header animation');
             this.setupOptimizedHomeHeader(header);
         } else {
-            console.log('📄 Internal page - setting up basic animation');
+            console.log('📄 Internal page - setting up basic header animation');
             this.setupOptimizedInternalHeader(header);
         }
     }
 
     optimizeHeaderPerformance(header) {
-        // Применяем оптимизации производительности
         header.style.willChange = 'transform, opacity';
         header.style.backfaceVisibility = 'hidden';
         header.style.contain = 'layout style paint';
@@ -130,7 +168,6 @@ class DaehaaApp {
         const mobileToggle = document.querySelector('.mobile-menu-toggle');
         if (!mobileToggle) return;
         
-        // Скрываем бургер-меню на десктопе
         if (window.innerWidth > 768) {
             mobileToggle.style.display = 'none';
             mobileToggle.style.visibility = 'hidden';
@@ -215,7 +252,7 @@ class DaehaaApp {
         
         window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
         
-        // Обработчик наведения - оптимизированный
+        // Обработчик наведения
         header.addEventListener('mouseenter', (e) => {
             e.stopPropagation();
             if (self.headerState.isHidden) {
@@ -234,7 +271,6 @@ class DaehaaApp {
             const mobileToggle = document.querySelector('.mobile-menu-toggle');
             if (mobileToggle) {
                 if (self.headerState.isMobile) {
-                    // На мобильных показываем
                     mobileToggle.style.display = 'flex';
                     mobileToggle.style.visibility = 'visible';
                     mobileToggle.style.opacity = '1';
@@ -242,7 +278,6 @@ class DaehaaApp {
                     mobileToggle.style.height = '32px';
                     mobileToggle.style.pointerEvents = 'auto';
                 } else {
-                    // На десктопе скрываем
                     mobileToggle.style.display = 'none';
                     mobileToggle.style.visibility = 'hidden';
                     mobileToggle.style.opacity = '0';
@@ -583,6 +618,11 @@ class DaehaaApp {
     }
 
     setupAnimations() {
+        if (this.isServicesPage || this.isAboutPage) {
+            console.log('ℹ️ Services/About page - skipping animations');
+            return;
+        }
+        
         this.setupScrollAnimations();
         this.setupParallax();
         this.setupCounters();
@@ -928,6 +968,11 @@ class DaehaaApp {
     }
 
     setupPerformanceOptimizations() {
+        if (this.isServicesPage || this.isAboutPage) {
+            console.log('ℹ️ Services/About page - skipping performance optimizations');
+            return;
+        }
+        
         window.addEventListener('resize', this.debounce(() => {
             this.handleResize();
         }, 250));
@@ -990,131 +1035,14 @@ class DaehaaApp {
         });
     }
 
-    loadComponent(containerId, componentPath) {
-        return fetch(componentPath)
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                return response.text();
-            })
-            .then(html => {
-                document.getElementById(containerId).innerHTML = html;
-                this.init();
-            })
-            .catch(error => {
-                console.error('Error loading component:', error);
-            });
-    }
-
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    throttle(func, limit) {
-        let inThrottle;
-        return function() {
-            const args = arguments;
-            const context = this;
-            if (!inThrottle) {
-                func.apply(context, args);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
-            }
-        };
-    }
-
-    isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-
-    isTouchDevice() {
-        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    }
-
-    setupErrorHandling() {
-        window.addEventListener('error', (e) => {
-            console.error('Global error:', e.error);
-            this.handleError(e.error);
-        });
-
-        window.addEventListener('unhandledrejection', (e) => {
-            console.error('Unhandled promise rejection:', e.reason);
-            this.handleError(e.reason);
-        });
-    }
-
-    handleError(error) {
-        console.error('Application error:', error);
-    }
-
-    setupFooterSupport() {
-        console.log('🦶 Setting up footer support...');
-        
-        if ('MutationObserver' in window) {
-            const footerObserver = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    mutation.addedNodes.forEach((node) => {
-                        if (node.nodeType === 1) {
-                            if (node.classList && node.classList.contains('.main-footer')) {
-                                console.log('🦶 Footer added to DOM, initializing...');
-                                this.initializeFooter(node);
-                            } else if (node.querySelector) {
-                                const footer = node.querySelector('.main-footer');
-                                if (footer) {
-                                    console.log('🦶 Footer found in added node, initializing...');
-                                    this.initializeFooter(footer);
-                                }
-                            }
-                        }
-                    });
-                });
-            });
-
-            footerObserver.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const footer = document.querySelector('.main-footer');
-                if (footer && typeof window.initFooter === 'function') {
-                    console.log('🦶 DOM loaded, initializing footer...');
-                    window.initFooter();
-                }
-            }, 500);
-        });
-    }
-
-    initializeFooter(footerElement) {
-        if (typeof window.initFooter === 'function') {
-            setTimeout(() => {
-                window.initFooter();
-            }, 100);
-        }
-    }
-
     setupGlassHeaderEffects() {
-        const header = document.querySelector('.main-header');
-        if (!header) return;
-
-        // Проверяем, не Services/About ли это страница
-        const isServicesPage = document.body.classList.contains('services-page');
-        const isAboutPage = document.body.classList.contains('about-page');
-        
-        // Не применяем анимации для Services/About страниц
-        if (isServicesPage || isAboutPage) {
+        if (this.isServicesPage || this.isAboutPage) {
             console.log('ℹ️ Services/About page - skipping glass header effects');
             return;
         }
+        
+        const header = document.querySelector('.main-header');
+        if (!header) return;
 
         setTimeout(() => {
             header.classList.add('header-glass-enter');
@@ -1335,6 +1263,54 @@ class DaehaaApp {
         });
     }
 
+    setupFooterSupport() {
+        console.log('🦶 Setting up footer support...');
+        
+        if ('MutationObserver' in window) {
+            const footerObserver = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === 1) {
+                            if (node.classList && node.classList.contains('.main-footer')) {
+                                console.log('🦶 Footer added to DOM, initializing...');
+                                this.initializeFooter(node);
+                            } else if (node.querySelector) {
+                                const footer = node.querySelector('.main-footer');
+                                if (footer) {
+                                    console.log('🦶 Footer found in added node, initializing...');
+                                    this.initializeFooter(footer);
+                                }
+                            }
+                        }
+                    });
+                });
+            });
+
+            footerObserver.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const footer = document.querySelector('.main-footer');
+                if (footer && typeof window.initFooter === 'function') {
+                    console.log('🦶 DOM loaded, initializing footer...');
+                    window.initFooter();
+                }
+            }, 500);
+        });
+    }
+
+    initializeFooter(footerElement) {
+        if (typeof window.initFooter === 'function') {
+            setTimeout(() => {
+                window.initFooter();
+            }, 100);
+        }
+    }
+
     initializeExistingFooter() {
         const existingFooter = document.querySelector('.main-footer');
         if (existingFooter && typeof window.initFooter === 'function') {
@@ -1342,87 +1318,82 @@ class DaehaaApp {
             window.initFooter();
         }
     }
+
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+
+    loadComponent(containerId, componentPath) {
+        return fetch(componentPath)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById(containerId).innerHTML = html;
+                this.init();
+            })
+            .catch(error => {
+                console.error('Error loading component:', error);
+            });
+    }
+
+    isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    isTouchDevice() {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    }
+
+    setupErrorHandling() {
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e.error);
+            this.handleError(e.error);
+        });
+
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled promise rejection:', e.reason);
+            this.handleError(e.reason);
+        });
+    }
+
+    handleError(error) {
+        console.error('Application error:', error);
+    }
 }
 
-// Optimized glass header initialization
-function initOptimizedGlassHeader() {
-    console.log('🔵 Initializing optimized glass header...');
-    
-    const header = document.querySelector('.main-header');
-    if (!header) {
-        console.warn('⚠️ No glass header found');
-        return;
-    }
-    
-    const isServicesPage = document.body.classList.contains('services-page');
-    const isAboutPage = document.body.classList.contains('about-page');
-    
-    // ВАЖНЫЙ ФИКС: Для Services/About страниц применяем минимальную настройку
-    if (isServicesPage || isAboutPage) {
-        console.log('ℹ️ Services/About page - applying minimal header setup');
-        
-        // Отключаем анимации
-        header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-        header.classList.remove('header-hidden');
-        
-        // Устанавливаем правильную позицию
-        if (window.innerWidth > 768) {
-            header.style.left = '50%';
-            header.style.transform = 'translateX(-50%)';
-            header.style.top = '20px';
-        } else {
-            header.style.left = '0';
-            header.style.transform = 'translateY(0)';
-            header.style.top = '0';
-        }
-        
-        console.log('✅ Services/About header setup complete');
-        return;
-    }
-    
-    // Для остальных страниц применяем обычную логику
-    header.style.willChange = 'opacity';
-    header.style.backfaceVisibility = 'hidden';
-    
-    // Добавляем анимацию входа
-    setTimeout(() => {
-        header.classList.add('header-glass-enter');
-        
-        setTimeout(() => {
-            header.classList.remove('header-glass-enter');
-        }, 600);
-    }, 100);
-    
-    // Эффект морфинга при наведении
-    header.addEventListener('mouseenter', () => {
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            header.classList.add('glass-morph');
-        }
-    });
-    
-    header.addEventListener('mouseleave', () => {
-        header.classList.remove('glass-morph');
-    });
-    
-    console.log('✅ Optimized glass header initialized');
-}
+// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ =====
 
-// Update active navigation
-function updateActiveNav() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
-        const linkHref = link.getAttribute('href');
-        if (linkHref === currentPage || 
-            (currentPage === '' && linkHref === 'index.html') ||
-            (currentPage === 'index.html' && linkHref === 'index.html')) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
-}
+// Global header initialization
+window.initHeader = function() {
+    if (window.DaehaaApp) {
+        window.DaehaaApp.setupMobileMenu();
+        window.DaehaaApp.setupCurrentPage();
+        window.DaehaaApp.setupLanguageSupport();
+    }
+};
 
 // Global footer initialization
 window.initFooter = function() {
@@ -1465,7 +1436,13 @@ window.loadComponentWithInit = function(url, containerId, fallbackHtml = '', ini
             return response.text();
         })
         .then(html => {
-            document.getElementById(containerId).innerHTML = html;
+            const container = document.getElementById(containerId);
+            if (!container) {
+                console.error(`Container ${containerId} not found`);
+                return false;
+            }
+            
+            container.innerHTML = html;
             
             if (containerId === 'footer-container' && typeof window.initFooter === 'function') {
                 setTimeout(window.initFooter, 50);
@@ -1480,7 +1457,10 @@ window.loadComponentWithInit = function(url, containerId, fallbackHtml = '', ini
         .catch(error => {
             console.error('Component loading error:', error);
             if (fallbackHtml) {
-                document.getElementById(containerId).innerHTML = fallbackHtml;
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.innerHTML = fallbackHtml;
+                }
             }
             return false;
         });
@@ -1633,6 +1613,88 @@ function lazyInit(selector, callback, options = {}) {
     document.querySelectorAll(selector).forEach(el => observer.observe(el));
 }
 
+// Update active navigation
+function updateActiveNav() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (linkHref === currentPage || 
+            (currentPage === '' && linkHref === 'index.html') ||
+            (currentPage === 'index.html' && linkHref === 'index.html')) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+// Optimized glass header initialization
+function initOptimizedGlassHeader() {
+    console.log('🔵 Initializing optimized glass header...');
+    
+    const header = document.querySelector('.main-header');
+    if (!header) {
+        console.warn('⚠️ No glass header found');
+        return;
+    }
+    
+    const isServicesPage = document.body.classList.contains('services-page') || 
+                           window.location.pathname.includes('services.html');
+    const isAboutPage = document.body.classList.contains('about-page') || 
+                        window.location.pathname.includes('about.html');
+    
+    // ВАЖНЫЙ ФИКС: Для Services/About страниц применяем минимальную настройку
+    if (isServicesPage || isAboutPage) {
+        console.log('ℹ️ Services/About page - applying minimal header setup');
+        
+        // Отключаем анимации
+        header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+        header.classList.remove('header-hidden');
+        
+        // Устанавливаем правильную позицию
+        if (window.innerWidth > 768) {
+            header.style.left = '50%';
+            header.style.transform = 'translateX(-50%)';
+            header.style.top = '20px';
+        } else {
+            header.style.left = '0';
+            header.style.transform = 'translateY(0)';
+            header.style.top = '0';
+        }
+        
+        console.log('✅ Services/About header setup complete');
+        return;
+    }
+    
+    // Для остальных страниц применяем обычную логику
+    header.style.willChange = 'opacity';
+    header.style.backfaceVisibility = 'hidden';
+    
+    // Добавляем анимацию входа
+    setTimeout(() => {
+        header.classList.add('header-glass-enter');
+        
+        setTimeout(() => {
+            header.classList.remove('header-glass-enter');
+        }, 600);
+    }, 100);
+    
+    // Эффект морфинга при наведении
+    header.addEventListener('mouseenter', () => {
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            header.classList.add('glass-morph');
+        }
+    });
+    
+    header.addEventListener('mouseleave', () => {
+        header.classList.remove('glass-morph');
+    });
+    
+    console.log('✅ Optimized glass header initialized');
+}
+
 // Export all functions
 window.DaehaaApp = window.DaehaaApp || {};
 window.DaehaaApp.utils = {
@@ -1675,18 +1737,12 @@ window.addEventListener('unhandledrejection', function(e) {
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', () => {
-    window.DaehaaApp = new DaehaaApp();
-    console.log('🚀 Daehaa application initialized with transparent glass header and FIXES for Services/About pages');
+    // Небольшая задержка чтобы компоненты успели загрузиться
+    setTimeout(() => {
+        window.DaehaaApp = new DaehaaApp();
+        console.log('🚀 Daehaa application initialized with Services/About fixes');
+    }, 300);
 });
-
-// Global header initialization
-window.initHeader = function() {
-    if (window.DaehaaApp) {
-        window.DaehaaApp.setupMobileMenu();
-        window.DaehaaApp.setupCurrentPage();
-        window.DaehaaApp.setupLanguageSupport();
-    }
-};
 
 // Automatic optimized glass header initialization with FIXES for Services/About
 document.addEventListener('DOMContentLoaded', function() {
@@ -1722,4 +1778,4 @@ if (typeof module !== 'undefined' && module.exports) {
     };
 }
 
-console.log('✅ main.js loaded with transparent glass header support and FIXES for Services/About pages');
+console.log('✅ main.js loaded with Services/About fixes - ready!');
