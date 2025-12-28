@@ -11,341 +11,14 @@
     <link rel="stylesheet" href="css/parallax.css">
     <link rel="stylesheet" href="css/animations.css">
     
-    <!-- ЗАМЕНЕН polyfill.io на polyfill.app -->
-    <script src="https://polyfill.app/v3/polyfill.min.js?features=default,es6,es7,IntersectionObserver,fetch,Promise,Array.from,NodeList.prototype.forEach,Element.prototype.classList,requestAnimationFrame"></script>
-    
-    <!-- Подключаем скрипт компонентов ПЕРЕД другими скриптами -->
+    <!-- Компоненты -->
     <script src="js/components.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/home.js"></script>
     <script src="js/parallax.js"></script>
-    
-    <style>
-        /* Language switcher styles */
-        .language-switcher {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            gap: 5px;
-            margin-right: 20px;
-        }
-
-        .lang-btn {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.7);
-            padding: 4px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            -webkit-transition: all 0.2s ease;
-            transition: all 0.2s ease;
-            min-width: 40px;
-            text-align: center;
-        }
-
-        .lang-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .lang-btn.active {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.4);
-            font-weight: 600;
-        }
-
-        /* Стили для старых браузеров */
-        .no-cssgradients .hero h1 span,
-        .no-cssgradients .stat-number-improved,
-        .no-cssgradients .cta-text h2 {
-            background: none !important;
-            -webkit-background-clip: initial !important;
-            background-clip: initial !important;
-            -webkit-text-fill-color: white !important;
-            color: white !important;
-        }
-
-        .no-backdropfilter .main-header,
-        .no-backdropfilter .stat-card,
-        .no-backdropfilter .hero-actions .btn-secondary {
-            background: rgba(15, 20, 35, 0.95) !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-        }
-
-        .no-csstransforms .speck-vertical-block,
-        .no-csstransforms .stat-card:hover,
-        .no-csstransforms .btn:hover,
-        .no-csstransforms .brand:hover {
-            transform: none !important;
-            -webkit-transform: none !important;
-            -moz-transform: none !important;
-        }
-
-        .no-flexgap .hero-actions,
-        .no-flexgap .speck-vertical-grid,
-        .no-flexgap .stats-grid-improved {
-            margin: -10px;
-        }
-
-        .no-flexgap .hero-actions .btn,
-        .no-flexgap .speck-vertical-block,
-        .no-flexgap .stat-card {
-            margin: 10px;
-        }
-
-        /* SPECK DESIGN MARQUEE STYLES */
-        .speck-marquee-section {
-            padding: 60px 0;
-            background: transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .speck-marquee-mask {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
-            -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
-        }
-
-        .speck-marquee-container {
-            position: relative;
-            width: 100%;
-            overflow: visible;
-        }
-
-        .speck-marquee-track {
-            display: flex;
-            width: max-content;
-            will-change: transform;
-            animation: speckMarqueeScroll 45s linear infinite;
-            padding: 12px 0;
-        }
-
-        .speck-marquee-track:hover {
-            animation-play-state: paused;
-        }
-
-        .speck-marquee-content {
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-            gap: 0;
-        }
-
-        .speck-brand {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            padding: 0 30px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            opacity: 0.8;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .speck-brand:hover {
-            color: #ffffff;
-            opacity: 1;
-            transform: translateY(-2px);
-        }
-
-        .speck-brand::before {
-            content: "•";
-            position: absolute;
-            left: -5px;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.8rem;
-        }
-
-        .speck-brand:first-child::before {
-            display: none;
-        }
-
-        @keyframes speckMarqueeScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* Градиентные края */
-        .speck-marquee-mask::before,
-        .speck-marquee-mask::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            width: 150px;
-            height: 100%;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .speck-marquee-mask::before {
-            left: 0;
-            background: linear-gradient(90deg, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 0.8) 50%, rgba(10, 10, 10, 0) 100%);
-        }
-
-        .speck-marquee-mask::after {
-            right: 0;
-            background: linear-gradient(270deg, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 0.8) 50%, rgba(10, 10, 10, 0) 100%);
-        }
-
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .speck-marquee-section { padding: 40px 0; }
-            .speck-brand { font-size: 1.1rem; padding: 0 20px; }
-            .speck-marquee-mask::before,
-            .speck-marquee-mask::after { width: 80px; }
-            .speck-marquee-track { animation: speckMarqueeScroll 30s linear infinite; }
-        }
-
-        @media (max-width: 480px) {
-            .speck-brand { font-size: 0.9rem; padding: 0 15px; }
-            .speck-marquee-mask::before,
-            .speck-marquee-mask::after { width: 50px; }
-            .speck-marquee-track { animation: speckMarqueeScroll 25s linear infinite; }
-        }
-
-        /* Фолбэк для старых браузеров */
-        .no-cssanimations .speck-marquee-track {
-            animation: none !important;
-        }
-
-        .no-cssgradients .speck-marquee-mask::before,
-        .no-cssgradients .speck-marquee-mask::after {
-            display: none !important;
-        }
-
-        .no-flexbox .speck-marquee-content {
-            display: block !important;
-            white-space: nowrap !important;
-        }
-
-        .no-flexbox .speck-brand {
-            display: inline-block !important;
-            margin-right: 50px !important;
-        }
-        
-        /* ===== HEADER FIX FOR HOME PAGE - SIMPLE VERSION LIKE SERVICES PAGE ===== */
-        .home-page .main-header {
-            position: fixed !important;
-            top: 20px !important;
-            left: 50% !important;
-            transform: translateX(-50%) translateY(0) !important;
-            width: calc(100% - 40px) !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            z-index: 1000 !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-            background: rgba(0, 102, 255, 0.12) !important;
-            backdrop-filter: blur(16px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-            border-radius: 20px !important;
-            border: 1px solid rgba(255, 255, 255, 0.22) !important;
-            box-shadow: 
-                0 8px 32px rgba(0, 102, 255, 0.18),
-                inset 0 1px 0 rgba(255, 255, 255, 0.12),
-                inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
-        }
-
-        .home-page .main-header.header-hidden {
-            opacity: 1 !important;
-            transform: translateX(-50%) translateY(0) !important;
-            pointer-events: auto !important;
-        }
-
-        .home-page .main-header:hover {
-            background: rgba(0, 102, 255, 0.15) !important;
-            box-shadow: 
-                0 12px 40px rgba(0, 102, 255, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.18),
-                0 0 30px rgba(0, 102, 255, 0.12) !important;
-            border-color: rgba(255, 255, 255, 0.28) !important;
-        }
-
-        .home-page .hero {
-            padding-top: 160px !important;
-        }
-
-        @media (max-width: 768px) {
-            .home-page .main-header {
-                left: 0 !important;
-                transform: none !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                border-radius: 0 !important;
-                top: 0 !important;
-                margin: 0 !important;
-                background: rgba(0, 102, 255, 0.22) !important;
-                backdrop-filter: blur(20px) saturate(200%) !important;
-                -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
-                border: none !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-            }
-            
-            .home-page .hero {
-                padding-top: 120px !important;
-            }
-        }
-    </style>
-    
-    <!-- Добавляем простой Modernizr для определения возможностей браузера -->
-    <script>
-        (function(d){
-            var tests = {
-                csstransforms: function() {
-                    var e = d.createElement('div');
-                    return 'transform' in e.style || 
-                           'webkitTransform' in e.style || 
-                           'msTransform' in e.style;
-                },
-                cssgrid: function() {
-                    var e = d.createElement('div');
-                    return 'grid' in e.style;
-                },
-                cssgradients: function() {
-                    var e = d.createElement('div');
-                    e.style.cssText = 'background:linear-gradient(45deg,#000,#fff)';
-                    return e.style.background && e.style.background.indexOf('gradient') !== -1;
-                },
-                backdropfilter: function() {
-                    var e = d.createElement('div');
-                    return 'backdropFilter' in e.style || 
-                           'webkitBackdropFilter' in e.style;
-                },
-                flexgap: function() {
-                    var e = d.createElement('div');
-                    e.style.cssText = 'display:flex;gap:10px';
-                    return e.style.gap !== undefined || 
-                           e.style.gridGap !== undefined;
-                }
-            };
-            
-            var classes = [];
-            for (var test in tests) {
-                if (!tests[test]()) {
-                    classes.push('no-' + test);
-                }
-            }
-            
-            if (classes.length) {
-                d.documentElement.className += ' ' + classes.join(' ');
-            }
-        })(document);
-    </script>
 </head>
-<body class="home-page">
+<body>
     <!-- PARALLAX BACKGROUNDS -->
     <div class="parallax-bg-container">
         <div id="parallax-bg-1" class="parallax-bg active"></div>
@@ -357,7 +30,7 @@
         <div class="scroll-progress-bar"></div>
     </div>
 
-    <!-- Header Container (загрузится автоматически через components.js) -->
+    <!-- Header Container -->
     <div id="header-container"></div>
 
     <!-- Hero Section -->
@@ -557,7 +230,7 @@
         </div>
     </section>
 
-    <!-- ===== SPECK DESIGN MARQUEE SECTION (точная копия speckdesign.com) ===== -->
+    <!-- SPECK DESIGN MARQUEE SECTION -->
     <section class="clients-section content-section speck-marquee-section" data-bg-index="0">
         <div class="container">
             <div class="clients-content">
@@ -673,191 +346,31 @@
         </div>
     </a>
 
-    <!-- Footer Container (загрузится автоматически через components.js) -->
+    <!-- Footer Container -->
     <div id="footer-container"></div>
 
     <script>
-        // Проверка состояния i18n
-        console.log('📄 Page loading, initializing...');
-        
-        // Принудительное обновление переводов после загрузки
-        function applyTranslationsForce() {
-            setTimeout(() => {
-                if (window.i18n && window.i18n.refresh) {
-                    const count = window.i18n.refresh();
-                    console.log(`✅ Force applied ${count} translations`);
-                }
-            }, 1000);
-        }
-        
-        // Проверка бегущей строки Speck
-        function checkSpeckMarquee() {
-            console.log('🎯 Проверка Speck бегущей строки...');
-            const track = document.getElementById('speckMarqueeTrack');
-            
-            if (track) {
-                console.log('✅ Speck трек найден');
-                
-                // Проверяем через 2 секунды
-                setTimeout(() => {
-                    const style = getComputedStyle(track);
-                    const transform = style.transform || style.webkitTransform;
-                    
-                    if (!transform || transform === 'none' || transform === 'matrix(1, 0, 0, 1, 0, 0)') {
-                        console.log('⚠️ CSS анимация не работает, запускаем JavaScript fallback');
-                        startSpeckMarqueeJS();
-                    } else {
-                        console.log('✅ Speck бегущая строка работает через CSS');
-                    }
-                }, 2000);
-            }
-        }
-        
-        // JavaScript fallback для Speck бегущей строки
-        function startSpeckMarqueeJS() {
-            const track = document.getElementById('speckMarqueeTrack');
-            if (!track) return;
-            
-            console.log('🚀 Запуск JavaScript fallback для Speck бегущей строки');
-            
-            // Убираем CSS анимацию
-            track.style.animation = 'none';
-            
-            let position = 0;
-            let animationId = null;
-            let isPaused = false;
-            const speed = -1.5; // пикселей за кадр
-            const content = track.querySelector('.speck-marquee-content');
-            const contentWidth = content.scrollWidth / 2;
-            
-            function animate() {
-                if (isPaused) {
-                    animationId = requestAnimationFrame(animate);
-                    return;
-                }
-                
-                position += speed;
-                
-                // Сбрасываем позицию когда уходим за границу
-                if (position <= -contentWidth) {
-                    position = 0;
-                }
-                
-                // Применяем transform
-                track.style.transform = `translateX(${position}px)`;
-                track.style.webkitTransform = `translateX(${position}px)`;
-                
-                animationId = requestAnimationFrame(animate);
-            }
-            
-            // Запускаем анимацию
-            animate();
-            
-            // Пауза при наведении
-            track.addEventListener('mouseenter', () => {
-                isPaused = true;
-            });
-            
-            track.addEventListener('mouseleave', () => {
-                isPaused = false;
-            });
-            
-            // Доступность
-            const brands = track.querySelectorAll('.speck-brand');
-            brands.forEach((brand, index) => {
-                brand.setAttribute('tabindex', '0');
-                brand.setAttribute('aria-label', `Посмотреть проекты для ${brand.textContent}`);
-                
-                brand.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        brand.click();
-                    }
-                });
-            });
-        }
-        
-        // Запустить проверки и инициализацию
+        // Инициализация главной страницы
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 DOM fully loaded');
+            console.log('📄 Главная страница загружена');
             
-            // Проверки специфичные для страницы
-            checkSpeckMarquee();
-            applyTranslationsForce();
-            
-            // Упрощаем для старых браузеров
-            setTimeout(function() {
-                var hasNoCSS = document.documentElement.classList.contains('no-csstransforms') ||
-                              document.documentElement.classList.contains('no-cssgradients');
-                
-                if (hasNoCSS) {
-                    console.log('🔄 Упрощаем для старых браузеров');
-                    
-                    // Показываем все элементы сразу
-                    var hiddenElements = document.querySelectorAll('.content-section, .speck-vertical-block');
-                    for (var i = 0; i < hiddenElements.length; i++) {
-                        hiddenElements[i].style.opacity = '1';
-                        hiddenElements[i].style.visibility = 'visible';
-                    }
-                    
-                    // Показываем финальные числа в статистике
-                    var statNumbers = document.querySelectorAll('.stat-number-improved');
-                    for (var i = 0; i < statNumbers.length; i++) {
-                        var target = statNumbers[i].getAttribute('data-target');
-                        if (target) {
-                            statNumbers[i].textContent = target;
-                            statNumbers[i].style.background = 'none';
-                            statNumbers[i].style.color = 'white';
-                        }
-                    }
+            // Проверка бегущей строки
+            function checkSpeckMarquee() {
+                const track = document.getElementById('speckMarqueeTrack');
+                if (track) {
+                    console.log('✅ Speck бегущая строка найдена');
                 }
-            }, 1000);
+            }
             
-            // Резервная проверка через 5 секунд
+            // Принудительное обновление переводов
             setTimeout(() => {
                 if (window.i18n && window.i18n.refresh) {
-                    console.log('🔄 Final translation refresh...');
                     window.i18n.refresh();
                 }
-            }, 5000);
+            }, 500);
+            
+            checkSpeckMarquee();
         });
-        
-        // Также проверять при полной загрузке страницы
-        window.addEventListener('load', function() {
-            console.log('📦 Page fully loaded');
-            applyTranslationsForce();
-        });
-        
-        // ===== DISABLE HEADER SCROLL LOGIC ON HOME PAGE =====
-        function disableHomeHeaderScrollLogic() {
-            console.log('🚫 Отключаем логику скролла хедера на главной');
-            
-            const header = document.querySelector('.main-header');
-            if (!header) return;
-            
-            // Убираем все классы скрытия
-            header.classList.remove('header-hidden', 'header-minimized');
-            
-            // Фиксируем позицию
-            header.style.opacity = '1';
-            header.style.transform = 'translateX(-50%) translateY(0)';
-            header.style.pointerEvents = 'auto';
-            
-            // Мобильная версия
-            if (window.innerWidth <= 768) {
-                header.style.left = '0';
-                header.style.transform = 'none';
-                header.style.width = '100%';
-                header.style.maxWidth = '100%';
-                header.style.borderRadius = '0';
-                header.style.top = '0';
-                header.style.margin = '0';
-            }
-        }
-        
-        // Отключаем логику скролла хедера на главной
-        setTimeout(disableHomeHeaderScrollLogic, 300);
-        window.addEventListener('resize', disableHomeHeaderScrollLogic);
     </script>
 </body>
 </html>
