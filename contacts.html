@@ -11,37 +11,16 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/contacts.css">
     
-    <!-- ЕДИНЫЙ СКРИПТ КОМПОНЕНТОВ -->
+    <!-- Компоненты -->
     <script src="js/components.js"></script>
-    
-    <style>
-        /* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ КОНТАКТОВ ===== */
-        body.contact-page {
-            background: #0a0c12;
-            color: rgba(255, 255, 255, 0.95);
-            padding-top: 0 !important;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Отступы для контента */
-        .contact-hero {
-            padding-top: 180px !important;
-        }
-        
-        @media (max-width: 768px) {
-            body.contact-page {
-                padding-top: 0;
-            }
-            
-            .contact-hero {
-                padding-top: 140px !important;
-            }
-        }
-    </style>
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/contacts.js"></script>
 </head>
 <body class="contact-page">
-    <!-- Header Container (загрузится автоматически через components.js) -->
+    <!-- Header Container -->
     <div id="header-container"></div>
     
     <!-- Hero Section -->
@@ -331,59 +310,122 @@
         </div>
     </section>
 
-    <!-- Footer Container (загрузится автоматически через components.js) -->
+    <!-- Footer Container -->
     <div id="footer-container"></div>
     
-    <!-- JavaScript -->
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/home.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/contacts.js"></script>
-    
     <script>
-        // ===== СКРИПТЫ ДЛЯ СТРАНИЦЫ КОНТАКТОВ =====
-        
-        // Плавный скролл для якорных ссылок
-        function initSmoothScroll() {
-            document.addEventListener('click', function(e) {
-                if (e.target.matches('a[href^="#"]') || e.target.closest('a[href^="#"]')) {
-                    e.preventDefault();
-                    const target = e.target.matches('a[href^="#"]') ? e.target : e.target.closest('a[href^="#"]');
-                    const id = target.getAttribute('href');
-                    
-                    if (id === '#') return;
-                    
-                    const element = document.querySelector(id);
-                    if (element) {
-                        const headerOffset = 100;
-                        const elementPosition = element.offsetTop;
-                        const offsetPosition = elementPosition - headerOffset;
-                        
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                }
-            });
-        }
-        
-        // Основная инициализация
+        // Инициализация страницы контактов
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 Contact page DOM loaded');
+            console.log('📄 Страница контактов загружена');
             
-            // Инициализируем плавный скролл
-            initSmoothScroll();
+            // Плавный скролл
+            function initSmoothScroll() {
+                document.addEventListener('click', function(e) {
+                    if (e.target.matches('a[href^="#"]') || e.target.closest('a[href^="#"]')) {
+                        e.preventDefault();
+                        const target = e.target.matches('a[href^="#"]') ? e.target : e.target.closest('a[href^="#"]');
+                        const id = target.getAttribute('href');
+                        
+                        if (id === '#') return;
+                        
+                        const element = document.querySelector(id);
+                        if (element) {
+                            const headerOffset = 100;
+                            const elementPosition = element.offsetTop;
+                            const offsetPosition = elementPosition - headerOffset;
+                            
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            }
             
-            // Инициализируем i18n
+            // Обработка формы
+            function setupContactForm() {
+                const contactForm = document.getElementById('contactForm');
+                if (!contactForm) return;
+                
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Здесь должна быть логика отправки формы
+                    console.log('📧 Форма отправлена');
+                    
+                    // Показать сообщение об успехе
+                    alert('Сообщение отправлено! Мы свяжемся с вами в течение 24 часов.');
+                    contactForm.reset();
+                });
+            }
+            
+            // FAQ аккордеон
+            function setupFAQ() {
+                const faqQuestions = document.querySelectorAll('.faq-question');
+                
+                faqQuestions.forEach(question => {
+                    question.addEventListener('click', function() {
+                        const answer = this.nextElementSibling;
+                        const icon = this.querySelector('i');
+                        
+                        // Закрываем все остальные
+                        document.querySelectorAll('.faq-answer').forEach(item => {
+                            if (item !== answer) {
+                                item.style.maxHeight = null;
+                                item.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
+                            }
+                        });
+                        
+                        // Открываем/закрываем текущий
+                        if (answer.style.maxHeight) {
+                            answer.style.maxHeight = null;
+                            icon.style.transform = 'rotate(0deg)';
+                        } else {
+                            answer.style.maxHeight = answer.scrollHeight + 'px';
+                            icon.style.transform = 'rotate(180deg)';
+                        }
+                    });
+                });
+            }
+            
+            // Копирование адреса
+            function setupCopyAddress() {
+                const copyBtn = document.getElementById('copyAddressBtn');
+                if (!copyBtn) return;
+                
+                copyBtn.addEventListener('click', function() {
+                    const address = 'Moscow City, Tower 45, Presnenskaya Naberezhnaya, 123, Moscow, Russia 123112';
+                    
+                    navigator.clipboard.writeText(address)
+                        .then(() => {
+                            const originalText = this.querySelector('span').textContent;
+                            this.querySelector('span').textContent = 'Скопировано!';
+                            
+                            setTimeout(() => {
+                                this.querySelector('span').textContent = originalText;
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Ошибка копирования: ', err);
+                        });
+                });
+            }
+            
+            // Инициализация переводов
             setTimeout(() => {
-                if (window.i18n && window.i18n.init) {
-                    window.i18n.init();
+                if (window.i18n && window.i18n.refresh) {
+                    window.i18n.refresh();
                 }
             }, 500);
             
-            // Инициализируем функционал контактов
+            // Инициализация всех функций
+            initSmoothScroll();
+            setupContactForm();
+            setupFAQ();
+            setupCopyAddress();
+            
+            // Инициализация анимаций
             setTimeout(() => {
                 if (typeof initContact === 'function') {
                     initContact();
