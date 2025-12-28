@@ -2,7 +2,7 @@
 
 /* Services Hero */
 .services-hero {
-    padding: 160px 0 80px;
+    padding: 180px 0 80px;
     background: var(--secondary);
     flex-grow: 1;
     transition: padding-top 0.3s ease;
@@ -20,17 +20,16 @@
     background: var(--primary);
     border-bottom: 1px solid var(--border);
     position: sticky;
-    top: 100px;
+    top: 120px;
     z-index: 100;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: none !important; /* Отключаем анимации */
 }
 
 /* Скрытая навигация */
 .services-nav.nav-hidden {
-    transform: translateY(-100%) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 .services-navigation {
@@ -67,6 +66,7 @@
 .service-detail {
     padding: 120px 0;
     border-bottom: 1px solid var(--border);
+    scroll-margin-top: 150px;
 }
 
 .service-detail:last-child {
@@ -258,101 +258,186 @@
     margin-right: auto;
 }
 
-/* ===== GLASS HEADER ADJUSTMENTS ===== */
+/* ===== КРИТИЧЕСКИЕ ФИКСЫ ДЛЯ ХЕДЕРА НА SERVICES СТРАНИЦЕ ===== */
 
-.internal-page .services-hero {
-    padding-top: 180px !important;
+/* 1. ПОЛНОЕ ОТКЛЮЧЕНИЕ АНИМАЦИЙ ДЛЯ SERVICES HEADER */
+body.services-page .main-header,
+body.services-page .main-header * {
+    /* Отключаем ВСЕ анимации */
+    animation: none !important;
+    -webkit-animation: none !important;
+    -moz-animation: none !important;
+    -o-animation: none !important;
+    
+    /* Отключаем ВСЕ переходы */
+    transition: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    
+    transition-property: none !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    transition-timing-function: none !important;
+    
+    /* Фиксируем transform */
+    transform: none !important;
+    -webkit-transform: none !important;
+    -moz-transform: none !important;
+    -o-transform: none !important;
+    
+    /* Отключаем все эффекты */
+    transform-style: flat !important;
+    perspective: none !important;
+    backface-visibility: visible !important;
+    will-change: auto !important;
 }
 
-.internal-page .services-nav {
-    position: sticky;
-    top: 100px;
-    z-index: 999;
-    transition: all 0.3s ease;
-    margin-top: 20px;
-    background: rgba(var(--primary-rgb, 13, 13, 18), 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+/* 2. ПОСТОЯННАЯ ФИКСИРОВАННАЯ ПОЗИЦИЯ - ДЕСКТОП */
+body.services-page .main-header {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    top: 20px !important;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    visibility: visible !important;
+    border-radius: 20px !important;
 }
 
-.internal-page .main-header.header-hidden ~ .services-nav {
-    top: 80px;
+/* 3. ЗАПРЕТ ИЗМЕНЕНИЙ ПРИ HOVER */
+body.services-page .main-header:hover,
+body.services-page .main-header:active,
+body.services-page .main-header:focus,
+body.services-page .main-header:focus-within {
+    transform: translateX(-50%) !important;
+    left: 50% !important;
+    top: 20px !important;
 }
 
-/* ===== HEADER HIDE ON SCROLL STYLES ===== */
-
-/* Анимация для плавного скрытия/показа */
-@keyframes headerSlideIn {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+/* 4. ОТКЛЮЧАЕМ СКРЫТИЕ ХЕДЕРА */
+body.services-page .main-header.header-hidden {
+    transform: translateX(-50%) translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    visibility: visible !important;
 }
 
-@keyframes headerSlideOut {
-    from {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
+/* 5. SCROLLED STATE - ТОЛЬКО СТИЛИ, БЕЗ СДВИГА */
+body.services-page .main-header.scrolled {
+    transform: translateX(-50%) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    padding: 15px 0 !important;
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 0 25px rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Основные стили для скрытого хедера */
-.main-header {
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                padding 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    will-change: transform, opacity;
+/* 6. ОТКЛЮЧАЕМ HOVER ЭФФЕКТЫ НА ЭЛЕМЕНТАХ ХЕДЕРА */
+body.services-page .main-header .nav-link:hover,
+body.services-page .main-header .nav-link:active,
+body.services-page .main-header .nav-link:focus {
+    transform: none !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
 }
 
-.main-header.header-hidden {
-    animation: headerSlideOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
-    pointer-events: none !important;
+body.services-page .main-header .logo:hover,
+body.services-page .main-header .logo:active {
+    transform: none !important;
 }
 
-.main-header:not(.header-hidden) {
-    animation: headerSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
-    pointer-events: all !important;
+body.services-page .main-header .logo-mark:hover,
+body.services-page .main-header .logo-mark:active {
+    transform: none !important;
+    box-shadow: 
+        0 4px 20px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
-/* Навигация услуг скрывается вместе с хедером */
-.services-nav {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+body.services-page .main-header .btn-primary:hover,
+body.services-page .main-header .btn-primary:active {
+    transform: none !important;
+    box-shadow: 
+        0 4px 20px rgba(255, 255, 255, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.1) !important;
 }
 
-.services-nav.nav-hidden {
-    transform: translateY(-100%) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+body.services-page .main-header .lang-btn:hover,
+body.services-page .main-header .lang-btn:active {
+    transform: none !important;
+    background: none !important;
 }
 
-/* Показываем хедер при наведении (только на десктопе) */
-@media (min-width: 769px) {
-    .main-header:hover:not(.mobile-menu-active) {
+/* 7. МОБИЛЬНАЯ ВЕРСИЯ */
+@media (max-width: 768px) {
+    /* Мобильная позиция хедера */
+    body.services-page .main-header {
+        position: fixed !important;
+        left: 0 !important;
         transform: translateY(0) !important;
-        opacity: 1 !important;
-        pointer-events: all !important;
-        animation: none !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        top: 0 !important;
+        background: rgba(10, 10, 20, 0.95) !important;
+        backdrop-filter: blur(30px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+        padding: 16px 0 !important;
     }
     
-    .main-header:hover:not(.mobile-menu-active) ~ .services-nav {
+    /* Мобильные hover состояния */
+    body.services-page .main-header:hover,
+    body.services-page .main-header:active,
+    body.services-page .main-header:focus {
+        transform: translateY(0) !important;
+        left: 0 !important;
+        top: 0 !important;
+    }
+    
+    /* Мобильный scrolled state */
+    body.services-page .main-header.scrolled {
+        transform: translateY(0) !important;
+        background: rgba(10, 10, 20, 0.98) !important;
+        padding: 12px 0 !important;
+    }
+    
+    /* Мобильное скрытие хедера */
+    body.services-page .main-header.header-hidden {
         transform: translateY(0) !important;
         opacity: 1 !important;
-        pointer-events: all !important;
+    }
+    
+    /* Регулируем отступы для мобильных */
+    body.services-page .services-hero {
+        padding-top: 140px !important;
+    }
+    
+    body.services-page {
+        padding-top: 100px !important;
+    }
+    
+    body.services-page .service-detail {
+        scroll-margin-top: 120px !important;
     }
 }
 
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+/* ===== МОБИЛЬНАЯ ВЕРСИЯ ОСНОВНЫХ СТИЛЕЙ ===== */
 
 @media (max-width: 768px) {
     /* Хедер на мобильных не скрывается */
@@ -361,13 +446,6 @@
         transform: translateY(0) !important;
         opacity: 1 !important;
         pointer-events: all !important;
-        background: rgba(0, 102, 255, 0.25) !important;
-        backdrop-filter: blur(25px) saturate(200%) !important;
-        -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
-        padding: 12px 0 !important;
-        top: 0 !important;
-        border-radius: 0 !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
     }
     
     .services-nav.nav-hidden {
@@ -383,10 +461,6 @@
     
     .services-hero {
         padding: 140px 0 60px !important;
-    }
-    
-    .internal-page .services-hero {
-        padding-top: 120px !important;
     }
     
     /* Navigation Mobile */
@@ -570,10 +644,6 @@
         padding: 100px 0 40px !important;
     }
     
-    .internal-page .services-hero {
-        padding-top: 100px !important;
-    }
-    
     .services-navigation {
         gap: 8px;
     }
@@ -664,10 +734,6 @@
         min-height: auto;
     }
     
-    .internal-page .services-hero {
-        padding-top: 100px !important;
-    }
-    
     .services-navigation {
         flex-direction: row;
         flex-wrap: nowrap;
@@ -682,29 +748,9 @@
     }
 }
 
-/* ===== COMPATIBILITY ===== */
+/* ===== ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ ДЛЯ SERVICES СТРАНИЦЫ ===== */
 
-.internal-page {
-    --primary-rgb: 13, 13, 18;
-}
-
-.internal-page .services-nav {
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    background: rgba(var(--primary-rgb, 13, 13, 18), 0.9);
-}
-
-.internal-page .service-detail {
-    scroll-margin-top: 150px;
-}
-
-@media (max-width: 768px) {
-    .internal-page .service-detail {
-        scroll-margin-top: 120px;
-    }
-}
-
-/* FIX: Ensure footer stays at bottom */
+/* Убеждаемся, что footer остается внизу */
 body.services-page {
     min-height: 100vh;
     display: flex;
@@ -719,9 +765,7 @@ body.services-page {
     width: 100%;
 }
 
-/* ===== HEADER HIDE FIXES ===== */
-
-/* Убираем все анимации */
+/* Убираем все анимации для header на services */
 .main-header {
     animation: none !important;
     -webkit-animation: none !important;
@@ -815,4 +859,21 @@ body.services-page .main-header.header-hidden {
 /* Фикс для отступа контента */
 body.services-page .services-hero {
     padding-top: 180px !important;
+}
+
+/* EMERGENCY OVERRIDES - Высший приоритет */
+body.services-page .main-header[style] {
+    /* Переопределяем любые инлайн-стили */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 20px !important;
+    transition: none !important;
+}
+
+@media (max-width: 768px) {
+    body.services-page .main-header[style] {
+        left: 0 !important;
+        transform: translateY(0) !important;
+        top: 0 !important;
+    }
 }
