@@ -1,21 +1,71 @@
 <!-- components/header.html -->
-<!-- ===== УНИВЕРСАЛЬНЫЙ ПРОЗРАЧНЫЙ ХЕДЕР С БЕЛЫМИ ЭЛЕМЕНТАМИ ===== -->
+<!-- ===== УНИВЕРСАЛЬНЫЙ ПРОЗРАЧНЫЙ ХЕДЕР С ФИКСОМ ДЛЯ SERVICES/ABOUT ===== -->
 <style>
-    /* ===== ГАРАНТИЯ ПРОЗРАЧНОСТИ ХЕДЕРА ===== */
+    /* ===== ВАЖНЫЙ ФИКС: ПРАВИЛЬНОЕ ПОЗИЦИОНИРОВАНИЕ ДЛЯ ВСЕХ СТРАНИЦ ===== */
     .main-header {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) !important; /* ВАЖНО: translateX(-50%) всегда */
+        right: auto;
+        width: calc(100% - 40px);
+        max-width: 1400px;
+        margin: 0 auto;
+        z-index: 1000;
+        padding: 20px 0;
+        border-radius: 20px;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         background: rgba(255, 255, 255, 0.05) !important;
         backdrop-filter: blur(25px) saturate(180%) !important;
         -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            inset 0 0 20px rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
+    /* ОСОБЫЙ ФИКС ДЛЯ SERVICES И ABOUT СТРАНИЦ */
+    body.services-page .main-header,
+    body.about-page .main-header {
+        position: fixed !important;
+        left: 50% !important;
+        transform: translateX(-50%) translateY(0) !important;
+        right: auto !important;
+        width: calc(100% - 40px) !important;
+        max-width: 1400px !important;
+        margin: 0 auto !important;
+        top: 20px !important;
+        z-index: 1000 !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+        animation: none !important;
+        -webkit-animation: none !important;
+    }
+
+    /* УБИРАЕМ ВСЕ ЭФФЕКТЫ СКРЫТИЯ ДЛЯ SERVICES/ABOUT */
+    body.services-page .main-header.header-hidden,
+    body.about-page .main-header.header-hidden {
+        transform: translateX(-50%) translateY(0) !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
+    /* Эффект при скролле */
     .main-header.scrolled {
         background: rgba(255, 255, 255, 0.08) !important;
         backdrop-filter: blur(30px) saturate(200%) !important;
         -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
         border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        padding: 15px 0;
+        box-shadow: 
+            0 12px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            inset 0 0 25px rgba(255, 255, 255, 0.08);
     }
 
+    /* ГЛАВНАЯ СТРАНИЦА - ЕЩЕ БОЛЕЕ ПРОЗРАЧНЫЙ */
     body.home-page .main-header {
         background: rgba(255, 255, 255, 0.03) !important;
     }
@@ -24,32 +74,56 @@
         background: rgba(255, 255, 255, 0.06) !important;
     }
 
+    /* ВНУТРЕННИЕ СТРАНИЦЫ */
     body.internal-page .main-header {
         background: rgba(255, 255, 255, 0.05) !important;
         backdrop-filter: blur(25px) saturate(180%) !important;
         -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
     }
 
+    /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ФИКС ===== */
     @media (max-width: 768px) {
         .main-header {
+            position: fixed !important;
+            left: 0 !important;
+            transform: translateY(0) !important; /* ТОЛЬКО translateY для мобильных */
+            right: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            top: 0 !important;
             background: rgba(10, 10, 20, 0.95) !important;
             backdrop-filter: blur(30px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-            border-radius: 0 !important;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            padding: 16px 0 !important;
+        }
+        
+        /* SERVICES/ABOUT НА МОБИЛЬНЫХ */
+        body.services-page .main-header,
+        body.about-page .main-header {
+            position: fixed !important;
             left: 0 !important;
-            transform: none !important;
+            transform: translateY(0) !important;
+            right: 0 !important;
             width: 100% !important;
             max-width: 100% !important;
-            top: 0 !important;
             margin: 0 !important;
+            border-radius: 0 !important;
+            top: 0 !important;
+            background: rgba(10, 10, 20, 0.95) !important;
         }
         
         .main-header.scrolled {
             background: rgba(10, 10, 20, 0.98) !important;
-            padding: 10px 0 !important;
+            padding: 12px 0 !important;
         }
         
+        /* Скрываем бургер-меню на десктопе */
         @media (min-width: 769px) {
             .mobile-menu-toggle {
                 display: none !important;
@@ -65,39 +139,7 @@
         }
     }
 
-    /* ===== ОСНОВНЫЕ СТИЛИ ХЕДЕРА ===== */
-    .main-header {
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        right: 0;
-        width: calc(100% - 40px);
-        max-width: 1400px;
-        z-index: 1000;
-        padding: 20px 0;
-        border-radius: 20px;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1),
-            inset 0 0 20px rgba(255, 255, 255, 0.05);
-    }
-
-    .main-header.scrolled {
-        padding: 15px 0;
-        box-shadow: 
-            0 12px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.12),
-            inset 0 0 25px rgba(255, 255, 255, 0.08);
-    }
-
-    .main-header.header-hidden {
-        transform: translateX(-50%) translateY(-100%) !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-    }
-
+    /* Контейнер */
     .main-header .container {
         max-width: 1400px;
         margin: 0 auto;
@@ -111,14 +153,15 @@
         }
         
         .main-header {
-            padding: 15px 0 !important;
+            padding: 16px 0 !important;
         }
         
         .main-header.scrolled {
-            padding: 10px 0 !important;
+            padding: 12px 0 !important;
         }
     }
 
+    /* ===== ОСНОВНЫЕ СТИЛИ ХЕДЕРА ===== */
     .header-inner {
         display: flex;
         justify-content: space-between;
@@ -147,16 +190,16 @@
     .logo-mark {
         width: 44px;
         height: 44px;
-        background: white !important; /* БЕЛЫЙ ФОН */
+        background: white !important;
         border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 800;
         font-size: 18px;
-        color: #0a0a0a !important; /* ЧЕРНЫЙ ТЕКСТ для контраста */
+        color: #0a0a0a !important;
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        border: 1px solid rgba(255, 255, 255, 0.3) !important; /* БЕЛАЯ ГРАНИЦА */
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
         box-shadow: 
             0 4px 20px rgba(255, 255, 255, 0.15),
             inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -170,7 +213,7 @@
     }
 
     .logo-text {
-        color: white !important; /* БЕЛЫЙ ТЕКСТ */
+        color: white !important;
         font-weight: 700;
         font-size: 21px;
         letter-spacing: -0.3px;
@@ -210,40 +253,17 @@
         background: rgba(255, 255, 255, 0.03);
     }
 
-    .nav-link::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-        border-radius: 10px;
-        transform: scale(0.8);
-        opacity: 0;
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        z-index: -1;
-    }
-
     .nav-link:hover {
         color: white;
         transform: translateY(-2px);
-    }
-
-    .nav-link:hover::before {
-        transform: scale(1);
-        opacity: 1;
+        background: rgba(255, 255, 255, 0.12);
     }
 
     .nav-link.active {
         color: white;
         font-weight: 600;
-        background: rgba(255, 255, 255, 0.15) !important; /* БЕЛЫЙ ПРОЗРАЧНЫЙ ФОН */
-        border: 1px solid rgba(255, 255, 255, 0.2) !important; /* БЕЛАЯ ГРАНИЦА */
-    }
-
-    .nav-link.active::before {
-        opacity: 0;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
 
     /* Индикатор активной страницы - БЕЛЫЙ */
@@ -255,7 +275,7 @@
         transform: translateX(-50%);
         width: 6px;
         height: 6px;
-        background: white !important; /* БЕЛАЯ ТОЧКА */
+        background: white !important;
         border-radius: 50%;
         box-shadow: 0 0 10px rgba(255, 255, 255, 0.7) !important;
     }
@@ -328,13 +348,13 @@
         left: 4px;
         width: calc(50% - 4px);
         height: calc(100% - 8px);
-        background: rgba(255, 255, 255, 0.25) !important; /* БЕЛЫЙ ИНДИКАТОР */
+        background: rgba(255, 255, 255, 0.25) !important;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border-radius: 20px;
         transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         z-index: 1;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important; /* БЕЛАЯ ГРАНИЦА */
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
         box-shadow: 
             0 4px 12px rgba(255, 255, 255, 0.1),
             inset 0 1px 0 rgba(255, 255, 255, 0.15);
@@ -375,27 +395,9 @@
         z-index: 1;
     }
 
-    .btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: -1;
-        border-radius: 12px;
-    }
-
-    .btn:hover::before {
-        opacity: 1;
-    }
-
     .btn-primary {
-        background: white !important; /* БЕЛЫЙ ФОН */
-        color: #0a0a0a !important; /* ЧЕРНЫЙ ТЕКСТ для контраста */
+        background: white !important;
+        color: #0a0a0a !important;
         font-weight: 700;
         border: 1px solid rgba(255, 255, 255, 0.3) !important;
         box-shadow: 
@@ -412,23 +414,10 @@
         color: #0a0a0a !important;
     }
 
-    .btn-primary:active {
-        transform: translateY(-1px);
-    }
-
     .btn-small {
         padding: 10px 22px;
         font-size: 13.5px;
         border-radius: 10px;
-    }
-
-    .btn i {
-        font-size: 14px;
-        transition: transform 0.3s ease;
-    }
-
-    .btn:hover i {
-        transform: translateX(3px);
     }
 
     /* КНОПКА В ХЕДЕРЕ */
@@ -527,14 +516,6 @@
 
     /* ===== МОБИЛЬНЫЕ СТИЛИ ===== */
     @media (max-width: 768px) {
-        .main-header {
-            padding: 16px 0;
-        }
-        
-        .main-header.scrolled {
-            padding: 12px 0;
-        }
-        
         .logo-mark {
             width: 38px;
             height: 38px;
@@ -636,10 +617,6 @@
     }
 
     @media (max-width: 480px) {
-        .main-header {
-            padding: 14px 0;
-        }
-        
         .main-header .container {
             padding: 0 16px;
         }
@@ -714,141 +691,13 @@
         }
     }
 
-    /* ===== АДАПТАЦИЯ ДЛЯ РЕДУЦИРОВАННОГО ДВИЖЕНИЯ ===== */
-    @media (prefers-reduced-motion: reduce) {
-        .main-header,
-        .nav-link,
-        .btn,
-        .lang-btn,
-        .logo,
-        .logo-mark,
-        .mobile-menu-toggle,
-        .mobile-menu-overlay {
-            transition: none !important;
-        }
-        
-        .lang-slider {
-            transition: none !important;
-        }
-        
-        .nav-link:hover,
-        .btn:hover,
-        .logo:hover .logo-mark {
-            transform: none !important;
-        }
-        
-        .mobile-menu-toggle.active span {
-            transition: none !important;
-        }
-    }
-
-    /* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ УЛУЧШЕНИЯ ДОСТУПНОСТИ ===== */
-    .nav-link:focus,
-    .btn:focus,
-    .lang-btn:focus,
-    .mobile-menu-toggle:focus {
-        outline: 2px solid rgba(255, 255, 255, 0.6);
-        outline-offset: 2px;
-    }
-
-    .nav-link:focus-visible,
-    .btn:focus-visible,
-    .lang-btn:focus-visible,
-    .mobile-menu-toggle:focus-visible {
-        outline: 2px solid rgba(255, 255, 255, 0.8);
-        outline-offset: 2px;
-    }
-
-    /* ===== СТИЛИ ДЛЯ ВЫСОКОКОНТРАСТНЫХ РЕЖИМОВ ===== */
-    @media (prefers-contrast: high) {
-        .main-header {
-            background: rgba(0, 0, 0, 0.9) !important;
-            border: 2px solid white !important;
-        }
-        
-        .nav-link {
-            color: white !important;
-        }
-        
-        .nav-link.active {
-            background: white !important;
-            color: black !important;
-        }
-        
-        .btn-primary {
-            background: white !important;
-            color: black !important;
-            border: 2px solid white !important;
-        }
-        
-        .logo-mark {
-            background: white !important;
-            color: black !important;
-            border: 2px solid white !important;
-        }
-    }
-
-    /* ===== СТИЛИ ДЛЯ ТЕМНОЙ ТЕМЫ ===== */
-    @media (prefers-color-scheme: dark) {
-        .main-header {
-            background: rgba(255, 255, 255, 0.05) !important;
-        }
-        
-        .main-header.scrolled {
-            background: rgba(255, 255, 255, 0.08) !important;
-        }
-        
-        @media (max-width: 768px) {
-            .main-header {
-                background: rgba(10, 10, 20, 0.95) !important;
-            }
-        }
-    }
-
-    /* ===== АНИМАЦИЯ ПОЯВЛЕНИЯ ===== */
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateX(-50%) translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-    }
-
-    .main-header {
-        animation: slideDown 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-
-    /* ===== HEADER GLASS EFFECTS ===== */
-    .header-glass-enter {
-        animation: glassEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-
-    @keyframes glassEnter {
-        0% {
-            opacity: 0;
-            transform: translateX(-50%) translateY(-20px);
-            backdrop-filter: blur(5px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            backdrop-filter: blur(25px) saturate(180%);
-        }
-    }
-
-    .glass-morph {
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-        backdrop-filter: blur(35px) saturate(200%) !important;
-        -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
-        background: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        box-shadow: 
-            0 15px 45px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.15),
-            inset 0 0 30px rgba(255, 255, 255, 0.1) !important;
+    /* ===== ВЫСОКИЙ ПРИОРИТЕТ ДЛЯ FIXES ===== */
+    body.services-page .main-header,
+    body.about-page .main-header {
+        /* !important для гарантии переопределения */
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        right: auto !important;
     }
 </style>
 
@@ -937,16 +786,20 @@
 </style>
 
 <script>
-// ===== УНИВЕРСАЛЬНЫЙ СКРИПТ ХЕДЕРА =====
+// ===== УПРОЩЕННЫЙ СКРИПТ ХЕДЕРА БЕЗ АНИМАЦИЙ ДЛЯ SERVICES/ABOUT =====
 (function() {
     'use strict';
     
-    console.log('🚀 Загрузка прозрачного хедера с белыми элементами...');
+    console.log('🚀 Загрузка фиксированного хедера...');
     
     // ===== ОСНОВНЫЕ ПЕРЕМЕННЫЕ =====
     let isMobileMenuOpen = false;
-    let lastScrollY = window.scrollY;
-    let ticking = false;
+    
+    // Определяем тип страницы
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const isServicesPage = currentPage === 'services.html';
+    const isAboutPage = currentPage === 'about.html';
+    const isHomePage = currentPage === 'index.html' || currentPage === '' || currentPage === '/';
     
     // ===== ОСНОВНЫЕ ФУНКЦИИ =====
     
@@ -1133,24 +986,76 @@
     }
 
     /**
-     * Настройка эффекта скролла для прозрачного хедера
+     * ФИКС: Корректное позиционирование хедера для всех страниц
+     */
+    function fixHeaderPosition() {
+        const header = document.querySelector('.main-header');
+        if (!header) return;
+        
+        console.log('🔧 Применение фикса позиции хедера для:', currentPage);
+        
+        // Отключаем все анимации для Services/About страниц
+        if (isServicesPage || isAboutPage) {
+            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+        }
+        
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile) {
+            // Мобильная версия
+            header.style.position = 'fixed';
+            header.style.left = '0';
+            header.style.transform = 'translateY(0)';
+            header.style.right = '0';
+            header.style.width = '100%';
+            header.style.maxWidth = '100%';
+            header.style.margin = '0';
+            header.style.borderRadius = '0';
+            header.style.top = '0';
+        } else {
+            // Десктопная версия - ВСЕГДА центрируем
+            header.style.position = 'fixed';
+            header.style.left = '50%';
+            header.style.transform = 'translateX(-50%) translateY(0)';
+            header.style.right = 'auto';
+            header.style.width = 'calc(100% - 40px)';
+            header.style.maxWidth = '1400px';
+            header.style.margin = '0 auto';
+            header.style.top = '20px';
+            header.style.borderRadius = '20px';
+        }
+        
+        // Гарантируем видимость
+        header.style.opacity = '1';
+        header.style.zIndex = '1000';
+        header.style.pointerEvents = 'auto';
+        
+        // Убираем все классы, которые могут скрывать хедер
+        header.classList.remove('header-hidden', 'header-scrolled');
+        
+        // Для Services/About страниц гарантируем отсутствие анимаций
+        if (isServicesPage || isAboutPage) {
+            header.setAttribute('data-fixed-header', 'true');
+        }
+        
+        console.log('✅ Позиция хедера исправлена');
+    }
+
+    /**
+     * Настройка эффекта скролла (только для главной страницы)
      */
     function setupScrollEffect() {
         const header = document.querySelector('.main-header');
         if (!header) return;
         
-        // Определяем тип страницы
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const isHomePage = currentPage === 'index.html' || currentPage === '' || currentPage === '/';
-        const isServicesPage = currentPage === 'services.html';
-        const isAboutPage = currentPage === 'about.html';
-        
-        // Для страниц услуг и "о нас" отключаем скрытие хедера
+        // Для Services/About страниц отключаем скрытие
         if (isServicesPage || isAboutPage) {
             console.log('📄 Services/About page - отключаем скрытие хедера');
-            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
             return;
         }
+        
+        let lastScrollY = window.scrollY;
+        let ticking = false;
         
         function updateHeaderOnScroll() {
             const currentScrollY = window.scrollY;
@@ -1163,19 +1068,13 @@
             }
             
             // Логика скрытия только для главной страницы
-            if (isHomePage && !headerState.isMobile) {
+            if (isHomePage && window.innerWidth > 768) {
                 if (currentScrollY > lastScrollY && currentScrollY > 100) {
                     // Прокрутка вниз - скрываем
-                    if (!headerState.isHidden) {
-                        header.classList.add('header-hidden');
-                        headerState.isHidden = true;
-                    }
+                    header.classList.add('header-hidden');
                 } else if (currentScrollY < lastScrollY) {
                     // Прокрутка вверх - показываем
-                    if (headerState.isHidden) {
-                        header.classList.remove('header-hidden');
-                        headerState.isHidden = false;
-                    }
+                    header.classList.remove('header-hidden');
                 }
             }
             
@@ -1190,19 +1089,6 @@
                 ticking = true;
             }
         }, { passive: true });
-        
-        // Инициализация
-        updateHeaderOnScroll();
-        
-        // Показываем хедер при наведении (только для главной)
-        if (isHomePage) {
-            header.addEventListener('mouseenter', () => {
-                if (headerState.isHidden) {
-                    header.classList.remove('header-hidden');
-                    headerState.isHidden = false;
-                }
-            });
-        }
         
         console.log('✅ Эффект скролла настроен');
     }
@@ -1232,12 +1118,11 @@
     /**
      * Основная функция инициализации хедера
      */
-    function initUniversalHeader() {
-        console.log('🚀 Инициализация прозрачного хедера с белыми элементами...');
+    function initFixedHeader() {
+        console.log('🚀 Инициализация фиксированного хедера...');
         
         // Определяем тип страницы для body classes
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        if (currentPage === 'index.html' || currentPage === '' || currentPage === '/') {
+        if (isHomePage) {
             document.body.classList.add('home-page');
         } else {
             document.body.classList.add('internal-page');
@@ -1248,6 +1133,7 @@
         setupMobileMenu();
         setActiveNavLink();
         setupLanguageSwitcher();
+        fixHeaderPosition(); // ВАЖНО: сначала фиксируем позицию
         setupScrollEffect();
         setupBodyPadding();
         
@@ -1256,37 +1142,28 @@
             updateLanguageSwitcherState(e.detail.lang);
         });
         
-        console.log('✅ Прозрачный хедер с белыми элементами инициализирован');
+        // Обработчик изменения размера окна
+        window.addEventListener('resize', () => {
+            fixHeaderPosition();
+        });
+        
+        console.log('✅ Фиксированный хедер инициализирован');
     }
-
-    // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ДЛЯ УПРАВЛЕНИЯ ХЕДЕРОМ =====
-    const headerState = {
-        isHidden: false,
-        lastScrollY: 0,
-        isMobile: window.innerWidth <= 768,
-        ticking: false
-    };
 
     // ===== АВТОМАТИЧЕСКАЯ ИНИЦИАЛИЗАЦИЯ =====
     
     // Ждем полной загрузки DOM
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initUniversalHeader, 100);
+            setTimeout(initFixedHeader, 100);
         });
     } else {
-        setTimeout(initUniversalHeader, 100);
+        setTimeout(initFixedHeader, 100);
     }
     
-    // ===== ЭКСПОРТ ФУНКЦИЙ ДЛЯ ВНЕШНЕГО ИСПОЛЬЗОВАНИЯ =====
+    // Дополнительный фикс через 500ms
+    setTimeout(fixHeaderPosition, 500);
     
-    window.initUniversalHeader = initUniversalHeader;
-    window.setupMobileMenu = setupMobileMenu;
-    window.setActiveNavLink = setActiveNavLink;
-    window.setupLanguageSwitcher = setupLanguageSwitcher;
-    window.updateLanguageSwitcherState = updateLanguageSwitcherState;
-    window.setupScrollEffect = setupScrollEffect;
-    
-    console.log('✅ Прозрачный хедер с белыми элементами загружен и готов к инициализации');
+    console.log('✅ Файл header.html с фиксами загружен');
 })();
 </script>
