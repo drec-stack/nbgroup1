@@ -1,3 +1,4 @@
+/* style.css */
 :root {
     /* ОСНОВНЫЕ ЦВЕТА - СИНЯЯ ПАЛИТРА ДЛЯ КОНТЕНТА */
     --primary-blue: #0066ff;
@@ -130,6 +131,7 @@ body {
     width: 100%;
 }
 
+/* ===== ЛОГОТИП - БЕЛЫЙ ===== */
 .logo {
     display: flex;
     align-items: center;
@@ -149,25 +151,34 @@ body {
 .logo-mark {
     width: 40px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.9);
+    background: white !important; /* БЕЛЫЙ ФОН */
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
     font-size: 16px;
-    color: var(--primary-blue);
+    color: #0a0a0a !important; /* ЧЕРНЫЙ ТЕКСТ для контраста */
     transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 
+        0 4px 20px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .logo-mark:hover {
     transform: scale(1.05);
-    background: white;
+    background: white !important;
+    box-shadow: 
+        0 8px 30px rgba(255, 255, 255, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .logo-text {
-    color: white;
+    color: white !important; /* БЕЛЫЙ ТЕКСТ */
     font-weight: 700;
+    background: none !important;
+    -webkit-text-fill-color: white !important;
 }
 
 .main-nav {
@@ -195,6 +206,11 @@ body {
     transform: translateY(-2px);
 }
 
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.15) !important; /* БЕЛЫЙ ПРОЗРАЧНЫЙ ФОН */
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* БЕЛАЯ ГРАНИЦА */
+}
+
 .nav-link::after {
     content: '';
     position: absolute;
@@ -210,6 +226,19 @@ body {
 
 .nav-link:hover::after {
     width: 80%;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: white !important; /* БЕЛАЯ ТОЧКА */
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7) !important;
 }
 
 .header-actions {
@@ -234,16 +263,37 @@ body {
 }
 
 .btn-primary {
-    background: rgba(255, 255, 255, 0.9);
-    color: #ff0000 !important; /* КРАСНЫЙ ТЕКСТ ДЛЯ КНОПКИ */
+    background: white !important; /* БЕЛЫЙ ФОН */
+    color: #0a0a0a !important; /* ЧЕРНЫЙ ТЕКСТ для контраста */
     font-weight: 700;
 }
 
 .btn-primary:hover {
-    background: white;
-    color: #cc0000 !important; /* ТЕМНЫЙ КРАСНЫЙ ПРИ НАВЕДЕНИИ */
+    background: white !important;
+    color: #0a0a0a !important;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+}
+
+/* КНОПКА В ХЕДЕРЕ */
+.header-actions .btn-primary {
+    background: white !important;
+    color: #0a0a0a !important;
+    font-weight: 700;
+    backdrop-filter: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 
+        0 4px 20px rgba(255, 255, 255, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.header-actions .btn-primary:hover {
+    background: white !important;
+    color: #0a0a0a !important;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 30px rgba(255, 255, 255, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .btn-secondary {
@@ -285,7 +335,7 @@ body {
     box-shadow: 0 12px 35px rgba(0, 102, 255, 0.4);
 }
 
-/* ===== LANGUAGE SWITCHER - ПРОЗРАЧНЫЙ ===== */
+/* ===== LANGUAGE SWITCHER - ПРОЗРАЧНЫЙ С БЕЛЫМ ИНДИКАТОРОМ ===== */
 .language-switcher {
     display: flex;
     align-items: center;
@@ -334,16 +384,16 @@ body {
     left: 4px;
     width: calc(50% - 4px);
     height: calc(100% - 8px);
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.25) !important; /* БЕЛЫЙ ИНДИКАТОР */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 20px;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 1;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* БЕЛАЯ ГРАНИЦА */
     box-shadow: 
-        0 4px 12px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 4px 12px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .language-switcher[data-current-lang="en"] .lang-slider {
@@ -453,26 +503,29 @@ body {
 .footer-logo .logo-mark {
     width: 40px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.9);
+    background: white !important; /* БЕЛЫЙ ФОН */
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
     font-size: 16px;
-    color: var(--primary-blue);
+    color: #0a0a0a !important; /* ЧЕРНЫЙ ТЕКСТ */
     transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 
 .footer-logo .logo-mark:hover {
     transform: scale(1.05);
-    background: white;
+    background: white !important;
 }
 
 .footer-logo .logo-text {
-    color: white;
+    color: white !important; /* БЕЛЫЙ ТЕКСТ */
     font-weight: 700;
     font-size: 20px;
+    background: none !important;
+    -webkit-text-fill-color: white !important;
 }
 
 .footer-description {
@@ -2725,6 +2778,8 @@ a:focus-visible {
         height: 30px;
         font-size: 14px;
         border-radius: 6px;
+        background: white !important;
+        color: #0a0a0a !important;
     }
     
     .language-switcher {
@@ -2870,7 +2925,7 @@ a:focus-visible {
     .nav-link:hover,
     .nav-link.active {
         background: white !important;
-        color: var(--primary-blue) !important;
+        color: black !important;
     }
     
     .card {
@@ -2886,7 +2941,19 @@ a:focus-visible {
     .nav-link:hover,
     .btn:hover {
         background: white !important;
-        color: var(--primary) !important;
+        color: black !important;
+    }
+    
+    .logo-mark {
+        background: white !important;
+        color: black !important;
+        border: 2px solid white !important;
+    }
+    
+    .header-actions .btn-primary {
+        background: white !important;
+        color: black !important;
+        border: 2px solid white !important;
     }
 }
 
@@ -2939,26 +3006,6 @@ a:focus-visible {
     .mobile-menu-toggle {
         display: none !important;
     }
-}
-
-/* ===== КРАСНЫЙ ТЕКСТ ДЛЯ КНОПКИ "НАЧАТЬ ПРОЕКТ" ===== */
-.header-actions .btn-primary {
-    color: #ff0000 !important;
-    font-weight: 700;
-    backdrop-filter: none !important;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 
-        0 4px 20px rgba(0, 102, 255, 0.3),
-        0 0 0 1px rgba(255, 255, 255, 0.1);
-}
-
-.header-actions .btn-primary:hover {
-    background: white !important;
-    color: #cc0000 !important;
-    transform: translateY(-2px);
-    box-shadow: 
-        0 8px 30px rgba(0, 102, 255, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 /* ===== СИНИЙ ТЕКСТ ДЛЯ ЗАГОЛОВКА "НАША ЭКСПЕРТИЗА" ===== */
@@ -3123,4 +3170,93 @@ body.contacts-page .main-header.scrolled {
     background: rgba(255, 255, 255, 0.08) !important;
     backdrop-filter: blur(30px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+}
+
+/* ===== ФИНАЛЬНЫЕ ФИКСЫ ДЛЯ БЕЛЫХ ЭЛЕМЕНТОВ ХЕДЕРА ===== */
+/* Добавлено для гарантии белых элементов */
+
+/* 1. Гарантируем белый фон логотипа во всех состояниях */
+.logo-mark,
+.logo:hover .logo-mark,
+.logo-mark:hover,
+.footer-logo .logo-mark,
+.footer-logo .logo-mark:hover {
+    background: white !important;
+    color: #0a0a0a !important;
+}
+
+/* 2. Гарантируем белый текст логотипа */
+.logo-text,
+.footer-logo .logo-text {
+    color: white !important;
+    background: none !important;
+    -webkit-text-fill-color: white !important;
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
+}
+
+/* 3. Гарантируем белую кнопку в хедере */
+.header-actions .btn-primary,
+.header-actions .btn-primary:hover,
+.header-actions .btn-primary:active {
+    background: white !important;
+    color: #0a0a0a !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* 4. Гарантируем белый индикатор переключателя языка */
+.lang-slider {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 5. Гарантируем белую активную навигацию */
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.nav-link.active::after {
+    background: white !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7) !important;
+}
+
+/* 6. Для других кнопок (если есть в контенте) */
+.btn-primary:not(.header-actions .btn-primary) {
+    background: white !important;
+    color: #0a0a0a !important;
+}
+
+/* 7. Мобильная версия */
+@media (max-width: 768px) {
+    .logo-mark {
+        background: white !important;
+        color: #0a0a0a !important;
+    }
+    
+    .logo-text {
+        color: white !important;
+    }
+    
+    .header-actions .btn-primary {
+        background: white !important;
+        color: #0a0a0a !important;
+    }
+    
+    .lang-slider {
+        background: rgba(255, 255, 255, 0.25) !important;
+    }
+    
+    .nav-link.active {
+        background: rgba(255, 255, 255, 0.15) !important;
+    }
+}
+
+/* 8. Высокий приоритет для переопределения */
+.main-header .logo-mark,
+.main-header .logo-text,
+.main-header .header-actions .btn-primary,
+.main-header .language-switcher .lang-slider,
+.main-header .nav-link.active {
+    /* Принудительное переопределение */
 }
