@@ -141,9 +141,6 @@ class ComponentLoader {
         if (this.loadedComponents.has('footer')) {
             this.initFooter();
         }
-        
-        // Обновляем активную навигацию
-        this.updateActiveNav();
     }
     
     /**
@@ -154,15 +151,14 @@ class ComponentLoader {
         
         // Даем время на загрузку стилей
         setTimeout(() => {
-            // Используем функции из загруженного скрипта header
-            if (typeof window.initHeader === 'function') {
-                window.initHeader();
+            // Используем универсальную функцию инициализации
+            if (typeof window.initUniversalHeader === 'function') {
+                window.initUniversalHeader();
             } else {
-                // Альтернативная инициализация
+                // Альтернативная инициализация если функция не найдена
                 if (typeof setupMobileMenu === 'function') setupMobileMenu();
                 if (typeof setActiveNavLink === 'function') setActiveNavLink();
                 if (typeof setupLanguageSwitcher === 'function') setupLanguageSwitcher();
-                if (typeof setupHeaderScrollLogic === 'function') setupHeaderScrollLogic();
                 
                 console.log('✅ Хедер инициализирован (альтернативный метод)');
             }
@@ -175,7 +171,6 @@ class ComponentLoader {
     initFooter() {
         console.log('🦶 Инициализация футера...');
         
-        // Используем функцию из загруженного скрипта footer
         setTimeout(() => {
             if (typeof window.initFooter === 'function') {
                 window.initFooter();
@@ -183,25 +178,6 @@ class ComponentLoader {
                 console.log('⚠️ Функция initFooter не найдена');
             }
         }, 150);
-    }
-    
-    /**
-     * Обновляет активную ссылку в навигации
-     */
-    updateActiveNav() {
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href === currentPage || 
-                (currentPage === '' && href === 'index.html') ||
-                (currentPage === 'index.html' && href === 'index.html')) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
     }
     
     /**
@@ -234,7 +210,6 @@ class ComponentLoader {
             footerContainer.innerHTML = this.getFallbackFooter();
         }
         
-        // Инициализируем фолбэк компоненты
         setTimeout(() => {
             this.initFallbackComponents();
         }, 100);
@@ -245,7 +220,7 @@ class ComponentLoader {
      */
     getFallbackHeader() {
         return `
-            <header class="main-header" style="background: rgba(15, 20, 35, 0.95); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 15px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+            <header class="main-header" style="position: fixed; top: 0; left: 0; right: 0; background: rgba(15, 20, 35, 0.95); padding: 15px 0; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
                 <div class="container">
                     <div class="header-inner" style="display: flex; justify-content: space-between; align-items: center;">
                         <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none; color: white;">
@@ -253,19 +228,19 @@ class ComponentLoader {
                             <span class="logo-text" style="font-size: 18px; font-weight: bold;">NBGROUP.TECH</span>
                         </a>
                         <nav class="main-nav" style="display: flex; gap: 30px;">
-                            <a href="index.html" class="nav-link active" style="color: white; text-decoration: none; font-weight: 500;">Home</a>
-                            <a href="services.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Services</a>
-                            <a href="portfolio.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Work</a>
-                            <a href="brandbook.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Brandbook</a>
-                            <a href="about.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">About</a>
-                            <a href="contacts.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Contact</a>
+                            <a href="index.html" class="nav-link active" style="color: white; text-decoration: none; font-weight: 500;">Главная</a>
+                            <a href="about.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">О нас</a>
+                            <a href="services.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Услуги</a>
+                            <a href="portfolio.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Портфолио</a>
+                            <a href="brandbook.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Брендбук</a>
+                            <a href="contacts.html" class="nav-link" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;">Контакты</a>
                         </nav>
                         <div class="header-actions" style="display: flex; align-items: center; gap: 15px;">
                             <div class="language-switcher" style="display: flex; gap: 5px;">
                                 <button class="lang-btn" data-lang="ru" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer;">RU</button>
                                 <button class="lang-btn" data-lang="en" style="background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.7); padding: 5px 10px; border-radius: 4px; cursor: pointer;">EN</button>
                             </div>
-                            <a href="contacts.html" class="btn btn-small btn-primary" style="background: #0066ff; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 500;">Start Project</a>
+                            <a href="contacts.html" class="btn btn-small btn-primary" style="background: #0066ff; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 500;">Начать проект</a>
                         </div>
                     </div>
                 </div>
