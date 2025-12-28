@@ -1,4 +1,4 @@
-// services.js - COMPLETE header stabilization - NO MOVEMENT AT ALL!
+// services.js - COMPLETE header stabilization
 console.log('🛡️ Services.js loaded - ABSOLUTELY NO header movement!');
 
 // ===== ГЛАВНЫЙ ФИКС ХЕДЕРА =====
@@ -87,45 +87,13 @@ function lockHeaderPosition() {
         setTimeout(setFixedPosition, 10);
     });
     
-    // 7. СКРОЛЛ
+    // 7. СКРОЛЛ - НИКАКИХ ИЗМЕНЕНИЙ!
     window.addEventListener('scroll', () => {
         header.classList.add('scrolled');
         // НИКАКИХ ИЗМЕНЕНИЙ ПОЗИЦИИ ПРИ СКРОЛЛЕ!
     }, { passive: true });
     
-    // 8. ПЕРИОДИЧЕСКАЯ ПРОВЕРКА
-    const checkInterval = setInterval(() => {
-        setFixedPosition();
-    }, 2000);
-    
-    // 9. ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ
-    setTimeout(setFixedPosition, 100);
-    setTimeout(setFixedPosition, 500);
-    setTimeout(setFixedPosition, 1000);
-    
     console.log('✅ Header position LOCKED permanently');
-    
-    // Функция очистки
-    return () => clearInterval(checkInterval);
-}
-
-// ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
-function initServicesPage() {
-    console.log('🚀 Initializing Services page with FIXED header...');
-    
-    // 1. ФИКСИРУЕМ ХЕДЕР
-    const cleanup = lockHeaderPosition();
-    
-    // 2. ИНИЦИАЛИЗИРУЕМ ОСТАЛЬНОЙ ФУНКЦИОНАЛ
-    setupServicesContent();
-    setupNavigation();
-    
-    // 3. ОЧИСТКА
-    window.addEventListener('beforeunload', () => {
-        if (cleanup) cleanup();
-    });
-    
-    console.log('✅ Services page initialized');
 }
 
 // ===== ДОПОЛНИТЕЛЬНЫЙ ФУНКЦИОНАЛ =====
@@ -199,16 +167,36 @@ function setupNavigation() {
     });
 }
 
-// ===== АВТОМАТИЧЕСКАЯ ИНИЦИАЛИЗАЦИЯ =====
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(initServicesPage, 100);
-    });
-} else {
-    setTimeout(initServicesPage, 100);
+// ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ =====
+function initServicesPage() {
+    console.log('🚀 Initializing Services page with FIXED header...');
+    
+    // 1. ФИКСИРУЕМ ХЕДЕР (самое главное!)
+    lockHeaderPosition();
+    
+    // 2. ИНИЦИАЛИЗИРУЕМ ОСТАЛЬНОЙ ФУНКЦИОНАЛ
+    setupServicesContent();
+    setupNavigation();
+    
+    console.log('✅ Services page initialized');
 }
 
-// Экспорт
+// ===== АВТОМАТИЧЕСКАЯ ИНИЦИАЛИЗАЦИЯ =====
+// Ждем загрузки header.html и main.js
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('📄 DOM loaded - waiting for header initialization...');
+    
+    // Даем время на инициализацию хедера из header.html
+    setTimeout(() => {
+        // ФИКС: Проверяем, не вызвана ли уже инициализация
+        if (!window.servicesPageInitialized) {
+            window.servicesPageInitialized = true;
+            initServicesPage();
+        }
+    }, 300); // Увеличил задержку для надежности
+});
+
+// Экспорт функций
 window.lockHeaderPosition = lockHeaderPosition;
 window.initServicesPage = initServicesPage;
 
