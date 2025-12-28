@@ -9,82 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/animations.css">
     
-    <!-- ЕДИНЫЙ СКРИПТ КОМПОНЕНТОВ -->
+    <!-- Компоненты -->
     <script src="js/components.js"></script>
-    
-    <style>
-        /* КРИТИЧЕСКИЕ СТИЛИ для хедера - загружаются сразу */
-        .main-header {
-            position: fixed !important;
-            top: 20px !important;
-            left: 50% !important;
-            transform: translateX(-50%) translateY(0) !important;
-            width: calc(100% - 40px) !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            z-index: 1000 !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-            transition: all 0.4s ease !important;
-            border-radius: 20px !important;
-            background: rgba(0, 102, 255, 0.12) !important;
-            backdrop-filter: blur(16px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.22) !important;
-        }
-        
-        .main-header.header-hidden {
-            transform: translateX(-50%) translateY(-100%) !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-        
-        .main-header.header-scrolled {
-            background: rgba(0, 102, 255, 0.2) !important;
-            backdrop-filter: blur(20px) saturate(200%) !important;
-            -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
-        }
-        
-        @media (max-width: 768px) {
-            body.brandbook-page {
-                padding-top: 60px;
-            }
-            
-            .main-header {
-                top: 0 !important;
-                left: 0 !important;
-                transform: none !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                border-radius: 0 !important;
-                margin: 0 !important;
-                padding: 14px 0 !important;
-                background: rgba(0, 102, 255, 0.22) !important;
-                border: none !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-            }
-            
-            .main-header.header-hidden {
-                transform: translateY(-100%) !important;
-            }
-        }
-        
-        /* Ensure content starts below header */
-        body.brandbook-page {
-            padding-top: 80px;
-            background: var(--secondary);
-            overflow-x: hidden;
-        }
-        
-        @media (max-width: 768px) {
-            body.brandbook-page {
-                padding-top: 60px;
-            }
-        }
-    </style>
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/brandbook.js"></script>
+    <script src="js/animations.js"></script>
 </head>
 <body class="brandbook-page">
-    <!-- Header Container (загрузится автоматически через components.js) -->
+    <!-- Header Container -->
     <div id="header-container"></div>
     
     <!-- HERO -->
@@ -242,89 +175,64 @@
         </div>
     </section>
 
-    <!-- Footer Container (загрузится автоматически через components.js) -->
+    <!-- Footer Container -->
     <div id="footer-container"></div>
     
-    <!-- JavaScript -->
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/brandbook.js"></script>
-    <script src="js/animations.js"></script>
-    
     <script>
-        // CRITICAL FIX: Apply header positioning immediately
-        (function() {
-            // Apply header styles immediately to prevent FOUC (Flash of Unstyled Content)
-            const style = document.createElement('style');
-            style.textContent = `
-                .main-header {
-                    position: fixed !important;
-                    top: 20px !important;
-                    left: 50% !important;
-                    transform: translateX(-50%) translateY(0) !important;
-                    width: calc(100% - 40px) !important;
-                    max-width: 1400px !important;
-                    margin: 0 auto !important;
-                    z-index: 1000 !important;
-                    opacity: 1 !important;
-                    pointer-events: auto !important;
-                    transition: all 0.4s ease !important;
-                    border-radius: 20px !important;
-                    background: rgba(0, 102, 255, 0.12) !important;
-                    backdrop-filter: blur(16px) saturate(180%) !important;
-                    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-                    border: 1px solid rgba(255, 255, 255, 0.22) !important;
-                }
+        // Инициализация страницы брендбука
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Страница брендбука загружена');
+            
+            // Фильтрация кейсов
+            function setupBrandbookFilter() {
+                const filterBtns = document.querySelectorAll('.filter-btn');
+                const brandCases = document.querySelectorAll('.brand-case');
                 
-                @media (max-width: 768px) {
-                    .main-header {
-                        top: 0 !important;
-                        left: 0 !important;
-                        transform: none !important;
-                        width: 100% !important;
-                        max-width: 100% !important;
-                        border-radius: 0 !important;
-                        margin: 0 !important;
-                        padding: 14px 0 !important;
-                        background: rgba(0, 102, 255, 0.22) !important;
-                        border: none !important;
-                        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Обновляем активную кнопку
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        const filter = this.getAttribute('data-filter');
+                        
+                        // Показываем/скрываем кейсы
+                        brandCases.forEach(brandCase => {
+                            if (filter === 'all' || brandCase.getAttribute('data-category') === filter) {
+                                brandCase.style.display = 'block';
+                                setTimeout(() => {
+                                    brandCase.style.opacity = '1';
+                                    brandCase.style.transform = 'translateY(0)';
+                                }, 10);
+                            } else {
+                                brandCase.style.opacity = '0';
+                                brandCase.style.transform = 'translateY(20px)';
+                                setTimeout(() => {
+                                    brandCase.style.display = 'none';
+                                }, 300);
+                            }
+                        });
+                    });
+                });
+            }
             
-            // Initialize i18n with delay
+            // Инициализация переводов
             setTimeout(() => {
-                if (window.i18n && window.i18n.init) {
-                    window.i18n.init();
+                if (window.i18n && window.i18n.refresh) {
+                    window.i18n.refresh();
                 }
-            }, 300);
+            }, 500);
             
-            // Initialize brandbook page animations
+            // Инициализация фильтрации
+            setupBrandbookFilter();
+            
+            // Инициализация анимаций
             setTimeout(() => {
                 if (typeof window.initBrandbook === 'function') {
                     window.initBrandbook();
                 }
-            }, 1500);
-            
-            // Smooth scrolling for anchor links
-            document.addEventListener('click', function(e) {
-                if (e.target.matches('a[href^="#"]')) {
-                    e.preventDefault();
-                    const id = e.target.getAttribute('href');
-                    if (id === '#') return;
-                    
-                    const element = document.querySelector(id);
-                    if (element) {
-                        window.scrollTo({
-                            top: element.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                }
-            });
-        })();
+            }, 1000);
+        });
     </script>
 </body>
 </html>
