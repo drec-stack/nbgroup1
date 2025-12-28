@@ -46,11 +46,7 @@ body {
     line-height: 1.6;
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
-}
-
-/* ДОБАВЛЕН ОТСТУП ДЛЯ ФИКСИРОВАННОГО ХЕДЕРА */
-main {
-    margin-top: 120px;
+    padding-top: 80px; /* Отступ для фиксированного хедера */
 }
 
 .container {
@@ -59,29 +55,58 @@ main {
     padding: 0 20px;
 }
 
-/* ===== ЗАКРУГЛЕННЫЙ СИНИЙ HEADER ===== */
+/* ===== ЗАКРУГЛЕННЫЙ ПРОЗРАЧНЫЙ GLASS HEADER ===== */
 .main-header {
     position: fixed;
     top: 20px;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: calc(100% - 40px);
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px 0;
-    background: var(--blue-gradient);
+    background: rgba(255, 255, 255, 0.05) !important; /* ЧИСТОЕ СТЕКЛО */
     z-index: 1000;
     border-radius: 20px;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(0, 102, 255, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    backdrop-filter: blur(25px) saturate(180%);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     
-    /* Анимация скрытия/появления */
-    transform: translateY(0);
+    /* Анимация */
     opacity: 1;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Эффект при скролле - легкое затемнение */
+.main-header.scrolled {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 0 25px rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 15px 0;
+}
+
+/* Эффект при наведении */
+.main-header:hover {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+}
+
+/* Хедер скрыт (только для главной) */
+.main-header.header-hidden {
+    transform: translateX(-50%) translateY(-100%) !important;
+    opacity: 0 !important;
+    pointer-events: none;
 }
 
 /* Убираем отступы у контейнера внутри хедера */
@@ -114,6 +139,7 @@ main {
     font-size: 20px;
     gap: 12px;
     transition: var(--transition);
+    z-index: 1001;
 }
 
 .logo:hover {
@@ -158,12 +184,15 @@ main {
     position: relative;
     padding: 8px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .nav-link:hover,
 .nav-link.active {
     color: white;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
 }
 
 .nav-link::after {
@@ -256,19 +285,22 @@ main {
     box-shadow: 0 12px 35px rgba(0, 102, 255, 0.4);
 }
 
-/* ===== LANGUAGE SWITCHER ===== */
+/* ===== LANGUAGE SWITCHER - ПРОЗРАЧНЫЙ ===== */
 .language-switcher {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 25px;
     padding: 4px;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
     min-width: 120px;
     height: 40px;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .lang-btn {
@@ -278,12 +310,12 @@ main {
     padding: 8px 16px;
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     border-radius: 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     z-index: 2;
     min-width: 56px;
@@ -302,11 +334,16 @@ main {
     left: 4px;
     width: calc(50% - 4px);
     height: calc(100% - 8px);
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 20px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 1;
-    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .language-switcher[data-current-lang="en"] .lang-slider {
@@ -324,7 +361,7 @@ main {
 
 .lang-btn:hover:not(.active) {
     color: white;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .mobile-menu-toggle {
@@ -2389,6 +2426,7 @@ a:focus-visible {
         width: 100%;
         max-width: 100%;
         overflow-x: hidden;
+        padding-top: 70px !important;
     }
     
     /* Хедер на всю ширину */
@@ -2400,6 +2438,23 @@ a:focus-visible {
         left: 0 !important;
         right: 0 !important;
         margin: 0 !important;
+        transform: none !important;
+        background: rgba(10, 10, 20, 0.95) !important;
+        backdrop-filter: blur(30px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    
+    .main-header.scrolled {
+        background: rgba(10, 10, 20, 0.98) !important;
+        padding: 10px 0 !important;
+    }
+    
+    .main-header.header-hidden {
+        transform: translateY(-100%) !important;
     }
     
     /* Контейнер хедера без отступов */
@@ -2413,10 +2468,25 @@ a:focus-visible {
         width: 100% !important;
         border-radius: 0 !important;
         right: -100% !important;
+        background: rgba(10, 10, 20, 0.98) !important;
+        backdrop-filter: blur(30px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.15) !important;
+        box-shadow: -10px 0 50px rgba(0, 0, 0, 0.5) !important;
     }
     
     .main-nav.active {
         right: 0 !important;
+    }
+    
+    /* Показываем бургер-меню на мобильных */
+    .mobile-menu-toggle {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 32px !important;
+        height: 32px !important;
+        pointer-events: auto !important;
     }
     
     /* Увеличение touch target для мобильных */
@@ -2451,6 +2521,13 @@ a:focus-visible {
     .card-link:active {
         background: rgba(255, 255, 255, 0.15);
         transform: scale(0.95);
+    }
+    
+    /* Прозрачный language switcher на мобильных */
+    .language-switcher {
+        background: rgba(255, 255, 255, 0.12) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
     }
     
     /* Footer Mobile */
@@ -2627,12 +2704,12 @@ a:focus-visible {
 }
 
 @media (max-width: 480px) {
-    main {
-        margin-top: 90px;
+    body {
+        padding-top: 65px;
     }
     
     .main-header {
-        padding: 12px 0;
+        padding: 12px 0 !important;
     }
     
     .main-header .header-inner {
@@ -2722,23 +2799,23 @@ a:focus-visible {
     }
     
     .main-header {
-        transition: none;
+        transition: none !important;
     }
     
     .nav-link::after {
-        transition: none;
+        transition: none !important;
     }
     
     .lang-slider {
-        transition: none;
+        transition: none !important;
     }
     
     .scroll-arrow {
-        animation: none;
+        animation: none !important;
     }
     
     .marquee-track {
-        animation: none;
+        animation: none !important;
     }
     
     [role="link"],
@@ -2752,7 +2829,7 @@ a:focus-visible {
     .value-card,
     .team-member,
     .contact-card {
-        transition: none;
+        transition: none !important;
     }
     
     [role="link"]:hover,
@@ -2766,33 +2843,34 @@ a:focus-visible {
     .value-card:hover,
     .team-member:hover,
     .contact-card:hover {
-        transform: none;
+        transform: none !important;
     }
     
     .page-transition {
-        transition: none;
+        transition: none !important;
     }
     
     .parallax-bg {
-        transition: none;
-        background-attachment: scroll;
+        transition: none !important;
+        background-attachment: scroll !important;
     }
 }
 
 /* ===== HIGH CONTRAST MODE ===== */
 @media (prefers-contrast: high) {
     .main-header {
-        border: 2px solid white;
+        border: 2px solid white !important;
+        background: rgba(0, 0, 0, 0.9) !important;
     }
     
     .nav-link {
-        color: white;
+        color: white !important;
     }
     
     .nav-link:hover,
     .nav-link.active {
-        background: white;
-        color: var(--primary-blue);
+        background: white !important;
+        color: var(--primary-blue) !important;
     }
     
     .card {
@@ -2802,35 +2880,47 @@ a:focus-visible {
     [role="link"]:focus,
     .clickable-element:focus,
     a:focus {
-        outline: 3px solid white;
+        outline: 3px solid white !important;
     }
     
     .nav-link:hover,
     .btn:hover {
-        background: white;
-        color: var(--primary);
+        background: white !important;
+        color: var(--primary) !important;
     }
 }
 
 /* ===== DARK MODE ENHANCEMENTS ===== */
 @media (prefers-color-scheme: dark) {
     .main-header {
-        background: var(--blue-gradient);
+        background: rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    .main-header.scrolled {
+        background: rgba(255, 255, 255, 0.08) !important;
+    }
+    
+    @media (max-width: 768px) {
+        .main-header {
+            background: rgba(10, 10, 20, 0.95) !important;
+        }
     }
     
     .main-footer {
-        background: #000000;
+        background: #000000 !important;
     }
 }
 
 /* ===== PRINT STYLES ===== */
 @media print {
     .main-header {
-        position: static;
+        position: static !important;
         background: #000 !important;
         color: #000 !important;
-        border-radius: 0;
-        box-shadow: none;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        transform: none !important;
+        opacity: 1 !important;
     }
     
     .main-footer {
@@ -2839,69 +2929,36 @@ a:focus-visible {
     }
     
     .btn {
-        display: none;
+        display: none !important;
     }
     
     .language-switcher {
-        display: none;
+        display: none !important;
     }
     
     .mobile-menu-toggle {
-        display: none;
+        display: none !important;
     }
 }
 
-/* ===== РАЗНОЕ ПОВЕДЕНИЕ ХЕДЕРА ДЛЯ ВНУТРЕННИХ СТРАНИЦ ===== */
-
-/* Для внутренних страниц хедер всегда видимый и с фоном */
-body.internal-page .main-header {
-    transform: translateY(0) !important;
-    background: var(--blue-gradient) !important;
-    backdrop-filter: blur(10px) !important;
-    opacity: 1 !important;
-}
-
-/* Убираем прозрачность для внутренних страниц */
-body.internal-page .main-header.scrolled {
-    background: var(--blue-gradient) !important;
-}
-
-/* Для главной страницы оставляем текущее поведение */
-body.home-page .main-header {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Гарантируем, что на внутренних страницах хедер всегда видим */
-body.internal-page .main-header {
-    position: sticky !important;
-    top: 20px !important;
-}
-
-/* Services navigation mobile fix */
-@media (max-width: 768px) {
-    .services-nav {
-        position: static;
-        transform: none !important;
-        opacity: 1 !important;
-    }
-    
-    .services-nav.hidden {
-        transform: none !important;
-        opacity: 1 !important;
-    }
-}
-
-/* ===== КРАСНЫЙ ТЕКСТ ДЛЯ КНОПКИ "НАЧАТЬ ПРОЕКТ" И ЗАГОЛОВКА "НАШИ УСЛУГИ" ===== */
+/* ===== КРАСНЫЙ ТЕКСТ ДЛЯ КНОПКИ "НАЧАТЬ ПРОЕКТ" ===== */
 .header-actions .btn-primary {
     color: #ff0000 !important;
     font-weight: 700;
+    backdrop-filter: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 
+        0 4px 20px rgba(0, 102, 255, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-.services-preview .section-title {
-    color: #ff0000 !important;
-    -webkit-text-fill-color: #ff0000 !important;
-    background: none !important;
+.header-actions .btn-primary:hover {
+    background: white !important;
+    color: #cc0000 !important;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 30px rgba(0, 102, 255, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 /* ===== СИНИЙ ТЕКСТ ДЛЯ ЗАГОЛОВКА "НАША ЭКСПЕРТИЗА" ===== */
@@ -2912,493 +2969,30 @@ body.internal-page .main-header {
     font-weight: 800;
 }
 
-/* ===== ОБЩИЕ ФИКСЫ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ ===== */
-
-/* 1. Убираем горизонтальный скролл */
-html, body {
-    max-width: 100vw;
-    overflow-x: hidden;
-    position: relative;
+/* ===== ГЛАВНАЯ СТРАНИЦА - БОЛЕЕ ПРОЗРАЧНЫЙ ===== */
+body.home-page .main-header {
+    background: rgba(255, 255, 255, 0.03) !important;
 }
 
-/* 2. Фиксируем ширину для всех элементов */
-@media (max-width: 768px) {
-    * {
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-    
-    /* Контейнеры */
-    .container {
-        width: 100% !important;
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-    }
-    
-    /* Фикс для бегущей строки */
-    .marquee-container {
-        width: 100vw;
-        margin-left: -20px;
-        padding: 0 20px;
-    }
-    
-    .marquee-track {
-        width: max-content;
-    }
-    
-    /* Фикс для кнопок */
-    .btn {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    
-    /* Улучшаем скролл */
-    body {
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* Скрываем скроллбар на iOS */
-    ::-webkit-scrollbar {
-        display: none;
-    }
+body.home-page .main-header.scrolled {
+    background: rgba(255, 255, 255, 0.06) !important;
 }
 
-/* 3. Для очень маленьких экранов */
-@media (max-width: 375px) {
-    .container {
-        padding-left: 15px !important;
-        padding-right: 15px !important;
-    }
-    
-    h1, h2, h3 {
-        word-wrap: break-word;
-        hyphens: auto;
-    }
+/* ===== ВНУТРЕННИЕ СТРАНИЦЫ - ТАКОЙ ЖЕ ПРОЗРАЧНЫЙ ===== */
+body.internal-page .main-header {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
 }
 
-/* 4. Фикс для iOS Safari */
-@supports (-webkit-touch-callout: none) {
-    .parallax-bg-container {
-        height: -webkit-fill-available;
-    }
-    
-    .hero {
-        height: -webkit-fill-available;
-        min-height: 100vh;
-    }
+body.internal-page .main-header.scrolled {
+    background: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* 5. Предотвращаем увеличение текста на iOS */
-html {
-    -webkit-text-size-adjust: 100%;
-    -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-}
-
-/* 6. Улучшаем производительность */
-@media (max-width: 768px) {
-    .content-section {
-        will-change: transform;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-    }
-}
-
-/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ БЕГУЩЕЙ СТРОКИ ===== */
-
-/* Улучшенные стили для бегущей строки */
-.marquee-container {
-    position: relative;
-    isolation: isolate;
-}
-
-/* Фикс для мобильных устройств */
-@media (max-width: 768px) {
-    .marquee-content {
-        gap: 20px !important;
-    }
-    
-    .brand {
-        font-size: 1.2rem !important;
-        padding: 0 15px !important;
-    }
-}
-
-/* Поддержка темной темы для бегущей строки */
-@media (prefers-color-scheme: dark) {
-    .marquee-container::before {
-        background: linear-gradient(to right, #0a0a0a 0%, transparent 100%);
-    }
-    
-    .marquee-container::after {
-        background: linear-gradient(to left, #0a0a0a 0%, transparent 100%);
-    }
-}
-
-/* Высокая контрастность */
-@media (prefers-contrast: high) {
-    .brand {
-        opacity: 1 !important;
-        font-weight: 900 !important;
-    }
-    
-    .separator {
-        opacity: 0.7 !important;
-    }
-}
-
-/* Отладка */
-.debug-marquee .marquee-infinite-wrapper {
-    outline: 2px solid red;
-}
-
-.debug-marquee .marquee-track {
-    outline: 1px dashed blue;
-}
-
-.debug-marquee .brand {
-    background: rgba(255, 0, 0, 0.1);
-}
-
-/* ===== МОБИЛЬНЫЙ ПРОЗРАЧНЫЙ ФОН (GLASS EFFECT) ===== */
-@media (max-width: 768px) {
-    /* Фон для всего body с затемнением и размытием */
-    body {
-        background: linear-gradient(
-            rgba(10, 10, 20, 0.92),
-            rgba(15, 15, 25, 0.88)
-        ) !important;
-        position: relative;
-    }
-    
-    /* Эффект стекла для всех секций с контентом */
-    .content-section {
-        background: rgba(30, 30, 40, 0.65) !important;
-        backdrop-filter: blur(20px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-        border-radius: 24px !important;
-        border: 1px solid rgba(255, 255, 255, 0.18) !important;
-        margin: 20px 15px !important;
-        padding: 30px 25px !important;
-        box-shadow: 
-            0 8px 32px 0 rgba(0, 0, 0, 0.36),
-            inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
-        position: relative !important;
-        z-index: 2 !important;
-    }
-    
-    /* Контейнеры внутри секций */
-    .content-section .container {
-        background: transparent !important;
-    }
-    
-    /* Герой-секция с усиленной прозрачностью */
-    .hero.parallax-hero {
-        background: rgba(0, 0, 0, 0.7) !important;
-        backdrop-filter: blur(25px) !important;
-        -webkit-backdrop-filter: blur(25px) !important;
-        margin: 15px 10px 30px !important;
-        border-radius: 30px !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        padding: 40px 25px !important;
-    }
-    
-    /* Контент внутри героя */
-    .parallax-content {
-        background: rgba(255, 255, 255, 0.05) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        border-radius: 20px !important;
-        padding: 30px 20px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    /* Карточки услуг - эффект стекла */
-    .speck-service-card-enhanced {
-        background: rgba(40, 40, 50, 0.7) !important;
-        backdrop-filter: blur(15px) saturate(160%) !important;
-        -webkit-backdrop-filter: blur(15px) saturate(160%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        box-shadow: 
-            0 15px 35px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    /* Карточки статистики */
-    .stat-card {
-        background: rgba(255, 255, 255, 0.08) !important;
-        backdrop-filter: blur(15px) !important;
-        -webkit-backdrop-filter: blur(15px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    /* CTA секция */
-    .cta-improved {
-        background: rgba(0, 102, 255, 0.2) !important;
-        backdrop-filter: blur(20px) !important;
-        -webkit-backdrop-filter: blur(20px) !important;
-        border: 1px solid rgba(0, 102, 255, 0.3) !important;
-    }
-    
-    /* Секция клиентов (бегущая строка) */
-    .clients-section {
-        background: rgba(20, 20, 30, 0.75) !important;
-        backdrop-filter: blur(15px) !important;
-        -webkit-backdrop-filter: blur(15px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    /* Улучшение читаемости текста */
-    .parallax-content h1,
-    .speck-title-enhanced,
-    .cta-text h2,
-    .stat-number-improved {
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
-    }
-    
-    p, 
-    .hero-description p, 
-    .speck-description-enhanced p,
-    .cta-text p,
-    .stat-label-improved {
-        color: rgba(255, 255, 255, 0.95) !important;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
-    }
-    
-    /* Параллакс фон - затемняем для мобильных */
-    .parallax-bg::after {
-        background: rgba(0, 0, 0, 0.6) !important;
-    }
-    
-    /* Хедер - делаем полностью прозрачным стекло */
-    .main-header {
-        background: rgba(0, 102, 255, 0.85) !important;
-        backdrop-filter: blur(20px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    /* Футер - добавляем прозрачность */
-    .main-footer {
-        background: rgba(0, 0, 0, 0.9) !important;
-        backdrop-filter: blur(20px) !important;
-        -webkit-backdrop-filter: blur(20px) !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    /* Бегущая строка - улучшаем видимость */
-    .marquee-container {
-        background: rgba(0, 0, 0, 0.4) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        border-radius: 15px !important;
-        padding: 10px 5px !important;
-        margin: 10px 0 !important;
-    }
-    
-    .brand {
-        opacity: 0.9 !important;
-        font-weight: 700 !important;
-    }
-}
-
-/* Для очень маленьких экранов (до 480px) */
-@media (max-width: 480px) {
-    .content-section {
-        margin: 15px 10px !important;
-        padding: 25px 20px !important;
-        background: rgba(30, 30, 40, 0.75) !important;
-    }
-    
-    .hero.parallax-hero {
-        margin: 10px 8px 25px !important;
-        padding: 30px 20px !important;
-    }
-    
-    .speck-service-card-enhanced {
-        background: rgba(40, 40, 50, 0.8) !important;
-        padding: 25px 20px !important;
-    }
-    
-    .stat-card {
-        padding: 25px 15px !important;
-    }
-    
-    /* Усиливаем прозрачность для маленьких экранов */
-    .parallax-content {
-        padding: 20px 15px !important;
-    }
-}
-
-/* Поддержка устройств без backdrop-filter */
-@supports not (backdrop-filter: blur(10px)) {
-    @media (max-width: 768px) {
-        .content-section {
-            background: rgba(30, 30, 40, 0.9) !important;
-        }
-        
-        .hero.parallax-hero {
-            background: rgba(0, 0, 0, 0.85) !important;
-        }
-        
-        .speck-service-card-enhanced {
-            background: rgba(40, 40, 50, 0.9) !important;
-        }
-        
-        .main-header {
-            background: rgba(0, 102, 255, 0.95) !important;
-        }
-        
-        .main-footer {
-            background: rgba(0, 0, 0, 0.95) !important;
-        }
-    }
-}
-
-/* Отключение размытия для слабых устройств */
-@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
-    .content-section,
-    .hero.parallax-hero,
-    .speck-service-card-enhanced,
-    .stat-card,
-    .cta-improved,
-    .clients-section,
-    .main-header,
-    .main-footer {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-    }
-}
-
-/* Темная тема по умолчанию - усиливаем контраст */
-@media (prefers-color-scheme: dark) {
-    @media (max-width: 768px) {
-        .content-section {
-            background: rgba(25, 25, 35, 0.7) !important;
-            border-color: rgba(255, 255, 255, 0.15) !important;
-        }
-        
-        .speck-service-card-enhanced {
-            background: rgba(35, 35, 45, 0.75) !important;
-        }
-    }
-}
-
-/* Высокая контрастность */
-@media (prefers-contrast: high) {
-    @media (max-width: 768px) {
-        .content-section {
-            background: rgba(20, 20, 30, 0.95) !important;
-            border: 2px solid white !important;
-        }
-        
-        .speck-service-card-enhanced {
-            background: rgba(30, 30, 40, 0.98) !important;
-            border: 2px solid white !important;
-        }
-        
-        p, .hero-description p {
-            color: white !important;
-        }
-        
-        .main-header {
-            border: 2px solid white !important;
-        }
-    }
-}
-
-/* Убираем градиентные overlay с фона */
-.parallax-hero::before,
-.parallax-hero::after {
-    display: none !important;
-}
-
-/* Убираем синий overlay с хедера на главной */
-.home-page .main-header::before,
-.home-page .main-header::after {
-    display: none !important;
-}
-
-/* Чистим футер от overlay эффектов */
-.main-footer::before,
-.main-footer::after {
-    display: none !important;
-}
-
-/* Убираем все дополнительные псевдоэлементы с фонами */
-*::before,
-*::after {
-    background: none !important;
-    box-shadow: none !important;
-}
-
-/* Чистый фон для всех секций */
-.content-section {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
-/* Фикс для параллакс контейнера */
-.parallax-bg-container {
-    background: transparent !important;
-}
-
-/* Убираем все затемнения и наложения */
-.speck-vertical-section,
-.clients-section,
-.stats-improved,
-.cta-improved,
-.hero {
-    background: transparent !important;
-}
-
-/* ===== FIX FOR SERVICES PAGE ===== */
-body.services-page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-body.services-page .services-hero {
-    flex-grow: 1;
-}
-
-.main-footer {
-    margin-top: auto;
-}
-
-/* FIX: Prevent header from hiding on services page */
-body.services-page .main-header {
-    transform: translateY(0) !important;
-    opacity: 1 !important;
-}
-
-body.services-page .main-header.header-hidden {
-    transform: translateY(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
-
-/* Mobile fix for services navigation */
-@media (max-width: 768px) {
-    body.services-page .services-nav {
-        position: static !important;
-        top: auto !important;
-    }
-}
-
-/* Добавьте в конец файла style.css эти стили: */
-
-/* ===== ФИНАЛЬНЫЙ ФИКС: ХЕДЕР НА СТРАНИЦЕ УСЛУГ ===== */
-body.services-page .main-header {
-    transform: translateY(0) !important;
+/* ===== SERVICES/ABOUT PAGE - ФИКСИРОВАННЫЙ ХЕДЕР БЕЗ АНИМАЦИЙ ===== */
+body.services-page .main-header,
+body.about-page .main-header {
+    transform: none !important;
     opacity: 1 !important;
     pointer-events: auto !important;
     transition: none !important;
@@ -3406,41 +3000,127 @@ body.services-page .main-header {
     -webkit-animation: none !important;
 }
 
-body.services-page .main-header.header-hidden {
-    transform: translateY(0) !important;
+body.services-page .main-header.header-hidden,
+body.about-page .main-header.header-hidden {
+    transform: none !important;
     opacity: 1 !important;
     pointer-events: auto !important;
 }
 
-/* Гарантируем фиксированное положение */
+/* ===== ПОДДЕРЖКА БЕЗ BACKDROP-FILTER ===== */
+@supports not (backdrop-filter: blur(10px)) {
+    .main-header {
+        background: rgba(15, 20, 35, 0.98) !important;
+    }
+    
+    .main-header.scrolled {
+        background: rgba(15, 20, 35, 0.99) !important;
+    }
+    
+    .language-switcher {
+        background: rgba(255, 255, 255, 0.12) !important;
+    }
+    
+    @media (max-width: 768px) {
+        .main-header {
+            background: rgba(10, 10, 20, 0.98) !important;
+        }
+        
+        .main-nav {
+            background: rgba(10, 10, 20, 0.99) !important;
+        }
+    }
+}
+
+/* ===== RIPPLE EFFECT FOR BUTTONS ===== */
+@keyframes ripple-animation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* ===== HEADER GLASS EFFECTS ===== */
+.header-glass-enter {
+    animation: glassEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes glassEnter {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+        backdrop-filter: blur(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        backdrop-filter: blur(25px) saturate(180%);
+    }
+}
+
+.glass-morph {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    backdrop-filter: blur(35px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 
+        0 15px 45px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 0 30px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Скрываем main отступ, так как padding-top уже в body */
+main {
+    margin-top: 0 !important;
+}
+
+/* Services page fix */
 body.services-page .main-header {
     position: fixed !important;
     top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 @media (max-width: 768px) {
     body.services-page .main-header {
         top: 0 !important;
-        border-radius: 0 !important;
+        left: 0 !important;
+        transform: none !important;
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
+        border-radius: 0 !important;
     }
 }
 
-/* Отключаем все эффекты скрытия для страницы услуг */
+/* Убираем возможные переопределения */
 body.services-page .main-header,
-body.services-page .main-header:hover,
-body.services-page .main-header.header-scrolled {
-    background: rgba(0, 102, 255, 0.12) !important;
-    backdrop-filter: blur(16px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 102, 255, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+body.about-page .main-header,
+body.home-page .main-header,
+body.portfolio-page .main-header,
+body.brandbook-page .main-header,
+body.contacts-page .main-header {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
 }
 
-body.services-page .main-header:hover {
-    background: rgba(0, 102, 255, 0.15) !important;
+body.services-page .main-header.scrolled,
+body.about-page .main-header.scrolled,
+body.home-page .main-header.scrolled,
+body.portfolio-page .main-header.scrolled,
+body.brandbook-page .main-header.scrolled,
+body.contacts-page .main-header.scrolled {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
 }
