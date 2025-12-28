@@ -11,64 +11,15 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/portfolio.css">
     
-    <!-- ЕДИНЫЙ СКРИПТ КОМПОНЕНТОВ -->
+    <!-- Компоненты -->
     <script src="js/components.js"></script>
-    
-    <style>
-        /* Минимальные стили только для портфолио */
-        .portfolio-page {
-            padding-top: 80px;
-        }
-        
-        /* Корректировка отступов для хедера */
-        .portfolio-hero {
-            padding-top: 180px !important;
-            transition: padding-top 0.3s ease !important;
-        }
-        
-        /* Мобильные корректировки */
-        @media (max-width: 768px) {
-            .portfolio-hero {
-                padding-top: 140px !important;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .portfolio-hero {
-                padding-top: 120px !important;
-            }
-        }
-        
-        /* Для accessibility */
-        .skip-to-content {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: #0066ff;
-            color: white;
-            padding: 8px 16px;
-            text-decoration: none;
-            border-radius: 4px;
-            z-index: 1001;
-        }
-        
-        .skip-to-content:focus {
-            top: 20px;
-        }
-
-        /* Плавные переходы */
-        .portfolio-hero, 
-        .main-header,
-        .portfolio-grid-section {
-            transition: all 0.3s ease !important;
-        }
-    </style>
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/portfolio.js"></script>
 </head>
 <body class="portfolio-page">
-    <!-- Skip to content для accessibility -->
-    <a href="#main-content" class="skip-to-content" data-i18n="nav.skipToContent">Skip to main content</a>
-    
-    <!-- Header Container (загрузится автоматически через components.js) -->
+    <!-- Header Container -->
     <div id="header-container"></div>
 
     <!-- Main Content -->
@@ -434,29 +385,64 @@
         </section>
     </main>
 
-    <!-- Footer Container (загрузится автоматически через components.js) -->
+    <!-- Footer Container -->
     <div id="footer-container"></div>
 
-    <!-- JavaScript -->
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/portfolio.js"></script>
-    
     <script>
-        // Initialize i18n with delay
-        setTimeout(() => {
-            if (window.i18n && window.i18n.init) {
-                window.i18n.init();
+        // Инициализация страницы портфолио
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Страница портфолио загружена');
+            
+            // Фильтрация проектов
+            function setupPortfolioFilter() {
+                const filterBtns = document.querySelectorAll('.filter-btn');
+                const portfolioItems = document.querySelectorAll('.portfolio-item');
+                
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Обновляем активную кнопку
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        const filter = this.getAttribute('data-filter');
+                        
+                        // Показываем/скрываем элементы
+                        portfolioItems.forEach(item => {
+                            if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                                item.style.display = 'block';
+                                setTimeout(() => {
+                                    item.style.opacity = '1';
+                                    item.style.transform = 'translateY(0)';
+                                }, 10);
+                            } else {
+                                item.style.opacity = '0';
+                                item.style.transform = 'translateY(20px)';
+                                setTimeout(() => {
+                                    item.style.display = 'none';
+                                }, 300);
+                            }
+                        });
+                    });
+                });
             }
-        }, 300);
-        
-        // Initialize portfolio page functionality
-        setTimeout(() => {
-            if (typeof initPortfolio === 'function') {
-                initPortfolio();
-            }
-        }, 500);
+            
+            // Инициализация переводов
+            setTimeout(() => {
+                if (window.i18n && window.i18n.refresh) {
+                    window.i18n.refresh();
+                }
+            }, 500);
+            
+            // Инициализация фильтрации
+            setupPortfolioFilter();
+            
+            // Инициализация анимаций
+            setTimeout(() => {
+                if (typeof initPortfolio === 'function') {
+                    initPortfolio();
+                }
+            }, 1000);
+        });
     </script>
 </body>
 </html>
