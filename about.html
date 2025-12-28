@@ -10,150 +10,15 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/about.css">
     
-    <!-- ЕДИНЫЙ СКРИПТ КОМПОНЕНТОВ -->
+    <!-- Компоненты -->
     <script src="js/components.js"></script>
-    
-    <style>
-        /* Ensure content starts below header */
-        body {
-            padding-top: 80px;
-            background: var(--secondary);
-            overflow-x: hidden;
-        }
-        @media (max-width: 768px) {
-            body {
-                padding-top: 60px;
-            }
-        }
-        
-        /* Custom styles for team photos */
-        .member-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        .team-member:hover .member-photo img {
-            transform: scale(1.1);
-        }
-        
-        /* Ensure images have fallback */
-        .member-photo {
-            position: relative;
-        }
-        
-        .member-photo::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 10px;
-            background: radial-gradient(ellipse at center, 
-                rgba(0, 102, 255, 0.4) 0%, 
-                transparent 70%);
-            filter: blur(5px);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 0;
-        }
-        
-        .team-member:hover .member-photo::after {
-            opacity: 1;
-        }
-        
-        /* Loading animation for images */
-        @keyframes shimmer {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
-        
-        .loading-photo {
-            background: linear-gradient(90deg, 
-                rgba(255, 255, 255, 0.05) 25%, 
-                rgba(255, 255, 255, 0.1) 50%, 
-                rgba(255, 255, 255, 0.05) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
-        
-        /* Smooth transitions for all interactive elements */
-        * {
-            transition-property: transform, opacity, background-color, border-color, box-shadow;
-            transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        /* ===== ВАЖНОЕ ИСПРАВЛЕНИЕ: ФИКС ПОЗИЦИИ ХЕДЕРА НА СТРАНИЦЕ ABOUT ===== */
-        body.about-page {
-            overflow-x: hidden !important;
-            width: 100% !important;
-            max-width: 100vw !important;
-            position: relative;
-        }
-
-        body.about-page .main-header {
-            position: fixed !important;
-            top: 20px !important;
-            left: 50% !important;
-            transform: translateX(-50%) translateY(0) !important;
-            right: auto !important;
-            width: calc(100% - 40px) !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            z-index: 1000 !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        /* Отключаем все анимации скрытия для about-page */
-        body.about-page .main-header.header-hidden,
-        body.about-page .main-header.header-scrolled {
-            transform: translateX(-50%) translateY(0) !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-        }
-
-        /* На мобильных устройствах */
-        @media (max-width: 768px) {
-            body.about-page .main-header {
-                left: 0 !important;
-                transform: none !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                border-radius: 0 !important;
-                top: 0 !important;
-                margin: 0 !important;
-            }
-            
-            body.about-page .main-header.header-hidden,
-            body.about-page .main-header.header-scrolled {
-                transform: none !important;
-            }
-        }
-
-        /* Принудительно фиксируем контейнер хедера */
-        body.about-page #header-container {
-            position: relative;
-            z-index: 1000;
-        }
-
-        body.about-page #header-container .header-inner {
-            position: static !important;
-        }
-
-        /* Убираем возможные конфликты с параллаксом */
-        body.about-page .main-header * {
-            position: static !important;
-            transform: none !important;
-        }
-    </style>
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/about.js"></script>
 </head>
 <body class="about-page">
-    <!-- Header Container (загрузится автоматически через components.js) -->
+    <!-- Header Container -->
     <div id="header-container"></div>
     
     <!-- Hero Section -->
@@ -448,9 +313,9 @@
             </div>
             
             <!-- Additional Team Info -->
-            <div class="team-info" style="text-align: center; margin-top: 80px; padding: 40px; background: rgba(255, 255, 255, 0.02); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.05);">
-                <h3 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--white);">Наша философия</h3>
-                <p style="font-size: 1.2rem; color: var(--light-text); max-width: 800px; margin: 0 auto; line-height: 1.8;">
+            <div class="team-info">
+                <h3>Наша философия</h3>
+                <p>
                     Мы верим, что успех проекта зависит от синергии дизайна, инженерии и производства. 
                     Наша команда объединяет экспертов из разных областей для создания продуктов, 
                     которые не только красивы, но и функциональны, надежны и готовы к массовому производству.
@@ -473,14 +338,8 @@
         </div>
     </section>
     
-    <!-- Footer Container (загрузится автоматически через components.js) -->
+    <!-- Footer Container -->
     <div id="footer-container"></div>
-    
-    <!-- JavaScript -->
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/about.js"></script>
     
     <script>
         // Функция для обработки ошибок загрузки фото
@@ -508,133 +367,26 @@
             img.outerHTML = svg;
         }
 
-        // Глобальная функция для обработки ошибок
         window.handleTeamPhotoError = handleTeamPhotoError;
 
-        // Проверка наличия изображений команды
-        function checkTeamPhotos() {
-            const photoUrls = [
-                'assets/images/team/spartak.jpg',
-                'assets/images/team/urmat.jpg', 
-                'assets/images/team/elena.jpg'
-            ];
-            
-            photoUrls.forEach(url => {
-                fetch(url, { method: 'HEAD' })
-                    .then(response => {
-                        if (!response.ok) {
-                            console.warn(`⚠️ Photo not found: ${url}`);
-                        } else {
-                            console.log(`✅ Photo found: ${url}`);
-                        }
-                    })
-                    .catch(() => {
-                        console.warn(`❌ Cannot access: ${url}`);
-                    });
-            });
-        }
-        
-        // Initialize i18n with delay
-        setTimeout(() => {
-            if (window.i18n && window.i18n.init) {
-                window.i18n.init();
-            }
-        }, 300);
-        
-        // Initialize about page animations
-        setTimeout(() => {
-            if (typeof window.initAbout === 'function') {
-                window.initAbout();
-            }
-        }, 1500);
-        
-        // Проверяем фото через 2 секунды после загрузки
-        setTimeout(checkTeamPhotos, 2000);
-        
-        // Image loading optimization
+        // Инициализация страницы
         document.addEventListener('DOMContentLoaded', function() {
-            const teamImages = document.querySelectorAll('.member-photo img');
+            console.log('📄 Страница "О нас" загружена');
             
-            teamImages.forEach(img => {
-                // Add loading animation
-                img.style.opacity = '0';
-                img.style.transition = 'opacity 0.5s ease';
-                
-                // When image loads
-                img.onload = function() {
-                    this.style.opacity = '1';
-                };
-                
-                // If image fails to load
-                img.onerror = function() {
-                    console.warn('Failed to load image:', this.src);
-                    // Keep opacity for SVG fallback
-                    setTimeout(() => {
-                        this.style.opacity = '1';
-                    }, 100);
-                };
-            });
-        });
-        
-        // Smooth scrolling for anchor links
-        document.addEventListener('click', function(e) {
-            if (e.target.matches('a[href^="#"]')) {
-                e.preventDefault();
-                const id = e.target.getAttribute('href');
-                if (id === '#') return;
-                
-                const element = document.querySelector(id);
-                if (element) {
-                    window.scrollTo({
-                        top: element.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
+            // Инициализация переводов
+            setTimeout(() => {
+                if (window.i18n && window.i18n.refresh) {
+                    window.i18n.refresh();
                 }
-            }
-        });
-        
-        // ===== ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ХЕДЕРА НА СТРАНИЦЕ ABOUT =====
-        function fixHeaderPosition() {
-            const header = document.querySelector('.main-header');
-            if (!header) return;
+            }, 500);
             
-            // Принудительно фиксируем позицию для страницы about
-            if (document.body.classList.contains('about-page')) {
-                header.style.position = 'fixed';
-                header.style.left = '50%';
-                header.style.transform = 'translateX(-50%) translateY(0)';
-                header.style.right = 'auto';
-                header.style.width = 'calc(100% - 40px)';
-                header.style.maxWidth = '1400px';
-                header.style.margin = '0 auto';
-                header.style.top = '20px';
-                header.style.zIndex = '1000';
-                header.style.opacity = '1';
-                header.style.pointerEvents = 'auto';
-                
-                // Убираем классы, которые могут скрывать хедер
-                header.classList.remove('header-hidden', 'header-scrolled');
-                
-                // На мобильных
-                if (window.innerWidth <= 768) {
-                    header.style.left = '0';
-                    header.style.transform = 'none';
-                    header.style.width = '100%';
-                    header.style.maxWidth = '100%';
-                    header.style.borderRadius = '0';
-                    header.style.top = '0';
-                    header.style.margin = '0';
+            // Инициализация анимаций
+            setTimeout(() => {
+                if (typeof window.initAbout === 'function') {
+                    window.initAbout();
                 }
-            }
-        }
-        
-        // Вызываем фикс при загрузке и изменении размера
-        document.addEventListener('DOMContentLoaded', fixHeaderPosition);
-        window.addEventListener('load', fixHeaderPosition);
-        window.addEventListener('resize', fixHeaderPosition);
-        
-        // Дополнительный фикс через 1 секунду после полной загрузки
-        setTimeout(fixHeaderPosition, 1000);
+            }, 1000);
+        });
     </script>
 </body>
 </html>
