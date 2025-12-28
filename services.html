@@ -10,40 +10,15 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/services.css">
     
-    <!-- ЕДИНЫЙ СКРИПТ КОМПОНЕНТОВ -->
+    <!-- Компоненты -->
     <script src="js/components.js"></script>
-    
-    <style>
-        .services-hero {
-            padding-top: 180px;
-            padding-bottom: 80px;
-            background: var(--secondary);
-            transition: padding-top 0.3s ease;
-        }
-
-        @media (max-width: 768px) {
-            .services-hero {
-                padding-top: 120px;
-                padding-bottom: 60px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .services-hero {
-                padding-top: 100px;
-                padding-bottom: 40px;
-            }
-        }
-        
-        body.services-page {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-    </style>
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/services.js"></script>
 </head>
 <body class="services-page">
-    <!-- Header Container (загрузится автоматически через components.js) -->
+    <!-- Header Container -->
     <div id="header-container"></div>
 
     <section class="services-hero">
@@ -361,27 +336,17 @@
         </div>
     </section>
 
-    <!-- Footer Container (загрузится автоматически через components.js) -->
+    <!-- Footer Container -->
     <div id="footer-container"></div>
 
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/services.js"></script>
-    
     <script>
-        // ===== SERVICES PAGE INITIALIZATION =====
-        (function() {
-            'use strict';
+        // Инициализация страницы услуг
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Страница услуг загружена');
             
-            console.log('🎯 Initializing services page...');
-            
-            // Services navigation
+            // Навигация по услугам
             function setupServicesNavigation() {
                 const navItems = document.querySelectorAll('.nav-item');
-                const sections = document.querySelectorAll('.service-detail');
-                
-                if (!navItems.length) return;
                 
                 navItems.forEach(item => {
                     item.addEventListener('click', function(e) {
@@ -399,8 +364,7 @@
                             navItems.forEach(navItem => navItem.classList.remove('active'));
                             this.classList.add('active');
                             
-                            const header = document.querySelector('.main-header');
-                            const headerHeight = header?.offsetHeight || 0;
+                            const headerHeight = document.querySelector('.main-header')?.offsetHeight || 70;
                             const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
                             const offset = headerHeight + navHeight + 20;
                             
@@ -413,16 +377,15 @@
                 });
             }
             
-            // Initialize everything
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log('📄 Services page DOM loaded');
-                
-                setupServicesNavigation();
-                
-                console.log('✅ Services page fully initialized');
-            });
+            // Инициализация переводов
+            setTimeout(() => {
+                if (window.i18n && window.i18n.refresh) {
+                    window.i18n.refresh();
+                }
+            }, 500);
             
-        })();
+            setupServicesNavigation();
+        });
     </script>
 </body>
 </html>
