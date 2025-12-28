@@ -46,6 +46,46 @@ class DaehaaApp {
             return;
         }
         
+        // ===== КРИТИЧЕСКИЙ ФИКС: НЕ ВМЕШИВАЕМСЯ В SERVICES/ABOUT СТРАНИЦЫ =====
+        const isServicesPage = document.body.classList.contains('services-page');
+        const isAboutPage = document.body.classList.contains('about-page');
+        
+        if (isServicesPage || isAboutPage) {
+            console.log('📄 Services/About page detected - SKIPPING main.js header animations');
+            
+            // Минимальная настройка - только позиция
+            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+            header.classList.remove('header-hidden');
+            
+            if (window.innerWidth > 768) {
+                header.style.left = '50%';
+                header.style.transform = 'translateX(-50%)';
+                header.style.top = '20px';
+                header.style.width = 'calc(100% - 40px)';
+                header.style.maxWidth = '1400px';
+                header.style.margin = '0 auto';
+            } else {
+                header.style.left = '0';
+                header.style.transform = 'translateY(0)';
+                header.style.top = '0';
+                header.style.width = '100%';
+                header.style.maxWidth = '100%';
+                header.style.margin = '0';
+                header.style.borderRadius = '0';
+            }
+            
+            // Добавляем scrolled класс
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            }
+            
+            // Без обработчиков скролла
+            console.log('✅ Services/About header setup complete (static)');
+            return;
+        }
+        
+        // Для остальных страниц - оригинальная логика
+        
         // Установка начальных классов для body
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         if (currentPage === 'index.html' || currentPage === '' || currentPage === '/') {
@@ -53,16 +93,6 @@ class DaehaaApp {
         } else {
             document.body.classList.add('internal-page');
             document.body.classList.add(`${currentPage.replace('.html', '')}-page`);
-        }
-        
-        // Определяем тип страницы
-        const isServicesPage = document.body.classList.contains('services-page');
-        const isAboutPage = document.body.classList.contains('about-page');
-        
-        // ВАЖНЫЙ ФИКС: Для Services/About pages устанавливаем корректную позицию сразу
-        if (isServicesPage || isAboutPage) {
-            console.log('📄 Services/About page detected - applying position fix');
-            this.applyServicesAboutHeaderFix(header);
         }
         
         // Оптимизация производительности хедера
@@ -78,123 +108,13 @@ class DaehaaApp {
         // Проверяем тип страницы и настраиваем соответствующую анимацию
         const isHomePage = document.body.classList.contains('home-page');
         
-        if (isServicesPage || isAboutPage) {
-            console.log('📄 Services/About page - disabling header animations and setting fixed position');
-            this.setupFixedHeaderForServicesAbout(header);
-            return;
-        }
-        
         if (isHomePage) {
             console.log('🏠 Home page - setting up optimized animation');
             this.setupOptimizedHomeHeader(header);
-            return;
-        }
-        
-        console.log('📄 Internal page - setting up basic animation');
-        this.setupOptimizedInternalHeader(header);
-    }
-
-    // ВАЖНЫЙ ФИКС: Функция для исправления позиции хедера на Services/About страницах
-    applyServicesAboutHeaderFix(header) {
-        if (!header) return;
-        
-        console.log('🔧 Applying Services/About header position fix');
-        
-        // Отключаем все анимации для хедера
-        header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-        
-        // Устанавливаем правильную позицию
-        if (window.innerWidth > 768) {
-            // Десктопная версия
-            header.style.position = 'fixed';
-            header.style.left = '50%';
-            header.style.transform = 'translateX(-50%) translateY(0)';
-            header.style.right = 'auto';
-            header.style.width = 'calc(100% - 40px)';
-            header.style.maxWidth = '1400px';
-            header.style.margin = '0 auto';
-            header.style.top = '20px';
-            header.style.zIndex = '1000';
-            header.style.opacity = '1';
-            header.style.pointerEvents = 'auto';
         } else {
-            // Мобильная версия
-            header.style.position = 'fixed';
-            header.style.left = '0';
-            header.style.transform = 'translateY(0)';
-            header.style.right = '0';
-            header.style.width = '100%';
-            header.style.maxWidth = '100%';
-            header.style.margin = '0';
-            header.style.top = '0';
-            header.style.zIndex = '1000';
-            header.style.opacity = '1';
-            header.style.pointerEvents = 'auto';
-            header.style.borderRadius = '0';
+            console.log('📄 Internal page - setting up basic animation');
+            this.setupOptimizedInternalHeader(header);
         }
-        
-        // Убираем все классы, которые могут скрывать или сдвигать хедер
-        header.classList.remove('header-hidden', 'header-scrolled');
-        
-        // Предотвращаем применение других анимаций
-        header.setAttribute('data-header-fixed', 'true');
-        
-        console.log('✅ Services/About header position fixed');
-    }
-
-    setupFixedHeaderForServicesAbout(header) {
-        const self = this;
-        
-        console.log('🔧 Setting up fixed header for Services/About pages');
-        
-        // Применяем фикс позиции
-        self.applyServicesAboutHeaderFix(header);
-        
-        // Обработчик скролла только для добавления класса scrolled
-        function handleScroll() {
-            const currentScrollY = window.scrollY;
-            
-            // Добавляем класс scrolled при прокрутке
-            if (currentScrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            self.headerState.lastScrollY = currentScrollY;
-        }
-        
-        // Начальное состояние
-        handleScroll();
-        
-        // Обработчик скролла
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        
-        // Обработчик изменения размера окна
-        window.addEventListener('resize', () => {
-            self.headerState.isMobile = window.innerWidth <= 768;
-            self.applyServicesAboutHeaderFix(header);
-            
-            // Управляем видимостью бургер-меню
-            const mobileToggle = document.querySelector('.mobile-menu-toggle');
-            if (mobileToggle) {
-                if (self.headerState.isMobile) {
-                    mobileToggle.style.display = 'flex';
-                    mobileToggle.style.visibility = 'visible';
-                    mobileToggle.style.opacity = '1';
-                    mobileToggle.style.width = '32px';
-                    mobileToggle.style.height = '32px';
-                    mobileToggle.style.pointerEvents = 'auto';
-                } else {
-                    mobileToggle.style.display = 'none';
-                    mobileToggle.style.visibility = 'hidden';
-                    mobileToggle.style.opacity = '0';
-                    mobileToggle.style.width = '0';
-                    mobileToggle.style.height = '0';
-                    mobileToggle.style.pointerEvents = 'none';
-                }
-            }
-        });
     }
 
     optimizeHeaderPerformance(header) {
@@ -203,13 +123,7 @@ class DaehaaApp {
         header.style.backfaceVisibility = 'hidden';
         header.style.contain = 'layout style paint';
         
-        // Оптимизируем переходы (если это не Services/About страница)
-        const isServicesPage = document.body.classList.contains('services-page');
-        const isAboutPage = document.body.classList.contains('about-page');
-        
-        if (!isServicesPage && !isAboutPage) {
-            header.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-        }
+        header.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
     }
 
     setupMobileMenuVisibility() {
@@ -361,16 +275,6 @@ class DaehaaApp {
 
     setupOptimizedInternalHeader(header) {
         const self = this;
-        
-        // Проверяем, не Services/About ли это страница
-        const isServicesPage = document.body.classList.contains('services-page');
-        const isAboutPage = document.body.classList.contains('about-page');
-        
-        if (isServicesPage || isAboutPage) {
-            console.log('📄 Services/About page in internal header setup - using fixed position');
-            this.setupFixedHeaderForServicesAbout(header);
-            return;
-        }
         
         function handleScroll() {
             const currentScrollY = window.scrollY;
@@ -1450,45 +1354,29 @@ function initOptimizedGlassHeader() {
         return;
     }
     
-    const isHomePage = document.body.classList.contains('home-page');
     const isServicesPage = document.body.classList.contains('services-page');
     const isAboutPage = document.body.classList.contains('about-page');
     
-    // ВАЖНЫЙ ФИКС: Для Services/About страниц применяем фикс
+    // ВАЖНЫЙ ФИКС: Для Services/About страниц применяем минимальную настройку
     if (isServicesPage || isAboutPage) {
-        console.log('ℹ️ Services/About page - applying header position fix');
+        console.log('ℹ️ Services/About page - applying minimal header setup');
         
         // Отключаем анимации
         header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+        header.classList.remove('header-hidden');
         
         // Устанавливаем правильную позицию
         if (window.innerWidth > 768) {
-            header.style.position = 'fixed';
             header.style.left = '50%';
-            header.style.transform = 'translateX(-50%) translateY(0)';
-            header.style.right = 'auto';
-            header.style.width = 'calc(100% - 40px)';
-            header.style.maxWidth = '1400px';
-            header.style.margin = '0 auto';
+            header.style.transform = 'translateX(-50%)';
             header.style.top = '20px';
         } else {
-            header.style.position = 'fixed';
             header.style.left = '0';
             header.style.transform = 'translateY(0)';
-            header.style.right = '0';
-            header.style.width = '100%';
-            header.style.maxWidth = '100%';
-            header.style.margin = '0';
             header.style.top = '0';
-            header.style.borderRadius = '0';
         }
         
-        // Гарантируем видимость
-        header.style.opacity = '1';
-        header.style.zIndex = '1000';
-        header.classList.remove('header-hidden');
-        
-        console.log('✅ Services/About header fixed');
+        console.log('✅ Services/About header setup complete');
         return;
     }
     
