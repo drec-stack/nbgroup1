@@ -235,6 +235,69 @@
             display: inline-block !important;
             margin-right: 50px !important;
         }
+        
+        /* ===== HEADER FIX FOR HOME PAGE - SIMPLE VERSION LIKE SERVICES PAGE ===== */
+        .home-page .main-header {
+            position: fixed !important;
+            top: 20px !important;
+            left: 50% !important;
+            transform: translateX(-50%) translateY(0) !important;
+            width: calc(100% - 40px) !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            z-index: 1000 !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            background: rgba(0, 102, 255, 0.12) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border-radius: 20px !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+            box-shadow: 
+                0 8px 32px rgba(0, 102, 255, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .home-page .main-header.header-hidden {
+            opacity: 1 !important;
+            transform: translateX(-50%) translateY(0) !important;
+            pointer-events: auto !important;
+        }
+
+        .home-page .main-header:hover {
+            background: rgba(0, 102, 255, 0.15) !important;
+            box-shadow: 
+                0 12px 40px rgba(0, 102, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                0 0 30px rgba(0, 102, 255, 0.12) !important;
+            border-color: rgba(255, 255, 255, 0.28) !important;
+        }
+
+        .home-page .hero {
+            padding-top: 160px !important;
+        }
+
+        @media (max-width: 768px) {
+            .home-page .main-header {
+                left: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                top: 0 !important;
+                margin: 0 !important;
+                background: rgba(0, 102, 255, 0.22) !important;
+                backdrop-filter: blur(20px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            .home-page .hero {
+                padding-top: 120px !important;
+            }
+        }
     </style>
     
     <!-- Добавляем простой Modernizr для определения возможностей браузера -->
@@ -764,6 +827,37 @@
             console.log('📦 Page fully loaded');
             applyTranslationsForce();
         });
+        
+        // ===== DISABLE HEADER SCROLL LOGIC ON HOME PAGE =====
+        function disableHomeHeaderScrollLogic() {
+            console.log('🚫 Отключаем логику скролла хедера на главной');
+            
+            const header = document.querySelector('.main-header');
+            if (!header) return;
+            
+            // Убираем все классы скрытия
+            header.classList.remove('header-hidden', 'header-minimized');
+            
+            // Фиксируем позицию
+            header.style.opacity = '1';
+            header.style.transform = 'translateX(-50%) translateY(0)';
+            header.style.pointerEvents = 'auto';
+            
+            // Мобильная версия
+            if (window.innerWidth <= 768) {
+                header.style.left = '0';
+                header.style.transform = 'none';
+                header.style.width = '100%';
+                header.style.maxWidth = '100%';
+                header.style.borderRadius = '0';
+                header.style.top = '0';
+                header.style.margin = '0';
+            }
+        }
+        
+        // Отключаем логику скролла хедера на главной
+        setTimeout(disableHomeHeaderScrollLogic, 300);
+        window.addEventListener('resize', disableHomeHeaderScrollLogic);
     </script>
 </body>
 </html>
