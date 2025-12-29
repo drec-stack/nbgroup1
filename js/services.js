@@ -1,6 +1,14 @@
 // services.js - ULTIMATE HEADER FIX
 console.log('🛡️ Services.js loaded - ULTIMATE FIX!');
 
+// Проверяем, не инициализировался ли уже скрипт
+if (window.servicesInitialized) {
+    console.log('⚠️ Services.js already initialized, skipping...');
+    // Останавливаем выполнение если уже инициализировался
+    throw new Error('Services.js already initialized');
+}
+window.servicesInitialized = true;
+
 // ===== ГЛОБАЛЬНАЯ ФУНКЦИЯ ДЛЯ БЛОКИРОВКИ =====
 function injectUltimateHeaderFix() {
     console.log('🚀 Injecting ULTIMATE header fix...');
@@ -129,58 +137,62 @@ function injectUltimateHeaderFix() {
     document.head.insertBefore(style, document.head.firstChild);
     
     // 3. Применяем инлайн-стили немедленно
-    const header = document.querySelector('.main-header');
-    if (header) {
-        const isMobile = window.innerWidth <= 768;
-        
-        if (isMobile) {
-            header.style.cssText = `
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                transform: none !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-                border-radius: 0 !important;
-                z-index: 1000 !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                pointer-events: auto !important;
-                animation: none !important;
-                transition: none !important;
-            `;
-        } else {
-            header.style.cssText = `
-                position: fixed !important;
-                top: 20px !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-                right: auto !important;
-                width: calc(100% - 40px) !important;
-                max-width: 1400px !important;
-                margin: 0 auto !important;
-                border-radius: 20px !important;
-                z-index: 1000 !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                pointer-events: auto !important;
-                animation: none !important;
-                transition: none !important;
-            `;
+    setTimeout(() => {
+        const header = document.querySelector('.main-header');
+        if (header) {
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                header.style.cssText = `
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    right: 0 !important;
+                    transform: none !important;
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    margin: 0 !important;
+                    border-radius: 0 !important;
+                    z-index: 1000 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    pointer-events: auto !important;
+                    animation: none !important;
+                    transition: none !important;
+                `;
+            } else {
+                header.style.cssText = `
+                    position: fixed !important;
+                    top: 20px !important;
+                    left: 50% !important;
+                    transform: translateX(-50%) !important;
+                    right: auto !important;
+                    width: calc(100% - 40px) !important;
+                    max-width: 1400px !important;
+                    margin: 0 auto !important;
+                    border-radius: 20px !important;
+                    z-index: 1000 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    pointer-events: auto !important;
+                    animation: none !important;
+                    transition: none !important;
+                `;
+            }
+            
+            // Убираем все классы, которые могут влиять на позицию
+            header.classList.remove('header-hidden', 'header-glass-enter', 'glass-morph');
+            
+            // Добавляем scrolled класс если нужно
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            console.log('✅ Ultimate CSS fix applied to header');
         }
-        
-        // Убираем все классы, которые могут влиять на позицию
-        header.classList.remove('header-hidden', 'header-glass-enter', 'glass-morph');
-        
-        // Добавляем scrolled класс если нужно
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    }
+    }, 100);
     
     console.log('✅ Ultimate CSS fix injected');
 }
@@ -190,7 +202,10 @@ function blockJavaScriptInterference() {
     console.log('🔒 Blocking all JavaScript interference...');
     
     const header = document.querySelector('.main-header');
-    if (!header) return;
+    if (!header) {
+        console.warn('⚠️ Header not found for blocking interference');
+        return;
+    }
     
     // 1. БЛОКИРОВКА СКРОЛЛА
     const blockScrollHandler = function(e) {
@@ -288,7 +303,9 @@ function initServicesPage() {
     injectUltimateHeaderFix();
     
     // 2. Блокируем JS интерференцию
-    blockJavaScriptInterference();
+    setTimeout(() => {
+        blockJavaScriptInterference();
+    }, 200);
     
     // 3. Настройка контента страницы
     setupServicesContent();
@@ -402,14 +419,15 @@ try {
     initServicesPage();
 } catch (error) {
     console.error('Initialization error:', error);
-    // Пробуем еще раз
-    setTimeout(initServicesPage, 100);
+    // Пробуем еще раз через 200мс
+    setTimeout(initServicesPage, 200);
 }
 
 // Дублируем при полной загрузке
 document.addEventListener('DOMContentLoaded', () => {
     console.log('📄 DOM loaded - applying additional fixes...');
-    injectUltimateHeaderFix();
+    // Убеждаемся, что фикс применяется
+    setTimeout(injectUltimateHeaderFix, 100);
 });
 
 console.log('✅ services.js - ULTIMATE FIX loaded!');
