@@ -6,16 +6,23 @@
     <title data-i18n="services.title">Services - NBGROUP.TECH</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS файлы -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/services.css">
     
-    <!-- Компоненты -->
+    <!-- JS файлы - НОВЫЙ ПОРЯДОК ЗАГРУЗКИ -->
+    <!-- Сначала компоненты и i18n -->
     <script src="js/components.js"></script>
     <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/services.js"></script>
+    
+    <!-- ПОТОМ services.js должен загрузиться ДО main.js -->
+    <script src="js/services.js" defer></script>
+    
+    <!-- И только потом main.js и animations.js -->
+    <script src="js/main.js" defer></script>
+    <script src="js/animations.js" defer></script>
 </head>
 <body class="services-page">
     <!-- Header Container -->
@@ -340,52 +347,94 @@
     <div id="footer-container"></div>
 
     <script>
-        // Инициализация страницы услуг
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 Страница услуг загружена');
+        // Инициализация страницы услуг с защитой от повторной инициализации
+        if (!window.servicesPageInitialized) {
+            window.servicesPageInitialized = true;
             
-            // Навигация по услугам
-            function setupServicesNavigation() {
-                const navItems = document.querySelectorAll('.nav-item');
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('📄 Страница услуг загружена');
                 
-                navItems.forEach(item => {
-                    item.addEventListener('click', function(e) {
-                        e.preventDefault();
+                // Финальный фикс хедера
+                setTimeout(function() {
+                    const header = document.querySelector('.main-header');
+                    if (header) {
+                        console.log('✅ Применяем финальный фикс хедера...');
                         
-                        const targetId = this.getAttribute('href');
+                        // Принудительно фиксируем позицию
+                        header.style.position = 'fixed';
+                        header.style.top = '20px';
+                        header.style.left = '50%';
+                        header.style.transform = 'translateX(-50%)';
+                        header.style.width = 'calc(100% - 40px)';
+                        header.style.maxWidth = '1400px';
+                        header.style.zIndex = '1000';
+                        header.style.opacity = '1';
+                        header.style.visibility = 'visible';
+                        header.style.pointerEvents = 'auto';
                         
-                        if (targetId === '#brandbook') {
-                            window.location.href = 'brandbook.html';
-                            return;
+                        // Отключаем все анимации
+                        header.style.transition = 'none';
+                        header.style.animation = 'none';
+                        header.style.webkitTransition = 'none';
+                        header.style.webkitAnimation = 'none';
+                        
+                        // Убираем классы которые могут мешать
+                        header.classList.remove('header-hidden', 'header-glass-enter', 'glass-morph');
+                        
+                        // Добавляем scrolled класс если нужно
+                        if (window.scrollY > 50) {
+                            header.classList.add('scrolled');
+                        } else {
+                            header.classList.remove('scrolled');
                         }
                         
-                        const targetSection = document.querySelector(targetId);
-                        if (targetSection) {
-                            navItems.forEach(navItem => navItem.classList.remove('active'));
-                            this.classList.add('active');
+                        console.log('✅ Хедер фиксирован');
+                    }
+                }, 800);
+                
+                // Навигация по услугам
+                function setupServicesNavigation() {
+                    const navItems = document.querySelectorAll('.nav-item');
+                    
+                    navItems.forEach(item => {
+                        item.addEventListener('click', function(e) {
+                            e.preventDefault();
                             
-                            const headerHeight = document.querySelector('.main-header')?.offsetHeight || 70;
-                            const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
-                            const offset = headerHeight + navHeight + 20;
+                            const targetId = this.getAttribute('href');
                             
-                            window.scrollTo({
-                                top: targetSection.offsetTop - offset,
-                                behavior: 'smooth'
-                            });
-                        }
+                            if (targetId === '#brandbook') {
+                                window.location.href = 'brandbook.html';
+                                return;
+                            }
+                            
+                            const targetSection = document.querySelector(targetId);
+                            if (targetSection) {
+                                navItems.forEach(navItem => navItem.classList.remove('active'));
+                                this.classList.add('active');
+                                
+                                const headerHeight = document.querySelector('.main-header')?.offsetHeight || 70;
+                                const navHeight = document.querySelector('.services-nav')?.offsetHeight || 0;
+                                const offset = headerHeight + navHeight + 20;
+                                
+                                window.scrollTo({
+                                    top: targetSection.offsetTop - offset,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        });
                     });
-                });
-            }
-            
-            // Инициализация переводов
-            setTimeout(() => {
-                if (window.i18n && window.i18n.refresh) {
-                    window.i18n.refresh();
                 }
-            }, 500);
-            
-            setupServicesNavigation();
-        });
+                
+                // Инициализация переводов
+                setTimeout(() => {
+                    if (window.i18n && window.i18n.refresh) {
+                        window.i18n.refresh();
+                    }
+                }, 500);
+                
+                setupServicesNavigation();
+            });
+        }
     </script>
 </body>
 </html>
