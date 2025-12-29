@@ -667,3 +667,130 @@ body.services-page .main-header {
         pointer-events: auto !important;
     }
 }
+
+/* ===== ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ SERVICES/ABOUT СТРАНИЦ ===== */
+
+/* Отключаем все анимации для Services/About страниц */
+body.services-page .main-header,
+body.about-page .main-header {
+    /* Принудительные стили */
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    z-index: 1000 !important;
+    
+    /* Гарантированная видимость */
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    
+    /* Отключение всех анимаций */
+    animation: none !important;
+    transition: none !important;
+    -webkit-animation: none !important;
+    -webkit-transition: none !important;
+}
+
+/* МОБИЛЬНАЯ ВЕРСИЯ */
+@media (max-width: 768px) {
+    body.services-page .main-header,
+    body.about-page .main-header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+    }
+}
+
+/* БЛОКИРОВКА ВСЕХ СОСТОЯНИЙ */
+body.services-page .main-header:hover,
+body.services-page .main-header:active,
+body.services-page .main-header:focus,
+body.services-page .main-header.scrolled,
+body.services-page .main-header.header-hidden,
+body.about-page .main-header:hover,
+body.about-page .main-header:active,
+body.about-page .main-header:focus,
+body.about-page .main-header.scrolled,
+body.about-page .main-header.header-hidden {
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+}
+
+@media (max-width: 768px) {
+    body.services-page .main-header:hover,
+    body.services-page .main-header:active,
+    body.services-page .main-header:focus,
+    body.services-page .main-header.scrolled,
+    body.services-page .main-header.header-hidden,
+    body.about-page .main-header:hover,
+    body.about-page .main-header:active,
+    body.about-page .main-header:focus,
+    body.about-page .main-header.scrolled,
+    body.about-page .main-header.header-hidden {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+}
+
+/* ПЕРЕОПРЕДЕЛЕНИЕ ИНЛАЙН-СТИЛЕЙ */
+body.services-page .main-header[style],
+body.about-page .main-header[style] {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 20px !important;
+    position: fixed !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+}
+
+@media (max-width: 768px) {
+    body.services-page .main-header[style],
+    body.about-page .main-header[style] {
+        left: 0 !important;
+        transform: none !important;
+        top: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+}
+
+/* ОТКЛЮЧЕНИЕ АНИМАЦИЙ ДЛЯ ВСЕХ ДОЧЕРНИХ ЭЛЕМЕНТОВ */
+body.services-page .main-header *,
+body.about-page .main-header * {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Фикс для отступов контента */
+body.services-page,
+body.about-page {
+    padding-top: 80px !important;
+}
+
+@media (max-width: 768px) {
+    body.services-page,
+    body.about-page {
+        padding-top: 60px !important;
+    }
+}
