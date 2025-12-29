@@ -1,4 +1,18 @@
 // Animations controller - ENHANCED FOR SPECK BLOCKS
+console.log('🚀 Animations.js loaded with safety wrapper');
+
+// Безопасный wrapper для всех функций
+const safeWrapper = (fn) => {
+    return (...args) => {
+        try {
+            return fn(...args);
+        } catch (error) {
+            console.warn('⚠️ Animation error caught:', error.message);
+            return null;
+        }
+    };
+};
+
 class NBAnimations {
     constructor() {
         this.observerOptions = {
@@ -21,9 +35,21 @@ class NBAnimations {
     }
 
     setupGlassAnimations() {
-        // Add glass animations to header on page load
-        const header = document.querySelector('.main-header');
-        if (header) {
+        // Защита: ждем загрузки DOM для Services/About страниц
+        if (document.body.classList.contains('services-page') || 
+            document.body.classList.contains('about-page')) {
+            console.log('ℹ️ Services/About page - skipping glass animations');
+            return;
+        }
+        
+        // Добавляем небольшую задержку для гарантии загрузки хедера
+        setTimeout(() => {
+            const header = document.querySelector('.main-header');
+            if (!header) {
+                console.warn('⚠️ Header not found for glass animations');
+                return;
+            }
+            
             // Add animation on load
             header.style.animation = 'headerGlassEnter 0.6s ease forwards';
             
@@ -42,7 +68,7 @@ class NBAnimations {
             header.addEventListener('mouseleave', () => {
                 header.classList.remove('glass-morph');
             });
-        }
+        }, 300);
         
         // Setup glass animations for other elements
         const glassElements = document.querySelectorAll('.glass-effect');
@@ -354,6 +380,13 @@ class NBAnimations {
 
 // Initialize animations
 document.addEventListener('DOMContentLoaded', () => {
+    // Проверяем, не страница ли это Services или About
+    if (document.body.classList.contains('services-page') || 
+        document.body.classList.contains('about-page')) {
+        console.log('ℹ️ Services/About page - skipping NBAnimations initialization');
+        return;
+    }
+    
     window.NBAnimations = new NBAnimations();
     
     // Добавить класс для активации анимаций Speck
@@ -535,6 +568,13 @@ function initSpeckBlockEffects() {
 
 // Initialize all Speck animations on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем, не страница ли это Services или About
+    if (document.body.classList.contains('services-page') || 
+        document.body.classList.contains('about-page')) {
+        console.log('ℹ️ Services/About page - skipping Speck animations');
+        return;
+    }
+    
     // Wait a bit for everything to load
     setTimeout(() => {
         animateSpeckNumbers();
@@ -581,4 +621,4 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         }
     `;
     document.head.appendChild(style);
-                            }
+}
