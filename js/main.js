@@ -1,7 +1,5 @@
-// main.js - ОБНОВЛЕННАЯ ВЕРСИЯ с фиксами для Services/About страниц
-// Оптимизирован для прозрачного glass хедера
-
-console.log('🚀 main.js loaded with Services/About fixes');
+// main.js - ОБНОВЛЕННАЯ ВЕРСИЯ с полными фиксами для Services/About страниц
+console.log('🚀 main.js loaded with complete Services/About fixes');
 
 class DaehaaApp {
     constructor() {
@@ -65,68 +63,37 @@ class DaehaaApp {
     setupHeaderSupport() {
         console.log('🔧 Setting up optimized header support...');
         
+        // ===== КРИТИЧЕСКИЙ ФИКС: ПРЕДВАРИТЕЛЬНАЯ ПРОВЕРКА ДЛЯ SERVICES/ABOUT =====
+        this.isServicesPage = document.body.classList.contains('services-page') || 
+                              window.location.pathname.includes('services.html');
+        this.isAboutPage = document.body.classList.contains('about-page') || 
+                           window.location.pathname.includes('about.html');
+        
+        // ЕСЛИ ЭТО SERVICES ИЛИ ABOUT СТРАНИЦА - ПРОПУСКАЕМ ВСЮ НАСТРОЙКУ ХЕДЕРА
+        if (this.isServicesPage || this.isAboutPage) {
+            console.log('ℹ️ Services/About page detected - COMPLETELY SKIPPING header setup');
+            
+            // Минимальная проверка: если хедер есть, просто убедимся что он видим
+            setTimeout(() => {
+                const header = document.querySelector('.main-header');
+                if (header) {
+                    header.style.opacity = '1';
+                    header.style.visibility = 'visible';
+                    header.style.pointerEvents = 'auto';
+                    console.log('✅ Services/About header visibility ensured');
+                }
+            }, 500);
+            
+            return; // ВАЖНО: полностью выходим из функции!
+        }
+        
+        // ===== ДЛЯ ОСТАЛЬНЫХ СТРАНИЦ - ПРОДОЛЖАЕМ КАК ОБЫЧНО =====
+        
         const header = document.querySelector('.main-header');
         if (!header) {
             console.warn('⚠️ No header found');
             return;
         }
-        
-        // ===== КРИТИЧЕСКИЙ ФИКС: МИНИМАЛЬНАЯ НАСТРОЙКА ДЛЯ SERVICES/ABOUT =====
-        if (this.isServicesPage || this.isAboutPage) {
-            console.log('ℹ️ Services/About page detected - applying MINIMAL header setup');
-            
-            // ОТКЛЮЧАЕМ ВСЕ АНИМАЦИИ И ПЕРЕХОДЫ
-            header.style.transition = 'none';
-            header.style.animation = 'none';
-            header.style.webkitTransition = 'none';
-            header.style.webkitAnimation = 'none';
-            
-            // Убираем классы которые могут мешать
-            header.classList.remove('header-hidden', 'header-glass-enter', 'glass-morph');
-            
-            // Устанавливаем статическую позицию
-            if (window.innerWidth > 768) {
-                // Десктоп
-                header.style.position = 'fixed';
-                header.style.top = '20px';
-                header.style.left = '50%';
-                header.style.transform = 'translateX(-50%)';
-                header.style.width = 'calc(100% - 40px)';
-                header.style.maxWidth = '1400px';
-                header.style.margin = '0 auto';
-                header.style.borderRadius = '20px';
-            } else {
-                // Мобильный
-                header.style.position = 'fixed';
-                header.style.top = '0';
-                header.style.left = '0';
-                header.style.transform = 'none';
-                header.style.width = '100%';
-                header.style.maxWidth = '100%';
-                header.style.margin = '0';
-                header.style.borderRadius = '0';
-            }
-            
-            // Гарантируем видимость
-            header.style.opacity = '1';
-            header.style.visibility = 'visible';
-            header.style.zIndex = '1000';
-            
-            // Добавляем scrolled класс если нужно
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            // ОТКЛЮЧАЕМ ВСЕ ОБРАБОТЧИКИ СКРОЛЛА
-            // Ничего не добавляем!
-            
-            console.log('✅ Services/About header setup complete (static, no animations)');
-            return; // ВАЖНО: выходим из функции!
-        }
-        
-        // ===== ДЛЯ ОСТАЛЬНЫХ СТРАНИЦ - ПОЛНАЯ НАСТРОЙКА =====
         
         // Устанавливаем классы для body
         if (this.isHomePage) {
