@@ -483,18 +483,18 @@
     }
 }
 
-/* ===== КРИТИЧЕСКИЙ ФИКС: ПОЛНОЕ УБРАНИЕ СЬЕЗЖАНИЯ ХЕДЕРА ===== */
+/* ===== УЛЬТИМАТИВНЫЙ ФИКС ДЛЯ ХЕДЕРА ===== */
 
-/* 1. ПОЛНОЕ ОТКЛЮЧЕНИЕ ВСЕХ АНИМАЦИЙ И ПЕРЕХОДОВ */
+/* 1. ПОЛНОЕ ОТКЛЮЧЕНИЕ ВСЕХ АНИМАЦИЙ */
 body.services-page .main-header,
-body.services-page .main-header * {
-    /* БЛОКИРУЕМ ВСЕ АНИМАЦИИ */
+body.services-page .main-header *,
+body.services-page .main-header *::before,
+body.services-page .main-header *::after {
     animation: none !important;
     -webkit-animation: none !important;
     -moz-animation: none !important;
     -o-animation: none !important;
     
-    /* БЛОКИРУЕМ ВСЕ ПЕРЕХОДЫ */
     transition: none !important;
     -webkit-transition: none !important;
     -moz-transition: none !important;
@@ -503,150 +503,92 @@ body.services-page .main-header * {
     transition-duration: 0s !important;
     transition-delay: 0s !important;
     transition-timing-function: none !important;
-    
-    /* ОТКЛЮЧАЕМ ВСЕ ЭФФЕКТЫ */
-    will-change: auto !important;
-    backface-visibility: visible !important;
-    perspective: none !important;
 }
 
-/* 2. АБСОЛЮТНАЯ ФИКСАЦИЯ ПОЗИЦИИ - ДЕСКТОП */
+/* 2. АБСОЛЮТНАЯ ФИКСАЦИЯ ПОЗИЦИИ */
 body.services-page .main-header {
+    /* ДЕСКТОП */
     position: fixed !important;
     top: 20px !important;
     left: 50% !important;
+    transform: translateX(-50%) !important;
     right: auto !important;
     width: calc(100% - 40px) !important;
     max-width: 1400px !important;
     margin: 0 auto !important;
     z-index: 1000 !important;
     
-    /* ГАРАНТИРУЕМ ВИДИМОСТЬ */
+    /* ГАРАНТИИ */
     opacity: 1 !important;
-    pointer-events: auto !important;
     visibility: visible !important;
-}
-
-/* 3. TRANSFORM ФИКС - САМОЕ ВАЖНОЕ! */
-body.services-page .main-header {
-    transform: translateX(-50%) !important;
-}
-
-/* 4. БЛОКИРОВКА ЛЮБОГО ИЗМЕНЕНИЯ ПРИ HOVER */
-body.services-page .main-header:hover,
-body.services-page .main-header:active,
-body.services-page .main-header:focus,
-body.services-page .main-header:focus-within {
-    /* ИДЕНТИЧНЫЕ СТИЛИ - никаких изменений! */
-    transform: translateX(-50%) !important;
-    left: 50% !important;
-    top: 20px !important;
-}
-
-/* 5. ОТКЛЮЧАЕМ SCROLLED STATE АНИМАЦИИ */
-body.services-page .main-header.scrolled {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(30px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    padding: 15px 0 !important;
-    box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 0 25px rgba(255, 255, 255, 0.08) !important;
+    pointer-events: auto !important;
     
-    /* НИКАКИХ TRANSFORM ИЗМЕНЕНИЙ! */
-    transform: translateX(-50%) !important;
+    /* БЛОКИРОВКА */
+    will-change: auto !important;
+    backface-visibility: visible !important;
+    perspective: none !important;
 }
 
-/* 6. БЛОКИРОВКА ВСЕХ HOVER ЭФФЕКТОВ НА ЭЛЕМЕНТАХ */
-body.services-page .main-header .nav-link:hover,
-body.services-page .main-header .nav-link:active,
-body.services-page .main-header .nav-link:focus {
-    transform: none !important;
-    transition: none !important;
-}
-
-body.services-page .main-header .logo:hover,
-body.services-page .main-header .logo:active {
-    transform: none !important;
-}
-
-body.services-page .main-header .logo-mark:hover,
-body.services-page .main-header .logo-mark:active {
-    transform: none !important;
-    box-shadow: 
-        0 4px 20px rgba(255, 255, 255, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-}
-
-body.services-page .main-header .btn-primary:hover,
-body.services-page .main-header .btn-primary:active {
-    transform: none !important;
-    box-shadow: 
-        0 4px 20px rgba(255, 255, 255, 0.15),
-        0 0 0 1px rgba(255, 255, 255, 0.1) !important;
-}
-
-body.services-page .main-header .lang-btn:hover,
-body.services-page .main-header .lang-btn:active {
-    transform: none !important;
-    background: none !important;
-}
-
-/* 7. МОБИЛЬНАЯ ВЕРСИЯ - ФИКС */
+/* 3. МОБИЛЬНАЯ ВЕРСИЯ */
 @media (max-width: 768px) {
-    /* Мобильная позиция хедера */
     body.services-page .main-header {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
         right: 0 !important;
+        transform: none !important;
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
         border-radius: 0 !important;
-        
-        /* НИКАКОГО TRANSFORM! */
-        transform: none !important;
-    }
-    
-    /* Мобильные hover состояния */
-    body.services-page .main-header:hover,
-    body.services-page .main-header:active,
-    body.services-page .main-header:focus {
-        transform: none !important;
-        left: 0 !important;
-        top: 0 !important;
-    }
-    
-    /* Мобильный scrolled state */
-    body.services-page .main-header.scrolled {
-        transform: none !important;
-        background: rgba(10, 10, 20, 0.98) !important;
-        padding: 12px 0 !important;
-    }
-    
-    /* Регулируем отступы для мобильных */
-    body.services-page .services-hero {
-        padding-top: 140px !important;
-    }
-    
-    body.services-page {
-        padding-top: 100px !important;
-    }
-    
-    body.services-page .service-detail {
-        scroll-margin-top: 120px !important;
     }
 }
 
-/* 8. ПРЕДОТВРАЩАЕМ ЛЮБЫЕ ИНЛАЙН-СТИЛИ */
+/* 4. БЛОКИРОВКА ВСЕХ СОСТОЯНИЙ */
+body.services-page .main-header:hover,
+body.services-page .main-header:active,
+body.services-page .main-header:focus,
+body.services-page .main-header.scrolled,
+body.services-page .main-header.header-hidden {
+    /* ИДЕНТИЧНЫЕ СТИЛИ */
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+}
+
+@media (max-width: 768px) {
+    body.services-page .main-header:hover,
+    body.services-page .main-header:active,
+    body.services-page .main-header:focus,
+    body.services-page .main-header.scrolled,
+    body.services-page .main-header.header-hidden {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+}
+
+/* 5. ПЕРЕОПРЕДЕЛЕНИЕ ИНЛАЙН-СТИЛЕЙ */
 body.services-page .main-header[style] {
-    /* ПЕРЕОПРЕДЕЛЯЕМ ЛЮБЫЕ ИНЛАЙН-СТИЛИ */
+    /* ПЕРЕОПРЕДЕЛЯЕМ ЛЮБЫЕ ИНЛАЙН СТИЛИ */
     left: 50% !important;
     transform: translateX(-50%) !important;
     top: 20px !important;
+    position: fixed !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    animation: none !important;
     transition: none !important;
 }
 
@@ -655,10 +597,13 @@ body.services-page .main-header[style] {
         left: 0 !important;
         transform: none !important;
         top: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
     }
 }
 
-/* 9. УБЕЖДАЕМСЯ ЧТО FOOTER НЕ СМЕЩАЕТСЯ */
+/* 6. ДОПОЛНИТЕЛЬНЫЕ ГАРАНТИИ */
 body.services-page {
     min-height: 100vh;
     display: flex;
@@ -673,31 +618,52 @@ body.services-page .main-footer {
     flex-shrink: 0;
 }
 
-/* ===== КРИТИЧЕСКИЙ ФИКС - ПРИНУДИТЕЛЬНАЯ ФИКСАЦИЯ ===== */
-/* Добавлено для гарантии что хедер не сьезжает */
+/* 7. ФИКС ДЛЯ ОТСТУПОВ */
+body.services-page .services-hero {
+    padding-top: 180px !important;
+}
+
+@media (max-width: 768px) {
+    body.services-page .services-hero {
+        padding-top: 140px !important;
+    }
+    
+    body.services-page .service-detail {
+        scroll-margin-top: 120px !important;
+    }
+}
+
+/* 8. КРИТИЧЕСКИЙ ФИКС - ПРИНУДИТЕЛЬНОЕ ПЕРЕОПРЕДЕЛЕНИЕ */
 body.services-page .main-header {
-    /* Гарантированная центровка */
+    all: unset;
+    position: fixed !important;
+    top: 20px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    /* Блокируем любое изменение позиции */
-    position: fixed !important;
-    /* Фиксируем отступы */
-    margin: 0 auto !important;
-    /* Фиксируем размеры */
     width: calc(100% - 40px) !important;
     max-width: 1400px !important;
-    /* Фиксируем вертикальную позицию */
-    top: 20px !important;
+    margin: 0 auto !important;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
 }
 
 @media (max-width: 768px) {
     body.services-page .main-header {
+        all: unset;
+        position: fixed !important;
+        top: 0 !important;
         left: 0 !important;
+        right: 0 !important;
         transform: none !important;
         width: 100% !important;
         max-width: 100% !important;
-        top: 0 !important;
-        border-radius: 0 !important;
         margin: 0 !important;
+        border-radius: 0 !important;
+        z-index: 1000 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
     }
 }
