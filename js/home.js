@@ -45,17 +45,9 @@
             // Проверяем, работает ли CSS анимация
             setTimeout(() => {
                 const style = window.getComputedStyle(speckMarqueeTrack);
-                const transform = style.transform || style.webkitTransform;
                 
-                console.log('🔍 Проверка CSS анимации:', {
-                    transform: transform,
-                    animation: style.animationName,
-                    animationPlayState: style.animationPlayState
-                });
-                
-                // Если анимация не работает, запускаем JS fallback
-                if (transform === 'none' || transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
-                    style.animationName === 'none' || this.isReducedMotion) {
+                // Если анимация не работает (пользователь отключил или браузер не поддерживает)
+                if (style.animationName === 'none' || this.isReducedMotion) {
                     console.log('🚀 Запуск JS fallback для Speck бегущей строки');
                     this.runSpeckMarqueeJS(speckMarqueeTrack);
                 } else {
@@ -213,15 +205,6 @@
                 header.style.borderRadius = '0';
                 header.style.top = '0';
                 header.style.margin = '0';
-            }
-            
-            // Убираем обработчики событий если они есть
-            const originalSetupHeaderScrollLogic = window.setupHeaderScrollLogic;
-            if (originalSetupHeaderScrollLogic) {
-                window.setupHeaderScrollLogic = function() {
-                    console.log('⚠️ Header scroll logic disabled for home page');
-                    return;
-                };
             }
         }
 
