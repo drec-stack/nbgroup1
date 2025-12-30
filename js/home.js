@@ -23,9 +23,168 @@
             this.initSpeckVerticalBlocksModern();
             this.initEnhancedSpeckBlocks();
             this.initSpeckBlocksAnimations();
+            this.initSpeckMarquee(); // Инициализация бегущей строки Speck
             
             // Отключаем логику скролла хедера для главной страницы
             this.disableHeaderScrollLogic();
+        }
+
+        // ===== SPECK MARQUEE INITIALIZATION =====
+        initSpeckMarquee() {
+            console.log('🎯 Инициализация Speck бегущей строки...');
+            
+            const speckMarqueeTrack = document.getElementById('speckMarqueeTrack');
+            if (!speckMarqueeTrack) {
+                console.warn('❌ Speck marquee track не найден');
+                return;
+            }
+
+            // Добавляем класс для отладки (можно удалить)
+            document.body.classList.add('debug-marquee');
+
+            // Проверяем, работает ли CSS анимация
+            setTimeout(() => {
+                const style = window.getComputedStyle(speckMarqueeTrack);
+                const transform = style.transform || style.webkitTransform;
+                
+                console.log('🔍 Проверка CSS анимации:', {
+                    transform: transform,
+                    animation: style.animationName,
+                    animationPlayState: style.animationPlayState
+                });
+                
+                // Если анимация не работает, запускаем JS fallback
+                if (transform === 'none' || transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                    style.animationName === 'none' || this.isReducedMotion) {
+                    console.log('🚀 Запуск JS fallback для Speck бегущей строки');
+                    this.runSpeckMarqueeJS(speckMarqueeTrack);
+                } else {
+                    console.log('✅ Speck бегущая строка работает через CSS');
+                    // Добавляем обработчики для паузы при наведении
+                    this.addSpeckMarqueeHoverHandlers(speckMarqueeTrack);
+                }
+            }, 100);
+
+            // Проверка через 2 секунды на всякий случай
+            setTimeout(() => {
+                const track = document.querySelector('.speck-marquee-track');
+                if (track) {
+                    const rect = track.getBoundingClientRect();
+                    const isMoving = rect.left !== 0; // Простая проверка движения
+                    
+                    if (!isMoving && !track.classList.contains('js-fallback-active')) {
+                        console.log('⚠️ Бегущая строка не двигается, запускаем JS fallback');
+                        this.runSpeckMarqueeJS(speckMarqueeTrack);
+                    }
+                }
+            }, 2000);
+        }
+
+        // ===== JS FALLBACK FOR SPECK MARQUEE =====
+        runSpeckMarqueeJS(track) {
+            if (track.classList.contains('js-fallback-active')) {
+                console.log('⚠️ JS fallback уже активен');
+                return;
+            }
+
+            const content = track.querySelector('.speck-marquee-content');
+            if (!content) {
+                console.error('❌ Speck marquee content не найден');
+                return;
+            }
+
+            console.log('🔄 Запуск JS бегущей строки...');
+
+            // Добавляем маркер активации JS fallback
+            track.classList.add('js-fallback-active');
+            
+            // Останавливаем CSS анимацию
+            track.style.animation = 'none';
+            track.style.webkitAnimation = 'none';
+            
+            // Увеличиваем ширину для плавного перехода
+            const originalContent = content.innerHTML;
+            content.innerHTML = originalContent + originalContent + originalContent;
+            
+            let position = 0;
+            const speed = -1.2; // Скорость прокрутки
+            let animationId = null;
+            let isPaused = false;
+            let lastTime = 0;
+            const fps = 60;
+            const interval = 1000 / fps;
+
+            const animate = (currentTime) => {
+                if (!lastTime) lastTime = currentTime;
+                const deltaTime = currentTime - lastTime;
+
+                if (deltaTime > interval && !isPaused) {
+                    position += speed;
+                    
+                    // Сбрасываем позицию, когда прокрутили 1/3 контента
+                    const contentWidth = content.scrollWidth / 3;
+                    if (position <= -contentWidth) {
+                        position = 0;
+                    }
+                    
+                    // Применяем трансформацию
+                    track.style.transform = `translateX(${position}px)`;
+                    track.style.webkitTransform = `translateX(${position}px)`;
+                    
+                    lastTime = currentTime - (deltaTime % interval);
+                }
+                
+                animationId = requestAnimationFrame(animate);
+            };
+
+            // Запускаем анимацию
+            animationId = requestAnimationFrame(animate);
+            
+            // Добавляем обработчики для паузы
+            this.addSpeckMarqueeHoverHandlers(track, () => isPaused = true, () => isPaused = false);
+            
+            // Сохраняем ID анимации для очистки
+            track._marqueeAnimationId = animationId;
+            
+            console.log('✅ Speck бегущая строка запущена через JS');
+        }
+
+        // ===== HOVER HANDLERS FOR MARQUEE =====
+        addSpeckMarqueeHoverHandlers(track, pauseCallback = null, resumeCallback = null) {
+            if (!track) return;
+
+            const pauseMarquee = () => {
+                if (track.classList.contains('js-fallback-active')) {
+                    if (pauseCallback) pauseCallback();
+                } else {
+                    track.style.animationPlayState = 'paused';
+                }
+                track.classList.add('paused');
+            };
+
+            const resumeMarquee = () => {
+                if (track.classList.contains('js-fallback-active')) {
+                    if (resumeCallback) resumeCallback();
+                } else {
+                    track.style.animationPlayState = 'running';
+                }
+                track.classList.remove('paused');
+            };
+
+            // Обработчики для всей секции
+            const section = track.closest('.speck-marquee-section');
+            if (section) {
+                section.addEventListener('mouseenter', pauseMarquee);
+                section.addEventListener('mouseleave', resumeMarquee);
+                section.addEventListener('touchstart', pauseMarquee);
+                section.addEventListener('touchend', resumeMarquee);
+            }
+
+            // Обработчики для самого трека
+            track.addEventListener('mouseenter', pauseMarquee);
+            track.addEventListener('mouseleave', resumeMarquee);
+            track.addEventListener('touchstart', pauseMarquee);
+            track.addEventListener('touchend', resumeMarquee);
         }
 
         disableHeaderScrollLogic() {
@@ -439,9 +598,9 @@
             checkBackgrounds();
         }
 
-        // ===== MARQUEE ANIMATIONS =====
+        // ===== MARQUEE ANIMATIONS (старая бегущая строка) =====
         initMarqueeAnimations() {
-            const marqueeTracks = document.querySelectorAll('.marquee-track');
+            const marqueeTracks = document.querySelectorAll('.marquee-track:not(#speckMarqueeTrack)');
             
             if (!marqueeTracks.length) return;
 
@@ -461,18 +620,18 @@
                 }
                 
                 if (!isWorking) {
-                    console.log('🎯 Бегущая строка не работает через CSS, запускаем JS fallback...');
+                    console.log('🎯 Старая бегущая строка не работает через CSS, запускаем JS fallback...');
                     this.initMarqueeJSFallback();
                 } else {
-                    console.log('✅ Бегущая строка работает через CSS');
+                    console.log('✅ Старая бегущая строка работает через CSS');
                 }
             }, 1000);
         }
 
         initMarqueeJSFallback() {
-            console.log('🚀 Запуск JavaScript fallback для бегущей строки...');
+            console.log('🚀 Запуск JavaScript fallback для старой бегущей строки...');
             
-            const marqueeTracks = document.querySelectorAll('.marquee-track');
+            const marqueeTracks = document.querySelectorAll('.marquee-track:not(#speckMarqueeTrack)');
             
             marqueeTracks.forEach((track, index) => {
                 const isReverse = index === 1;
@@ -572,7 +731,7 @@
             
             if (!isWorking && window.homePage) {
                 console.warn('⚠️ Бегущая строка не работает, запускаем fallback...');
-                window.homePage.initMarqueeAnimations();
+                window.homePage.initSpeckMarquee();
             }
         }, 2000);
     }
