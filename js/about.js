@@ -4,6 +4,9 @@ console.log('🎯 about.js loaded - SPECK DESIGN OPTIMIZED WITH LANGUAGE FIX');
 function initAbout() {
     console.log('🎯 Initializing about page with Speck Design optimizations...');
     
+    // ФИКС ДЛЯ ХЕДЕРА НА СТРАНИЦЕ ABOUT
+    fixHeaderForAboutPage();
+    
     // Основные функции с мобильной оптимизацией
     setupTeamInteractions();
     setupStoryStats();
@@ -17,6 +20,41 @@ function initAbout() {
     setupLanguageIntegration();
     
     console.log('✅ About page with Speck Design fully optimized');
+}
+
+// ФИКС ДЛЯ ХЕДЕРА НА СТРАНИЦЕ ABOUT - ОБЕСПЕЧИВАЕМ ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ
+function fixHeaderForAboutPage() {
+    const header = document.querySelector('.main-header');
+    if (header) {
+        // Убираем возможные анимации скрытия хедера
+        header.classList.remove('header-hidden');
+        header.style.opacity = '1';
+        header.style.transform = 'translateX(-50%) translateY(0)';
+        header.style.pointerEvents = 'auto';
+        header.style.transition = 'all 0.3s ease';
+        
+        // Убедимся, что хедер фиксированный
+        header.style.position = 'fixed';
+        header.style.top = '20px';
+        header.style.left = '50%';
+        header.style.transform = 'translateX(-50%)';
+        
+        // Установим z-index чтобы быть над всем
+        header.style.zIndex = '1000';
+        
+        // Для мобильных корректируем
+        if (window.innerWidth <= 768) {
+            header.style.top = '0';
+            header.style.left = '0';
+            header.style.transform = 'none';
+            header.style.width = '100%';
+            header.style.maxWidth = '100%';
+            header.style.borderRadius = '0';
+            header.style.margin = '0';
+        }
+        
+        console.log('✅ Header fixed for about page');
+    }
 }
 
 // ИНТЕГРАЦИЯ С ЯЗЫКОВОЙ СИСТЕМОЙ i18n.js
