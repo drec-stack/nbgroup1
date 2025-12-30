@@ -2670,3 +2670,337 @@ button,
     -webkit-animation: columnClick 0.3s ease;
     animation: columnClick 0.3s ease;
 }
+
+/* =========================================== */
+/* SPECK DESIGN MARQUEE - ПОЛНОСТЬЮ РАБОЧИЕ СТИЛИ */
+/* =========================================== */
+
+.speck-marquee-section {
+    padding: 120px 0;
+    background: transparent !important;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+}
+
+.speck-marquee-mask {
+    position: relative;
+    overflow: hidden;
+    margin: 40px 0;
+    background: transparent !important;
+}
+
+/* Градиенты по бокам для эффекта исчезающих краев */
+.speck-marquee-mask::before,
+.speck-marquee-mask::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 150px;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.speck-marquee-mask::before {
+    left: 0;
+    background: linear-gradient(90deg, 
+        #0a0a0a 0%, 
+        rgba(10, 10, 10, 0.8) 50%,
+        transparent 100%);
+}
+
+.speck-marquee-mask::after {
+    right: 0;
+    background: linear-gradient(270deg, 
+        #0a0a0a 0%, 
+        rgba(10, 10, 10, 0.8) 50%,
+        transparent 100%);
+}
+
+.speck-marquee-container {
+    width: 100%;
+    overflow: visible;
+    position: relative;
+    background: transparent !important;
+}
+
+.speck-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: speckMarquee 40s linear infinite;
+    will-change: transform;
+    padding: 25px 0;
+    white-space: nowrap;
+}
+
+/* Останавливаем анимацию при наведении */
+.speck-marquee-track:hover {
+    animation-play-state: paused;
+}
+
+.speck-marquee-content {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    gap: 0;
+}
+
+.speck-brand {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 0 50px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-decoration: none;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.speck-brand:hover {
+    color: #ffffff;
+    opacity: 1;
+    transform: translateY(-3px);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.speck-brand::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #0066ff, #66b5ff);
+    transition: width 0.4s ease;
+    border-radius: 1.5px;
+    box-shadow: 0 0 10px rgba(0, 102, 255, 0.5);
+}
+
+.speck-brand:hover::after {
+    width: 60%;
+}
+
+/* Специальные стили для разных брендов */
+.speck-brand:nth-child(3n+1) {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.speck-brand:nth-child(3n+2) {
+    color: rgba(200, 220, 255, 0.85);
+}
+
+.speck-brand:nth-child(3n+3) {
+    color: rgba(180, 200, 255, 0.8);
+}
+
+/* Анимация бегущей строки */
+@keyframes speckMarquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Пауза анимации при наведении */
+.speck-marquee-track:hover {
+    animation-play-state: paused;
+}
+
+/* Индикатор загрузки */
+.speck-marquee-track::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #0066ff;
+    z-index: 10;
+    animation: marqueeLoader 2s ease-in-out infinite;
+}
+
+@keyframes marqueeLoader {
+    0%, 100% {
+        left: 0;
+        width: 0;
+    }
+    50% {
+        left: 25%;
+        width: 50%;
+    }
+}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ БЕГУЩЕЙ СТРОКИ ===== */
+
+@media (max-width: 1400px) {
+    .speck-brand {
+        font-size: 1.7rem;
+        padding: 0 45px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .speck-brand {
+        font-size: 1.6rem;
+        padding: 0 40px;
+    }
+    
+    .speck-marquee-mask::before,
+    .speck-marquee-mask::after {
+        width: 120px;
+    }
+}
+
+@media (max-width: 992px) {
+    .speck-marquee-section {
+        padding: 100px 0;
+    }
+    
+    .speck-brand {
+        font-size: 1.5rem;
+        padding: 0 35px;
+    }
+    
+    .speck-marquee-mask::before,
+    .speck-marquee-mask::after {
+        width: 100px;
+    }
+    
+    .speck-marquee-track {
+        padding: 20px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .speck-marquee-section {
+        padding: 80px 0 60px;
+    }
+    
+    .speck-brand {
+        font-size: 1.4rem;
+        padding: 0 30px;
+    }
+    
+    .speck-marquee-mask::before,
+    .speck-marquee-mask::after {
+        width: 70px;
+    }
+    
+    .speck-marquee-track {
+        padding: 18px 0;
+        animation-duration: 35s;
+    }
+}
+
+@media (max-width: 576px) {
+    .speck-marquee-section {
+        padding: 60px 0 40px;
+    }
+    
+    .speck-brand {
+        font-size: 1.2rem;
+        padding: 0 25px;
+    }
+    
+    .speck-marquee-mask::before,
+    .speck-marquee-mask::after {
+        width: 50px;
+    }
+    
+    .speck-marquee-track {
+        padding: 15px 0;
+        animation-duration: 30s;
+    }
+}
+
+@media (max-width: 480px) {
+    .speck-brand {
+        font-size: 1.1rem;
+        padding: 0 20px;
+    }
+    
+    .speck-marquee-mask::before,
+    .speck-marquee-mask::after {
+        width: 40px;
+    }
+    
+    .speck-marquee-track {
+        padding: 12px 0;
+        animation-duration: 25s;
+    }
+}
+
+/* ===== REDUCED MOTION SUPPORT ===== */
+@media (prefers-reduced-motion: reduce) {
+    .speck-marquee-track {
+        animation: none !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+    }
+    
+    .speck-marquee-track::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+    
+    .speck-brand:hover {
+        transform: none !important;
+    }
+    
+    .speck-marquee-track::before {
+        animation: none;
+        display: none;
+    }
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATION ===== */
+@media (hover: none) {
+    .speck-brand:hover {
+        transform: none;
+    }
+    
+    .speck-brand:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+    }
+}
+
+/* ===== FALLBACK FOR OLD BROWSERS ===== */
+.no-cssanimations .speck-marquee-track {
+    animation: none;
+    overflow-x: auto;
+}
+
+/* ===== PERFORMANCE OPTIMIZATION ===== */
+.speck-marquee-track {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    will-change: transform;
+}
+
+/* ===== FIX FOR IOS MOMENTUM SCROLLING ===== */
+.speck-marquee-track {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ===== DEBUG MODE (можно удалить после тестирования) ===== */
+.debug-marquee .speck-marquee-track {
+    border: 2px dashed rgba(0, 102, 255, 0.3);
+}
+
+.debug-marquee .speck-brand {
+    background: rgba(0, 102, 255, 0.1);
+    border: 1px solid rgba(0, 102, 255, 0.2);
+    border-radius: 4px;
+}
