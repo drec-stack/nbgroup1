@@ -1,4 +1,4 @@
-/* style.css */
+/* style.css - ПОЛНЫЙ ФАЙЛ С ДОБАВЛЕННЫМИ СТИЛЯМИ ДЛЯ БЕГУЩЕЙ СТРОКИ */
 :root {
     /* ОСНОВНЫЕ ЦВЕТА - СИНЯЯ ПАЛИТРА ДЛЯ КОНТЕНТА */
     --primary-blue: #0066ff;
@@ -54,6 +54,229 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+/* ===== SPECK DESIGN MARQUEE SECTION - ТОЧНО КАК НА SPECKDESIGN.COM ===== */
+
+.speck-marquee-section {
+    padding: 100px 0;
+    background-color: var(--primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.speck-marquee-wrapper {
+    width: 100%;
+}
+
+.speck-marquee-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 40px;
+    text-align: center;
+    display: block;
+}
+
+/* Маска с градиентными краями */
+.speck-marquee-mask {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 60px 0;
+    margin: 20px 0;
+    mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 10%,
+        black 90%,
+        transparent
+    );
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 10%,
+        black 90%,
+        transparent
+    );
+}
+
+/* Основной контейнер */
+.speck-marquee-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+/* Движущийся трек */
+.speck-marquee-track {
+    display: flex;
+    width: fit-content;
+    animation: speckMarquee 40s linear infinite;
+    animation-play-state: running;
+    will-change: transform;
+}
+
+/* Анимация бегущей строки */
+@keyframes speckMarquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Контент внутри трека */
+.speck-marquee-content {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 80px; /* Большой отступ между брендами как на Speck */
+}
+
+/* Стили брендов как на Speck */
+.speck-brand {
+    color: #ffffff !important;
+    font-size: 5rem !important; /* Очень большой текст как на Speck */
+    font-weight: 900 !important;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    opacity: 0.9;
+    position: relative;
+    display: inline-block;
+}
+
+.speck-brand:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    color: #ffffff !important;
+    text-shadow: 
+        0 0 30px rgba(255, 255, 255, 0.5),
+        0 0 60px rgba(255, 255, 255, 0.3);
+}
+
+/* Пауза при наведении */
+.speck-marquee-container:hover .speck-marquee-track {
+    animation-play-state: paused;
+}
+
+/* Градиентные края для эффекта исчезновения */
+.speck-marquee-mask::before,
+.speck-marquee-mask::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 200px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.speck-marquee-mask::before {
+    left: 0;
+    background: linear-gradient(to right, var(--primary), transparent);
+}
+
+.speck-marquee-mask::after {
+    right: 0;
+    background: linear-gradient(to left, var(--primary), transparent);
+}
+
+/* Адаптивность для бегущей строки */
+@media (max-width: 1200px) {
+    .speck-brand {
+        font-size: 4rem !important;
+    }
+    .speck-marquee-content {
+        gap: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .speck-marquee-section {
+        padding: 60px 0;
+    }
+    
+    .speck-marquee-mask {
+        padding: 40px 0;
+        mask-image: linear-gradient(
+            to right,
+            transparent,
+            black 5%,
+            black 95%,
+            transparent
+        );
+        -webkit-mask-image: linear-gradient(
+            to right,
+            transparent,
+            black 5%,
+            black 95%,
+            transparent
+        );
+    }
+    
+    .speck-brand {
+        font-size: 3rem !important;
+    }
+    
+    .speck-marquee-content {
+        gap: 40px;
+    }
+    
+    .speck-marquee-track {
+        animation: speckMarquee 30s linear infinite;
+    }
+    
+    .speck-marquee-mask::before,
+    .speck-marquee-mask::after {
+        width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .speck-marquee-section {
+        padding: 40px 0;
+    }
+    
+    .speck-brand {
+        font-size: 2.2rem !important;
+    }
+    
+    .speck-marquee-content {
+        gap: 30px;
+    }
+    
+    .speck-marquee-track {
+        animation: speckMarquee 25s linear infinite;
+    }
+    
+    .speck-marquee-mask {
+        padding: 30px 0;
+    }
+}
+
+/* Поддержка prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .speck-marquee-track {
+        animation: none !important;
+    }
+}
+
+/* JavaScript fallback стили */
+.speck-marquee-track.js-fallback-active {
+    animation: none !important;
+}
+
+.speck-marquee-track.paused {
+    animation-play-state: paused !important;
 }
 
 /* ===== ЗАКРУГЛЕННЫЙ ПРОЗРАЧНЫЙ GLASS HEADER ===== */
@@ -2909,6 +3132,11 @@ a:focus-visible {
         transition: none !important;
         background-attachment: scroll !important;
     }
+    
+    /* Бегущая строка Speck */
+    .speck-marquee-track {
+        animation: none !important;
+    }
 }
 
 /* ===== HIGH CONTRAST MODE ===== */
@@ -3004,6 +3232,11 @@ a:focus-visible {
     }
     
     .mobile-menu-toggle {
+        display: none !important;
+    }
+    
+    /* Бегущая строка Speck */
+    .speck-marquee-section {
         display: none !important;
     }
 }
