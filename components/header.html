@@ -554,85 +554,6 @@
         }
     }
 
-    /* ===== МОБИЛЬНОЕ МЕНЮ ===== */
-    .mobile-menu-toggle {
-        display: none;
-        background: none;
-        border: none;
-        width: 36px;
-        height: 36px;
-        position: relative;
-        cursor: pointer;
-        border-radius: 10px;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        z-index: 1001;
-    }
-
-    .mobile-menu-toggle:hover {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 255, 255, 0.25);
-    }
-
-    .mobile-menu-toggle span {
-        display: block;
-        width: 20px;
-        height: 2px;
-        background: white;
-        position: absolute;
-        left: 8px;
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        border-radius: 1px;
-    }
-
-    .mobile-menu-toggle span:nth-child(1) { top: 12px; }
-    .mobile-menu-toggle span:nth-child(2) { top: 17px; }
-    .mobile-menu-toggle span:nth-child(3) { top: 22px; }
-
-    .mobile-menu-toggle.active span:nth-child(1) {
-        transform: rotate(45deg) translate(6px, 6px);
-        top: 17px;
-    }
-
-    .mobile-menu-toggle.active span:nth-child(2) {
-        opacity: 0;
-        transform: scale(0);
-    }
-
-    .mobile-menu-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
-        top: 17px;
-    }
-
-    .mobile-menu-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        z-index: 998;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .mobile-menu-overlay.active {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    @media (max-width: 768px) {
-        .mobile-menu-toggle {
-            display: flex;
-        }
-    }
-
     /* ===== ПОДДЕРЖКА БЕЗ BACKDROP-FILTER ===== */
     @supports not (backdrop-filter: blur(20px)) {
         .main-header {
@@ -757,21 +678,10 @@
                 <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject" aria-label="Начать новый проект">
                     Начать проект
                 </a>
-                
-                <!-- Кнопка мобильного меню -->
-                <button class="mobile-menu-toggle" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span class="sr-only">Меню</span>
-                </button>
             </div>
         </div>
     </div>
 </header>
-
-<!-- Оверлей для мобильного меню -->
-<div class="mobile-menu-overlay" aria-hidden="true"></div>
 
 <script>
 // ===== УНИВЕРСАЛЬНЫЙ СКРИПТ ХЕДЕРА ДЛЯ ВСЕХ СТРАНИЦ =====
@@ -781,84 +691,9 @@
     console.log('🚀 Загрузка стабильного хедера...');
     
     // ===== ОСНОВНЫЕ ПЕРЕМЕННЫЕ =====
-    let isMobileMenuOpen = false;
     let lastScrollY = window.scrollY;
     
     // ===== ФУНКЦИИ =====
-    
-    /**
-     * Настройка мобильного меню
-     */
-    function setupMobileMenu() {
-        const toggle = document.querySelector('.mobile-menu-toggle');
-        const nav = document.querySelector('.main-nav');
-        const overlay = document.querySelector('.mobile-menu-overlay');
-
-        if (!toggle || !nav) {
-            console.warn('⚠️ Элементы мобильного меню не найдены');
-            return;
-        }
-
-        const toggleMenu = (open) => {
-            const shouldOpen = open !== undefined ? open : !isMobileMenuOpen;
-            
-            if (shouldOpen) {
-                toggle.classList.add('active');
-                nav.classList.add('active');
-                if (overlay) overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                toggle.setAttribute('aria-expanded', 'true');
-                isMobileMenuOpen = true;
-                console.log('📱 Мобильное меню открыто');
-            } else {
-                toggle.classList.remove('active');
-                nav.classList.remove('active');
-                if (overlay) overlay.classList.remove('active');
-                document.body.style.overflow = '';
-                toggle.setAttribute('aria-expanded', 'false');
-                isMobileMenuOpen = false;
-                console.log('📱 Мобильное меню закрыто');
-            }
-        };
-
-        // Обработчик клика по бургер-меню
-        toggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            toggleMenu();
-        });
-
-        // Обработчик клика по оверлею
-        if (overlay) {
-            overlay.addEventListener('click', () => {
-                toggleMenu(false);
-            });
-        }
-
-        // Закрытие при клике на ссылки в меню
-        const navLinks = nav.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                toggleMenu(false);
-            });
-        });
-
-        // Закрытие на клавишу Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isMobileMenuOpen) {
-                toggleMenu(false);
-            }
-        });
-
-        // Закрытие при изменении размера окна (если перешли на десктоп)
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768 && isMobileMenuOpen) {
-                toggleMenu(false);
-            }
-        });
-
-        console.log('✅ Мобильное меню настроено');
-    }
 
     /**
      * Установка активной ссылки в навигации
@@ -1068,7 +903,6 @@
         
         // Инициализируем все компоненты
         setupPageClasses();
-        setupMobileMenu();
         setActiveNavLink();
         setupLanguageSwitcher();
         setupScrollHandler();
