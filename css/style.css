@@ -3493,3 +3493,43 @@ body.contacts-page .main-header.scrolled {
 .main-header .nav-link.active {
     /* Принудительное переопределение */
 }
+
+/* ===== FIX FOR ABOUT PAGE HEADER ===== */
+body.about-page .main-header {
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+@media (max-width: 768px) {
+    body.about-page .main-header {
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+    }
+}
+
+/* Убираем возможные переопределения для about page */
+body.about-page .main-header.header-hidden {
+    transform: translateX(-50%) translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+@media (max-width: 768px) {
+    body.about-page .main-header.header-hidden {
+        transform: none !important;
+    }
+}
