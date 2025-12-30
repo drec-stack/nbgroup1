@@ -256,34 +256,7 @@
 
     @media (max-width: 768px) {
         .main-nav {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 85%;
-            max-width: 400px;
-            height: 100vh;
-            background: rgba(10, 10, 20, 0.98);
-            backdrop-filter: blur(30px) saturate(200%);
-            -webkit-backdrop-filter: blur(30px) saturate(200%);
-            flex-direction: column;
-            padding: 100px 30px 40px;
-            border-left: 1px solid rgba(255, 255, 255, 0.15);
-            transition: right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 999;
-            margin: 0;
-            gap: 0;
-            box-shadow: -10px 0 50px rgba(0, 0, 0, 0.5);
-        }
-        
-        .main-nav.active {
-            right: 0;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .main-nav {
-            width: 90%;
-            padding: 90px 20px 30px;
+            display: none; /* Скрываем навигацию на мобильных */
         }
     }
 
@@ -375,6 +348,12 @@
     @media (max-width: 1100px) {
         .header-actions {
             gap: 18px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .header-actions {
+            gap: 16px;
         }
     }
 
@@ -566,10 +545,6 @@
         
         .language-switcher {
             background: rgba(255, 255, 255, 0.12);
-        }
-        
-        .mobile-menu-toggle {
-            background: rgba(255, 255, 255, 0.15);
         }
         
         .main-nav {
