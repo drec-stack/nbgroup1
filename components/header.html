@@ -1,5 +1,5 @@
 <!-- components/header.html -->
-<!-- ===== УНИВЕРСАЛЬНЫЙ СТАБИЛЬНЫЙ ХЕДЕР ДЛЯ ВСЕХ СТРАНИЦ ===== -->
+<!-- ===== ПРОСТОЙ И ЧИСТЫЙ ХЕДЕР БЕЗ ЛИШНИХ ЭЛЕМЕНТОВ ===== -->
 <style>
     /* ===== ОСНОВНЫЕ СТИЛИ ХЕДЕРА ===== */
     .main-header {
@@ -11,7 +11,7 @@
         max-width: 1400px !important;
         margin: 0 auto !important;
         z-index: 1000 !important;
-        padding: 20px 0 !important;
+        padding: 15px 0 !important;
         border-radius: 20px !important;
         transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
         background: rgba(255, 255, 255, 0.05) !important;
@@ -42,25 +42,6 @@
             box-shadow: 
                 0 8px 32px rgba(0, 0, 0, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-            padding: 16px 0 !important;
-        }
-    }
-
-    /* Эффект при скролле */
-    .main-header.scrolled {
-        background: rgba(255, 255, 255, 0.08) !important;
-        backdrop-filter: blur(30px) saturate(200%) !important;
-        -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        padding: 15px 0 !important;
-        box-shadow: 
-            0 12px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.12),
-            inset 0 0 25px rgba(255, 255, 255, 0.08) !important;
-    }
-
-    @media (max-width: 768px) {
-        .main-header.scrolled {
             padding: 12px 0 !important;
         }
     }
@@ -87,7 +68,7 @@
         width: 100%;
     }
 
-    /* ===== УЛУЧШЕННЫЙ ЛОГОТИП ===== */
+    /* ===== ЛОГОТИП ===== */
     .logo {
         display: flex;
         align-items: center;
@@ -129,30 +110,6 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
 
-    /* Эффект блеска */
-    .logo-mark::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-            to right,
-            transparent 0%,
-            rgba(255, 255, 255, 0.3) 50%,
-            transparent 100%
-        );
-        transform: rotate(30deg);
-        transition: all 0.6s ease;
-        opacity: 0;
-    }
-
-    .logo:hover .logo-mark::before {
-        opacity: 1;
-        transform: translateX(100%) rotate(30deg);
-    }
-
     .logo:hover .logo-mark {
         transform: scale(1.05) rotate(2deg);
         box-shadow: 
@@ -174,14 +131,6 @@
         line-height: 1.1;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
         transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    /* Градиент для текста при наведении */
-    .logo:hover .logo-text {
-        background: linear-gradient(90deg, #ffffff 0%, #e0e0e0 100%) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        background-clip: text !important;
     }
 
     @media (max-width: 768px) {
@@ -220,43 +169,23 @@
         }
     }
 
-    /* Анимация загрузки лого */
-    @keyframes logoFadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .logo {
-        animation: logoFadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
-    }
-
-    .logo-mark {
-        animation: logoFadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0s both;
-    }
-
     /* ===== НАВИГАЦИЯ ===== */
     .main-nav {
         display: flex;
-        gap: 24px;
+        gap: 20px;
         margin: 0 40px;
     }
 
     @media (max-width: 1100px) {
         .main-nav {
-            gap: 18px;
+            gap: 15px;
             margin: 0 30px;
         }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         .main-nav {
-            display: none; /* Скрываем навигацию на мобильных */
+            display: none;
         }
     }
 
@@ -266,13 +195,9 @@
         font-weight: 500;
         font-size: 15px;
         transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        padding: 10px 18px;
+        padding: 8px 16px;
         border-radius: 10px;
         white-space: nowrap;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-        backdrop-filter: blur(10px);
         background: rgba(255, 255, 255, 0.03);
     }
 
@@ -289,71 +214,16 @@
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
 
-    /* Индикатор активной страницы */
-    .nav-link.active::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 6px;
-        height: 6px;
-        background: white !important;
-        border-radius: 50%;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.7) !important;
-    }
-
-    @media (max-width: 768px) {
-        .nav-link {
-            padding: 18px 24px;
-            font-size: 17px;
-            margin-bottom: 8px;
-            width: 100%;
-            text-align: center;
-            border-radius: 12px;
-            border: 1px solid transparent;
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .nav-link:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-        
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.15) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        }
-        
-        .nav-link.active::after {
-            display: none;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .nav-link {
-            padding: 16px 20px;
-            font-size: 16px;
-        }
-    }
-
-    /* ===== КНОПКИ И ДЕЙСТВИЯ ===== */
-    .header-actions {
+    /* ===== ПРАВАЯ ЧАСТЬ ХЕДЕРА ===== */
+    .header-right {
         display: flex;
         align-items: center;
-        gap: 24px;
-    }
-
-    @media (max-width: 1100px) {
-        .header-actions {
-            gap: 18px;
-        }
+        gap: 20px;
     }
 
     @media (max-width: 768px) {
-        .header-actions {
-            gap: 16px;
+        .header-right {
+            gap: 15px;
         }
     }
 
@@ -362,39 +232,33 @@
         display: flex;
         align-items: center;
         background: rgba(255, 255, 255, 0.08);
-        border-radius: 24px;
-        padding: 4px;
-        position: relative;
+        border-radius: 20px;
+        padding: 3px;
         border: 1px solid rgba(255, 255, 255, 0.12);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
-        min-width: 120px;
-        height: 40px;
+        width: 100px;
+        height: 36px;
         overflow: hidden;
-        box-shadow: 
-            inset 0 1px 0 rgba(255, 255, 255, 0.05),
-            0 2px 10px rgba(0, 0, 0, 0.15);
     }
 
     .lang-btn {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
+        justify-content: center;
+        gap: 6px;
+        padding: 6px 12px;
         background: none;
         border: none;
         color: rgba(255, 255, 255, 0.85);
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 500;
         cursor: pointer;
-        border-radius: 20px;
+        border-radius: 16px;
         transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        position: relative;
-        z-index: 2;
-        min-width: 56px;
-        justify-content: center;
         flex: 1;
         outline: none;
+        min-width: 46px;
     }
 
     .lang-btn:hover {
@@ -404,57 +268,27 @@
     .lang-btn.active {
         color: white;
         font-weight: 600;
+        background: rgba(255, 255, 255, 0.25) !important;
     }
 
     .lang-slider {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        width: calc(50% - 4px);
-        height: calc(100% - 8px);
-        background: rgba(255, 255, 255, 0.25) !important;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 20px;
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        z-index: 1;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        box-shadow: 
-            0 4px 12px rgba(255, 255, 255, 0.1),
-            inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    }
-
-    .language-switcher[data-current-lang="en"] .lang-slider {
-        transform: translateX(100%);
-    }
-
-    .language-switcher[data-current-lang="ru"] .lang-slider {
-        transform: translateX(0);
+        display: none;
     }
 
     .lang-flag {
-        font-size: 16px;
-        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .lang-btn:hover .lang-flag {
-        transform: scale(1.2);
+        font-size: 14px;
     }
 
     @media (max-width: 768px) {
         .language-switcher {
-            min-width: 110px;
-            height: 38px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.12) !important;
-            backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            width: 90px;
+            height: 34px;
         }
         
         .lang-btn {
-            padding: 7px 14px;
-            font-size: 13px;
-            min-width: 52px;
+            padding: 5px 10px;
+            font-size: 12.5px;
+            min-width: 42px;
         }
         
         .lang-text {
@@ -466,71 +300,66 @@
         }
         
         .lang-flag {
-            font-size: 15px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .language-switcher {
-            min-width: 90px;
-            border-radius: 18px;
-        }
-        
-        .lang-btn {
-            padding: 6px 12px;
-            min-width: 45px;
-            border-radius: 16px;
-        }
-        
-        .lang-slider {
-            border-radius: 16px;
+            font-size: 13px;
         }
     }
 
     /* ===== КНОПКА "НАЧАТЬ ПРОЕКТ" ===== */
-    .header-actions .btn-primary {
+    .header-right .btn-primary {
         display: inline-flex;
         align-items: center;
-        padding: 12px 26px;
+        padding: 10px 24px;
         background: white !important;
         color: #0a0a0a !important;
         border: none;
-        border-radius: 12px;
+        border-radius: 10px;
         font-weight: 700;
-        font-size: 14.5px;
+        font-size: 14px;
         text-decoration: none;
         cursor: pointer;
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        gap: 10px;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
+        gap: 8px;
         border: 1px solid rgba(255, 255, 255, 0.25);
-        box-shadow: 
-            0 4px 20px rgba(255, 255, 255, 0.15),
-            0 0 0 1px rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
     }
 
-    .header-actions .btn-primary:hover {
+    .header-right .btn-primary:hover {
         background: white !important;
         color: #0a0a0a !important;
         transform: translateY(-3px);
-        box-shadow: 
-            0 8px 30px rgba(255, 255, 255, 0.25),
-            0 0 0 1px rgba(255, 255, 255, 0.2);
-    }
-
-    .header-actions .btn-small {
-        padding: 10px 22px;
-        font-size: 13.5px;
-        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25);
     }
 
     @media (max-width: 768px) {
-        /* Скрываем кнопку "Начать проект" на мобильных в хедере */
-        .header-actions .btn-primary {
+        .header-right .btn-primary {
+            padding: 8px 20px;
+            font-size: 13px;
+            border-radius: 8px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .header-right .btn-primary {
             display: none;
         }
+    }
+
+    /* ===== УДАЛЯЕМ ВСЕ СКРЫТЫЕ ЭЛЕМЕНТЫ ===== */
+    .mobile-menu-toggle,
+    .mobile-menu-overlay,
+    .menu-toggle,
+    .burger-menu,
+    .hamburger,
+    .menu-btn,
+    .nav-toggle {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        z-index: -1000 !important;
     }
 
     /* ===== ПОДДЕРЖКА БЕЗ BACKDROP-FILTER ===== */
@@ -539,68 +368,13 @@
             background: rgba(15, 20, 35, 0.98) !important;
         }
         
-        .main-header.scrolled {
-            background: rgba(15, 20, 35, 0.99) !important;
-        }
-        
         .language-switcher {
             background: rgba(255, 255, 255, 0.12);
-        }
-        
-        .main-nav {
-            background: rgba(15, 20, 35, 0.99);
-        }
-        
-        @media (max-width: 768px) {
-            .main-header {
-                background: rgba(10, 10, 20, 0.98) !important;
-            }
-            
-            .main-nav {
-                background: rgba(10, 10, 20, 0.99) !important;
-            }
-        }
-    }
-
-    /* ===== СКРЫТЫЕ ЭЛЕМЕНТЫ ДЛЯ СКРИНРИДЕРОВ ===== */
-    .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    }
-
-    /* ===== ВЫСОКИЙ ПРИОРИТЕТ ДЛЯ СТРАНИЦ С ПРОБЛЕМАМИ ===== */
-    body.services-page .main-header,
-    body.about-page .main-header {
-        /* Гарантированное позиционирование */
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        right: auto !important;
-        width: calc(100% - 40px) !important;
-        max-width: 1400px !important;
-        margin: 0 auto !important;
-        top: 20px !important;
-    }
-
-    @media (max-width: 768px) {
-        body.services-page .main-header,
-        body.about-page .main-header {
-            left: 0 !important;
-            transform: none !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            top: 0 !important;
         }
     }
 </style>
 
-<!-- HTML ХЕДЕРА -->
+<!-- HTML ХЕДЕРА - МИНИМАЛЬНАЯ ВЕРСИЯ -->
 <header class="main-header">
     <div class="container">
         <div class="header-inner">
@@ -612,45 +386,24 @@
             
             <!-- Основная навигация -->
             <nav class="main-nav" aria-label="Основная навигация">
-                <a href="index.html" class="nav-link" data-i18n="nav.home" aria-current="page">
-                    Главная
-                </a>
-                <a href="about.html" class="nav-link" data-i18n="nav.about">
-                    О нас
-                </a>
-                <a href="services.html" class="nav-link" data-i18n="nav.services">
-                    Услуги
-                </a>
-                <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">
-                    Портфолио
-                </a>
-                <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">
-                    Брендбук
-                </a>
-                <a href="contacts.html" class="nav-link" data-i18n="nav.contact">
-                    Контакты
-                </a>
+                <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
+                <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
+                <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
+                <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
+                <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
+                <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
             </nav>
             
-            <!-- Действия -->
-            <div class="header-actions">
+            <!-- Правая часть - только переключатель языка и кнопка -->
+            <div class="header-right">
                 <!-- Переключатель языка -->
-                <div class="language-switcher" data-current-lang="ru" aria-label="Переключатель языка">
-                    <div class="lang-slider" aria-hidden="true"></div>
-                    <button class="lang-btn" data-lang="ru" aria-label="Русский язык">
-                        <span class="lang-text" aria-hidden="true">RU</span>
-                        <span class="lang-flag" aria-hidden="true">🇷🇺</span>
-                        <span class="sr-only">Русский язык</span>
-                    </button>
-                    <button class="lang-btn active" data-lang="en" aria-label="Английский язык">
-                        <span class="lang-text" aria-hidden="true">EN</span>
-                        <span class="lang-flag" aria-hidden="true">🇺🇸</span>
-                        <span class="sr-only">Английский язык</span>
-                    </button>
+                <div class="language-switcher" data-current-lang="ru">
+                    <button class="lang-btn" data-lang="ru">🇷🇺</button>
+                    <button class="lang-btn active" data-lang="en">🇺🇸</button>
                 </div>
                 
                 <!-- Кнопка Начать проект -->
-                <a href="contacts.html" class="btn btn-primary btn-small" data-i18n="nav.startProject" aria-label="Начать новый проект">
+                <a href="contacts.html" class="btn btn-primary" data-i18n="nav.startProject">
                     Начать проект
                 </a>
             </div>
@@ -659,20 +412,27 @@
 </header>
 
 <script>
-// ===== УНИВЕРСАЛЬНЫЙ СКРИПТ ХЕДЕРА ДЛЯ ВСЕХ СТРАНИЦ =====
+// ===== ПРОСТОЙ СКРИПТ ДЛЯ ХЕДЕРА =====
 (function() {
     'use strict';
     
-    console.log('🚀 Загрузка стабильного хедера...');
+    // Ждем загрузки DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHeader);
+    } else {
+        initHeader();
+    }
     
-    // ===== ОСНОВНЫЕ ПЕРЕМЕННЫЕ =====
-    let lastScrollY = window.scrollY;
+    function initHeader() {
+        // Установка активной ссылки
+        setActiveNavLink();
+        
+        // Настройка переключателя языка
+        setupLanguageSwitcher();
+        
+        console.log('✅ Хедер загружен');
+    }
     
-    // ===== ФУНКЦИИ =====
-
-    /**
-     * Установка активной ссылки в навигации
-     */
     function setActiveNavLink() {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         const navLinks = document.querySelectorAll('.nav-link');
@@ -680,43 +440,30 @@
         navLinks.forEach(link => {
             const href = link.getAttribute('href');
             
-            // Убираем все активные классы
             link.classList.remove('active');
-            link.removeAttribute('aria-current');
             
-            // Проверяем, является ли эта ссылка текущей страницей
             if (href === currentPage) {
                 link.classList.add('active');
-                link.setAttribute('aria-current', 'page');
             }
             
-            // Специальная проверка для главной страницы
+            // Для главной страницы
             if ((currentPage === '' || currentPage === 'index.html' || currentPage === '/') && href === 'index.html') {
                 link.classList.add('active');
-                link.setAttribute('aria-current', 'page');
             }
         });
-        
-        console.log('✅ Активная навигация установлена для:', currentPage);
     }
-
-    /**
-     * Настройка переключателя языка
-     */
+    
     function setupLanguageSwitcher() {
         const langButtons = document.querySelectorAll('.lang-btn');
         const switcher = document.querySelector('.language-switcher');
         
-        if (!langButtons.length || !switcher) {
-            console.warn('⚠️ Переключатель языка не найден');
-            return;
-        }
+        if (!langButtons.length || !switcher) return;
         
-        // Установка начального состояния из localStorage
+        // Установка начального состояния
         const currentLang = localStorage.getItem('preferredLang') || 'ru';
         updateLanguageSwitcherState(currentLang);
         
-        // Обработчики кликов по кнопкам
+        // Обработчики кликов
         langButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -725,50 +472,27 @@
                 const lang = btn.getAttribute('data-lang');
                 const currentActive = document.querySelector('.lang-btn.active');
                 
-                // Если уже выбран этот язык, ничего не делаем
                 if (currentActive && currentActive.getAttribute('data-lang') === lang) {
                     return;
                 }
                 
-                // Обновляем состояние переключателя
                 updateLanguageSwitcherState(lang);
-                
-                // Сохраняем выбор в localStorage
                 localStorage.setItem('preferredLang', lang);
                 
-                // Отправляем событие смены языка
-                const languageChangedEvent = new CustomEvent('languageChanged', { 
-                    detail: { lang: lang } 
-                });
-                window.dispatchEvent(languageChangedEvent);
-                
-                console.log('🌐 Язык изменен на:', lang);
-                
-                // Обновляем переводы через i18n
+                // Обновляем переводы
                 if (window.i18n && window.i18n.smoothSwitchLanguage) {
                     window.i18n.smoothSwitchLanguage(lang);
                 } else if (window.i18n && window.i18n.refresh) {
                     window.i18n.refresh();
-                } else {
-                    console.warn('⚠️ i18n не найден, перезагружаем страницу');
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 100);
                 }
             });
         });
-        
-        console.log('✅ Переключатель языка настроен');
     }
-
-    /**
-     * Обновление состояния переключателя языка
-     */
+    
     function updateLanguageSwitcherState(lang) {
         const langBtns = document.querySelectorAll('.lang-btn');
         const switcher = document.querySelector('.language-switcher');
         
-        // Обновляем активную кнопку
         langBtns.forEach(btn => {
             btn.classList.remove('active');
             if (btn.getAttribute('data-lang') === lang) {
@@ -776,174 +500,9 @@
             }
         });
         
-        // Обновляем атрибут контейнера
         if (switcher) {
             switcher.setAttribute('data-current-lang', lang);
         }
     }
-
-    /**
-     * Обработка скролла для хедера
-     */
-    function setupScrollHandler() {
-        const header = document.querySelector('.main-header');
-        
-        if (!header) {
-            console.warn('⚠️ Хедер не найден для обработки скролла');
-            return;
-        }
-        
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY;
-            
-            if (currentScrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            lastScrollY = currentScrollY;
-        };
-        
-        // Оптимизированный обработчик скролла
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    handleScroll();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
-        
-        // Инициализация при загрузке
-        handleScroll();
-        
-        console.log('✅ Обработчик скролла настроен');
-    }
-
-    /**
-     * Автоматическое добавление классов к body
-     */
-    function setupPageClasses() {
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        
-        // Удаляем все существующие классы страниц
-        document.body.classList.remove(
-            'home-page', 
-            'services-page', 
-            'about-page',
-            'portfolio-page',
-            'brandbook-page',
-            'contacts-page'
-        );
-        
-        // Добавляем класс в зависимости от страницы
-        switch(currentPage) {
-            case 'index.html':
-            case '':
-            case '/':
-                document.body.classList.add('home-page');
-                console.log('✅ Добавлен класс: home-page');
-                break;
-            case 'services.html':
-                document.body.classList.add('services-page');
-                console.log('✅ Добавлен класс: services-page');
-                break;
-            case 'about.html':
-                document.body.classList.add('about-page');
-                console.log('✅ Добавлен класс: about-page');
-                break;
-            case 'portfolio.html':
-                document.body.classList.add('portfolio-page');
-                console.log('✅ Добавлен класс: portfolio-page');
-                break;
-            case 'brandbook.html':
-                document.body.classList.add('brandbook-page');
-                console.log('✅ Добавлен класс: brandbook-page');
-                break;
-            case 'contacts.html':
-                document.body.classList.add('contacts-page');
-                console.log('✅ Добавлен класс: contacts-page');
-                break;
-        }
-    }
-
-    /**
-     * Основная функция инициализации хедера
-     */
-    function initHeader() {
-        console.log('🚀 Инициализация стабильного хедера...');
-        
-        // Инициализируем все компоненты
-        setupPageClasses();
-        setActiveNavLink();
-        setupLanguageSwitcher();
-        setupScrollHandler();
-        
-        // Гарантированное позиционирование хедера
-        const header = document.querySelector('.main-header');
-        if (header) {
-            // Принудительно устанавливаем правильные стили
-            header.style.position = 'fixed';
-            header.style.top = '20px';
-            header.style.left = '50%';
-            header.style.transform = 'translateX(-50%)';
-            header.style.width = 'calc(100% - 40px)';
-            header.style.maxWidth = '1400px';
-            header.style.margin = '0 auto';
-            header.style.zIndex = '1000';
-            
-            // Мобильная версия
-            if (window.innerWidth <= 768) {
-                header.style.left = '0';
-                header.style.transform = 'none';
-                header.style.width = '100%';
-                header.style.maxWidth = '100%';
-                header.style.borderRadius = '0';
-                header.style.top = '0';
-            }
-        }
-        
-        console.log('✅ Стабильный хедер инициализирован');
-    }
-
-    // ===== АВТОМАТИЧЕСКАЯ ИНИЦИАЛИЗАЦИЯ =====
-    
-    // Ждем полной загрузки DOM
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initHeader, 100);
-        });
-    } else {
-        setTimeout(initHeader, 100);
-    }
-    
-    // Реинициализация при изменении размера окна
-    window.addEventListener('resize', () => {
-        const header = document.querySelector('.main-header');
-        if (header) {
-            if (window.innerWidth <= 768) {
-                header.style.left = '0';
-                header.style.transform = 'none';
-                header.style.width = '100%';
-                header.style.maxWidth = '100%';
-                header.style.borderRadius = '0';
-                header.style.top = '0';
-            } else {
-                header.style.position = 'fixed';
-                header.style.top = '20px';
-                header.style.left = '50%';
-                header.style.transform = 'translateX(-50%)';
-                header.style.width = 'calc(100% - 40px)';
-                header.style.maxWidth = '1400px';
-                header.style.margin = '0 auto';
-                header.style.borderRadius = '20px';
-            }
-        }
-    });
-    
-    console.log('✅ Файл header.html загружен');
 })();
 </script>
