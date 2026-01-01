@@ -1,5 +1,5 @@
-// main.js - ОБНОВЛЕННАЯ ВЕРСИЯ с полными фиксами для Services/About страниц
-console.log('🚀 main.js loaded with complete Services/About fixes');
+// main.js - ОБНОВЛЕННАЯ ВЕРСИЯ с полными фиксами для удаления скрытых кнопок
+console.log('🚀 main.js loaded with NO HIDDEN BUTTONS fix');
 
 class DaehaaApp {
     constructor() {
@@ -30,10 +30,12 @@ class DaehaaApp {
     }
 
     init() {
-        console.log('🚀 Daehaa App initializing with Services/About awareness...');
+        console.log('🚀 Daehaa App initializing with NO HIDDEN BUTTONS...');
+        
+        // СНАЧАЛА УДАЛЯЕМ ВСЕ СКРЫТЫЕ ЭЛЕМЕНТЫ
+        this.removeAllHiddenElements();
         
         // Базовые функции которые работают на всех страницах
-        this.setupMobileMenu();
         this.setupSmoothScroll();
         this.setupCurrentPage();
         this.setupLanguageSupport();
@@ -43,13 +45,6 @@ class DaehaaApp {
         this.setupClickableElements();
         this.setupNavigationTracking();
         
-        // Функции которые зависят от типа страницы
-        if (!this.isServicesPage && !this.isAboutPage) {
-            this.setupAnimations();
-            this.setupPerformanceOptimizations();
-            this.setupGlassHeaderEffects();
-        }
-        
         // Настройка хедера (с учетом типа страницы)
         this.setupHeaderSupport();
         
@@ -57,37 +52,48 @@ class DaehaaApp {
         this.setupFooterSupport();
         this.initializeExistingFooter();
         
-        console.log('✅ Daehaa application initialized');
+        console.log('✅ Daehaa application initialized (NO HIDDEN BUTTONS)');
+    }
+
+    removeAllHiddenElements() {
+        console.log('🗑️ Removing all hidden elements...');
+        
+        // Удаляем все элементы бургер-меню
+        const hiddenSelectors = [
+            '.mobile-menu-toggle',
+            '.menu-toggle',
+            '.burger-menu',
+            '.hamburger',
+            '.menu-btn',
+            '.nav-toggle',
+            '.mobile-menu-overlay',
+            '.menu-overlay',
+            '.mobile-menu',
+            '.menu-container'
+        ];
+        
+        hiddenSelectors.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => {
+                if (el.parentNode) {
+                    console.log(`🗑️ Removing: ${selector}`);
+                    el.parentNode.removeChild(el);
+                }
+            });
+        });
+        
+        // Добавляем класс к body для CSS контроля
+        document.body.classList.add('no-hidden-buttons');
+        
+        // Удаляем все обработчики событий для этих элементов
+        document.removeEventListener('click', this.handleMobileMenuClick);
+        document.removeEventListener('keydown', this.handleMobileMenuEscape);
+        
+        console.log('✅ All hidden elements removed');
     }
 
     setupHeaderSupport() {
-        console.log('🔧 Setting up optimized header support...');
-        
-        // ===== КРИТИЧЕСКИЙ ФИКС: ПРЕДВАРИТЕЛЬНАЯ ПРОВЕРКА ДЛЯ SERVICES/ABOUT =====
-        this.isServicesPage = document.body.classList.contains('services-page') || 
-                              window.location.pathname.includes('services.html');
-        this.isAboutPage = document.body.classList.contains('about-page') || 
-                           window.location.pathname.includes('about.html');
-        
-        // ЕСЛИ ЭТО SERVICES ИЛИ ABOUT СТРАНИЦА - ПРОПУСКАЕМ ВСЮ НАСТРОЙКУ ХЕДЕРА
-        if (this.isServicesPage || this.isAboutPage) {
-            console.log('ℹ️ Services/About page detected - COMPLETELY SKIPPING header setup');
-            
-            // Минимальная проверка: если хедер есть, просто убедимся что он видим
-            setTimeout(() => {
-                const header = document.querySelector('.main-header');
-                if (header) {
-                    header.style.opacity = '1';
-                    header.style.visibility = 'visible';
-                    header.style.pointerEvents = 'auto';
-                    console.log('✅ Services/About header visibility ensured');
-                }
-            }, 500);
-            
-            return; // ВАЖНО: полностью выходим из функции!
-        }
-        
-        // ===== ДЛЯ ОСТАЛЬНЫХ СТРАНИЦ - ПРОДОЛЖАЕМ КАК ОБЫЧНО =====
+        console.log('🔧 Setting up SIMPLE header support (no hidden buttons)...');
         
         const header = document.querySelector('.main-header');
         if (!header) {
@@ -95,6 +101,13 @@ class DaehaaApp {
             return;
         }
         
+        // Простая настройка - без сложных анимаций
+        this.setupSimpleHeader(header);
+        
+        console.log('✅ Header setup complete (no hidden buttons)');
+    }
+
+    setupSimpleHeader(header) {
         // Устанавливаем классы для body
         if (this.isHomePage) {
             document.body.classList.add('home-page');
@@ -104,352 +117,39 @@ class DaehaaApp {
             document.body.classList.add(`${currentPage.replace('.html', '')}-page`);
         }
         
-        // Оптимизация производительности хедера
-        this.optimizeHeaderPerformance(header);
+        // Убираем все сложные анимации
+        header.style.animation = 'none';
+        header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
         
-        // Настройка видимости бургер-меню
-        this.setupMobileMenuVisibility();
+        // Убираем классы скрытия
+        header.classList.remove('header-hidden');
+        header.style.opacity = '1';
+        header.style.visibility = 'visible';
+        header.style.pointerEvents = 'auto';
         
-        // Устанавливаем начальное состояние
-        this.headerState.isMobile = window.innerWidth <= 768;
-        this.headerState.lastScrollY = window.scrollY;
-        
-        if (this.isHomePage) {
-            console.log('🏠 Home page - setting up full header animation');
-            this.setupOptimizedHomeHeader(header);
-        } else {
-            console.log('📄 Internal page - setting up basic header animation');
-            this.setupOptimizedInternalHeader(header);
-        }
-    }
-
-    optimizeHeaderPerformance(header) {
-        header.style.willChange = 'transform, opacity';
-        header.style.backfaceVisibility = 'hidden';
-        header.style.contain = 'layout style paint';
-        
-        header.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-    }
-
-    setupMobileMenuVisibility() {
-        const mobileToggle = document.querySelector('.mobile-menu-toggle');
-        if (!mobileToggle) return;
-        
-        if (window.innerWidth > 768) {
-            mobileToggle.style.display = 'none';
-            mobileToggle.style.visibility = 'hidden';
-            mobileToggle.style.opacity = '0';
-            mobileToggle.style.width = '0';
-            mobileToggle.style.height = '0';
-            mobileToggle.style.pointerEvents = 'none';
-        } else {
-            mobileToggle.style.display = 'flex';
-            mobileToggle.style.visibility = 'visible';
-            mobileToggle.style.opacity = '1';
-            mobileToggle.style.width = '32px';
-            mobileToggle.style.height = '32px';
-            mobileToggle.style.pointerEvents = 'auto';
-        }
-    }
-
-    setupOptimizedHomeHeader(header) {
-        const self = this;
-        
-        function handleScroll() {
-            const currentScrollY = window.scrollY;
-            
-            // Для мобильных - никогда не скрываем
-            if (self.headerState.isMobile) {
-                header.classList.remove('header-hidden');
-                header.style.opacity = '1';
-                header.style.transform = 'translateY(0)';
-                self.headerState.lastScrollY = currentScrollY;
-                return;
-            }
-            
-            // Десктопная логика
-            if (currentScrollY <= self.headerState.scrollThreshold) {
-                // Вверху страницы - всегда показываем
-                if (self.headerState.isHidden) {
-                    header.classList.remove('header-hidden');
-                    header.style.opacity = '1';
-                    header.style.transform = 'translateX(-50%) translateY(0)';
-                    self.headerState.isHidden = false;
-                }
-            } else if (currentScrollY > self.headerState.lastScrollY && 
-                       currentScrollY > self.headerState.scrollThreshold) {
-                // Прокрутка вниз - скрываем
-                if (!self.headerState.isHidden) {
-                    header.classList.add('header-hidden');
-                    self.headerState.isHidden = true;
-                }
-            } else if (currentScrollY < self.headerState.lastScrollY) {
-                // Прокрутка вверх - показываем
-                if (self.headerState.isHidden) {
-                    header.classList.remove('header-hidden');
-                    header.style.opacity = '1';
-                    header.style.transform = 'translateX(-50%) translateY(0)';
-                    self.headerState.isHidden = false;
-                }
-            }
-            
-            // Добавляем класс scrolled при прокрутке
-            if (currentScrollY > 50) {
+        // Простой скролл-эффект
+        const handleScroll = () => {
+            if (window.scrollY > 50) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
-            
-            self.headerState.lastScrollY = currentScrollY;
-        }
-        
-        // Начальное состояние
-        handleScroll();
-        
-        // Оптимизированный обработчик скролла
-        const optimizedScrollHandler = () => {
-            if (!self.headerState.ticking) {
-                window.requestAnimationFrame(() => {
-                    handleScroll();
-                    self.headerState.ticking = false;
-                });
-                self.headerState.ticking = true;
-            }
         };
         
-        window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll(); // начальное состояние
         
-        // Обработчик наведения
-        header.addEventListener('mouseenter', (e) => {
-            e.stopPropagation();
-            if (self.headerState.isHidden) {
-                header.classList.remove('header-hidden');
-                header.style.opacity = '1';
-                header.style.transform = 'translateX(-50%) translateY(0)';
-                self.headerState.isHidden = false;
-            }
-        });
-        
-        // Обработчик изменения размера окна
+        // Обработчик ресайза
         window.addEventListener('resize', () => {
-            self.headerState.isMobile = window.innerWidth <= 768;
-            
-            // Управляем видимостью бургер-меню
-            const mobileToggle = document.querySelector('.mobile-menu-toggle');
-            if (mobileToggle) {
-                if (self.headerState.isMobile) {
-                    mobileToggle.style.display = 'flex';
-                    mobileToggle.style.visibility = 'visible';
-                    mobileToggle.style.opacity = '1';
-                    mobileToggle.style.width = '32px';
-                    mobileToggle.style.height = '32px';
-                    mobileToggle.style.pointerEvents = 'auto';
-                } else {
-                    mobileToggle.style.display = 'none';
-                    mobileToggle.style.visibility = 'hidden';
-                    mobileToggle.style.opacity = '0';
-                    mobileToggle.style.width = '0';
-                    mobileToggle.style.height = '0';
-                    mobileToggle.style.pointerEvents = 'none';
-                }
-            }
-            
-            // Сбрасываем состояние на десктопе
-            if (!self.headerState.isMobile && self.headerState.isHidden) {
-                header.classList.remove('header-hidden');
-                header.style.opacity = '1';
-                header.style.transform = 'translateX(-50%) translateY(0)';
-                self.headerState.isHidden = false;
-            }
-            
-            // Обновляем позицию хедера
+            // Гарантируем правильную позицию
             if (window.innerWidth > 768) {
                 header.style.left = '50%';
-                header.style.transform = 'translateX(-50%) translateY(0)';
+                header.style.transform = 'translateX(-50%)';
             } else {
                 header.style.left = '0';
                 header.style.transform = 'translateY(0)';
             }
         });
-        
-        console.log('✅ Home header animation setup complete');
-    }
-
-    setupOptimizedInternalHeader(header) {
-        const self = this;
-        
-        function handleScroll() {
-            const currentScrollY = window.scrollY;
-            
-            if (currentScrollY <= 0) {
-                header.style.transform = window.innerWidth > 768 ? 'translateX(-50%) translateY(0)' : 'translateY(0)';
-                header.classList.remove('header-hidden', 'header-scrolled');
-                if (self.headerState.isHidden) {
-                    header.style.opacity = '1';
-                    self.headerState.isHidden = false;
-                }
-                return;
-            }
-            
-            // Добавляем класс scrolled при прокрутке
-            if (currentScrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            if (currentScrollY > self.headerState.lastScrollY && 
-                currentScrollY > self.headerState.scrollThreshold) {
-                // Прокрутка вниз - показываем уменьшенный хедер
-                if (!self.headerState.isHidden) {
-                    header.classList.add('header-scrolled');
-                }
-            } else if (currentScrollY < self.headerState.lastScrollY) {
-                // Прокрутка вверх - показываем нормальный хедер
-                header.classList.remove('header-scrolled');
-                if (self.headerState.isHidden) {
-                    header.classList.remove('header-hidden');
-                    header.style.opacity = '1';
-                    header.style.transform = window.innerWidth > 768 ? 'translateX(-50%) translateY(0)' : 'translateY(0)';
-                    self.headerState.isHidden = false;
-                }
-            }
-            
-            self.headerState.lastScrollY = currentScrollY;
-        }
-        
-        // Начальное состояние
-        handleScroll();
-        
-        // Оптимизированный обработчик скролла
-        const optimizedScrollHandler = () => {
-            if (!self.headerState.ticking) {
-                window.requestAnimationFrame(() => {
-                    handleScroll();
-                    self.headerState.ticking = false;
-                });
-                self.headerState.ticking = true;
-            }
-        };
-        
-        window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
-    }
-
-    setupMobileMenu() {
-        const mobileToggle = document.querySelector('.mobile-menu-toggle');
-        const mainNav = document.querySelector('.main-nav');
-        const mobileOverlay = document.querySelector('.mobile-menu-overlay');
-        const body = document.body;
-
-        if (mobileToggle && mainNav) {
-            // Сначала скрываем бургер на десктопе
-            if (window.innerWidth > 768) {
-                mobileToggle.style.display = 'none';
-                mobileToggle.style.visibility = 'hidden';
-                mobileToggle.style.opacity = '0';
-                mobileToggle.style.width = '0';
-                mobileToggle.style.height = '0';
-                mobileToggle.style.pointerEvents = 'none';
-            }
-            
-            const toggleMenu = () => {
-                const isActive = mainNav.classList.contains('active');
-                
-                mobileToggle.classList.toggle('active');
-                mainNav.classList.toggle('active');
-                if (mobileOverlay) mobileOverlay.classList.toggle('active');
-                body.style.overflow = isActive ? '' : 'hidden';
-                
-                if (!isActive) {
-                    document.documentElement.style.overflow = 'hidden';
-                } else {
-                    document.documentElement.style.overflow = '';
-                }
-            };
-
-            mobileToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                toggleMenu();
-            });
-
-            const navLinks = mainNav.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileToggle.classList.remove('active');
-                    mainNav.classList.remove('active');
-                    if (mobileOverlay) mobileOverlay.classList.remove('active');
-                    body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                });
-            });
-
-            if (mobileOverlay) {
-                mobileOverlay.addEventListener('click', () => {
-                    mobileToggle.classList.remove('active');
-                    mainNav.classList.remove('active');
-                    mobileOverlay.classList.remove('active');
-                    body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                });
-            }
-
-            // Закрытие по клику снаружи
-            document.addEventListener('click', (e) => {
-                if (!mainNav.contains(e.target) && 
-                    !mobileToggle.contains(e.target) && 
-                    mainNav.classList.contains('active')) {
-                    mobileToggle.classList.remove('active');
-                    mainNav.classList.remove('active');
-                    if (mobileOverlay) mobileOverlay.classList.remove('active');
-                    body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
-            });
-
-            // Закрытие по Escape
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && mainNav.classList.contains('active')) {
-                    mobileToggle.classList.remove('active');
-                    mainNav.classList.remove('active');
-                    if (mobileOverlay) mobileOverlay.classList.remove('active');
-                    body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
-            });
-
-            // Закрытие при изменении размера
-            window.addEventListener('resize', () => {
-                if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
-                    mobileToggle.classList.remove('active');
-                    mainNav.classList.remove('active');
-                    if (mobileOverlay) mobileOverlay.classList.remove('active');
-                    body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
-                
-                // Управление видимостью бургер-меню
-                if (window.innerWidth > 768) {
-                    mobileToggle.style.display = 'none';
-                    mobileToggle.style.visibility = 'hidden';
-                    mobileToggle.style.opacity = '0';
-                    mobileToggle.style.width = '0';
-                    mobileToggle.style.height = '0';
-                    mobileToggle.style.pointerEvents = 'none';
-                } else {
-                    mobileToggle.style.display = 'flex';
-                    mobileToggle.style.visibility = 'visible';
-                    mobileToggle.style.opacity = '1';
-                    mobileToggle.style.width = '32px';
-                    mobileToggle.style.height = '32px';
-                    mobileToggle.style.pointerEvents = 'auto';
-                }
-            });
-
-            console.log('✅ Mobile menu setup complete');
-        } else {
-            console.warn('⚠️ Mobile menu elements not found');
-        }
     }
 
     setupSmoothScroll() {
@@ -582,112 +282,6 @@ class DaehaaApp {
         if (switcher) {
             switcher.setAttribute('data-current-lang', lang);
         }
-    }
-
-    setupAnimations() {
-        if (this.isServicesPage || this.isAboutPage) {
-            console.log('ℹ️ Services/About page - skipping animations');
-            return;
-        }
-        
-        this.setupScrollAnimations();
-        this.setupParallax();
-        this.setupCounters();
-    }
-
-    setupScrollAnimations() {
-        const animatedElements = document.querySelectorAll('.fade-in, .slide-up, .slide-left, .slide-right');
-        
-        if (animatedElements.length > 0 && 'IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const delay = entry.target.getAttribute('data-delay') || 0;
-                        
-                        setTimeout(() => {
-                            entry.target.style.opacity = '1';
-                            entry.target.style.transform = 'translateY(0) translateX(0)';
-                            entry.target.classList.add('animated');
-                        }, parseInt(delay));
-                        
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            });
-
-            animatedElements.forEach(el => {
-                if (el.classList.contains('fade-in')) {
-                    el.style.opacity = '0';
-                } else if (el.classList.contains('slide-up')) {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateY(30px)';
-                } else if (el.classList.contains('slide-left')) {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateX(-30px)';
-                } else if (el.classList.contains('slide-right')) {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateX(30px)';
-                }
-                
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-        }
-    }
-
-    setupParallax() {
-        const parallaxElements = document.querySelectorAll('[data-parallax]');
-        
-        if (parallaxElements.length > 0) {
-            const handleParallax = () => {
-                const scrolled = window.pageYOffset;
-                
-                parallaxElements.forEach(el => {
-                    const parallaxSpeed = parseFloat(el.getAttribute('data-parallax')) || 0.5;
-                    const yPos = -(scrolled * parallaxSpeed);
-                    el.style.transform = `translateY(${yPos}px)`;
-                });
-            };
-
-            window.addEventListener('scroll', handleParallax, { passive: true });
-        }
-    }
-
-    setupCounters() {
-        const counters = document.querySelectorAll('.stat-number');
-        
-        if (counters.length > 0 && 'IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        this.animateCounter(entry.target);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            counters.forEach(counter => observer.observe(counter));
-        }
-    }
-
-    animateCounter(counter) {
-        const target = parseInt(counter.getAttribute('data-target') || counter.textContent);
-        const duration = 2000;
-        const step = target / (duration / 16);
-        let current = 0;
-
-        const timer = setInterval(() => {
-            current += step;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-                counter.classList.add('counter-animate');
-            }
-            counter.textContent = Math.floor(current).toLocaleString();
-        }, 16);
     }
 
     setupMobileOptimizations() {
@@ -934,102 +528,6 @@ class DaehaaApp {
         }
     }
 
-    setupPerformanceOptimizations() {
-        if (this.isServicesPage || this.isAboutPage) {
-            console.log('ℹ️ Services/About page - skipping performance optimizations');
-            return;
-        }
-        
-        window.addEventListener('resize', this.debounce(() => {
-            this.handleResize();
-        }, 250));
-
-        this.optimizeScrollPerformance();
-
-        this.preloadCriticalResources();
-    }
-
-    handleResize() {
-        if (window.innerWidth > 768) {
-            const mobileMenu = document.querySelector('.main-nav');
-            const mobileToggle = document.querySelector('.mobile-menu-toggle');
-            if (mobileMenu && mobileMenu.classList.contains('active')) {
-                mobileMenu.classList.remove('active');
-                mobileToggle.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            // Скрываем бургер-меню на десктопе
-            if (mobileToggle) {
-                mobileToggle.style.display = 'none';
-                mobileToggle.style.visibility = 'hidden';
-                mobileToggle.style.opacity = '0';
-                mobileToggle.style.width = '0';
-                mobileToggle.style.height = '0';
-            }
-        }
-    }
-
-    optimizeScrollPerformance() {
-        document.addEventListener('scroll', () => {}, {passive: true});
-        
-        this.throttleScrollAnimations();
-    }
-
-    throttleScrollAnimations() {
-        let ticking = false;
-        
-        const updateOnScroll = () => {
-            ticking = false;
-        };
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(updateOnScroll);
-                ticking = true;
-            }
-        }, { passive: true });
-    }
-
-    preloadCriticalResources() {
-        const criticalResources = [];
-
-        criticalResources.forEach(resource => {
-            const link = document.createElement('link');
-            link.rel = 'preload';
-            link.href = resource;
-            document.head.appendChild(link);
-        });
-    }
-
-    setupGlassHeaderEffects() {
-        if (this.isServicesPage || this.isAboutPage) {
-            console.log('ℹ️ Services/About page - skipping glass header effects');
-            return;
-        }
-        
-        const header = document.querySelector('.main-header');
-        if (!header) return;
-
-        setTimeout(() => {
-            header.classList.add('header-glass-enter');
-            
-            setTimeout(() => {
-                header.classList.remove('header-glass-enter');
-            }, 600);
-        }, 100);
-
-        header.addEventListener('mouseenter', () => {
-            if (!this.isReducedMotion) {
-                header.classList.add('glass-morph');
-            }
-        });
-
-        header.addEventListener('mouseleave', () => {
-            header.classList.remove('glass-morph');
-        });
-    }
-
     setupClickableElements() {
         console.log('🖱️ Setting up clickable elements...');
         
@@ -1044,10 +542,6 @@ class DaehaaApp {
         });
         
         this.setupPageTransitions();
-        
-        if (document.body.classList.contains('home-page')) {
-            this.setupHomeClickableCards();
-        }
     }
 
     setupClickFeedback(element) {
@@ -1071,44 +565,6 @@ class DaehaaApp {
         }
         
         this.enhanceAccessibility(element);
-        
-        if (!element.classList.contains('no-ripple')) {
-            element.addEventListener('click', (e) => {
-                this.createRippleEffect(element, e);
-            });
-        }
-    }
-
-    createRippleEffect(element, event) {
-        const ripple = document.createElement('span');
-        const rect = element.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = event.clientX - rect.left - size / 2;
-        const y = event.clientY - rect.top - size / 2;
-        
-        ripple.style.cssText = `
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.6);
-            transform: scale(0);
-            animation: ripple-animation 0.6s ease-out;
-            width: ${size}px;
-            height: ${size}px;
-            top: ${y}px;
-            left: ${x}px;
-            pointer-events: none;
-            z-index: 1;
-        `;
-        
-        element.style.position = 'relative';
-        element.style.overflow = 'hidden';
-        element.appendChild(ripple);
-        
-        setTimeout(() => {
-            if (ripple.parentNode === element) {
-                element.removeChild(ripple);
-            }
-        }, 600);
     }
 
     enhanceAccessibility(element) {
@@ -1176,48 +632,6 @@ class DaehaaApp {
                     }, 300);
                 });
             }
-        });
-    }
-
-    setupHomeClickableCards() {
-        const serviceCards = document.querySelectorAll('.speck-service-card-enhanced.clickable-service-card');
-        
-        serviceCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                if (!this.isReducedMotion) {
-                    card.style.transform = 'translateY(-15px)';
-                }
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                if (!this.isReducedMotion) {
-                    card.style.transform = '';
-                }
-            });
-            
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                card.style.transform = 'translateY(-10px) scale(0.98)';
-                
-                setTimeout(() => {
-                    card.style.transform = '';
-                }, 300);
-                
-                setTimeout(() => {
-                    const href = card.getAttribute('href');
-                    if (href) {
-                        window.location.href = href;
-                    }
-                }, 350);
-            });
-            
-            card.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    card.click();
-                }
-            });
         });
     }
 
@@ -1356,7 +770,6 @@ class DaehaaApp {
 // Global header initialization
 window.initHeader = function() {
     if (window.DaehaaApp) {
-        window.DaehaaApp.setupMobileMenu();
         window.DaehaaApp.setupCurrentPage();
         window.DaehaaApp.setupLanguageSupport();
     }
@@ -1597,86 +1010,6 @@ function updateActiveNav() {
     });
 }
 
-// Optimized glass header initialization
-function initOptimizedGlassHeader() {
-    console.log('🔵 Initializing optimized glass header...');
-    
-    const header = document.querySelector('.main-header');
-    if (!header) {
-        console.warn('⚠️ No glass header found');
-        return;
-    }
-    
-    const isServicesPage = document.body.classList.contains('services-page') || 
-                           window.location.pathname.includes('services.html');
-    const isAboutPage = document.body.classList.contains('about-page') || 
-                        window.location.pathname.includes('about.html');
-    
-    // ВАЖНЫЙ ФИКС: Для Services/About страниц применяем минимальную настройку
-    if (isServicesPage || isAboutPage) {
-        console.log('ℹ️ Services/About page - applying minimal header setup');
-        
-        // Отключаем анимации
-        header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-        header.classList.remove('header-hidden');
-        
-        // Устанавливаем правильную позицию
-        if (window.innerWidth > 768) {
-            header.style.left = '50%';
-            header.style.transform = 'translateX(-50%)';
-            header.style.top = '20px';
-        } else {
-            header.style.left = '0';
-            header.style.transform = 'translateY(0)';
-            header.style.top = '0';
-        }
-        
-        console.log('✅ Services/About header setup complete');
-        return;
-    }
-    
-    // Для остальных страниц применяем обычную логику
-    header.style.willChange = 'opacity';
-    header.style.backfaceVisibility = 'hidden';
-    
-    // Добавляем анимацию входа
-    setTimeout(() => {
-        header.classList.add('header-glass-enter');
-        
-        setTimeout(() => {
-            header.classList.remove('header-glass-enter');
-        }, 600);
-    }, 100);
-    
-    // Эффект морфинга при наведении
-    header.addEventListener('mouseenter', () => {
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            header.classList.add('glass-morph');
-        }
-    });
-    
-    header.addEventListener('mouseleave', () => {
-        header.classList.remove('glass-morph');
-    });
-    
-    console.log('✅ Optimized glass header initialized');
-}
-
-// Export all functions
-window.DaehaaApp = window.DaehaaApp || {};
-window.DaehaaApp.utils = {
-    debounce: window.debounce,
-    throttle: window.throttle,
-    generateId: window.generateId,
-    formatNumber: window.formatNumber,
-    formatDate: window.formatDate,
-    copyToClipboard: window.copyToClipboard,
-    isElementVisible: window.isElementVisible,
-    getUrlParams: window.getUrlParams,
-    setUrlParam: window.setUrlParam,
-    lazyInit: lazyInit
-};
-
 // Global error handler
 window.addEventListener('error', function(e) {
     console.error('Global error caught:', e.error);
@@ -1707,42 +1040,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Небольшая задержка чтобы компоненты успели загрузиться
     setTimeout(() => {
         window.DaehaaApp = new DaehaaApp();
-        console.log('🚀 Daehaa application initialized with Services/About fixes');
+        console.log('🚀 Daehaa application initialized with NO HIDDEN BUTTONS');
     }, 300);
 });
 
-// Automatic optimized glass header initialization with FIXES for Services/About
-document.addEventListener('DOMContentLoaded', function() {
-    const checkHeaderInterval = setInterval(() => {
-        const header = document.querySelector('.main-header');
-        if (header) {
-            clearInterval(checkHeaderInterval);
-            initOptimizedGlassHeader();
-            updateActiveNav();
-        }
-    }, 100);
-    
-    setTimeout(() => {
-        const header = document.querySelector('.main-header');
-        if (header && !header.classList.contains('header-initialized')) {
-            initOptimizedGlassHeader();
-            updateActiveNav();
-            header.classList.add('header-initialized');
-        }
-    }, 2000);
-});
-
 // Export functions for global use
-window.initOptimizedGlassHeader = initOptimizedGlassHeader;
 window.updateActiveNav = updateActiveNav;
 
 // Module exports
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         DaehaaApp: window.DaehaaApp,
-        initOptimizedGlassHeader,
         updateActiveNav
     };
 }
 
-console.log('✅ main.js loaded with Services/About fixes - ready!');
+console.log('✅ main.js loaded with NO HIDDEN BUTTONS - ready!');
