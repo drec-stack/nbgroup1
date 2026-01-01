@@ -15,17 +15,8 @@
     <script src="js/main.js"></script>
     <script src="js/brandbook.js"></script>
     <script src="js/animations.js"></script>
-    
-    <!-- Скрипт для управления чистым хедером -->
-    <script>
-        // Устанавливаем флаг для чистого хедера
-        document.addEventListener('DOMContentLoaded', function() {
-            document.body.classList.add('clean-header-mode');
-            console.log('🔧 Brandbook page - clean header mode activated');
-        });
-    </script>
 </head>
-<body class="brandbook-page clean-header-mode">
+<body class="brandbook-page">
     <!-- Header Container -->
     <div id="header-container"></div>
     
@@ -188,14 +179,9 @@
     <div id="footer-container"></div>
     
     <script>
-        // Инициализация страницы брендбука с чистым хедером
+        // Инициализация страницы брендбука
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 Страница брендбука загружена (чистый хедер)');
-            
-            // Блокируем создание скрытых элементов
-            setTimeout(() => {
-                cleanHiddenElements();
-            }, 500);
+            console.log('📄 Страница брендбука загружена (прозрачный стеклянный хедер)');
             
             // Фильтрация кейсов
             function setupBrandbookFilter() {
@@ -229,29 +215,6 @@
                     });
                 });
             }
-            
-            // Функция очистки скрытых элементов
-            function cleanHiddenElements() {
-                const hiddenElements = document.querySelectorAll(
-                    '.mobile-menu-toggle, .menu-toggle, .burger-menu, .hamburger, .menu-btn, .nav-toggle, .mobile-menu-overlay, .menu-overlay, .mobile-menu, .menu-container'
-                );
-                
-                hiddenElements.forEach(el => {
-                    if (el.parentNode) {
-                        el.parentNode.removeChild(el);
-                    }
-                });
-                
-                // Убираем обработчики событий для бургер-меню
-                document.removeEventListener('click', handleMobileMenuClick);
-                document.removeEventListener('keydown', handleMobileMenuEscape);
-                
-                console.log('🧹 Скрытые элементы очищены на странице брендбука');
-            }
-            
-            // Заглушки для обработчиков
-            function handleMobileMenuClick() {}
-            function handleMobileMenuEscape() {}
             
             // Инициализация переводов
             setTimeout(() => {
