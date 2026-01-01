@@ -833,7 +833,7 @@ body.portfolio-page .main-header.header-hidden {
 
 /* 4. Корректировка отступов страницы для портфолио */
 body.portfolio-page {
-    padding-top: 80px !important;
+    /* padding-top уже установлен в style.css, не дублируем */
     overflow-x: hidden !important;
 }
 
@@ -858,10 +858,6 @@ body.portfolio-page {
     
     body.portfolio-page .main-header.header-hidden {
         transform: none !important;
-    }
-    
-    body.portfolio-page {
-        padding-top: 70px !important;
     }
     
     /* Адаптация language switcher для мобильных на портфолио */
