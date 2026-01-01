@@ -15,9 +15,75 @@
     <script src="js/main.js"></script>
     <script src="js/brandbook.js"></script>
     <script src="js/animations.js"></script>
+    
+    <!-- Стиль для очистки хедера ТОЛЬКО на этой странице -->
+    <style>
+        /* ===== ПОЛНАЯ ОЧИСТКА ХЕДЕРА НА СТРАНИЦЕ БРЕНДБУКА ===== */
+        .brandbook-page .main-header {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            min-height: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            z-index: -1000 !important;
+            overflow: hidden !important;
+            border: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background: transparent !important;
+            transform: none !important;
+            top: -100px !important;
+        }
+        
+        .brandbook-page {
+            padding-top: 0 !important;
+        }
+        
+        .brandbook-hero {
+            padding: 140px 0 80px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .brandbook-hero {
+                padding: 100px 0 60px !important;
+            }
+        }
+        
+        /* Убираем скролл-эффекты для хедера на этой странице */
+        .brandbook-page .main-header.header-scrolled,
+        .brandbook-page .main-header.header-hidden {
+            display: none !important;
+        }
+        
+        /* Убираем отступы для футера, так как хедера нет */
+        .brandbook-page #footer-container {
+            margin-top: 0 !important;
+        }
+        
+        /* Анимация появления контента без хедера */
+        .brandbook-hero-content {
+            animation: brandbookFadeInUp 0.8s ease-out 0.1s both;
+        }
+        
+        @keyframes brandbookFadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body class="brandbook-page">
-    <!-- Header Container -->
+    <!-- Header Container (будет очищен стилями выше) -->
     <div id="header-container"></div>
     
     <!-- HERO -->
@@ -179,9 +245,9 @@
     <div id="footer-container"></div>
     
     <script>
-        // Инициализация страницы брендбука
+        // Инициализация страницы брендбука (без хедера)
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 Страница брендбука загружена');
+            console.log('📄 Страница брендбука загружена (без хедера)');
             
             // Фильтрация кейсов
             function setupBrandbookFilter() {
