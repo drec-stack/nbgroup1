@@ -17,20 +17,20 @@
 /* УБИРАЕМ ВСЕ СТИЛИ .main-header - они в HTML и header.html */
 /* Только стили для body */
 body.brandbook-page {
-    padding-top: 0;
+    padding-top: 80px;
     background: var(--secondary);
     overflow-x: hidden;
 }
 
 @media (max-width: 768px) {
     body.brandbook-page {
-        padding-top: 0;
+        padding-top: 60px;
     }
 }
 
 /* ===== BRANDBOOK HERO ===== */
 .brandbook-hero {
-    padding: 140px 0 80px;
+    padding: 160px 0 80px;
     background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
     position: relative;
     overflow: hidden;
@@ -563,6 +563,128 @@ body.brandbook-page {
     transform: translateY(0);
 }
 
+/* ===== СТИЛИ ДЛЯ ЧИСТОГО ХЕДЕРА НА СТРАНИЦЕ БРЕНДБУКА ===== */
+body.brandbook-page.clean-header-mode .main-header {
+    /* Делаем хедер более заметным для брендбука */
+    background: rgba(10, 15, 25, 0.95) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    border: 1px solid rgba(0, 102, 255, 0.3) !important;
+    box-shadow: 
+        0 15px 40px rgba(0, 102, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Гарантированно скрываем все скрытые/невидимые элементы бургер-меню */
+body.brandbook-page.clean-header-mode .mobile-menu-toggle,
+body.brandbook-page.clean-header-mode .menu-toggle,
+body.brandbook-page.clean-header-mode .burger-menu,
+body.brandbook-page.clean-header-mode .hamburger,
+body.brandbook-page.clean-header-mode .menu-btn,
+body.brandbook-page.clean-header-mode .nav-toggle,
+body.brandbook-page.clean-header-mode .mobile-menu-overlay,
+body.brandbook-page.clean-header-mode .menu-overlay,
+body.brandbook-page.clean-header-mode .mobile-menu,
+body.brandbook-page.clean-header-mode .menu-container {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    z-index: -1000 !important;
+    pointer-events: none !important;
+}
+
+/* Улучшаем видимость навигации на странице брендбука */
+body.brandbook-page.clean-header-mode .main-nav {
+    display: flex !important;
+    gap: 15px !important;
+}
+
+/* Делаем активную ссылку более заметной на брендбуке */
+body.brandbook-page.clean-header-mode .nav-link.active {
+    background: rgba(0, 102, 255, 0.25) !important;
+    border: 1px solid rgba(0, 102, 255, 0.4) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2) !important;
+}
+
+/* Улучшаем переключатель языка */
+body.brandbook-page.clean-header-mode .language-switcher {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Улучшаем кнопку "Начать проект" */
+body.brandbook-page.clean-header-mode .header-right .btn-primary {
+    background: linear-gradient(135deg, #0066ff, #00aaff) !important;
+    box-shadow: 0 8px 25px rgba(0, 102, 255, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Делаем логотип более контрастным */
+body.brandbook-page.clean-header-mode .logo-mark {
+    background: linear-gradient(135deg, #ffffff 0%, #e6e6e6 100%) !important;
+    box-shadow: 
+        0 6px 20px rgba(255, 255, 255, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    body.brandbook-page.clean-header-mode .main-header {
+        background: rgba(10, 15, 25, 0.98) !important;
+        backdrop-filter: blur(30px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+        border-bottom: 1px solid rgba(0, 102, 255, 0.25) !important;
+        box-shadow: 
+            0 10px 30px rgba(0, 102, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* На мобильных скрываем основную навигацию как в обычном хедере */
+    body.brandbook-page.clean-header-mode .main-nav {
+        display: none !important;
+    }
+    
+    /* Улучшаем видимость кнопки языка на мобильных */
+    body.brandbook-page.clean-header-mode .language-switcher {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    }
+    
+    /* Улучшаем кнопку "Начать проект" на мобильных */
+    body.brandbook-page.clean-header-mode .header-right .btn-primary {
+        background: linear-gradient(135deg, #0066ff, #00aaff) !important;
+        box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4) !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    }
+}
+
+/* Гарантируем что хедер всегда виден и правильно позиционирован */
+body.brandbook-page.clean-header-mode .main-header {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0) !important;
+    pointer-events: auto !important;
+}
+
+/* Исправляем отступы body для чистого хедера */
+body.brandbook-page.clean-header-mode {
+    padding-top: 80px !important;
+}
+
+@media (max-width: 768px) {
+    body.brandbook-page.clean-header-mode {
+        padding-top: 60px !important;
+    }
+}
+
 /* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 1400px) {
     .brand-cases-grid {
@@ -626,7 +748,7 @@ body.brandbook-page {
 
 @media (max-width: 768px) {
     .brandbook-hero {
-        padding: 100px 0 60px !important;
+        padding: 140px 0 60px !important;
     }
     
     .brandbook-intro,
@@ -871,71 +993,4 @@ body.brandbook-page {
 /* Плавная прокрутка для всего документа */
 html {
     scroll-behavior: smooth;
-}
-
-/* ===== ПОЛНАЯ ОЧИСТКА ХЕДЕРА НА СТРАНИЦЕ БРЕНДБУКА ===== */
-.brandbook-page .main-header {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    pointer-events: none !important;
-    position: absolute !important;
-    z-index: -1000 !important;
-    overflow: hidden !important;
-    border: none !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background: transparent !important;
-    transform: none !important;
-    top: -100px !important;
-}
-
-.brandbook-page {
-    padding-top: 0 !important;
-}
-
-.brandbook-hero {
-    padding: 140px 0 80px !important;
-}
-
-@media (max-width: 768px) {
-    .brandbook-hero {
-        padding: 100px 0 60px !important;
-    }
-    
-    .brandbook-page {
-        padding-top: 0 !important;
-    }
-}
-
-/* Убираем скролл-эффекты для хедера на этой странице */
-.brandbook-page .main-header.header-scrolled,
-.brandbook-page .main-header.header-hidden {
-    display: none !important;
-}
-
-/* Убираем отступы для футера, так как хедера нет */
-.brandbook-page #footer-container {
-    margin-top: 0 !important;
-}
-
-/* Анимация появления контента без хедера */
-.brandbook-hero-content {
-    animation: brandbookFadeInUp 0.8s ease-out 0.1s both;
-}
-
-@keyframes brandbookFadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
