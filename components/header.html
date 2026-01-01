@@ -1,5 +1,5 @@
 <!-- components/header.html -->
-<!-- ===== ЧИСТЫЙ ХЕДЕР БЕЗ СКРЫТЫХ ЭЛЕМЕНТОВ ===== -->
+<!-- ===== УНИВЕРСАЛЬНЫЙ ХЕДЕР ДЛЯ ВСЕХ СТРАНИЦ ===== -->
 <style>
     /* ===== ОСНОВНЫЕ СТИЛИ ХЕДЕРА ===== */
     .main-header {
@@ -24,7 +24,7 @@
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
     }
 
-    /* Мобильная версия хедера - БЕЗ БУРГЕРА */
+    /* Мобильная версия хедера */
     @media (max-width: 768px) {
         .main-header {
             position: fixed !important;
@@ -43,6 +43,44 @@
                 0 8px 32px rgba(0, 0, 0, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
             padding: 12px 0 !important;
+        }
+    }
+
+    /* Эффект при скролле */
+    .main-header.scrolled {
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(30px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+        box-shadow: 
+            0 12px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            inset 0 0 25px rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        padding: 10px 0 !important;
+    }
+
+    /* ===== ОСОБЫЕ СТИЛИ ДЛЯ ПОРТФОЛИО ===== */
+    body.portfolio-page .main-header {
+        /* Убираем все сложные анимации для портфолио */
+        animation: none !important;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+    }
+    
+    /* Скрываем кнопку "Начать проект" на портфолио */
+    body.portfolio-page .header-right .btn-primary {
+        display: none !important;
+    }
+    
+    /* На портфолио всегда показываем хедер */
+    body.portfolio-page .main-header.header-hidden {
+        transform: translateX(-50%) translateY(0) !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+    
+    @media (max-width: 768px) {
+        body.portfolio-page .main-header.header-hidden {
+            transform: translateY(0) !important;
         }
     }
 
@@ -339,14 +377,14 @@
         }
     }
 
-    /* ===== КРИТИЧЕСКИЙ ФИКС: УДАЛЯЕМ ВСЕ СКРЫТЫЕ ЭЛЕМЕНТЫ ===== */
-    .mobile-menu-toggle,
-    .mobile-menu-overlay,
-    .menu-toggle,
-    .burger-menu,
-    .hamburger,
-    .menu-btn,
-    .nav-toggle {
+    /* ===== КРИТИЧЕСКИЙ ФИКС: УДАЛЯЕМ ВСЕ СКРЫТЫЕ ЭЛЕМЕНТЫ ДЛЯ ПОРТФОЛИО ===== */
+    body.portfolio-page .mobile-menu-toggle,
+    body.portfolio-page .mobile-menu-overlay,
+    body.portfolio-page .menu-toggle,
+    body.portfolio-page .burger-menu,
+    body.portfolio-page .hamburger,
+    body.portfolio-page .menu-btn,
+    body.portfolio-page .nav-toggle {
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -358,9 +396,9 @@
         pointer-events: none !important;
     }
 
-    /* НЕТ МОБИЛЬНОГО МЕНЮ ВООБЩЕ */
-    .mobile-menu,
-    .menu-overlay {
+    /* НЕТ МОБИЛЬНОГО МЕНЮ ВООБЩЕ ДЛЯ ПОРТФОЛИО */
+    body.portfolio-page .mobile-menu,
+    body.portfolio-page .menu-overlay {
         display: none !important;
     }
 
@@ -376,8 +414,7 @@
     }
 </style>
 
-<!-- HTML ХЕДЕРА - БЕЗ БУРГЕР-МЕНЮ -->
-<header class="main-header">
+<header class="main-header" id="main-header">
     <div class="container">
         <div class="header-inner">
             <!-- Логотип -->
@@ -396,7 +433,7 @@
                 <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
             </nav>
             
-            <!-- Правая часть - только переключатель языка и кнопка -->
+            <!-- Правая часть - переключатель языка и кнопка -->
             <div class="header-right">
                 <!-- Переключатель языка -->
                 <div class="language-switcher" data-current-lang="ru">
@@ -404,7 +441,7 @@
                     <button class="lang-btn active" data-lang="en">🇺🇸</button>
                 </div>
                 
-                <!-- Кнопка Начать проект -->
+                <!-- Кнопка Начать проект (будет скрыта на портфолио через CSS) -->
                 <a href="contacts.html" class="btn btn-primary" data-i18n="nav.startProject">
                     Начать проект
                 </a>
@@ -414,49 +451,101 @@
 </header>
 
 <script>
-// ===== ПРОСТОЙ СКРИПТ ДЛЯ ХЕДЕРА =====
+// ===== СКРИПТ ДЛЯ УНИВЕРСАЛЬНОГО ХЕДЕРА =====
 (function() {
     'use strict';
     
+    // Определяем тип страницы
+    const isPortfolioPage = document.body.classList.contains('portfolio-page') || 
+                           window.location.pathname.includes('portfolio.html');
+    
     // Ждем загрузки DOM
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initHeader);
+        document.addEventListener('DOMContentLoaded', function() {
+            initHeader(isPortfolioPage);
+        });
     } else {
-        initHeader();
+        initHeader(isPortfolioPage);
     }
     
-    function initHeader() {
-        // Установка активной ссылки
+    function initHeader(isPortfolio) {
+        console.log(isPortfolio ? '🎯 Инициализация хедера для портфолио' : '🏠 Инициализация стандартного хедера');
+        
+        const header = document.querySelector('.main-header');
+        if (!header) {
+            console.warn('⚠️ Хедер не найден');
+            return;
+        }
+        
+        // ОСОБАЯ ОБРАБОТКА ДЛЯ ПОРТФОЛИО
+        if (isPortfolio) {
+            console.log('🧹 Очистка хедера для портфолио...');
+            
+            // 1. Убираем все скрытые элементы
+            removeHiddenElementsForPortfolio();
+            
+            // 2. Скрываем кнопку "Начать проект"
+            hideStartProjectButton();
+            
+            // 3. Отключаем сложные анимации
+            header.style.animation = 'none';
+            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+            
+            // 4. Гарантируем что хедер виден
+            header.classList.remove('header-hidden');
+            header.style.opacity = '1';
+            header.style.visibility = 'visible';
+            header.style.pointerEvents = 'auto';
+            
+            console.log('✅ Хедер очищен для портфолио');
+        }
+        
+        // ОБЩИЕ ФУНКЦИИ ДЛЯ ВСЕХ СТРАНИЦ
         setActiveNavLink();
-        
-        // Настройка переключателя языка
         setupLanguageSwitcher();
+        setupScrollEffect();
         
-        // УДАЛЯЕМ ВСЕ СКРЫТЫЕ КНОПКИ
-        removeHiddenButtons();
-        
-        console.log('✅ Хедер загружен (без скрытых кнопок)');
+        console.log('✅ Хедер инициализирован');
     }
     
-    function removeHiddenButtons() {
+    function removeHiddenElementsForPortfolio() {
         // Удаляем все элементы бургер-меню
-        const hiddenElements = document.querySelectorAll(
-            '.mobile-menu-toggle, .menu-toggle, .burger-menu, .hamburger, .menu-btn, .nav-toggle'
-        );
+        const hiddenSelectors = [
+            '.mobile-menu-toggle',
+            '.menu-toggle',
+            '.burger-menu',
+            '.hamburger',
+            '.menu-btn',
+            '.nav-toggle',
+            '.mobile-menu-overlay',
+            '.menu-overlay'
+        ];
         
-        hiddenElements.forEach(el => {
-            if (el.parentNode) {
-                el.parentNode.removeChild(el);
-            }
+        hiddenSelectors.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => {
+                if (el && el.parentNode) {
+                    el.parentNode.removeChild(el);
+                    console.log(`🗑️ Удален элемент: ${selector}`);
+                }
+            });
         });
         
         // Удаляем мобильные меню
-        const mobileMenus = document.querySelectorAll('.mobile-menu, .menu-overlay');
+        const mobileMenus = document.querySelectorAll('.mobile-menu, .menu-container');
         mobileMenus.forEach(el => {
-            if (el.parentNode) {
+            if (el && el.parentNode) {
                 el.parentNode.removeChild(el);
             }
         });
+    }
+    
+    function hideStartProjectButton() {
+        const startProjectBtn = document.querySelector('.header-right .btn-primary');
+        if (startProjectBtn) {
+            startProjectBtn.style.display = 'none';
+            console.log('✅ Кнопка "Начать проект" скрыта');
+        }
     }
     
     function setActiveNavLink() {
@@ -529,6 +618,32 @@
         if (switcher) {
             switcher.setAttribute('data-current-lang', lang);
         }
+    }
+    
+    function setupScrollEffect() {
+        const header = document.querySelector('.main-header');
+        if (!header) return;
+        
+        let ticking = false;
+        
+        const updateHeader = () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            ticking = false;
+        };
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        }, { passive: true });
+        
+        // Инициализация
+        updateHeader();
     }
 })();
 </script>
