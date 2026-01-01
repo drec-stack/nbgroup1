@@ -3512,3 +3512,60 @@ body {
         display: none !important; /* Скрываем только на очень маленьких экранах */
     }
 }
+
+/* ===== ВСЕ ВНУТРЕННИЕ СТРАНИЦЫ - ОДИНАКОВЫЙ ХЕДЕР ===== */
+body.services-page .main-header,
+body.about-page .main-header,
+body.portfolio-page .main-header,
+body.brandbook-page .main-header,
+body.contacts-page .main-header {
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: none !important;
+    animation: none !important;
+    -webkit-animation: none !important;
+}
+
+body.services-page .main-header.header-hidden,
+body.about-page .main-header.header-hidden,
+body.portfolio-page .main-header.header-hidden,
+body.brandbook-page .main-header.header-hidden,
+body.contacts-page .main-header.header-hidden {
+    transform: translateX(-50%) translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+@media (max-width: 768px) {
+    body.services-page .main-header.header-hidden,
+    body.about-page .main-header.header-hidden,
+    body.portfolio-page .main-header.header-hidden,
+    body.brandbook-page .main-header.header-hidden,
+    body.contacts-page .main-header.header-hidden {
+        transform: translateY(0) !important;
+    }
+}
+
+/* ===== КОНТАКТЫ - УБЕДИТЕСЬ ЧТО ХЕДЕР ВИДЕН ===== */
+body.contacts-page .main-header {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0) !important;
+}
+
+body.contacts-page .main-header.header-hidden {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0) !important;
+}
+
+@media (max-width: 768px) {
+    body.contacts-page .main-header {
+        transform: none !important;
+    }
+    
+    body.contacts-page .main-header.header-hidden {
+        transform: none !important;
+    }
+}
