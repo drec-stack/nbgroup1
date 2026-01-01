@@ -564,10 +564,16 @@ class DaehaaApp {
             element.setAttribute('tabindex', '0');
         }
         
+        // ИСПРАВЛЕНИЕ: НЕ добавляем aria-label для навигационных ссылок
         this.enhanceAccessibility(element);
     }
 
     enhanceAccessibility(element) {
+        // ИСПРАВЛЕНИЕ: Не добавляем aria-label для навигационных ссылок в хедере
+        if (element.closest('.main-nav')) {
+            return; // Пропускаем навигационные ссылки
+        }
+        
         if (!element.hasAttribute('aria-label') && element.hasAttribute('href')) {
             const href = element.getAttribute('href');
             let label = '';
