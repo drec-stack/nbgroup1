@@ -8,7 +8,8 @@ console.log('🎨 Brandbook page script loaded with language support');
     // Create style element immediately
     const style = document.createElement('style');
     style.textContent = `
-        .main-header {
+        /* Базовые стили хедера для всех страниц, кроме брендбука */
+        .main-header:not(.brandbook-page .main-header) {
             position: fixed !important;
             top: 20px !important;
             left: 50% !important;
@@ -27,20 +28,20 @@ console.log('🎨 Brandbook page script loaded with language support');
             border: 1px solid rgba(255, 255, 255, 0.22) !important;
         }
         
-        .main-header.header-hidden {
+        .main-header.header-hidden:not(.brandbook-page .main-header) {
             transform: translateX(-50%) translateY(-100%) !important;
             opacity: 0 !important;
             pointer-events: none !important;
         }
         
-        .main-header.header-scrolled {
+        .main-header.header-scrolled:not(.brandbook-page .main-header) {
             background: rgba(0, 102, 255, 0.2) !important;
             backdrop-filter: blur(20px) saturate(200%) !important;
             -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
         }
         
         @media (max-width: 768px) {
-            .main-header {
+            .main-header:not(.brandbook-page .main-header) {
                 top: 0 !important;
                 left: 0 !important;
                 transform: none !important;
@@ -54,9 +55,31 @@ console.log('🎨 Brandbook page script loaded with language support');
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
             }
             
-            .main-header.header-hidden {
+            .main-header.header-hidden:not(.brandbook-page .main-header) {
                 transform: translateY(-100%) !important;
             }
+        }
+        
+        /* Стили для брендбука - хедер скрыт */
+        .brandbook-page .main-header {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            min-height: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            z-index: -1000 !important;
+            overflow: hidden !important;
+            border: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background: transparent !important;
+            transform: none !important;
+            top: -100px !important;
         }
     `;
     
@@ -72,7 +95,10 @@ console.log('🎨 Brandbook page script loaded with language support');
     // Also apply directly to any existing header
     document.addEventListener('DOMContentLoaded', () => {
         const header = document.querySelector('.main-header');
-        if (header) {
+        const isBrandbookPage = document.body.classList.contains('brandbook-page') || 
+                               window.location.pathname.includes('brandbook');
+        
+        if (header && !isBrandbookPage) {
             console.log('🎯 Applying header fix to existing element');
             header.style.position = 'fixed';
             header.style.top = '20px';
@@ -101,11 +127,73 @@ console.log('🎨 Brandbook page script loaded with language support');
 function initBrandbook() {
     console.log('🚀 Initializing brandbook functionality...');
     
-    // Apply header positioning one more time for safety
-    const header = document.querySelector('.main-header');
-    if (header) {
-        header.style.left = '50%';
-        header.style.transform = 'translateX(-50%) translateY(0)';
+    const isBrandbookPage = document.body.classList.contains('brandbook-page') || 
+                           window.location.pathname.includes('brandbook');
+    
+    // ===== ОЧИСТКА ХЕДЕРА ТОЛЬКО НА СТРАНИЦЕ БРЕНДБУКА =====
+    if (isBrandbookPage) {
+        console.log('🔧 Brandbook page detected - clearing header...');
+        
+        const header = document.querySelector('.main-header');
+        const headerContainer = document.getElementById('header-container');
+        
+        // Полностью скрываем хедер
+        if (header) {
+            header.style.display = 'none';
+            header.style.visibility = 'hidden';
+            header.style.opacity = '0';
+            header.style.height = '0';
+            header.style.minHeight = '0';
+            header.style.padding = '0';
+            header.style.margin = '0';
+            header.style.pointerEvents = 'none';
+            header.style.overflow = 'hidden';
+            header.style.position = 'absolute';
+            header.style.zIndex = '-1000';
+            header.style.background = 'transparent';
+            header.style.border = 'none';
+            header.style.boxShadow = 'none';
+            header.style.backdropFilter = 'none';
+            header.style.webkitBackdropFilter = 'none';
+            header.style.transform = 'none';
+            header.style.top = '-100px';
+            header.style.left = '0';
+            
+            // Убираем классы скролла
+            header.classList.remove('header-scrolled', 'header-hidden');
+        }
+        
+        // Скрываем контейнер хедера
+        if (headerContainer) {
+            headerContainer.style.display = 'none';
+            headerContainer.style.visibility = 'hidden';
+            headerContainer.style.height = '0';
+            headerContainer.style.minHeight = '0';
+            headerContainer.style.padding = '0';
+            headerContainer.style.margin = '0';
+            headerContainer.style.overflow = 'hidden';
+            headerContainer.style.pointerEvents = 'none';
+        }
+        
+        // Корректируем отступы body
+        document.body.style.paddingTop = '0';
+        
+        // Корректируем отступы для hero-секции
+        const hero = document.querySelector('.brandbook-hero');
+        if (hero) {
+            hero.style.paddingTop = window.innerWidth <= 768 ? '100px' : '140px';
+            hero.style.transition = 'padding-top 0.3s ease';
+        }
+        
+        // Убираем обработчики скролла для хедера
+        window.removeEventListener('scroll', handleHeaderScroll);
+    } else {
+        // Apply header positioning one more time for safety
+        const header = document.querySelector('.main-header');
+        if (header) {
+            header.style.left = '50%';
+            header.style.transform = 'translateX(-50%) translateY(0)';
+        }
     }
     
     // Initialize all modules
@@ -121,19 +209,21 @@ function initBrandbook() {
     // Setup language integration
     setupBrandbookLanguageIntegration();
     
-    // Initialize header properly
-    setTimeout(() => {
-        if (window.initHeader) {
-            window.initHeader();
-        }
-        
-        // Final header positioning check
-        const finalHeader = document.querySelector('.main-header');
-        if (finalHeader) {
-            finalHeader.style.left = '50%';
-            finalHeader.style.transform = 'translateX(-50%) translateY(0)';
-        }
-    }, 500);
+    // Initialize header properly (только если не страница брендбука)
+    if (!isBrandbookPage) {
+        setTimeout(() => {
+            if (window.initHeader) {
+                window.initHeader();
+            }
+            
+            // Final header positioning check
+            const finalHeader = document.querySelector('.main-header');
+            if (finalHeader) {
+                finalHeader.style.left = '50%';
+                finalHeader.style.transform = 'translateX(-50%) translateY(0)';
+            }
+        }, 500);
+    }
     
     console.log('✅ Brandbook functionality initialized');
 }
@@ -551,13 +641,30 @@ function getNotificationColor(type) {
     return colors[type] || '#2196F3';
 }
 
+// Helper function for scroll handling (если используется)
+function handleHeaderScroll() {
+    const header = document.querySelector('.main-header');
+    if (header && !document.body.classList.contains('brandbook-page')) {
+        if (window.scrollY > 100) {
+            header.classList.add('header-scrolled');
+        } else {
+            header.classList.remove('header-scrolled');
+        }
+    }
+}
+
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', function() {
-    // Apply immediate header positioning
-    const header = document.querySelector('.main-header');
-    if (header) {
-        header.style.left = '50%';
-        header.style.transform = 'translateX(-50%) translateY(0)';
+    // Apply immediate header positioning (только если не страница брендбука)
+    const isBrandbookPage = document.body.classList.contains('brandbook-page') || 
+                           window.location.pathname.includes('brandbook');
+    
+    if (!isBrandbookPage) {
+        const header = document.querySelector('.main-header');
+        if (header) {
+            header.style.left = '50%';
+            header.style.transform = 'translateX(-50%) translateY(0)';
+        }
     }
     
     setTimeout(() => {
@@ -575,10 +682,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize if page already loaded
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
-    const header = document.querySelector('.main-header');
-    if (header) {
-        header.style.left = '50%';
-        header.style.transform = 'translateX(-50%) translateY(0)';
+    const isBrandbookPage = document.body.classList.contains('brandbook-page') || 
+                           window.location.pathname.includes('brandbook');
+    
+    if (!isBrandbookPage) {
+        const header = document.querySelector('.main-header');
+        if (header) {
+            header.style.left = '50%';
+            header.style.transform = 'translateX(-50%) translateY(0)';
+        }
     }
     
     setTimeout(() => {
