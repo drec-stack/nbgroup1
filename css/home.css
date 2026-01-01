@@ -1,5 +1,5 @@
-/* home.css - Главная страница NB Group Tech */
-/* Версия: 2.0.0 | Дата: 2024 */
+/* home.css - Главная страница NB Group Tech - ФИКСИРОВАННАЯ ВЕРСИЯ БЕЗ СКРЫТЫХ КНОПОК */
+/* Версия: 3.0.0 | Дата: 2024 | ФИКС: НЕТ СКРЫТЫХ КНОПОК */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -39,8 +39,7 @@ body {
     }
 }
 
-/* ===== ГАРАНТИРОВАННЫЕ СТИЛИ ХЕДЕРА ===== */
-/* Убираем все анимации и фиксируем позицию */
+/* ===== КРИТИЧЕСКИЙ ФИКС: ГАРАНТИРОВАННЫЙ ХЕДЕР БЕЗ СКРЫТЫХ КНОПОК ===== */
 .main-header {
     position: fixed !important;
     top: 20px !important;
@@ -60,10 +59,11 @@ body {
         inset 0 1px 0 rgba(255, 255, 255, 0.1),
         inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    transition: all 0.3s ease !important;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+    animation: none !important;
 }
 
-/* Мобильная версия хедера */
+/* Мобильная версия хедера - БЕЗ БУРГЕРА */
 @media (max-width: 768px) {
     .main-header {
         left: 0 !important;
@@ -101,6 +101,78 @@ body {
     .main-header.scrolled {
         padding: 12px 0 !important;
     }
+}
+
+/* УБИРАЕМ ВСЕ СКРЫТЫЕ КНОПКИ И МЕНЮ - КРИТИЧЕСКИЙ ФИКС */
+.mobile-menu-toggle,
+.menu-toggle,
+.burger-menu,
+.hamburger,
+.menu-btn,
+.nav-toggle,
+.mobile-menu-overlay,
+.menu-overlay {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    z-index: -1000 !important;
+    pointer-events: none !important;
+}
+
+.mobile-menu,
+.menu-container {
+    display: none !important;
+}
+
+/* Отключаем все JS-переключение меню */
+.main-nav {
+    display: flex !important;
+}
+
+@media (max-width: 900px) {
+    .main-nav {
+        display: none !important; /* На мобильных просто скрываем навигацию */
+    }
+}
+
+/* Гарантируем что правая часть всегда видна */
+.header-right {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Убираем все анимации скрытия хедера */
+.main-header.header-hidden {
+    transform: translateX(-50%) translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+@media (max-width: 768px) {
+    .main-header.header-hidden {
+        transform: translateY(0) !important;
+    }
+}
+
+/* Убираем hover эффекты для несуществующих элементов */
+.mobile-menu-toggle:hover,
+.menu-toggle:hover,
+.burger-menu:hover {
+    background: transparent !important;
+    transform: none !important;
+}
+
+/* Убираем outline/focus для несуществующих элементов */
+.mobile-menu-toggle:focus,
+.menu-toggle:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 /* ===== HERO SECTION ===== */
@@ -1800,4 +1872,104 @@ body.contacts-page .main-header {
     background: linear-gradient(90deg, #0066ff, #3399ff);
     width: 0%;
     transition: width 0.1s ease;
+}
+
+/* ===== ФИНАЛЬНЫЕ ГАРАНТИИ ПРОТИВ СКРЫТЫХ КНОПОК ===== */
+/* Эти стили должны быть в самом конце файла */
+
+/* 1. Гарантируем что кнопка "Начать проект" всегда видна */
+.header-right .btn-primary {
+    display: inline-flex !important;
+}
+
+@media (max-width: 480px) {
+    .header-right .btn-primary {
+        display: none !important;
+    }
+}
+
+/* 2. Отключаем все сложные анимации хедера */
+@keyframes glassEnter {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* 3. Для всех страниц - фиксируем хедер */
+body.services-page .main-header,
+body.about-page .main-header,
+body.portfolio-page .main-header,
+body.brandbook-page .main-header,
+body.contacts-page .main-header,
+body.home-page .main-header {
+    position: fixed !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* 4. Финальная гарантия - удаляем все через JS */
+.no-hidden-buttons .mobile-menu-toggle,
+.no-hidden-buttons .menu-toggle {
+    display: none !important;
+}
+
+/* 5. Предотвращаем горизонтальный скролл */
+html, body {
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* 6. Гарантируем что хедер не мешает контенту */
+body {
+    padding-top: 80px !important;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 65px !important;
+    }
+}
+
+/* 7. Убираем все контейнеры мобильного меню */
+.mobile-menu-container,
+.burger-container,
+.menu-wrapper {
+    display: none !important;
+}
+
+/* 8. Отключаем все transition для скрытых элементов */
+.mobile-menu-toggle *,
+.menu-toggle * {
+    transition: none !important;
+}
+
+/* 9. Гарантируем что бургер-иконки не появятся */
+.burger-line,
+.hamburger-line,
+.menu-line {
+    display: none !important;
+}
+
+/* 10. Финальный абсолютный запрет */
+[class*="mobile"],
+[class*="burger"],
+[class*="hamburger"],
+[class*="menu-toggle"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
