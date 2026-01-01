@@ -1091,3 +1091,212 @@
     visibility: visible !important;
     transform: translateX(-50%) translateY(0) !important;
 }
+
+/* ===== ФИКС ДЛЯ ХЕДЕРА НА СТРАНИЦЕ КОНТАКТОВ ===== */
+
+/* Убираем все выпадающие элементы для навигации на странице контактов */
+.contact-page .main-nav .nav-link[href="contacts.html"] {
+    /* Отключаем все возможные взаимодействия, создающие выпадающие элементы */
+    pointer-events: none !important;
+    cursor: default !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+}
+
+/* Скрываем любые псевдоэлементы, которые могут быть тултипами */
+.contact-page .main-nav .nav-link[href="contacts.html"]::before,
+.contact-page .main-nav .nav-link[href="contacts.html"]::after {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    content: none !important;
+}
+
+/* Убираем все hover-эффекты для активной ссылки */
+.contact-page .main-nav .nav-link[href="contacts.html"]:hover,
+.contact-page .main-nav .nav-link[href="contacts.html"]:focus,
+.contact-page .main-nav .nav-link[href="contacts.html"]:active {
+    transform: none !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: none !important;
+}
+
+/* Отключаем переходы для активной ссылки */
+.contact-page .main-nav .nav-link[href="contacts.html"] {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Специальные стили для стеклянного хедера на контактах */
+.contact-page .glass-header {
+    /* Гарантируем, что хедер не создает контекст для выпадающих элементов */
+    isolation: isolate;
+    contain: layout style paint;
+}
+
+/* Убираем все возможные выпадающие элементы в правом углу */
+.contact-page .header-right > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Фикс для языка переключателя на контактах */
+.contact-page .language-switcher {
+    overflow: hidden;
+}
+
+.contact-page .language-switcher .lang-btn {
+    pointer-events: auto !important;
+}
+
+/* Убираем выпадающие элементы для кнопки "Начать проект" */
+.contact-page .header-right .btn-primary {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.contact-page .header-right .btn-primary::before,
+.contact-page .header-right .btn-primary::after {
+    display: none !important;
+}
+
+/* Дополнительные стили для мобильной версии */
+@media (max-width: 768px) {
+    .contact-page .main-nav .nav-link[href="contacts.html"] {
+        /* На мобильных делаем ссылку еще более нейтральной */
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        padding: 8px 16px !important;
+        margin: 2px 0 !important;
+    }
+    
+    .contact-page .main-header {
+        /* Гарантируем правильное отображение на мобильных */
+        background: rgba(0, 102, 255, 0.22) !important;
+        backdrop-filter: blur(20px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+    }
+}
+
+/* ===== УБИРАЕМ ВСЕ СКРЫТЫЕ ЭЛЕМЕНТЫ В ПРАВОМ УГЛУ ===== */
+/* Находим и скрываем любые элементы, которые могут появляться в правом углу */
+.contact-page .main-header *:last-child:not(.header-right):not(.language-switcher):not(.btn-primary) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    z-index: -1000 !important;
+    pointer-events: none !important;
+}
+
+/* Фикс для контейнера хедера */
+.contact-page .header-inner {
+    position: relative;
+    z-index: 1;
+}
+
+/* Гарантируем, что только нужные элементы видны */
+.contact-page .header-inner > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Скрываем любые абсолютно позиционированные элементы в хедере */
+.contact-page .main-header [style*="position: absolute"],
+.contact-page .main-header [style*="position:fixed"] {
+    display: none !important;
+}
+
+/* ===== ФИНАЛЬНЫЙ ФИКС: ОТКЛЮЧАЕМ ВСЕ ВЫПАДАЮЩИЕ ЭЛЕМЕНТЫ ===== */
+/* Глобальное правило для страницы контактов */
+.contact-page [role="tooltip"],
+.contact-page [aria-describedby],
+.contact-page [data-balloon],
+.contact-page [data-tooltip],
+.contact-page .tooltip,
+.contact-page .tippy-box,
+.contact-page .popover {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+}
+
+/* Отключаем все hover-эффекты, создающие подсказки */
+.contact-page *:hover > [role="tooltip"],
+.contact-page *:hover > [data-tooltip],
+.contact-page *:focus > [role="tooltip"],
+.contact-page *:focus > [data-tooltip] {
+    display: none !important;
+}
+
+/* Специально для правого угла хедера */
+.contact-page .header-right > *:last-child::after {
+    display: none !important;
+}
+
+/* Убираем все псевдоэлементы в правой части */
+.contact-page .header-right::before,
+.contact-page .header-right::after,
+.contact-page .header-right > *::before,
+.contact-page .header-right > *::after {
+    content: none !important;
+}
+
+/* ===== CSS РЕСЕТ ДЛЯ ХЕДЕРА ===== */
+/* Гарантируем чистый хедер без лишних элементов */
+.contact-page .main-header {
+    all: initial;
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    z-index: 1000 !important;
+    padding: 18px 0 !important;
+    background: rgba(0, 102, 255, 0.12) !important;
+    border-radius: 20px !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 102, 255, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+}
+
+.contact-page .main-header * {
+    all: revert;
+}
+
+/* Фикс для мобильной версии */
+@media (max-width: 768px) {
+    .contact-page .main-header {
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        padding: 14px 0 !important;
+        background: rgba(0, 102, 255, 0.22) !important;
+        backdrop-filter: blur(20px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+}
