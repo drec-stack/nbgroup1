@@ -1,161 +1,21 @@
-// contacts.js - Инициализация страницы контактов с стеклянным хедером
+// contacts.js - Инициализация страницы контактов с ОБЩИМ хедером
 
-console.log('🚀 Contact page with glass header initialized');
+console.log('🚀 Contact page with clean header initialized');
 
 // Основная функция инициализации страницы
 function initContact() {
-    console.log('🎯 Initializing contact page with glass header...');
+    console.log('🎯 Initializing contact page with clean header...');
     
-    setupHeaderFunctionality();
     setupContactForm();
     setupContactInteractions();
     setupMapInteraction();
     setupFAQAccordion();
     setupContactCards();
-    setupHeaderScroll();
     
-    console.log('✅ Contact page initialized successfully');
-}
-
-// Настройка функционала хедера
-function setupHeaderFunctionality() {
-    // Мобильное меню
-    const toggle = document.querySelector('.mobile-menu-toggle');
-    const nav = document.querySelector('.main-nav');
-    const overlay = document.querySelector('.mobile-menu-overlay');
+    // НЕТ setupHeaderFunctionality() - хедер управляется header.html
+    // НЕТ setupHeaderScroll() - хедер управляется header.html
     
-    if (toggle && nav) {
-        const toggleMenu = () => {
-            const isActive = nav.classList.contains('active');
-            toggle.classList.toggle('active');
-            nav.classList.toggle('active');
-            if (overlay) overlay.classList.toggle('active');
-            document.body.style.overflow = isActive ? '' : 'hidden';
-        };
-
-        toggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleMenu();
-        });
-
-        if (overlay) {
-            overlay.addEventListener('click', toggleMenu);
-        }
-
-        // Закрытие меню при клике на ссылки
-        const navLinks = nav.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', toggleMenu);
-        });
-
-        // Закрытие по Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && nav.classList.contains('active')) {
-                toggleMenu();
-            }
-        });
-
-        // Закрытие при ресайзе (десктоп)
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768 && nav.classList.contains('active')) {
-                toggleMenu();
-            }
-        });
-    }
-
-    // Переключатель языка
-    const langSwitcher = document.querySelector('.language-switcher');
-    const langButtons = document.querySelectorAll('.lang-btn');
-    
-    if (langSwitcher && langButtons.length) {
-        langButtons.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const newLang = this.getAttribute('data-lang');
-                const currentLang = langSwitcher.getAttribute('data-current-lang');
-                
-                if (newLang !== currentLang) {
-                    // Обновление UI
-                    langButtons.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    langSwitcher.setAttribute('data-current-lang', newLang);
-                    
-                    // Событие смены языка
-                    window.dispatchEvent(new CustomEvent('languageChanged', {
-                        detail: { lang: newLang }
-                    }));
-                    
-                    // Если доступен i18n
-                    if (window.i18n && window.i18n.setLang) {
-                        window.i18n.setLang(newLang);
-                    }
-                    
-                    console.log(`🌐 Language switched to: ${newLang}`);
-                }
-            });
-        });
-        
-        // Синхронизация с i18n если доступен
-        if (window.i18n && window.i18n.getCurrentLang) {
-            const currentLang = window.i18n.getCurrentLang();
-            langSwitcher.setAttribute('data-current-lang', currentLang);
-            langButtons.forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
-            });
-        }
-    }
-
-    // Установка активной навигационной ссылки
-    setActiveNavLink();
-}
-
-// Установка активной ссылки в навигации
-function setActiveNavLink() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (href === currentPage || 
-            (currentPage === '' && href === 'index.html') ||
-            (currentPage === 'index.html' && href === 'index.html')) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
-}
-
-// Эффект скролла для хедера
-function setupHeaderScroll() {
-    const header = document.querySelector('.main-header');
-    if (!header) return;
-    
-    let lastScrollY = window.scrollY;
-    const scrollThreshold = 100;
-    
-    window.addEventListener('scroll', () => {
-        const currentScrollY = window.scrollY;
-        
-        if (currentScrollY <= 0) {
-            header.classList.remove('header-hidden', 'header-scrolled');
-            header.style.opacity = '1';
-            return;
-        }
-        
-        if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-            // Скролл вниз
-            header.classList.remove('header-hidden');
-            header.classList.add('header-scrolled');
-        } else if (currentScrollY < lastScrollY) {
-            // Скролл вверх
-            header.classList.remove('header-hidden');
-            header.classList.remove('header-scrolled');
-        }
-        
-        lastScrollY = currentScrollY;
-    }, { passive: true });
+    console.log('✅ Contact page initialized successfully (clean header)');
 }
 
 // Настройка контактной формы
@@ -501,26 +361,6 @@ function showNotification(message, type = 'info') {
     }
 }
 
-// Обработчик события смены языка
-window.addEventListener('languageChanged', function(event) {
-    console.log('🌐 Language changed to:', event.detail.lang);
-    
-    // Обновляем переключатель языка
-    const switcher = document.querySelector('.language-switcher');
-    if (switcher) {
-        switcher.setAttribute('data-current-lang', event.detail.lang);
-    }
-    
-    // Обновляем кнопки
-    const langBtns = document.querySelectorAll('.lang-btn');
-    langBtns.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-lang') === event.detail.lang) {
-            btn.classList.add('active');
-        }
-    });
-});
-
 // Инициализация при загрузке DOM
 document.addEventListener('DOMContentLoaded', () => {
     console.log('📄 Contact page DOM loaded');
@@ -553,4 +393,4 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
     }, 200);
 }
 
-console.log('✅ contacts.js loaded successfully');
+console.log('✅ contacts.js loaded successfully (CLEAN VERSION)');
