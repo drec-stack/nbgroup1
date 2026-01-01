@@ -1,15 +1,132 @@
-// brandbook.js - Complete functionality for brandbook page with language support
-console.log('🎨 Brandbook page script loaded with language support');
+// brandbook.js - Complete functionality for brandbook page with clean header
+console.log('🎨 Brandbook page script loaded with CLEAN HEADER support');
+
+// ФУНКЦИЯ ДЛЯ ОЧИСТКИ ХЕДЕРА ОТ СКРЫТЫХ ЭЛЕМЕНТОВ
+function cleanHeaderForBrandbook() {
+    console.log('🧹 Starting header cleanup for brandbook page...');
+    
+    // 1. Удаляем все скрытые элементы бургер-меню
+    const hiddenSelectors = [
+        '.mobile-menu-toggle',
+        '.menu-toggle', 
+        '.burger-menu',
+        '.hamburger',
+        '.menu-btn',
+        '.nav-toggle',
+        '.mobile-menu-overlay',
+        '.menu-overlay',
+        '.mobile-menu',
+        '.menu-container',
+        '.mobile-nav-toggle'
+    ];
+    
+    let removedCount = 0;
+    hiddenSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(el => {
+            if (el.parentNode) {
+                el.parentNode.removeChild(el);
+                removedCount++;
+                console.log(`🗑️ Removed: ${selector}`);
+            }
+        });
+    });
+    
+    // 2. Удаляем все inline-стили для скрытых элементов
+    document.querySelectorAll('[style*="display: none"][style*="burger"], [style*="display: none"][style*="menu"], [style*="display: none"][style*="mobile"]').forEach(el => {
+        if (el.parentNode && (el.classList.contains('burger') || el.classList.contains('menu') || el.classList.contains('mobile'))) {
+            el.parentNode.removeChild(el);
+            removedCount++;
+        }
+    });
+    
+    // 3. Отключаем все обработчики событий для бургер-меню
+    const originalAddEventListener = EventTarget.prototype.addEventListener;
+    EventTarget.prototype.addEventListener = function(type, handler, options) {
+        if (type.includes('menu') || type.includes('burger') || type.includes('toggle')) {
+            console.log(`🚫 Blocked event listener: ${type}`);
+            return;
+        }
+        return originalAddEventListener.call(this, type, handler, options);
+    };
+    
+    // 4. Добавляем CSS гарантии
+    const cleanHeaderStyles = document.createElement('style');
+    cleanHeaderStyles.id = 'brandbook-clean-header-styles';
+    cleanHeaderStyles.textContent = `
+        /* ГАРАНТИЯ: НИКАКИХ СКРЫТЫХ ЭЛЕМЕНТОВ В ХЕДЕРЕ БРЕНДБУКА */
+        body.brandbook-page .mobile-menu-toggle,
+        body.brandbook-page .menu-toggle,
+        body.brandbook-page .burger-menu,
+        body.brandbook-page .hamburger,
+        body.brandbook-page .menu-btn,
+        body.brandbook-page .nav-toggle,
+        body.brandbook-page .mobile-menu-overlay,
+        body.brandbook-page .menu-overlay,
+        body.brandbook-page .mobile-menu,
+        body.brandbook-page .menu-container,
+        body.brandbook-page .mobile-nav-toggle,
+        body.brandbook-page [class*="burger"],
+        body.brandbook-page [class*="mobile-toggle"],
+        body.brandbook-page [class*="menu-btn"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            width: 0 !important;
+            height: 0 !important;
+            overflow: hidden !important;
+            position: absolute !important;
+            z-index: -1000 !important;
+            pointer-events: none !important;
+        }
+        
+        /* Делаем основной хедер более заметным */
+        body.brandbook-page .main-header {
+            background: rgba(10, 15, 25, 0.95) !important;
+            backdrop-filter: blur(25px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+            border: 1px solid rgba(0, 102, 255, 0.3) !important;
+            box-shadow: 
+                0 15px 40px rgba(0, 102, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        /* Гарантируем что навигация видна */
+        body.brandbook-page .main-nav {
+            display: flex !important;
+        }
+        
+        @media (max-width: 768px) {
+            body.brandbook-page .main-nav {
+                display: none !important; /* Как в оригинальном хедере */
+            }
+            
+            body.brandbook-page .main-header {
+                background: rgba(10, 15, 25, 0.98) !important;
+            }
+        }
+    `;
+    
+    // Удаляем старые стили если есть
+    const oldStyles = document.getElementById('brandbook-clean-header-styles');
+    if (oldStyles) oldStyles.remove();
+    
+    // Добавляем новые стили
+    document.head.appendChild(cleanHeaderStyles);
+    
+    console.log(`✅ Header cleanup complete. Removed ${removedCount} hidden elements.`);
+    
+    return removedCount;
+}
 
 // CRITICAL FIX: Apply header positioning immediately
 (function applyHeaderFixImmediately() {
-    console.log('🔧 Applying immediate header positioning fix...');
+    console.log('🔧 Applying immediate header positioning fix for brandbook...');
     
     // Create style element immediately
     const style = document.createElement('style');
     style.textContent = `
-        /* Базовые стили хедера для всех страниц, кроме брендбука */
-        .main-header:not(.brandbook-page .main-header) {
+        .main-header {
             position: fixed !important;
             top: 20px !important;
             left: 50% !important;
@@ -28,20 +145,20 @@ console.log('🎨 Brandbook page script loaded with language support');
             border: 1px solid rgba(255, 255, 255, 0.22) !important;
         }
         
-        .main-header.header-hidden:not(.brandbook-page .main-header) {
+        .main-header.header-hidden {
             transform: translateX(-50%) translateY(-100%) !important;
             opacity: 0 !important;
             pointer-events: none !important;
         }
         
-        .main-header.header-scrolled:not(.brandbook-page .main-header) {
+        .main-header.header-scrolled {
             background: rgba(0, 102, 255, 0.2) !important;
             backdrop-filter: blur(20px) saturate(200%) !important;
             -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
         }
         
         @media (max-width: 768px) {
-            .main-header:not(.brandbook-page .main-header) {
+            .main-header {
                 top: 0 !important;
                 left: 0 !important;
                 transform: none !important;
@@ -55,31 +172,14 @@ console.log('🎨 Brandbook page script loaded with language support');
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
             }
             
-            .main-header.header-hidden:not(.brandbook-page .main-header) {
+            .main-header.header-hidden {
                 transform: translateY(-100%) !important;
             }
         }
         
-        /* Стили для брендбука - хедер скрыт */
-        .brandbook-page .main-header {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            height: 0 !important;
-            min-height: 0 !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            pointer-events: none !important;
-            position: absolute !important;
-            z-index: -1000 !important;
-            overflow: hidden !important;
-            border: none !important;
-            box-shadow: none !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            background: transparent !important;
-            transform: none !important;
-            top: -100px !important;
+        /* Дополнительные стили для чистого хедера на брендбуке */
+        body.brandbook-page .main-header {
+            background: rgba(10, 15, 25, 0.95) !important;
         }
     `;
     
@@ -95,10 +195,7 @@ console.log('🎨 Brandbook page script loaded with language support');
     // Also apply directly to any existing header
     document.addEventListener('DOMContentLoaded', () => {
         const header = document.querySelector('.main-header');
-        const isBrandbookPage = document.body.classList.contains('brandbook-page') || 
-                               window.location.pathname.includes('brandbook');
-        
-        if (header && !isBrandbookPage) {
+        if (header) {
             console.log('🎯 Applying header fix to existing element');
             header.style.position = 'fixed';
             header.style.top = '20px';
@@ -125,107 +222,49 @@ console.log('🎨 Brandbook page script loaded with language support');
 
 // Main initialization function
 function initBrandbook() {
-    console.log('🚀 Initializing brandbook functionality...');
+    console.log('🚀 Initializing brandbook functionality with CLEAN HEADER...');
     
-    const isBrandbookPage = document.body.classList.contains('brandbook-page') || 
-                           window.location.pathname.includes('brandbook');
+    // ШАГ 1: Очищаем хедер от скрытых элементов
+    cleanHeaderForBrandbook();
     
-    // ===== ОЧИСТКА ХЕДЕРА ТОЛЬКО НА СТРАНИЦЕ БРЕНДБУКА =====
-    if (isBrandbookPage) {
-        console.log('🔧 Brandbook page detected - clearing header...');
-        
-        const header = document.querySelector('.main-header');
-        const headerContainer = document.getElementById('header-container');
-        
-        // Полностью скрываем хедер
-        if (header) {
-            header.style.display = 'none';
-            header.style.visibility = 'hidden';
-            header.style.opacity = '0';
-            header.style.height = '0';
-            header.style.minHeight = '0';
-            header.style.padding = '0';
-            header.style.margin = '0';
-            header.style.pointerEvents = 'none';
-            header.style.overflow = 'hidden';
-            header.style.position = 'absolute';
-            header.style.zIndex = '-1000';
-            header.style.background = 'transparent';
-            header.style.border = 'none';
-            header.style.boxShadow = 'none';
-            header.style.backdropFilter = 'none';
-            header.style.webkitBackdropFilter = 'none';
-            header.style.transform = 'none';
-            header.style.top = '-100px';
-            header.style.left = '0';
-            
-            // Убираем классы скролла
-            header.classList.remove('header-scrolled', 'header-hidden');
-        }
-        
-        // Скрываем контейнер хедера
-        if (headerContainer) {
-            headerContainer.style.display = 'none';
-            headerContainer.style.visibility = 'hidden';
-            headerContainer.style.height = '0';
-            headerContainer.style.minHeight = '0';
-            headerContainer.style.padding = '0';
-            headerContainer.style.margin = '0';
-            headerContainer.style.overflow = 'hidden';
-            headerContainer.style.pointerEvents = 'none';
-        }
-        
-        // Корректируем отступы body
-        document.body.style.paddingTop = '0';
-        
-        // Корректируем отступы для hero-секции
-        const hero = document.querySelector('.brandbook-hero');
-        if (hero) {
-            hero.style.paddingTop = window.innerWidth <= 768 ? '100px' : '140px';
-            hero.style.transition = 'padding-top 0.3s ease';
-        }
-        
-        // Убираем обработчики скролла для хедера
-        window.removeEventListener('scroll', handleHeaderScroll);
-    } else {
-        // Apply header positioning one more time for safety
-        const header = document.querySelector('.main-header');
-        if (header) {
-            header.style.left = '50%';
-            header.style.transform = 'translateX(-50%) translateY(0)';
-        }
+    // ШАГ 2: Применяем фикс позиционирования хедера
+    const header = document.querySelector('.main-header');
+    if (header) {
+        header.style.left = '50%';
+        header.style.transform = 'translateX(-50%) translateY(0)';
     }
     
-    // Initialize all modules
+    // ШАГ 3: Инициализируем все модули
     setupCaseStudies();
     setupFilterButtons();
     setupColorPalettes();
     setupBrandbookAnimations();
     setupCopyFunctionality();
     
-    // Setup mobile interactions
+    // ШАГ 4: Настройка мобильных взаимодействий
     setupMobileInteractions();
     
-    // Setup language integration
+    // ШАГ 5: Настройка языковой интеграции
     setupBrandbookLanguageIntegration();
     
-    // Initialize header properly (только если не страница брендбука)
-    if (!isBrandbookPage) {
-        setTimeout(() => {
-            if (window.initHeader) {
-                window.initHeader();
-            }
+    // ШАГ 6: Инициализируем хедер правильно
+    setTimeout(() => {
+        if (window.initHeader) {
+            window.initHeader();
+        }
+        
+        // Финальная проверка позиционирования хедера
+        const finalHeader = document.querySelector('.main-header');
+        if (finalHeader) {
+            finalHeader.style.left = '50%';
+            finalHeader.style.transform = 'translateX(-50%) translateY(0)';
             
-            // Final header positioning check
-            const finalHeader = document.querySelector('.main-header');
-            if (finalHeader) {
-                finalHeader.style.left = '50%';
-                finalHeader.style.transform = 'translateX(-50%) translateY(0)';
-            }
-        }, 500);
-    }
+            // Дополнительная очистка на случай если что-то появилось
+            setTimeout(cleanHeaderForBrandbook, 1000);
+        }
+    }, 500);
     
-    console.log('✅ Brandbook functionality initialized');
+    console.log('✅ Brandbook functionality initialized with clean header');
 }
 
 // ИНТЕГРАЦИЯ С ЯЗЫКОВОЙ СИСТЕМОЙ i18n.js
@@ -247,6 +286,9 @@ function setupBrandbookLanguageIntegration() {
             
             // Синхронизируем UI переключателя языка
             updateLanguageSwitcherUIFromEvent(event.detail.lang);
+            
+            // Повторно чистим хедер на случай ререндера
+            setTimeout(cleanHeaderForBrandbook, 300);
         }, 300);
     });
     
@@ -641,32 +683,21 @@ function getNotificationColor(type) {
     return colors[type] || '#2196F3';
 }
 
-// Helper function for scroll handling (если используется)
-function handleHeaderScroll() {
-    const header = document.querySelector('.main-header');
-    if (header && !document.body.classList.contains('brandbook-page')) {
-        if (window.scrollY > 100) {
-            header.classList.add('header-scrolled');
-        } else {
-            header.classList.remove('header-scrolled');
-        }
-    }
-}
-
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', function() {
-    // Apply immediate header positioning (только если не страница брендбука)
-    const isBrandbookPage = document.body.classList.contains('brandbook-page') || 
-                           window.location.pathname.includes('brandbook');
+    console.log('📄 DOM loaded for brandbook page');
     
-    if (!isBrandbookPage) {
-        const header = document.querySelector('.main-header');
-        if (header) {
-            header.style.left = '50%';
-            header.style.transform = 'translateX(-50%) translateY(0)';
-        }
+    // СНАЧАЛА: Очищаем хедер от скрытых элементов
+    setTimeout(cleanHeaderForBrandbook, 100);
+    
+    // Затем: Применяем фикс позиционирования
+    const header = document.querySelector('.main-header');
+    if (header) {
+        header.style.left = '50%';
+        header.style.transform = 'translateX(-50%) translateY(0)';
     }
     
+    // Затем: Инициализируем функциональность
     setTimeout(() => {
         initBrandbook();
     }, 300);
@@ -678,19 +709,21 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         document.body.style.opacity = '1';
     }, 100);
+    
+    // Периодически проверяем и чистим хедер (на случай динамических изменений)
+    setInterval(() => {
+        if (document.body.classList.contains('brandbook-page')) {
+            cleanHeaderForBrandbook();
+        }
+    }, 3000);
 });
 
 // Initialize if page already loaded
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
-    const isBrandbookPage = document.body.classList.contains('brandbook-page') || 
-                           window.location.pathname.includes('brandbook');
-    
-    if (!isBrandbookPage) {
-        const header = document.querySelector('.main-header');
-        if (header) {
-            header.style.left = '50%';
-            header.style.transform = 'translateX(-50%) translateY(0)';
-        }
+    const header = document.querySelector('.main-header');
+    if (header) {
+        header.style.left = '50%';
+        header.style.transform = 'translateX(-50%) translateY(0)';
     }
     
     setTimeout(() => {
@@ -714,5 +747,6 @@ window.initBrandbook = initBrandbook;
 window.showNotification = showNotification;
 window.rgbToHex = rgbToHex;
 window.updateLanguageSwitcherUI = updateLanguageSwitcherUI;
+window.cleanHeaderForBrandbook = cleanHeaderForBrandbook;
 
-console.log('✅ Brandbook.js initialization functions ready');
+console.log('✅ Brandbook.js initialization functions ready (CLEAN HEADER VERSION)');
