@@ -1,3 +1,4 @@
+
 /* ===== BRANDBOOK PAGE STYLES ===== */
 
 /* CSS Variables from main theme */
@@ -563,29 +564,118 @@ body.brandbook-page {
     transform: translateY(0);
 }
 
-/* ===== СТИЛИ ДЛЯ ЧИСТОГО ХЕДЕРА НА СТРАНИЦЕ БРЕНДБУКА ===== */
-body.brandbook-page.clean-header-mode .main-header {
-    /* Делаем хедер более заметным для брендбука */
-    background: rgba(10, 15, 25, 0.95) !important;
+/* ===== СТИЛИ ДЛЯ ПРОЗРАЧНОГО СТЕКЛЯННОГО ХЕДЕРА НА СТРАНИЦЕ БРЕНДБУКА ===== */
+
+/* Основной стеклянный эффект - такой же как на других страницах */
+body.brandbook-page .main-header {
+    /* Стеклянный эффект с легким оттенком акцента */
+    background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(25px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-    border: 1px solid rgba(0, 102, 255, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     box-shadow: 
-        0 15px 40px rgba(0, 102, 255, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
 }
 
-/* Гарантированно скрываем все скрытые/невидимые элементы бургер-меню */
-body.brandbook-page.clean-header-mode .mobile-menu-toggle,
-body.brandbook-page.clean-header-mode .menu-toggle,
-body.brandbook-page.clean-header-mode .burger-menu,
-body.brandbook-page.clean-header-mode .hamburger,
-body.brandbook-page.clean-header-mode .menu-btn,
-body.brandbook-page.clean-header-mode .nav-toggle,
-body.brandbook-page.clean-header-mode .mobile-menu-overlay,
-body.brandbook-page.clean-header-mode .menu-overlay,
-body.brandbook-page.clean-header-mode .mobile-menu,
-body.brandbook-page.clean-header-mode .menu-container {
+/* При скролле - немного усиливаем стеклянный эффект */
+body.brandbook-page .main-header.scrolled {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Активная ссылка в навигации */
+body.brandbook-page .nav-link.active {
+    color: white !important;
+    font-weight: 600 !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Переключатель языка - стеклянный */
+body.brandbook-page .language-switcher {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+}
+
+/* Активный язык */
+body.brandbook-page .lang-btn.active {
+    color: white !important;
+    font-weight: 600 !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Кнопка "Начать проект" - стеклянная с градиентом */
+body.brandbook-page .header-right .btn-primary {
+    background: white !important;
+    color: #0a0a0a !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 
+        0 4px 20px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Логотип - стеклянный эффект */
+body.brandbook-page .logo-mark {
+    background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%) !important;
+    border: 2px solid rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 
+        0 4px 20px rgba(255, 255, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Мобильная версия - более сильный стеклянный эффект */
+@media (max-width: 768px) {
+    body.brandbook-page .main-header {
+        background: rgba(10, 10, 20, 0.95) !important;
+        backdrop-filter: blur(30px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    /* На мобильных скрываем основную навигацию как в оригинале */
+    body.brandbook-page .main-nav {
+        display: none !important;
+    }
+    
+    /* Улучшаем стеклянный эффект переключателя языка */
+    body.brandbook-page .language-switcher {
+        background: rgba(255, 255, 255, 0.12) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    /* Кнопка "Начать проект" на мобильных */
+    body.brandbook-page .header-right .btn-primary {
+        background: white !important;
+        color: #0a0a0a !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 
+            0 4px 15px rgba(255, 255, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    }
+}
+
+/* ГАРАНТИРОВАННОЕ УДАЛЕНИЕ ВСЕХ СКРЫТЫХ ЭЛЕМЕНТОВ В ХЕДЕРЕ */
+body.brandbook-page .mobile-menu-toggle,
+body.brandbook-page .menu-toggle,
+body.brandbook-page .burger-menu,
+body.brandbook-page .hamburger,
+body.brandbook-page .menu-btn,
+body.brandbook-page .nav-toggle,
+body.brandbook-page .mobile-menu-overlay,
+body.brandbook-page .menu-overlay,
+body.brandbook-page .mobile-menu,
+body.brandbook-page .menu-container,
+body.brandbook-page [class*="mobile-toggle"],
+body.brandbook-page [class*="burger"] {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
@@ -597,91 +687,22 @@ body.brandbook-page.clean-header-mode .menu-container {
     pointer-events: none !important;
 }
 
-/* Улучшаем видимость навигации на странице брендбука */
-body.brandbook-page.clean-header-mode .main-nav {
-    display: flex !important;
-    gap: 15px !important;
-}
-
-/* Делаем активную ссылку более заметной на брендбуке */
-body.brandbook-page.clean-header-mode .nav-link.active {
-    background: rgba(0, 102, 255, 0.25) !important;
-    border: 1px solid rgba(0, 102, 255, 0.4) !important;
-    color: white !important;
-    font-weight: 600 !important;
-    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2) !important;
-}
-
-/* Улучшаем переключатель языка */
-body.brandbook-page.clean-header-mode .language-switcher {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* Улучшаем кнопку "Начать проект" */
-body.brandbook-page.clean-header-mode .header-right .btn-primary {
-    background: linear-gradient(135deg, #0066ff, #00aaff) !important;
-    box-shadow: 0 8px 25px rgba(0, 102, 255, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
-/* Делаем логотип более контрастным */
-body.brandbook-page.clean-header-mode .logo-mark {
-    background: linear-gradient(135deg, #ffffff 0%, #e6e6e6 100%) !important;
-    box-shadow: 
-        0 6px 20px rgba(255, 255, 255, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
-/* Адаптивность для мобильных */
-@media (max-width: 768px) {
-    body.brandbook-page.clean-header-mode .main-header {
-        background: rgba(10, 15, 25, 0.98) !important;
-        backdrop-filter: blur(30px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-        border-bottom: 1px solid rgba(0, 102, 255, 0.25) !important;
-        box-shadow: 
-            0 10px 30px rgba(0, 102, 255, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    /* На мобильных скрываем основную навигацию как в обычном хедере */
-    body.brandbook-page.clean-header-mode .main-nav {
-        display: none !important;
-    }
-    
-    /* Улучшаем видимость кнопки языка на мобильных */
-    body.brandbook-page.clean-header-mode .language-switcher {
-        background: rgba(255, 255, 255, 0.15) !important;
-        border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    }
-    
-    /* Улучшаем кнопку "Начать проект" на мобильных */
-    body.brandbook-page.clean-header-mode .header-right .btn-primary {
-        background: linear-gradient(135deg, #0066ff, #00aaff) !important;
-        box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4) !important;
-        border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    }
-}
-
 /* Гарантируем что хедер всегда виден и правильно позиционирован */
-body.brandbook-page.clean-header-mode .main-header {
+body.brandbook-page .main-header {
     opacity: 1 !important;
     visibility: visible !important;
     transform: translateX(-50%) translateY(0) !important;
     pointer-events: auto !important;
 }
 
-/* Исправляем отступы body для чистого хедера */
-body.brandbook-page.clean-header-mode {
-    padding-top: 80px !important;
-}
-
-@media (max-width: 768px) {
-    body.brandbook-page.clean-header-mode {
-        padding-top: 60px !important;
+/* Поддержка браузеров без backdrop-filter */
+@supports not (backdrop-filter: blur(20px)) {
+    body.brandbook-page .main-header {
+        background: rgba(15, 20, 35, 0.98) !important;
+    }
+    
+    body.brandbook-page .language-switcher {
+        background: rgba(255, 255, 255, 0.12) !important;
     }
 }
 
