@@ -1,5 +1,63 @@
-// portfolio.js - Full portfolio functionality
+// portfolio.js - Full portfolio functionality with header cleaning
 console.log('🎯 portfolio.js loaded');
+
+// Очистка хедера для портфолио
+function cleanPortfolioHeader() {
+    console.log('🧹 Cleaning portfolio header...');
+    
+    const header = document.querySelector('.main-header');
+    if (!header) {
+        console.warn('⚠️ Header not found');
+        return;
+    }
+    
+    // Добавляем класс для идентификации
+    header.classList.add('portfolio-clean-header');
+    document.body.classList.add('portfolio-page');
+    
+    // 1. Удаляем все скрытые элементы
+    const selectorsToRemove = [
+        '.mobile-menu-toggle',
+        '.menu-toggle',
+        '.burger-menu',
+        '.hamburger',
+        '.menu-btn',
+        '.nav-toggle',
+        '.mobile-menu-overlay',
+        '.menu-overlay',
+        '.mobile-menu',
+        '.menu-container'
+    ];
+    
+    selectorsToRemove.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(el => {
+            if (el && el.parentNode) {
+                el.parentNode.removeChild(el);
+                console.log(`🗑️ Removed: ${selector}`);
+            }
+        });
+    });
+    
+    // 2. Скрываем кнопку "Начать проект"
+    const startProjectBtn = document.querySelector('.header-right .btn-primary');
+    if (startProjectBtn) {
+        startProjectBtn.style.display = 'none';
+        console.log('✅ Hidden "Start project" button');
+    }
+    
+    // 3. Отключаем все сложные анимации хедера
+    header.style.animation = 'none';
+    header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+    
+    // 4. Гарантируем что хедер виден
+    header.classList.remove('header-hidden');
+    header.style.opacity = '1';
+    header.style.visibility = 'visible';
+    header.style.pointerEvents = 'auto';
+    
+    console.log('✅ Portfolio header cleaned successfully');
+}
 
 function initPortfolio() {
     console.log('🎯 Initializing portfolio page...');
@@ -12,6 +70,9 @@ function initPortfolio() {
             header.classList.remove('header-hide-smooth', 'header-show-smooth');
         }
     }
+    
+    // Очистка хедера
+    cleanPortfolioHeader();
     
     // Основная функциональность портфолио
     setupPortfolioFilter();
@@ -414,7 +475,8 @@ if (document.readyState === 'loading') {
     }, 300);
 }
 
-// Export function
+// Export functions
 window.initPortfolio = initPortfolio;
+window.cleanPortfolioHeader = cleanPortfolioHeader;
 
 console.log('✅ Portfolio script loaded successfully');
