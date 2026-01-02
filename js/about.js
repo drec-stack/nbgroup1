@@ -1,11 +1,11 @@
-// about.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ДЛЯ SPECK DESIGN СТИЛЯ С ИСПРАВЛЕННЫМ ЯЗЫКОМ
-console.log('🎯 about.js loaded - SPECK DESIGN OPTIMIZED WITH LANGUAGE FIX');
+// about.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ДЛЯ SPECK DESIGN СТИЛЯ С ИСПРАВЛЕННЫМ ХЕДЕРОМ
+console.log('🎯 about.js loaded - SPECK DESIGN OPTIMIZED WITH HEADER FIX');
 
 function initAbout() {
     console.log('🎯 Initializing about page with Speck Design optimizations...');
     
-    // ФИКС ДЛЯ ХЕДЕРА НА СТРАНИЦЕ ABOUT
-    fixHeaderForAboutPage();
+    // ФИКС ДЛЯ ХЕДЕРА НА СТРАНИЦЕ ABOUT - НАДЕЖНАЯ РЕАЛИЗАЦИЯ
+    ensureHeaderStability();
     
     // Основные функции с мобильной оптимизацией
     setupTeamInteractions();
@@ -19,42 +19,185 @@ function initAbout() {
     // Инициализация языковых функций (используем i18n.js)
     setupLanguageIntegration();
     
+    // Устанавливаем начальные отступы для контента
+    adjustContentPaddingForHeader();
+    
     console.log('✅ About page with Speck Design fully optimized');
 }
 
-// ФИКС ДЛЯ ХЕДЕРА НА СТРАНИЦЕ ABOUT - ОБЕСПЕЧИВАЕМ ФИКСИРОВАННОЕ ПОЛОЖЕНИЕ
-function fixHeaderForAboutPage() {
+// НАДЕЖНЫЙ ФИКС ДЛЯ ХЕДЕРА - обеспечиваем стабильность при любых условиях
+function ensureHeaderStability() {
+    const headerContainer = document.getElementById('header-container');
     const header = document.querySelector('.main-header');
-    if (header) {
-        // Убираем возможные анимации скрытия хедера
-        header.classList.remove('header-hidden');
-        header.style.opacity = '1';
-        header.style.transform = 'translateX(-50%) translateY(0)';
-        header.style.pointerEvents = 'auto';
-        header.style.transition = 'all 0.3s ease';
-        
-        // Убедимся, что хедер фиксированный
-        header.style.position = 'fixed';
-        header.style.top = '20px';
-        header.style.left = '50%';
-        header.style.transform = 'translateX(-50%)';
-        
-        // Установим z-index чтобы быть над всем
-        header.style.zIndex = '1000';
-        
-        // Для мобильных корректируем
-        if (window.innerWidth <= 768) {
-            header.style.top = '0';
-            header.style.left = '0';
-            header.style.transform = 'none';
-            header.style.width = '100%';
-            header.style.maxWidth = '100%';
-            header.style.borderRadius = '0';
-            header.style.margin = '0';
+    
+    if (!headerContainer || !header) {
+        console.warn('⚠️ Header elements not found, waiting for components to load...');
+        setTimeout(ensureHeaderStability, 300);
+        return;
+    }
+    
+    console.log('🔧 Ensuring header stability...');
+    
+    // 1. Устанавливаем гарантированные стили для контейнера
+    headerContainer.style.cssText = `
+        position: relative;
+        width: 100%;
+        height: 90px;
+        margin: 0;
+        padding: 0;
+        display: block;
+    `;
+    
+    // 2. Применяем гарантированные стили для хедера через JavaScript
+    const applyHeaderStyles = () => {
+        // Проверяем, что хедер загружен из компонента
+        if (header.innerHTML.trim() === '') {
+            console.log('🔄 Header content not loaded yet, retrying...');
+            setTimeout(applyHeaderStyles, 200);
+            return;
         }
         
-        console.log('✅ Header fixed for about page');
+        // Десктопные стили
+        if (window.innerWidth > 768) {
+            header.style.cssText = `
+                position: fixed !important;
+                top: 20px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                z-index: 1000 !important;
+                width: calc(100% - 40px) !important;
+                max-width: 1200px !important;
+                margin: 0 auto !important;
+                background: rgba(10, 12, 18, 0.95) !important;
+                backdrop-filter: blur(20px) !important;
+                -webkit-backdrop-filter: blur(20px) !important;
+                border: 1px solid rgba(255, 255, 255, 0.12) !important;
+                border-radius: 20px !important;
+                box-shadow: 
+                    0 10px 40px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+                transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: all !important;
+            `;
+        } else {
+            // Мобильные стили
+            header.style.cssText = `
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+                padding: 15px 20px !important;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
+                z-index: 1000 !important;
+                background: rgba(10, 12, 18, 0.98) !important;
+                backdrop-filter: blur(20px) !important;
+                -webkit-backdrop-filter: blur(20px) !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: all !important;
+            `;
+        }
+        
+        console.log('✅ Header styles applied successfully');
+        
+        // 3. Добавляем обработчик изменения размера окна
+        window.addEventListener('resize', handleHeaderResize);
+        
+        // 4. Устанавливаем начальный флаг для предотвращения конфликтов
+        header.setAttribute('data-header-fixed', 'true');
+        
+        // 5. Добавляем резервную проверку каждые 2 секунды
+        setInterval(() => {
+            const computedStyle = window.getComputedStyle(header);
+            if (computedStyle.position !== 'fixed') {
+                console.warn('⚠️ Header lost fixed position, reapplying...');
+                applyHeaderStyles();
+            }
+        }, 2000);
+    };
+    
+    // Обработчик изменения размера окна для хедера
+    function handleHeaderResize() {
+        const isMobile = window.innerWidth <= 768;
+        const header = document.querySelector('.main-header');
+        
+        if (!header) return;
+        
+        if (isMobile) {
+            header.style.cssText = `
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                border: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+                padding: 15px 20px !important;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
+                z-index: 1000 !important;
+                background: rgba(10, 12, 18, 0.98) !important;
+                backdrop-filter: blur(20px) !important;
+                -webkit-backdrop-filter: blur(20px) !important;
+            `;
+        } else {
+            header.style.cssText = `
+                position: fixed !important;
+                top: 20px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                z-index: 1000 !important;
+                width: calc(100% - 40px) !important;
+                max-width: 1200px !important;
+                margin: 0 auto !important;
+                background: rgba(10, 12, 18, 0.95) !important;
+                backdrop-filter: blur(20px) !important;
+                -webkit-backdrop-filter: blur(20px) !important;
+                border: 1px solid rgba(255, 255, 255, 0.12) !important;
+                border-radius: 20px !important;
+                box-shadow: 
+                    0 10px 40px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+            `;
+        }
+        
+        // Пересчитываем отступы для контента
+        adjustContentPaddingForHeader();
     }
+    
+    // Запускаем после небольшой задержки, чтобы компоненты успели загрузиться
+    setTimeout(applyHeaderStyles, 500);
+}
+
+// АВТОМАТИЧЕСКАЯ КОРРЕКТИРОВКА ОТСТУПОВ ДЛЯ КОНТЕНТА
+function adjustContentPaddingForHeader() {
+    const header = document.querySelector('.main-header');
+    const heroSection = document.querySelector('.about-hero');
+    
+    if (!header || !heroSection) return;
+    
+    // Вычисляем высоту хедера
+    const headerHeight = header.offsetHeight;
+    const isMobile = window.innerWidth <= 768;
+    
+    // Устанавливаем отступ для hero секции
+    if (isMobile) {
+        heroSection.style.paddingTop = `${headerHeight + 40}px`;
+        heroSection.style.marginTop = '0';
+    } else {
+        heroSection.style.paddingTop = `${headerHeight + 60}px`;
+        heroSection.style.marginTop = '0';
+    }
+    
+    console.log(`📏 Header height: ${headerHeight}px, padding adjusted`);
 }
 
 // ИНТЕГРАЦИЯ С ЯЗЫКОВОЙ СИСТЕМОЙ i18n.js
@@ -400,7 +543,7 @@ function setupImageLoading() {
     });
 }
 
-// АНИМАЦИИ ДЛЯ CTA КНОПКИ (ИСПРАВЛЕНО - убрана опечатка cttaButton)
+// АНИМАЦИИ ДЛЯ CTA КНОПКИ
 function setupCTAAnimations() {
     const ctaButton = document.querySelector('.about-cta .btn');
     if (!ctaButton) {
@@ -559,9 +702,48 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
                 opacity: 1;
             }
             
-            /* Улучшенная плавность для хедера */
-            .main-header {
+            /* Гарантированные стили для хедера на странице about */
+            body.about-page .main-header {
+                position: fixed !important;
+                top: 20px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                z-index: 1000 !important;
+                width: calc(100% - 40px) !important;
+                max-width: 1200px !important;
+                margin: 0 auto !important;
+                background: rgba(10, 12, 18, 0.95) !important;
+                backdrop-filter: blur(20px) !important;
+                -webkit-backdrop-filter: blur(20px) !important;
+                border: 1px solid rgba(255, 255, 255, 0.12) !important;
+                border-radius: 20px !important;
+                box-shadow: 
+                    0 10px 40px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
                 transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+            }
+            
+            @media (max-width: 768px) {
+                body.about-page .main-header {
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    transform: none !important;
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    border-radius: 0 !important;
+                    border: none !important;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+                    padding: 15px 20px !important;
+                    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
+                }
+            }
+            
+            /* Предотвращение конфликтов с другими стилями */
+            body.about-page header,
+            body.about-page .header,
+            body.about-page [class*="header"] {
+                position: static !important;
             }
         `;
         document.head.appendChild(style);
@@ -573,5 +755,6 @@ window.initAbout = initAbout;
 window.setupSpeckAnimations = setupSpeckAnimations;
 window.setupStoryStats = setupStoryStats;
 window.updateLanguageSwitcherUI = updateLanguageSwitcherUI;
+window.ensureHeaderStability = ensureHeaderStability;
 
 console.log('✅ about.js initialization functions ready');
