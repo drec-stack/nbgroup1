@@ -66,9 +66,12 @@
         transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
     }
     
-    /* Скрываем кнопку "Начать проект" на портфолио */
+    /* КНОПКА "НАЧАТЬ ПРОЕКТ" ВИДНА НА ПОРТФОЛИО */
     body.portfolio-page .header-right .btn-primary {
-        display: none !important;
+        display: inline-flex !important;  /* ИСПРАВЛЕНО: было none */
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
     }
     
     /* На портфолио всегда показываем хедер */
@@ -441,7 +444,7 @@
                     <button class="lang-btn active" data-lang="en">🇺🇸</button>
                 </div>
                 
-                <!-- Кнопка Начать проект (будет скрыта на портфолио через CSS) -->
+                <!-- Кнопка Начать проект (ВИДНА НА ВСЕХ СТРАНИЦАХ, включая портфолио) -->
                 <a href="contacts.html" class="btn btn-primary" data-i18n="nav.startProject">
                     Начать проект
                 </a>
@@ -484,8 +487,8 @@
             // 1. Убираем все скрытые элементы
             removeHiddenElementsForPortfolio();
             
-            // 2. Скрываем кнопку "Начать проект"
-            hideStartProjectButton();
+            // 2. НЕ скрываем кнопку "Начать проект" - ОНА ДОЛЖНА БЫТЬ ВИДНА!
+            // hideStartProjectButton(); // ЗАКОММЕНТИРОВАНО
             
             // 3. Отключаем сложные анимации
             header.style.animation = 'none';
@@ -540,13 +543,14 @@
         });
     }
     
-    function hideStartProjectButton() {
-        const startProjectBtn = document.querySelector('.header-right .btn-primary');
-        if (startProjectBtn) {
-            startProjectBtn.style.display = 'none';
-            console.log('✅ Кнопка "Начать проект" скрыта');
-        }
-    }
+    // ЭТА ФУНКЦИЯ ЗАКОММЕНТИРОВАНА - КНОПКА ДОЛЖНА БЫТЬ ВИДНА!
+    // function hideStartProjectButton() {
+    //     const startProjectBtn = document.querySelector('.header-right .btn-primary');
+    //     if (startProjectBtn) {
+    //         startProjectBtn.style.display = 'none';
+    //         console.log('✅ Кнопка "Начать проект" скрыта');
+    //     }
+    // }
     
     function setActiveNavLink() {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
