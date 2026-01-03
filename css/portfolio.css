@@ -783,17 +783,9 @@
     animation: slideInFilter 0.5s ease-out;
 }
 
-/* ===== ОЧИСТКА ХЕДЕРА ДЛЯ ПОРТФОЛИО ===== */
+/* ===== ОЧИСТКА ХЕДЕРА ДЛЯ ПОРТФОЛИО (КОНТРОЛЬ ЭЛЕМЕНТОВ) ===== */
 
-/* 1. Скрываем кнопку "Начать проект" на портфолио */
-body.portfolio-page .header-right .btn-primary {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-}
-
-/* 2. Удаляем все элементы бургер-меню на портфолио */
+/* Удаляем все элементы бургер-меню на портфолио */
 body.portfolio-page .mobile-menu-toggle,
 body.portfolio-page .menu-toggle,
 body.portfolio-page .burger-menu,
@@ -814,6 +806,8 @@ body.portfolio-page .menu-container {
     z-index: -1000 !important;
     pointer-events: none !important;
 }
+
+/* КНОПКА "НАЧАТЬ ПРОЕКТ" ВИДНА НА ПОРТФОЛИО - УБРАНО СКРЫТИЕ */
 
 /* 3. Фиксируем хедер всегда видимым на портфолио */
 body.portfolio-page .main-header {
