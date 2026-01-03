@@ -39,24 +39,14 @@ function cleanPortfolioHeader() {
         });
     });
     
-    // 2. Скрываем кнопку "Начать проект"
-    const startProjectBtn = document.querySelector('.header-right .btn-primary');
-    if (startProjectBtn) {
-        startProjectBtn.style.display = 'none';
-        console.log('✅ Hidden "Start project" button');
-    }
+    // 2. НЕ скрываем кнопку "Начать проект" - ОНА ДОЛЖНА БЫТЬ ВИДНА!
+    // const startProjectBtn = document.querySelector('.header-right .btn-primary');
+    // if (startProjectBtn) {
+    //     startProjectBtn.style.display = 'none';
+    //     console.log('✅ Hidden "Start project" button');
+    // }
     
-    // 3. Отключаем все сложные анимации хедера
-    header.style.animation = 'none';
-    header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-    
-    // 4. Гарантируем что хедер виден
-    header.classList.remove('header-hidden');
-    header.style.opacity = '1';
-    header.style.visibility = 'visible';
-    header.style.pointerEvents = 'auto';
-    
-    console.log('✅ Portfolio header cleaned successfully');
+    console.log('✅ Portfolio header cleaned successfully, "Start project" button is VISIBLE');
 }
 
 function initPortfolio() {
