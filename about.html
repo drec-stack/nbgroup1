@@ -18,7 +18,7 @@
     <script src="js/about.js"></script>
 </head>
 <body class="about-page">
-    <!-- Header Container -->
+    <!-- Header Container (загружается через components.js) -->
     <div id="header-container"></div>
     
     <!-- Hero Section -->
@@ -338,7 +338,7 @@
         </div>
     </section>
     
-    <!-- Footer Container -->
+    <!-- Footer Container (загружается через components.js) -->
     <div id="footer-container"></div>
     
     <script>
@@ -380,7 +380,7 @@
                 }
             }, 500);
             
-            // Инициализация анимаций
+            // Инициализация анимаций (теперь только контента)
             setTimeout(() => {
                 if (typeof window.initAbout === 'function') {
                     window.initAbout();
