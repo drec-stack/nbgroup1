@@ -12,10 +12,31 @@ function initContact() {
     setupFAQAccordion();
     setupContactCards();
     
-    // НЕТ setupHeaderFunctionality() - хедер управляется header.html
-    // НЕТ setupHeaderScroll() - хедер управляется header.html
+    // Удаляем LinkedIn и Behance из страницы контактов
+    removeLinkedInBehance();
     
     console.log('✅ Contact page initialized successfully (clean header)');
+}
+
+// Удаление LinkedIn и Behance элементов
+function removeLinkedInBehance() {
+    // Удаляем LinkedIn и Behance карточки из социальной сетки
+    const linkedinCards = document.querySelectorAll('.social-card.linkedin, .social-card.behance');
+    linkedinCards.forEach(card => {
+        if (card.parentNode) {
+            card.parentNode.removeChild(card);
+        }
+    });
+    
+    // Удаляем LinkedIn и Behance из текста если есть
+    const socialDescriptions = document.querySelectorAll('.social-section p');
+    socialDescriptions.forEach(desc => {
+        if (desc.textContent.includes('LinkedIn') || desc.textContent.includes('Behance')) {
+            desc.textContent = 'Follow us on Telegram, Instagram and WhatsApp for updates and news.';
+        }
+    });
+    
+    console.log('🗑️ Removed LinkedIn and Behance elements');
 }
 
 // Настройка контактной формы
@@ -393,4 +414,4 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
     }, 200);
 }
 
-console.log('✅ contacts.js loaded successfully (CLEAN VERSION)');
+console.log('✅ contacts.js loaded successfully (UPDATED VERSION with WhatsApp)');
