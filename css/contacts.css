@@ -453,8 +453,7 @@
 
 .telegram .social-icon { background: #0088cc; }
 .instagram .social-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-.linkedin .social-icon { background: #0077b5; }
-.behance .social-icon { background: #0057ff; }
+.whatsapp .social-icon { background: #25d366; }
 
 .social-card:hover .social-icon {
     transform: scale(1.1) rotate(5deg);
