@@ -5,6 +5,81 @@
 
 console.log('🚀 about.js loaded - CLEAN VERSION');
 
+// Safe DOM operations wrapper
+const safe = {
+    get: (selector) => {
+        try {
+            const element = document.querySelector(selector);
+            return element || null;
+        } catch (error) {
+            console.error(`❌ Error getting element: ${selector}`, error);
+            return null;
+        }
+    },
+    
+    getAll: (selector) => {
+        try {
+            const elements = document.querySelectorAll(selector);
+            return elements.length > 0 ? Array.from(elements) : [];
+        } catch (error) {
+            console.error(`❌ Error getting elements: ${selector}`, error);
+            return [];
+        }
+    },
+    
+    addClass: (element, className) => {
+        if (element && element.classList) {
+            try {
+                element.classList.add(className);
+                return true;
+            } catch (error) {
+                console.error(`❌ Error adding class ${className} to element`, error);
+                return false;
+            }
+        }
+        return false;
+    },
+    
+    removeClass: (element, className) => {
+        if (element && element.classList) {
+            try {
+                element.classList.remove(className);
+                return true;
+            } catch (error) {
+                console.error(`❌ Error removing class ${className} from element`, error);
+                return false;
+            }
+        }
+        return false;
+    },
+    
+    on: (element, event, handler) => {
+        if (element && typeof handler === 'function') {
+            try {
+                element.addEventListener(event, handler);
+                return true;
+            } catch (error) {
+                console.error(`❌ Error adding ${event} listener to element`, error);
+                return false;
+            }
+        }
+        return false;
+    },
+    
+    setStyle: (element, styles) => {
+        if (element && element.style) {
+            try {
+                Object.assign(element.style, styles);
+                return true;
+            } catch (error) {
+                console.error('❌ Error setting styles on element', error);
+                return false;
+            }
+        }
+        return false;
+    }
+};
+
 // ============================================================================
 // MAIN INITIALIZATION FUNCTION
 // ============================================================================
@@ -12,16 +87,20 @@ console.log('🚀 about.js loaded - CLEAN VERSION');
 function initAbout() {
     console.log('🎯 Initializing about page content...');
     
-    // Setup all page functionalities (header is handled by header.html)
-    setupPageFunctionalities();
-    
-    // Setup mobile optimizations
-    setupMobileOptimizations();
-    
-    // Start content animations
-    startContentAnimations();
-    
-    console.log('✅ About page content initialized');
+    try {
+        // Setup all page functionalities (header is handled by header.html)
+        setupPageFunctionalities();
+        
+        // Setup mobile optimizations
+        setupMobileOptimizations();
+        
+        // Start content animations
+        startContentAnimations();
+        
+        console.log('✅ About page content initialized');
+    } catch (error) {
+        console.error('❌ Error in initAbout:', error);
+    }
 }
 
 // ============================================================================
@@ -31,28 +110,32 @@ function initAbout() {
 function setupPageFunctionalities() {
     console.log('⚙️ Setting up page functionalities...');
     
-    // 1. Team Interactions
-    setupTeamInteractions();
-    
-    // 2. Story Statistics
-    setupStoryStats();
-    
-    // 3. Speck Animations
-    setupSpeckAnimations();
-    
-    // 4. Image Loading
-    setupImageLoading();
-    
-    // 5. CTA Animations
-    setupCTAAnimations();
-    
-    // 6. Scroll Animations
-    setupScrollAnimations();
-    
-    // 7. Language Integration
-    setupLanguageIntegration();
-    
-    console.log('✅ All page functionalities initialized');
+    try {
+        // 1. Team Interactions
+        setupTeamInteractions();
+        
+        // 2. Story Statistics
+        setupStoryStats();
+        
+        // 3. Speck Animations
+        setupSpeckAnimations();
+        
+        // 4. Image Loading
+        setupImageLoading();
+        
+        // 5. CTA Animations
+        setupCTAAnimations();
+        
+        // 6. Scroll Animations
+        setupScrollAnimations();
+        
+        // 7. Language Integration
+        setupLanguageIntegration();
+        
+        console.log('✅ All page functionalities initialized');
+    } catch (error) {
+        console.error('❌ Error setting up page functionalities:', error);
+    }
 }
 
 // ============================================================================
@@ -60,59 +143,81 @@ function setupPageFunctionalities() {
 // ============================================================================
 
 function setupTeamInteractions() {
-    const teamMembers = document.querySelectorAll('.team-member');
+    const teamMembers = safe.getAll('.team-member');
     const isMobile = window.innerWidth <= 768;
     
     console.log(`👥 Found ${teamMembers.length} team members`);
     
     teamMembers.forEach((member, index) => {
+        if (!member) return;
+        
         // Add data attribute for identification
-        member.setAttribute('data-team-member', index + 1);
+        try {
+            member.setAttribute('data-team-member', index + 1);
+        } catch (error) {
+            console.error('❌ Error setting attribute on team member:', error);
+        }
         
         // Desktop hover effects
         if (!isMobile) {
-            member.addEventListener('mouseenter', () => {
-                member.style.transform = 'translateY(-10px) scale(1.02)';
-                member.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                member.style.boxShadow = '0 20px 40px rgba(0, 102, 255, 0.3)';
+            safe.on(member, 'mouseenter', () => {
+                safe.setStyle(member, {
+                    transform: 'translateY(-10px) scale(1.02)',
+                    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    boxShadow: '0 20px 40px rgba(0, 102, 255, 0.3)'
+                });
                 
                 // Animate member photo
                 const photo = member.querySelector('.member-photo');
                 if (photo) {
-                    photo.style.transform = 'scale(1.05)';
-                    photo.style.transition = 'transform 0.3s ease';
+                    safe.setStyle(photo, {
+                        transform: 'scale(1.05)',
+                        transition: 'transform 0.3s ease'
+                    });
                 }
             });
             
-            member.addEventListener('mouseleave', () => {
-                member.style.transform = 'translateY(0) scale(1)';
-                member.style.boxShadow = '';
+            safe.on(member, 'mouseleave', () => {
+                safe.setStyle(member, {
+                    transform: 'translateY(0) scale(1)',
+                    boxShadow: ''
+                });
                 
                 // Reset member photo
                 const photo = member.querySelector('.member-photo');
                 if (photo) {
-                    photo.style.transform = 'scale(1)';
+                    safe.setStyle(photo, { transform: 'scale(1)' });
                 }
             });
         }
         
         // Mobile touch effects
         if (isMobile) {
-            member.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                this.style.transform = 'scale(0.98)';
-                this.style.opacity = '0.95';
-                this.style.transition = 'all 0.2s ease';
+            safe.on(member, 'touchstart', function(e) {
+                try {
+                    e.preventDefault();
+                    safe.setStyle(this, {
+                        transform: 'scale(0.98)',
+                        opacity: '0.95',
+                        transition: 'all 0.2s ease'
+                    });
+                } catch (error) {
+                    console.error('❌ Error in touchstart:', error);
+                }
             });
             
-            member.addEventListener('touchend', function() {
-                this.style.transform = 'scale(1)';
-                this.style.opacity = '1';
+            safe.on(member, 'touchend', function() {
+                safe.setStyle(this, {
+                    transform: 'scale(1)',
+                    opacity: '1'
+                });
             });
             
-            member.addEventListener('touchcancel', function() {
-                this.style.transform = 'scale(1)';
-                this.style.opacity = '1';
+            safe.on(member, 'touchcancel', function() {
+                safe.setStyle(this, {
+                    transform: 'scale(1)',
+                    opacity: '1'
+                });
             });
         }
     });
@@ -123,7 +228,7 @@ function setupTeamInteractions() {
 // ============================================================================
 
 function setupStoryStats() {
-    const storyStats = document.querySelectorAll('.story-stat');
+    const storyStats = safe.getAll('.story-stat');
     
     if (storyStats.length === 0) {
         console.log('📊 No story stats found');
@@ -138,11 +243,15 @@ function setupStoryStats() {
                 console.log('🎯 Story stats section visible, animating...');
                 
                 storyStats.forEach((stat, index) => {
+                    if (!stat) return;
+                    
                     setTimeout(() => {
                         // Animate container
-                        stat.style.opacity = '1';
-                        stat.style.transform = 'translateY(0)';
-                        stat.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                        safe.setStyle(stat, {
+                            opacity: '1',
+                            transform: 'translateY(0)',
+                            transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                        });
                         
                         // Animate counter if not already animated
                         const numberElement = stat.querySelector('.stat-number');
@@ -161,12 +270,16 @@ function setupStoryStats() {
         rootMargin: '0px 0px -100px 0px'
     });
     
-    const storySection = document.querySelector('.our-story');
+    const storySection = safe.get('.our-story');
     if (storySection) {
         // Set initial state
         storyStats.forEach(stat => {
-            stat.style.opacity = '0';
-            stat.style.transform = 'translateY(30px)';
+            if (stat) {
+                safe.setStyle(stat, {
+                    opacity: '0',
+                    transform: 'translateY(30px)'
+                });
+            }
         });
         
         // Start observing
@@ -177,9 +290,13 @@ function setupStoryStats() {
             if (storyStats[0] && storyStats[0].style.opacity === '0') {
                 console.log('🔄 Fallback: Triggering story stats animation');
                 storyStats.forEach((stat, index) => {
+                    if (!stat) return;
+                    
                     setTimeout(() => {
-                        stat.style.opacity = '1';
-                        stat.style.transform = 'translateY(0)';
+                        safe.setStyle(stat, {
+                            opacity: '1',
+                            transform: 'translateY(0)'
+                        });
                     }, index * 200);
                 });
             }
@@ -188,38 +305,58 @@ function setupStoryStats() {
 }
 
 function animateCounter(element) {
-    const text = element.textContent;
-    const finalValue = parseInt(text.replace('+', '')) || 0;
+    // Проверка на существование элемента
+    if (!element) {
+        console.error('❌ animateCounter: element is null or undefined');
+        return;
+    }
     
-    if (finalValue <= 0) return;
-    
-    const duration = 1500; // 1.5 seconds
-    const steps = 60;
-    const increment = finalValue / steps;
-    let currentValue = 0;
-    let step = 0;
-    
-    const animateStep = () => {
-        if (step >= steps) {
-            element.textContent = text;
-            // Add celebration effect
-            element.style.transform = 'scale(1.1)';
-            setTimeout(() => {
-                element.style.transform = 'scale(1)';
-                element.style.transition = 'transform 0.3s ease';
-            }, 200);
-            return;
-        }
+    try {
+        const text = element.textContent || '';
+        const finalValue = parseInt(text.replace('+', '')) || 0;
         
-        currentValue += increment;
-        element.textContent = Math.floor(currentValue) + (text.includes('+') ? '+' : '');
-        step++;
+        if (finalValue <= 0) return;
         
+        const duration = 1500; // 1.5 seconds
+        const steps = 60;
+        const increment = finalValue / steps;
+        let currentValue = 0;
+        let step = 0;
+        
+        const animateStep = () => {
+            // Проверка на существование элемента в каждом кадре
+            if (!element) {
+                console.error('❌ animateCounter: element was removed during animation');
+                return;
+            }
+            
+            if (step >= steps) {
+                element.textContent = text;
+                // Add celebration effect
+                safe.setStyle(element, { transform: 'scale(1.1)' });
+                setTimeout(() => {
+                    if (element) {
+                        safe.setStyle(element, { 
+                            transform: 'scale(1)',
+                            transition: 'transform 0.3s ease'
+                        });
+                    }
+                }, 200);
+                return;
+            }
+            
+            currentValue += increment;
+            element.textContent = Math.floor(currentValue) + (text.includes('+') ? '+' : '');
+            step++;
+            
+            requestAnimationFrame(animateStep);
+        };
+        
+        // Start animation
         requestAnimationFrame(animateStep);
-    };
-    
-    // Start animation
-    requestAnimationFrame(animateStep);
+    } catch (error) {
+        console.error('❌ Error animating counter:', error);
+    }
 }
 
 // ============================================================================
@@ -227,7 +364,7 @@ function animateCounter(element) {
 // ============================================================================
 
 function setupSpeckAnimations() {
-    const speckCards = document.querySelectorAll('.speck-service-card');
+    const speckCards = safe.getAll('.speck-service-card');
     const isMobile = window.innerWidth <= 768;
     
     if (speckCards.length === 0) {
@@ -243,16 +380,20 @@ function setupSpeckAnimations() {
                 const delay = isMobile ? index * 100 : index * 150;
                 
                 setTimeout(() => {
-                    entry.target.classList.add('revealed');
-                    
-                    // Animate icon
-                    const icon = entry.target.querySelector('.speck-card-icon');
-                    if (icon) {
-                        icon.style.transform = 'scale(1) rotate(0deg)';
-                        icon.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    if (entry.target) {
+                        safe.addClass(entry.target, 'revealed');
+                        
+                        // Animate icon
+                        const icon = entry.target.querySelector('.speck-card-icon');
+                        if (icon) {
+                            safe.setStyle(icon, {
+                                transform: 'scale(1) rotate(0deg)',
+                                transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                            });
+                        }
+                        
+                        console.log(`✨ Revealed card ${index + 1}`);
                     }
-                    
-                    console.log(`✨ Revealed card ${index + 1}`);
                 }, delay);
                 
                 observer.unobserve(entry.target);
@@ -265,23 +406,31 @@ function setupSpeckAnimations() {
     
     // Set initial state and start observing
     speckCards.forEach((card, index) => {
-        card.setAttribute('data-speck-card', index + 1);
+        if (!card) return;
         
-        // Set initial state based on animation class
-        if (card.classList.contains('reveal-left') || card.classList.contains('reveal-right')) {
-            card.style.opacity = '0';
+        try {
+            card.setAttribute('data-speck-card', index + 1);
+            
+            // Set initial state based on animation class
+            if (card.classList.contains('reveal-left') || card.classList.contains('reveal-right')) {
+                safe.setStyle(card, { opacity: '0' });
+            }
+            
+            observer.observe(card);
+        } catch (error) {
+            console.error('❌ Error setting up speck card:', error);
         }
-        
-        observer.observe(card);
     });
     
     // Fallback: reveal all after 3 seconds
     setTimeout(() => {
         speckCards.forEach((card, index) => {
-            if (!card.classList.contains('revealed')) {
-                card.classList.add('revealed');
-                card.style.opacity = '1';
-                card.style.transform = 'none';
+            if (card && !card.classList.contains('revealed')) {
+                safe.addClass(card, 'revealed');
+                safe.setStyle(card, {
+                    opacity: '1',
+                    transform: 'none'
+                });
             }
         });
     }, 3000);
@@ -298,52 +447,66 @@ function setupMobileOptimizations() {
     
     console.log('📱 Setting up mobile optimizations...');
     
-    // Prevent zoom on double tap
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function(event) {
-        const now = Date.now();
-        if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
-        }
-        lastTouchEnd = now;
-    }, { passive: false });
-    
-    // Improve touch feedback for interactive elements
-    const touchElements = document.querySelectorAll('.btn, .speck-service-card, .team-member, .mission-feature, .story-stat');
-    
-    touchElements.forEach(el => {
-        // Increase touch target size for buttons
-        if (el.classList.contains('btn')) {
-            el.style.minHeight = '44px';
-            el.style.minWidth = '44px';
-        }
+    try {
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
         
-        // Add touch feedback
-        el.addEventListener('touchstart', function() {
-            this.style.transform = 'scale(0.98)';
-            this.style.opacity = '0.9';
-            this.style.transition = 'all 0.1s ease';
+        // Improve touch feedback for interactive elements
+        const touchElements = safe.getAll('.btn, .speck-service-card, .team-member, .mission-feature, .story-stat');
+        
+        touchElements.forEach(el => {
+            if (!el) return;
+            
+            // Increase touch target size for buttons
+            if (el.classList.contains('btn')) {
+                safe.setStyle(el, {
+                    minHeight: '44px',
+                    minWidth: '44px'
+                });
+            }
+            
+            // Add touch feedback
+            safe.on(el, 'touchstart', function() {
+                safe.setStyle(this, {
+                    transform: 'scale(0.98)',
+                    opacity: '0.9',
+                    transition: 'all 0.1s ease'
+                });
+            });
+            
+            safe.on(el, 'touchend', function() {
+                safe.setStyle(this, {
+                    transform: 'scale(1)',
+                    opacity: '1'
+                });
+            });
+            
+            safe.on(el, 'touchcancel', function() {
+                safe.setStyle(this, {
+                    transform: 'scale(1)',
+                    opacity: '1'
+                });
+            });
         });
         
-        el.addEventListener('touchend', function() {
-            this.style.transform = 'scale(1)';
-            this.style.opacity = '1';
-        });
+        // Optimize scrolling performance
+        document.body.style.webkitOverflowScrolling = 'touch';
+        document.documentElement.style.scrollBehavior = 'auto';
         
-        el.addEventListener('touchcancel', function() {
-            this.style.transform = 'scale(1)';
-            this.style.opacity = '1';
-        });
-    });
-    
-    // Optimize scrolling performance
-    document.body.style.webkitOverflowScrolling = 'touch';
-    document.documentElement.style.scrollBehavior = 'auto';
-    
-    // Disable hover effects on mobile
-    document.body.classList.add('is-mobile');
-    
-    console.log('✅ Mobile optimizations applied');
+        // Disable hover effects on mobile
+        safe.addClass(document.body, 'is-mobile');
+        
+        console.log('✅ Mobile optimizations applied');
+    } catch (error) {
+        console.error('❌ Error setting up mobile optimizations:', error);
+    }
 }
 
 // ============================================================================
@@ -351,7 +514,7 @@ function setupMobileOptimizations() {
 // ============================================================================
 
 function setupImageLoading() {
-    const images = document.querySelectorAll('.member-photo img');
+    const images = safe.getAll('.member-photo img');
     
     if (images.length === 0) {
         console.log('🖼️ No team images found');
@@ -361,80 +524,95 @@ function setupImageLoading() {
     console.log(`🖼️ Found ${images.length} team images`);
     
     images.forEach((img, index) => {
-        // Set loading attributes
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        img.setAttribute('data-image-index', index + 1);
+        if (!img) return;
         
-        // Set initial state
-        img.style.opacity = '0';
-        img.style.transition = 'opacity 0.5s ease';
-        
-        // Handle successful load
-        img.onload = function() {
-            this.style.opacity = '1';
-            console.log(`✅ Image loaded: ${this.src || this.alt}`);
-        };
-        
-        // Handle error
-        img.onerror = function() {
-            console.warn(`❌ Failed to load image: ${this.src || this.alt}`);
+        try {
+            // Set loading attributes
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.setAttribute('data-image-index', index + 1);
             
-            // Extract initials from alt text
-            const alt = this.alt || '';
-            const initials = alt.match(/\b([A-Z])/g)?.join('') || 'NB';
+            // Set initial state
+            safe.setStyle(img, {
+                opacity: '0',
+                transition: 'opacity 0.5s ease'
+            });
             
-            // Use global fallback function if available
-            if (typeof window.handleTeamPhotoError === 'function') {
-                window.handleTeamPhotoError(this, initials);
-            } else {
-                // Local fallback
-                createImageFallback(this, initials);
-            }
-        };
-        
-        // Force load if not loaded after 2 seconds
-        setTimeout(() => {
-            if (img.complete && img.naturalHeight === 0) {
-                img.dispatchEvent(new Event('error'));
-            }
-        }, 2000);
+            // Handle successful load
+            img.onload = function() {
+                if (this) {
+                    safe.setStyle(this, { opacity: '1' });
+                    console.log(`✅ Image loaded: ${this.src || this.alt}`);
+                }
+            };
+            
+            // Handle error
+            img.onerror = function() {
+                console.warn(`❌ Failed to load image: ${this.src || this.alt}`);
+                
+                // Extract initials from alt text
+                const alt = this.alt || '';
+                const initials = alt.match(/\b([A-Z])/g)?.join('') || 'NB';
+                
+                // Use global fallback function if available
+                if (typeof window.handleTeamPhotoError === 'function') {
+                    window.handleTeamPhotoError(this, initials);
+                } else {
+                    // Local fallback
+                    createImageFallback(this, initials);
+                }
+            };
+            
+            // Force load if not loaded after 2 seconds
+            setTimeout(() => {
+                if (img && img.complete && img.naturalHeight === 0) {
+                    img.dispatchEvent(new Event('error'));
+                }
+            }, 2000);
+        } catch (error) {
+            console.error('❌ Error setting up image loading:', error);
+        }
     });
     
     console.log('✅ Image loading optimized');
 }
 
 function createImageFallback(imgElement, initials) {
-    const parent = imgElement.parentElement;
-    if (!parent) return;
+    if (!imgElement || !imgElement.parentElement) return;
     
-    // Create SVG fallback
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', '0 0 200 200');
-    svg.setAttribute('width', '200');
-    svg.setAttribute('height', '200');
-    svg.style.borderRadius = '50%';
-    svg.style.background = 'linear-gradient(135deg, #0066ff, #00aaff)';
-    
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('x', '50%');
-    text.setAttribute('y', '50%');
-    text.setAttribute('text-anchor', 'middle');
-    text.setAttribute('dy', '0.35em');
-    text.setAttribute('fill', 'white');
-    text.setAttribute('font-size', '70');
-    text.setAttribute('font-weight', 'bold');
-    text.setAttribute('font-family', 'Arial, sans-serif');
-    text.textContent = initials;
-    
-    svg.appendChild(text);
-    
-    // Replace image with SVG
-    parent.innerHTML = '';
-    parent.appendChild(svg);
-    parent.classList.add('image-fallback');
-    
-    console.log(`🔄 Created SVG fallback for ${initials}`);
+    try {
+        const parent = imgElement.parentElement;
+        
+        // Create SVG fallback
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 200 200');
+        svg.setAttribute('width', '200');
+        svg.setAttribute('height', '200');
+        svg.style.borderRadius = '50%';
+        svg.style.background = 'linear-gradient(135deg, #0066ff, #00aaff)';
+        
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', '50%');
+        text.setAttribute('y', '50%');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dy', '0.35em');
+        text.setAttribute('fill', 'white');
+        text.setAttribute('font-size', '70');
+        text.setAttribute('font-weight', 'bold');
+        text.setAttribute('font-family', 'Arial, sans-serif');
+        text.textContent = initials;
+        
+        svg.appendChild(text);
+        
+        // Replace image with SVG
+        parent.innerHTML = '';
+        parent.appendChild(svg);
+        safe.addClass(parent, 'image-fallback');
+        
+        console.log(`🔄 Created SVG fallback for ${initials}`);
+    } catch (error) {
+        console.error('❌ Error creating image fallback:', error);
+    }
 }
 
 // ============================================================================
@@ -442,82 +620,93 @@ function createImageFallback(imgElement, initials) {
 // ============================================================================
 
 function setupCTAAnimations() {
-    const ctaButton = document.querySelector('.about-cta .btn');
+    const ctaButton = safe.get('.about-cta .btn');
     
-    if (!cttaButton) {
+    if (!ctaButton) {
         console.log('📣 No CTA button found');
         return;
     }
     
     console.log('📣 Setting up CTA button animations');
     
-    const arrowIcon = ctaButton.querySelector('.fa-arrow-right');
-    
-    // Hover animations
-    ctaButton.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-5px) scale(1.05)';
-        this.style.boxShadow = '0 25px 60px rgba(0, 102, 255, 0.5)';
-        this.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    try {
+        const arrowIcon = ctaButton.querySelector('.fa-arrow-right');
         
-        if (arrowIcon) {
-            arrowIcon.style.transform = 'translateX(8px)';
-            arrowIcon.style.transition = 'transform 0.3s ease';
-        }
-    });
-    
-    ctaButton.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-        this.style.boxShadow = '';
-        
-        if (arrowIcon) {
-            arrowIcon.style.transform = 'translateX(0)';
-        }
-    });
-    
-    // Click/touch animations
-    ctaButton.addEventListener('mousedown', function() {
-        this.style.transform = 'scale(0.95)';
-    });
-    
-    ctaButton.addEventListener('mouseup', function() {
-        this.style.transform = 'translateY(-5px) scale(1.05)';
-    });
-    
-    // Pulsing animation every 10 seconds
-    let pulseInterval;
-    
-    const startPulseAnimation = () => {
-        pulseInterval = setInterval(() => {
-            if (document.visibilityState === 'visible') {
-                ctaButton.classList.add('pulse');
-                setTimeout(() => {
-                    ctaButton.classList.remove('pulse');
-                }, 1000);
+        // Hover animations
+        safe.on(ctaButton, 'mouseenter', function() {
+            safe.setStyle(this, {
+                transform: 'translateY(-5px) scale(1.05)',
+                boxShadow: '0 25px 60px rgba(0, 102, 255, 0.5)',
+                transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+            });
+            
+            if (arrowIcon) {
+                safe.setStyle(arrowIcon, {
+                    transform: 'translateX(8px)',
+                    transition: 'transform 0.3s ease'
+                });
             }
-        }, 10000);
-    };
-    
-    const stopPulseAnimation = () => {
-        if (pulseInterval) {
-            clearInterval(pulseInterval);
-        }
-    };
-    
-    // Start pulse animation when page is visible
-    if (document.visibilityState === 'visible') {
-        startPulseAnimation();
-    }
-    
-    // Handle page visibility changes
-    document.addEventListener('visibilitychange', () => {
+        });
+        
+        safe.on(ctaButton, 'mouseleave', function() {
+            safe.setStyle(this, {
+                transform: 'translateY(0) scale(1)',
+                boxShadow: ''
+            });
+            
+            if (arrowIcon) {
+                safe.setStyle(arrowIcon, { transform: 'translateX(0)' });
+            }
+        });
+        
+        // Click/touch animations
+        safe.on(ctaButton, 'mousedown', function() {
+            safe.setStyle(this, { transform: 'scale(0.95)' });
+        });
+        
+        safe.on(ctaButton, 'mouseup', function() {
+            safe.setStyle(this, { transform: 'translateY(-5px) scale(1.05)' });
+        });
+        
+        // Pulsing animation every 10 seconds
+        let pulseInterval;
+        
+        const startPulseAnimation = () => {
+            pulseInterval = setInterval(() => {
+                if (document.visibilityState === 'visible') {
+                    safe.addClass(ctaButton, 'pulse');
+                    setTimeout(() => {
+                        safe.removeClass(ctaButton, 'pulse');
+                    }, 1000);
+                }
+            }, 10000);
+        };
+        
+        const stopPulseAnimation = () => {
+            if (pulseInterval) {
+                clearInterval(pulseInterval);
+                pulseInterval = null;
+            }
+        };
+        
+        // Start pulse animation when page is visible
         if (document.visibilityState === 'visible') {
             startPulseAnimation();
-        } else {
-            stopPulseAnimation();
         }
-    });
-    
-    console.log('✅ CTA button animations set up');
+        
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                startPulseAnimation();
+            } else {
+                stopPulseAnimation();
+            }
+        });
+        
+        console.log('✅ CTA button animations set up');
+    } catch (error) {
+        console.error('❌ Error setting up CTA animations:', error);
+    }
 }
 
 // ============================================================================
@@ -525,7 +714,7 @@ function setupCTAAnimations() {
 // ============================================================================
 
 function setupScrollAnimations() {
-    const sections = document.querySelectorAll('section');
+    const sections = safe.getAll('section');
     const isMobile = window.innerWidth <= 768;
     
     if (sections.length === 0) {
@@ -538,13 +727,13 @@ function setupScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('animated');
+                safe.addClass(entry.target, 'animated');
                 
                 // Add delay for children animations
                 const animatedChildren = entry.target.querySelectorAll('.reveal-left, .reveal-right');
                 animatedChildren.forEach((child, index) => {
                     setTimeout(() => {
-                        child.classList.add('revealed');
+                        if (child) safe.addClass(child, 'revealed');
                     }, index * 100);
                 });
             }
@@ -555,7 +744,7 @@ function setupScrollAnimations() {
     });
     
     sections.forEach(section => {
-        observer.observe(section);
+        if (section) observer.observe(section);
     });
     
     console.log('✅ Scroll animations set up');
@@ -568,59 +757,68 @@ function setupScrollAnimations() {
 function setupLanguageIntegration() {
     console.log('🌐 Setting up language integration...');
     
-    // Listen for language change events
-    window.addEventListener('languageChanged', function(event) {
-        console.log('🔄 Language changed to:', event.detail.lang);
+    try {
+        // Listen for language change events
+        window.addEventListener('languageChanged', function(event) {
+            console.log('🔄 Language changed to:', event.detail.lang);
+            
+            // Re-initialize animations after language change
+            setTimeout(() => {
+                if (typeof window.setupSpeckAnimations === 'function') {
+                    window.setupSpeckAnimations();
+                }
+                
+                if (typeof window.setupStoryStats === 'function') {
+                    window.setupStoryStats();
+                }
+                
+                // Update UI elements if needed
+                updateLanguageSpecificUI(event.detail.lang);
+            }, 300);
+        });
         
-        // Re-initialize animations after language change
-        setTimeout(() => {
-            if (typeof window.setupSpeckAnimations === 'function') {
-                window.setupSpeckAnimations();
-            }
-            
-            if (typeof window.setupStoryStats === 'function') {
-                window.setupStoryStats();
-            }
-            
-            // Update UI elements if needed
-            updateLanguageSpecificUI(event.detail.lang);
-        }, 300);
-    });
-    
-    // Initialize language switcher UI
-    updateLanguageSwitcherUI();
-    
-    console.log('✅ Language integration set up');
+        // Initialize language switcher UI
+        updateLanguageSwitcherUI();
+        
+        console.log('✅ Language integration set up');
+    } catch (error) {
+        console.error('❌ Error setting up language integration:', error);
+    }
 }
 
 function updateLanguageSpecificUI(lang) {
     // Update any language-specific UI elements
-    const elements = document.querySelectorAll('[data-i18n]');
+    const elements = safe.getAll('[data-i18n]');
     console.log(`🔄 Updating ${elements.length} language-specific elements`);
     
     // Add visual feedback for language change
-    document.body.classList.add('language-changing');
+    safe.addClass(document.body, 'language-changing');
     setTimeout(() => {
-        document.body.classList.remove('language-changing');
+        safe.removeClass(document.body, 'language-changing');
     }, 500);
 }
 
 function updateLanguageSwitcherUI() {
-    const langSwitcher = document.querySelector('.language-switcher');
+    const langSwitcher = safe.get('.language-switcher');
     if (!langSwitcher) return;
     
-    // Get current language from localStorage or default to 'ru'
-    const currentLang = localStorage.getItem('preferredLang') || 'ru';
-    langSwitcher.setAttribute('data-current-lang', currentLang);
-    
-    // Update active buttons
-    const langButtons = document.querySelectorAll('.lang-btn');
-    langButtons.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-lang') === currentLang) {
-            btn.classList.add('active');
-        }
-    });
+    try {
+        // Get current language from localStorage or default to 'ru'
+        const currentLang = localStorage.getItem('preferredLang') || 'ru';
+        langSwitcher.setAttribute('data-current-lang', currentLang);
+        
+        // Update active buttons
+        const langButtons = safe.getAll('.lang-btn');
+        langButtons.forEach(btn => {
+            if (!btn) return;
+            safe.removeClass(btn, 'active');
+            if (btn.getAttribute('data-lang') === currentLang) {
+                safe.addClass(btn, 'active');
+            }
+        });
+    } catch (error) {
+        console.error('❌ Error updating language switcher UI:', error);
+    }
 }
 
 // ============================================================================
@@ -630,21 +828,25 @@ function updateLanguageSwitcherUI() {
 function startContentAnimations() {
     console.log('🎭 Starting content animations...');
     
-    // Initialize Intersection Observers for animations
-    setupAllObservers();
-    
-    // Start any delayed animations
-    setTimeout(() => {
-        // Trigger any manual animations
-        const elements = document.querySelectorAll('[data-animate-on-load]');
-        elements.forEach((el, index) => {
-            setTimeout(() => {
-                el.classList.add('animated');
-            }, index * 200);
-        });
-    }, 500);
-    
-    console.log('✅ Content animations started');
+    try {
+        // Initialize Intersection Observers for animations
+        setupAllObservers();
+        
+        // Start any delayed animations
+        setTimeout(() => {
+            // Trigger any manual animations
+            const elements = safe.getAll('[data-animate-on-load]');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    if (el) safe.addClass(el, 'animated');
+                }, index * 200);
+            });
+        }, 500);
+        
+        console.log('✅ Content animations started');
+    } catch (error) {
+        console.error('❌ Error starting content animations:', error);
+    }
 }
 
 function setupAllObservers() {
@@ -658,7 +860,7 @@ function setupAllObservers() {
     ];
     
     animationSelectors.forEach(selector => {
-        const elements = document.querySelectorAll(selector);
+        const elements = safe.getAll(selector);
         if (elements.length > 0) {
             setupAnimationObserver(selector, elements);
         }
@@ -668,14 +870,16 @@ function setupAllObservers() {
 function setupAnimationObserver(selector, elements) {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animated');
+            if (entry.isIntersecting && entry.target) {
+                safe.addClass(entry.target, 'animated');
                 observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.1 });
     
-    elements.forEach(el => observer.observe(el));
+    elements.forEach(el => {
+        if (el) observer.observe(el);
+    });
 }
 
 // ============================================================================
@@ -686,22 +890,30 @@ function setupAnimationObserver(selector, elements) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('📄 DOM fully loaded, starting about page initialization...');
     
-    // Initial initialization with delay
-    setTimeout(() => {
-        if (typeof initAbout === 'function') {
-            initAbout();
-        } else {
-            console.error('❌ initAbout function not found');
-        }
-    }, 100);
+    try {
+        // Initial initialization with delay
+        setTimeout(() => {
+            if (typeof initAbout === 'function') {
+                initAbout();
+            } else {
+                console.error('❌ initAbout function not found');
+            }
+        }, 100);
+    } catch (error) {
+        console.error('❌ Error in DOMContentLoaded for about page:', error);
+    }
 });
 
 // Fallback for early load
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
     setTimeout(() => {
         console.log('⚡ Early load detected, initializing...');
-        if (typeof initAbout === 'function') {
-            initAbout();
+        try {
+            if (typeof initAbout === 'function') {
+                initAbout();
+            }
+        } catch (error) {
+            console.error('❌ Error in early load initialization:', error);
         }
     }, 50);
 }
@@ -709,7 +921,8 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
 // Global error handler for about page
 window.addEventListener('error', function(event) {
     if (event.filename && event.filename.includes('about.js')) {
-        console.error('❌ Error in about.js:', event.message, event.error);
+        console.error('❌ Global error in about.js:', event.message, event.error);
+        event.preventDefault();
     }
 });
 
