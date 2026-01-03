@@ -1,4 +1,5 @@
-/* ===== ABOUT PAGE STYLES - FULLY REWRITTEN WITH GUARANTEED HEADER FIX ===== */
+/* ===== ABOUT PAGE STYLES - CLEAN VERSION WITHOUT HEADER FIXES ===== */
+/* Header styles are now ONLY in header.html component */
 
 /* CSS Variables from main theme */
 :root {
@@ -14,138 +15,9 @@
     --glass-border: rgba(255, 255, 255, 0.1);
 }
 
-/* ===== GUARANTEED HEADER FIX - ABSOLUTE CONTROL ===== */
-
-/* Reset everything related to header positioning */
-body.about-page {
-    margin: 0 !important;
-    padding: 0 !important;
-    position: relative !important;
-    overflow-x: hidden !important;
-}
-
-/* FORCEFUL HEADER CONTAINER STYLES */
-#header-container {
-    position: relative !important;
-    width: 100% !important;
-    height: 90px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: block !important;
-    overflow: visible !important;
-    z-index: 1000 !important;
-    box-sizing: border-box !important;
-}
-
-/* ABSOLUTE CONTROL OVER ANY HEADER ELEMENT */
-#header-container .main-header,
-#header-container header,
-#header-container .header,
-#header-container [class*="header"],
-#header-container [class*="Header"],
-#header-container nav,
-#header-container .navbar,
-#header-container .navigation,
-#header-container > div,
-#header-container > nav,
-#header-container > header {
-    /* GUARANTEED POSITIONING */
-    position: fixed !important;
-    top: 20px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    z-index: 1000 !important;
-    
-    /* GUARANTEED SIZING */
-    width: calc(100% - 40px) !important;
-    max-width: 1200px !important;
-    margin: 0 auto !important;
-    box-sizing: border-box !important;
-    
-    /* GUARANTEED VISUALS */
-    background: rgba(10, 12, 18, 0.95) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 20px !important;
-    box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-    
-    /* GUARANTEED VISIBILITY */
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: all !important;
-    display: block !important;
-    
-    /* GUARANTEED TRANSITIONS */
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-    
-    /* RESET ANY POTENTIAL INTERFERENCE */
-    bottom: auto !important;
-    right: auto !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    float: none !important;
-    clear: none !important;
-}
-
-/* PREVENT ANY OTHER HEADER STYLES FROM INTERFERING */
-body.about-page header,
-body.about-page .header,
-body.about-page .main-header,
-body.about-page [class*="header"],
-body.about-page [class*="Header"],
-body.about-page nav:not(#header-container nav),
-body.about-page .navbar:not(#header-container .navbar) {
-    position: static !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-}
-
-/* MOBILE HEADER FIX - GUARANTEED */
-@media (max-width: 768px) {
-    #header-container {
-        height: 70px !important;
-    }
-    
-    #header-container .main-header,
-    #header-container header,
-    #header-container .header,
-    #header-container [class*="header"],
-    #header-container [class*="Header"],
-    #header-container nav,
-    #header-container .navbar,
-    #header-container .navigation,
-    #header-container > div,
-    #header-container > nav,
-    #header-container > header {
-        /* MOBILE POSITIONING */
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        transform: none !important;
-        
-        /* MOBILE SIZING */
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        
-        /* MOBILE VISUALS */
-        border: none !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
-        padding: 15px 20px !important;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
-        background: rgba(10, 12, 18, 0.98) !important;
-    }
-}
-
-/* ===== ABOUT HERO SECTION - ADJUSTED FOR HEADER ===== */
+/* ===== ABOUT HERO SECTION ===== */
 .about-hero {
-    padding: 160px 0 80px !important; /* Increased top padding for header */
+    padding: 160px 0 80px;
     background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
     position: relative;
     overflow: hidden;
@@ -153,7 +25,6 @@ body.about-page .navbar:not(#header-container .navbar) {
     min-height: 60vh;
     display: flex;
     align-items: center;
-    margin-top: 0 !important;
 }
 
 .about-hero::before {
@@ -1332,9 +1203,9 @@ body.about-page .navbar:not(#header-container .navbar) {
 }
 
 @media (max-width: 768px) {
-    /* ADJUST HERO PADDING FOR MOBILE HEADER */
+    /* ADJUST HERO PADDING FOR HEADER (header styles are in header.html) */
     .about-hero {
-        padding: 120px 0 60px !important;
+        padding: 120px 0 60px;
         min-height: 50vh;
     }
     
@@ -1343,11 +1214,11 @@ body.about-page .navbar:not(#header-container .navbar) {
     .speck-design-section,
     .our-team,
     .about-cta {
-        padding: 100px 0 !important;
+        padding: 100px 0;
     }
     
     .about-hero .page-title {
-        font-size: 3.2rem !important;
+        font-size: 3.2rem;
     }
     
     .about-hero .page-subtitle {
@@ -1360,7 +1231,7 @@ body.about-page .navbar:not(#header-container .navbar) {
     .speck-title,
     .our-team .section-header h2,
     .about-cta .cta-content h2 {
-        font-size: 3rem !important;
+        font-size: 3rem;
     }
     
     .mission-text p,
@@ -1468,7 +1339,7 @@ body.about-page .navbar:not(#header-container .navbar) {
 
 @media (max-width: 576px) {
     .about-hero .page-title {
-        font-size: 2.8rem !important;
+        font-size: 2.8rem;
     }
     
     .about-hero .page-subtitle {
@@ -1480,7 +1351,7 @@ body.about-page .navbar:not(#header-container .navbar) {
     .speck-title,
     .our-team .section-header h2,
     .about-cta .cta-content h2 {
-        font-size: 2.6rem !important;
+        font-size: 2.6rem;
     }
     
     .mission-text p,
@@ -1642,7 +1513,7 @@ body.about-page .navbar:not(#header-container .navbar) {
     .speck-title,
     .our-team .section-header h2,
     .about-cta .cta-content h2 {
-        font-size: 2.4rem !important;
+        font-size: 2.4rem;
     }
     
     .mission-visual {
@@ -1731,15 +1602,6 @@ body.about-page .navbar:not(#header-container .navbar) {
 .story-stat:focus-within {
     outline: 3px solid var(--accent);
     outline-offset: 4px;
-}
-
-/* Улучшенная производительность при скролле */
-.scrolling .speck-service-card,
-.scrolling .team-member,
-.scrolling .story-stat,
-.scrolling .mission-feature {
-    transition: none !important;
-    animation: none !important;
 }
 
 /* Плавная прокрутка для всего документа */
