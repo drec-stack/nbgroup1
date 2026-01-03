@@ -17,11 +17,8 @@
                     <a href="https://instagram.com/nb_group_tech" class="social-link instagram" aria-label="Instagram">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="#" class="social-link linkedin" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="#" class="social-link behance" aria-label="Behance">
-                        <i class="fab fa-behance"></i>
+                    <a href="https://wa.me/message/NQOOJX3ZPEBHA1" class="social-link whatsapp" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
                     </a>
                 </div>
             </div>
@@ -52,6 +49,20 @@
                     <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="footer.contact.address">Moscow, Russia</span></p>
                     <p><i class="fas fa-phone"></i> +7 (495) 123-4567</p>
                     <p><i class="fas fa-envelope"></i> info@nbgroup.tech</p>
+                    <div class="messenger-contacts">
+                        <a href="https://t.me/NB_GROUP_TECH" class="messenger-contact telegram">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#0088cc">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.78-.42-.72-.23-1.29-.36-1.24-.76.03-.26.37-.53 1.03-.82 4.11-1.75 6.85-2.91 8.22-3.48 3.9-1.6 4.71-1.88 5.24-1.9.12 0 .38.03.55.18.14.13.18.3.2.42.01.12.03.38.01.59z"/>
+                            </svg>
+                            <span>Telegram</span>
+                        </a>
+                        <a href="https://wa.me/message/NQOOJX3ZPEBHA1" class="messenger-contact whatsapp">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#25d366">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                            </svg>
+                            <span>WhatsApp</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -172,14 +183,9 @@
     border-color: #e4405f;
 }
 
-.social-link.linkedin:hover {
-    background: rgba(0, 119, 181, 0.3);
-    border-color: #0077b5;
-}
-
-.social-link.behance:hover {
-    background: rgba(23, 105, 255, 0.3);
-    border-color: #1769ff;
+.social-link.whatsapp:hover {
+    background: rgba(37, 211, 102, 0.3);
+    border-color: #25d366;
 }
 
 .footer-links {
@@ -220,6 +226,53 @@
     color: rgba(255, 255, 255, 0.8);
     width: 20px;
     text-align: center;
+}
+
+.messenger-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.messenger-contact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.messenger-contact:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.messenger-contact.telegram:hover {
+    border-color: #0088cc;
+    background: rgba(0, 136, 204, 0.1);
+}
+
+.messenger-contact.whatsapp:hover {
+    border-color: #25d366;
+    background: rgba(37, 211, 102, 0.1);
+}
+
+.messenger-contact svg {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.messenger-contact:hover svg {
+    transform: scale(1.1);
 }
 
 .footer-bottom {
@@ -289,6 +342,15 @@
         justify-content: center;
     }
     
+    .messenger-contacts {
+        align-items: center;
+    }
+    
+    .messenger-contact {
+        justify-content: center;
+        min-width: 140px;
+    }
+    
     .footer-bottom {
         flex-direction: column;
         gap: 20px;
@@ -336,6 +398,17 @@
         font-size: 16px;
     }
     
+    .messenger-contacts {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .messenger-contact {
+        flex: 0 0 auto;
+        min-width: 120px;
+    }
+    
     .footer-legal {
         flex-direction: column;
         gap: 10px;
@@ -360,6 +433,10 @@
     .footer-logo .logo-mark {
         transition: none;
     }
+    
+    .messenger-contact {
+        transition: none;
+    }
 }
 </style>
 
@@ -368,6 +445,7 @@ function initFooter() {
     console.log('🦶 Footer initialized');
     setupFooterAnimations();
     setupSocialLinks();
+    setupMessengerContacts();
 }
 
 function setupFooterAnimations() {
@@ -414,6 +492,28 @@ function setupSocialLinks() {
     });
 }
 
+function setupMessengerContacts() {
+    const messengerContacts = document.querySelectorAll('.messenger-contact');
+    
+    messengerContacts.forEach(contact => {
+        contact.addEventListener('mouseenter', () => {
+            contact.style.transform = 'translateX(5px)';
+        });
+        
+        contact.addEventListener('mouseleave', () => {
+            contact.style.transform = 'translateX(0)';
+        });
+        
+        contact.addEventListener('touchstart', () => {
+            contact.style.transform = 'scale(0.98)';
+        }, { passive: true });
+        
+        contact.addEventListener('touchend', () => {
+            contact.style.transform = 'scale(1)';
+        }, { passive: true });
+    });
+}
+
 // Автоматическая инициализация при загрузке
 if (document.querySelector('.main-footer')) {
     document.addEventListener('DOMContentLoaded', initFooter);
@@ -423,6 +523,7 @@ if (document.querySelector('.main-footer')) {
 window.initFooter = initFooter;
 window.setupFooterAnimations = setupFooterAnimations;
 window.setupSocialLinks = setupSocialLinks;
+window.setupMessengerContacts = setupMessengerContacts;
 
-console.log('✅ NB Group Footer script loaded');
+console.log('✅ NB Group Footer script loaded with WhatsApp');
 </script>
