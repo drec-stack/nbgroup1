@@ -1,9 +1,9 @@
 // ============================================================================
-// about.js - CLEAN VERSION WITHOUT HEADER FIXES
+// about.js - CLEAN VERSION WITH HEADER FIXES
 // Header management is now ONLY in header.html component
 // ============================================================================
 
-console.log('🚀 about.js loaded - CLEAN VERSION');
+console.log('🚀 about.js loaded - CLEAN VERSION WITH HEADER FIXES');
 
 // Safe DOM operations wrapper
 const safe = {
@@ -81,6 +81,56 @@ const safe = {
 };
 
 // ============================================================================
+// HEADER FIXES FOR ABOUT PAGE
+// ============================================================================
+
+function setupHeaderFix() {
+    console.log('🔧 Setting up header fix for about page...');
+    
+    const header = safe.get('.main-header');
+    if (!header) {
+        console.warn('⚠️ Header not found');
+        return;
+    }
+    
+    try {
+        // Убираем все сложные анимации
+        safe.setStyle(header, {
+            animation: 'none',
+            transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
+        });
+        
+        // Убираем классы скрытия
+        safe.removeClass(header, 'header-hidden');
+        safe.setStyle(header, {
+            opacity: '1',
+            visibility: 'visible',
+            pointerEvents: 'auto'
+        });
+        
+        // Принудительно центрируем хедер
+        if (window.innerWidth > 768) {
+            safe.setStyle(header, {
+                left: '50%',
+                transform: 'translateX(-50%)'
+            });
+        } else {
+            safe.setStyle(header, {
+                left: '0',
+                transform: 'none'
+            });
+        }
+        
+        // Добавляем класс для страницы about
+        safe.addClass(document.body, 'about-page');
+        
+        console.log('✅ Header fix applied for about page');
+    } catch (error) {
+        console.error('❌ Error setting up header fix:', error);
+    }
+}
+
+// ============================================================================
 // MAIN INITIALIZATION FUNCTION
 // ============================================================================
 
@@ -88,6 +138,9 @@ function initAbout() {
     console.log('🎯 Initializing about page content...');
     
     try {
+        // СНАЧАЛА фиксим хедер
+        setupHeaderFix();
+        
         // Setup all page functionalities (header is handled by header.html)
         setupPageFunctionalities();
         
@@ -503,10 +556,31 @@ function setupMobileOptimizations() {
         // Disable hover effects on mobile
         safe.addClass(document.body, 'is-mobile');
         
+        // Центрируем хедер на мобильных
+        setupMobileHeaderCentering();
+        
         console.log('✅ Mobile optimizations applied');
     } catch (error) {
         console.error('❌ Error setting up mobile optimizations:', error);
     }
+}
+
+function setupMobileHeaderCentering() {
+    const header = safe.get('.main-header');
+    if (!header) return;
+    
+    // Принудительно центрируем хедер на мобильных
+    safe.setStyle(header, {
+        left: '0',
+        transform: 'none',
+        width: '100%',
+        maxWidth: '100%',
+        borderRadius: '0',
+        top: '0',
+        margin: '0'
+    });
+    
+    console.log('✅ Header centered for mobile');
 }
 
 // ============================================================================
