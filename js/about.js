@@ -1,9 +1,8 @@
 // ============================================================================
-// about.js - CLEAN VERSION WITH HEADER FIXES
-// Header management is now ONLY in header.html component
+// about.js - CLEAN VERSION WITH PHOTO FIXES
 // ============================================================================
 
-console.log('🚀 about.js loaded - CLEAN VERSION WITH HEADER FIXES');
+console.log('🚀 about.js loaded - PHOTO FIXES VERSION');
 
 // Safe DOM operations wrapper
 const safe = {
@@ -81,6 +80,142 @@ const safe = {
 };
 
 // ============================================================================
+// PHOTO OPTIMIZATION FUNCTIONS
+// ============================================================================
+
+function optimizeTeamPhotos() {
+    console.log('🖼️ Optimizing team photos...');
+    
+    const teamPhotos = safe.getAll('.member-photo img');
+    
+    if (teamPhotos.length === 0) {
+        console.log('📸 No team photos found');
+        return;
+    }
+    
+    console.log(`📸 Found ${teamPhotos.length} team photos`);
+    
+    teamPhotos.forEach((img, index) => {
+        if (!img) return;
+        
+        try {
+            // Set optimal photo settings
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.setAttribute('data-photo-index', index + 1);
+            
+            // Ensure proper styling
+            safe.setStyle(img, {
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center 25%',
+                borderRadius: '50%',
+                display: 'block',
+                transition: 'transform 0.3s ease'
+            });
+            
+            // Custom positioning based on team member
+            if (index === 0) { // Спартак
+                safe.setStyle(img, { objectPosition: 'center 25%' });
+            } else if (index === 1) { // Урмат
+                safe.setStyle(img, { objectPosition: 'center 30%' });
+            } else if (index === 2) { // Елена
+                safe.setStyle(img, { objectPosition: 'center 20%' });
+            }
+            
+            // Handle successful load
+            img.onload = function() {
+                if (this) {
+                    safe.setStyle(this, { opacity: '1' });
+                    console.log(`✅ Photo loaded: ${this.alt || 'Team member'}`);
+                    
+                    // Add subtle animation on load
+                    setTimeout(() => {
+                        safe.setStyle(this, {
+                            transform: 'scale(1.02)',
+                            transition: 'transform 0.5s ease'
+                        });
+                        
+                        setTimeout(() => {
+                            safe.setStyle(this, { transform: 'scale(1)' });
+                        }, 300);
+                    }, 100);
+                }
+            };
+            
+            // Handle error
+            img.onerror = function() {
+                console.warn(`❌ Failed to load photo: ${this.alt || 'Unknown'}`);
+                
+                // Extract initials from alt text
+                const alt = this.alt || '';
+                const initials = alt.match(/\b([A-Z])/g)?.join('') || 'NB';
+                
+                // Use global fallback function
+                if (typeof window.handleTeamPhotoError === 'function') {
+                    window.handleTeamPhotoError(this, initials);
+                } else {
+                    // Local fallback
+                    createPhotoFallback(this, initials);
+                }
+            };
+            
+            // Force check after 3 seconds
+            setTimeout(() => {
+                if (img && img.complete && img.naturalHeight === 0) {
+                    img.dispatchEvent(new Event('error'));
+                }
+            }, 3000);
+            
+        } catch (error) {
+            console.error('❌ Error optimizing photo:', error);
+        }
+    });
+    
+    console.log('✅ Team photos optimized');
+}
+
+function createPhotoFallback(imgElement, initials) {
+    if (!imgElement || !imgElement.parentElement) return;
+    
+    try {
+        const parent = imgElement.parentElement;
+        
+        // Create SVG fallback
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 200 200');
+        svg.setAttribute('width', '200');
+        svg.setAttribute('height', '200');
+        svg.style.borderRadius = '50%';
+        svg.style.background = 'linear-gradient(135deg, #0066ff, #00aaff)';
+        svg.style.display = 'block';
+        
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', '50%');
+        text.setAttribute('y', '50%');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dy', '0.35em');
+        text.setAttribute('fill', 'white');
+        text.setAttribute('font-size', '70');
+        text.setAttribute('font-weight', 'bold');
+        text.setAttribute('font-family', 'Arial, sans-serif');
+        text.textContent = initials;
+        
+        svg.appendChild(text);
+        
+        // Replace image with SVG
+        parent.innerHTML = '';
+        parent.appendChild(svg);
+        safe.addClass(parent, 'photo-fallback');
+        
+        console.log(`🔄 Created photo fallback for ${initials}`);
+    } catch (error) {
+        console.error('❌ Error creating photo fallback:', error);
+    }
+}
+
+// ============================================================================
 // HEADER FIXES FOR ABOUT PAGE
 // ============================================================================
 
@@ -138,7 +273,10 @@ function initAbout() {
     console.log('🎯 Initializing about page content...');
     
     try {
-        // СНАЧАЛА фиксим хедер
+        // СНАЧАЛА оптимизируем фото
+        optimizeTeamPhotos();
+        
+        // Потом фиксим хедер
         setupHeaderFix();
         
         // Setup all page functionalities (header is handled by header.html)
@@ -173,8 +311,7 @@ function setupPageFunctionalities() {
         // 3. Speck Animations
         setupSpeckAnimations();
         
-        // 4. Image Loading
-        setupImageLoading();
+        // 4. Image Loading (уже сделано в optimizeTeamPhotos)
         
         // 5. CTA Animations
         setupCTAAnimations();
@@ -220,12 +357,21 @@ function setupTeamInteractions() {
                     boxShadow: '0 20px 40px rgba(0, 102, 255, 0.3)'
                 });
                 
-                // Animate member photo
+                // Animate member photo (уменьшенный эффект)
                 const photo = member.querySelector('.member-photo');
                 if (photo) {
                     safe.setStyle(photo, {
                         transform: 'scale(1.05)',
                         transition: 'transform 0.3s ease'
+                    });
+                }
+                
+                // Animate photo inside
+                const photoImg = member.querySelector('.member-photo img');
+                if (photoImg) {
+                    safe.setStyle(photoImg, {
+                        transform: 'scale(1.02)',
+                        transition: 'transform 0.5s ease'
                     });
                 }
             });
@@ -240,6 +386,12 @@ function setupTeamInteractions() {
                 const photo = member.querySelector('.member-photo');
                 if (photo) {
                     safe.setStyle(photo, { transform: 'scale(1)' });
+                }
+                
+                // Reset photo inside
+                const photoImg = member.querySelector('.member-photo img');
+                if (photoImg) {
+                    safe.setStyle(photoImg, { transform: 'scale(1)' });
                 }
             });
         }
@@ -559,6 +711,9 @@ function setupMobileOptimizations() {
         // Центрируем хедер на мобильных
         setupMobileHeaderCentering();
         
+        // Adjust photo positioning for mobile
+        adjustPhotosForMobile();
+        
         console.log('✅ Mobile optimizations applied');
     } catch (error) {
         console.error('❌ Error setting up mobile optimizations:', error);
@@ -583,110 +738,23 @@ function setupMobileHeaderCentering() {
     console.log('✅ Header centered for mobile');
 }
 
-// ============================================================================
-// IMAGE LOADING OPTIMIZATION
-// ============================================================================
-
-function setupImageLoading() {
-    const images = safe.getAll('.member-photo img');
+function adjustPhotosForMobile() {
+    const teamPhotos = safe.getAll('.member-photo img');
     
-    if (images.length === 0) {
-        console.log('🖼️ No team images found');
-        return;
-    }
-    
-    console.log(`🖼️ Found ${images.length} team images`);
-    
-    images.forEach((img, index) => {
+    teamPhotos.forEach((img, index) => {
         if (!img) return;
         
-        try {
-            // Set loading attributes
-            img.loading = 'lazy';
-            img.decoding = 'async';
-            img.setAttribute('data-image-index', index + 1);
-            
-            // Set initial state
-            safe.setStyle(img, {
-                opacity: '0',
-                transition: 'opacity 0.5s ease'
-            });
-            
-            // Handle successful load
-            img.onload = function() {
-                if (this) {
-                    safe.setStyle(this, { opacity: '1' });
-                    console.log(`✅ Image loaded: ${this.src || this.alt}`);
-                }
-            };
-            
-            // Handle error
-            img.onerror = function() {
-                console.warn(`❌ Failed to load image: ${this.src || this.alt}`);
-                
-                // Extract initials from alt text
-                const alt = this.alt || '';
-                const initials = alt.match(/\b([A-Z])/g)?.join('') || 'NB';
-                
-                // Use global fallback function if available
-                if (typeof window.handleTeamPhotoError === 'function') {
-                    window.handleTeamPhotoError(this, initials);
-                } else {
-                    // Local fallback
-                    createImageFallback(this, initials);
-                }
-            };
-            
-            // Force load if not loaded after 2 seconds
-            setTimeout(() => {
-                if (img && img.complete && img.naturalHeight === 0) {
-                    img.dispatchEvent(new Event('error'));
-                }
-            }, 2000);
-        } catch (error) {
-            console.error('❌ Error setting up image loading:', error);
+        // Adjust object-position for better mobile display
+        if (index === 0) { // Спартак
+            safe.setStyle(img, { objectPosition: 'center 20%' });
+        } else if (index === 1) { // Урмат
+            safe.setStyle(img, { objectPosition: 'center 25%' });
+        } else if (index === 2) { // Елена
+            safe.setStyle(img, { objectPosition: 'center 15%' });
         }
     });
     
-    console.log('✅ Image loading optimized');
-}
-
-function createImageFallback(imgElement, initials) {
-    if (!imgElement || !imgElement.parentElement) return;
-    
-    try {
-        const parent = imgElement.parentElement;
-        
-        // Create SVG fallback
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('viewBox', '0 0 200 200');
-        svg.setAttribute('width', '200');
-        svg.setAttribute('height', '200');
-        svg.style.borderRadius = '50%';
-        svg.style.background = 'linear-gradient(135deg, #0066ff, #00aaff)';
-        
-        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('x', '50%');
-        text.setAttribute('y', '50%');
-        text.setAttribute('text-anchor', 'middle');
-        text.setAttribute('dy', '0.35em');
-        text.setAttribute('fill', 'white');
-        text.setAttribute('font-size', '70');
-        text.setAttribute('font-weight', 'bold');
-        text.setAttribute('font-family', 'Arial, sans-serif');
-        text.textContent = initials;
-        
-        svg.appendChild(text);
-        
-        // Replace image with SVG
-        parent.innerHTML = '';
-        parent.appendChild(svg);
-        safe.addClass(parent, 'image-fallback');
-        
-        console.log(`🔄 Created SVG fallback for ${initials}`);
-    } catch (error) {
-        console.error('❌ Error creating image fallback:', error);
-    }
+    console.log('✅ Photos adjusted for mobile');
 }
 
 // ============================================================================
@@ -1002,15 +1070,16 @@ window.addEventListener('error', function(event) {
 
 // Export functions for global access
 window.initAbout = initAbout;
+window.optimizeTeamPhotos = optimizeTeamPhotos;
 window.setupSpeckAnimations = setupSpeckAnimations;
 window.setupStoryStats = setupStoryStats;
 window.setupTeamInteractions = setupTeamInteractions;
-window.createImageFallback = createImageFallback;
+window.createPhotoFallback = createPhotoFallback;
 
 // Global image fallback function
 window.handleTeamPhotoError = function(img, initials) {
     console.warn('🖼️ Global fallback for team photo:', initials);
-    createImageFallback(img, initials);
+    createPhotoFallback(img, initials);
 };
 
 console.log('✅ about.js fully loaded and ready for execution');
