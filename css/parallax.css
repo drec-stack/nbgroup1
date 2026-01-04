@@ -1,5 +1,6 @@
-/* parallax.css - КРОССБРАУЗЕРНЫЕ СТИЛИ */
+/* parallax.css - SPEK DESIGN STYLE - ПОЛНАЯ ВЕРСИЯ */
 
+/* PARALLAX BACKGROUND CONTAINER */
 .parallax-bg-container {
     position: fixed;
     top: 0;
@@ -8,8 +9,10 @@
     height: 100%;
     z-index: -1;
     overflow: hidden;
+    pointer-events: none;
 }
 
+/* INDIVIDUAL BACKGROUND LAYERS */
 .parallax-bg {
     position: absolute;
     top: 0;
@@ -20,24 +23,25 @@
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    -webkit-transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .parallax-bg.active {
     opacity: 1;
 }
 
-/* Specific background images */
+/* SPECIFIC BACKGROUND IMAGES */
 #parallax-bg-1 { 
     background-image: url('../assets/images/parallax/bg-1.jpg'); 
-    opacity: 1;
+    opacity: 1; /* Начальный активный фон */
 }
 #parallax-bg-2 { 
     background-image: url('../assets/images/parallax/bg-2.jpg'); 
 }
-/* ДОБАВЛЕНЫ ДВА НОВЫХ ФОНА */
 #parallax-bg-3 { 
     background-image: url('../assets/images/parallax/bg-3.jpg'); 
 }
@@ -45,7 +49,7 @@
     background-image: url('../assets/images/parallax/bg-4.jpg'); 
 }
 
-/* Overlay for better text readability - TRANSPARENT */
+/* DARK OVERLAY FOR BETTER TEXT READABILITY */
 .parallax-bg::after {
     content: '';
     position: absolute;
@@ -53,20 +57,15 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.15);
+    pointer-events: none;
 }
 
-/* Hero Section with Parallax */
+/* HERO SECTION WITH PARALLAX */
 .parallax-hero {
     height: 100vh;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
     position: relative;
     z-index: 2;
@@ -87,44 +86,49 @@
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 30px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .parallax-content p {
     font-size: 1.3rem;
     margin-bottom: 40px;
     line-height: 1.6;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .hero-actions {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     gap: 20px;
-    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
 }
 
-/* Content Sections */
+/* CONTENT SECTIONS - TRANSPARENT BACKGROUND */
 .content-section {
     position: relative;
     z-index: 3;
-    background: transparent;
+    background: transparent !important;
     padding: 100px 0;
     overflow: hidden;
 }
 
-/* Ensure content is visible on backgrounds */
-.clients-section,
-.services-preview,
+/* Ensure specific sections are transparent */
+.speck-vertical-section,
+.speck-marquee-section,
 .stats-improved,
 .cta-improved {
     background: transparent !important;
+    position: relative;
+    z-index: 2;
 }
 
-/* Scroll Progress Bar */
+/* SECTION CONTENT STYLING FOR BETTER VISIBILITY */
+.content-section > .container {
+    position: relative;
+    z-index: 4;
+}
+
+/* SCROLL PROGRESS BAR */
 .scroll-progress {
     position: fixed;
     top: 0;
@@ -133,99 +137,85 @@
     height: 3px;
     background: rgba(255, 255, 255, 0.1);
     z-index: 1000;
+    backdrop-filter: blur(5px);
 }
 
 .scroll-progress-bar {
     height: 100%;
-    background: var(--accent);
+    background: linear-gradient(90deg, #0066ff, #00aaff);
     width: 0%;
-    -webkit-transition: width 0.1s ease;
-    transition: width 0.1s ease;
+    transition: width 0.2s ease;
 }
 
-/* Scroll Indicator */
+/* SCROLL INDICATOR */
 .parallax-scroll-indicator {
     position: absolute;
     bottom: 40px;
     left: 50%;
-    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     color: white;
     text-align: center;
-    z-index: 2;
+    z-index: 4;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px 25px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .scroll-arrow {
     width: 24px;
     height: 24px;
-    border-right: 2px solid white;
-    border-bottom: 2px solid white;
-    -webkit-transform: rotate(45deg);
+    border-right: 2px solid rgba(255, 255, 255, 0.9);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.9);
     transform: rotate(45deg);
     margin: 0 auto 10px;
-    -webkit-animation: bounce 2s infinite;
     animation: bounce 2s infinite;
-}
-
-@-webkit-keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        -webkit-transform: rotate(45deg) translateY(0);
-        transform: rotate(45deg) translateY(0);
-    }
-    40% {
-        -webkit-transform: rotate(45deg) translateY(-10px);
-        transform: rotate(45deg) translateY(-10px);
-    }
-    60% {
-        -webkit-transform: rotate(45deg) translateY(-5px);
-        transform: rotate(45deg) translateY(-5px);
-    }
 }
 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
-        -webkit-transform: rotate(45deg) translateY(0);
         transform: rotate(45deg) translateY(0);
     }
     40% {
-        -webkit-transform: rotate(45deg) translateY(-10px);
         transform: rotate(45deg) translateY(-10px);
     }
     60% {
-        -webkit-transform: rotate(45deg) translateY(-5px);
         transform: rotate(45deg) translateY(-5px);
     }
 }
 
-/* Make sure header is above backgrounds */
-.main-header {
-    position: relative;
-    z-index: 1000;
-}
-
-/* ===== КРОССБРАУЗЕРНАЯ МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===== */
-@media (max-width: 1024px) {
-    .parallax-bg-container {
-        width: 100vw !important;
-        height: 100vh !important;
+/* SUBTLE PARALLAX EFFECT FOR DESKTOP */
+@media (min-width: 769px) {
+    .parallax-bg {
+        transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.5s ease;
+        transform: scale(1.02);
     }
     
-    .parallax-bg {
-        background-attachment: scroll;
-        background-position: center center;
-        background-size: cover;
+    .parallax-bg.active {
+        animation: subtleParallax 20s ease-in-out infinite alternate;
+    }
+    
+    @keyframes subtleParallax {
+        0% {
+            transform: translateY(0px) scale(1.02);
+        }
+        100% {
+            transform: translateY(-30px) scale(1.03);
+        }
     }
 }
 
+/* ===== MOBILE OPTIMIZATION ===== */
 @media (max-width: 768px) {
-    /* Убираем горизонтальный скролл */
+    /* Prevent horizontal scroll */
     html, body {
         max-width: 100vw;
         overflow-x: hidden;
         position: relative;
     }
     
-    /* Фиксируем контейнер фона */
+    /* Fix background container */
     .parallax-bg-container {
         position: fixed !important;
         top: 0 !important;
@@ -235,59 +225,54 @@
         z-index: -1;
     }
     
-    /* Оптимизация фоновых изображений */
+    /* Optimize background images for mobile */
     .parallax-bg {
         background-attachment: scroll !important;
         background-position: center center !important;
         background-size: cover !important;
         width: 100% !important;
         height: 100% !important;
-        left: 0 !important;
-        top: 0 !important;
-        position: absolute !important;
+        animation: none !important;
+        transform: none !important;
+        transition: opacity 0.8s ease !important;
     }
     
-    /* Усиливаем затемнение фона для лучшей читаемости */
+    /* Enhanced overlay for mobile readability */
     .parallax-bg::after {
-        background: rgba(0, 0, 0, 0) !important;
-        -webkit-backdrop-filter: blur(0) !important;
-        backdrop-filter: blur(0) !important;
+        background: rgba(0, 0, 0, 0.3) !important;
     }
     
-    /* Улучшаем читаемость текста с прозрачным фоном */
+    /* Hero content optimization */
+    .parallax-hero {
+        height: 100vh;
+        min-height: -webkit-fill-available;
+    }
+    
     .parallax-content {
         text-align: center !important;
-        padding: 25px 20px !important;
+        padding: 30px 20px !important;
         margin: 0 15px !important;
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(15px);
+        background: rgba(0, 0, 0, 0.4);
         border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        -webkit-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     }
     
     .parallax-content h1 {
         font-size: 2.5rem !important;
         line-height: 1.2;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
     }
     
     .parallax-content p {
         font-size: 1.1rem !important;
         margin-bottom: 30px;
         color: rgba(255, 255, 255, 0.95);
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     }
     
+    /* Button optimization */
     .hero-actions {
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
         flex-direction: column;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
         align-items: center;
         gap: 15px;
     }
@@ -295,59 +280,38 @@
     .hero-actions .btn {
         width: 100%;
         max-width: 280px;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
         justify-content: center;
-        -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
         background: rgba(255, 255, 255, 0.15);
         border: 1px solid rgba(255, 255, 255, 0.3);
     }
     
-    /* Прозрачный фон для других секций */
+    /* Content sections */
     .content-section {
-        padding: 60px 0 !important;
+        padding: 70px 0 !important;
         background-color: transparent !important;
-        position: relative;
-        z-index: 2;
     }
     
-    /* Убираем лишние отступы у контейнеров */
     .container {
         padding-left: 20px !important;
         padding-right: 20px !important;
         max-width: 100% !important;
     }
     
-    /* Скрываем скролл индикатор на мобильных */
+    /* Scroll indicator */
     .parallax-scroll-indicator {
         bottom: 20px;
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        background: rgba(0, 0, 0, 0.4);
-        padding: 10px 20px;
-        border-radius: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 12px 20px;
+        font-size: 0.9rem;
     }
     
-    .scroll-arrow {
-        border-right-color: rgba(255, 255, 255, 0.9);
-        border-bottom-color: rgba(255, 255, 255, 0.9);
-    }
-    
-    /* Progress bar с прозрачностью */
+    /* Progress bar */
     .scroll-progress {
         background: rgba(255, 255, 255, 0.05);
-        -webkit-backdrop-filter: blur(5px);
-        backdrop-filter: blur(5px);
-    }
-    
-    .scroll-progress-bar {
-        background: -webkit-linear-gradient(90deg, #0066ff, #00aaff);
-        background: linear-gradient(90deg, #0066ff, #00aaff);
     }
 }
 
+/* Small mobile devices */
 @media (max-width: 480px) {
     .parallax-content h1 {
         font-size: 2rem !important;
@@ -358,24 +322,21 @@
     }
     
     .parallax-content {
-        padding: 20px 15px !important;
+        padding: 25px 15px !important;
         margin: 0 10px !important;
-        background: rgba(0, 0, 0, 0.4);
-        -webkit-backdrop-filter: blur(15px);
-        backdrop-filter: blur(15px);
+        background: rgba(0, 0, 0, 0.45);
     }
     
     .hero-actions .btn {
         max-width: 100%;
     }
     
-    /* Усиливаем прозрачность параллакс фона для маленьких экранов */
-    .parallax-bg::after {
-        background: rgba(0, 0, 0, 0) !important;
+    .content-section {
+        padding: 50px 0 !important;
     }
 }
 
-/* Для очень маленьких экранов */
+/* Very small screens */
 @media (max-width: 375px) {
     .parallax-content h1 {
         font-size: 1.8rem !important;
@@ -386,7 +347,7 @@
     }
     
     .parallax-content {
-        padding: 15px 10px !important;
+        padding: 20px 12px !important;
         margin: 0 8px !important;
     }
 }
@@ -394,18 +355,22 @@
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
     .parallax-bg {
-        -webkit-transition: none;
-        transition: none;
-        background-attachment: scroll;
+        transition: none !important;
+        background-attachment: scroll !important;
+        animation: none !important;
+        transform: none !important;
     }
     
     .scroll-arrow {
-        -webkit-animation: none;
-        animation: none;
+        animation: none !important;
+    }
+    
+    .scroll-progress-bar {
+        transition: none !important;
     }
 }
 
-/* Fix for iOS Safari */
+/* iOS Safari fixes */
 @supports (-webkit-touch-callout: none) {
     .parallax-bg {
         background-attachment: scroll;
@@ -414,9 +379,13 @@
     .parallax-bg-container {
         height: -webkit-fill-available;
     }
+    
+    .parallax-hero {
+        height: -webkit-fill-available;
+    }
 }
 
-/* Исправления для IE и старых браузеров */
+/* Legacy browser support */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     .parallax-bg-container {
         position: absolute !important;
@@ -428,23 +397,23 @@
     }
     
     .parallax-content {
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.6);
         padding: 40px 20px;
     }
 }
 
-/* Для браузеров без backdrop-filter */
-.no-backdropfilter .parallax-content {
-    background: rgba(0, 0, 0, 0.5) !important;
-}
-
-.no-backdropfilter .parallax-bg::after {
-    background: rgba(0, 0, 0, 0.3) !important;
-}
-
-/* Firefox специфичные правки */
+/* Firefox specific fixes */
 @-moz-document url-prefix() {
     .parallax-bg {
         background-attachment: scroll;
     }
+}
+
+/* Fallback for browsers without backdrop-filter */
+.no-backdropfilter .parallax-content {
+    background: rgba(0, 0, 0, 0.6) !important;
+}
+
+.no-backdropfilter .parallax-scroll-indicator {
+    background: rgba(0, 0, 0, 0.6) !important;
 }
