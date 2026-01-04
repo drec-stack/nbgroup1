@@ -1,5 +1,5 @@
 // parallax.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ (ПОЛНАЯ ВЕРСИЯ С ФИКСОМ)
-console.log('🎯 parallax.js loaded - MOBILE OPTIMIZED');
+console.log('🎯 parallax.js loaded - MOBILE OPTIMIZED (4 backgrounds)');
 
 class ScrollBackgroundChanger {
     constructor() {
@@ -51,7 +51,7 @@ class ScrollBackgroundChanger {
     }
     
     init() {
-        console.log('🎯 Initializing mobile-optimized background changes...');
+        console.log('🎯 Initializing mobile-optimized background changes (4 backgrounds)...');
         
         if (this.backgrounds.length === 0) return;
         
@@ -64,7 +64,7 @@ class ScrollBackgroundChanger {
         
         this.setupProgressBar();
         this.setupPerformanceOptimizations();
-        console.log('✅ Background changer optimized for mobile');
+        console.log(`✅ Background changer ready with ${this.backgrounds.length} backgrounds`);
     }
     
     setupMobileBackgrounds() {
@@ -97,15 +97,17 @@ class ScrollBackgroundChanger {
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
         
-        // Определяем новый индекс фона на основе позиции скролла
+        // Определяем новый индекс фона на основе позиции скролла (для 4 фонов)
         let newBgIndex = 0;
         
-        if (scrollY > windowHeight * 0.3 && scrollY <= windowHeight * 1.5) {
-            newBgIndex = 1; // Clients section
-        } else if (scrollY > windowHeight * 1.5 && scrollY <= windowHeight * 2.5) {
-            newBgIndex = 0; // Services section
-        } else if (scrollY > windowHeight * 2.5) {
-            newBgIndex = 1; // Stats & CTA sections
+        if (scrollY < windowHeight * 0.5) {
+            newBgIndex = 0; // Первый фон
+        } else if (scrollY >= windowHeight * 0.5 && scrollY < windowHeight * 1.3) {
+            newBgIndex = 1; // Второй фон
+        } else if (scrollY >= windowHeight * 1.3 && scrollY < windowHeight * 2.3) {
+            newBgIndex = 2; // Третий фон
+        } else if (scrollY >= windowHeight * 2.3) {
+            newBgIndex = 3; // Четвертый фон
         }
         
         // Меняем фон только если индекс изменился
@@ -122,19 +124,19 @@ class ScrollBackgroundChanger {
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
         
-        // Полная логика для десктопов
+        // Обновленная логика для 4 фонов
         let newBgIndex = 0;
         
         if (scrollY < windowHeight * 0.5) {
-            newBgIndex = 0;
-        } else if (scrollY >= windowHeight * 0.5 && scrollY < windowHeight * 1.5) {
-            newBgIndex = 1;
-        } else if (scrollY >= windowHeight * 1.5 && scrollY < windowHeight * 2.5) {
-            newBgIndex = 0;
-        } else if (scrollY >= windowHeight * 2.5 && scrollY < windowHeight * 3.5) {
-            newBgIndex = 1;
+            newBgIndex = 0; // Первый фон
+        } else if (scrollY >= windowHeight * 0.5 && scrollY < windowHeight * 1.2) {
+            newBgIndex = 1; // Второй фон
+        } else if (scrollY >= windowHeight * 1.2 && scrollY < windowHeight * 2.0) {
+            newBgIndex = 2; // Третий фон
+        } else if (scrollY >= windowHeight * 2.0 && scrollY < windowHeight * 3.0) {
+            newBgIndex = 3; // Четвертый фон
         } else {
-            newBgIndex = 0;
+            newBgIndex = 0; // Возвращаемся к первому
         }
         
         if (newBgIndex !== this.currentBgIndex && newBgIndex < this.backgrounds.length) {
@@ -283,6 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (parallaxBackgrounds.length > 0) {
         try {
             window.parallaxInstance = new ScrollBackgroundChanger();
+            console.log(`✅ Parallax initialized with ${parallaxBackgrounds.length} backgrounds`);
         } catch (error) {
             console.error('❌ Error initializing parallax:', error);
             // Fallback: показываем только первый фон
