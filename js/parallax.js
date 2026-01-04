@@ -1,24 +1,20 @@
-// parallax.js - SPEK DESIGN STYLE - ПОЛНАЯ ВЕРСИЯ
-console.log('🎯 parallax.js loaded - SPEK DESIGN STYLE');
+// parallax.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ (ПОЛНАЯ ВЕРСИЯ С ФИКСОМ)
+console.log('🎯 parallax.js loaded - MOBILE OPTIMIZED (4 backgrounds)');
 
 class ScrollBackgroundChanger {
     constructor() {
         this.backgrounds = document.querySelectorAll('.parallax-bg');
-        this.sections = document.querySelectorAll('.content-section, section[class*="section"]');
+        this.sections = document.querySelectorAll('.content-section');
         this.progressBar = document.querySelector('.scroll-progress-bar');
         
         this.currentBgIndex = 0;
         this.isAnimating = false;
         this.isMobile = this.checkIsMobile();
         this.lastScrollY = window.scrollY;
+        this.scrollThreshold = 100;
         
-        // Настройки для плавной смены
-        this.scrollThreshold = 50;
-        this.sectionBgMap = new Map();
-        this.currentSection = null;
-        
+        // Фикс для мобильных
         this.fixMobileIssues();
-        this.initSectionMapping();
         this.init();
     }
     
@@ -26,207 +22,146 @@ class ScrollBackgroundChanger {
         return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
     
-    initSectionMapping() {
-        console.log('🗺️ Initializing section-background mapping...');
-        
-        // Получаем все основные секции на странице
-        const allSections = [
-            document.querySelector('.parallax-hero') || document.querySelector('.hero'),
-            document.querySelector('.speck-vertical-section'),
-            document.querySelector('.speck-marquee-section'),
-            document.querySelector('.stats-improved'),
-            document.querySelector('.cta-improved')
-        ].filter(section => section !== null);
-        
-        // Назначаем каждой секции свой фон по порядку
-        allSections.forEach((section, index) => {
-            const bgIndex = index % this.backgrounds.length;
-            this.sectionBgMap.set(section, bgIndex);
-            section.dataset.bgIndex = bgIndex;
-            
-            console.log(`📌 Section ${index + 1} (${section.className}) → Background ${bgIndex}`);
-        });
-        
-        // Если секций больше, чем фонов - используем циклическое распределение
-        const additionalSections = Array.from(document.querySelectorAll('section')).filter(section => 
-            !allSections.includes(section) && 
-            section.offsetHeight > 100 && // Игнорируем маленькие секции
-            !section.classList.contains('parallax-hero')
-        );
-        
-        additionalSections.forEach((section, index) => {
-            const bgIndex = (allSections.length + index) % this.backgrounds.length;
-            this.sectionBgMap.set(section, bgIndex);
-            section.dataset.bgIndex = bgIndex;
-            
-            console.log(`📌 Additional section (${section.className}) → Background ${bgIndex}`);
-        });
-    }
-    
     fixMobileIssues() {
         if (this.isMobile) {
             console.log('📱 Mobile device detected, applying fixes...');
             
-            // Базовые фиксы для мобильных
+            // 1. Убираем горизонтальный скролл
             document.documentElement.style.overflowX = 'hidden';
             document.body.style.overflowX = 'hidden';
             
-            // Оптимизация фонов для мобильных
+            // 2. Фиксируем фон
             this.backgrounds.forEach(bg => {
                 bg.style.backgroundAttachment = 'scroll';
                 bg.style.backgroundPosition = 'center center';
                 bg.style.backgroundSize = 'cover';
-                bg.style.transform = 'none';
-                bg.style.willChange = 'auto';
+                bg.style.left = '0';
+                bg.style.width = '100%';
+            });
+            
+            // 3. Добавляем fallback фон для контентных секций
+            this.sections.forEach(section => {
+                if (section.classList.contains('content-section')) {
+                    section.style.backgroundColor = 'var(--secondary)';
+                    section.style.position = 'relative';
+                    section.style.zIndex = '2';
+                }
             });
         }
     }
     
     init() {
-        console.log('🎯 Initializing Speck Design style background system...');
+        console.log('🎯 Initializing mobile-optimized background changes (4 backgrounds)...');
         
-        if (this.backgrounds.length === 0) {
-            console.warn('⚠️ No parallax backgrounds found');
-            return;
+        if (this.backgrounds.length === 0) return;
+        
+        // Упрощенная логика для мобильных
+        if (this.isMobile) {
+            this.setupMobileBackgrounds();
+        } else {
+            this.setupDesktopBackgrounds();
         }
         
-        // Устанавливаем начальный фон
-        this.setBackground(0);
-        
-        // Настраиваем основной наблюдатель
-        this.setupIntersectionObserver();
-        
-        // Настраиваем прогресс бар
         this.setupProgressBar();
-        
-        // Резервный обработчик для браузеров без IntersectionObserver
-        this.throttledScroll = this.throttle(this.handleScroll.bind(this), 100);
-        window.addEventListener('scroll', this.throttledScroll, { passive: true });
-        
-        console.log(`✅ Background system ready: ${this.backgrounds.length} backgrounds for ${this.sectionBgMap.size} sections`);
+        this.setupPerformanceOptimizations();
+        console.log(`✅ Background changer ready with ${this.backgrounds.length} backgrounds`);
     }
     
-    setupIntersectionObserver() {
-        if (!('IntersectionObserver' in window)) {
-            console.warn('⚠️ IntersectionObserver not supported, using scroll-based detection');
-            return;
-        }
+    setupMobileBackgrounds() {
+        // На мобильных используем упрощенную логику смены фонов
+        this.setBackground(0);
         
-        const observerOptions = {
-            root: null,
-            rootMargin: '-30% 0px -30% 0px', // Секция активна когда 40% в области просмотра
-            threshold: 0.4
-        };
+        // Оптимизированный скролл для мобильных
+        this.throttledScroll = this.throttle(this.handleMobileScroll.bind(this), 50);
+        window.addEventListener('scroll', this.throttledScroll, { passive: true });
         
-        this.intersectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !this.isAnimating) {
-                    const section = entry.target;
-                    const bgIndex = this.sectionBgMap.get(section);
-                    
-                    if (bgIndex !== undefined && bgIndex !== this.currentBgIndex) {
-                        // Находим индекс для логирования
-                        let sectionName = 'Unknown';
-                        this.sectionBgMap.forEach((index, sec) => {
-                            if (sec === section) {
-                                sectionName = sec.className || 'section';
-                            }
-                        });
-                        
-                        console.log(`🎨 "${sectionName}" entered view → Background ${bgIndex}`);
-                        this.currentSection = section;
-                        this.setBackground(bgIndex);
-                    }
-                }
-            });
-        }, observerOptions);
-        
-        // Наблюдаем за всеми секциями в карте
-        this.sectionBgMap.forEach((bgIndex, section) => {
-            this.intersectionObserver.observe(section);
-            console.log(`👁️ Observing section: ${section.className || 'unnamed-section'}`);
+        // Добавляем обработчик изменения ориентации
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                this.handleResize();
+            }, 300);
         });
     }
     
-    handleScroll() {
-        if (this.isAnimating || this.isMobile) return;
+    setupDesktopBackgrounds() {
+        // Полная функциональность для десктопов
+        this.setBackground(0);
+        this.throttledScroll = this.throttle(this.handleScroll.bind(this), 16);
+        window.addEventListener('scroll', this.throttledScroll, { passive: true });
+        this.setupIntersectionObserver();
+    }
+    
+    handleMobileScroll() {
+        if (this.isAnimating) return;
         
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
-        const scrollDirection = scrollY > this.lastScrollY ? 'down' : 'up';
         
-        // Используем IntersectionObserver если доступен, иначе определяем секцию по скроллу
-        if (!this.intersectionObserver) {
-            this.detectCurrentSection(scrollY, windowHeight);
+        // Определяем новый индекс фона на основе позиции скролла (для 4 фонов)
+        let newBgIndex = 0;
+        
+        if (scrollY < windowHeight * 0.5) {
+            newBgIndex = 0; // Первый фон
+        } else if (scrollY >= windowHeight * 0.5 && scrollY < windowHeight * 1.3) {
+            newBgIndex = 1; // Второй фон
+        } else if (scrollY >= windowHeight * 1.3 && scrollY < windowHeight * 2.3) {
+            newBgIndex = 2; // Третий фон
+        } else if (scrollY >= windowHeight * 2.3) {
+            newBgIndex = 3; // Четвертый фон
+        }
+        
+        // Меняем фон только если индекс изменился
+        if (newBgIndex !== this.currentBgIndex) {
+            this.setBackground(newBgIndex);
         }
         
         this.lastScrollY = scrollY;
     }
     
-    detectCurrentSection(scrollY, windowHeight) {
-        let closestSection = null;
-        let minDistance = Infinity;
-        let closestBgIndex = 0;
+    handleScroll() {
+        if (this.isAnimating) return;
         
-        this.sectionBgMap.forEach((bgIndex, section) => {
-            const rect = section.getBoundingClientRect();
-            const sectionTop = rect.top + scrollY;
-            const sectionCenter = sectionTop + rect.height / 2;
-            const distanceFromCenter = Math.abs((scrollY + windowHeight / 2) - sectionCenter);
-            
-            if (distanceFromCenter < minDistance) {
-                minDistance = distanceFromCenter;
-                closestSection = section;
-                closestBgIndex = bgIndex;
-            }
-        });
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
         
-        if (closestSection && closestBgIndex !== this.currentBgIndex) {
-            console.log(`🎨 Scroll detected: "${closestSection.className}" → Background ${closestBgIndex}`);
-            this.setBackground(closestBgIndex);
+        // Обновленная логика для 4 фонов
+        let newBgIndex = 0;
+        
+        if (scrollY < windowHeight * 0.5) {
+            newBgIndex = 0; // Первый фон
+        } else if (scrollY >= windowHeight * 0.5 && scrollY < windowHeight * 1.2) {
+            newBgIndex = 1; // Второй фон
+        } else if (scrollY >= windowHeight * 1.2 && scrollY < windowHeight * 2.0) {
+            newBgIndex = 2; // Третий фон
+        } else if (scrollY >= windowHeight * 2.0 && scrollY < windowHeight * 3.0) {
+            newBgIndex = 3; // Четвертый фон
+        } else {
+            newBgIndex = 0; // Возвращаемся к первому
+        }
+        
+        if (newBgIndex !== this.currentBgIndex && newBgIndex < this.backgrounds.length) {
+            this.setBackground(newBgIndex);
         }
     }
     
-    setBackground(index) {
-        if (this.isAnimating || index === this.currentBgIndex || !this.backgrounds[index]) return;
-        
-        this.isAnimating = true;
-        const previousIndex = this.currentBgIndex;
-        this.currentBgIndex = index;
-        
-        console.log(`🔄 Transition: Background ${previousIndex} → ${index}`);
-        
-        // Плавное исчезновение текущего фона
-        if (this.backgrounds[previousIndex]) {
-            this.backgrounds[previousIndex].style.transition = 'opacity 0.8s ease';
-            this.backgrounds[previousIndex].style.opacity = '0';
-        }
-        
-        // Плавное появление нового фона
-        setTimeout(() => {
-            this.backgrounds.forEach(bg => {
-                bg.classList.remove('active');
-            });
-            
-            const newBg = this.backgrounds[index];
-            newBg.classList.add('active');
-            newBg.style.opacity = '0';
-            newBg.style.transition = 'opacity 1s ease';
-            
-            // Запускаем анимацию появления
-            requestAnimationFrame(() => {
-                newBg.style.opacity = '1';
-            });
-            
-            // Сбрасываем флаг анимации
-            setTimeout(() => {
-                this.isAnimating = false;
-                newBg.style.transition = '';
-                if (this.backgrounds[previousIndex]) {
-                    this.backgrounds[previousIndex].style.transition = '';
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const section = entry.target;
+                    const bgIndex = parseInt(section.getAttribute('data-bg-index')) || 0;
+                    
+                    this.setBackground(bgIndex);
                 }
-            }, 1000);
-        }, this.isMobile ? 300 : 500);
+            });
+        }, {
+            threshold: 0.4,
+            rootMargin: '-100px 0px -100px 0px'
+        });
+        
+        this.sections.forEach(section => {
+            observer.observe(section);
+        });
     }
     
     setupProgressBar() {
@@ -238,13 +173,89 @@ class ScrollBackgroundChanger {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const progress = (scrollTop / documentHeight) * 100;
             
-            this.progressBar.style.width = `${Math.min(progress, 100)}%`;
-            this.progressBar.style.transition = 'width 0.1s ease';
+            this.progressBar.style.width = Math.min(progress, 100) + '%';
         };
         
-        window.addEventListener('scroll', this.throttle(updateProgress, 100), { passive: true });
+        window.addEventListener('scroll', this.throttle(updateProgress, 16), { passive: true });
     }
     
+    setupPerformanceOptimizations() {
+        // Отключаем сложные анимации на слабых устройствах
+        if (this.isLowPerformanceDevice()) {
+            console.log('📱 Low performance device detected, simplifying parallax');
+            this.simplifyForLowPerformance();
+        }
+        
+        // Оптимизация для reduced motion
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            console.log('♿ Reduced motion enabled, disabling parallax animations');
+            this.disableAnimations();
+        }
+    }
+    
+    isLowPerformanceDevice() {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const memory = navigator.deviceMemory || 4;
+        const cores = navigator.hardwareConcurrency || 4;
+        
+        return isMobile && (memory < 4 || cores < 4);
+    }
+    
+    simplifyForLowPerformance() {
+        // Оставляем только первый фон
+        this.backgrounds.forEach((bg, index) => {
+            if (index > 0) {
+                bg.style.display = 'none';
+            }
+        });
+    }
+    
+    disableAnimations() {
+        this.backgrounds.forEach(bg => {
+            bg.style.transition = 'none';
+        });
+    }
+    
+    setBackground(index) {
+        if (this.isAnimating || index === this.currentBgIndex) return;
+        
+        this.isAnimating = true;
+        this.currentBgIndex = index;
+        
+        console.log(`🎨 Changing background to index: ${index}`);
+        
+        // Убираем active класс со всех фонов
+        this.backgrounds.forEach(bg => {
+            bg.classList.remove('active');
+        });
+        
+        // Добавляем active класс к текущему фону
+        if (this.backgrounds[index]) {
+            this.backgrounds[index].classList.add('active');
+        }
+        
+        // Сбрасываем флаг анимации
+        setTimeout(() => {
+            this.isAnimating = false;
+        }, this.isMobile ? 800 : 1200);
+    }
+    
+    handleResize() {
+        // Обновляем определение мобильного устройства
+        this.isMobile = this.checkIsMobile();
+        
+        // Применяем фиксы снова
+        this.fixMobileIssues();
+        
+        // Перезапускаем логику фонов
+        if (this.isMobile) {
+            this.setupMobileBackgrounds();
+        } else {
+            this.setupDesktopBackgrounds();
+        }
+    }
+    
+    // Вспомогательная функция для throttle
     throttle(func, limit) {
         let inThrottle;
         return function() {
@@ -258,66 +269,32 @@ class ScrollBackgroundChanger {
         };
     }
     
-    handleResize() {
-        this.isMobile = this.checkIsMobile();
-        this.fixMobileIssues();
-        
-        // Переинициализация при значительном изменении размера
-        if (window.parallaxInstance) {
-            setTimeout(() => {
-                if (this.intersectionObserver) {
-                    this.intersectionObserver.disconnect();
-                }
-                this.initSectionMapping();
-                this.setupIntersectionObserver();
-            }, 300);
-        }
-    }
-    
+    // Очистка при уничтожении
     destroy() {
-        if (this.intersectionObserver) {
-            this.intersectionObserver.disconnect();
-        }
         window.removeEventListener('scroll', this.throttledScroll);
         this.backgrounds.forEach(bg => {
             bg.classList.remove('active');
-            bg.style.opacity = '';
-            bg.style.transition = '';
         });
-        this.backgrounds[0]?.classList.add('active');
     }
 }
 
-// Инициализация при полной загрузке DOM
+// Инициализация с проверкой поддержки
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM loaded, initializing Speck Design parallax...');
+    const parallaxBackgrounds = document.querySelectorAll('.parallax-bg');
     
-    // Даем время на загрузку всех компонентов
-    setTimeout(() => {
-        const parallaxBackgrounds = document.querySelectorAll('.parallax-bg');
-        
-        if (parallaxBackgrounds.length > 0) {
-            try {
-                window.parallaxInstance = new ScrollBackgroundChanger();
-                console.log('✅ Speck Design parallax system initialized successfully');
-                
-                // Проверка инициализации
-                setTimeout(() => {
-                    const activeBg = document.querySelector('.parallax-bg.active');
-                    console.log(`🔍 Active background check: ${activeBg ? 'OK' : 'NO ACTIVE BACKGROUND!'}`);
-                }, 500);
-            } catch (error) {
-                console.error('❌ Error initializing parallax:', error);
-                // Fallback: показываем только первый фон
-                parallaxBackgrounds.forEach((bg, index) => {
-                    if (index === 0) bg.classList.add('active');
-                    else bg.style.display = 'none';
-                });
-            }
-        } else {
-            console.warn('⚠️ No .parallax-bg elements found on page');
+    if (parallaxBackgrounds.length > 0) {
+        try {
+            window.parallaxInstance = new ScrollBackgroundChanger();
+            console.log(`✅ Parallax initialized with ${parallaxBackgrounds.length} backgrounds`);
+        } catch (error) {
+            console.error('❌ Error initializing parallax:', error);
+            // Fallback: показываем только первый фон
+            parallaxBackgrounds.forEach((bg, index) => {
+                if (index === 0) bg.classList.add('active');
+                else bg.style.display = 'none';
+            });
         }
-    }, 300);
+    }
 });
 
 // Обработчик изменения размера окна
@@ -325,9 +302,9 @@ let resizeTimeout;
 window.addEventListener('resize', function() {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-        if (window.parallaxInstance) {
-            console.log('🔄 Window resized, updating parallax system...');
-            window.parallaxInstance.handleResize();
+        const currentInstance = window.parallaxInstance;
+        if (currentInstance) {
+            currentInstance.handleResize();
         }
     }, 250);
 });
