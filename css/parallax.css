@@ -37,6 +37,13 @@
 #parallax-bg-2 { 
     background-image: url('../assets/images/parallax/bg-2.jpg'); 
 }
+/* ДОБАВЛЕНЫ ДВА НОВЫХ ФОНА */
+#parallax-bg-3 { 
+    background-image: url('../assets/images/parallax/bg-3.jpg'); 
+}
+#parallax-bg-4 { 
+    background-image: url('../assets/images/parallax/bg-4.jpg'); 
+}
 
 /* Overlay for better text readability - TRANSPARENT */
 .parallax-bg::after {
@@ -440,4 +447,4 @@
     .parallax-bg {
         background-attachment: scroll;
     }
-        }
+}
