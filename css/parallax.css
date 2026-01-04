@@ -143,60 +143,6 @@
     transition: width 0.1s ease;
 }
 
-/* Scroll Indicator */
-.parallax-scroll-indicator {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    color: white;
-    text-align: center;
-    z-index: 2;
-}
-
-.scroll-arrow {
-    width: 24px;
-    height: 24px;
-    border-right: 2px solid white;
-    border-bottom: 2px solid white;
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-    margin: 0 auto 10px;
-    -webkit-animation: bounce 2s infinite;
-    animation: bounce 2s infinite;
-}
-
-@-webkit-keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        -webkit-transform: rotate(45deg) translateY(0);
-        transform: rotate(45deg) translateY(0);
-    }
-    40% {
-        -webkit-transform: rotate(45deg) translateY(-10px);
-        transform: rotate(45deg) translateY(-10px);
-    }
-    60% {
-        -webkit-transform: rotate(45deg) translateY(-5px);
-        transform: rotate(45deg) translateY(-5px);
-    }
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        -webkit-transform: rotate(45deg) translateY(0);
-        transform: rotate(45deg) translateY(0);
-    }
-    40% {
-        -webkit-transform: rotate(45deg) translateY(-10px);
-        transform: rotate(45deg) translateY(-10px);
-    }
-    60% {
-        -webkit-transform: rotate(45deg) translateY(-5px);
-        transform: rotate(45deg) translateY(-5px);
-    }
-}
-
 /* Make sure header is above backgrounds */
 .main-header {
     position: relative;
@@ -319,22 +265,6 @@
         max-width: 100% !important;
     }
     
-    /* Скрываем скролл индикатор на мобильных */
-    .parallax-scroll-indicator {
-        bottom: 20px;
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        background: rgba(0, 0, 0, 0.4);
-        padding: 10px 20px;
-        border-radius: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    .scroll-arrow {
-        border-right-color: rgba(255, 255, 255, 0.9);
-        border-bottom-color: rgba(255, 255, 255, 0.9);
-    }
-    
     /* Progress bar с прозрачностью */
     .scroll-progress {
         background: rgba(255, 255, 255, 0.05);
@@ -397,11 +327,6 @@
         -webkit-transition: none;
         transition: none;
         background-attachment: scroll;
-    }
-    
-    .scroll-arrow {
-        -webkit-animation: none;
-        animation: none;
     }
 }
 
