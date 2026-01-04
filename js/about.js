@@ -1,8 +1,8 @@
 // ============================================================================
-// about.js - CLEAN VERSION WITH PHOTO FIXES
+// about.js - WORKING VERSION WITH SVG PLACEHOLDERS
 // ============================================================================
 
-console.log('🚀 about.js loaded - PHOTO FIXES VERSION');
+console.log('🚀 about.js loaded - WORKING VERSION');
 
 // Safe DOM operations wrapper
 const safe = {
@@ -80,147 +80,89 @@ const safe = {
 };
 
 // ============================================================================
-// PHOTO OPTIMIZATION FUNCTIONS
+// TEAM PHOTOS ANIMATIONS (USING SVG PLACEHOLDERS)
 // ============================================================================
 
-function optimizeTeamPhotos() {
-    console.log('🖼️ Optimizing team photos...');
+function animateTeamPhotos() {
+    console.log('🎭 Animating team photos...');
     
-    const teamPhotos = safe.getAll('.member-photo img');
+    const teamMembers = safe.getAll('.team-member');
+    const memberPhotos = safe.getAll('.member-photo svg');
     
-    if (teamPhotos.length === 0) {
-        console.log('📸 No team photos found');
-        return;
-    }
+    console.log(`👥 Found ${teamMembers.length} team members`);
+    console.log(`🖼️ Found ${memberPhotos.length} SVG photos`);
     
-    console.log(`📸 Found ${teamPhotos.length} team photos`);
+    if (teamMembers.length === 0) return;
     
-    teamPhotos.forEach((img, index) => {
-        if (!img) return;
+    // Animate each member with delay
+    teamMembers.forEach((member, index) => {
+        if (!member) return;
         
-        try {
-            // Set optimal photo settings
-            img.loading = 'lazy';
-            img.decoding = 'async';
-            img.setAttribute('data-photo-index', index + 1);
+        setTimeout(() => {
+            // Add animation class
+            safe.addClass(member, 'animated');
             
-            // Ensure proper styling
-            safe.setStyle(img, {
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center 25%',
-                borderRadius: '50%',
-                display: 'block',
-                transition: 'transform 0.3s ease'
-            });
-            
-            // Custom positioning based on team member
-            if (index === 0) { // Спартак
-                safe.setStyle(img, { objectPosition: 'center 25%' });
-            } else if (index === 1) { // Урмат
-                safe.setStyle(img, { objectPosition: 'center 30%' });
-            } else if (index === 2) { // Елена
-                safe.setStyle(img, { objectPosition: 'center 20%' });
+            // Animate SVG photo
+            const photo = member.querySelector('.member-photo svg');
+            if (photo) {
+                safe.setStyle(photo, {
+                    opacity: '1',
+                    transform: 'scale(1)',
+                    transition: 'all 0.6s ease'
+                });
+                
+                // Animate the gradient
+                animateSVGGradient(photo, index);
             }
             
-            // Handle successful load
-            img.onload = function() {
-                if (this) {
-                    safe.setStyle(this, { opacity: '1' });
-                    console.log(`✅ Photo loaded: ${this.alt || 'Team member'}`);
-                    
-                    // Add subtle animation on load
-                    setTimeout(() => {
-                        safe.setStyle(this, {
-                            transform: 'scale(1.02)',
-                            transition: 'transform 0.5s ease'
-                        });
-                        
-                        setTimeout(() => {
-                            safe.setStyle(this, { transform: 'scale(1)' });
-                        }, 300);
-                    }, 100);
-                }
-            };
-            
-            // Handle error
-            img.onerror = function() {
-                console.warn(`❌ Failed to load photo: ${this.alt || 'Unknown'}`);
-                
-                // Extract initials from alt text
-                const alt = this.alt || '';
-                const initials = alt.match(/\b([A-Z])/g)?.join('') || 'NB';
-                
-                // Use global fallback function
-                if (typeof window.handleTeamPhotoError === 'function') {
-                    window.handleTeamPhotoError(this, initials);
-                } else {
-                    // Local fallback
-                    createPhotoFallback(this, initials);
-                }
-            };
-            
-            // Force check after 3 seconds
-            setTimeout(() => {
-                if (img && img.complete && img.naturalHeight === 0) {
-                    img.dispatchEvent(new Event('error'));
-                }
-            }, 3000);
-            
-        } catch (error) {
-            console.error('❌ Error optimizing photo:', error);
-        }
+            console.log(`✨ Animated team member ${index + 1}`);
+        }, index * 200);
     });
-    
-    console.log('✅ Team photos optimized');
 }
 
-function createPhotoFallback(imgElement, initials) {
-    if (!imgElement || !imgElement.parentElement) return;
+function animateSVGGradient(svgElement, index) {
+    if (!svgElement) return;
     
     try {
-        const parent = imgElement.parentElement;
+        // Get circle element
+        const circle = svgElement.querySelector('circle');
+        if (!circle) return;
         
-        // Create SVG fallback
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('viewBox', '0 0 200 200');
-        svg.setAttribute('width', '200');
-        svg.setAttribute('height', '200');
-        svg.style.borderRadius = '50%';
-        svg.style.background = 'linear-gradient(135deg, #0066ff, #00aaff)';
-        svg.style.display = 'block';
+        // Pulsing animation
+        let scale = 1;
+        const direction = 1;
         
-        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('x', '50%');
-        text.setAttribute('y', '50%');
-        text.setAttribute('text-anchor', 'middle');
-        text.setAttribute('dy', '0.35em');
-        text.setAttribute('fill', 'white');
-        text.setAttribute('font-size', '70');
-        text.setAttribute('font-weight', 'bold');
-        text.setAttribute('font-family', 'Arial, sans-serif');
-        text.textContent = initials;
+        const pulse = () => {
+            if (!svgElement) return;
+            
+            scale += 0.002 * direction;
+            if (scale > 1.02) direction = -1;
+            if (scale < 0.98) direction = 1;
+            
+            safe.setStyle(svgElement, {
+                transform: `scale(${scale})`,
+                transition: 'transform 2s ease-in-out'
+            });
+            
+            setTimeout(pulse, 50);
+        };
         
-        svg.appendChild(text);
+        // Start pulsing after delay
+        setTimeout(() => {
+            pulse();
+        }, 1000 + (index * 500));
         
-        // Replace image with SVG
-        parent.innerHTML = '';
-        parent.appendChild(svg);
-        safe.addClass(parent, 'photo-fallback');
-        
-        console.log(`🔄 Created photo fallback for ${initials}`);
     } catch (error) {
-        console.error('❌ Error creating photo fallback:', error);
+        console.error('❌ Error animating SVG gradient:', error);
     }
 }
 
 // ============================================================================
-// HEADER FIXES FOR ABOUT PAGE
+// HEADER SETUP FOR ABOUT PAGE
 // ============================================================================
 
-function setupHeaderFix() {
-    console.log('🔧 Setting up header fix for about page...');
+function setupHeaderForAboutPage() {
+    console.log('🔧 Setting up header for about page...');
     
     const header = safe.get('.main-header');
     if (!header) {
@@ -229,13 +171,10 @@ function setupHeaderFix() {
     }
     
     try {
-        // Убираем все сложные анимации
-        safe.setStyle(header, {
-            animation: 'none',
-            transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
-        });
+        // Add about-page class to body
+        safe.addClass(document.body, 'about-page');
         
-        // Убираем классы скрытия
+        // Ensure header is visible
         safe.removeClass(header, 'header-hidden');
         safe.setStyle(header, {
             opacity: '1',
@@ -243,25 +182,9 @@ function setupHeaderFix() {
             pointerEvents: 'auto'
         });
         
-        // Принудительно центрируем хедер
-        if (window.innerWidth > 768) {
-            safe.setStyle(header, {
-                left: '50%',
-                transform: 'translateX(-50%)'
-            });
-        } else {
-            safe.setStyle(header, {
-                left: '0',
-                transform: 'none'
-            });
-        }
-        
-        // Добавляем класс для страницы about
-        safe.addClass(document.body, 'about-page');
-        
-        console.log('✅ Header fix applied for about page');
+        console.log('✅ Header setup complete for about page');
     } catch (error) {
-        console.error('❌ Error setting up header fix:', error);
+        console.error('❌ Error setting up header:', error);
     }
 }
 
@@ -270,25 +193,22 @@ function setupHeaderFix() {
 // ============================================================================
 
 function initAbout() {
-    console.log('🎯 Initializing about page content...');
+    console.log('🎯 Initializing about page...');
     
     try {
-        // СНАЧАЛА оптимизируем фото
-        optimizeTeamPhotos();
+        // 1. Setup header
+        setupHeaderForAboutPage();
         
-        // Потом фиксим хедер
-        setupHeaderFix();
+        // 2. Animate team photos (SVG placeholders)
+        animateTeamPhotos();
         
-        // Setup all page functionalities (header is handled by header.html)
+        // 3. Setup page functionalities
         setupPageFunctionalities();
         
-        // Setup mobile optimizations
-        setupMobileOptimizations();
-        
-        // Start content animations
+        // 4. Start content animations
         startContentAnimations();
         
-        console.log('✅ About page content initialized');
+        console.log('✅ About page fully initialized');
     } catch (error) {
         console.error('❌ Error in initAbout:', error);
     }
@@ -302,25 +222,20 @@ function setupPageFunctionalities() {
     console.log('⚙️ Setting up page functionalities...');
     
     try {
-        // 1. Team Interactions
-        setupTeamInteractions();
+        // 1. Team member interactions
+        setupTeamMemberInteractions();
         
-        // 2. Story Statistics
+        // 2. Story statistics animation
         setupStoryStats();
         
-        // 3. Speck Animations
-        setupSpeckAnimations();
+        // 3. Service cards animation
+        setupServiceCards();
         
-        // 4. Image Loading (уже сделано в optimizeTeamPhotos)
+        // 4. CTA button effects
+        setupCTAEffects();
         
-        // 5. CTA Animations
-        setupCTAAnimations();
-        
-        // 6. Scroll Animations
+        // 5. Scroll animations
         setupScrollAnimations();
-        
-        // 7. Language Integration
-        setupLanguageIntegration();
         
         console.log('✅ All page functionalities initialized');
     } catch (error) {
@@ -329,96 +244,81 @@ function setupPageFunctionalities() {
 }
 
 // ============================================================================
-// TEAM INTERACTIONS
+// TEAM MEMBER INTERACTIONS
 // ============================================================================
 
-function setupTeamInteractions() {
+function setupTeamMemberInteractions() {
     const teamMembers = safe.getAll('.team-member');
     const isMobile = window.innerWidth <= 768;
     
-    console.log(`👥 Found ${teamMembers.length} team members`);
+    console.log(`👥 Setting up interactions for ${teamMembers.length} team members`);
     
     teamMembers.forEach((member, index) => {
         if (!member) return;
         
-        // Add data attribute for identification
-        try {
-            member.setAttribute('data-team-member', index + 1);
-        } catch (error) {
-            console.error('❌ Error setting attribute on team member:', error);
-        }
-        
         // Desktop hover effects
         if (!isMobile) {
-            safe.on(member, 'mouseenter', () => {
-                safe.setStyle(member, {
-                    transform: 'translateY(-10px) scale(1.02)',
-                    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                    boxShadow: '0 20px 40px rgba(0, 102, 255, 0.3)'
+            safe.on(member, 'mouseenter', function() {
+                safe.setStyle(this, {
+                    transform: 'translateY(-10px)',
+                    boxShadow: '0 20px 40px rgba(0, 102, 255, 0.3)',
+                    transition: 'all 0.3s ease'
                 });
                 
-                // Animate member photo (уменьшенный эффект)
-                const photo = member.querySelector('.member-photo');
-                if (photo) {
-                    safe.setStyle(photo, {
-                        transform: 'scale(1.05)',
-                        transition: 'transform 0.3s ease'
+                // Animate SVG photo
+                const svg = this.querySelector('.member-photo svg');
+                if (svg) {
+                    safe.setStyle(svg, {
+                        transform: 'scale(1.1) rotate(5deg)',
+                        transition: 'all 0.4s ease'
                     });
                 }
                 
-                // Animate photo inside
-                const photoImg = member.querySelector('.member-photo img');
-                if (photoImg) {
-                    safe.setStyle(photoImg, {
-                        transform: 'scale(1.02)',
-                        transition: 'transform 0.5s ease'
-                    });
-                }
+                // Animate social icons
+                const socialIcons = this.querySelectorAll('.member-social a');
+                socialIcons.forEach((icon, i) => {
+                    setTimeout(() => {
+                        safe.setStyle(icon, {
+                            transform: 'translateY(-5px)',
+                            transition: 'transform 0.3s ease'
+                        });
+                    }, i * 100);
+                });
             });
             
-            safe.on(member, 'mouseleave', () => {
-                safe.setStyle(member, {
-                    transform: 'translateY(0) scale(1)',
-                    boxShadow: ''
+            safe.on(member, 'mouseleave', function() {
+                safe.setStyle(this, {
+                    transform: 'translateY(0)',
+                    boxShadow: 'none'
                 });
                 
-                // Reset member photo
-                const photo = member.querySelector('.member-photo');
-                if (photo) {
-                    safe.setStyle(photo, { transform: 'scale(1)' });
+                // Reset SVG photo
+                const svg = this.querySelector('.member-photo svg');
+                if (svg) {
+                    safe.setStyle(svg, {
+                        transform: 'scale(1) rotate(0deg)'
+                    });
                 }
                 
-                // Reset photo inside
-                const photoImg = member.querySelector('.member-photo img');
-                if (photoImg) {
-                    safe.setStyle(photoImg, { transform: 'scale(1)' });
-                }
+                // Reset social icons
+                const socialIcons = this.querySelectorAll('.member-social a');
+                socialIcons.forEach(icon => {
+                    safe.setStyle(icon, { transform: 'translateY(0)' });
+                });
             });
         }
         
         // Mobile touch effects
         if (isMobile) {
             safe.on(member, 'touchstart', function(e) {
-                try {
-                    e.preventDefault();
-                    safe.setStyle(this, {
-                        transform: 'scale(0.98)',
-                        opacity: '0.95',
-                        transition: 'all 0.2s ease'
-                    });
-                } catch (error) {
-                    console.error('❌ Error in touchstart:', error);
-                }
-            });
-            
-            safe.on(member, 'touchend', function() {
+                e.preventDefault();
                 safe.setStyle(this, {
-                    transform: 'scale(1)',
-                    opacity: '1'
+                    transform: 'scale(0.98)',
+                    opacity: '0.9'
                 });
             });
             
-            safe.on(member, 'touchcancel', function() {
+            safe.on(member, 'touchend', function() {
                 safe.setStyle(this, {
                     transform: 'scale(1)',
                     opacity: '1'
@@ -445,20 +345,19 @@ function setupStoryStats() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                console.log('🎯 Story stats section visible, animating...');
+                console.log('🎯 Story stats visible, animating...');
                 
                 storyStats.forEach((stat, index) => {
                     if (!stat) return;
                     
                     setTimeout(() => {
-                        // Animate container
                         safe.setStyle(stat, {
                             opacity: '1',
                             transform: 'translateY(0)',
-                            transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                            transition: 'all 0.6s ease'
                         });
                         
-                        // Animate counter if not already animated
+                        // Animate counter
                         const numberElement = stat.querySelector('.stat-number');
                         if (numberElement && !numberElement.hasAttribute('data-animated')) {
                             animateCounter(numberElement);
@@ -470,51 +369,16 @@ function setupStoryStats() {
                 observer.unobserve(entry.target);
             }
         });
-    }, { 
-        threshold: 0.3,
-        rootMargin: '0px 0px -100px 0px'
-    });
+    }, { threshold: 0.3 });
     
     const storySection = safe.get('.our-story');
     if (storySection) {
-        // Set initial state
-        storyStats.forEach(stat => {
-            if (stat) {
-                safe.setStyle(stat, {
-                    opacity: '0',
-                    transform: 'translateY(30px)'
-                });
-            }
-        });
-        
-        // Start observing
         observer.observe(storySection);
-        
-        // Fallback: animate after 2 seconds if not triggered
-        setTimeout(() => {
-            if (storyStats[0] && storyStats[0].style.opacity === '0') {
-                console.log('🔄 Fallback: Triggering story stats animation');
-                storyStats.forEach((stat, index) => {
-                    if (!stat) return;
-                    
-                    setTimeout(() => {
-                        safe.setStyle(stat, {
-                            opacity: '1',
-                            transform: 'translateY(0)'
-                        });
-                    }, index * 200);
-                });
-            }
-        }, 2000);
     }
 }
 
 function animateCounter(element) {
-    // Проверка на существование элемента
-    if (!element) {
-        console.error('❌ animateCounter: element is null or undefined');
-        return;
-    }
+    if (!element) return;
     
     try {
         const text = element.textContent || '';
@@ -522,30 +386,19 @@ function animateCounter(element) {
         
         if (finalValue <= 0) return;
         
-        const duration = 1500; // 1.5 seconds
+        const duration = 1500;
         const steps = 60;
         const increment = finalValue / steps;
         let currentValue = 0;
         let step = 0;
         
         const animateStep = () => {
-            // Проверка на существование элемента в каждом кадре
-            if (!element) {
-                console.error('❌ animateCounter: element was removed during animation');
-                return;
-            }
-            
             if (step >= steps) {
                 element.textContent = text;
-                // Add celebration effect
+                // Celebration effect
                 safe.setStyle(element, { transform: 'scale(1.1)' });
                 setTimeout(() => {
-                    if (element) {
-                        safe.setStyle(element, { 
-                            transform: 'scale(1)',
-                            transition: 'transform 0.3s ease'
-                        });
-                    }
+                    safe.setStyle(element, { transform: 'scale(1)' });
                 }, 200);
                 return;
             }
@@ -557,7 +410,6 @@ function animateCounter(element) {
             requestAnimationFrame(animateStep);
         };
         
-        // Start animation
         requestAnimationFrame(animateStep);
     } catch (error) {
         console.error('❌ Error animating counter:', error);
@@ -565,19 +417,19 @@ function animateCounter(element) {
 }
 
 // ============================================================================
-// SPECK DESIGN ANIMATIONS
+// SERVICE CARDS ANIMATIONS
 // ============================================================================
 
-function setupSpeckAnimations() {
-    const speckCards = safe.getAll('.speck-service-card');
+function setupServiceCards() {
+    const serviceCards = safe.getAll('.speck-service-card');
     const isMobile = window.innerWidth <= 768;
     
-    if (speckCards.length === 0) {
-        console.log('💎 No Speck design cards found');
+    if (serviceCards.length === 0) {
+        console.log('💎 No service cards found');
         return;
     }
     
-    console.log(`💎 Found ${speckCards.length} Speck design cards`);
+    console.log(`💎 Found ${serviceCards.length} service cards`);
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry, index) => {
@@ -585,23 +437,117 @@ function setupSpeckAnimations() {
                 const delay = isMobile ? index * 100 : index * 150;
                 
                 setTimeout(() => {
-                    if (entry.target) {
-                        safe.addClass(entry.target, 'revealed');
-                        
-                        // Animate icon
-                        const icon = entry.target.querySelector('.speck-card-icon');
-                        if (icon) {
-                            safe.setStyle(icon, {
-                                transform: 'scale(1) rotate(0deg)',
-                                transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
-                            });
-                        }
-                        
-                        console.log(`✨ Revealed card ${index + 1}`);
+                    safe.addClass(entry.target, 'revealed');
+                    
+                    // Animate icon
+                    const icon = entry.target.querySelector('.speck-card-icon');
+                    if (icon) {
+                        safe.setStyle(icon, {
+                            transform: 'scale(1) rotate(0deg)',
+                            transition: 'all 0.6s ease'
+                        });
                     }
                 }, delay);
                 
                 observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: isMobile ? 0.1 : 0.2 });
+    
+    serviceCards.forEach((card, index) => {
+        if (!card) return;
+        
+        card.setAttribute('data-service-card', index + 1);
+        
+        if (card.classList.contains('reveal-left') || card.classList.contains('reveal-right')) {
+            safe.setStyle(card, { opacity: '0' });
+        }
+        
+        observer.observe(card);
+    });
+}
+
+// ============================================================================
+// CTA EFFECTS
+// ============================================================================
+
+function setupCTAEffects() {
+    const ctaButton = safe.get('.about-cta .btn');
+    
+    if (!ctaButton) {
+        console.log('📣 No CTA button found');
+        return;
+    }
+    
+    console.log('📣 Setting up CTA button effects');
+    
+    try {
+        const arrowIcon = ctaButton.querySelector('.fa-arrow-right');
+        
+        // Hover animations
+        safe.on(ctaButton, 'mouseenter', function() {
+            safe.setStyle(this, {
+                transform: 'translateY(-5px)',
+                boxShadow: '0 20px 40px rgba(0, 102, 255, 0.5)'
+            });
+            
+            if (arrowIcon) {
+                safe.setStyle(arrowIcon, { transform: 'translateX(8px)' });
+            }
+        });
+        
+        safe.on(ctaButton, 'mouseleave', function() {
+            safe.setStyle(this, {
+                transform: 'translateY(0)',
+                boxShadow: ''
+            });
+            
+            if (arrowIcon) {
+                safe.setStyle(arrowIcon, { transform: 'translateX(0)' });
+            }
+        });
+        
+        // Click effects
+        safe.on(ctaButton, 'mousedown', function() {
+            safe.setStyle(this, { transform: 'scale(0.95)' });
+        });
+        
+        safe.on(ctaButton, 'mouseup', function() {
+            safe.setStyle(this, { transform: 'translateY(-5px)' });
+        });
+        
+        // Pulsing animation
+        setInterval(() => {
+            if (document.visibilityState === 'visible') {
+                safe.addClass(ctaButton, 'pulse');
+                setTimeout(() => {
+                    safe.removeClass(ctaButton, 'pulse');
+                }, 1000);
+            }
+        }, 10000);
+        
+        console.log('✅ CTA button effects set up');
+    } catch (error) {
+        console.error('❌ Error setting up CTA effects:', error);
+    }
+}
+
+// ============================================================================
+// SCROLL ANIMATIONS
+// ============================================================================
+
+function setupScrollAnimations() {
+    const sections = safe.getAll('section');
+    const isMobile = window.innerWidth <= 768;
+    
+    if (sections.length === 0) return;
+    
+    console.log(`📜 Setting up scroll animations for ${sections.length} sections`);
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                safe.addClass(entry.target, 'animated');
             }
         });
     }, { 
@@ -609,36 +555,49 @@ function setupSpeckAnimations() {
         rootMargin: '0px 0px -50px 0px'
     });
     
-    // Set initial state and start observing
-    speckCards.forEach((card, index) => {
-        if (!card) return;
-        
-        try {
-            card.setAttribute('data-speck-card', index + 1);
-            
-            // Set initial state based on animation class
-            if (card.classList.contains('reveal-left') || card.classList.contains('reveal-right')) {
-                safe.setStyle(card, { opacity: '0' });
-            }
-            
-            observer.observe(card);
-        } catch (error) {
-            console.error('❌ Error setting up speck card:', error);
-        }
+    sections.forEach(section => {
+        if (section) observer.observe(section);
     });
+}
+
+// ============================================================================
+// CONTENT ANIMATIONS
+// ============================================================================
+
+function startContentAnimations() {
+    console.log('🎭 Starting content animations...');
     
-    // Fallback: reveal all after 3 seconds
-    setTimeout(() => {
-        speckCards.forEach((card, index) => {
-            if (card && !card.classList.contains('revealed')) {
-                safe.addClass(card, 'revealed');
-                safe.setStyle(card, {
-                    opacity: '1',
-                    transform: 'none'
-                });
-            }
-        });
-    }, 3000);
+    try {
+        // Animate mission features
+        setTimeout(() => {
+            const missionFeatures = safe.getAll('.mission-feature');
+            missionFeatures.forEach((feature, index) => {
+                setTimeout(() => {
+                    safe.setStyle(feature, {
+                        opacity: '1',
+                        transform: 'translateY(0)'
+                    });
+                }, index * 150);
+            });
+        }, 500);
+        
+        // Animate visual elements
+        setTimeout(() => {
+            const visualElements = safe.getAll('.mission-visual i, .image-placeholder i');
+            visualElements.forEach((el, index) => {
+                setTimeout(() => {
+                    safe.setStyle(el, {
+                        opacity: '1',
+                        transform: 'scale(1)'
+                    });
+                }, index * 300);
+            });
+        }, 800);
+        
+        console.log('✅ Content animations started');
+    } catch (error) {
+        console.error('❌ Error starting content animations:', error);
+    }
 }
 
 // ============================================================================
@@ -653,375 +612,24 @@ function setupMobileOptimizations() {
     console.log('📱 Setting up mobile optimizations...');
     
     try {
-        // Prevent zoom on double tap
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(event) {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, { passive: false });
+        // Add mobile class to body
+        safe.addClass(document.body, 'is-mobile');
         
-        // Improve touch feedback for interactive elements
-        const touchElements = safe.getAll('.btn, .speck-service-card, .team-member, .mission-feature, .story-stat');
-        
+        // Improve touch targets
+        const touchElements = safe.getAll('.btn, .team-member, .speck-service-card');
         touchElements.forEach(el => {
             if (!el) return;
             
-            // Increase touch target size for buttons
-            if (el.classList.contains('btn')) {
-                safe.setStyle(el, {
-                    minHeight: '44px',
-                    minWidth: '44px'
-                });
-            }
-            
-            // Add touch feedback
-            safe.on(el, 'touchstart', function() {
-                safe.setStyle(this, {
-                    transform: 'scale(0.98)',
-                    opacity: '0.9',
-                    transition: 'all 0.1s ease'
-                });
-            });
-            
-            safe.on(el, 'touchend', function() {
-                safe.setStyle(this, {
-                    transform: 'scale(1)',
-                    opacity: '1'
-                });
-            });
-            
-            safe.on(el, 'touchcancel', function() {
-                safe.setStyle(this, {
-                    transform: 'scale(1)',
-                    opacity: '1'
-                });
+            safe.setStyle(el, {
+                minHeight: '44px',
+                minWidth: '44px'
             });
         });
-        
-        // Optimize scrolling performance
-        document.body.style.webkitOverflowScrolling = 'touch';
-        document.documentElement.style.scrollBehavior = 'auto';
-        
-        // Disable hover effects on mobile
-        safe.addClass(document.body, 'is-mobile');
-        
-        // Центрируем хедер на мобильных
-        setupMobileHeaderCentering();
-        
-        // Adjust photo positioning for mobile
-        adjustPhotosForMobile();
         
         console.log('✅ Mobile optimizations applied');
     } catch (error) {
         console.error('❌ Error setting up mobile optimizations:', error);
     }
-}
-
-function setupMobileHeaderCentering() {
-    const header = safe.get('.main-header');
-    if (!header) return;
-    
-    // Принудительно центрируем хедер на мобильных
-    safe.setStyle(header, {
-        left: '0',
-        transform: 'none',
-        width: '100%',
-        maxWidth: '100%',
-        borderRadius: '0',
-        top: '0',
-        margin: '0'
-    });
-    
-    console.log('✅ Header centered for mobile');
-}
-
-function adjustPhotosForMobile() {
-    const teamPhotos = safe.getAll('.member-photo img');
-    
-    teamPhotos.forEach((img, index) => {
-        if (!img) return;
-        
-        // Adjust object-position for better mobile display
-        if (index === 0) { // Спартак
-            safe.setStyle(img, { objectPosition: 'center 20%' });
-        } else if (index === 1) { // Урмат
-            safe.setStyle(img, { objectPosition: 'center 25%' });
-        } else if (index === 2) { // Елена
-            safe.setStyle(img, { objectPosition: 'center 15%' });
-        }
-    });
-    
-    console.log('✅ Photos adjusted for mobile');
-}
-
-// ============================================================================
-// CTA BUTTON ANIMATIONS
-// ============================================================================
-
-function setupCTAAnimations() {
-    const ctaButton = safe.get('.about-cta .btn');
-    
-    if (!ctaButton) {
-        console.log('📣 No CTA button found');
-        return;
-    }
-    
-    console.log('📣 Setting up CTA button animations');
-    
-    try {
-        const arrowIcon = ctaButton.querySelector('.fa-arrow-right');
-        
-        // Hover animations
-        safe.on(ctaButton, 'mouseenter', function() {
-            safe.setStyle(this, {
-                transform: 'translateY(-5px) scale(1.05)',
-                boxShadow: '0 25px 60px rgba(0, 102, 255, 0.5)',
-                transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
-            });
-            
-            if (arrowIcon) {
-                safe.setStyle(arrowIcon, {
-                    transform: 'translateX(8px)',
-                    transition: 'transform 0.3s ease'
-                });
-            }
-        });
-        
-        safe.on(ctaButton, 'mouseleave', function() {
-            safe.setStyle(this, {
-                transform: 'translateY(0) scale(1)',
-                boxShadow: ''
-            });
-            
-            if (arrowIcon) {
-                safe.setStyle(arrowIcon, { transform: 'translateX(0)' });
-            }
-        });
-        
-        // Click/touch animations
-        safe.on(ctaButton, 'mousedown', function() {
-            safe.setStyle(this, { transform: 'scale(0.95)' });
-        });
-        
-        safe.on(ctaButton, 'mouseup', function() {
-            safe.setStyle(this, { transform: 'translateY(-5px) scale(1.05)' });
-        });
-        
-        // Pulsing animation every 10 seconds
-        let pulseInterval;
-        
-        const startPulseAnimation = () => {
-            pulseInterval = setInterval(() => {
-                if (document.visibilityState === 'visible') {
-                    safe.addClass(ctaButton, 'pulse');
-                    setTimeout(() => {
-                        safe.removeClass(ctaButton, 'pulse');
-                    }, 1000);
-                }
-            }, 10000);
-        };
-        
-        const stopPulseAnimation = () => {
-            if (pulseInterval) {
-                clearInterval(pulseInterval);
-                pulseInterval = null;
-            }
-        };
-        
-        // Start pulse animation when page is visible
-        if (document.visibilityState === 'visible') {
-            startPulseAnimation();
-        }
-        
-        // Handle page visibility changes
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') {
-                startPulseAnimation();
-            } else {
-                stopPulseAnimation();
-            }
-        });
-        
-        console.log('✅ CTA button animations set up');
-    } catch (error) {
-        console.error('❌ Error setting up CTA animations:', error);
-    }
-}
-
-// ============================================================================
-// SCROLL ANIMATIONS
-// ============================================================================
-
-function setupScrollAnimations() {
-    const sections = safe.getAll('section');
-    const isMobile = window.innerWidth <= 768;
-    
-    if (sections.length === 0) {
-        console.log('📜 No sections found for scroll animations');
-        return;
-    }
-    
-    console.log(`📜 Found ${sections.length} sections for scroll animations`);
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                safe.addClass(entry.target, 'animated');
-                
-                // Add delay for children animations
-                const animatedChildren = entry.target.querySelectorAll('.reveal-left, .reveal-right');
-                animatedChildren.forEach((child, index) => {
-                    setTimeout(() => {
-                        if (child) safe.addClass(child, 'revealed');
-                    }, index * 100);
-                });
-            }
-        });
-    }, { 
-        threshold: isMobile ? 0.1 : 0.2,
-        rootMargin: '0px 0px -100px 0px'
-    });
-    
-    sections.forEach(section => {
-        if (section) observer.observe(section);
-    });
-    
-    console.log('✅ Scroll animations set up');
-}
-
-// ============================================================================
-// LANGUAGE INTEGRATION
-// ============================================================================
-
-function setupLanguageIntegration() {
-    console.log('🌐 Setting up language integration...');
-    
-    try {
-        // Listen for language change events
-        window.addEventListener('languageChanged', function(event) {
-            console.log('🔄 Language changed to:', event.detail.lang);
-            
-            // Re-initialize animations after language change
-            setTimeout(() => {
-                if (typeof window.setupSpeckAnimations === 'function') {
-                    window.setupSpeckAnimations();
-                }
-                
-                if (typeof window.setupStoryStats === 'function') {
-                    window.setupStoryStats();
-                }
-                
-                // Update UI elements if needed
-                updateLanguageSpecificUI(event.detail.lang);
-            }, 300);
-        });
-        
-        // Initialize language switcher UI
-        updateLanguageSwitcherUI();
-        
-        console.log('✅ Language integration set up');
-    } catch (error) {
-        console.error('❌ Error setting up language integration:', error);
-    }
-}
-
-function updateLanguageSpecificUI(lang) {
-    // Update any language-specific UI elements
-    const elements = safe.getAll('[data-i18n]');
-    console.log(`🔄 Updating ${elements.length} language-specific elements`);
-    
-    // Add visual feedback for language change
-    safe.addClass(document.body, 'language-changing');
-    setTimeout(() => {
-        safe.removeClass(document.body, 'language-changing');
-    }, 500);
-}
-
-function updateLanguageSwitcherUI() {
-    const langSwitcher = safe.get('.language-switcher');
-    if (!langSwitcher) return;
-    
-    try {
-        // Get current language from localStorage or default to 'ru'
-        const currentLang = localStorage.getItem('preferredLang') || 'ru';
-        langSwitcher.setAttribute('data-current-lang', currentLang);
-        
-        // Update active buttons
-        const langButtons = safe.getAll('.lang-btn');
-        langButtons.forEach(btn => {
-            if (!btn) return;
-            safe.removeClass(btn, 'active');
-            if (btn.getAttribute('data-lang') === currentLang) {
-                safe.addClass(btn, 'active');
-            }
-        });
-    } catch (error) {
-        console.error('❌ Error updating language switcher UI:', error);
-    }
-}
-
-// ============================================================================
-// CONTENT ANIMATIONS
-// ============================================================================
-
-function startContentAnimations() {
-    console.log('🎭 Starting content animations...');
-    
-    try {
-        // Initialize Intersection Observers for animations
-        setupAllObservers();
-        
-        // Start any delayed animations
-        setTimeout(() => {
-            // Trigger any manual animations
-            const elements = safe.getAll('[data-animate-on-load]');
-            elements.forEach((el, index) => {
-                setTimeout(() => {
-                    if (el) safe.addClass(el, 'animated');
-                }, index * 200);
-            });
-        }, 500);
-        
-        console.log('✅ Content animations started');
-    } catch (error) {
-        console.error('❌ Error starting content animations:', error);
-    }
-}
-
-function setupAllObservers() {
-    // Setup observers for different animation types
-    const animationSelectors = [
-        '.reveal-left',
-        '.reveal-right',
-        '.story-stat',
-        '.mission-feature',
-        '.speck-service-card'
-    ];
-    
-    animationSelectors.forEach(selector => {
-        const elements = safe.getAll(selector);
-        if (elements.length > 0) {
-            setupAnimationObserver(selector, elements);
-        }
-    });
-}
-
-function setupAnimationObserver(selector, elements) {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && entry.target) {
-                safe.addClass(entry.target, 'animated');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    elements.forEach(el => {
-        if (el) observer.observe(el);
-    });
 }
 
 // ============================================================================
@@ -1030,56 +638,20 @@ function setupAnimationObserver(selector, elements) {
 
 // DOM Ready initialization
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 DOM fully loaded, starting about page initialization...');
+    console.log('📄 About page DOM loaded');
     
     try {
-        // Initial initialization with delay
         setTimeout(() => {
-            if (typeof initAbout === 'function') {
-                initAbout();
-            } else {
-                console.error('❌ initAbout function not found');
-            }
+            initAbout();
+            setupMobileOptimizations();
         }, 100);
     } catch (error) {
-        console.error('❌ Error in DOMContentLoaded for about page:', error);
+        console.error('❌ Error in DOMContentLoaded:', error);
     }
 });
 
-// Fallback for early load
-if (document.readyState === 'interactive' || document.readyState === 'complete') {
-    setTimeout(() => {
-        console.log('⚡ Early load detected, initializing...');
-        try {
-            if (typeof initAbout === 'function') {
-                initAbout();
-            }
-        } catch (error) {
-            console.error('❌ Error in early load initialization:', error);
-        }
-    }, 50);
-}
-
-// Global error handler for about page
-window.addEventListener('error', function(event) {
-    if (event.filename && event.filename.includes('about.js')) {
-        console.error('❌ Global error in about.js:', event.message, event.error);
-        event.preventDefault();
-    }
-});
-
-// Export functions for global access
+// Export for global access
 window.initAbout = initAbout;
-window.optimizeTeamPhotos = optimizeTeamPhotos;
-window.setupSpeckAnimations = setupSpeckAnimations;
-window.setupStoryStats = setupStoryStats;
-window.setupTeamInteractions = setupTeamInteractions;
-window.createPhotoFallback = createPhotoFallback;
+window.animateTeamPhotos = animateTeamPhotos;
 
-// Global image fallback function
-window.handleTeamPhotoError = function(img, initials) {
-    console.warn('🖼️ Global fallback for team photo:', initials);
-    createPhotoFallback(img, initials);
-};
-
-console.log('✅ about.js fully loaded and ready for execution');
+console.log('✅ about.js fully loaded');
