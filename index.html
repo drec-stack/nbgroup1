@@ -19,13 +19,12 @@
     <script src="js/parallax.js"></script>
 </head>
 <body class="home-page">
-    <!-- PARALLAX BACKGROUNDS -->
+    <!-- PARALLAX BACKGROUNDS - 4 ФОНА ДЛЯ СЕКЦИЙ -->
     <div class="parallax-bg-container">
-        <div id="parallax-bg-1" class="parallax-bg active"></div>
-        <div id="parallax-bg-2" class="parallax-bg"></div>
-        <!-- ДОБАВЛЕНЫ ДВА НОВЫХ ФОНА -->
-        <div id="parallax-bg-3" class="parallax-bg"></div>
-        <div id="parallax-bg-4" class="parallax-bg"></div>
+        <div id="parallax-bg-1" class="parallax-bg active" data-bg-index="0"></div>
+        <div id="parallax-bg-2" class="parallax-bg" data-bg-index="1"></div>
+        <div id="parallax-bg-3" class="parallax-bg" data-bg-index="2"></div>
+        <div id="parallax-bg-4" class="parallax-bg" data-bg-index="3"></div>
     </div>
 
     <!-- SCROLL PROGRESS BAR -->
@@ -36,8 +35,8 @@
     <!-- Header Container -->
     <div id="header-container"></div>
 
-    <!-- Hero Section -->
-    <section class="hero parallax-hero">
+    <!-- Hero Section - ФОН 1 -->
+    <section class="hero parallax-hero content-section" data-bg-index="0">
         <div class="container">
             <div class="parallax-content">
                 <h1>
@@ -70,8 +69,8 @@
         </div>
     </section>
 
-    <!-- Speck Design Vertical Blocks -->
-    <section class="speck-vertical-section content-section" data-bg-index="0">
+    <!-- Speck Design Vertical Blocks - ФОН 2 -->
+    <section class="speck-vertical-section content-section" data-bg-index="1">
         <div class="container">
             <div class="speck-vertical-grid">
                 <!-- Блок 1: Strategy -->
@@ -233,8 +232,8 @@
         </div>
     </section>
 
-    <!-- SPECK DESIGN MARQUEE SECTION (БЕГУЩАЯ СТРОКА КАК НА SPECKDESIGN.COM) -->
-    <section class="speck-marquee-section content-section" data-bg-index="1">
+    <!-- SPECK DESIGN MARQUEE SECTION - ФОН 3 -->
+    <section class="speck-marquee-section content-section" data-bg-index="2">
         <div class="container">
             <div class="speck-marquee-wrapper">
                 <p class="speck-marquee-label">TRUSTED BY INDUSTRY LEADERS</p>
@@ -287,8 +286,8 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats-improved content-section" data-bg-index="2">
+    <!-- Stats Section - ФОН 4 -->
+    <section class="stats-improved content-section" data-bg-index="3">
         <div class="container">
             <div class="stats-grid-improved">
                 <!-- Проекты завершено -->
@@ -338,8 +337,8 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <a href="contacts.html" class="cta-improved content-section clickable-cta" data-bg-index="3">
+    <!-- CTA Section - ФОН 1 (циклически повторяется) -->
+    <a href="contacts.html" class="cta-improved content-section clickable-cta" data-bg-index="0">
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
@@ -362,15 +361,29 @@
     <script>
         // Инициализация главной страницы
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 Главная страница загружена');
+            console.log('📄 Главная страница загружена - Speck Design Style');
             
-            // Проверка бегущей строки
-            function checkSpeckMarquee() {
+            // Проверка элементов параллакса
+            setTimeout(() => {
+                const backgrounds = document.querySelectorAll('.parallax-bg');
+                const sections = document.querySelectorAll('.content-section');
+                
+                console.log(`🔍 Found ${backgrounds.length} backgrounds and ${sections.length} content sections`);
+                
+                backgrounds.forEach((bg, index) => {
+                    console.log(`🎯 Background ${index}: ${bg.id} - active: ${bg.classList.contains('active')}`);
+                });
+                
+                sections.forEach((section, index) => {
+                    console.log(`📌 Section ${index}: ${section.className} - bg-index: ${section.dataset.bgIndex}`);
+                });
+                
+                // Проверка бегущей строки
                 const track = document.getElementById('speckMarqueeTrack');
                 if (track) {
                     console.log('✅ Speck бегущая строка найдена');
                 }
-            }
+            }, 1000);
             
             // Принудительное обновление переводов
             setTimeout(() => {
@@ -379,7 +392,23 @@
                 }
             }, 500);
             
-            checkSpeckMarquee();
+            // Проверка инициализации параллакса
+            setTimeout(() => {
+                if (window.parallaxInstance) {
+                    console.log('✅ Parallax instance initialized:', window.parallaxInstance);
+                } else {
+                    console.warn('⚠️ Parallax instance not found, check parallax.js');
+                }
+            }, 2000);
+        });
+        
+        // Обработчик для отладки
+        window.addEventListener('scroll', function() {
+            if (window.debugParallax) {
+                const scrollY = window.scrollY;
+                const activeBg = document.querySelector('.parallax-bg.active');
+                console.log(`📊 Scroll: ${scrollY}px, Active BG: ${activeBg ? activeBg.id : 'none'}`);
+            }
         });
     </script>
 </body>
