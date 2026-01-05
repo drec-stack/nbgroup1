@@ -1,4 +1,4 @@
-// home.js - Simplified Home Page Functionality
+// home.js - Главная страница с видеофоном как на Speck Design
 
 (function() {
     'use strict';
@@ -8,12 +8,13 @@
             this.isReducedMotion = window.matchMedia ? 
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
             
-            console.log('🏠 HomePage инициализирован (упрощенная версия)');
+            console.log('🏠 HomePage инициализирован с видеофоном');
             
             this.init();
         }
 
         init() {
+            this.initVideoBackground();
             this.initBasicAnimations();
             this.initStatsCounter();
             this.initParallaxBackgrounds();
@@ -23,10 +24,218 @@
             this.initSpeckVerticalBlocksModern();
             this.initEnhancedSpeckBlocks();
             this.initSpeckBlocksAnimations();
-            this.initSpeckMarquee(); // Инициализация бегущей строки Speck
+            this.initSpeckMarquee();
             
             // Отключаем логику скролла хедера для главной страницы
             this.disableHeaderScrollLogic();
+            
+            console.log('✅ Все компоненты инициализированы');
+        }
+
+        // ===== VIDEO BACKGROUND MANAGEMENT =====
+        initVideoBackground() {
+            console.log('🎬 Инициализация видеофона...');
+            
+            const video = document.querySelector('.video-bg');
+            const playButton = document.querySelector('.video-play-button');
+            
+            if (!video) {
+                console.warn('⚠️ Видео не найдено');
+                return;
+            }
+            
+            // Проверяем, поддерживает ли браузер видео
+            if (!video.canPlayType || !video.canPlayType('video/mp4')) {
+                console.log('⚠️ Браузер не поддерживает видео, показываем фолбэк');
+                this.showVideoFallback();
+                return;
+            }
+            
+            // Если пользователь предпочитает уменьшенную анимацию
+            if (this.isReducedMotion) {
+                console.log('⚠️ Пользователь предпочитает reduced motion, показываем статичное изображение');
+                video.style.display = 'none';
+                this.showVideoFallback();
+                return;
+            }
+            
+            // Обработчики событий видео
+            video.addEventListener('loadeddata', () => {
+                console.log('📹 Видео загружено, пытаемся воспроизвести...');
+                
+                // Пытаемся запустить воспроизведение
+                const playPromise = video.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            console.log('✅ Видео успешно запущено');
+                            if (playButton) playButton.style.display = 'none';
+                        })
+                        .catch(error => {
+                            console.log('⚠️ Автоплей заблокирован:', error.message);
+                            this.handleAutoplayBlocked(video, playButton);
+                        });
+                }
+            });
+            
+            video.addEventListener('canplay', () => {
+                console.log('🎞️ Видео готово к воспроизведению');
+                video.classList.add('loaded');
+            });
+            
+            video.addEventListener('error', (e) => {
+                console.error('❌ Ошибка загрузки видео:', e);
+                this.handleVideoError(video);
+            });
+            
+            video.addEventListener('playing', () => {
+                console.log('▶️ Видео воспроизводится');
+                if (playButton) playButton.style.display = 'none';
+            });
+            
+            // Обработчик для кнопки воспроизведения
+            if (playButton) {
+                playButton.addEventListener('click', () => {
+                    video.play()
+                        .then(() => {
+                            console.log('✅ Видео запущено по клику');
+                            playButton.classList.remove('show');
+                            setTimeout(() => {
+                                playButton.style.display = 'none';
+                            }, 300);
+                        })
+                        .catch(error => {
+                            console.log('❌ Не удалось запустить видео:', error);
+                        });
+                });
+            }
+            
+            // Проверяем, играет ли видео через 2 секунды
+            setTimeout(() => {
+                if (video.paused && this.isMobileDevice()) {
+                    console.log('📱 Видео не играет на мобильном, показываем кнопку');
+                    this.handleAutoplayBlocked(video, playButton);
+                }
+            }, 2000);
+            
+            // Оптимизация производительности
+            this.optimizeVideoPerformance(video);
+        }
+        
+        handleAutoplayBlocked(video, playButton) {
+            if (playButton) {
+                playButton.style.display = 'flex';
+                playButton.classList.add('show');
+                
+                // Добавляем обработчик для touch-устройств
+                if (this.isTouchDevice()) {
+                    const handleUserInteraction = () => {
+                        video.play()
+                            .then(() => {
+                                playButton.classList.remove('show');
+                                setTimeout(() => {
+                                    playButton.style.display = 'none';
+                                }, 300);
+                            })
+                            .catch(e => {
+                                console.log('⚠️ Не удалось запустить видео после взаимодействия:', e);
+                            });
+                        
+                        // Удаляем обработчики после первого взаимодействия
+                        document.removeEventListener('touchstart', handleUserInteraction);
+                        document.removeEventListener('click', handleUserInteraction);
+                    };
+                    
+                    document.addEventListener('touchstart', handleUserInteraction, { once: true });
+                    document.addEventListener('click', handleUserInteraction, { once: true });
+                }
+            }
+        }
+        
+        handleVideoError(video) {
+            console.log('🖼️ Показываем фолбэк изображение');
+            video.style.display = 'none';
+            
+            // Показываем параллакс-фон
+            const parallaxBg = document.getElementById('parallax-bg-1');
+            if (parallaxBg) {
+                parallaxBg.classList.add('active');
+                parallaxBg.style.opacity = '1';
+            }
+            
+            // Скрываем кнопку воспроизведения
+            const playButton = document.querySelector('.video-play-button');
+            if (playButton) {
+                playButton.style.display = 'none';
+            }
+        }
+        
+        showVideoFallback() {
+            const videoContainer = document.querySelector('.video-bg-container');
+            if (videoContainer) {
+                videoContainer.style.backgroundImage = 'url(assets/images/parallax/bg-1.jpg)';
+                videoContainer.style.backgroundSize = 'cover';
+                videoContainer.style.backgroundPosition = 'center';
+            }
+            
+            const video = document.querySelector('.video-bg');
+            if (video) {
+                video.style.display = 'none';
+            }
+            
+            const playButton = document.querySelector('.video-play-button');
+            if (playButton) {
+                playButton.style.display = 'none';
+            }
+        }
+        
+        optimizeVideoPerformance(video) {
+            // Устанавливаем атрибуты для оптимизации
+            video.setAttribute('preload', 'auto');
+            video.setAttribute('playsinline', '');
+            video.setAttribute('webkit-playsinline', '');
+            video.setAttribute('muted', '');
+            
+            // Для мобильных устройств уменьшаем качество
+            if (this.isMobileDevice()) {
+                video.setAttribute('preload', 'metadata');
+                
+                // Останавливаем видео когда оно не видно
+                this.setupVideoVisibilityControl(video);
+            }
+        }
+        
+        setupVideoVisibilityControl(video) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Видео видно - воспроизводим
+                        if (video.paused) {
+                            video.play().catch(e => {
+                                console.log('⚠️ Не удалось возобновить видео:', e);
+                            });
+                        }
+                    } else {
+                        // Видео не видно - приостанавливаем
+                        if (!video.paused) {
+                            video.pause();
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            observer.observe(video);
+        }
+        
+        isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+        
+        isTouchDevice() {
+            return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         }
 
         // ===== SPECK MARQUEE INITIALIZATION =====
@@ -39,14 +248,14 @@
                 return;
             }
 
-            // Добавляем класс для отладки (можно удалить)
+            // Добавляем класс для отладки
             document.body.classList.add('debug-marquee');
 
             // Проверяем, работает ли CSS анимация
             setTimeout(() => {
                 const style = window.getComputedStyle(speckMarqueeTrack);
                 
-                // Если анимация не работает (пользователь отключил или браузер не поддерживает)
+                // Если анимация не работает
                 if (style.animationName === 'none' || this.isReducedMotion) {
                     console.log('🚀 Запуск JS fallback для Speck бегущей строки');
                     this.runSpeckMarqueeJS(speckMarqueeTrack);
@@ -57,12 +266,12 @@
                 }
             }, 100);
 
-            // Проверка через 2 секунды на всякий случай
+            // Проверка через 2 секунды
             setTimeout(() => {
                 const track = document.querySelector('.speck-marquee-track');
                 if (track) {
                     const rect = track.getBoundingClientRect();
-                    const isMoving = rect.left !== 0; // Простая проверка движения
+                    const isMoving = rect.left !== 0;
                     
                     if (!isMoving && !track.classList.contains('js-fallback-active')) {
                         console.log('⚠️ Бегущая строка не двигается, запускаем JS fallback');
@@ -99,7 +308,7 @@
             content.innerHTML = originalContent + originalContent + originalContent;
             
             let position = 0;
-            const speed = -1.2; // Скорость прокрутки
+            const speed = -1.2;
             let animationId = null;
             let isPaused = false;
             let lastTime = 0;
@@ -113,7 +322,7 @@
                 if (deltaTime > interval && !isPaused) {
                     position += speed;
                     
-                    // Сбрасываем позицию, когда прокрутили 1/3 контента
+                    // Сбрасываем позицию
                     const contentWidth = content.scrollWidth / 3;
                     if (position <= -contentWidth) {
                         position = 0;
@@ -188,7 +397,7 @@
             // Убираем все классы скрытия
             header.classList.remove('header-hidden', 'header-minimized', 'header-scrolled');
             
-            // Фиксируем позицию как на странице услуг
+            // Фиксируем позицию
             header.style.opacity = '1';
             header.style.transform = 'translateX(-50%) translateY(0)';
             header.style.pointerEvents = 'auto';
