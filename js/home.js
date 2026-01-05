@@ -1,5 +1,7 @@
-// home.js - ПОЛНЫЙ ФАЙЛ ДЛЯ ВИДЕОФОНА И АНИМАЦИЙ
-console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
+// home.js - ПОЛНАЯ ВЕРСИЯ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ NB GROUP TECH
+// Версия: 4.0.0 | РАБОЧИЙ ВИДЕОФОН
+
+console.log('🎬 home.js загружен - РАБОЧАЯ ВЕРСИЯ 4.0');
 
 (function() {
     'use strict';
@@ -10,49 +12,55 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
             
             console.log('🏠 HomePage инициализирован');
+            console.log('📱 Пользовательский агент:', navigator.userAgent);
             
-            // КРИТИЧЕСКИ ВАЖНО: сначала видео
-            this.initVideoBackground();
+            // КРИТИЧЕСКИ ВАЖНО: сначала инициализируем видео
+            this.initializeVideoBackground();
             
-            // Затем остальное
-            this.init();
+            // Затем остальные компоненты
+            this.initialize();
         }
 
-        // ===== ВИДЕОФОН (ГЛАВНОЕ) =====
-        initVideoBackground() {
-            console.log('🎬 ИНИЦИАЛИЗАЦИЯ ВИДЕОФОНА...');
+        // ===== ВИДЕОФОН - ПОЛНАЯ РЕАЛИЗАЦИЯ =====
+        initializeVideoBackground() {
+            console.log('🎬 НАЧАЛО ИНИЦИАЛИЗАЦИИ ВИДЕОФОНА');
             
-            // 1. Находим элементы
-            this.video = document.querySelector('.video-bg');
-            this.videoContainer = document.querySelector('.video-bg-container');
+            this.video = document.getElementById('video-background');
+            this.videoContainer = document.getElementById('video-background-container');
             this.playButton = document.getElementById('video-play-button');
+            this.muteButton = document.getElementById('video-mute-button');
             
+            // Проверяем существование элементов
             if (!this.video) {
-                console.error('❌ Видео .video-bg не найдено в DOM!');
-                this.showVideoFallback();
+                console.error('❌ КРИТИЧЕСКАЯ ОШИБКА: Видео элемент не найден в DOM!');
+                console.error('Проверьте ID элемента в HTML');
+                this.activateVideoFallback();
                 return;
             }
             
-            console.log('✅ Видео найдено:', this.video);
-            console.log('✅ Источник:', this.video.querySelector('source')?.src || this.video.src);
+            console.log('✅ Видео элемент найден:', this.video);
+            console.log('✅ Источник видео:', this.video.querySelector('source')?.src || this.video.src);
             
-            // 2. Устанавливаем критические атрибуты
+            // Шаг 1: Установка критически важных атрибутов
             this.setupVideoAttributes();
             
-            // 3. Гарантируем видимость
+            // Шаг 2: Гарантия видимости видео
             this.ensureVideoVisibility();
             
-            // 4. Настраиваем обработчики
+            // Шаг 3: Настройка обработчиков событий
             this.setupVideoEventHandlers();
             
-            // 5. Запускаем воспроизведение
+            // Шаг 4: Настройка элементов управления
+            this.setupVideoControls();
+            
+            // Шаг 5: Запуск воспроизведения
             this.startVideoPlayback();
             
             console.log('✅ Видеофон инициализирован');
         }
         
         setupVideoAttributes() {
-            // Критически важные атрибуты
+            // Критически важные атрибуты для всех браузеров
             this.video.setAttribute('playsinline', '');
             this.video.setAttribute('webkit-playsinline', '');
             this.video.setAttribute('muted', '');
@@ -60,29 +68,33 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
             this.video.setAttribute('autoplay', '');
             this.video.setAttribute('preload', 'auto');
             
-            // Убеждаемся что есть источник
-            if (!this.video.querySelector('source') && !this.video.src) {
-                console.log('➕ Добавляем source элемент...');
-                const source = document.createElement('source');
-                source.src = 'assets/videos/hero-bg.mp4';
-                source.type = 'video/mp4';
-                this.video.appendChild(source);
-            }
+            // Устанавливаем muted для гарантии автозапуска
+            this.video.muted = true;
+            this.video.loop = true;
+            
+            console.log('✅ Атрибуты видео установлены');
+            console.log('- muted:', this.video.muted);
+            console.log('- loop:', this.video.loop);
+            console.log('- autoplay:', this.video.autoplay);
+            console.log('- playsinline:', this.video.hasAttribute('playsinline'));
         }
         
         ensureVideoVisibility() {
-            // Принудительно устанавливаем видимость
+            // Принудительно устанавливаем видимость видео
             this.video.style.display = 'block';
             this.video.style.visibility = 'visible';
             this.video.style.opacity = '1';
             this.video.style.position = 'fixed';
             this.video.style.top = '0';
             this.video.style.left = '0';
-            this.video.style.width = '100vw';
-            this.video.style.height = '100vh';
-            this.video.style.zIndex = '-1';
+            this.video.style.width = '100%';
+            this.video.style.height = '100%';
+            this.video.style.zIndex = '-100';
             this.video.style.objectFit = 'cover';
+            this.video.style.pointerEvents = 'none';
+            this.video.style.userSelect = 'none';
             
+            // Принудительно устанавливаем видимость контейнера
             if (this.videoContainer) {
                 this.videoContainer.style.display = 'block';
                 this.videoContainer.style.visibility = 'visible';
@@ -91,176 +103,286 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
             
             // Принудительно загружаем видео
             this.video.load();
+            
+            console.log('✅ Видимость видео гарантирована');
         }
         
         setupVideoEventHandlers() {
-            // Когда видео загружено
+            // Событие: видео загружено
             this.video.addEventListener('loadeddata', () => {
-                console.log('📹 Видео загружено, размер:', 
-                    this.video.videoWidth + 'x' + this.video.videoHeight);
-                this.video.classList.add('loaded');
+                console.log('📹 Видео загружено');
+                console.log('- Размер:', this.video.videoWidth + 'x' + this.video.videoHeight);
+                console.log('- Длительность:', this.video.duration + ' секунд');
+                console.log('- Буферизировано:', this.video.buffered.length > 0);
+                
+                // Добавляем класс для стилизации
+                this.video.classList.add('video-loaded');
             });
             
-            // Когда видео играет
+            // Событие: видео может начать воспроизведение
+            this.video.addEventListener('canplay', () => {
+                console.log('🎵 Видео готово к воспроизведению');
+            });
+            
+            // Событие: видео воспроизводится
             this.video.addEventListener('playing', () => {
                 console.log('▶️ Видео воспроизводится');
-                this.hidePlayButton();
+                this.hideVideoControls();
             });
             
-            // Ошибка видео
+            // Событие: видео приостановлено
+            this.video.addEventListener('pause', () => {
+                console.log('⏸️ Видео приостановлено');
+                
+                // Для мобильных устройств показываем кнопку воспроизведения
+                if (this.isMobileDevice() && !this.video.ended) {
+                    console.log('📱 Показываем кнопку воспроизведения для мобильных');
+                    this.showVideoPlayButton();
+                }
+            });
+            
+            // Событие: видео закончило воспроизведение
+            this.video.addEventListener('ended', () => {
+                console.log('⏹️ Видео закончило воспроизведение');
+                // Перезапускаем видео (зациклено)
+                this.video.currentTime = 0;
+                this.video.play().catch(e => console.log('Автоповтор:', e.name));
+            });
+            
+            // Событие: ошибка видео
             this.video.addEventListener('error', (e) => {
                 console.error('❌ ОШИБКА ВИДЕО:');
-                console.error('- Код:', this.video.error?.code);
+                console.error('- Код ошибки:', this.video.error?.code);
                 console.error('- Сообщение:', this.video.error?.message);
                 console.error('- Событие:', e);
                 
-                this.showVideoFallback();
+                this.activateVideoFallback();
             });
             
-            // Когда видео может играть без остановок
-            this.video.addEventListener('canplaythrough', () => {
-                console.log('✅ Видео готово к бесперебойному воспроизведению');
+            // Событие: изменение готовности видео
+            this.video.addEventListener('readystatechange', () => {
+                console.log('🔄 Готовность видео изменилась:', this.video.readyState);
             });
+            
+            console.log('✅ Обработчики событий видео установлены');
+        }
+        
+        setupVideoControls() {
+            // Кнопка воспроизведения/паузы
+            if (this.playButton) {
+                this.playButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    console.log('🖱️ Клик по кнопке воспроизведения');
+                    
+                    if (this.video.paused || this.video.ended) {
+                        this.video.play()
+                            .then(() => {
+                                console.log('✅ Видео запущено по клику');
+                                this.hideVideoControls();
+                            })
+                            .catch(error => {
+                                console.error('❌ Не удалось запустить видео:', error);
+                                this.showVideoPlayButton();
+                            });
+                    } else {
+                        this.video.pause();
+                        this.playButton.innerHTML = '<i class="fas fa-play"></i>';
+                        console.log('⏸️ Видео приостановлено по клику');
+                    }
+                });
+            }
+            
+            // Кнопка звука
+            if (this.muteButton) {
+                this.muteButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    this.video.muted = !this.video.muted;
+                    this.muteButton.innerHTML = this.video.muted ? 
+                        '<i class="fas fa-volume-mute"></i>' : 
+                        '<i class="fas fa-volume-up"></i>';
+                    
+                    console.log(this.video.muted ? '🔇 Звук выключен' : '🔊 Звук включен');
+                });
+            }
+            
+            console.log('✅ Элементы управления видео настроены');
         }
         
         startVideoPlayback() {
-            console.log('🚀 Запускаем воспроизведение видео...');
+            console.log('🚀 ЗАПУСК ВОСПРОИЗВЕДЕНИЯ ВИДЕО...');
             
+            // Даем время DOM полностью загрузиться
             setTimeout(() => {
-                // Попробуем запустить сразу
-                const playPromise = this.video.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise
-                        .then(() => {
-                            console.log('✅ Видео успешно запущено автоматически');
-                            this.video.style.opacity = '1';
-                            this.hidePlayButton();
-                        })
-                        .catch(error => {
-                            console.log('⚠️ Автоплей заблокирован:', error.name);
-                            
-                            // Показываем кнопку воспроизведения для мобильных
-                            if (this.isMobileDevice()) {
-                                this.showPlayButton();
-                                this.enableMobileInteraction();
-                            }
-                        });
-                }
-                
-                // Проверим через 3 секунды
-                setTimeout(() => {
-                    if (this.video.paused) {
-                        console.log('⏸️ Видео все еще приостановлено через 3 секунды');
-                        if (this.isMobileDevice()) {
-                            this.showPlayButton();
-                        }
+                try {
+                    console.log('🔄 Попытка автоматического запуска...');
+                    const playPromise = this.video.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise
+                            .then(() => {
+                                console.log('✅ Автозапуск видео успешен');
+                                this.video.style.opacity = '1';
+                                this.hideVideoControls();
+                                
+                                // Гарантируем видимость
+                                this.video.style.display = 'block';
+                                this.video.style.visibility = 'visible';
+                            })
+                            .catch(error => {
+                                console.log('⚠️ Автозапуск заблокирован:', error.name);
+                                console.log('🔍 Причина:', error.message);
+                                
+                                // Для мобильных устройств
+                                if (this.isMobileDevice()) {
+                                    console.log('📱 Это мобильное устройство, настраиваем взаимодействие');
+                                    this.showVideoPlayButton();
+                                    this.setupMobileVideoInteraction();
+                                } else {
+                                    console.log('💻 Это десктоп, показываем кнопку воспроизведения');
+                                    this.showVideoPlayButton();
+                                }
+                            });
                     }
-                }, 3000);
-            }, 200);
+                } catch (error) {
+                    console.error('❌ Непредвиденная ошибка при запуске видео:', error);
+                    this.activateVideoFallback();
+                }
+            }, 500); // Задержка для стабильности
+            
+            // Дополнительная проверка через 2 секунды
+            setTimeout(() => {
+                if (this.video.paused && !this.video.ended) {
+                    console.log('⏸️ Видео все еще приостановлено через 2 секунды');
+                    
+                    if (this.isMobileDevice()) {
+                        this.showVideoPlayButton();
+                    } else {
+                        // Пробуем запустить снова на десктопе
+                        this.video.play().catch(e => {
+                            console.log('Повторный запуск:', e.name);
+                            this.showVideoPlayButton();
+                        });
+                    }
+                }
+            }, 2000);
+            
+            // Финальная гарантия видимости через 3 секунды
+            setTimeout(() => {
+                this.video.style.display = 'block';
+                this.video.style.visibility = 'visible';
+                this.video.style.opacity = '1';
+                console.log('✅ Финальная гарантия видимости активирована');
+            }, 3000);
         }
         
-        showPlayButton() {
-            if (!this.playButton) return;
+        showVideoPlayButton() {
+            if (!this.playButton || !this.playButton.parentElement) return;
             
-            this.playButton.classList.add('show');
+            const controlsContainer = this.playButton.parentElement;
+            controlsContainer.style.display = 'flex';
             this.playButton.style.display = 'flex';
+            this.playButton.classList.add('show');
             
-            this.playButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('🖱️ Клик по кнопке воспроизведения');
-                
-                this.video.play()
-                    .then(() => {
-                        console.log('✅ Видео запущено по клику');
-                        this.hidePlayButton();
-                    })
-                    .catch(error => {
-                        console.error('❌ Не удалось запустить видео:', error);
-                        this.showVideoFallback();
-                    });
-            });
+            console.log('🔼 Кнопка воспроизведения показана');
         }
         
-        hidePlayButton() {
-            if (this.playButton) {
-                this.playButton.classList.remove('show');
-                this.playButton.style.display = 'none';
+        hideVideoControls() {
+            if (this.playButton && this.playButton.parentElement) {
+                const controlsContainer = this.playButton.parentElement;
+                controlsContainer.style.display = 'none';
+                console.log('🔽 Элементы управления видео скрыты');
             }
         }
         
-        enableMobileInteraction() {
-            const handleInteraction = () => {
-                console.log('📱 Пользователь взаимодействовал со страницей');
+        setupMobileVideoInteraction() {
+            console.log('📱 Настройка взаимодействия для мобильных устройств');
+            
+            const handleFirstInteraction = () => {
+                console.log('👆 Пользователь взаимодействовал со страницей');
                 
                 this.video.play()
                     .then(() => {
                         console.log('✅ Видео запущено после взаимодействия');
-                        this.hidePlayButton();
+                        this.hideVideoControls();
                     })
-                    .catch(e => {
-                        console.log('❌ Не удалось запустить видео:', e);
+                    .catch(error => {
+                        console.log('❌ Не удалось запустить видео после взаимодействия:', error.name);
+                        this.showVideoPlayButton();
                     });
                 
                 // Удаляем обработчики после первого взаимодействия
-                document.removeEventListener('touchstart', handleInteraction);
-                document.removeEventListener('click', handleInteraction);
+                document.removeEventListener('click', handleFirstInteraction);
+                document.removeEventListener('touchstart', handleFirstInteraction);
+                document.removeEventListener('scroll', handleFirstInteraction);
+                document.removeEventListener('keydown', handleFirstInteraction);
             };
             
-            document.addEventListener('touchstart', handleInteraction, { once: true });
-            document.addEventListener('click', handleInteraction, { once: true });
+            // Добавляем обработчики для различных типов взаимодействия
+            document.addEventListener('click', handleFirstInteraction, { once: true });
+            document.addEventListener('touchstart', handleFirstInteraction, { once: true });
+            document.addEventListener('scroll', handleFirstInteraction, { once: true });
+            document.addEventListener('keydown', handleFirstInteraction, { once: true });
+            
+            console.log('✅ Обработчики взаимодействия установлены');
         }
         
-        showVideoFallback() {
-            console.log('🖼️ Активируем фолбэк (статичное изображение)');
+        activateVideoFallback() {
+            console.log('🖼️ Активация резервного изображения');
             
             // Скрываем видео
             this.video.style.display = 'none';
             
-            // Устанавливаем фоновое изображение
+            // Показываем резервное изображение
             const fallback = document.querySelector('.video-fallback');
             if (fallback) {
                 fallback.style.display = 'block';
             }
             
-            // Скрываем кнопку воспроизведения
-            this.hidePlayButton();
+            // Скрываем элементы управления
+            this.hideVideoControls();
             
             // Добавляем класс для CSS
-            document.body.classList.add('no-video');
+            document.body.classList.add('video-fallback-active');
+            
+            console.log('✅ Резервное изображение активировано');
         }
         
         isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            console.log('📱 Проверка устройства:', isMobile ? 'Мобильное' : 'Десктоп');
+            return isMobile;
         }
 
-        // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
-        init() {
+        // ===== ИНИЦИАЛИЗАЦИЯ ОСТАЛЬНЫХ КОМПОНЕНТОВ =====
+        initialize() {
             console.log('🚀 Инициализация остальных компонентов...');
             
-            this.initBasicAnimations();
-            this.initStatsCounter();
-            this.initSpeckVerticalBlocks();
-            this.initSpeckMarquee();
-            this.initScrollProgress();
-            this.initParallaxBackgrounds();
-            this.initClickableStats();
-            this.initCTAClickable();
+            this.initializeBasicAnimations();
+            this.initializeStatsCounter();
+            this.initializeSpeckVerticalBlocks();
+            this.initializeSpeckMarquee();
+            this.initializeScrollProgress();
+            this.initializeParallaxBackgrounds();
+            this.initializeClickableStats();
+            this.initializeCTAClickable();
             
             console.log('✅ Все компоненты инициализированы');
         }
 
         // ===== SPECK VERTICAL BLOCKS =====
-        initSpeckVerticalBlocks() {
-            console.log('🎨 Инициализация вертикальных блоков...');
-            
+        initializeSpeckVerticalBlocks() {
             const speckBlocks = document.querySelectorAll('.speck-vertical-block');
             
             if (!speckBlocks.length) {
                 console.log('⚠️ Вертикальные блоки не найдены');
                 return;
             }
+            
+            console.log('🎨 Инициализация ' + speckBlocks.length + ' вертикальных блоков');
             
             if (window.IntersectionObserver) {
                 const blockObserver = new IntersectionObserver((entries) => {
@@ -287,19 +409,17 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
                     });
                 }, 500);
             }
-            
-            console.log('✅ Инициализировано ' + speckBlocks.length + ' вертикальных блоков');
         }
 
         // ===== SPECK MARQUEE =====
-        initSpeckMarquee() {
-            console.log('🎯 Инициализация Speck бегущей строки...');
-            
+        initializeSpeckMarquee() {
             const speckMarqueeTrack = document.getElementById('speckMarqueeTrack');
             if (!speckMarqueeTrack) {
                 console.warn('❌ Speck marquee track не найден');
                 return;
             }
+
+            console.log('🎯 Инициализация Speck бегущей строки');
 
             // Проверяем работает ли CSS анимация
             setTimeout(() => {
@@ -425,10 +545,15 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
         }
 
         // ===== STATS COUNTER =====
-        initStatsCounter() {
+        initializeStatsCounter() {
             const statNumbers = document.querySelectorAll('.stat-number-improved');
             
-            if (!statNumbers.length) return;
+            if (!statNumbers.length) {
+                console.log('⚠️ Статистические числа не найдены');
+                return;
+            }
+            
+            console.log('📊 Инициализация счетчика статистики: ' + statNumbers.length + ' элементов');
             
             const animateNumber = (element, target) => {
                 let current = 0;
@@ -502,8 +627,15 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
         }
 
         // ===== БАЗОВЫЕ АНИМАЦИИ =====
-        initBasicAnimations() {
+        initializeBasicAnimations() {
             const sections = document.querySelectorAll('.content-section');
+            
+            if (!sections.length) {
+                console.log('⚠️ Секции контента не найдены');
+                return;
+            }
+            
+            console.log('🎭 Инициализация базовых анимаций: ' + sections.length + ' секций');
             
             const checkSections = () => {
                 const windowHeight = window.innerHeight || 
@@ -529,10 +661,15 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
         }
 
         // ===== PARALLAX BACKGROUNDS =====
-        initParallaxBackgrounds() {
+        initializeParallaxBackgrounds() {
             const contentSections = document.querySelectorAll('.content-section[data-bg-index]');
             
-            if (!contentSections.length) return;
+            if (!contentSections.length) {
+                console.log('⚠️ Секции с parallax фоном не найдены');
+                return;
+            }
+            
+            console.log('🌄 Инициализация parallax фонов: ' + contentSections.length + ' секций');
             
             const checkBackgrounds = () => {
                 const windowHeight = window.innerHeight || 
@@ -568,9 +705,14 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
         }
 
         // ===== SCROLL PROGRESS =====
-        initScrollProgress() {
+        initializeScrollProgress() {
             const progressBar = document.querySelector('.scroll-progress-bar');
-            if (!progressBar) return;
+            if (!progressBar) {
+                console.log('⚠️ Прогресс-бар скролла не найден');
+                return;
+            }
+            
+            console.log('📏 Инициализация прогресс-бара скролла');
             
             const updateProgress = () => {
                 const windowHeight = window.innerHeight;
@@ -586,8 +728,15 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
         }
 
         // ===== CLICKABLE ELEMENTS =====
-        initClickableStats() {
+        initializeClickableStats() {
             const statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
+            
+            if (!statCards.length) {
+                console.log('⚠️ Кликабельные карточки статистики не найдены');
+                return;
+            }
+            
+            console.log('🖱️ Инициализация кликабельных элементов: ' + statCards.length + ' карточек');
             
             statCards.forEach(card => {
                 if (!card.hasAttribute('tabindex')) {
@@ -605,9 +754,14 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
             });
         }
 
-        initCTAClickable() {
+        initializeCTAClickable() {
             const ctaSection = document.querySelector('.cta-improved.clickable-cta');
-            if (!ctaSection) return;
+            if (!ctaSection) {
+                console.log('⚠️ Кликабельная CTA секция не найдена');
+                return;
+            }
+            
+            console.log('📞 Инициализация кликабельной CTA секции');
             
             if (!ctaSection.hasAttribute('tabindex')) {
                 ctaSection.setAttribute('tabindex', '0');
@@ -625,24 +779,47 @@ console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
     }
 
     // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
-    function initHomePage() {
+    function initializeHomePage() {
+        // Проверяем, что мы на главной странице
         if (!document.body || !document.body.classList.contains('home-page')) {
+            console.log('⚠️ Это не главная страница, home.js не будет инициализирован');
             return;
         }
         
+        console.log('📄 ИНИЦИАЛИЗАЦИЯ ГЛАВНОЙ СТРАНИЦЫ NB GROUP TECH');
+        console.log('🔧 Состояние загрузки DOM:', document.readyState);
+        
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('📄 DOM загружен, создаем HomePage');
-                window.homePage = new HomePage();
+                console.log('✅ DOM полностью загружен');
+                console.log('🎬 Создание экземпляра HomePage...');
+                try {
+                    window.homePage = new HomePage();
+                    console.log('🎉 Главная страница успешно инициализирована!');
+                } catch (error) {
+                    console.error('❌ Ошибка при инициализации HomePage:', error);
+                }
             });
         } else {
-            console.log('📄 DOM уже загружен, создаем HomePage');
-            window.homePage = new HomePage();
+            console.log('✅ DOM уже загружен');
+            console.log('🎬 Создание экземпляра HomePage...');
+            try {
+                window.homePage = new HomePage();
+                console.log('🎉 Главная страница успешно инициализирована!');
+            } catch (error) {
+                console.error('❌ Ошибка при инициализации HomePage:', error);
+            }
         }
     }
     
-    // Автоматическая инициализация
-    initHomePage();
+    // Автоматическая инициализация при загрузке скрипта
+    console.log('🚀 Запуск инициализации главной страницы...');
+    initializeHomePage();
+    
+    // Экспортируем класс для глобального доступа (если нужно)
+    if (typeof window !== 'undefined') {
+        window.HomePage = HomePage;
+    }
     
     console.log('✅ home.js полностью загружен и готов к работе');
     
