@@ -1,5 +1,4 @@
-// home.js - Главная страница с поддержкой видеофона
-console.log('🏠 HomePage инициализирован (с видеофоном)');
+// home.js - Simplified Home Page Functionality
 
 (function() {
     'use strict';
@@ -9,162 +8,25 @@ console.log('🏠 HomePage инициализирован (с видеофоно
             this.isReducedMotion = window.matchMedia ? 
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
             
-            this.videoBackground = null;
-            this.isVideoPlaying = false;
-            
-            console.log('🏠 HomePage инициализирован');
+            console.log('🏠 HomePage инициализирован (упрощенная версия)');
             
             this.init();
         }
 
         init() {
-            this.initVideoBackground();
             this.initBasicAnimations();
             this.initStatsCounter();
+            this.initParallaxBackgrounds();
+            this.initMarqueeAnimations();
             this.initClickableStats();
             this.initCTAClickable();
             this.initSpeckVerticalBlocksModern();
             this.initEnhancedSpeckBlocks();
             this.initSpeckBlocksAnimations();
-            this.initSpeckMarquee();
+            this.initSpeckMarquee(); // Инициализация бегущей строки Speck
             
             // Отключаем логику скролла хедера для главной страницы
             this.disableHeaderScrollLogic();
-            
-            console.log('✅ HomePage инициализирован полностью');
-        }
-
-        // ===== ИНИЦИАЛИЗАЦИЯ ВИДЕОФОНА =====
-        initVideoBackground() {
-            console.log('🎬 Инициализация видеофона...');
-            
-            const video = document.getElementById('heroVideo');
-            if (!video) {
-                console.warn('⚠️ Видеофон не найден, используем фолбэк');
-                this.showFallbackBackground();
-                return;
-            }
-            
-            this.videoBackground = video;
-            
-            // Проверяем, поддерживает ли браузер автоматическое воспроизведение
-            this.setupVideoPlayback(video);
-            
-            // Проверка загрузки видео
-            video.addEventListener('loadeddata', () => {
-                console.log('✅ Видеофон загружен успешно');
-                this.isVideoPlaying = !video.paused;
-            });
-            
-            video.addEventListener('error', (e) => {
-                console.error('❌ Ошибка загрузки видео:', e);
-                this.showFallbackBackground();
-            });
-            
-            // Добавляем класс при успешной загрузке
-            video.addEventListener('canplaythrough', () => {
-                document.body.classList.add('video-loaded');
-            });
-        }
-
-        setupVideoPlayback(video) {
-            // Попытка автоматического воспроизведения
-            const playPromise = video.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    console.log('✅ Видеофон воспроизводится автоматически');
-                    this.isVideoPlaying = true;
-                }).catch(error => {
-                    console.log('⚠️ Автозапуск видео предотвращен браузером:', error.name);
-                    
-                    // Показываем кнопку для ручного запуска
-                    this.showVideoPlayButton();
-                    
-                    // Пытаемся запустить при взаимодействии пользователя
-                    this.setupUserInteractionVideoStart();
-                });
-            }
-        }
-
-        showVideoPlayButton() {
-            // Создаем кнопку для запуска видео
-            const playButton = document.createElement('button');
-            playButton.className = 'video-play-button';
-            playButton.innerHTML = '<i class="fas fa-play"></i> Включить видеофон';
-            playButton.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                padding: 12px 24px;
-                background: rgba(0, 102, 255, 0.9);
-                color: white;
-                border: none;
-                border-radius: 8px;
-                cursor: pointer;
-                z-index: 1000;
-                font-family: inherit;
-                font-weight: 600;
-                backdrop-filter: blur(10px);
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                transition: all 0.3s ease;
-            `;
-            
-            playButton.addEventListener('click', () => {
-                this.videoBackground.play().then(() => {
-                    playButton.style.display = 'none';
-                    this.isVideoPlaying = true;
-                }).catch(e => {
-                    console.error('❌ Не удалось запустить видео:', e);
-                });
-            });
-            
-            document.body.appendChild(playButton);
-            
-            // Скрываем кнопку через 10 секунд если видео не нужно
-            setTimeout(() => {
-                if (playButton.parentNode && this.isVideoPlaying === false) {
-                    playButton.style.opacity = '0.5';
-                }
-            }, 10000);
-        }
-
-        setupUserInteractionVideoStart() {
-            const startVideoOnInteraction = () => {
-                if (this.videoBackground && this.videoBackground.paused) {
-                    this.videoBackground.play().then(() => {
-                        console.log('✅ Видео запущено после взаимодействия пользователя');
-                        this.isVideoPlaying = true;
-                        
-                        // Удаляем все обработчики
-                        document.removeEventListener('click', startVideoOnInteraction);
-                        document.removeEventListener('scroll', startVideoOnInteraction);
-                        document.removeEventListener('touchstart', startVideoOnInteraction);
-                    }).catch(e => {
-                        console.error('❌ Не удалось запустить видео:', e);
-                    });
-                }
-            };
-            
-            // Добавляем обработчики для различных взаимодействий
-            document.addEventListener('click', startVideoOnInteraction, { once: true });
-            document.addEventListener('scroll', startVideoOnInteraction, { once: true });
-            document.addEventListener('touchstart', startVideoOnInteraction, { once: true });
-        }
-
-        showFallbackBackground() {
-            console.log('🖼️ Используем фолбэк фон');
-            document.body.classList.add('no-video');
-            
-            const videoContainer = document.querySelector('.video-background-container');
-            if (videoContainer) {
-                videoContainer.style.backgroundImage = 'url(assets/images/parallax/bg-1.jpg)';
-                videoContainer.style.backgroundSize = 'cover';
-                videoContainer.style.backgroundPosition = 'center';
-                videoContainer.style.backgroundColor = '#0a0a0a';
-            }
         }
 
         // ===== SPECK MARQUEE INITIALIZATION =====
@@ -176,6 +38,9 @@ console.log('🏠 HomePage инициализирован (с видеофоно
                 console.warn('❌ Speck marquee track не найден');
                 return;
             }
+
+            // Добавляем класс для отладки (можно удалить)
+            document.body.classList.add('debug-marquee');
 
             // Проверяем, работает ли CSS анимация
             setTimeout(() => {
@@ -676,6 +541,142 @@ console.log('🏠 HomePage инициализирован (с видеофоно
             window.addEventListener('resize', checkSections);
             checkSections();
         }
+
+        // ===== PARALLAX BACKGROUNDS =====
+        initParallaxBackgrounds() {
+            const contentSections = document.querySelectorAll('.content-section[data-bg-index]');
+            
+            if (!contentSections.length) return;
+            
+            const checkBackgrounds = () => {
+                const windowHeight = window.innerHeight || 
+                                   document.documentElement.clientHeight || 
+                                   document.body.clientHeight;
+                let activeIndex = 0;
+                
+                for (const section of contentSections) {
+                    const rect = section.getBoundingClientRect();
+                    const isVisible = (
+                        rect.top <= windowHeight * 0.5 &&
+                        rect.bottom >= windowHeight * 0.5
+                    );
+                    
+                    if (isVisible) {
+                        activeIndex = parseInt(section.getAttribute('data-bg-index')) || 0;
+                        break;
+                    }
+                }
+                
+                const backgrounds = document.querySelectorAll('.parallax-bg');
+                backgrounds.forEach(bg => bg.classList.remove('active'));
+                
+                const targetBg = document.getElementById('parallax-bg-' + (parseInt(activeIndex) + 1));
+                if (targetBg) {
+                    targetBg.classList.add('active');
+                }
+            };
+            
+            window.addEventListener('scroll', checkBackgrounds);
+            window.addEventListener('resize', checkBackgrounds);
+            checkBackgrounds();
+        }
+
+        // ===== MARQUEE ANIMATIONS (старая бегущая строка) =====
+        initMarqueeAnimations() {
+            const marqueeTracks = document.querySelectorAll('.marquee-track:not(#speckMarqueeTrack)');
+            
+            if (!marqueeTracks.length) return;
+
+            setTimeout(() => {
+                let isWorking = false;
+                
+                for (const track of marqueeTracks) {
+                    const style = track.currentStyle || window.getComputedStyle(track);
+                    const transform = style.transform || style.webkitTransform || style.mozTransform;
+                    
+                    if (transform && transform !== 'none' && 
+                        transform !== 'matrix(1, 0, 0, 1, 0, 0)' &&
+                        transform !== 'matrix(1, 0, 0, 1, 0, 0, 0)') {
+                        isWorking = true;
+                        break;
+                    }
+                }
+                
+                if (!isWorking) {
+                    console.log('🎯 Старая бегущая строка не работает через CSS, запускаем JS fallback...');
+                    this.initMarqueeJSFallback();
+                } else {
+                    console.log('✅ Старая бегущая строка работает через CSS');
+                }
+            }, 1000);
+        }
+
+        initMarqueeJSFallback() {
+            console.log('🚀 Запуск JavaScript fallback для старой бегущей строки...');
+            
+            const marqueeTracks = document.querySelectorAll('.marquee-track:not(#speckMarqueeTrack)');
+            
+            marqueeTracks.forEach((track, index) => {
+                const isReverse = index === 1;
+                
+                track.style.animation = 'none';
+                track.style.webkitAnimation = 'none';
+                track.style.mozAnimation = 'none';
+                track.style.oAnimation = 'none';
+                
+                let position = 0;
+                const speed = isReverse ? 2 : -2;
+                const contentWidth = track.scrollWidth / 3;
+                let animationId = null;
+                let isPaused = false;
+                
+                const animate = () => {
+                    if (isPaused) {
+                        animationId = window.requestAnimationFrame ? 
+                            requestAnimationFrame(animate) : 
+                            setTimeout(animate, 16);
+                        return;
+                    }
+                    
+                    position += speed;
+                    
+                    if (position <= -contentWidth) {
+                        position = 0;
+                    } else if (position >= 0) {
+                        position = -contentWidth;
+                    }
+                    
+                    if ('transform' in track.style || 
+                        'webkitTransform' in track.style ||
+                        'mozTransform' in track.style) {
+                        track.style.transform = 'translateX(' + position + 'px)';
+                        track.style.webkitTransform = 'translateX(' + position + 'px)';
+                        track.style.mozTransform = 'translateX(' + position + 'px)';
+                    } else {
+                        track.style.position = 'relative';
+                        track.style.left = position + 'px';
+                    }
+                    
+                    animationId = window.requestAnimationFrame ? 
+                        requestAnimationFrame(animate) : 
+                        setTimeout(animate, 16);
+                };
+                
+                animate();
+                
+                track.addEventListener('mouseenter', () => {
+                    isPaused = true;
+                });
+                
+                track.addEventListener('mouseleave', () => {
+                    isPaused = false;
+                });
+                
+                track._animationId = animationId;
+                
+                console.log('✅ Трек ' + (index + 1) + ' запущен через JS fallback');
+            });
+        }
     }
 
     // ===== GLOBAL INITIALIZATION =====
@@ -693,11 +694,42 @@ console.log('🏠 HomePage инициализирован (с видеофоно
         }
     }
     
+    // Проверка работы бегущей строки
+    function checkMarqueeWorking() {
+        setTimeout(() => {
+            const tracks = document.querySelectorAll('.marquee-track');
+            let isWorking = false;
+            
+            for (const track of tracks) {
+                const style = track.currentStyle || window.getComputedStyle(track);
+                const transform = style.transform || style.webkitTransform || style.mozTransform;
+                
+                if (transform && transform !== 'none' && 
+                    transform !== 'matrix(1, 0, 0, 1, 0, 0)' &&
+                    transform !== 'matrix(1, 0, 0, 1, 0, 0, 0)') {
+                    isWorking = true;
+                    break;
+                }
+            }
+            
+            if (!isWorking && window.homePage) {
+                console.warn('⚠️ Бегущая строка не работает, запускаем fallback...');
+                window.homePage.initSpeckMarquee();
+            }
+        }, 2000);
+    }
+    
     // Экспорт функций
     window.initHomePage = initHomePage;
+    window.checkMarqueeWorking = checkMarqueeWorking;
     
     // Автоматическая инициализация
     initHomePage();
+    
+    window.addEventListener('load', checkMarqueeWorking);
+    
+    // Резервный запуск через 5 секунд
+    setTimeout(checkMarqueeWorking, 5000);
     
     console.log('✅ home.js загружен и готов к работе');
 })();
