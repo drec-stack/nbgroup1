@@ -1,5 +1,5 @@
-// home.js - ПОЛНЫЙ ФАЙЛ С ИСПРАВЛЕННЫМ ВИДЕОФОНОМ
-console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБОЧИЙ ВИДЕОФОН (ИСПРАВЛЕННЫЙ)');
+// home.js - ПОЛНЫЙ ФАЙЛ ДЛЯ ВИДЕОФОНА И АНИМАЦИЙ
+console.log('🎬 home.js загружен - ПОЛНАЯ ВЕРСИЯ');
 
 (function() {
     'use strict';
@@ -11,10 +11,10 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             
             console.log('🏠 HomePage инициализирован');
             
-            // СНАЧАЛА видео - КРИТИЧЕСКИ ВАЖНОЕ
+            // КРИТИЧЕСКИ ВАЖНО: сначала видео
             this.initVideoBackground();
             
-            // Потом остальное
+            // Затем остальное
             this.init();
         }
 
@@ -22,93 +22,37 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
         initVideoBackground() {
             console.log('🎬 ИНИЦИАЛИЗАЦИЯ ВИДЕОФОНА...');
             
-            // 1. НАЙДЕМ ВИДЕО В ДОМ
+            // 1. Находим элементы
             this.video = document.querySelector('.video-bg');
             this.videoContainer = document.querySelector('.video-bg-container');
+            this.playButton = document.getElementById('video-play-button');
             
             if (!this.video) {
-                console.error('❌ ОШИБКА: Видео .video-bg не найдено в DOM!');
-                console.log('🔍 Ищем все video элементы:', document.querySelectorAll('video'));
-                
-                // Попробуем найти любое видео
-                const allVideos = document.querySelectorAll('video');
-                if (allVideos.length > 0) {
-                    this.video = allVideos[0];
-                    this.video.classList.add('video-bg');
-                    console.log('✅ Нашли видео, добавили класс:', this.video);
-                } else {
-                    this.showVideoFallback();
-                    return;
-                }
-            }
-            
-            if (!this.videoContainer) {
-                console.warn('⚠️ Контейнер .video-bg-container не найден');
-                this.videoContainer = this.video.parentElement;
-                if (this.videoContainer) {
-                    this.videoContainer.classList.add('video-bg-container');
-                    console.log('✅ Используем родительский контейнер:', this.videoContainer);
-                }
+                console.error('❌ Видео .video-bg не найдено в DOM!');
+                this.showVideoFallback();
+                return;
             }
             
             console.log('✅ Видео найдено:', this.video);
-            console.log('✅ Контейнер:', this.videoContainer);
             console.log('✅ Источник:', this.video.querySelector('source')?.src || this.video.src);
             
-            // КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: УБИРАЕМ display: none
-            this.removeDisplayNone();
-            
-            // 2. УСТАНОВИМ КРИТИЧЕСКИЕ АТРИБУТЫ
+            // 2. Устанавливаем критические атрибуты
             this.setupVideoAttributes();
             
-            // 3. ПРИНУДИТЕЛЬНО ПОКАЖЕМ ВИДЕО
-            this.forceShowVideo();
+            // 3. Гарантируем видимость
+            this.ensureVideoVisibility();
             
-            // 4. НАСТРОИМ ОБРАБОТЧИКИ
+            // 4. Настраиваем обработчики
             this.setupVideoEventHandlers();
             
-            // 5. ЗАПУСТИМ ВИДЕО
+            // 5. Запускаем воспроизведение
             this.startVideoPlayback();
             
             console.log('✅ Видеофон инициализирован');
         }
         
-        // КРИТИЧЕСКИЙ МЕТОД: УБИРАЕМ display: none
-        removeDisplayNone() {
-            console.log('🚫 Удаляем display: none у видео...');
-            
-            // Удаляем inline display: none
-            if (this.video.style.display === 'none') {
-                console.log('⚠️ Найден inline display: none, удаляем...');
-                this.video.style.display = 'block';
-            }
-            
-            // Принудительно устанавливаем видимость
-            this.video.style.cssText += `
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            `;
-            
-            // Также для контейнера
-            if (this.videoContainer) {
-                this.videoContainer.style.cssText += `
-                    display: block !important;
-                    visibility: visible !important;
-                    opacity: 1 !important;
-                `;
-            }
-            
-            // Добавляем класс для принудительного отображения
-            this.video.classList.add('video-force-visible');
-            
-            console.log('✅ display: none удален');
-        }
-        
         setupVideoAttributes() {
-            console.log('⚙️ Устанавливаем атрибуты видео...');
-            
-            // КРИТИЧЕСКИ ВАЖНЫЕ АТРИБУТЫ
+            // Критически важные атрибуты
             this.video.setAttribute('playsinline', '');
             this.video.setAttribute('webkit-playsinline', '');
             this.video.setAttribute('muted', '');
@@ -116,7 +60,7 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             this.video.setAttribute('autoplay', '');
             this.video.setAttribute('preload', 'auto');
             
-            // Убедимся что есть источник
+            // Убеждаемся что есть источник
             if (!this.video.querySelector('source') && !this.video.src) {
                 console.log('➕ Добавляем source элемент...');
                 const source = document.createElement('source');
@@ -124,102 +68,32 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
                 source.type = 'video/mp4';
                 this.video.appendChild(source);
             }
-            
-            // СТИЛИ ДЛЯ ГАРАНТИИ
-            this.video.style.cssText += `
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100vw !important;
-                height: 100vh !important;
-                object-fit: cover !important;
-                object-position: center !important;
-                z-index: -1 !important;
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                filter: brightness(0.7) !important;
-                pointer-events: none !important;
-            `;
         }
         
-        forceShowVideo() {
-            console.log('👁️ Принудительно показываем видео...');
+        ensureVideoVisibility() {
+            // Принудительно устанавливаем видимость
+            this.video.style.display = 'block';
+            this.video.style.visibility = 'visible';
+            this.video.style.opacity = '1';
+            this.video.style.position = 'fixed';
+            this.video.style.top = '0';
+            this.video.style.left = '0';
+            this.video.style.width = '100vw';
+            this.video.style.height = '100vh';
+            this.video.style.zIndex = '-1';
+            this.video.style.objectFit = 'cover';
             
-            // Гарантируем что контейнер правильно стилизован
             if (this.videoContainer) {
-                this.videoContainer.style.cssText += `
-                    position: fixed !important;
-                    top: 0 !important;
-                    left: 0 !important;
-                    width: 100vw !important;
-                    height: 100vh !important;
-                    z-index: -1 !important;
-                    overflow: hidden !important;
-                    pointer-events: none !important;
-                    display: block !important;
-                    visibility: visible !important;
-                `;
+                this.videoContainer.style.display = 'block';
+                this.videoContainer.style.visibility = 'visible';
+                this.videoContainer.style.opacity = '1';
             }
             
-            // Добавим оверлей для читаемости текста
-            let overlay = document.querySelector('.video-overlay');
-            if (!overlay) {
-                overlay = document.createElement('div');
-                overlay.className = 'video-overlay';
-                overlay.style.cssText = `
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(
-                        to bottom,
-                        rgba(10, 10, 10, 0.3) 0%,
-                        rgba(10, 10, 10, 0.5) 100%
-                    );
-                    z-index: 0;
-                `;
-                
-                if (this.videoContainer) {
-                    this.videoContainer.appendChild(overlay);
-                } else {
-                    this.video.parentNode.insertBefore(overlay, this.video);
-                }
-            }
-            
-            // Принудительно загрузим видео
+            // Принудительно загружаем видео
             this.video.load();
-            
-            // Запускаем проверку через 100мс
-            setTimeout(() => {
-                this.checkVideoVisibility();
-            }, 100);
-        }
-        
-        checkVideoVisibility() {
-            const computedStyle = window.getComputedStyle(this.video);
-            console.log('🔍 Проверяем видимость видео:');
-            console.log('- display:', computedStyle.display);
-            console.log('- visibility:', computedStyle.visibility);
-            console.log('- opacity:', computedStyle.opacity);
-            
-            if (computedStyle.display === 'none') {
-                console.warn('⚠️ Видео все еще display: none! Принудительно исправляем...');
-                this.video.style.display = 'block !important';
-                
-                // Еще одна попытка через setTimeout
-                setTimeout(() => {
-                    this.video.style.display = 'block';
-                    this.video.style.visibility = 'visible';
-                    this.video.style.opacity = '1';
-                }, 50);
-            }
         }
         
         setupVideoEventHandlers() {
-            console.log('🎮 Настраиваем обработчики видео...');
-            
             // Когда видео загружено
             this.video.addEventListener('loadeddata', () => {
                 console.log('📹 Видео загружено, размер:', 
@@ -252,7 +126,6 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
         startVideoPlayback() {
             console.log('🚀 Запускаем воспроизведение видео...');
             
-            // Убедимся что видео видимо перед запуском
             setTimeout(() => {
                 // Попробуем запустить сразу
                 const playPromise = this.video.play();
@@ -262,15 +135,14 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
                         .then(() => {
                             console.log('✅ Видео успешно запущено автоматически');
                             this.video.style.opacity = '1';
+                            this.hidePlayButton();
                         })
                         .catch(error => {
                             console.log('⚠️ Автоплей заблокирован:', error.name);
                             
-                            // Покажем кнопку воспроизведения
-                            this.showPlayButton();
-                            
-                            // На мобильных ждем взаимодействия
+                            // Показываем кнопку воспроизведения для мобильных
                             if (this.isMobileDevice()) {
+                                this.showPlayButton();
                                 this.enableMobileInteraction();
                             }
                         });
@@ -280,96 +152,41 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
                 setTimeout(() => {
                     if (this.video.paused) {
                         console.log('⏸️ Видео все еще приостановлено через 3 секунды');
-                        this.showPlayButton();
+                        if (this.isMobileDevice()) {
+                            this.showPlayButton();
+                        }
                     }
                 }, 3000);
             }, 200);
         }
         
         showPlayButton() {
-            let playButton = document.querySelector('.video-play-button');
+            if (!this.playButton) return;
             
-            if (!playButton) {
-                console.log('➕ Создаем кнопку воспроизведения...');
-                playButton = document.createElement('button');
-                playButton.className = 'video-play-button';
-                playButton.innerHTML = '<i class="fas fa-play"></i>';
-                playButton.setAttribute('aria-label', 'Воспроизвести видеофон');
-                playButton.setAttribute('title', 'Нажмите для воспроизведения видео');
-                
-                playButton.style.cssText = `
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 70px;
-                    height: 70px;
-                    background: rgba(0, 102, 255, 0.85);
-                    border-radius: 50%;
-                    border: none;
-                    color: white;
-                    font-size: 28px;
-                    cursor: pointer;
-                    z-index: 100;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-                    backdrop-filter: blur(10px);
-                `;
-                
-                playButton.addEventListener('mouseenter', () => {
-                    playButton.style.transform = 'translate(-50%, -50%) scale(1.1)';
-                    playButton.style.background = 'rgba(0, 102, 255, 1)';
-                });
-                
-                playButton.addEventListener('mouseleave', () => {
-                    playButton.style.transform = 'translate(-50%, -50%) scale(1)';
-                    playButton.style.background = 'rgba(0, 102, 255, 0.85)';
-                });
-                
-                playButton.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('🖱️ Клик по кнопке воспроизведения');
-                    
-                    this.video.play()
-                        .then(() => {
-                            console.log('✅ Видео запущено по клику');
-                            playButton.style.opacity = '0';
-                            setTimeout(() => {
-                                playButton.style.display = 'none';
-                            }, 300);
-                        })
-                        .catch(error => {
-                            console.error('❌ Не удалось запустить видео:', error);
-                            this.showVideoFallback();
-                        });
-                });
-                
-                // Добавляем в контейнер или body
-                if (this.videoContainer) {
-                    this.videoContainer.appendChild(playButton);
-                } else {
-                    document.body.appendChild(playButton);
-                }
-            }
+            this.playButton.classList.add('show');
+            this.playButton.style.display = 'flex';
             
-            playButton.style.display = 'flex';
-            playButton.style.opacity = '1';
-            
-            // Анимация пульсации
-            playButton.style.animation = 'pulse 2s infinite';
+            this.playButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🖱️ Клик по кнопке воспроизведения');
+                
+                this.video.play()
+                    .then(() => {
+                        console.log('✅ Видео запущено по клику');
+                        this.hidePlayButton();
+                    })
+                    .catch(error => {
+                        console.error('❌ Не удалось запустить видео:', error);
+                        this.showVideoFallback();
+                    });
+            });
         }
         
         hidePlayButton() {
-            const playButton = document.querySelector('.video-play-button');
-            if (playButton) {
-                playButton.style.opacity = '0';
-                setTimeout(() => {
-                    playButton.style.display = 'none';
-                }, 300);
+            if (this.playButton) {
+                this.playButton.classList.remove('show');
+                this.playButton.style.display = 'none';
             }
         }
         
@@ -402,22 +219,16 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             this.video.style.display = 'none';
             
             // Устанавливаем фоновое изображение
-            if (this.videoContainer) {
-                this.videoContainer.style.backgroundImage = 'url("assets/images/parallax/bg-1.jpg")';
-                this.videoContainer.style.backgroundSize = 'cover';
-                this.videoContainer.style.backgroundPosition = 'center';
-                this.videoContainer.style.backgroundColor = '#0a0a0a';
+            const fallback = document.querySelector('.video-fallback');
+            if (fallback) {
+                fallback.style.display = 'block';
             }
             
             // Скрываем кнопку воспроизведения
             this.hidePlayButton();
             
-            // Активируем параллакс-фон как фолбэк
-            const parallaxBg = document.getElementById('parallax-bg-1');
-            if (parallaxBg) {
-                parallaxBg.classList.add('active');
-                parallaxBg.style.opacity = '1';
-            }
+            // Добавляем класс для CSS
+            document.body.classList.add('no-video');
         }
         
         isMobileDevice() {
@@ -430,82 +241,54 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             
             this.initBasicAnimations();
             this.initStatsCounter();
+            this.initSpeckVerticalBlocks();
+            this.initSpeckMarquee();
+            this.initScrollProgress();
             this.initParallaxBackgrounds();
             this.initClickableStats();
             this.initCTAClickable();
-            this.initSpeckVerticalBlocksModern();
-            this.initEnhancedSpeckBlocks();
-            this.initSpeckBlocksAnimations();
-            this.initSpeckMarquee();
             
             console.log('✅ Все компоненты инициализированы');
-            
-            // Добавляем глобальную функцию для отладки
-            this.addDebugFunction();
         }
-        
-        addDebugFunction() {
-            window.debugVideo = () => {
-                console.log('🔍 === ОТЛАДКА ВИДЕОФОНА ===');
-                
-                const video = document.querySelector('.video-bg');
-                if (!video) {
-                    console.error('❌ Видео не найдено в DOM');
-                    console.log('🔍 Ищем все видео элементы:', document.querySelectorAll('video'));
-                    return;
-                }
-                
-                console.log('📋 ИНФОРМАЦИЯ О ВИДЕО:');
-                console.log('- Элемент:', video);
-                console.log('- Тег:', video.tagName);
-                console.log('- Классы:', video.className);
-                console.log('- ID:', video.id);
-                
-                console.log('🎨 СТИЛИ:');
-                const styles = window.getComputedStyle(video);
-                console.log('- display:', styles.display);
-                console.log('- visibility:', styles.visibility);
-                console.log('- opacity:', styles.opacity);
-                console.log('- position:', styles.position);
-                console.log('- zIndex:', styles.zIndex);
-                console.log('- width:', styles.width);
-                console.log('- height:', styles.height);
-                
-                console.log('📹 СВОЙСТВА ВИДЕО:');
-                console.log('- currentSrc:', video.currentSrc);
-                console.log('- src:', video.src);
-                console.log('- readyState:', video.readyState);
-                console.log('- error:', video.error);
-                console.log('- error код:', video.error?.code);
-                console.log('- error сообщение:', video.error?.message);
-                console.log('- paused:', video.paused);
-                console.log('- muted:', video.muted);
-                console.log('- loop:', video.loop);
-                console.log('- autoplay:', video.autoplay);
-                console.log('- videoWidth:', video.videoWidth);
-                console.log('- videoHeight:', video.videoHeight);
-                
-                console.log('🔗 ИСТОЧНИКИ:');
-                const sources = video.querySelectorAll('source');
-                sources.forEach((source, i) => {
-                    console.log(`  Source ${i + 1}:`, {
-                        src: source.src,
-                        type: source.type
+
+        // ===== SPECK VERTICAL BLOCKS =====
+        initSpeckVerticalBlocks() {
+            console.log('🎨 Инициализация вертикальных блоков...');
+            
+            const speckBlocks = document.querySelectorAll('.speck-vertical-block');
+            
+            if (!speckBlocks.length) {
+                console.log('⚠️ Вертикальные блоки не найдены');
+                return;
+            }
+            
+            if (window.IntersectionObserver) {
+                const blockObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry, index) => {
+                        if (entry.isIntersecting) {
+                            setTimeout(() => {
+                                entry.target.classList.add('visible');
+                            }, index * 200);
+                            blockObserver.unobserve(entry.target);
+                        }
                     });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
                 });
                 
-                console.log('👁️ ВИДИМОСТЬ:');
-                const rect = video.getBoundingClientRect();
-                console.log('- Bounding rect:', rect);
-                console.log('- Видимый:', rect.width > 0 && rect.height > 0);
-                
-                console.log('🔄 Пробуем запустить видео...');
-                video.play()
-                    .then(() => console.log('✅ Видео успешно запущено'))
-                    .catch(e => console.log('❌ Ошибка запуска:', e.message));
-            };
+                speckBlocks.forEach(block => blockObserver.observe(block));
+            } else {
+                setTimeout(() => {
+                    speckBlocks.forEach((block, index) => {
+                        setTimeout(() => {
+                            block.classList.add('visible');
+                        }, index * 200);
+                    });
+                }, 500);
+            }
             
-            console.log('🐛 debugVideo() доступна в консоли браузера');
+            console.log('✅ Инициализировано ' + speckBlocks.length + ' вертикальных блоков');
         }
 
         // ===== SPECK MARQUEE =====
@@ -518,6 +301,7 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
                 return;
             }
 
+            // Проверяем работает ли CSS анимация
             setTimeout(() => {
                 const style = window.getComputedStyle(speckMarqueeTrack);
                 
@@ -530,6 +314,7 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
                 }
             }, 100);
 
+            // Проверка через 2 секунды
             setTimeout(() => {
                 const track = document.querySelector('.speck-marquee-track');
                 if (track) {
@@ -562,6 +347,7 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             track.style.animation = 'none';
             track.style.webkitAnimation = 'none';
             
+            // Дублируем контент для бесконечного эффекта
             const originalContent = content.innerHTML;
             content.innerHTML = originalContent + originalContent + originalContent;
             
@@ -638,178 +424,11 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             track.addEventListener('touchend', resumeMarquee);
         }
 
-        // ===== SPECK VERTICAL BLOCKS =====
-        initSpeckVerticalBlocksModern() {
-            console.log('🎨 Инициализация вертикальных блоков...');
-            
-            const speckBlocks = document.querySelectorAll('.speck-vertical-block');
-            
-            if (!speckBlocks.length) {
-                console.log('⚠️ Вертикальные блоки не найдены');
-                return;
-            }
-            
-            if (window.IntersectionObserver) {
-                const blockObserver = new IntersectionObserver((entries) => {
-                    entries.forEach((entry, index) => {
-                        if (entry.isIntersecting) {
-                            setTimeout(() => {
-                                entry.target.classList.add('visible');
-                            }, index * 200);
-                            blockObserver.unobserve(entry.target);
-                        }
-                    });
-                }, {
-                    threshold: 0.1,
-                    rootMargin: '0px 0px -50px 0px'
-                });
-                
-                speckBlocks.forEach(block => blockObserver.observe(block));
-            } else {
-                setTimeout(() => {
-                    speckBlocks.forEach((block, index) => {
-                        setTimeout(() => {
-                            block.classList.add('visible');
-                        }, index * 200);
-                    });
-                }, 500);
-            }
-            
-            console.log('✅ Инициализировано ' + speckBlocks.length + ' вертикальных блоков');
-        }
-
-        initEnhancedSpeckBlocks() {
-            console.log('🎨 Инициализация улучшенных Speck блоков...');
-            
-            const featureColumns = document.querySelectorAll('.speck-feature-column');
-            
-            featureColumns.forEach(column => {
-                column.classList.add('clickable-column');
-                
-                if (!column.hasAttribute('tabindex')) {
-                    column.setAttribute('tabindex', '0');
-                }
-                
-                if (!column.hasAttribute('role')) {
-                    column.setAttribute('role', 'button');
-                }
-                
-                const columnTitle = column.querySelector('.speck-column-title');
-                if (columnTitle && !column.hasAttribute('aria-label')) {
-                    const block = column.closest('.speck-vertical-block');
-                    const blockTitle = block?.querySelector('.speck-block-title')?.textContent || 'Секция';
-                    column.setAttribute('aria-label', 'Перейти к ' + columnTitle.textContent + ' в разделе ' + blockTitle);
-                }
-                
-                column.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    column.classList.add('column-clicked');
-                    setTimeout(() => {
-                        column.classList.remove('column-clicked');
-                    }, 300);
-                    
-                    const block = column.closest('.speck-vertical-block');
-                    const blockIndex = block ? block.getAttribute('data-block-index') : '0';
-                    const blockTitles = ['strategy', 'design', 'engineering', 'manufacturing'];
-                    const blockTitle = blockTitles[parseInt(blockIndex)] || 'services';
-                    
-                    console.log('🔗 Навигация: Блок ' + blockIndex + ' (' + blockTitle + ')');
-                    
-                    setTimeout(() => {
-                        window.location.href = 'services.html#' + blockTitle;
-                    }, 350);
-                });
-                
-                column.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
-                        e.preventDefault();
-                        column.click();
-                    }
-                });
-            });
-            
-            console.log('✅ Инициализировано ' + featureColumns.length + ' колонок');
-        }
-
-        initSpeckBlocksAnimations() {
-            console.log('✨ Инициализация анимаций Speck блоков...');
-            
-            setTimeout(() => {
-                document.body.classList.add('speck-animations-loaded');
-            }, 1000);
-            
-            const featureItems = document.querySelectorAll('.speck-feature-item');
-            featureItems.forEach((item, i) => {
-                item.style.setProperty('--item-index', i);
-            });
-            
-            if (window.IntersectionObserver) {
-                const columnObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('scroll-animated');
-                        }
-                    });
-                }, {
-                    threshold: 0.2,
-                    rootMargin: '0px 0px -50px 0px'
-                });
-                
-                const columns = document.querySelectorAll('.speck-feature-column');
-                columns.forEach(col => columnObserver.observe(col));
-            }
-            
-            setTimeout(() => {
-                const columns = document.querySelectorAll('.speck-feature-column');
-                columns.forEach((col, i) => {
-                    setTimeout(() => {
-                        col.style.animationPlayState = 'running';
-                    }, i * 100);
-                });
-            }, 500);
-            
-            console.log('✅ Анимации Speck блоков инициализированы');
-        }
-
         // ===== STATS COUNTER =====
         initStatsCounter() {
             const statNumbers = document.querySelectorAll('.stat-number-improved');
             
             if (!statNumbers.length) return;
-            
-            const hasNoCSS = document.documentElement.classList.contains('no-csstransforms');
-            if (hasNoCSS) {
-                statNumbers.forEach(stat => {
-                    const target = parseInt(stat.getAttribute('data-target')) || 0;
-                    stat.textContent = target;
-                    stat.classList.add('animated');
-                });
-                return;
-            }
-            
-            const checkVisibility = () => {
-                const windowHeight = window.innerHeight || 
-                                   document.documentElement.clientHeight || 
-                                   document.body.clientHeight;
-                
-                statNumbers.forEach(stat => {
-                    const rect = stat.getBoundingClientRect();
-                    const isVisible = (
-                        rect.top <= windowHeight * 0.8 &&
-                        rect.bottom >= 0
-                    );
-                    
-                    if (isVisible && !stat.classList.contains('animated')) {
-                        const target = parseInt(stat.getAttribute('data-target')) || 0;
-                        if (target > 0) {
-                            this.animateNumber(stat, target);
-                            stat.classList.add('animated');
-                        }
-                    }
-                });
-            };
             
             const animateNumber = (element, target) => {
                 let current = 0;
@@ -855,48 +474,31 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
                 }
             };
             
-            window.addEventListener('scroll', checkVisibility);
-            window.addEventListener('resize', checkVisibility);
-            checkVisibility();
-        }
-
-        // ===== CLICKABLE STATS CARDS =====
-        initClickableStats() {
-            const statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
-            
-            statCards.forEach(card => {
-                if (!card.hasAttribute('tabindex')) {
-                    card.setAttribute('tabindex', '0');
-                }
+            const checkVisibility = () => {
+                const windowHeight = window.innerHeight || 
+                                   document.documentElement.clientHeight || 
+                                   document.body.clientHeight;
                 
-                card.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.keyCode === 13) {
-                        e.preventDefault();
-                        if (card.href) {
-                            window.location.href = card.href;
+                statNumbers.forEach(stat => {
+                    const rect = stat.getBoundingClientRect();
+                    const isVisible = (
+                        rect.top <= windowHeight * 0.8 &&
+                        rect.bottom >= 0
+                    );
+                    
+                    if (isVisible && !stat.classList.contains('animated')) {
+                        const target = parseInt(stat.getAttribute('data-target')) || 0;
+                        if (target > 0) {
+                            animateNumber(stat, target);
+                            stat.classList.add('animated');
                         }
                     }
                 });
-            });
-        }
-
-        // ===== CLICKABLE CTA SECTION =====
-        initCTAClickable() {
-            const ctaSection = document.querySelector('.cta-improved.clickable-cta');
-            if (!ctaSection) return;
+            };
             
-            if (!ctaSection.hasAttribute('tabindex')) {
-                ctaSection.setAttribute('tabindex', '0');
-            }
-            
-            ctaSection.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.keyCode === 13) {
-                    e.preventDefault();
-                    if (ctaSection.href) {
-                        window.location.href = ctaSection.href;
-                    }
-                }
-            });
+            window.addEventListener('scroll', checkVisibility);
+            window.addEventListener('resize', checkVisibility);
+            checkVisibility();
         }
 
         // ===== БАЗОВЫЕ АНИМАЦИИ =====
@@ -964,6 +566,62 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             window.addEventListener('resize', checkBackgrounds);
             checkBackgrounds();
         }
+
+        // ===== SCROLL PROGRESS =====
+        initScrollProgress() {
+            const progressBar = document.querySelector('.scroll-progress-bar');
+            if (!progressBar) return;
+            
+            const updateProgress = () => {
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight - windowHeight;
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const progress = (scrollTop / documentHeight) * 100;
+                
+                progressBar.style.width = Math.min(progress, 100) + '%';
+            };
+            
+            window.addEventListener('scroll', updateProgress);
+            updateProgress();
+        }
+
+        // ===== CLICKABLE ELEMENTS =====
+        initClickableStats() {
+            const statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
+            
+            statCards.forEach(card => {
+                if (!card.hasAttribute('tabindex')) {
+                    card.setAttribute('tabindex', '0');
+                }
+                
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.keyCode === 13) {
+                        e.preventDefault();
+                        if (card.href) {
+                            window.location.href = card.href;
+                        }
+                    }
+                });
+            });
+        }
+
+        initCTAClickable() {
+            const ctaSection = document.querySelector('.cta-improved.clickable-cta');
+            if (!ctaSection) return;
+            
+            if (!ctaSection.hasAttribute('tabindex')) {
+                ctaSection.setAttribute('tabindex', '0');
+            }
+            
+            ctaSection.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    e.preventDefault();
+                    if (ctaSection.href) {
+                        window.location.href = ctaSection.href;
+                    }
+                }
+            });
+        }
     }
 
     // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
@@ -987,41 +645,5 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
     initHomePage();
     
     console.log('✅ home.js полностью загружен и готов к работе');
-    
-    // Глобальная функция отладки
-    window.debugVideo = function() {
-        console.log('🔍 === ОТЛАДКА ВИДЕО (глобальная функция) ===');
-        
-        const video = document.querySelector('.video-bg');
-        if (!video) {
-            console.error('❌ Видео .video-bg не найдено!');
-            return;
-        }
-        
-        console.log('🎬 Видео элемент:', video);
-        console.log('📁 Текущий источник:', video.currentSrc || video.src);
-        console.log('⚠️ Ошибка:', video.error);
-        console.log('⏸️ Приостановлено:', video.paused);
-        
-        // КРИТИЧЕСКИЙ ФИКС: Проверяем display
-        const computedStyle = window.getComputedStyle(video);
-        console.log('🎨 Проверка стилей:');
-        console.log('- display:', computedStyle.display);
-        console.log('- visibility:', computedStyle.visibility);
-        
-        if (computedStyle.display === 'none') {
-            console.warn('🚨 КРИТИЧЕСКАЯ ОШИБКА: Видео имеет display: none!');
-            console.log('🔧 Принудительно исправляем...');
-            video.style.display = 'block !important';
-            video.style.visibility = 'visible !important';
-        }
-        
-        // Пробуем запустить
-        video.play().then(() => {
-            console.log('✅ Видео запущено успешно');
-        }).catch(e => {
-            console.log('❌ Ошибка запуска:', e.message);
-        });
-    };
     
 })();
