@@ -19,22 +19,13 @@
     <script src="js/parallax.js"></script>
 </head>
 <body class="home-page">
-    <!-- VIDEO BACKGROUND КАК НА SPECKDESIGN.COM -->
-    <div class="video-background-container">
-        <video class="video-background" id="heroVideo" autoplay muted loop playsinline preload="auto">
-            <!-- Основное видео в формате MP4 (H.264) -->
-            <source src="assets/videos/hero-bg.mp4" type="video/mp4">
-            <!-- Фолбэк для старых браузеров или WebM -->
-            <source src="assets/videos/hero-bg.webm" type="video/webm">
-            <!-- Альтернативное изображение если видео не работает -->
-            <img src="assets/images/parallax/bg-1.jpg" alt="Фоновое видео">
-            Ваш браузер не поддерживает видеофон. Пожалуйста, обновите браузер.
-        </video>
-        <!-- Затемнение для лучшей читаемости текста -->
-        <div class="video-overlay"></div>
-        
-        <!-- Эффект градиента поверх видео (опционально) -->
-        <div class="video-gradient"></div>
+    <!-- PARALLAX BACKGROUNDS -->
+    <div class="parallax-bg-container">
+        <div id="parallax-bg-1" class="parallax-bg active"></div>
+        <div id="parallax-bg-2" class="parallax-bg"></div>
+        <!-- ДОБАВЛЕНЫ ДВА НОВЫХ ФОНА -->
+        <div id="parallax-bg-3" class="parallax-bg"></div>
+        <div id="parallax-bg-4" class="parallax-bg"></div>
     </div>
 
     <!-- SCROLL PROGRESS BAR -->
@@ -46,9 +37,9 @@
     <div id="header-container"></div>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero parallax-hero">
         <div class="container">
-            <div class="hero-content">
+            <div class="parallax-content">
                 <h1>
                     <span data-i18n="home.hero.titleLine1">NB GROUP TECH</span><br>
                     <span data-i18n="home.hero.subtitle">Industrial Design & Manufacturing</span>
@@ -72,12 +63,6 @@
                     </a>
                 </div>
             </div>
-        </div>
-        
-        <!-- Индикатор скролла -->
-        <div class="scroll-indicator">
-            <div class="scroll-arrow"></div>
-            <span data-i18n="home.scroll">Прокрутите вниз</span>
         </div>
     </section>
 
@@ -244,16 +229,20 @@
         </div>
     </section>
 
-    <!-- SPECK DESIGN MARQUEE SECTION -->
+    <!-- SPECK DESIGN MARQUEE SECTION (БЕГУЩАЯ СТРОКА КАК НА SPECKDESIGN.COM) -->
     <section class="speck-marquee-section content-section" data-bg-index="1">
         <div class="container">
             <div class="speck-marquee-wrapper">
                 <p class="speck-marquee-label">TRUSTED BY INDUSTRY LEADERS</p>
                 
+                <!-- Маска с градиентными краями -->
                 <div class="speck-marquee-mask">
+                    <!-- Основной контейнер -->
                     <div class="speck-marquee-container">
+                        <!-- Движущийся трек -->
                         <div class="speck-marquee-track" id="speckMarqueeTrack">
                             <div class="speck-marquee-content">
+                                <!-- Основной список брендов -->
                                 <a href="portfolio.html" class="speck-brand">dtronic</a>
                                 <a href="portfolio.html" class="speck-brand">BRITA</a>
                                 <a href="portfolio.html" class="speck-brand">Roku</a>
@@ -298,6 +287,7 @@
     <section class="stats-improved content-section" data-bg-index="2">
         <div class="container">
             <div class="stats-grid-improved">
+                <!-- Проекты завершено -->
                 <a href="portfolio.html" class="stat-card clickable-stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-rocket"></i>
@@ -308,6 +298,7 @@
                     </div>
                 </a>
                 
+                <!-- Лет опыта -->
                 <a href="about.html" class="stat-card clickable-stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-calendar-alt"></i>
@@ -318,6 +309,7 @@
                     </div>
                 </a>
                 
+                <!-- Довольных клиентов -->
                 <a href="about.html#clients" class="stat-card clickable-stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-heart"></i>
@@ -328,6 +320,7 @@
                     </div>
                 </a>
                 
+                <!-- Наград -->
                 <a href="about.html#awards" class="stat-card clickable-stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-trophy"></i>
@@ -367,23 +360,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 Главная страница загружена');
             
-            // Проверка видеофона
-            function checkVideoBackground() {
-                const video = document.getElementById('heroVideo');
-                if (video) {
-                    console.log('✅ Видеофон найден');
-                    
-                    // Запуск видео если не запустилось автоматически
-                    setTimeout(() => {
-                        if (video.paused && !video.ended) {
-                            video.play().catch(e => {
-                                console.log('⚠️ Автозапуск видео предотвращен браузером:', e);
-                            });
-                        }
-                    }, 1000);
-                }
-            }
-            
             // Проверка бегущей строки
             function checkSpeckMarquee() {
                 const track = document.getElementById('speckMarqueeTrack');
@@ -399,7 +375,6 @@
                 }
             }, 500);
             
-            checkVideoBackground();
             checkSpeckMarquee();
         });
     </script>
