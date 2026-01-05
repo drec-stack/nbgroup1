@@ -1,4 +1,5 @@
-// home.js - Главная страница с РАБОЧИМ видеофоном
+// home.js - ПОЛНЫЙ ФАЙЛ С РАБОЧИМ ВИДЕОФОНОМ
+console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБОЧИЙ ВИДЕОФОН');
 
 (function() {
     'use strict';
@@ -10,16 +11,358 @@
             
             console.log('🏠 HomePage инициализирован');
             
+            // СНАЧАЛА видео - САМОЕ ВАЖНОЕ
+            this.initVideoBackground();
+            
+            // Потом остальное
             this.init();
         }
 
+        // ===== ВИДЕОФОН (ГЛАВНОЕ) =====
+        initVideoBackground() {
+            console.log('🎬 ИНИЦИАЛИЗАЦИЯ ВИДЕОФОНА...');
+            
+            // 1. НАЙДЕМ ВИДЕО В ДОМ
+            this.video = document.querySelector('.video-bg');
+            this.videoContainer = document.querySelector('.video-bg-container');
+            
+            if (!this.video) {
+                console.error('❌ ОШИБКА: Видео .video-bg не найдено в DOM!');
+                console.log('🔍 Ищем все video элементы:', document.querySelectorAll('video'));
+                
+                // Попробуем найти любое видео
+                const allVideos = document.querySelectorAll('video');
+                if (allVideos.length > 0) {
+                    this.video = allVideos[0];
+                    this.video.classList.add('video-bg');
+                    console.log('✅ Нашли видео, добавили класс:', this.video);
+                } else {
+                    this.showVideoFallback();
+                    return;
+                }
+            }
+            
+            if (!this.videoContainer) {
+                console.warn('⚠️ Контейнер .video-bg-container не найден');
+                this.videoContainer = this.video.parentElement;
+                if (this.videoContainer) {
+                    this.videoContainer.classList.add('video-bg-container');
+                    console.log('✅ Используем родительский контейнер:', this.videoContainer);
+                }
+            }
+            
+            console.log('✅ Видео найдено:', this.video);
+            console.log('✅ Контейнер:', this.videoContainer);
+            console.log('✅ Источник:', this.video.querySelector('source')?.src || this.video.src);
+            
+            // 2. УСТАНОВИМ КРИТИЧЕСКИЕ АТРИБУТЫ
+            this.setupVideoAttributes();
+            
+            // 3. ПРИНУДИТЕЛЬНО ПОКАЖЕМ ВИДЕО
+            this.forceShowVideo();
+            
+            // 4. НАСТРОИМ ОБРАБОТЧИКИ
+            this.setupVideoEventHandlers();
+            
+            // 5. ЗАПУСТИМ ВИДЕО
+            this.startVideoPlayback();
+            
+            console.log('✅ Видеофон инициализирован');
+        }
+        
+        setupVideoAttributes() {
+            console.log('⚙️ Устанавливаем атрибуты видео...');
+            
+            // КРИТИЧЕСКИ ВАЖНЫЕ АТРИБУТЫ
+            this.video.setAttribute('playsinline', '');
+            this.video.setAttribute('webkit-playsinline', '');
+            this.video.setAttribute('muted', '');
+            this.video.setAttribute('loop', '');
+            this.video.setAttribute('autoplay', '');
+            this.video.setAttribute('preload', 'auto');
+            
+            // Убедимся что есть источник
+            if (!this.video.querySelector('source') && !this.video.src) {
+                console.log('➕ Добавляем source элемент...');
+                const source = document.createElement('source');
+                source.src = 'assets/videos/hero-bg.mp4';
+                source.type = 'video/mp4';
+                this.video.appendChild(source);
+            }
+            
+            // СТИЛИ ДЛЯ ГАРАНТИИ
+            this.video.style.cssText = `
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                object-fit: cover !important;
+                object-position: center !important;
+                z-index: -1 !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                filter: brightness(0.7) !important;
+                pointer-events: none !important;
+            `;
+        }
+        
+        forceShowVideo() {
+            console.log('👁️ Принудительно показываем видео...');
+            
+            // Гарантируем что контейнер правильно стилизован
+            if (this.videoContainer) {
+                this.videoContainer.style.cssText = `
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100vw !important;
+                    height: 100vh !important;
+                    z-index: -1 !important;
+                    overflow: hidden !important;
+                    pointer-events: none !important;
+                `;
+            }
+            
+            // Добавим оверлей для читаемости текста
+            let overlay = document.querySelector('.video-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'video-overlay';
+                overlay.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(
+                        to bottom,
+                        rgba(10, 10, 10, 0.3) 0%,
+                        rgba(10, 10, 10, 0.5) 100%
+                    );
+                    z-index: 0;
+                `;
+                
+                if (this.videoContainer) {
+                    this.videoContainer.appendChild(overlay);
+                } else {
+                    this.video.parentNode.insertBefore(overlay, this.video);
+                }
+            }
+            
+            // Принудительно загрузим видео
+            this.video.load();
+        }
+        
+        setupVideoEventHandlers() {
+            console.log('🎮 Настраиваем обработчики видео...');
+            
+            // Когда видео загружено
+            this.video.addEventListener('loadeddata', () => {
+                console.log('📹 Видео загружено, размер:', 
+                    this.video.videoWidth + 'x' + this.video.videoHeight);
+                this.video.classList.add('loaded');
+            });
+            
+            // Когда видео играет
+            this.video.addEventListener('playing', () => {
+                console.log('▶️ Видео воспроизводится');
+                this.hidePlayButton();
+            });
+            
+            // Ошибка видео
+            this.video.addEventListener('error', (e) => {
+                console.error('❌ ОШИБКА ВИДЕО:');
+                console.error('- Код:', this.video.error?.code);
+                console.error('- Сообщение:', this.video.error?.message);
+                console.error('- Событие:', e);
+                
+                this.showVideoFallback();
+            });
+            
+            // Когда видео может играть без остановок
+            this.video.addEventListener('canplaythrough', () => {
+                console.log('✅ Видео готово к бесперебойному воспроизведению');
+            });
+        }
+        
+        startVideoPlayback() {
+            console.log('🚀 Запускаем воспроизведение видео...');
+            
+            // Попробуем запустить сразу
+            const playPromise = this.video.play();
+            
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        console.log('✅ Видео успешно запущено автоматически');
+                        this.video.style.opacity = '1';
+                    })
+                    .catch(error => {
+                        console.log('⚠️ Автоплей заблокирован:', error.name);
+                        
+                        // Покажем кнопку воспроизведения
+                        this.showPlayButton();
+                        
+                        // На мобильных ждем взаимодействия
+                        if (this.isMobileDevice()) {
+                            this.enableMobileInteraction();
+                        }
+                    });
+            }
+            
+            // Проверим через 3 секунды
+            setTimeout(() => {
+                if (this.video.paused) {
+                    console.log('⏸️ Видео все еще приостановлено через 3 секунды');
+                    this.showPlayButton();
+                }
+            }, 3000);
+        }
+        
+        showPlayButton() {
+            let playButton = document.querySelector('.video-play-button');
+            
+            if (!playButton) {
+                console.log('➕ Создаем кнопку воспроизведения...');
+                playButton = document.createElement('button');
+                playButton.className = 'video-play-button';
+                playButton.innerHTML = '<i class="fas fa-play"></i>';
+                playButton.setAttribute('aria-label', 'Воспроизвести видеофон');
+                playButton.setAttribute('title', 'Нажмите для воспроизведения видео');
+                
+                playButton.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 70px;
+                    height: 70px;
+                    background: rgba(0, 102, 255, 0.85);
+                    border-radius: 50%;
+                    border: none;
+                    color: white;
+                    font-size: 28px;
+                    cursor: pointer;
+                    z-index: 100;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                    backdrop-filter: blur(10px);
+                `;
+                
+                playButton.addEventListener('mouseenter', () => {
+                    playButton.style.transform = 'translate(-50%, -50%) scale(1.1)';
+                    playButton.style.background = 'rgba(0, 102, 255, 1)';
+                });
+                
+                playButton.addEventListener('mouseleave', () => {
+                    playButton.style.transform = 'translate(-50%, -50%) scale(1)';
+                    playButton.style.background = 'rgba(0, 102, 255, 0.85)';
+                });
+                
+                playButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🖱️ Клик по кнопке воспроизведения');
+                    
+                    this.video.play()
+                        .then(() => {
+                            console.log('✅ Видео запущено по клику');
+                            playButton.style.opacity = '0';
+                            setTimeout(() => {
+                                playButton.style.display = 'none';
+                            }, 300);
+                        })
+                        .catch(error => {
+                            console.error('❌ Не удалось запустить видео:', error);
+                            this.showVideoFallback();
+                        });
+                });
+                
+                // Добавляем в контейнер или body
+                if (this.videoContainer) {
+                    this.videoContainer.appendChild(playButton);
+                } else {
+                    document.body.appendChild(playButton);
+                }
+            }
+            
+            playButton.style.display = 'flex';
+            playButton.style.opacity = '1';
+            
+            // Анимация пульсации
+            playButton.style.animation = 'pulse 2s infinite';
+        }
+        
+        hidePlayButton() {
+            const playButton = document.querySelector('.video-play-button');
+            if (playButton) {
+                playButton.style.opacity = '0';
+                setTimeout(() => {
+                    playButton.style.display = 'none';
+                }, 300);
+            }
+        }
+        
+        enableMobileInteraction() {
+            const handleInteraction = () => {
+                console.log('📱 Пользователь взаимодействовал со страницей');
+                
+                this.video.play()
+                    .then(() => {
+                        console.log('✅ Видео запущено после взаимодействия');
+                        this.hidePlayButton();
+                    })
+                    .catch(e => {
+                        console.log('❌ Не удалось запустить видео:', e);
+                    });
+                
+                // Удаляем обработчики после первого взаимодействия
+                document.removeEventListener('touchstart', handleInteraction);
+                document.removeEventListener('click', handleInteraction);
+            };
+            
+            document.addEventListener('touchstart', handleInteraction, { once: true });
+            document.addEventListener('click', handleInteraction, { once: true });
+        }
+        
+        showVideoFallback() {
+            console.log('🖼️ Активируем фолбэк (статичное изображение)');
+            
+            // Скрываем видео
+            this.video.style.display = 'none';
+            
+            // Устанавливаем фоновое изображение
+            if (this.videoContainer) {
+                this.videoContainer.style.backgroundImage = 'url("assets/images/parallax/bg-1.jpg")';
+                this.videoContainer.style.backgroundSize = 'cover';
+                this.videoContainer.style.backgroundPosition = 'center';
+                this.videoContainer.style.backgroundColor = '#0a0a0a';
+            }
+            
+            // Скрываем кнопку воспроизведения
+            this.hidePlayButton();
+            
+            // Активируем параллакс-фон как фолбэк
+            const parallaxBg = document.getElementById('parallax-bg-1');
+            if (parallaxBg) {
+                parallaxBg.classList.add('active');
+                parallaxBg.style.opacity = '1';
+            }
+        }
+        
+        isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
         init() {
-            console.log('🚀 Начинаем инициализацию...');
+            console.log('🚀 Инициализация остальных компонентов...');
             
-            // ПЕРВЫМ ДЕЛОМ - видеофон
-            this.initVideoBackground();
-            
-            // Затем остальные компоненты
             this.initBasicAnimations();
             this.initStatsCounter();
             this.initParallaxBackgrounds();
@@ -30,250 +373,77 @@
             this.initSpeckBlocksAnimations();
             this.initSpeckMarquee();
             
-            // Отключаем логику скролла хедера
-            this.disableHeaderScrollLogic();
-            
             console.log('✅ Все компоненты инициализированы');
-        }
-
-        // ===== VIDEO BACKGROUND (ГЛАВНЫЙ ФИКС) =====
-        initVideoBackground() {
-            console.log('🎬 Инициализация видеофона...');
             
-            const video = document.querySelector('.video-bg');
-            const playButton = document.querySelector('.video-play-button');
-            
-            if (!video) {
-                console.error('❌ Видео не найдено в DOM');
-                this.showVideoFallback();
-                return;
-            }
-            
-            console.log('✅ Видео найдено:', video);
-            
-            // Проверяем, поддерживает ли браузер видео
-            const canPlayMP4 = video.canPlayType && video.canPlayType('video/mp4');
-            if (!canPlayMP4) {
-                console.warn('⚠️ Браузер не поддерживает MP4 видео');
-                this.showVideoFallback();
-                return;
-            }
-            
-            // Если пользователь предпочитает уменьшенную анимацию
-            if (this.isReducedMotion) {
-                console.log('⚠️ Пользователь предпочитает reduced motion');
-                this.showVideoFallback();
-                return;
-            }
-            
-            // Устанавливаем атрибуты для корректной работы
-            this.setupVideoAttributes(video);
-            
-            // Настраиваем обработчики событий
-            this.setupVideoEventHandlers(video, playButton);
-            
-            // Пытаемся запустить видео
-            this.startVideoPlayback(video, playButton);
-            
-            // Проверяем видео через 3 секунды
-            setTimeout(() => {
-                this.checkVideoStatus(video, playButton);
-            }, 3000);
-            
-            console.log('✅ Видеофон настроен');
+            // Добавляем глобальную функцию для отладки
+            this.addDebugFunction();
         }
         
-        setupVideoAttributes(video) {
-            // Критические атрибуты для работы видео
-            video.setAttribute('playsinline', '');
-            video.setAttribute('webkit-playsinline', '');
-            video.setAttribute('muted', '');
-            video.setAttribute('loop', '');
-            video.setAttribute('preload', 'auto');
-            
-            // Для мобильных устройств
-            if (this.isMobileDevice()) {
-                video.setAttribute('autoplay', '');
-                video.setAttribute('poster', 'assets/images/parallax/bg-1.jpg');
-            }
-            
-            // Принудительно показываем видео
-            video.style.display = 'block';
-            video.style.visibility = 'visible';
-            video.style.opacity = '1';
-            video.style.zIndex = '1';
-        }
-        
-        setupVideoEventHandlers(video, playButton) {
-            // Событие когда видео загружено
-            video.addEventListener('loadeddata', () => {
-                console.log('📹 Видео загружено');
-                video.classList.add('loaded');
-            });
-            
-            // Событие когда видео начинает воспроизводиться
-            video.addEventListener('playing', () => {
-                console.log('▶️ Видео воспроизводится');
-                if (playButton) {
-                    playButton.style.display = 'none';
-                }
-                // Принудительно показываем видео
-                video.style.opacity = '1';
-            });
-            
-            // Событие ошибки
-            video.addEventListener('error', (e) => {
-                console.error('❌ Ошибка видео:', e);
-                console.error('Код ошибки:', video.error ? video.error.code : 'unknown');
+        addDebugFunction() {
+            window.debugVideo = () => {
+                console.log('🔍 === ОТЛАДКА ВИДЕОФОНА ===');
                 
-                // Показываем фолбэк
-                this.showVideoFallback();
-                
-                // Скрываем кнопку воспроизведения
-                if (playButton) {
-                    playButton.style.display = 'none';
+                const video = document.querySelector('.video-bg');
+                if (!video) {
+                    console.error('❌ Видео не найдено в DOM');
+                    console.log('🔍 Ищем все видео элементы:', document.querySelectorAll('video'));
+                    return;
                 }
-            });
-            
-            // Событие когда видео приостановлено
-            video.addEventListener('pause', () => {
-                console.log('⏸️ Видео приостановлено');
-            });
-            
-            // Событие когда видео завершило загрузку
-            video.addEventListener('canplaythrough', () => {
-                console.log('✅ Видео полностью загружено');
-            });
-            
-            // Обработчик для кнопки воспроизведения
-            if (playButton) {
-                playButton.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    console.log('🖱️ Нажата кнопка воспроизведения');
-                    
-                    video.play()
-                        .then(() => {
-                            console.log('✅ Видео запущено по клику');
-                            playButton.style.display = 'none';
-                        })
-                        .catch(error => {
-                            console.error('❌ Не удалось запустить видео:', error);
-                            this.showVideoFallback();
-                        });
+                
+                console.log('📋 ИНФОРМАЦИЯ О ВИДЕО:');
+                console.log('- Элемент:', video);
+                console.log('- Тег:', video.tagName);
+                console.log('- Классы:', video.className);
+                console.log('- ID:', video.id);
+                
+                console.log('🎨 СТИЛИ:');
+                const styles = window.getComputedStyle(video);
+                console.log('- display:', styles.display);
+                console.log('- visibility:', styles.visibility);
+                console.log('- opacity:', styles.opacity);
+                console.log('- position:', styles.position);
+                console.log('- zIndex:', styles.zIndex);
+                console.log('- width:', styles.width);
+                console.log('- height:', styles.height);
+                
+                console.log('📹 СВОЙСТВА ВИДЕО:');
+                console.log('- currentSrc:', video.currentSrc);
+                console.log('- src:', video.src);
+                console.log('- readyState:', video.readyState);
+                console.log('- error:', video.error);
+                console.log('- error код:', video.error?.code);
+                console.log('- error сообщение:', video.error?.message);
+                console.log('- paused:', video.paused);
+                console.log('- muted:', video.muted);
+                console.log('- loop:', video.loop);
+                console.log('- autoplay:', video.autoplay);
+                console.log('- videoWidth:', video.videoWidth);
+                console.log('- videoHeight:', video.videoHeight);
+                
+                console.log('🔗 ИСТОЧНИКИ:');
+                const sources = video.querySelectorAll('source');
+                sources.forEach((source, i) => {
+                    console.log(`  Source ${i + 1}:`, {
+                        src: source.src,
+                        type: source.type
+                    });
                 });
-            }
-        }
-        
-        startVideoPlayback(video, playButton) {
-            console.log('🚀 Пытаемся запустить видео...');
-            
-            // Пытаемся запустить воспроизведение
-            const playPromise = video.play();
-            
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        console.log('✅ Видео успешно запущено автоматически');
-                        if (playButton) {
-                            playButton.style.display = 'none';
-                        }
-                    })
-                    .catch(error => {
-                        console.log('⚠️ Автоплей заблокирован:', error.name);
-                        
-                        // Показываем кнопку воспроизведения
-                        if (playButton) {
-                            playButton.style.display = 'flex';
-                            playButton.classList.add('show');
-                            
-                            // На мобильных пытаемся запустить после жеста пользователя
-                            if (this.isMobileDevice()) {
-                                this.enableMobileVideoInteraction(video, playButton);
-                            }
-                        }
-                    });
-            }
-        }
-        
-        checkVideoStatus(video, playButton) {
-            if (video.paused) {
-                console.log('⏸️ Видео все еще приостановлено');
                 
-                // Показываем кнопку воспроизведения
-                if (playButton) {
-                    playButton.style.display = 'flex';
-                    playButton.classList.add('show');
-                }
+                console.log('👁️ ВИДИМОСТЬ:');
+                const rect = video.getBoundingClientRect();
+                console.log('- Bounding rect:', rect);
+                console.log('- Видимый:', rect.width > 0 && rect.height > 0);
                 
-                // Проверяем, есть ли ошибка
-                if (video.error) {
-                    console.error('❌ Ошибка видео:', video.error);
-                    this.showVideoFallback();
-                }
-            } else {
-                console.log('✅ Видео воспроизводится нормально');
-            }
-        }
-        
-        enableMobileVideoInteraction(video, playButton) {
-            const handleUserInteraction = () => {
-                console.log('📱 Пользователь взаимодействовал со страницей');
-                
+                console.log('🔄 Пробуем запустить видео...');
                 video.play()
-                    .then(() => {
-                        console.log('✅ Видео запущено после взаимодействия');
-                        if (playButton) {
-                            playButton.style.display = 'none';
-                        }
-                    })
-                    .catch(e => {
-                        console.log('❌ Не удалось запустить видео:', e);
-                    });
-                
-                // Удаляем обработчики
-                document.removeEventListener('touchstart', handleUserInteraction);
-                document.removeEventListener('click', handleUserInteraction);
+                    .then(() => console.log('✅ Видео успешно запущено'))
+                    .catch(e => console.log('❌ Ошибка запуска:', e.message));
             };
             
-            // Добавляем обработчики
-            document.addEventListener('touchstart', handleUserInteraction, { once: true });
-            document.addEventListener('click', handleUserInteraction, { once: true });
-        }
-        
-        showVideoFallback() {
-            console.log('🖼️ Показываем фолбэк изображение');
-            
-            const video = document.querySelector('.video-bg');
-            const videoContainer = document.querySelector('.video-bg-container');
-            const playButton = document.querySelector('.video-play-button');
-            
-            // Скрываем видео
-            if (video) {
-                video.style.display = 'none';
-            }
-            
-            // Скрываем кнопку
-            if (playButton) {
-                playButton.style.display = 'none';
-            }
-            
-            // Устанавливаем фоновое изображение
-            if (videoContainer) {
-                videoContainer.style.backgroundImage = 'url(assets/images/parallax/bg-1.jpg)';
-                videoContainer.style.backgroundSize = 'cover';
-                videoContainer.style.backgroundPosition = 'center';
-                videoContainer.style.backgroundColor = '#0a0a0a';
-            }
-            
-            // Добавляем класс для CSS
-            document.body.classList.add('no-video');
-        }
-        
-        isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            console.log('🐛 debugVideo() доступна в консоли браузера');
         }
 
-        // ===== SPECK MARQUEE INITIALIZATION =====
+        // ===== SPECK MARQUEE =====
         initSpeckMarquee() {
             console.log('🎯 Инициализация Speck бегущей строки...');
             
@@ -287,10 +457,10 @@
                 const style = window.getComputedStyle(speckMarqueeTrack);
                 
                 if (style.animationName === 'none' || this.isReducedMotion) {
-                    console.log('🚀 Запуск JS fallback');
+                    console.log('🚀 Запуск JS fallback для Speck бегущей строки');
                     this.runSpeckMarqueeJS(speckMarqueeTrack);
                 } else {
-                    console.log('✅ Бегущая строка работает через CSS');
+                    console.log('✅ Speck бегущая строка работает через CSS');
                     this.addSpeckMarqueeHoverHandlers(speckMarqueeTrack);
                 }
             }, 100);
@@ -302,7 +472,7 @@
                     const isMoving = rect.left !== 0;
                     
                     if (!isMoving && !track.classList.contains('js-fallback-active')) {
-                        console.log('⚠️ Бегущая строка не двигается');
+                        console.log('⚠️ Бегущая строка не двигается, запускаем JS fallback');
                         this.runSpeckMarqueeJS(speckMarqueeTrack);
                     }
                 }
@@ -310,15 +480,22 @@
         }
 
         runSpeckMarqueeJS(track) {
-            if (track.classList.contains('js-fallback-active')) return;
+            if (track.classList.contains('js-fallback-active')) {
+                console.log('⚠️ JS fallback уже активен');
+                return;
+            }
 
             const content = track.querySelector('.speck-marquee-content');
-            if (!content) return;
+            if (!content) {
+                console.error('❌ Speck marquee content не найден');
+                return;
+            }
 
-            console.log('🔄 Запуск JS бегущей строки');
+            console.log('🔄 Запуск JS бегущей строки...');
 
             track.classList.add('js-fallback-active');
             track.style.animation = 'none';
+            track.style.webkitAnimation = 'none';
             
             const originalContent = content.innerHTML;
             content.innerHTML = originalContent + originalContent + originalContent;
@@ -358,7 +535,7 @@
             
             track._marqueeAnimationId = animationId;
             
-            console.log('✅ JS бегущая строка запущена');
+            console.log('✅ Speck бегущая строка запущена через JS');
         }
 
         addSpeckMarqueeHoverHandlers(track, pauseCallback = null, resumeCallback = null) {
@@ -394,30 +571,6 @@
             track.addEventListener('mouseleave', resumeMarquee);
             track.addEventListener('touchstart', pauseMarquee);
             track.addEventListener('touchend', resumeMarquee);
-        }
-
-        disableHeaderScrollLogic() {
-            console.log('🚫 Отключаем логику скролла хедера');
-            
-            const header = document.querySelector('.main-header');
-            if (!header) return;
-            
-            header.classList.remove('header-hidden', 'header-minimized', 'header-scrolled');
-            
-            header.style.opacity = '1';
-            header.style.transform = 'translateX(-50%) translateY(0)';
-            header.style.pointerEvents = 'auto';
-            header.style.transition = 'background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease';
-            
-            if (window.innerWidth <= 768) {
-                header.style.left = '0';
-                header.style.transform = 'none';
-                header.style.width = '100%';
-                header.style.maxWidth = '100%';
-                header.style.borderRadius = '0';
-                header.style.top = '0';
-                header.style.margin = '0';
-            }
         }
 
         // ===== SPECK VERTICAL BLOCKS =====
@@ -457,48 +610,7 @@
                 }, 500);
             }
             
-            this.initFeatureItemsInteractivity();
-            console.log('✅ Инициализировано ' + speckBlocks.length + ' блоков');
-        }
-
-        initFeatureItemsInteractivity() {
-            const featureItems = document.querySelectorAll('.speck-feature-item');
-            
-            if (!featureItems.length) return;
-            
-            featureItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    item.classList.add('active');
-                    setTimeout(() => {
-                        item.classList.remove('active');
-                    }, 150);
-                    
-                    const block = item.closest('.speck-vertical-block');
-                    if (block) {
-                        const blockIndex = block.getAttribute('data-block-index');
-                        const blockTitles = ['strategy', 'design', 'engineering', 'manufacturing'];
-                        
-                        if (blockTitles[blockIndex]) {
-                            setTimeout(() => {
-                                window.location.href = 'services.html#' + blockTitles[blockIndex];
-                            }, 200);
-                        }
-                    }
-                });
-                
-                if (!item.hasAttribute('tabindex')) {
-                    item.setAttribute('tabindex', '0');
-                }
-                
-                item.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.keyCode === 13) {
-                        e.preventDefault();
-                        item.click();
-                    }
-                });
-            });
+            console.log('✅ Инициализировано ' + speckBlocks.length + ' вертикальных блоков');
         }
 
         initEnhancedSpeckBlocks() {
@@ -593,13 +705,24 @@
                 });
             }, 500);
             
-            console.log('✅ Анимации инициализированы');
+            console.log('✅ Анимации Speck блоков инициализированы');
         }
 
+        // ===== STATS COUNTER =====
         initStatsCounter() {
             const statNumbers = document.querySelectorAll('.stat-number-improved');
             
             if (!statNumbers.length) return;
+            
+            const hasNoCSS = document.documentElement.classList.contains('no-csstransforms');
+            if (hasNoCSS) {
+                statNumbers.forEach(stat => {
+                    const target = parseInt(stat.getAttribute('data-target')) || 0;
+                    stat.textContent = target;
+                    stat.classList.add('animated');
+                });
+                return;
+            }
             
             const checkVisibility = () => {
                 const windowHeight = window.innerHeight || 
@@ -672,6 +795,7 @@
             checkVisibility();
         }
 
+        // ===== CLICKABLE STATS CARDS =====
         initClickableStats() {
             const statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
             
@@ -691,6 +815,7 @@
             });
         }
 
+        // ===== CLICKABLE CTA SECTION =====
         initCTAClickable() {
             const ctaSection = document.querySelector('.cta-improved.clickable-cta');
             if (!ctaSection) return;
@@ -709,6 +834,7 @@
             });
         }
 
+        // ===== БАЗОВЫЕ АНИМАЦИИ =====
         initBasicAnimations() {
             const sections = document.querySelectorAll('.content-section');
             
@@ -735,6 +861,7 @@
             checkSections();
         }
 
+        // ===== PARALLAX BACKGROUNDS =====
         initParallaxBackgrounds() {
             const contentSections = document.querySelectorAll('.content-section[data-bg-index]');
             
@@ -774,7 +901,7 @@
         }
     }
 
-    // ===== GLOBAL INITIALIZATION =====
+    // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
     function initHomePage() {
         if (!document.body || !document.body.classList.contains('home-page')) {
             return;
@@ -782,11 +909,11 @@
         
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('📄 DOM загружен, инициализируем HomePage');
+                console.log('📄 DOM загружен, создаем HomePage');
                 window.homePage = new HomePage();
             });
         } else {
-            console.log('📄 DOM уже загружен, инициализируем HomePage');
+            console.log('📄 DOM уже загружен, создаем HomePage');
             window.homePage = new HomePage();
         }
     }
@@ -794,27 +921,29 @@
     // Автоматическая инициализация
     initHomePage();
     
-    // Отладка
+    console.log('✅ home.js полностью загружен и готов к работе');
+    
+    // Глобальная функция отладки
     window.debugVideo = function() {
+        console.log('🔍 === ОТЛАДКА ВИДЕО (глобальная функция) ===');
+        
         const video = document.querySelector('.video-bg');
         if (!video) {
-            console.error('❌ Видео не найдено');
+            console.error('❌ Видео .video-bg не найдено!');
             return;
         }
         
-        console.log('🔍 Отладка видео:');
-        console.log('- display:', video.style.display);
-        console.log('- visibility:', video.style.visibility);
-        console.log('- opacity:', video.style.opacity);
-        console.log('- zIndex:', video.style.zIndex);
-        console.log('- currentSrc:', video.currentSrc);
-        console.log('- error:', video.error);
-        console.log('- paused:', video.paused);
-        console.log('- readyState:', video.readyState);
+        console.log('🎬 Видео элемент:', video);
+        console.log('📁 Текущий источник:', video.currentSrc || video.src);
+        console.log('⚠️ Ошибка:', video.error);
+        console.log('⏸️ Приостановлено:', video.paused);
         
-        // Добавляем класс для визуальной отладки
-        document.body.classList.add('debug-video');
+        // Пробуем запустить
+        video.play().then(() => {
+            console.log('✅ Видео запущено успешно');
+        }).catch(e => {
+            console.log('❌ Ошибка запуска:', e.message);
+        });
     };
     
-    console.log('✅ home.js загружен');
 })();
