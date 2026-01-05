@@ -1,5 +1,5 @@
-// home.js - ПОЛНЫЙ ФАЙЛ С РАБОЧИМ ВИДЕОФОНОМ
-console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБОЧИЙ ВИДЕОФОН');
+// home.js - ПОЛНЫЙ ФАЙЛ С ИСПРАВЛЕННЫМ ВИДЕОФОНОМ
+console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБОЧИЙ ВИДЕОФОН (ИСПРАВЛЕННЫЙ)');
 
 (function() {
     'use strict';
@@ -11,7 +11,7 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             
             console.log('🏠 HomePage инициализирован');
             
-            // СНАЧАЛА видео - САМОЕ ВАЖНОЕ
+            // СНАЧАЛА видео - КРИТИЧЕСКИ ВАЖНОЕ
             this.initVideoBackground();
             
             // Потом остальное
@@ -55,6 +55,9 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             console.log('✅ Контейнер:', this.videoContainer);
             console.log('✅ Источник:', this.video.querySelector('source')?.src || this.video.src);
             
+            // КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: УБИРАЕМ display: none
+            this.removeDisplayNone();
+            
             // 2. УСТАНОВИМ КРИТИЧЕСКИЕ АТРИБУТЫ
             this.setupVideoAttributes();
             
@@ -68,6 +71,38 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             this.startVideoPlayback();
             
             console.log('✅ Видеофон инициализирован');
+        }
+        
+        // КРИТИЧЕСКИЙ МЕТОД: УБИРАЕМ display: none
+        removeDisplayNone() {
+            console.log('🚫 Удаляем display: none у видео...');
+            
+            // Удаляем inline display: none
+            if (this.video.style.display === 'none') {
+                console.log('⚠️ Найден inline display: none, удаляем...');
+                this.video.style.display = 'block';
+            }
+            
+            // Принудительно устанавливаем видимость
+            this.video.style.cssText += `
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            `;
+            
+            // Также для контейнера
+            if (this.videoContainer) {
+                this.videoContainer.style.cssText += `
+                    display: block !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                `;
+            }
+            
+            // Добавляем класс для принудительного отображения
+            this.video.classList.add('video-force-visible');
+            
+            console.log('✅ display: none удален');
         }
         
         setupVideoAttributes() {
@@ -91,7 +126,7 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             }
             
             // СТИЛИ ДЛЯ ГАРАНТИИ
-            this.video.style.cssText = `
+            this.video.style.cssText += `
                 position: fixed !important;
                 top: 0 !important;
                 left: 0 !important;
@@ -113,7 +148,7 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             
             // Гарантируем что контейнер правильно стилизован
             if (this.videoContainer) {
-                this.videoContainer.style.cssText = `
+                this.videoContainer.style.cssText += `
                     position: fixed !important;
                     top: 0 !important;
                     left: 0 !important;
@@ -122,6 +157,8 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
                     z-index: -1 !important;
                     overflow: hidden !important;
                     pointer-events: none !important;
+                    display: block !important;
+                    visibility: visible !important;
                 `;
             }
             
@@ -153,6 +190,31 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
             
             // Принудительно загрузим видео
             this.video.load();
+            
+            // Запускаем проверку через 100мс
+            setTimeout(() => {
+                this.checkVideoVisibility();
+            }, 100);
+        }
+        
+        checkVideoVisibility() {
+            const computedStyle = window.getComputedStyle(this.video);
+            console.log('🔍 Проверяем видимость видео:');
+            console.log('- display:', computedStyle.display);
+            console.log('- visibility:', computedStyle.visibility);
+            console.log('- opacity:', computedStyle.opacity);
+            
+            if (computedStyle.display === 'none') {
+                console.warn('⚠️ Видео все еще display: none! Принудительно исправляем...');
+                this.video.style.display = 'block !important';
+                
+                // Еще одна попытка через setTimeout
+                setTimeout(() => {
+                    this.video.style.display = 'block';
+                    this.video.style.visibility = 'visible';
+                    this.video.style.opacity = '1';
+                }, 50);
+            }
         }
         
         setupVideoEventHandlers() {
@@ -190,35 +252,38 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
         startVideoPlayback() {
             console.log('🚀 Запускаем воспроизведение видео...');
             
-            // Попробуем запустить сразу
-            const playPromise = this.video.play();
-            
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        console.log('✅ Видео успешно запущено автоматически');
-                        this.video.style.opacity = '1';
-                    })
-                    .catch(error => {
-                        console.log('⚠️ Автоплей заблокирован:', error.name);
-                        
-                        // Покажем кнопку воспроизведения
-                        this.showPlayButton();
-                        
-                        // На мобильных ждем взаимодействия
-                        if (this.isMobileDevice()) {
-                            this.enableMobileInteraction();
-                        }
-                    });
-            }
-            
-            // Проверим через 3 секунды
+            // Убедимся что видео видимо перед запуском
             setTimeout(() => {
-                if (this.video.paused) {
-                    console.log('⏸️ Видео все еще приостановлено через 3 секунды');
-                    this.showPlayButton();
+                // Попробуем запустить сразу
+                const playPromise = this.video.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            console.log('✅ Видео успешно запущено автоматически');
+                            this.video.style.opacity = '1';
+                        })
+                        .catch(error => {
+                            console.log('⚠️ Автоплей заблокирован:', error.name);
+                            
+                            // Покажем кнопку воспроизведения
+                            this.showPlayButton();
+                            
+                            // На мобильных ждем взаимодействия
+                            if (this.isMobileDevice()) {
+                                this.enableMobileInteraction();
+                            }
+                        });
                 }
-            }, 3000);
+                
+                // Проверим через 3 секунды
+                setTimeout(() => {
+                    if (this.video.paused) {
+                        console.log('⏸️ Видео все еще приостановлено через 3 секунды');
+                        this.showPlayButton();
+                    }
+                }, 3000);
+            }, 200);
         }
         
         showPlayButton() {
@@ -937,6 +1002,19 @@ console.log('🎬 home.js загружен - ГАРАНТИРОВАННО РАБ
         console.log('📁 Текущий источник:', video.currentSrc || video.src);
         console.log('⚠️ Ошибка:', video.error);
         console.log('⏸️ Приостановлено:', video.paused);
+        
+        // КРИТИЧЕСКИЙ ФИКС: Проверяем display
+        const computedStyle = window.getComputedStyle(video);
+        console.log('🎨 Проверка стилей:');
+        console.log('- display:', computedStyle.display);
+        console.log('- visibility:', computedStyle.visibility);
+        
+        if (computedStyle.display === 'none') {
+            console.warn('🚨 КРИТИЧЕСКАЯ ОШИБКА: Видео имеет display: none!');
+            console.log('🔧 Принудительно исправляем...');
+            video.style.display = 'block !important';
+            video.style.visibility = 'visible !important';
+        }
         
         // Пробуем запустить
         video.play().then(() => {
