@@ -19,13 +19,27 @@
     <script src="js/parallax.js"></script>
 </head>
 <body class="home-page">
-    <!-- PARALLAX BACKGROUNDS -->
+    <!-- PARALLAX BACKGROUNDS (для остальных секций) -->
     <div class="parallax-bg-container">
-        <div id="parallax-bg-1" class="parallax-bg active"></div>
+        <div id="parallax-bg-1" class="parallax-bg"></div>
         <div id="parallax-bg-2" class="parallax-bg"></div>
-        <!-- ДОБАВЛЕНЫ ДВА НОВЫХ ФОНА -->
         <div id="parallax-bg-3" class="parallax-bg"></div>
         <div id="parallax-bg-4" class="parallax-bg"></div>
+    </div>
+
+    <!-- VIDEO BACKGROUND (как на Speck Design) -->
+    <div class="video-bg-container">
+        <video class="video-bg" autoplay muted loop playsinline preload="auto" 
+               poster="assets/images/parallax/bg-1.jpg">
+            <source src="assets/videos/hero-bg.mp4" type="video/mp4">
+            <!-- Фолбэк на изображение, если видео не загрузится -->
+            <img src="assets/images/parallax/bg-1.jpg" alt="Background fallback">
+        </video>
+        <div class="video-overlay"></div>
+        <!-- Кнопка воспроизведения для мобильных (скрыта по умолчанию) -->
+        <button class="video-play-button" aria-label="Воспроизвести видеофон">
+            <i class="fas fa-play"></i>
+        </button>
     </div>
 
     <!-- SCROLL PROGRESS BAR -->
