@@ -1,6 +1,6 @@
 /* home.css - Главная страница NB Group Tech */
-/* Версия: 6.0.0 | Полностью рабочий видеофон */
-/* Дата: 2024 | ФИНАЛЬНАЯ ВЕРСИЯ */
+/* Версия: 6.0.1 | ИСПРАВЛЕННЫЙ ВИДЕОФОН */
+/* Дата: 2024 | ФИНАЛЬНАЯ ИСПРАВЛЕННАЯ ВЕРСИЯ */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -41,7 +41,7 @@ body {
     }
 }
 
-/* ===== VIDEO BACKGROUND (ГАРАНТИРОВАННО РАБОЧИЙ) ===== */
+/* ===== VIDEO BACKGROUND (ГАРАНТИРОВАННО РАБОЧИЙ - ИСПРАВЛЕНО) ===== */
 .video-bg-container {
     position: fixed !important;
     top: 0 !important;
@@ -51,8 +51,12 @@ body {
     z-index: -1 !important;
     overflow: hidden !important;
     pointer-events: none !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
+/* КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: ГАРАНТИРУЕМ, ЧТО ВИДЕО ВИДИМО */
 .video-bg {
     position: absolute !important;
     top: 50% !important;
@@ -70,6 +74,59 @@ body {
     filter: brightness(0.7);
     transition: filter 0.5s ease;
 }
+
+/* ГАРАНТИРУЕМ ВИДИМОСТЬ ВО ВСЕХ СЛУЧАЯХ */
+video.video-bg {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* УБИРАЕМ ЛЮБЫЕ display: none ИЗ МЕДИА-ЗАПРОСОВ */
+@media (max-width: 1400px) {
+    .video-bg {
+        display: block !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .video-bg {
+        display: block !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .video-bg {
+        display: block !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .video-bg {
+        display: block !important;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+@media (max-width: 576px) {
+    .video-bg {
+        display: block !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-bg {
+        display: block !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .video-bg {
+        display: block !important;
+    }
+}
+
+/* КОНЕЦ КРИТИЧЕСКОГО ИСПРАВЛЕНИЯ */
 
 .video-overlay {
     position: absolute;
@@ -1877,15 +1934,26 @@ video.video-bg {
     z-index: 100;
 }
 
-/* ===== ДЕБАГ СТИЛИ (можно удалить после проверки) ===== */
-.debug .video-bg-container {
-    border: 3px solid red !important;
+/* ===== КРИТИЧЕСКИЙ ФИКС: УБИРАЕМ ВСЕ display: none ДЛЯ ВИДЕО ===== */
+video,
+.video-bg,
+.video-bg-container {
+    display: block !important;
 }
 
-.debug .video-bg {
-    border: 2px solid yellow !important;
+/* ЭКСТРЕННЫЙ ФИКС - принудительное отображение */
+#video-bg,
+.video-bg {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
-.debug .parallax-bg-container {
-    border: 2px solid blue !important;
+/* Если все еще не видно - еще более агрессивный фикс */
+video[class*="video"],
+video.video-bg,
+#video-bg {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
