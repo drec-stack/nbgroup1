@@ -1,5 +1,6 @@
-/* home.css - Главная страница NB Group Tech с видеофоном */
-/* Версия: 4.0.0 | Дата: 2024 | С ВИДЕОФОНОМ КАК НА SPECK DESIGN */
+/* home.css - Главная страница NB Group Tech */
+/* Версия: 6.0.0 | Полностью рабочий видеофон */
+/* Дата: 2024 | ФИНАЛЬНАЯ ВЕРСИЯ */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -18,6 +19,7 @@ body {
     color: white;
     overflow-x: hidden;
     position: relative;
+    min-height: 100vh;
 }
 
 .container {
@@ -39,24 +41,32 @@ body {
     }
 }
 
-/* ===== VIDEO BACKGROUND (Speck Design Style) ===== */
+/* ===== VIDEO BACKGROUND (ГАРАНТИРОВАННО РАБОЧИЙ) ===== */
 .video-bg-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 1;
-    overflow: hidden;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: -1 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
 }
 
 .video-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: cover !important;
+    z-index: 0 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     filter: brightness(0.7);
     transition: filter 0.5s ease;
 }
@@ -74,7 +84,7 @@ body {
         rgba(10, 10, 10, 0.8) 70%,
         rgba(10, 10, 10, 0.95) 100%
     );
-    z-index: 2;
+    z-index: 1;
 }
 
 /* Кнопка воспроизведения для мобильных */
@@ -86,9 +96,9 @@ body {
     transform: translate(-50%, -50%);
     width: 70px;
     height: 70px;
-    background: rgba(0, 102, 255, 0.8);
+    background: rgba(0, 102, 255, 0.85);
     border-radius: 50%;
-    z-index: 4;
+    z-index: 100;
     cursor: pointer;
     align-items: center;
     justify-content: center;
@@ -98,11 +108,13 @@ body {
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
     pointer-events: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .video-play-button:hover {
     background: rgba(0, 102, 255, 1);
     transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 6px 30px rgba(0, 102, 255, 0.4);
 }
 
 .video-play-button.show {
@@ -129,7 +141,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
+    z-index: -2;
     pointer-events: none;
 }
 
@@ -149,17 +161,17 @@ body {
     opacity: 1;
 }
 
-/* Скрываем параллакс на первой секции (где видео) */
-.hero.parallax-hero ~ .parallax-bg-container .parallax-bg.active {
-    opacity: 0;
+/* Скрываем параллакс на главном экране (там видео) */
+.hero ~ .parallax-bg-container .parallax-bg.active {
+    opacity: 0 !important;
 }
 
-/* Показываем параллакс начиная с первой content-section */
+/* Показываем параллакс на других секциях */
 .content-section[data-bg-index="0"] ~ .parallax-bg-container .parallax-bg.active {
-    opacity: 1;
+    opacity: 1 !important;
 }
 
-/* ===== КРИТИЧЕСКИЙ ФИКС: ГАРАНТИРОВАННЫЙ ХЕДЕР БЕЗ СКРЫТЫХ КНОПОК ===== */
+/* ===== КРИТИЧЕСКИЙ ФИКС: ГАРАНТИРОВАННЫЙ ХЕДЕР ===== */
 .main-header {
     position: fixed !important;
     top: 20px !important;
@@ -179,11 +191,10 @@ body {
         inset 0 1px 0 rgba(255, 255, 255, 0.1),
         inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
-    animation: none !important;
+    transition: all 0.3s ease !important;
 }
 
-/* Мобильная версия хедера - БЕЗ БУРГЕРА */
+/* Мобильная версия хедера */
 @media (max-width: 768px) {
     .main-header {
         left: 0 !important;
@@ -223,7 +234,7 @@ body {
     }
 }
 
-/* УБИРАЕМ ВСЕ СКРЫТЫЕ КНОПКИ И МЕНЮ - КРИТИЧЕСКИЙ ФИКС */
+/* Убираем все скрытые кнопки и меню */
 .mobile-menu-toggle,
 .menu-toggle,
 .burger-menu,
@@ -255,7 +266,7 @@ body {
 
 @media (max-width: 900px) {
     .main-nav {
-        display: none !important; /* На мобильных просто скрываем навигацию */
+        display: none !important;
     }
 }
 
@@ -267,20 +278,7 @@ body {
     pointer-events: auto !important;
 }
 
-/* Убираем все анимации скрытия хедера */
-.main-header.header-hidden {
-    transform: translateX(-50%) translateY(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
-
-@media (max-width: 768px) {
-    .main-header.header-hidden {
-        transform: translateY(0) !important;
-    }
-}
-
-/* ===== HERO SECTION ===== */
+/* ===== HERO SECTION (НА ВИДЕОФОНЕ) ===== */
 .hero {
     min-height: 100vh;
     padding: 220px 0 120px;
@@ -290,7 +288,7 @@ body {
     justify-content: center;
     background: transparent;
     overflow: hidden;
-    z-index: 3; /* Выше видео и параллакса */
+    z-index: 10; /* Выше видеофона */
 }
 
 .parallax-hero {
@@ -302,9 +300,10 @@ body {
     max-width: 1000px;
     margin: 0 auto;
     position: relative;
-    z-index: 4;
+    z-index: 20; /* Выше всего */
 }
 
+/* Стили текста с тенью для читаемости на видео */
 .hero h1 {
     font-size: 5.5rem;
     font-weight: 900;
@@ -312,6 +311,7 @@ body {
     letter-spacing: -0.03em;
     margin-bottom: 1.5rem;
     text-transform: uppercase;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
 }
 
 .hero h1 span {
@@ -333,15 +333,17 @@ body {
     font-size: 4.5rem;
     font-weight: 700;
     opacity: 0.9;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
 }
 
 .hero-subtitle {
     font-size: 2rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
     margin-bottom: 2.5rem;
     font-weight: 500;
     letter-spacing: 0.5px;
     line-height: 1.4;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
 }
 
 .hero-description {
@@ -353,8 +355,9 @@ body {
 .hero-description p {
     font-size: 1.4rem;
     line-height: 1.8;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 1.5rem;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
 }
 
 .hero-actions {
@@ -363,8 +366,11 @@ body {
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 3rem;
+    position: relative;
+    z-index: 30;
 }
 
+/* Кнопки */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -380,6 +386,8 @@ body {
     font-family: inherit;
     gap: 12px;
     min-width: 200px;
+    position: relative;
+    z-index: 100;
 }
 
 .btn-primary {
@@ -395,14 +403,14 @@ body {
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     color: white;
     border: 2px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-3px);
 }
@@ -421,7 +429,7 @@ body {
     position: relative;
     background: transparent;
     overflow: hidden;
-    z-index: 4;
+    z-index: 5;
 }
 
 .speck-vertical-grid {
@@ -675,7 +683,7 @@ body {
     background: transparent;
     position: relative;
     overflow: hidden;
-    z-index: 4;
+    z-index: 5;
 }
 
 .speck-marquee-wrapper {
@@ -819,7 +827,7 @@ body {
     padding: 140px 0;
     background: transparent;
     position: relative;
-    z-index: 4;
+    z-index: 5;
 }
 
 .stats-grid-improved {
@@ -827,7 +835,6 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 40px;
     position: relative;
-    z-index: 2;
 }
 
 .stat-card {
@@ -921,7 +928,7 @@ body {
     padding: 140px 0;
     background: transparent;
     position: relative;
-    z-index: 4;
+    z-index: 5;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
@@ -1037,6 +1044,24 @@ body {
     transform: translateX(8px) rotate(-15deg);
 }
 
+/* ===== ПРОГРЕСС-БАР СКРОЛЛА ===== */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 999;
+}
+
+.scroll-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #0066ff, #3399ff);
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
 /* ===== АДАПТИВНОСТЬ ===== */
 
 /* Десктоп (1400px+) */
@@ -1089,6 +1114,14 @@ body {
         font-size: 3.5rem;
     }
     
+    .video-bg {
+        filter: brightness(0.6);
+    }
+    
+    .video-overlay {
+        background: rgba(10, 10, 10, 0.7);
+    }
+    
     .speck-vertical-grid {
         max-width: 1000px;
         gap: 100px;
@@ -1135,19 +1168,6 @@ body {
         font-size: 1.6rem;
         padding: 0 40px;
     }
-    
-    /* Адаптивность видео */
-    .video-bg {
-        filter: brightness(0.6);
-    }
-    
-    .video-overlay {
-        background: linear-gradient(
-            to bottom,
-            rgba(10, 10, 10, 0.5) 0%,
-            rgba(10, 10, 10, 0.7) 100%
-        );
-    }
 }
 
 /* Планшеты горизонтально (992px - 1200px) */
@@ -1174,6 +1194,12 @@ body {
     
     .hero-description p {
         font-size: 1.2rem;
+    }
+    
+    .video-play-button {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
     }
     
     .speck-vertical-section {
@@ -1268,13 +1294,6 @@ body {
     .speck-marquee-mask::after {
         width: 100px;
     }
-    
-    /* Видео адаптивность */
-    .video-play-button {
-        width: 60px;
-        height: 60px;
-        font-size: 20px;
-    }
 }
 
 /* Планшеты вертикально (768px - 992px) */
@@ -1316,6 +1335,10 @@ body {
     .hero-actions .btn {
         width: 100%;
         max-width: 300px;
+    }
+    
+    .video-bg {
+        transform: translate(-50%, -50%) scale(1.05);
     }
     
     .speck-vertical-section {
@@ -1398,11 +1421,6 @@ body {
     .speck-marquee-mask::after {
         width: 70px;
     }
-    
-    /* Мобильная оптимизация видео */
-    .video-bg {
-        transform: translate(-50%, -50%) scale(1.05);
-    }
 }
 
 /* Телефоны (576px - 768px) */
@@ -1433,6 +1451,12 @@ body {
     
     .hero-description p {
         font-size: 1rem;
+    }
+    
+    .video-play-button {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
     }
     
     .speck-vertical-section {
@@ -1590,13 +1614,6 @@ body {
     .speck-marquee-mask::after {
         width: 40px;
     }
-    
-    /* Видео для очень маленьких экранов */
-    .video-play-button {
-        width: 50px;
-        height: 50px;
-        font-size: 18px;
-    }
 }
 
 /* Очень маленькие телефоны (до 400px) */
@@ -1661,7 +1678,9 @@ body {
     .btn,
     .content-section,
     .speck-marquee-track,
-    .video-bg {
+    .video-bg,
+    .video-play-button,
+    .parallax-bg {
         animation: none !important;
         transition: none !important;
     }
@@ -1672,11 +1691,11 @@ body {
     
     /* Отключаем видео при reduced motion */
     .video-bg {
-        display: none;
+        display: none !important;
     }
     
     .video-bg-container {
-        background: url('../../assets/images/parallax/bg-1.jpg') center/cover no-repeat;
+        background: url('../../assets/images/parallax/bg-1.jpg') center/cover no-repeat !important;
     }
 }
 
@@ -1686,7 +1705,8 @@ body {
     .stat-card:hover,
     .cta-improved:hover,
     .btn:hover,
-    .speck-brand:hover {
+    .speck-brand:hover,
+    .video-play-button:hover {
         transform: none;
     }
     
@@ -1747,7 +1767,9 @@ body {
     .btn-glow,
     .main-header,
     .video-bg-container,
-    .parallax-bg-container {
+    .parallax-bg-container,
+    .scroll-progress,
+    .video-play-button {
         display: none !important;
     }
     
@@ -1776,14 +1798,6 @@ body {
 
 /* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ===== */
 
-/* Гарантированная читаемость текста на видеофоне */
-.hero h1,
-.hero-subtitle,
-.hero-description p,
-.hero-actions .btn {
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
 /* Предотвращение горизонтального скролла */
 html, body {
     overflow-x: hidden !important;
@@ -1808,12 +1822,6 @@ body {
     }
 }
 
-/* Отключаем все transition для скрытых элементов */
-.mobile-menu-toggle *,
-.menu-toggle * {
-    transition: none !important;
-}
-
 /* Финальный абсолютный запрет на бургер-меню */
 [class*="mobile"],
 [class*="burger"],
@@ -1825,25 +1833,59 @@ body {
     pointer-events: none !important;
 }
 
-/* Прогресс-бар скролла */
-.scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 1001;
+/* Улучшение контраста для видеофона */
+.hero h1,
+.hero-subtitle,
+.hero-description p {
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.9);
 }
 
-.scroll-progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #0066ff, #3399ff);
-    width: 0%;
-    transition: width 0.1s ease;
+/* Фикс для iOS */
+@supports (-webkit-touch-callout: none) {
+    .video-bg {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        transform: none;
+    }
 }
 
-/* Специальные стили для яркости видео при скролле */
-body.scrolled .video-bg {
-    filter: brightness(0.5);
+/* Фикс для старых браузеров */
+.no-objectfit .video-bg {
+    display: none;
+}
+
+.no-objectfit .video-bg-container {
+    background: url('../../assets/images/parallax/bg-1.jpg') center/cover no-repeat;
+}
+
+/* Финальные гарантии для видео */
+video.video-bg {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Гарантируем что видео не перекрывает интерактивные элементы */
+.hero-actions a,
+.parallax-content,
+.hero-description {
+    position: relative;
+    z-index: 100;
+}
+
+/* ===== ДЕБАГ СТИЛИ (можно удалить после проверки) ===== */
+.debug .video-bg-container {
+    border: 3px solid red !important;
+}
+
+.debug .video-bg {
+    border: 2px solid yellow !important;
+}
+
+.debug .parallax-bg-container {
+    border: 2px solid blue !important;
 }
