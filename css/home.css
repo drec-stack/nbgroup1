@@ -1,4 +1,5 @@
-/* home.css - Главная страница*/
+/* home.css - Главная страница NB Group Tech - ФИКСИРОВАННАЯ ВЕРСИЯ БЕЗ СКРЫТЫХ КНОПОК */
+/* Версия: 3.0.0 | Дата: 2024 | ФИКС: НЕТ СКРЫТЫХ КНОПОК */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -188,7 +189,7 @@ body {
 
 .parallax-hero {
     position: relative;
-    z-index: 3;
+    z-index: 2;
 }
 
 .parallax-content {
@@ -196,7 +197,7 @@ body {
     max-width: 1000px;
     margin: 0 auto;
     position: relative;
-    z-index: 4;
+    z-index: 3;
 }
 
 .hero h1 {
@@ -319,7 +320,7 @@ body {
     opacity: 0.8;
     cursor: pointer;
     transition: opacity 0.3s ease;
-    z-index: 4;
+    z-index: 3;
 }
 
 .parallax-scroll-indicator:hover {
@@ -758,7 +759,7 @@ body {
     padding: 140px 0;
     background: transparent;
     position: relative;
-    z-index: 3;
+    z-index: 2;
 }
 
 .stats-grid-improved {
@@ -766,7 +767,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 40px;
     position: relative;
-    z-index: 3;
+    z-index: 2;
 }
 
 .stat-card {
@@ -860,7 +861,7 @@ body {
     padding: 140px 0;
     background: transparent;
     position: relative;
-    z-index: 3;
+    z-index: 2;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
@@ -877,7 +878,7 @@ body {
     margin: 0 auto;
     text-align: center;
     position: relative;
-    z-index: 3;
+    z-index: 2;
     padding: 0 20px;
 }
 
@@ -912,7 +913,7 @@ body {
 
 .cta-action {
     position: relative;
-    z-index: 3;
+    z-index: 2;
 }
 
 .btn-large {
@@ -974,162 +975,6 @@ body {
 
 .btn-glow:hover i {
     transform: translateX(8px) rotate(-15deg);
-}
-
-/* ===== VIDEO BACKGROUND (Speck Design Style) ===== */
-.video-background-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.video-background {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    transform: translateX(-50%) translateY(-50%);
-    object-fit: cover;
-    opacity: 0.7;
-    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(10, 10, 10, 0.8) 0%,
-        rgba(10, 10, 10, 0.4) 20%,
-        rgba(10, 10, 10, 0.2) 50%,
-        rgba(10, 10, 10, 0.6) 100%
-    );
-    z-index: 2;
-}
-
-.video-fallback {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    z-index: 1;
-    display: none;
-}
-
-.video-sound-toggle {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: white;
-    cursor: pointer;
-    z-index: 1005;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    pointer-events: auto;
-}
-
-.video-sound-toggle:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: scale(1.1);
-}
-
-.video-sound-toggle i {
-    font-size: 20px;
-    transition: opacity 0.3s ease;
-}
-
-.video-sound-toggle .fa-volume-up {
-    opacity: 0;
-    position: absolute;
-}
-
-.video-sound-toggle.sound-on .fa-volume-mute {
-    opacity: 0;
-}
-
-.video-sound-toggle.sound-on .fa-volume-up {
-    opacity: 1;
-}
-
-/* Адаптивность видео */
-@media (max-width: 768px) {
-    .video-background {
-        opacity: 0.8;
-    }
-    
-    .video-overlay {
-        background: linear-gradient(
-            to bottom,
-            rgba(10, 10, 10, 0.9) 0%,
-            rgba(10, 10, 10, 0.6) 30%,
-            rgba(10, 10, 10, 0.4) 70%,
-            rgba(10, 10, 10, 0.8) 100%
-        );
-    }
-    
-    .video-sound-toggle {
-        bottom: 20px;
-        right: 20px;
-        width: 45px;
-        height: 45px;
-    }
-}
-
-/* Оптимизация для мобильных устройств */
-@media (max-width: 576px) {
-    .video-background {
-        display: none;
-    }
-    
-    .video-fallback {
-        display: block !important;
-    }
-    
-    .video-sound-toggle {
-        display: none !important;
-    }
-}
-
-/* Для старых браузеров */
-.no-video .video-background {
-    display: none;
-}
-
-.no-video .video-fallback {
-    display: block;
-}
-
-/* Для сниженной анимации */
-@media (prefers-reduced-motion: reduce) {
-    .video-background {
-        display: none;
-    }
-    
-    .video-fallback {
-        display: block !important;
-    }
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
