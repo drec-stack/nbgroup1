@@ -1,5 +1,4 @@
-// home.js - Главная страница с видеофоном как на Speck Design
-// Версия: 4.0.0 - Полностью рабочий видеофон
+// home.js - Главная страница с РАБОЧИМ видеофоном
 
 (function() {
     'use strict';
@@ -9,17 +8,21 @@
             this.isReducedMotion = window.matchMedia ? 
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
             
-            console.log('🏠 HomePage инициализирован с видеофоном');
+            console.log('🏠 HomePage инициализирован');
             
             this.init();
         }
 
         init() {
-            this.initVideoBackground(); // ПЕРВЫМ ДЕЛОМ - видеофон
+            console.log('🚀 Начинаем инициализацию...');
+            
+            // ПЕРВЫМ ДЕЛОМ - видеофон
+            this.initVideoBackground();
+            
+            // Затем остальные компоненты
             this.initBasicAnimations();
             this.initStatsCounter();
             this.initParallaxBackgrounds();
-            this.initMarqueeAnimations();
             this.initClickableStats();
             this.initCTAClickable();
             this.initSpeckVerticalBlocksModern();
@@ -27,113 +30,108 @@
             this.initSpeckBlocksAnimations();
             this.initSpeckMarquee();
             
-            // Отключаем логику скролла хедера для главной страницы
+            // Отключаем логику скролла хедера
             this.disableHeaderScrollLogic();
             
             console.log('✅ Все компоненты инициализированы');
         }
 
-        // ===== VIDEO BACKGROUND MANAGEMENT =====
+        // ===== VIDEO BACKGROUND (ГЛАВНЫЙ ФИКС) =====
         initVideoBackground() {
             console.log('🎬 Инициализация видеофона...');
             
             const video = document.querySelector('.video-bg');
             const playButton = document.querySelector('.video-play-button');
-            const videoContainer = document.querySelector('.video-bg-container');
             
             if (!video) {
-                console.warn('⚠️ Видео не найдено');
+                console.error('❌ Видео не найдено в DOM');
+                this.showVideoFallback();
+                return;
+            }
+            
+            console.log('✅ Видео найдено:', video);
+            
+            // Проверяем, поддерживает ли браузер видео
+            const canPlayMP4 = video.canPlayType && video.canPlayType('video/mp4');
+            if (!canPlayMP4) {
+                console.warn('⚠️ Браузер не поддерживает MP4 видео');
+                this.showVideoFallback();
                 return;
             }
             
             // Если пользователь предпочитает уменьшенную анимацию
             if (this.isReducedMotion) {
-                console.log('⚠️ Пользователь предпочитает reduced motion, показываем статичное изображение');
-                this.showVideoFallback(video, playButton, videoContainer);
+                console.log('⚠️ Пользователь предпочитает reduced motion');
+                this.showVideoFallback();
                 return;
             }
             
-            // Проверяем, поддерживает ли браузер видео
-            if (!video.canPlayType || !video.canPlayType('video/mp4')) {
-                console.log('⚠️ Браузер не поддерживает видео, показываем фолбэк');
-                this.showVideoFallback(video, playButton, videoContainer);
-                return;
-            }
+            // Устанавливаем атрибуты для корректной работы
+            this.setupVideoAttributes(video);
             
-            // Устанавливаем корректный путь к видео
-            this.fixVideoPath(video);
+            // Настраиваем обработчики событий
+            this.setupVideoEventHandlers(video, playButton);
             
-            // Обработчики событий видео
-            this.setupVideoEventHandlers(video, playButton, videoContainer);
-            
-            // Оптимизация производительности
-            this.optimizeVideoPerformance(video);
-            
-            // Пытаемся запустить видео сразу
+            // Пытаемся запустить видео
             this.startVideoPlayback(video, playButton);
             
-            // Настройка видимости видео
-            this.setupVideoVisibilityControl(video);
+            // Проверяем видео через 3 секунды
+            setTimeout(() => {
+                this.checkVideoStatus(video, playButton);
+            }, 3000);
             
-            // Добавляем скролл-эффект
-            this.setupVideoScrollEffect();
-            
-            console.log('✅ Видеофон инициализирован');
+            console.log('✅ Видеофон настроен');
         }
         
-        fixVideoPath(video) {
-            // Проверяем, существует ли текущий путь к видео
-            const source = video.querySelector('source');
-            if (source && source.src) {
-                // Проверяем различные возможные пути
-                const possiblePaths = [
-                    source.src,
-                    'assets/videos/hero-bg.mp4',
-                    'videos/hero-bg.mp4',
-                    '../videos/hero-bg.mp4',
-                    '../../videos/hero-bg.mp4'
-                ];
-                
-                // Простая проверка - если в консоли браузера есть ошибка 404 для видео,
-                // попробуем альтернативный путь
-                video.addEventListener('error', (e) => {
-                    console.warn('❌ Ошибка загрузки видео по пути:', source.src);
-                    
-                    // Попробуем альтернативные пути
-                    const altSource = document.createElement('source');
-                    altSource.src = 'assets/videos/hero-bg.mp4';
-                    altSource.type = 'video/mp4';
-                    
-                    // Удаляем старый source и добавляем новый
-                    video.innerHTML = '';
-                    video.appendChild(altSource);
-                    
-                    console.log('🔄 Пробуем альтернативный путь:', altSource.src);
-                    
-                    // Перезагружаем видео
-                    video.load();
-                });
+        setupVideoAttributes(video) {
+            // Критические атрибуты для работы видео
+            video.setAttribute('playsinline', '');
+            video.setAttribute('webkit-playsinline', '');
+            video.setAttribute('muted', '');
+            video.setAttribute('loop', '');
+            video.setAttribute('preload', 'auto');
+            
+            // Для мобильных устройств
+            if (this.isMobileDevice()) {
+                video.setAttribute('autoplay', '');
+                video.setAttribute('poster', 'assets/images/parallax/bg-1.jpg');
             }
+            
+            // Принудительно показываем видео
+            video.style.display = 'block';
+            video.style.visibility = 'visible';
+            video.style.opacity = '1';
+            video.style.zIndex = '1';
         }
         
-        setupVideoEventHandlers(video, playButton, videoContainer) {
-            // Событие когда видео готово к воспроизведению
-            video.addEventListener('canplay', () => {
-                console.log('🎞️ Видео готово к воспроизведению');
+        setupVideoEventHandlers(video, playButton) {
+            // Событие когда видео загружено
+            video.addEventListener('loadeddata', () => {
+                console.log('📹 Видео загружено');
                 video.classList.add('loaded');
-                
-                // Показываем видео
-                video.style.opacity = '1';
             });
             
             // Событие когда видео начинает воспроизводиться
             video.addEventListener('playing', () => {
                 console.log('▶️ Видео воспроизводится');
                 if (playButton) {
-                    playButton.classList.remove('show');
-                    setTimeout(() => {
-                        playButton.style.display = 'none';
-                    }, 300);
+                    playButton.style.display = 'none';
+                }
+                // Принудительно показываем видео
+                video.style.opacity = '1';
+            });
+            
+            // Событие ошибки
+            video.addEventListener('error', (e) => {
+                console.error('❌ Ошибка видео:', e);
+                console.error('Код ошибки:', video.error ? video.error.code : 'unknown');
+                
+                // Показываем фолбэк
+                this.showVideoFallback();
+                
+                // Скрываем кнопку воспроизведения
+                if (playButton) {
+                    playButton.style.display = 'none';
                 }
             });
             
@@ -142,64 +140,32 @@
                 console.log('⏸️ Видео приостановлено');
             });
             
-            // Событие ошибки
-            video.addEventListener('error', (e) => {
-                console.error('❌ Ошибка видео:', e);
-                const errorCode = video.error ? video.error.code : 'unknown';
-                console.error('Код ошибки:', errorCode);
-                console.error('Сообщение:', video.error ? video.error.message : 'Нет деталей');
-                
-                // Показываем фолбэк
-                this.showVideoFallback(video, playButton, videoContainer);
-            });
-            
-            // Событие когда видео загружено
-            video.addEventListener('loadeddata', () => {
-                console.log('📹 Данные видео загружены');
-            });
-            
             // Событие когда видео завершило загрузку
             video.addEventListener('canplaythrough', () => {
-                console.log('✅ Видео полностью загружено и может воспроизводиться без остановок');
+                console.log('✅ Видео полностью загружено');
             });
             
             // Обработчик для кнопки воспроизведения
             if (playButton) {
                 playButton.addEventListener('click', (e) => {
                     e.preventDefault();
-                    e.stopPropagation();
-                    
-                    console.log('🖱️ Нажата кнопка воспроизведения видео');
+                    console.log('🖱️ Нажата кнопка воспроизведения');
                     
                     video.play()
                         .then(() => {
                             console.log('✅ Видео запущено по клику');
-                            playButton.classList.remove('show');
-                            setTimeout(() => {
-                                playButton.style.display = 'none';
-                            }, 300);
+                            playButton.style.display = 'none';
                         })
                         .catch(error => {
-                            console.log('❌ Не удалось запустить видео по клику:', error);
-                            this.showVideoFallback(video, playButton, videoContainer);
+                            console.error('❌ Не удалось запустить видео:', error);
+                            this.showVideoFallback();
                         });
-                });
-                
-                // Делаем кнопку доступной для клавиатуры
-                playButton.setAttribute('tabindex', '0');
-                playButton.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        playButton.click();
-                    }
                 });
             }
         }
         
         startVideoPlayback(video, playButton) {
-            // Устанавливаем стили для видео
-            video.style.opacity = '0';
-            video.style.transition = 'opacity 0.5s ease';
+            console.log('🚀 Пытаемся запустить видео...');
             
             // Пытаемся запустить воспроизведение
             const playPromise = video.play();
@@ -208,82 +174,90 @@
                 playPromise
                     .then(() => {
                         console.log('✅ Видео успешно запущено автоматически');
-                        video.style.opacity = '1';
                         if (playButton) {
                             playButton.style.display = 'none';
                         }
                     })
                     .catch(error => {
-                        console.log('⚠️ Автоплей заблокирован:', error.name, error.message);
+                        console.log('⚠️ Автоплей заблокирован:', error.name);
                         
                         // Показываем кнопку воспроизведения
                         if (playButton) {
                             playButton.style.display = 'flex';
                             playButton.classList.add('show');
                             
-                            // На мобильных устройствах пытаемся запустить после жеста пользователя
+                            // На мобильных пытаемся запустить после жеста пользователя
                             if (this.isMobileDevice()) {
                                 this.enableMobileVideoInteraction(video, playButton);
                             }
                         }
                     });
             }
-            
-            // Резервная проверка через 2 секунды
-            setTimeout(() => {
-                if (video.paused) {
-                    console.log('⏸️ Видео все еще приостановлено через 2 секунды');
-                    
-                    if (playButton) {
-                        playButton.style.display = 'flex';
-                        playButton.classList.add('show');
-                    }
+        }
+        
+        checkVideoStatus(video, playButton) {
+            if (video.paused) {
+                console.log('⏸️ Видео все еще приостановлено');
+                
+                // Показываем кнопку воспроизведения
+                if (playButton) {
+                    playButton.style.display = 'flex';
+                    playButton.classList.add('show');
                 }
-            }, 2000);
+                
+                // Проверяем, есть ли ошибка
+                if (video.error) {
+                    console.error('❌ Ошибка видео:', video.error);
+                    this.showVideoFallback();
+                }
+            } else {
+                console.log('✅ Видео воспроизводится нормально');
+            }
         }
         
         enableMobileVideoInteraction(video, playButton) {
             const handleUserInteraction = () => {
-                console.log('📱 Пользователь взаимодействовал со страницей, пытаемся запустить видео');
+                console.log('📱 Пользователь взаимодействовал со страницей');
                 
                 video.play()
                     .then(() => {
-                        console.log('✅ Видео запущено после взаимодействия пользователя');
+                        console.log('✅ Видео запущено после взаимодействия');
                         if (playButton) {
-                            playButton.classList.remove('show');
-                            setTimeout(() => {
-                                playButton.style.display = 'none';
-                            }, 300);
+                            playButton.style.display = 'none';
                         }
                     })
                     .catch(e => {
-                        console.log('❌ Не удалось запустить видео после взаимодействия:', e);
+                        console.log('❌ Не удалось запустить видео:', e);
                     });
                 
-                // Удаляем обработчики после первого взаимодействия
+                // Удаляем обработчики
                 document.removeEventListener('touchstart', handleUserInteraction);
                 document.removeEventListener('click', handleUserInteraction);
             };
             
-            // Добавляем обработчики для пользовательского взаимодействия
-            document.addEventListener('touchstart', handleUserInteraction, { once: true, passive: true });
+            // Добавляем обработчики
+            document.addEventListener('touchstart', handleUserInteraction, { once: true });
             document.addEventListener('click', handleUserInteraction, { once: true });
         }
         
-        showVideoFallback(video, playButton, videoContainer) {
+        showVideoFallback() {
             console.log('🖼️ Показываем фолбэк изображение');
+            
+            const video = document.querySelector('.video-bg');
+            const videoContainer = document.querySelector('.video-bg-container');
+            const playButton = document.querySelector('.video-play-button');
             
             // Скрываем видео
             if (video) {
                 video.style.display = 'none';
             }
             
-            // Скрываем кнопку воспроизведения
+            // Скрываем кнопку
             if (playButton) {
                 playButton.style.display = 'none';
             }
             
-            // Показываем параллакс-фон как фолбэк
+            // Устанавливаем фоновое изображение
             if (videoContainer) {
                 videoContainer.style.backgroundImage = 'url(assets/images/parallax/bg-1.jpg)';
                 videoContainer.style.backgroundSize = 'cover';
@@ -291,92 +265,12 @@
                 videoContainer.style.backgroundColor = '#0a0a0a';
             }
             
-            // Активируем первый параллакс-фон
-            const parallaxBg = document.getElementById('parallax-bg-1');
-            if (parallaxBg) {
-                parallaxBg.classList.add('active');
-                parallaxBg.style.opacity = '1';
-            }
-        }
-        
-        optimizeVideoPerformance(video) {
-            // Устанавливаем атрибуты для оптимизации
-            video.setAttribute('preload', 'auto');
-            video.setAttribute('playsinline', '');
-            video.setAttribute('webkit-playsinline', '');
-            video.setAttribute('muted', '');
-            video.setAttribute('loop', '');
-            
-            // Оптимизация для мобильных
-            if (this.isMobileDevice()) {
-                video.setAttribute('preload', 'metadata');
-                video.setAttribute('autoplay', '');
-                
-                // Уменьшаем качество для мобильных (браузер может игнорировать)
-                video.setAttribute('poster', 'assets/images/parallax/bg-1.jpg');
-            }
-        }
-        
-        setupVideoVisibilityControl(video) {
-            // Отключаем контроль видимости для видеофона
-            // Видеофон должен быть всегда виден на главном экране
-            return; // Пока отключаем эту функцию
-            
-            // Код ниже для будущих улучшений:
-            /*
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            // Видео видно - воспроизводим
-                            if (video.paused) {
-                                video.play().catch(e => {
-                                    console.log('⚠️ Не удалось возобновить видео:', e);
-                                });
-                            }
-                        } else {
-                            // Видео не видно - приостанавливаем (но не для фона)
-                            if (!video.paused && !this.isHeroSectionVisible()) {
-                                video.pause();
-                            }
-                        }
-                    });
-                }, {
-                    threshold: 0.1
-                });
-                
-                observer.observe(video);
-            }
-            */
-        }
-        
-        setupVideoScrollEffect() {
-            // Эффект затемнения видео при скролле
-            window.addEventListener('scroll', () => {
-                const video = document.querySelector('.video-bg');
-                if (!video) return;
-                
-                const scrollY = window.scrollY;
-                const maxScroll = 500;
-                const brightness = Math.max(0.3, 0.7 - (scrollY / maxScroll));
-                
-                video.style.filter = `brightness(${brightness})`;
-                
-                // Добавляем класс к body при скролле
-                if (scrollY > 50) {
-                    document.body.classList.add('scrolled');
-                } else {
-                    document.body.classList.remove('scrolled');
-                }
-            });
+            // Добавляем класс для CSS
+            document.body.classList.add('no-video');
         }
         
         isMobileDevice() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-        
-        isTouchDevice() {
-            return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         }
 
         // ===== SPECK MARQUEE INITIALIZATION =====
@@ -389,22 +283,18 @@
                 return;
             }
 
-            // Проверяем, работает ли CSS анимация
             setTimeout(() => {
                 const style = window.getComputedStyle(speckMarqueeTrack);
                 
-                // Если анимация не работает
                 if (style.animationName === 'none' || this.isReducedMotion) {
-                    console.log('🚀 Запуск JS fallback для Speck бегущей строки');
+                    console.log('🚀 Запуск JS fallback');
                     this.runSpeckMarqueeJS(speckMarqueeTrack);
                 } else {
-                    console.log('✅ Speck бегущая строка работает через CSS');
-                    // Добавляем обработчики для паузы при наведении
+                    console.log('✅ Бегущая строка работает через CSS');
                     this.addSpeckMarqueeHoverHandlers(speckMarqueeTrack);
                 }
             }, 100);
 
-            // Проверка через 2 секунды
             setTimeout(() => {
                 const track = document.querySelector('.speck-marquee-track');
                 if (track) {
@@ -412,36 +302,24 @@
                     const isMoving = rect.left !== 0;
                     
                     if (!isMoving && !track.classList.contains('js-fallback-active')) {
-                        console.log('⚠️ Бегущая строка не двигается, запускаем JS fallback');
+                        console.log('⚠️ Бегущая строка не двигается');
                         this.runSpeckMarqueeJS(speckMarqueeTrack);
                     }
                 }
             }, 2000);
         }
 
-        // ===== JS FALLBACK FOR SPECK MARQUEE =====
         runSpeckMarqueeJS(track) {
-            if (track.classList.contains('js-fallback-active')) {
-                console.log('⚠️ JS fallback уже активен');
-                return;
-            }
+            if (track.classList.contains('js-fallback-active')) return;
 
             const content = track.querySelector('.speck-marquee-content');
-            if (!content) {
-                console.error('❌ Speck marquee content не найден');
-                return;
-            }
+            if (!content) return;
 
-            console.log('🔄 Запуск JS бегущей строки...');
+            console.log('🔄 Запуск JS бегущей строки');
 
-            // Добавляем маркер активации JS fallback
             track.classList.add('js-fallback-active');
-            
-            // Останавливаем CSS анимацию
             track.style.animation = 'none';
-            track.style.webkitAnimation = 'none';
             
-            // Увеличиваем ширину для плавного перехода
             const originalContent = content.innerHTML;
             content.innerHTML = originalContent + originalContent + originalContent;
             
@@ -460,13 +338,11 @@
                 if (deltaTime > interval && !isPaused) {
                     position += speed;
                     
-                    // Сбрасываем позицию
                     const contentWidth = content.scrollWidth / 3;
                     if (position <= -contentWidth) {
                         position = 0;
                     }
                     
-                    // Применяем трансформацию
                     track.style.transform = `translateX(${position}px)`;
                     track.style.webkitTransform = `translateX(${position}px)`;
                     
@@ -476,19 +352,15 @@
                 animationId = requestAnimationFrame(animate);
             };
 
-            // Запускаем анимацию
             animationId = requestAnimationFrame(animate);
             
-            // Добавляем обработчики для паузы
             this.addSpeckMarqueeHoverHandlers(track, () => isPaused = true, () => isPaused = false);
             
-            // Сохраняем ID анимации для очистки
             track._marqueeAnimationId = animationId;
             
-            console.log('✅ Speck бегущая строка запущена через JS');
+            console.log('✅ JS бегущая строка запущена');
         }
 
-        // ===== HOVER HANDLERS FOR MARQUEE =====
         addSpeckMarqueeHoverHandlers(track, pauseCallback = null, resumeCallback = null) {
             if (!track) return;
 
@@ -510,7 +382,6 @@
                 track.classList.remove('paused');
             };
 
-            // Обработчики для всей секции
             const section = track.closest('.speck-marquee-section');
             if (section) {
                 section.addEventListener('mouseenter', pauseMarquee);
@@ -519,7 +390,6 @@
                 section.addEventListener('touchend', resumeMarquee);
             }
 
-            // Обработчики для самого трека
             track.addEventListener('mouseenter', pauseMarquee);
             track.addEventListener('mouseleave', resumeMarquee);
             track.addEventListener('touchstart', pauseMarquee);
@@ -527,23 +397,18 @@
         }
 
         disableHeaderScrollLogic() {
-            console.log('🚫 Отключаем логику скролла хедера на главной странице');
+            console.log('🚫 Отключаем логику скролла хедера');
             
             const header = document.querySelector('.main-header');
             if (!header) return;
             
-            // Убираем все классы скрытия
             header.classList.remove('header-hidden', 'header-minimized', 'header-scrolled');
             
-            // Фиксируем позицию
             header.style.opacity = '1';
             header.style.transform = 'translateX(-50%) translateY(0)';
             header.style.pointerEvents = 'auto';
-            
-            // Убираем все сложные transitions
             header.style.transition = 'background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease';
             
-            // Мобильная версия
             if (window.innerWidth <= 768) {
                 header.style.left = '0';
                 header.style.transform = 'none';
@@ -555,7 +420,7 @@
             }
         }
 
-        // ===== SPECK VERTICAL BLOCKS (Modern) =====
+        // ===== SPECK VERTICAL BLOCKS =====
         initSpeckVerticalBlocksModern() {
             console.log('🎨 Инициализация вертикальных блоков...');
             
@@ -566,7 +431,6 @@
                 return;
             }
             
-            // Используем Intersection Observer если поддерживается
             if (window.IntersectionObserver) {
                 const blockObserver = new IntersectionObserver((entries) => {
                     entries.forEach((entry, index) => {
@@ -584,7 +448,6 @@
                 
                 speckBlocks.forEach(block => blockObserver.observe(block));
             } else {
-                // Fallback для старых браузеров
                 setTimeout(() => {
                     speckBlocks.forEach((block, index) => {
                         setTimeout(() => {
@@ -595,10 +458,9 @@
             }
             
             this.initFeatureItemsInteractivity();
-            console.log('✅ Инициализировано ' + speckBlocks.length + ' вертикальных блоков');
+            console.log('✅ Инициализировано ' + speckBlocks.length + ' блоков');
         }
 
-        // ===== ИНТЕРАКТИВНОСТЬ ДЛЯ ЭЛЕМЕНТОВ СПИСКА =====
         initFeatureItemsInteractivity() {
             const featureItems = document.querySelectorAll('.speck-feature-item');
             
@@ -639,7 +501,6 @@
             });
         }
 
-        // ===== ENHANCED SPECK BLOCKS INTERACTIVITY =====
         initEnhancedSpeckBlocks() {
             console.log('🎨 Инициализация улучшенных Speck блоков...');
             
@@ -695,7 +556,6 @@
             console.log('✅ Инициализировано ' + featureColumns.length + ' колонок');
         }
 
-        // ===== SPECK BLOCKS ANIMATIONS =====
         initSpeckBlocksAnimations() {
             console.log('✨ Инициализация анимаций Speck блоков...');
             
@@ -733,24 +593,13 @@
                 });
             }, 500);
             
-            console.log('✅ Анимации Speck блоков инициализированы');
+            console.log('✅ Анимации инициализированы');
         }
 
-        // ===== STATS COUNTER =====
         initStatsCounter() {
             const statNumbers = document.querySelectorAll('.stat-number-improved');
             
             if (!statNumbers.length) return;
-            
-            const hasNoCSS = document.documentElement.classList.contains('no-csstransforms');
-            if (hasNoCSS) {
-                statNumbers.forEach(stat => {
-                    const target = parseInt(stat.getAttribute('data-target')) || 0;
-                    stat.textContent = target;
-                    stat.classList.add('animated');
-                });
-                return;
-            }
             
             const checkVisibility = () => {
                 const windowHeight = window.innerHeight || 
@@ -823,7 +672,6 @@
             checkVisibility();
         }
 
-        // ===== CLICKABLE STATS CARDS =====
         initClickableStats() {
             const statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
             
@@ -843,7 +691,6 @@
             });
         }
 
-        // ===== CLICKABLE CTA SECTION =====
         initCTAClickable() {
             const ctaSection = document.querySelector('.cta-improved.clickable-cta');
             if (!ctaSection) return;
@@ -862,7 +709,6 @@
             });
         }
 
-        // ===== БАЗОВЫЕ АНИМАЦИИ =====
         initBasicAnimations() {
             const sections = document.querySelectorAll('.content-section');
             
@@ -889,7 +735,6 @@
             checkSections();
         }
 
-        // ===== PARALLAX BACKGROUNDS =====
         initParallaxBackgrounds() {
             const contentSections = document.querySelectorAll('.content-section[data-bg-index]');
             
@@ -901,7 +746,6 @@
                                    document.body.clientHeight;
                 let activeIndex = 0;
                 
-                // Начинаем проверку с первой контентной секции (не Hero)
                 for (const section of contentSections) {
                     const rect = section.getBoundingClientRect();
                     const isVisible = (
@@ -928,103 +772,6 @@
             window.addEventListener('resize', checkBackgrounds);
             checkBackgrounds();
         }
-
-        // ===== MARQUEE ANIMATIONS (старая бегущая строка) =====
-        initMarqueeAnimations() {
-            const marqueeTracks = document.querySelectorAll('.marquee-track:not(#speckMarqueeTrack)');
-            
-            if (!marqueeTracks.length) return;
-
-            setTimeout(() => {
-                let isWorking = false;
-                
-                for (const track of marqueeTracks) {
-                    const style = track.currentStyle || window.getComputedStyle(track);
-                    const transform = style.transform || style.webkitTransform || style.mozTransform;
-                    
-                    if (transform && transform !== 'none' && 
-                        transform !== 'matrix(1, 0, 0, 1, 0, 0)' &&
-                        transform !== 'matrix(1, 0, 0, 1, 0, 0, 0)') {
-                        isWorking = true;
-                        break;
-                    }
-                }
-                
-                if (!isWorking) {
-                    console.log('🎯 Старая бегущая строка не работает через CSS, запускаем JS fallback...');
-                    this.initMarqueeJSFallback();
-                } else {
-                    console.log('✅ Старая бегущая строка работает через CSS');
-                }
-            }, 1000);
-        }
-
-        initMarqueeJSFallback() {
-            console.log('🚀 Запуск JavaScript fallback для старой бегущей строки...');
-            
-            const marqueeTracks = document.querySelectorAll('.marquee-track:not(#speckMarqueeTrack)');
-            
-            marqueeTracks.forEach((track, index) => {
-                const isReverse = index === 1;
-                
-                track.style.animation = 'none';
-                track.style.webkitAnimation = 'none';
-                track.style.mozAnimation = 'none';
-                track.style.oAnimation = 'none';
-                
-                let position = 0;
-                const speed = isReverse ? 2 : -2;
-                const contentWidth = track.scrollWidth / 3;
-                let animationId = null;
-                let isPaused = false;
-                
-                const animate = () => {
-                    if (isPaused) {
-                        animationId = window.requestAnimationFrame ? 
-                            requestAnimationFrame(animate) : 
-                            setTimeout(animate, 16);
-                        return;
-                    }
-                    
-                    position += speed;
-                    
-                    if (position <= -contentWidth) {
-                        position = 0;
-                    } else if (position >= 0) {
-                        position = -contentWidth;
-                    }
-                    
-                    if ('transform' in track.style || 
-                        'webkitTransform' in track.style ||
-                        'mozTransform' in track.style) {
-                        track.style.transform = 'translateX(' + position + 'px)';
-                        track.style.webkitTransform = 'translateX(' + position + 'px)';
-                        track.style.mozTransform = 'translateX(' + position + 'px)';
-                    } else {
-                        track.style.position = 'relative';
-                        track.style.left = position + 'px';
-                    }
-                    
-                    animationId = window.requestAnimationFrame ? 
-                        requestAnimationFrame(animate) : 
-                        setTimeout(animate, 16);
-                };
-                
-                animate();
-                
-                track.addEventListener('mouseenter', () => {
-                    isPaused = true;
-                });
-                
-                track.addEventListener('mouseleave', () => {
-                    isPaused = false;
-                });
-                
-                track._animationId = animationId;
-                
-                console.log('✅ Трек ' + (index + 1) + ' запущен через JS fallback');
-            });
-        }
     }
 
     // ===== GLOBAL INITIALIZATION =====
@@ -1035,49 +782,39 @@
         
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
+                console.log('📄 DOM загружен, инициализируем HomePage');
                 window.homePage = new HomePage();
             });
         } else {
+            console.log('📄 DOM уже загружен, инициализируем HomePage');
             window.homePage = new HomePage();
         }
     }
     
-    // Проверка работы бегущей строки
-    function checkMarqueeWorking() {
-        setTimeout(() => {
-            const tracks = document.querySelectorAll('.marquee-track');
-            let isWorking = false;
-            
-            for (const track of tracks) {
-                const style = track.currentStyle || window.getComputedStyle(track);
-                const transform = style.transform || style.webkitTransform || style.mozTransform;
-                
-                if (transform && transform !== 'none' && 
-                    transform !== 'matrix(1, 0, 0, 1, 0, 0)' &&
-                    transform !== 'matrix(1, 0, 0, 1, 0, 0, 0)') {
-                    isWorking = true;
-                    break;
-                }
-            }
-            
-            if (!isWorking && window.homePage) {
-                console.warn('⚠️ Бегущая строка не работает, запускаем fallback...');
-                window.homePage.initSpeckMarquee();
-            }
-        }, 2000);
-    }
-    
-    // Экспорт функций
-    window.initHomePage = initHomePage;
-    window.checkMarqueeWorking = checkMarqueeWorking;
-    
     // Автоматическая инициализация
     initHomePage();
     
-    window.addEventListener('load', checkMarqueeWorking);
+    // Отладка
+    window.debugVideo = function() {
+        const video = document.querySelector('.video-bg');
+        if (!video) {
+            console.error('❌ Видео не найдено');
+            return;
+        }
+        
+        console.log('🔍 Отладка видео:');
+        console.log('- display:', video.style.display);
+        console.log('- visibility:', video.style.visibility);
+        console.log('- opacity:', video.style.opacity);
+        console.log('- zIndex:', video.style.zIndex);
+        console.log('- currentSrc:', video.currentSrc);
+        console.log('- error:', video.error);
+        console.log('- paused:', video.paused);
+        console.log('- readyState:', video.readyState);
+        
+        // Добавляем класс для визуальной отладки
+        document.body.classList.add('debug-video');
+    };
     
-    // Резервный запуск через 5 секунд
-    setTimeout(checkMarqueeWorking, 5000);
-    
-    console.log('✅ home.js загружен и готов к работе');
+    console.log('✅ home.js загружен');
 })();
