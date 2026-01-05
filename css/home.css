@@ -1,6 +1,5 @@
-/* home.css - Главная страница NB Group Tech */
-/* Версия: 6.0.1 | ИСПРАВЛЕННЫЙ ВИДЕОФОН */
-/* Дата: 2024 | ФИНАЛЬНАЯ ИСПРАВЛЕННАЯ ВЕРСИЯ */
+/* home.css - ПОЛНЫЙ ФАЙЛ ДЛЯ ВИДЕОФОНА КАК НА SPECK DESIGN */
+/* Версия: 1.0.0 | РАБОЧИЙ ВИДЕОФОН */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -22,6 +21,10 @@ body {
     min-height: 100vh;
 }
 
+body.no-video {
+    background: #0a0a0a !important;
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -29,19 +32,7 @@ body {
     width: 100%;
 }
 
-@media (max-width: 768px) {
-    .container {
-        padding: 0 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 0 15px;
-    }
-}
-
-/* ===== VIDEO BACKGROUND (ГАРАНТИРОВАННО РАБОЧИЙ - ИСПРАВЛЕНО) ===== */
+/* ===== VIDEO BACKGROUND (ГАРАНТИРОВАННО РАБОЧИЙ) ===== */
 .video-bg-container {
     position: fixed !important;
     top: 0 !important;
@@ -51,83 +42,43 @@ body {
     z-index: -1 !important;
     overflow: hidden !important;
     pointer-events: none !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
 }
 
-/* КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: ГАРАНТИРУЕМ, ЧТО ВИДЕО ВИДИМО */
 .video-bg {
     position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    min-width: 100% !important;
-    min-height: 100% !important;
-    width: auto !important;
-    height: auto !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: cover !important;
     z-index: 0 !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
     filter: brightness(0.7);
     transition: filter 0.5s ease;
 }
 
-/* ГАРАНТИРУЕМ ВИДИМОСТЬ ВО ВСЕХ СЛУЧАЯХ */
-video.video-bg {
+/* Гарантия видимости ВСЕГДА */
+video.video-bg,
+video#video-bg,
+.video-bg {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
 }
 
-/* УБИРАЕМ ЛЮБЫЕ display: none ИЗ МЕДИА-ЗАПРОСОВ */
-@media (max-width: 1400px) {
-    .video-bg {
-        display: block !important;
-    }
+/* Фолбэк изображение */
+.video-fallback {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../assets/images/parallax/bg-1.jpg') center/cover no-repeat !important;
+    background-color: #0a0a0a !important;
+    z-index: 0;
 }
 
-@media (max-width: 1200px) {
-    .video-bg {
-        display: block !important;
-    }
-}
-
-@media (max-width: 992px) {
-    .video-bg {
-        display: block !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .video-bg {
-        display: block !important;
-        transform: translate(-50%, -50%) scale(1.05);
-    }
-}
-
-@media (max-width: 576px) {
-    .video-bg {
-        display: block !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .video-bg {
-        display: block !important;
-    }
-}
-
-@media (max-width: 400px) {
-    .video-bg {
-        display: block !important;
-    }
-}
-
-/* КОНЕЦ КРИТИЧЕСКОГО ИСПРАВЛЕНИЯ */
-
+/* Затемнение для читаемости */
 .video-overlay {
     position: absolute;
     top: 0;
@@ -136,10 +87,10 @@ video.video-bg {
     height: 100%;
     background: linear-gradient(
         to bottom,
-        rgba(10, 10, 10, 0.4) 0%,
-        rgba(10, 10, 10, 0.6) 30%,
-        rgba(10, 10, 10, 0.8) 70%,
-        rgba(10, 10, 10, 0.95) 100%
+        rgba(10, 10, 10, 0.2) 0%,
+        rgba(10, 10, 10, 0.4) 30%,
+        rgba(10, 10, 10, 0.6) 70%,
+        rgba(10, 10, 10, 0.8) 100%
     );
     z-index: 1;
 }
@@ -155,17 +106,18 @@ video.video-bg {
     height: 70px;
     background: rgba(0, 102, 255, 0.85);
     border-radius: 50%;
-    z-index: 100;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
     border: none;
     color: white;
     font-size: 24px;
-    backdrop-filter: blur(10px);
+    cursor: pointer;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease;
-    pointer-events: auto;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    pointer-events: auto !important;
 }
 
 .video-play-button:hover {
@@ -191,150 +143,6 @@ video.video-bg {
     }
 }
 
-/* ===== PARALLAX BACKGROUNDS ===== */
-.parallax-bg-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    pointer-events: none;
-}
-
-.parallax-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1s ease;
-}
-
-.parallax-bg.active {
-    opacity: 1;
-}
-
-/* Скрываем параллакс на главном экране (там видео) */
-.hero ~ .parallax-bg-container .parallax-bg.active {
-    opacity: 0 !important;
-}
-
-/* Показываем параллакс на других секциях */
-.content-section[data-bg-index="0"] ~ .parallax-bg-container .parallax-bg.active {
-    opacity: 1 !important;
-}
-
-/* ===== КРИТИЧЕСКИЙ ФИКС: ГАРАНТИРОВАННЫЙ ХЕДЕР ===== */
-.main-header {
-    position: fixed !important;
-    top: 20px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: calc(100% - 40px) !important;
-    max-width: 1400px !important;
-    margin: 0 auto !important;
-    z-index: 1000 !important;
-    padding: 20px 0 !important;
-    border-radius: 20px !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(25px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    transition: all 0.3s ease !important;
-}
-
-/* Мобильная версия хедера */
-@media (max-width: 768px) {
-    .main-header {
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        top: 0 !important;
-        margin: 0 !important;
-        background: rgba(10, 10, 20, 0.95) !important;
-        backdrop-filter: blur(30px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-        padding: 16px 0 !important;
-    }
-}
-
-/* Эффект при скролле */
-.main-header.scrolled {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(30px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    padding: 15px 0 !important;
-    box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 0 25px rgba(255, 255, 255, 0.08) !important;
-}
-
-@media (max-width: 768px) {
-    .main-header.scrolled {
-        padding: 12px 0 !important;
-    }
-}
-
-/* Убираем все скрытые кнопки и меню */
-.mobile-menu-toggle,
-.menu-toggle,
-.burger-menu,
-.hamburger,
-.menu-btn,
-.nav-toggle,
-.mobile-menu-overlay,
-.menu-overlay {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    z-index: -1000 !important;
-    pointer-events: none !important;
-}
-
-.mobile-menu,
-.menu-container {
-    display: none !important;
-}
-
-/* Отключаем все JS-переключение меню */
-.main-nav {
-    display: flex !important;
-}
-
-@media (max-width: 900px) {
-    .main-nav {
-        display: none !important;
-    }
-}
-
-/* Гарантируем что правая часть всегда видна */
-.header-right {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
-
 /* ===== HERO SECTION (НА ВИДЕОФОНЕ) ===== */
 .hero {
     min-height: 100vh;
@@ -345,11 +153,7 @@ video.video-bg {
     justify-content: center;
     background: transparent;
     overflow: hidden;
-    z-index: 10; /* Выше видеофона */
-}
-
-.parallax-hero {
-    position: relative;
+    z-index: 10;
 }
 
 .parallax-content {
@@ -357,10 +161,9 @@ video.video-bg {
     max-width: 1000px;
     margin: 0 auto;
     position: relative;
-    z-index: 20; /* Выше всего */
+    z-index: 20;
 }
 
-/* Стили текста с тенью для читаемости на видео */
 .hero h1 {
     font-size: 5.5rem;
     font-weight: 900;
@@ -692,32 +495,6 @@ video.video-bg {
     font-weight: 500;
 }
 
-/* Анимация появления колонок */
-.speck-feature-column {
-    opacity: 0;
-    transform: translateY(40px) scale(0.98);
-    animation: speckColumnFadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes speckColumnFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(40px) scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.speck-feature-column:nth-child(1) {
-    animation-delay: 0.4s;
-}
-
-.speck-feature-column:nth-child(2) {
-    animation-delay: 0.6s;
-}
-
 /* Разделительная линия между блоками */
 .speck-vertical-block:not(:last-child)::before {
     content: '';
@@ -753,7 +530,6 @@ video.video-bg {
     text-transform: uppercase;
     letter-spacing: 3px;
     margin-bottom: 30px;
-    font-weight: 600;
     position: relative;
     display: inline-block;
     padding-bottom: 15px;
@@ -1109,7 +885,7 @@ video.video-bg {
     width: 100%;
     height: 3px;
     background: rgba(255, 255, 255, 0.1);
-    z-index: 999;
+    z-index: 9999;
 }
 
 .scroll-progress-bar {
@@ -1120,8 +896,6 @@ video.video-bg {
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
-
-/* Десктоп (1400px+) */
 @media (max-width: 1400px) {
     .speck-vertical-grid {
         max-width: 1200px;
@@ -1157,7 +931,6 @@ video.video-bg {
     }
 }
 
-/* Ноутбуки (1200px - 1400px) */
 @media (max-width: 1200px) {
     .hero h1 {
         font-size: 4.5rem;
@@ -1227,7 +1000,6 @@ video.video-bg {
     }
 }
 
-/* Планшеты горизонтально (992px - 1200px) */
 @media (max-width: 992px) {
     .hero {
         padding: 180px 0 100px;
@@ -1251,12 +1023,6 @@ video.video-bg {
     
     .hero-description p {
         font-size: 1.2rem;
-    }
-    
-    .video-play-button {
-        width: 60px;
-        height: 60px;
-        font-size: 20px;
     }
     
     .speck-vertical-section {
@@ -1353,7 +1119,6 @@ video.video-bg {
     }
 }
 
-/* Планшеты вертикально (768px - 992px) */
 @media (max-width: 768px) {
     .hero {
         padding: 140px 0 80px;
@@ -1394,8 +1159,10 @@ video.video-bg {
         max-width: 300px;
     }
     
-    .video-bg {
-        transform: translate(-50%, -50%) scale(1.05);
+    .video-play-button {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
     }
     
     .speck-vertical-section {
@@ -1480,7 +1247,6 @@ video.video-bg {
     }
 }
 
-/* Телефоны (576px - 768px) */
 @media (max-width: 576px) {
     .hero {
         padding: 130px 0 60px;
@@ -1508,12 +1274,6 @@ video.video-bg {
     
     .hero-description p {
         font-size: 1rem;
-    }
-    
-    .video-play-button {
-        width: 50px;
-        height: 50px;
-        font-size: 18px;
     }
     
     .speck-vertical-section {
@@ -1595,7 +1355,6 @@ video.video-bg {
     }
 }
 
-/* Маленькие телефоны (до 576px) */
 @media (max-width: 480px) {
     .hero h1 {
         font-size: 2.2rem;
@@ -1673,30 +1432,6 @@ video.video-bg {
     }
 }
 
-/* Очень маленькие телефоны (до 400px) */
-@media (max-width: 400px) {
-    .container {
-        padding: 0 10px;
-    }
-    
-    .hero h1 {
-        font-size: 2rem;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 2.3rem;
-    }
-    
-    .hero h1 span:nth-child(2) {
-        font-size: 1.8rem;
-    }
-    
-    .speck-brand {
-        font-size: 0.9rem;
-        padding: 0 15px;
-    }
-}
-
 /* ===== АНИМАЦИИ ===== */
 @keyframes fadeInUp {
     from {
@@ -1714,188 +1449,7 @@ video.video-bg {
     opacity: 0;
 }
 
-.hero { animation-delay: 0.1s; }
-.speck-vertical-section { animation-delay: 0.2s; }
-.speck-marquee-section { animation-delay: 0.3s; }
-.stats-improved { animation-delay: 0.4s; }
-.cta-improved { animation-delay: 0.5s; }
-
-/* ===== ДОСТУПНОСТЬ И УЛУЧШЕНИЯ ===== */
-
-/* Поддержка уменьшенной анимации */
-@media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
-    }
-    
-    .speck-vertical-block,
-    .speck-feature-column,
-    .stat-card,
-    .cta-improved,
-    .btn,
-    .content-section,
-    .speck-marquee-track,
-    .video-bg,
-    .video-play-button,
-    .parallax-bg {
-        animation: none !important;
-        transition: none !important;
-    }
-    
-    .content-section {
-        opacity: 1;
-    }
-    
-    /* Отключаем видео при reduced motion */
-    .video-bg {
-        display: none !important;
-    }
-    
-    .video-bg-container {
-        background: url('../../assets/images/parallax/bg-1.jpg') center/cover no-repeat !important;
-    }
-}
-
-/* Улучшения для сенсорных устройств */
-@media (hover: none) {
-    .speck-feature-column:hover,
-    .stat-card:hover,
-    .cta-improved:hover,
-    .btn:hover,
-    .speck-brand:hover,
-    .video-play-button:hover {
-        transform: none;
-    }
-    
-    .speck-feature-column:active,
-    .stat-card:active {
-        transform: scale(0.98);
-    }
-    
-    .btn:active {
-        transform: scale(0.95);
-    }
-    
-    .stat-card::before,
-    .btn-glow::before {
-        display: none;
-    }
-    
-    .video-play-button:active {
-        transform: translate(-50%, -50%) scale(0.95);
-    }
-}
-
-/* Фокус для доступности */
-.btn:focus-visible,
-.stat-card:focus-visible,
-.speck-brand:focus-visible,
-.cta-improved:focus-visible,
-.video-play-button:focus-visible {
-    outline: 3px solid #0066ff;
-    outline-offset: 3px;
-    border-radius: 4px;
-}
-
-/* Стили для печати */
-@media print {
-    .hero,
-    .speck-vertical-section,
-    .speck-marquee-section,
-    .stats-improved,
-    .cta-improved {
-        background: white !important;
-        color: black !important;
-        padding: 40px 0 !important;
-    }
-    
-    .hero h1,
-    .hero-subtitle,
-    .speck-block-title,
-    .speck-column-title,
-    .stat-number-improved,
-    .cta-text h2 {
-        color: black !important;
-        background: none !important;
-    }
-    
-    .hero-actions,
-    .speck-marquee-track,
-    .btn-glow,
-    .main-header,
-    .video-bg-container,
-    .parallax-bg-container,
-    .scroll-progress,
-    .video-play-button {
-        display: none !important;
-    }
-    
-    .speck-block-right {
-        border-left: 1px solid #ccc !important;
-    }
-    
-    .speck-feature-columns {
-        display: block !important;
-    }
-    
-    .speck-feature-column {
-        margin-bottom: 20px !important;
-        break-inside: avoid;
-        background: white !important;
-        border: 1px solid #ccc !important;
-    }
-    
-    .stat-card {
-        box-shadow: none !important;
-        border: 1px solid #ccc !important;
-        break-inside: avoid;
-        background: white !important;
-    }
-}
-
 /* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ===== */
-
-/* Предотвращение горизонтального скролла */
-html, body {
-    overflow-x: hidden !important;
-    max-width: 100% !important;
-    width: 100% !important;
-}
-
-/* Гарантируем что хедер не мешает контенту */
-body {
-    padding-top: 80px !important;
-}
-
-@media (max-width: 768px) {
-    body {
-        padding-top: 70px !important;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding-top: 65px !important;
-    }
-}
-
-/* Финальный абсолютный запрет на бургер-меню */
-[class*="mobile"],
-[class*="burger"],
-[class*="hamburger"],
-[class*="menu-toggle"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-}
-
-/* Улучшение контраста для видеофона */
-.hero h1,
-.hero-subtitle,
-.hero-description p {
-    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.9);
-}
 
 /* Фикс для iOS */
 @supports (-webkit-touch-callout: none) {
@@ -1915,15 +1469,7 @@ body {
 }
 
 .no-objectfit .video-bg-container {
-    background: url('../../assets/images/parallax/bg-1.jpg') center/cover no-repeat;
-}
-
-/* Финальные гарантии для видео */
-video.video-bg {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    background: url('../assets/images/parallax/bg-1.jpg') center/cover no-repeat;
 }
 
 /* Гарантируем что видео не перекрывает интерактивные элементы */
@@ -1934,26 +1480,9 @@ video.video-bg {
     z-index: 100;
 }
 
-/* ===== КРИТИЧЕСКИЙ ФИКС: УБИРАЕМ ВСЕ display: none ДЛЯ ВИДЕО ===== */
-video,
-.video-bg,
-.video-bg-container {
-    display: block !important;
-}
-
-/* ЭКСТРЕННЫЙ ФИКС - принудительное отображение */
-#video-bg,
-.video-bg {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Если все еще не видно - еще более агрессивный фикс */
-video[class*="video"],
-video.video-bg,
-#video-bg {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+/* Фикс для видео при печати */
+@media print {
+    .video-bg-container {
+        display: none !important;
+    }
 }
