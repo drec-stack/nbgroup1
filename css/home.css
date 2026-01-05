@@ -1,5 +1,5 @@
-/* home.css - Главная страница NB Group Tech - ФИКСИРОВАННАЯ ВЕРСИЯ БЕЗ СКРЫТЫХ КНОПОК */
-/* Версия: 3.0.0 | Дата: 2024 | ФИКС: НЕТ СКРЫТЫХ КНОПОК */
+/* home.css - Главная страница NB Group Tech с видеофоном как на speckdesign.com */
+/* Версия: 4.0.0 | Дата: 2024 | ФИЧА: ВИДЕОФОН */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -39,7 +39,103 @@ body {
     }
 }
 
-/* ===== КРИТИЧЕСКИЙ ФИКС: ГАРАНТИРОВАННЫЙ ХЕДЕР БЕЗ СКРЫТЫХ КНОПОК ===== */
+/* ===== ВИДЕОФОН КАК НА SPECKDESIGN.COM ===== */
+.video-background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Под всем контентом */
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.video-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+    will-change: transform;
+    transition: opacity 1s ease;
+}
+
+/* Для современных браузеров с object-fit support */
+@supports (object-fit: cover) {
+    .video-background {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.4); /* Легкое затемнение */
+    z-index: 1;
+    pointer-events: none;
+}
+
+.video-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 10, 0.2) 0%,
+        rgba(10, 10, 10, 0.1) 20%,
+        transparent 50%,
+        rgba(10, 10, 10, 0.2) 80%,
+        rgba(10, 10, 10, 0.4) 100%
+    );
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Фолбэк если видео не загрузилось */
+.no-video .video-background-container {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    background-size: cover;
+    background-position: center;
+}
+
+/* Оптимизация для мобильных */
+@media (max-width: 768px) {
+    .video-background {
+        /* Некоторые мобильные браузеры требуют inline атрибутов */
+        transform: translate(-50%, -50%) scale(1.1); /* Немного увеличиваем для мобильных */
+    }
+    
+    .video-overlay {
+        background: rgba(10, 10, 10, 0.6); /* Более темное наложение для мобильных */
+    }
+}
+
+/* Улучшение производительности */
+@media (prefers-reduced-motion: reduce) {
+    .video-background {
+        display: none;
+    }
+    
+    .video-background-container {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    }
+}
+
+/* ===== КРИТИЧЕСКИЙ ФИКС: ГАРАНТИРОВАННЫЙ ХЕДЕР ===== */
 .main-header {
     position: fixed !important;
     top: 20px !important;
@@ -63,7 +159,7 @@ body {
     animation: none !important;
 }
 
-/* Мобильная версия хедера - БЕЗ БУРГЕРА */
+/* Мобильная версия хедера */
 @media (max-width: 768px) {
     .main-header {
         left: 0 !important;
@@ -103,78 +199,6 @@ body {
     }
 }
 
-/* УБИРАЕМ ВСЕ СКРЫТЫЕ КНОПКИ И МЕНЮ - КРИТИЧЕСКИЙ ФИКС */
-.mobile-menu-toggle,
-.menu-toggle,
-.burger-menu,
-.hamburger,
-.menu-btn,
-.nav-toggle,
-.mobile-menu-overlay,
-.menu-overlay {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    z-index: -1000 !important;
-    pointer-events: none !important;
-}
-
-.mobile-menu,
-.menu-container {
-    display: none !important;
-}
-
-/* Отключаем все JS-переключение меню */
-.main-nav {
-    display: flex !important;
-}
-
-@media (max-width: 900px) {
-    .main-nav {
-        display: none !important; /* На мобильных просто скрываем навигацию */
-    }
-}
-
-/* Гарантируем что правая часть всегда видна */
-.header-right {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
-
-/* Убираем все анимации скрытия хедера */
-.main-header.header-hidden {
-    transform: translateX(-50%) translateY(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
-
-@media (max-width: 768px) {
-    .main-header.header-hidden {
-        transform: translateY(0) !important;
-    }
-}
-
-/* Убираем hover эффекты для несуществующих элементов */
-.mobile-menu-toggle:hover,
-.menu-toggle:hover,
-.burger-menu:hover {
-    background: transparent !important;
-    transform: none !important;
-}
-
-/* Убираем outline/focus для несуществующих элементов */
-.mobile-menu-toggle:focus,
-.menu-toggle:focus {
-    outline: none !important;
-    box-shadow: none !important;
-}
-
 /* ===== HERO SECTION ===== */
 .hero {
     min-height: 100vh;
@@ -187,17 +211,26 @@ body {
     overflow: hidden;
 }
 
-.parallax-hero {
-    position: relative;
-    z-index: 2;
-}
-
-.parallax-content {
+.hero-content {
     text-align: center;
     max-width: 1000px;
     margin: 0 auto;
     position: relative;
-    z-index: 3;
+    z-index: 10; /* Выше видеофона */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease-out 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hero h1 {
@@ -237,12 +270,21 @@ body {
     font-weight: 500;
     letter-spacing: 0.5px;
     line-height: 1.4;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.7s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .hero-description {
     max-width: 900px;
     margin: 0 auto 3.5rem;
     padding: 0 20px;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.9s forwards;
 }
 
 .hero-description p {
@@ -258,6 +300,8 @@ body {
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 3rem;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 1.1s forwards;
 }
 
 .btn {
@@ -310,7 +354,8 @@ body {
     transform: translateX(5px);
 }
 
-.parallax-scroll-indicator {
+/* Индикатор скролла */
+.scroll-indicator {
     position: absolute;
     bottom: 40px;
     left: 50%;
@@ -320,10 +365,12 @@ body {
     opacity: 0.8;
     cursor: pointer;
     transition: opacity 0.3s ease;
-    z-index: 3;
+    z-index: 10;
+    animation: fadeIn 1s ease-out 1.3s forwards;
+    opacity: 0;
 }
 
-.parallax-scroll-indicator:hover {
+.scroll-indicator:hover {
     opacity: 1;
 }
 
@@ -350,14 +397,15 @@ body {
     }
 }
 
-.parallax-scroll-indicator span {
+.scroll-indicator span {
     font-size: 0.9rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     opacity: 0.7;
 }
 
-/* ===== SPECK VERTICAL SECTION ===== */
+/* ===== ОСТАЛЬНЫЕ СЕКЦИИ (сохраняются как были) ===== */
+/* SPECK VERTICAL SECTION */
 .speck-vertical-section {
     padding: 200px 0 150px;
     position: relative;
@@ -978,8 +1026,6 @@ body {
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
-
-/* Десктоп (1400px+) */
 @media (max-width: 1400px) {
     .speck-vertical-grid {
         max-width: 1200px;
@@ -1015,7 +1061,6 @@ body {
     }
 }
 
-/* Ноутбуки (1200px - 1400px) */
 @media (max-width: 1200px) {
     .hero h1 {
         font-size: 4.5rem;
@@ -1077,7 +1122,6 @@ body {
     }
 }
 
-/* Планшеты горизонтально (992px - 1200px) */
 @media (max-width: 992px) {
     .hero {
         padding: 180px 0 100px;
@@ -1197,7 +1241,6 @@ body {
     }
 }
 
-/* Планшеты вертикально (768px - 992px) */
 @media (max-width: 768px) {
     .hero {
         padding: 140px 0 80px;
@@ -1321,7 +1364,6 @@ body {
     }
 }
 
-/* Телефоны (576px - 768px) */
 @media (max-width: 576px) {
     .hero {
         padding: 130px 0 60px;
@@ -1351,7 +1393,7 @@ body {
         font-size: 1rem;
     }
     
-    .parallax-scroll-indicator {
+    .scroll-indicator {
         bottom: 30px;
     }
     
@@ -1434,7 +1476,6 @@ body {
     }
 }
 
-/* Маленькие телефоны (до 576px) */
 @media (max-width: 480px) {
     .hero h1 {
         font-size: 2.2rem;
@@ -1512,7 +1553,6 @@ body {
     }
 }
 
-/* Очень маленькие телефоны (до 400px) */
 @media (max-width: 400px) {
     .container {
         padding: 0 10px;
@@ -1536,55 +1576,47 @@ body {
     }
 }
 
-/* ===== АНИМАЦИИ ===== */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+/* ===== АДАПТИВНОСТЬ ДЛЯ ВИДЕОФОНА ===== */
+@media (max-width: 768px) and (orientation: portrait) {
+    .video-background {
+        transform: translate(-50%, -50%) scale(1.2);
     }
 }
 
-.content-section {
-    animation: fadeInUp 0.8s ease-out forwards;
-    opacity: 0;
-}
-
-.hero { animation-delay: 0.1s; }
-.speck-vertical-section { animation-delay: 0.2s; }
-.speck-marquee-section { animation-delay: 0.3s; }
-.stats-improved { animation-delay: 0.4s; }
-.cta-improved { animation-delay: 0.5s; }
-
-/* ===== ДОСТУПНОСТЬ И УЛУЧШЕНИЯ ===== */
-
-/* Поддержка уменьшенной анимации */
-@media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        padding: 150px 0 80px;
+        min-height: 100vh;
     }
     
-    .speck-vertical-block,
-    .speck-feature-column,
-    .stat-card,
-    .cta-improved,
-    .btn,
-    .content-section,
-    .speck-marquee-track,
-    .scroll-arrow {
+    .video-background {
+        transform: translate(-50%, -50%) scale(1.3);
+    }
+}
+
+/* ===== ПОДДЕРЖКА ПРЕДПОЧТЕНИЙ ДВИЖЕНИЯ ===== */
+@media (prefers-reduced-motion: reduce) {
+    .video-background {
         animation: none !important;
         transition: none !important;
     }
     
-    .content-section {
-        opacity: 1;
+    .hero-content,
+    .hero-subtitle,
+    .hero-description,
+    .hero-actions,
+    .scroll-indicator {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    .speck-marquee-track {
+        animation: none !important;
     }
 }
 
-/* Улучшения для сенсорных устройств */
+/* ===== УЛУЧШЕНИЯ ДЛЯ СЕНСОРНЫХ УСТРОЙСТВ ===== */
 @media (hover: none) {
     .speck-feature-column:hover,
     .stat-card:hover,
@@ -1609,7 +1641,7 @@ body {
     }
 }
 
-/* Фокус для доступности */
+/* ===== ДОСТУПНОСТЬ ===== */
 .btn:focus-visible,
 .stat-card:focus-visible,
 .speck-brand:focus-visible,
@@ -1619,8 +1651,12 @@ body {
     border-radius: 4px;
 }
 
-/* Стили для печати */
+/* ===== СТИЛИ ДЛЯ ПЕЧАТИ ===== */
 @media print {
+    .video-background-container {
+        display: none !important;
+    }
+    
     .hero,
     .speck-vertical-section,
     .speck-marquee-section,
@@ -1642,7 +1678,7 @@ body {
     }
     
     .hero-actions,
-    .parallax-scroll-indicator,
+    .scroll-indicator,
     .speck-marquee-track,
     .btn-glow,
     .main-header {
@@ -1672,261 +1708,15 @@ body {
     }
 }
 
-/* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ===== */
-
-/* Для IE11 */
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-    .hero {
-        display: block;
-    }
-    
-    .speck-vertical-block {
-        display: block;
-    }
-    
-    .speck-block-left,
-    .speck-block-right {
-        float: left;
-        width: 50%;
-        box-sizing: border-box;
-    }
-    
-    .speck-feature-columns {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-    
-    .speck-feature-column {
-        width: calc(50% - 50px);
-        margin-bottom: 40px;
-    }
-    
-    .hero-actions {
-        display: block;
-    }
-    
-    .hero-actions .btn {
-        display: inline-block;
-        margin: 0 12.5px 25px 12.5px;
-    }
-    
-    .stats-grid-improved {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .stat-card {
-        width: 280px;
-        margin: 15px;
-    }
-    
-    .main-header {
-        background: rgba(15, 20, 35, 0.98) !important;
-    }
-}
-
-/* Для Safari без поддержки gap */
-@supports not (gap: 10px) {
-    .hero-actions {
-        margin: -12.5px;
-    }
-    
-    .hero-actions .btn {
-        margin: 12.5px;
-    }
-    
-    .speck-vertical-grid {
-        margin: -75px 0;
-    }
-    
-    .speck-vertical-block {
-        margin: 75px 0;
-    }
-    
-    .stats-grid-improved {
-        margin: -20px;
-    }
-    
-    .stat-card {
-        margin: 20px;
-    }
-    
-    .speck-feature-columns {
-        margin: -60px;
-    }
-    
-    .speck-feature-column {
-        margin: 60px;
-    }
-}
-
-/* Гарантированная читаемость текста */
-.hero h1,
-.hero-subtitle,
-.speck-block-title,
-.speck-block-subtitle,
-.speck-column-title,
-.speck-feature-text,
-.speck-brand,
-.stat-number-improved,
-.stat-label-improved,
-.cta-text h2,
-.cta-text p {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-/* Гарантированная работа ссылок */
-a,
-button,
-.speck-feature-column,
-.stat-card,
-.cta-improved {
-    cursor: pointer;
-}
-
-/* Предотвращение переполнения */
-.container {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-
-/* ===== УНИВЕРСАЛЬНЫЙ ФИКС ХЕДЕРА ===== */
-/* Этот блок гарантирует, что хедер всегда будет на правильном месте */
-.main-header {
-    animation: none !important;
-    -webkit-animation: none !important;
-}
-
-/* Принудительное позиционирование для особых случаев */
-body.services-page .main-header,
-body.about-page .main-header,
-body.portfolio-page .main-header,
-body.brandbook-page .main-header,
-body.contacts-page .main-header {
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    right: auto !important;
-    width: calc(100% - 40px) !important;
-    max-width: 1400px !important;
-    margin: 0 auto !important;
-    top: 20px !important;
-}
-
-@media (max-width: 768px) {
-    body.services-page .main-header,
-    body.about-page .main-header,
-    body.portfolio-page .main-header,
-    body.brandbook-page .main-header,
-    body.contacts-page .main-header {
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        top: 0 !important;
-    }
-}
-
-/* ===== ПАРАЛЛАКС ЭФФЕКТЫ ===== */
-.parallax-bg-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
-}
-
-.parallax-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1s ease;
-}
-
-.parallax-bg.active {
-    opacity: 1;
-}
-
-/* Прогресс-бар скролла */
-.scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 1001;
-}
-
-.scroll-progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #0066ff, #3399ff);
-    width: 0%;
-    transition: width 0.1s ease;
-}
-
-/* ===== ФИНАЛЬНЫЕ ГАРАНТИИ ПРОТИВ СКРЫТЫХ КНОПОК ===== */
-/* Эти стили должны быть в самом конце файла */
-
-/* 1. Гарантируем что кнопка "Начать проект" всегда видна */
-.header-right .btn-primary {
-    display: inline-flex !important;
-}
-
-@media (max-width: 480px) {
-    .header-right .btn-primary {
-        display: none !important;
-    }
-}
-
-/* 2. Отключаем все сложные анимации хедера */
-@keyframes glassEnter {
-    from {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-    }
-}
-
-/* 3. Для всех страниц - фиксируем хедер */
-body.services-page .main-header,
-body.about-page .main-header,
-body.portfolio-page .main-header,
-body.brandbook-page .main-header,
-body.contacts-page .main-header,
-body.home-page .main-header {
-    position: fixed !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-}
-
-/* 4. Финальная гарантия - удаляем все через JS */
-.no-hidden-buttons .mobile-menu-toggle,
-.no-hidden-buttons .menu-toggle {
-    display: none !important;
-}
-
-/* 5. Предотвращаем горизонтальный скролл */
+/* ===== ФИНАЛЬНЫЕ ФИКСЫ ===== */
+/* Предотвращение горизонтального скролла */
 html, body {
     overflow-x: hidden !important;
     max-width: 100% !important;
     width: 100% !important;
 }
 
-/* 6. Гарантируем что хедер не мешает контенту */
+/* Гарантируем что хедер не мешает контенту */
 body {
     padding-top: 80px !important;
 }
@@ -1943,33 +1733,17 @@ body {
     }
 }
 
-/* 7. Убираем все контейнеры мобильного меню */
-.mobile-menu-container,
-.burger-container,
-.menu-wrapper {
-    display: none !important;
+/* Гарантируем работу ссылок */
+a,
+button,
+.speck-feature-column,
+.stat-card,
+.cta-improved {
+    cursor: pointer;
 }
 
-/* 8. Отключаем все transition для скрытых элементов */
-.mobile-menu-toggle *,
-.menu-toggle * {
-    transition: none !important;
-}
-
-/* 9. Гарантируем что бургер-иконки не появятся */
-.burger-line,
-.hamburger-line,
-.menu-line {
-    display: none !important;
-}
-
-/* 10. Финальный абсолютный запрет */
-[class*="mobile"],
-[class*="burger"],
-[class*="hamburger"],
-[class*="menu-toggle"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+/* Предотвращение переполнения */
+.container {
+    max-width: 100%;
+    overflow-x: hidden;
 }
