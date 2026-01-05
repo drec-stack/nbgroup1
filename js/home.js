@@ -1,4 +1,4 @@
-// home.js - Simplified Home Page Functionality
+// home.js - Simplified Home Page Functionality with Video Background
 
 (function() {
     'use strict';
@@ -8,12 +8,13 @@
             this.isReducedMotion = window.matchMedia ? 
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
             
-            console.log('🏠 HomePage инициализирован (упрощенная версия)');
+            console.log('🏠 HomePage инициализирован (упрощенная версия с видеофоном)');
             
             this.init();
         }
 
         init() {
+            this.initVideoBackground(); // Инициализация видеофона - ПЕРВЫМ!
             this.initBasicAnimations();
             this.initStatsCounter();
             this.initParallaxBackgrounds();
@@ -27,6 +28,166 @@
             
             // Отключаем логику скролла хедера для главной страницы
             this.disableHeaderScrollLogic();
+        }
+
+        // ===== VIDEO BACKGROUND INITIALIZATION =====
+        initVideoBackground() {
+            console.log('🎬 Инициализация видеофона...');
+            
+            const videoContainer = document.querySelector('.video-background-container');
+            const video = document.querySelector('.video-background');
+            const soundToggle = document.querySelector('.video-sound-toggle');
+            
+            if (!video) {
+                console.log('⚠️ Видеофон не найден');
+                return;
+            }
+            
+            // Проверяем поддержку видео
+            const supportsVideo = !!document.createElement('video').canPlayType;
+            if (!supportsVideo) {
+                console.log('⚠️ Браузер не поддерживает видео, используем fallback');
+                document.body.classList.add('no-video');
+                return;
+            }
+            
+            // Настройки видео
+            video.playsInline = true;
+            video.muted = true;
+            video.loop = true;
+            
+            // Обработка загрузки видео
+            video.addEventListener('loadeddata', () => {
+                console.log('✅ Видео загружено');
+                videoContainer.classList.add('video-loaded');
+                
+                try {
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.log('⚠️ Автовоспроизведение заблокировано:', error);
+                            this.handleAutoplayBlocked(video);
+                        });
+                    }
+                } catch (error) {
+                    console.log('⚠️ Ошибка воспроизведения:', error);
+                    this.handleAutoplayBlocked(video);
+                }
+            });
+            
+            video.addEventListener('error', (e) => {
+                console.error('❌ Ошибка загрузки видео:', e);
+                document.body.classList.add('no-video');
+            });
+            
+            // Управление звуком
+            if (soundToggle) {
+                soundToggle.style.display = 'flex';
+                
+                soundToggle.addEventListener('click', () => {
+                    if (video.muted) {
+                        video.muted = false;
+                        soundToggle.classList.add('sound-on');
+                        soundToggle.setAttribute('aria-label', 'Mute video');
+                        console.log('🔊 Звук видео включен');
+                    } else {
+                        video.muted = true;
+                        soundToggle.classList.remove('sound-on');
+                        soundToggle.setAttribute('aria-label', 'Unmute video');
+                        console.log('🔇 Звук видео выключен');
+                    }
+                });
+                
+                // Добавляем обработчик для пользовательского взаимодействия
+                document.addEventListener('click', () => {
+                    if (video.paused) {
+                        video.play().catch(e => console.log('⚠️ Не удалось возобновить видео:', e));
+                    }
+                }, { once: true });
+                
+                // Добавляем обработчик клавиатуры для доступности
+                soundToggle.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+                        e.preventDefault();
+                        soundToggle.click();
+                    }
+                });
+            }
+            
+            // Адаптация для мобильных устройств
+            if (window.innerWidth <= 576) {
+                video.style.display = 'none';
+                const fallback = document.querySelector('.video-fallback');
+                if (fallback) fallback.style.display = 'block';
+            }
+            
+            // Слушатель изменения размера окна
+            window.addEventListener('resize', () => {
+                if (window.innerWidth <= 576) {
+                    video.style.display = 'none';
+                    const fallback = document.querySelector('.video-fallback');
+                    if (fallback) fallback.style.display = 'block';
+                    if (soundToggle) soundToggle.style.display = 'none';
+                } else {
+                    video.style.display = 'block';
+                    const fallback = document.querySelector('.video-fallback');
+                    if (fallback) fallback.style.display = 'none';
+                    if (soundToggle && supportsVideo) soundToggle.style.display = 'flex';
+                }
+            });
+            
+            console.log('✅ Видеофон инициализирован');
+        }
+
+        // ===== AUTOPLAY BLOCKED HANDLER =====
+        handleAutoplayBlocked(video) {
+            // Показываем инструкцию для пользователя
+            const playButton = document.createElement('button');
+            playButton.className = 'video-play-overlay';
+            playButton.innerHTML = '<i class="fas fa-play"></i><span>Click to play video</span>';
+            playButton.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 102, 255, 0.8);
+                color: white;
+                border: none;
+                padding: 20px 40px;
+                border-radius: 50px;
+                font-size: 18px;
+                cursor: pointer;
+                z-index: 1004;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                backdrop-filter: blur(10px);
+                font-family: 'Inter', sans-serif;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            `;
+            
+            playButton.addEventListener('mouseenter', () => {
+                playButton.style.background = 'rgba(0, 102, 255, 0.9)';
+                playButton.style.transform = 'translate(-50%, -50%) scale(1.05)';
+            });
+            
+            playButton.addEventListener('mouseleave', () => {
+                playButton.style.background = 'rgba(0, 102, 255, 0.8)';
+                playButton.style.transform = 'translate(-50%, -50%)';
+            });
+            
+            playButton.addEventListener('click', () => {
+                video.play().then(() => {
+                    playButton.remove();
+                    console.log('✅ Пользователь разрешил воспроизведение видео');
+                }).catch(e => {
+                    console.log('⚠️ Пользователь заблокировал воспроизведение');
+                    playButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>Video blocked. Please enable autoplay</span>';
+                });
+            });
+            
+            document.body.appendChild(playButton);
         }
 
         // ===== SPECK MARQUEE INITIALIZATION =====
@@ -731,5 +892,5 @@
     // Резервный запуск через 5 секунд
     setTimeout(checkMarqueeWorking, 5000);
     
-    console.log('✅ home.js загружен и готов к работе');
+    console.log('✅ home.js загружен и готов к работе (с видеофоном)');
 })();
