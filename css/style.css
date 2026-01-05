@@ -1,6 +1,9 @@
-/* style.css - ПОЛНЫЙ ФАЙЛ С ДОБАВЛЕННЫМИ СТИЛЯМИ ДЛЯ БЕГУЩЕЙ СТРОКИ */
+/* style.css - ПОЛНЫЙ ФАЙЛ СТИЛЕЙ NB GROUP TECH */
+/* Версия: 3.0.0 | РАБОЧИЙ ВИДЕОФОН + SPECK DESIGN */
+/* Дата: 2024 | ПОЛНАЯ ВЕРСИЯ */
+
 :root {
-    /* ОСНОВНЫЕ ЦВЕТА - СИНЯЯ ПАЛИТРА ДЛЯ КОНТЕНТА */
+    /* ОСНОВНЫЕ ЦВЕТА - СИНЯЯ ПАЛИТРА */
     --primary-blue: #0066ff;
     --dark-blue: #0052cc;
     --light-blue: #3399ff;
@@ -21,9 +24,10 @@
     --blue-hover: #1a75ff;
     --blue-light-bg: rgba(0, 102, 255, 0.1);
     --blue-border: rgba(0, 102, 255, 0.3);
+    --white-transparent: rgba(255, 255, 255, 0.1);
 }
 
-/* ГЛОБАЛЬНЫЙ ФИКС ДЛЯ ГОРИЗОНТАЛЬНОГО СКРОЛЛА */
+/* ===== ГЛОБАЛЬНЫЙ СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
     margin: 0;
     padding: 0;
@@ -47,17 +51,18 @@ body {
     line-height: 1.6;
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     padding-top: 80px; /* Отступ для фиксированного хедера */
 }
 
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 30px;
+    width: 100%;
 }
 
 /* ===== SPECK DESIGN MARQUEE SECTION - ТОЧНО КАК НА SPECKDESIGN.COM ===== */
-
 .speck-marquee-section {
     padding: 100px 0;
     background-color: var(--primary);
@@ -190,95 +195,6 @@ body {
     background: linear-gradient(to left, var(--primary), transparent);
 }
 
-/* Адаптивность для бегущей строки */
-@media (max-width: 1200px) {
-    .speck-brand {
-        font-size: 4rem !important;
-    }
-    .speck-marquee-content {
-        gap: 60px;
-    }
-}
-
-@media (max-width: 768px) {
-    .speck-marquee-section {
-        padding: 60px 0;
-    }
-    
-    .speck-marquee-mask {
-        padding: 40px 0;
-        mask-image: linear-gradient(
-            to right,
-            transparent,
-            black 5%,
-            black 95%,
-            transparent
-        );
-        -webkit-mask-image: linear-gradient(
-            to right,
-            transparent,
-            black 5%,
-            black 95%,
-            transparent
-        );
-    }
-    
-    .speck-brand {
-        font-size: 3rem !important;
-    }
-    
-    .speck-marquee-content {
-        gap: 40px;
-    }
-    
-    .speck-marquee-track {
-        animation: speckMarquee 30s linear infinite;
-    }
-    
-    .speck-marquee-mask::before,
-    .speck-marquee-mask::after {
-        width: 100px;
-    }
-}
-
-@media (max-width: 480px) {
-    .speck-marquee-section {
-        padding: 40px 0;
-    }
-    
-    .speck-brand {
-        font-size: 2.2rem !important;
-    }
-    
-    .speck-marquee-content {
-        gap: 30px;
-    }
-    
-    .speck-marquee-track {
-        animation: speckMarquee 25s linear infinite;
-    }
-    
-    .speck-marquee-mask {
-        padding: 30px 0;
-    }
-}
-
-/* Поддержка prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-    .speck-marquee-track {
-        animation: none !important;
-    }
-}
-
-/* JavaScript fallback стили */
-.speck-marquee-track.js-fallback-active {
-    animation: none !important;
-}
-
-.speck-marquee-track.paused {
-    animation-play-state: paused !important;
-}
-
 /* ===== ЗАКРУГЛЕННЫЙ ПРОЗРАЧНЫЙ GLASS HEADER ===== */
 .main-header {
     position: fixed;
@@ -404,6 +320,7 @@ body {
     -webkit-text-fill-color: white !important;
 }
 
+/* ===== НАВИГАЦИЯ ===== */
 .main-nav {
     display: flex;
     gap: 30px;
@@ -797,8 +714,6 @@ body {
     border-color: #e4405f;
 }
 
-/* Удалены стили для LinkedIn и Behance */
-
 .footer-links {
     list-style: none;
 }
@@ -914,20 +829,6 @@ body {
 .footer-legal a:hover {
     color: white;
     background: rgba(255, 255, 255, 0.05);
-}
-
-/* Адаптивность для мессенджеров в контактах */
-@media (max-width: 768px) {
-    .messenger-contacts {
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    .messenger-contact {
-        flex: 0 0 auto;
-        min-width: 140px;
-    }
 }
 
 /* ===== ОСНОВНЫЕ СТИЛИ СОДЕРЖИМОГО ===== */
@@ -2612,47 +2513,6 @@ body {
         display: none !important;
     }
     
-    /* Увеличение touch target для мобильных */
-    .nav-link,
-    .btn,
-    .social-link,
-    .card-link {
-        min-height: 44px;
-        min-width: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    /* Упрощение анимаций на мобильных */
-    .nav-link:hover,
-    .btn:hover,
-    .social-link:hover,
-    .card-link:hover,
-    .project-card:hover,
-    .brand-case:hover,
-    .value-card:hover,
-    .team-member:hover,
-    .contact-card:hover {
-        transform: none;
-    }
-    
-    /* Улучшение визуальной обратной связи на touch */
-    .nav-link:active,
-    .btn:active,
-    .social-link:active,
-    .card-link:active {
-        background: rgba(255, 255, 255, 0.15);
-        transform: scale(0.95);
-    }
-    
-    /* Прозрачный language switcher на мобильных */
-    .language-switcher {
-        background: rgba(255, 255, 255, 0.12) !important;
-        backdrop-filter: blur(20px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
-    
     /* Footer Mobile */
     .footer-content {
         grid-template-columns: 1fr;
@@ -2824,6 +2684,24 @@ body {
         gap: 15px;
         text-align: center;
     }
+    
+    /* Адаптивность для бегущей строки Speck */
+    .speck-brand {
+        font-size: 3rem !important;
+    }
+    
+    .speck-marquee-content {
+        gap: 40px;
+    }
+    
+    .speck-marquee-track {
+        animation: speckMarquee 30s linear infinite;
+    }
+    
+    .speck-marquee-mask::before,
+    .speck-marquee-mask::after {
+        width: 100px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2913,6 +2791,27 @@ body {
     
     .messenger-contact {
         width: 160px;
+    }
+    
+    /* Адаптивность для бегущей строки Speck */
+    .speck-brand {
+        font-size: 2.2rem !important;
+    }
+    
+    .speck-marquee-content {
+        gap: 30px;
+    }
+    
+    .speck-marquee-track {
+        animation: speckMarquee 25s linear infinite;
+    }
+    
+    .speck-marquee-section {
+        padding: 40px 0;
+    }
+    
+    .speck-marquee-mask {
+        padding: 30px 0;
     }
 }
 
@@ -3159,14 +3058,6 @@ body.about-page .main-header.header-hidden {
     }
 }
 
-/* ===== RIPPLE EFFECT FOR BUTTONS ===== */
-@keyframes ripple-animation {
-    to {
-        transform: scale(4);
-        opacity: 0;
-    }
-}
-
 /* ===== HEADER GLASS EFFECTS ===== */
 .header-glass-enter {
     animation: glassEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -3253,8 +3144,6 @@ body.contacts-page .main-header.scrolled {
 }
 
 /* ===== ФИНАЛЬНЫЕ ФИКСЫ ДЛЯ БЕЛЫХ ЭЛЕМЕНТОВ ХЕДЕРА ===== */
-/* Добавлено для гарантии белых элементов */
-
 /* 1. Гарантируем белый фон логотипа во всех состояниях */
 .logo-mark,
 .logo:hover .logo-mark,
@@ -3332,15 +3221,6 @@ body.contacts-page .main-header.scrolled {
     }
 }
 
-/* 8. Высокий приоритет для переопределения */
-.main-header .logo-mark,
-.main-header .logo-text,
-.main-header .header-actions .btn-primary,
-.main-header .language-switcher .lang-slider,
-.main-header .nav-link.active {
-    /* Принудительное переопределение */
-}
-
 /* ===== FIX FOR ABOUT PAGE HEADER ===== */
 body.about-page .main-header {
     position: fixed !important;
@@ -3382,8 +3262,6 @@ body.about-page .main-header.header-hidden {
 }
 
 /* ===== КРИТИЧЕСКИЙ ФИКС: УБИРАЕМ ВСЕ СКРЫТЫЕ КНОПКИ ХЕДЕРА ===== */
-/* Эти стили гарантируют, что никакие скрытые кнопки не появятся */
-
 /* 1. Убираем все элементы бургер-меню */
 .mobile-menu-toggle,
 .menu-toggle,
@@ -3562,5 +3440,70 @@ body.contacts-page .main-header.header-hidden {
     
     body.contacts-page .main-header.header-hidden {
         transform: none !important;
+    }
+}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ SPECK MARQUEE ===== */
+@media (max-width: 1200px) {
+    .speck-brand {
+        font-size: 4rem !important;
+    }
+    .speck-marquee-content {
+        gap: 60px;
+    }
+}
+
+/* JavaScript fallback стили */
+.speck-marquee-track.js-fallback-active {
+    animation: none !important;
+}
+
+.speck-marquee-track.paused {
+    animation-play-state: paused !important;
+}
+
+/* ===== ФИНАЛЬНЫЕ ГАРАНТИИ ДЛЯ ВИДЕОФОНА ===== */
+/* ЭКСТРЕННЫЙ ФИКС - принудительное отображение */
+#video-bg,
+.video-bg {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Если все еще не видно - еще более агрессивный фикс */
+video[class*="video"],
+video.video-bg,
+#video-bg {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Для браузеров без object-fit */
+.no-objectfit .video-bg {
+    display: none !important;
+}
+
+.no-objectfit .video-bg-container {
+    background: url('../assets/images/parallax/bg-1.jpg') center/cover no-repeat !important;
+}
+
+/* Гарантия для iOS */
+@supports (-webkit-touch-callout: none) {
+    .video-bg {
+        object-fit: cover !important;
+        height: 100% !important;
+    }
+}
+
+/* Поддержка prefers-reduced-motion для видео */
+@media (prefers-reduced-motion: reduce) {
+    .video-bg {
+        display: none !important;
+    }
+    
+    .video-bg-container {
+        background: url('../assets/images/parallax/bg-1.jpg') center/cover no-repeat !important;
     }
 }
