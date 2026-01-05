@@ -1,5 +1,4 @@
-/* home.css - Главная страница NB Group Tech - ФИКСИРОВАННАЯ ВЕРСИЯ БЕЗ СКРЫТЫХ КНОПОК */
-/* Версия: 3.0.0 | Дата: 2024 | ФИКС: НЕТ СКРЫТЫХ КНОПОК */
+/* home.css - Главная страница */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -1972,4 +1971,218 @@ body {
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
+}
+
+/* ===== VIDEO BACKGROUND (Speck Design Style) ===== */
+.video-bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.video-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    filter: brightness(0.7);
+    transition: filter 0.5s ease;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 10, 0.4) 0%,
+        rgba(10, 10, 10, 0.6) 30%,
+        rgba(10, 10, 10, 0.8) 70%,
+        rgba(10, 10, 10, 0.95) 100%
+    );
+    z-index: 2;
+}
+
+/* Адаптация Hero-секции под видеофон */
+.hero.parallax-hero {
+    position: relative;
+    z-index: 3; /* Выше видео */
+    background: transparent;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Убираем параллакс-фон из Hero-секции */
+.parallax-bg-container {
+    z-index: 0; /* Ниже видео */
+}
+
+.parallax-bg.active {
+    opacity: 0; /* Скрываем на главном экране */
+}
+
+/* На остальных секциях параллакс работает как раньше */
+.content-section[data-bg-index="0"] ~ .parallax-bg-container .parallax-bg.active {
+    opacity: 1;
+}
+
+/* Кнопка воспроизведения для мобильных */
+.video-play-button {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    background: rgba(0, 102, 255, 0.8);
+    border-radius: 50%;
+    z-index: 4;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: white;
+    font-size: 24px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+}
+
+.video-play-button:hover {
+    background: rgba(0, 102, 255, 1);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.video-play-button.show {
+    display: flex;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(0, 102, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 102, 255, 0);
+    }
+}
+
+/* Адаптивность видео */
+@media (max-width: 992px) {
+    .video-bg {
+        filter: brightness(0.6);
+    }
+    
+    .video-overlay {
+        background: linear-gradient(
+            to bottom,
+            rgba(10, 10, 10, 0.5) 0%,
+            rgba(10, 10, 10, 0.7) 100%
+        );
+    }
+}
+
+@media (max-width: 768px) {
+    /* Оптимизация для мобильных */
+    .video-bg {
+        display: block;
+    }
+}
+
+/* Плавный переход от видео к следующему контенту */
+.speck-vertical-section {
+    position: relative;
+    z-index: 4;
+    background: transparent;
+}
+
+/* Специальные стили для яркости видео при скролле */
+body.scrolled .video-bg {
+    filter: brightness(0.5);
+}
+
+/* Улучшение производительности на мобильных */
+@media (max-width: 480px) {
+    .video-bg {
+        /* На мобильных уменьшаем битрейт для производительности */
+        transform: translate(-50%, -50%) scale(1.05); /* Небольшой зум для компенсации обрезки */
+    }
+    
+    .video-play-button {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+    }
+}
+
+/* Для устройств с поддержкой hover */
+@media (hover: hover) {
+    .video-play-button:hover {
+        background: rgba(0, 102, 255, 1);
+    }
+}
+
+/* Для устройств без поддержки hover */
+@media (hover: none) {
+    .video-play-button:active {
+        background: rgba(0, 102, 255, 1);
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+}
+
+/* Анимация появления видео-контейнера */
+.video-bg-container {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Улучшение контраста текста на видео-фоне */
+.parallax-content h1,
+.parallax-content .hero-subtitle,
+.parallax-content .hero-description p {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Гарантия что видео не перекрывает интерактивные элементы */
+.hero-actions a,
+.parallax-scroll-indicator {
+    position: relative;
+    z-index: 5;
+}
+
+/* Отключение видео для пользователей с предпочтением reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .video-bg {
+        display: none;
+    }
+    
+    .video-bg-container {
+        background: url('../../assets/images/parallax/bg-1.jpg') center/cover no-repeat;
+    }
 }
