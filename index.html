@@ -28,6 +28,22 @@
         <div id="parallax-bg-4" class="parallax-bg"></div>
     </div>
 
+    <!-- VIDEO BACKGROUND (Speck Design Style) -->
+    <div class="video-background-container">
+        <video class="video-background" autoplay muted loop playsinline preload="metadata">
+            <!-- MP4 для всех браузеров -->
+            <source src="assets/videos/hero-bg.mp4" type="video/mp4">
+            <!-- Fallback для старых браузеров -->
+            <div class="video-fallback" style="background-image: url('assets/videos/hero-bg-poster.jpg');"></div>
+        </video>
+        <div class="video-overlay"></div>
+        <!-- Кнопка управления звуком -->
+        <button class="video-sound-toggle" aria-label="Toggle video sound">
+            <i class="fas fa-volume-mute"></i>
+            <i class="fas fa-volume-up"></i>
+        </button>
+    </div>
+
     <!-- SCROLL PROGRESS BAR -->
     <div class="scroll-progress">
         <div class="scroll-progress-bar"></div>
