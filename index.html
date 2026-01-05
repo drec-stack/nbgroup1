@@ -20,28 +20,30 @@
     <script src="js/parallax.js"></script>
 </head>
 <body>
-    <!-- VIDEO BACKGROUND (РАБОЧИЙ - КАК НА SPECK DESIGN) -->
-    <div class="video-bg-container" id="video-bg-container">
-        <video class="video-bg" id="video-bg" autoplay muted loop playsinline preload="auto" 
-               poster="assets/images/parallax/bg-1.jpg">
-            <!-- Основные источники видео -->
+    <!-- VIDEO BACKGROUND -->
+    <div class="video-background-container" id="video-background-container">
+        <video class="video-background" id="video-background" 
+               autoplay muted loop playsinline preload="auto" 
+               poster="assets/images/parallax/bg-1.jpg"
+               aria-label="Фоновое видео с промышленным дизайном">
             <source src="assets/videos/hero-bg.mp4" type="video/mp4">
             <source src="assets/videos/hero-bg.webm" type="video/webm">
-            
-            <!-- Фолбэк для браузеров без поддержки video -->
-            <div class="video-fallback"></div>
-            
-            <!-- Сообщение для совсем старых браузеров -->
-            <p>Ваш браузер не поддерживает видео. Пожалуйста, обновите браузер.</p>
+            <!-- Fallback для браузеров без поддержки видео -->
+            <div class="video-fallback" style="background-image: url('assets/images/parallax/bg-1.jpg');"></div>
         </video>
         
-        <!-- Затемнение для лучшей читаемости текста -->
-        <div class="video-overlay" id="video-overlay"></div>
+        <!-- Затемнение для лучшей читаемости -->
+        <div class="video-overlay"></div>
         
-        <!-- Кнопка воспроизведения для мобильных (автоскрывается) -->
-        <button class="video-play-button" id="video-play-button" aria-label="Воспроизвести видеофон">
-            <i class="fas fa-play"></i>
-        </button>
+        <!-- Кнопка управления видео (скрыта по умолчанию) -->
+        <div class="video-controls">
+            <button class="video-play-button" id="video-play-button" aria-label="Воспроизвести видео">
+                <i class="fas fa-play"></i>
+            </button>
+            <button class="video-mute-button" id="video-mute-button" aria-label="Включить звук">
+                <i class="fas fa-volume-mute"></i>
+            </button>
+        </div>
     </div>
 
     <!-- PARALLAX BACKGROUNDS (для остальных секций) -->
@@ -379,125 +381,202 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
 
-    <!-- Критический скрипт для видео -->
+    <!-- Video Background Initialization Script -->
     <script>
-        // Инициализация видеофона
+        // Инициализация видеофона сразу после загрузки DOM
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Главная страница загружена');
+            console.log('🚀 Инициализация видеофона...');
             
-            // Функция для гарантированной инициализации видео
-            function initVideoBackground() {
-                const video = document.getElementById('video-bg');
-                if (!video) {
-                    console.error('❌ Видео элемент не найден');
-                    return;
-                }
-                
-                console.log('✅ Видео найдено, настраиваем...');
-                
-                // Гарантируем атрибуты
-                video.setAttribute('playsinline', '');
-                video.setAttribute('webkit-playsinline', '');
-                video.muted = true;
-                video.loop = true;
-                
-                // Событие при загрузке видео
-                video.addEventListener('loadeddata', function() {
-                    console.log('📹 Видео загружено, размер:', video.videoWidth + 'x' + video.videoHeight);
-                    attemptVideoPlayback();
-                });
-                
-                // Ошибка видео
-                video.addEventListener('error', function(e) {
-                    console.error('❌ Ошибка видео:', video.error);
-                    showVideoFallback();
-                });
-                
-                // Успешное воспроизведение
-                video.addEventListener('playing', function() {
-                    console.log('▶️ Видео воспроизводится');
-                    hidePlayButton();
-                });
-                
-                // Загружаем видео
-                video.load();
-                
-                // Пробуем запустить сразу
-                attemptVideoPlayback();
+            const video = document.getElementById('video-background');
+            const videoContainer = document.getElementById('video-background-container');
+            const playButton = document.getElementById('video-play-button');
+            const muteButton = document.getElementById('video-mute-button');
+            
+            if (!video) {
+                console.error('❌ Видео элемент не найден');
+                return;
             }
             
+            // Устанавливаем критически важные атрибуты
+            video.setAttribute('playsinline', '');
+            video.setAttribute('webkit-playsinline', '');
+            video.muted = true;
+            video.loop = true;
+            
+            // Принудительно устанавливаем стили для гарантии видимости
+            video.style.display = 'block';
+            video.style.visibility = 'visible';
+            video.style.opacity = '1';
+            video.style.position = 'fixed';
+            video.style.top = '0';
+            video.style.left = '0';
+            video.style.width = '100%';
+            video.style.height = '100%';
+            video.style.zIndex = '-100';
+            video.style.objectFit = 'cover';
+            
+            // Настраиваем контейнер
+            if (videoContainer) {
+                videoContainer.style.display = 'block';
+                videoContainer.style.visibility = 'visible';
+                videoContainer.style.opacity = '1';
+            }
+            
+            // Загружаем видео
+            video.load();
+            
+            // Обработчики событий
+            video.addEventListener('loadeddata', function() {
+                console.log('✅ Видео загружено');
+                attemptVideoPlayback();
+            });
+            
+            video.addEventListener('error', function(e) {
+                console.error('❌ Ошибка загрузки видео:', video.error);
+                showVideoFallback();
+            });
+            
+            video.addEventListener('playing', function() {
+                console.log('▶️ Видео воспроизводится');
+                hideVideoControls();
+            });
+            
+            video.addEventListener('pause', function() {
+                console.log('⏸️ Видео приостановлено');
+                // Для мобильных устройств показываем кнопку воспроизведения
+                if (isMobileDevice()) {
+                    showPlayButton();
+                }
+            });
+            
+            // Кнопка воспроизведения
+            if (playButton) {
+                playButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (video.paused) {
+                        video.play()
+                            .then(() => {
+                                console.log('✅ Видео запущено по клику');
+                                hideVideoControls();
+                            })
+                            .catch(error => {
+                                console.error('❌ Не удалось запустить видео:', error);
+                            });
+                    } else {
+                        video.pause();
+                        playButton.innerHTML = '<i class="fas fa-play"></i>';
+                    }
+                });
+            }
+            
+            // Кнопка звука
+            if (muteButton) {
+                muteButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    video.muted = !video.muted;
+                    muteButton.innerHTML = video.muted ? 
+                        '<i class="fas fa-volume-mute"></i>' : 
+                        '<i class="fas fa-volume-up"></i>';
+                });
+            }
+            
+            // Функция попытки воспроизведения
             function attemptVideoPlayback() {
-                const video = document.getElementById('video-bg');
                 const playPromise = video.play();
                 
                 if (playPromise !== undefined) {
                     playPromise
                         .then(() => {
                             console.log('✅ Автозапуск видео успешен');
+                            hideVideoControls();
                         })
                         .catch(error => {
                             console.log('⚠️ Автозапуск заблокирован:', error.name);
-                            handleMobileAutoplay();
+                            
+                            // Для мобильных устройств показываем кнопку
+                            if (isMobileDevice()) {
+                                showPlayButton();
+                                setupMobileInteraction();
+                            }
                         });
                 }
             }
             
-            function handleMobileAutoplay() {
-                // Показываем кнопку воспроизведения на мобильных
-                const playButton = document.getElementById('video-play-button');
-                if (playButton && isMobileDevice()) {
+            // Показать кнопку воспроизведения
+            function showPlayButton() {
+                if (playButton && playButton.parentElement) {
+                    playButton.parentElement.style.display = 'flex';
                     playButton.style.display = 'flex';
-                    
-                    playButton.addEventListener('click', function() {
-                        const video = document.getElementById('video-bg');
-                        video.play()
-                            .then(() => {
-                                playButton.style.display = 'none';
-                            })
-                            .catch(error => {
-                                console.error('Ошибка ручного запуска:', error);
-                            });
-                    });
                 }
             }
             
-            function hidePlayButton() {
-                const playButton = document.getElementById('video-play-button');
-                if (playButton) {
-                    playButton.style.display = 'none';
+            // Скрыть элементы управления видео
+            function hideVideoControls() {
+                if (playButton && playButton.parentElement) {
+                    playButton.parentElement.style.display = 'none';
                 }
             }
             
+            // Показать fallback изображение
             function showVideoFallback() {
-                console.log('🖼️ Активируем фолбэк (изображение)');
                 const fallback = document.querySelector('.video-fallback');
-                const video = document.getElementById('video-bg');
-                
                 if (fallback) {
                     fallback.style.display = 'block';
                 }
-                if (video) {
-                    video.style.display = 'none';
-                }
-                
-                document.body.classList.add('no-video');
+                video.style.display = 'none';
+                document.body.classList.add('video-fallback-active');
             }
             
+            // Настройка взаимодействия для мобильных устройств
+            function setupMobileInteraction() {
+                // Запускаем видео при первом взаимодействии с сайтом
+                const handleFirstInteraction = () => {
+                    video.play()
+                        .then(() => {
+                            console.log('✅ Видео запущено после взаимодействия');
+                            hideVideoControls();
+                        })
+                        .catch(error => {
+                            console.log('❌ Не удалось запустить видео после взаимодействия:', error);
+                        });
+                    
+                    // Удаляем обработчики после первого взаимодействия
+                    document.removeEventListener('click', handleFirstInteraction);
+                    document.removeEventListener('touchstart', handleFirstInteraction);
+                    document.removeEventListener('scroll', handleFirstInteraction);
+                };
+                
+                document.addEventListener('click', handleFirstInteraction, { once: true });
+                document.addEventListener('touchstart', handleFirstInteraction, { once: true });
+                document.addEventListener('scroll', handleFirstInteraction, { once: true });
+            }
+            
+            // Проверка мобильного устройства
             function isMobileDevice() {
                 return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             }
             
-            // Инициализация видео
-            initVideoBackground();
+            // Запускаем попытку воспроизведения
+            attemptVideoPlayback();
             
-            // Дополнительная проверка через 1 секунду
-            setTimeout(function() {
-                const video = document.getElementById('video-bg');
-                if (video && video.paused) {
-                    console.log('⏸️ Видео все еще приостановлено, пробуем снова...');
+            // Дополнительная попытка через 2 секунды
+            setTimeout(() => {
+                if (video.paused) {
+                    console.log('🔄 Повторная попытка запуска видео...');
                     video.play().catch(e => console.log('Повторный запуск:', e.name));
                 }
-            }, 1000);
+            }, 2000);
+            
+            // Гарантия видимости через 3 секунды
+            setTimeout(() => {
+                video.style.display = 'block';
+                video.style.visibility = 'visible';
+                video.style.opacity = '1';
+            }, 3000);
         });
     </script>
 </body>
