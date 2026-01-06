@@ -1,5 +1,4 @@
-/* home.css - ПОЛНЫЙ ФАЙЛ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ NB GROUP TECH */
-/* Версия: 4.0.0 | РАБОЧИЙ ВИДЕОФОН + SPECK DESIGN */
+/* home.css*/
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -28,8 +27,8 @@ body {
     width: 100%;
 }
 
-/* ===== VIDEO BACKGROUND SYSTEM ===== */
-.video-background-container {
+/* ===== STATIC HERO BACKGROUND SYSTEM ===== */
+.hero-background-container {
     position: fixed;
     top: 0;
     left: 0;
@@ -40,43 +39,35 @@ body {
     pointer-events: none;
 }
 
-.video-background {
+.hero-background-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     z-index: 1;
     filter: brightness(0.7);
     transition: filter 0.5s ease;
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    animation: backgroundZoom 30s ease-in-out infinite alternate;
 }
 
-/* Гарантия видимости во всех браузерах */
-video.video-background,
-video#video-background {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Фолбэк изображение */
-.video-fallback {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('../assets/images/parallax/bg-1.jpg') center/cover no-repeat;
-    z-index: 1;
-    display: none;
+@keyframes backgroundZoom {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.05);
+    }
 }
 
 /* Затемнение для читаемости */
-.video-overlay {
+.hero-background-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -94,59 +85,13 @@ video#video-background {
     pointer-events: none;
 }
 
-/* Элементы управления видео */
-.video-controls {
-    position: absolute;
-    bottom: 30px;
-    right: 30px;
-    display: flex;
-    gap: 15px;
-    z-index: 100;
-    pointer-events: auto;
-    display: none; /* Скрыты по умолчанию */
-}
-
-.video-play-button,
-.video-mute-button {
-    width: 50px;
-    height: 50px;
-    background: rgba(0, 102, 255, 0.85);
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.video-play-button:hover,
-.video-mute-button:hover {
-    background: rgba(0, 102, 255, 1);
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4);
-}
-
-.video-mute-button {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.video-mute-button:hover {
-    background: rgba(255, 255, 255, 0.25);
-}
-
-/* Состояние когда видео недоступно */
-body.video-fallback-active .video-background {
-    display: none;
-}
-
-body.video-fallback-active .video-fallback {
-    display: block;
+/* Убираем все стили видео-фона */
+.video-background-container,
+.video-background,
+.video-overlay,
+.video-controls,
+.video-fallback {
+    display: none !important;
 }
 
 /* ===== HERO SECTION ===== */
@@ -950,7 +895,7 @@ body.video-fallback-active .video-fallback {
         font-size: 3.5rem;
     }
     
-    .video-background {
+    .hero-background-image {
         filter: brightness(0.6);
     }
     
@@ -1159,18 +1104,6 @@ body.video-fallback-active .video-fallback {
     .hero-actions .btn {
         width: 100%;
         max-width: 300px;
-    }
-    
-    .video-controls {
-        bottom: 20px;
-        right: 20px;
-    }
-    
-    .video-play-button,
-    .video-mute-button {
-        width: 45px;
-        height: 45px;
-        font-size: 16px;
     }
     
     .speck-vertical-section {
@@ -1386,18 +1319,6 @@ body.video-fallback-active .video-fallback {
         min-width: auto;
     }
     
-    .video-controls {
-        bottom: 15px;
-        right: 15px;
-    }
-    
-    .video-play-button,
-    .video-mute-button {
-        width: 40px;
-        height: 40px;
-        font-size: 14px;
-    }
-    
     .speck-block-title {
         font-size: 1.6rem;
     }
@@ -1471,33 +1392,12 @@ body.video-fallback-active .video-fallback {
 
 /* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ===== */
 
-/* Фикс для iOS */
-@supports (-webkit-touch-callout: none) {
-    .video-background {
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        transform: none;
-    }
-    
-    /* Показываем кнопки управления на iOS */
-    .video-controls {
-        display: flex;
-    }
+/* Фикс для старых браузеров */
+.no-objectfit .hero-background-image {
+    background-attachment: scroll !important;
 }
 
-/* Фикс для старых браузеров без object-fit */
-.no-objectfit .video-background {
-    display: none !important;
-}
-
-.no-objectfit .video-background-container {
-    background: url('../assets/images/parallax/bg-1.jpg') center/cover no-repeat !important;
-}
-
-/* Гарантируем что видео не перекрывает интерактивные элементы */
+/* Гарантируем что фон не перекрывает интерактивные элементы */
 .hero-actions a,
 .parallax-content,
 .hero-description {
@@ -1505,21 +1405,17 @@ body.video-fallback-active .video-fallback {
     z-index: 100;
 }
 
-/* Фикс для видео при печати */
+/* Фикс при печати */
 @media print {
-    .video-background-container {
+    .hero-background-container {
         display: none !important;
     }
 }
 
 /* Поддержка prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-    .video-background {
-        display: none !important;
-    }
-    
-    .video-background-container {
-        background: url('../assets/images/parallax/bg-1.jpg') center/cover no-repeat !important;
+    .hero-background-image {
+        animation: none !important;
     }
     
     .speck-marquee-track {
