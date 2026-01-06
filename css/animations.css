@@ -971,15 +971,30 @@
 }
 
 [data-i18n] {
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease !important; /* Уменьшаем время перехода */
 }
 
+/* ИСПРАВЛЕНИЕ: Уменьшаем прозрачность (было 0.5, стало 0.95) */
 .language-changing [data-i18n] {
-    opacity: 0.5;
+    opacity: 0.95 !important; /* Почти не видно разницы */
+    color: inherit !important;
 }
 
 .language-changed [data-i18n] {
-    opacity: 1;
+    opacity: 1 !important;
+    color: inherit !important;
+}
+
+/* ОСОБЫЙ ФИКС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
+.home-page [data-i18n] {
+    opacity: 1 !important;
+    transition: none !important;
+}
+
+.home-page.language-changing [data-i18n],
+.home-page.language-changed [data-i18n] {
+    opacity: 1 !important;
+    transition: none !important;
 }
 
 .language-changed [data-i18n]:nth-child(1) { transition-delay: 0.05s; }
@@ -1917,6 +1932,15 @@
     .content-section {
         animation-delay: 0s !important;
     }
+    
+    /* ИСПРАВЛЕНИЕ: Отключаем анимации переключения языка */
+    .language-changing [data-i18n],
+    .language-changed [data-i18n],
+    [data-i18n] {
+        opacity: 1 !important;
+        transition: none !important;
+        animation: none !important;
+    }
 }
 
 /* Класс для активации всех анимаций Speck */
@@ -2397,4 +2421,92 @@
 
 .speck-marquee-track.bounce-on-pause:hover {
     animation: speckMarqueeBounce 0.5s ease;
+}
+
+/* ===== КРИТИЧЕСКИЕ ИСПРАВЛЕНИЯ АНИМАЦИЙ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА ===== */
+
+/* 1. УБИРАЕМ ПРОЗРАЧНОСТЬ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
+.home-page .language-changing [data-i18n],
+.home-page .language-changed [data-i18n] {
+    opacity: 1 !important;
+    transition: none !important;
+    animation: none !important;
+}
+
+/* 2. УСКОРЯЕМ ПЕРЕХОДЫ ДЛЯ ВСЕХ СТРАНИЦ */
+[data-i18n] {
+    transition: opacity 0.1s ease !important;
+}
+
+.language-changing [data-i18n] {
+    opacity: 0.95 !important; /* Почти не заметно */
+}
+
+.language-changed [data-i18n] {
+    opacity: 1 !important;
+}
+
+/* 3. ДЛЯ ТЕМНОГО ТЕКСТА НА ТЕМНОМ ФОНЕ */
+.hero [data-i18n],
+.dark-section [data-i18n],
+.dark-background [data-i18n] {
+    text-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.7),
+        0 2px 8px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 4. ОТКЛЮЧАЕМ ПРЕОБРАЗОВАНИЯ ПРИ ПЕРЕКЛЮЧЕНИИ ЯЗЫКА */
+.language-changing main,
+.language-changed main,
+.language-changing body > *:not(.parallax-bg-container):not(.scroll-progress),
+.language-changed body > *:not(.parallax-bg-container):not(.scroll-progress) {
+    transform: none !important;
+}
+
+/* 5. УБИРАЕМ ОВЕРЛЕЙ ПЕРЕХОДА ДЛЯ ГЛАВНОЙ */
+.home-page .language-transition-overlay {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* 6. ФИКС ДЛЯ prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .language-changing [data-i18n],
+    .language-changed [data-i18n],
+    [data-i18n] {
+        opacity: 1 !important;
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* 7. ГАРАНТИЯ: ЦВЕТ ТЕКСТА НЕ МЕНЯЕТСЯ */
+[data-i18n] {
+    color: inherit !important;
+}
+
+/* 8. ОКОНЧАТЕЛЬНЫЙ ФИКС ДЛЯ ПРОЗРАЧНОСТИ */
+body.language-changing .home-page [data-i18n],
+body.language-changed .home-page [data-i18n] {
+    opacity: 1 !important;
+    color: inherit !important;
+}
+
+/* 9. CSS ПЕРЕМЕННАЯ ДЛЯ КОНТРОЛЯ ПРОЗРАЧНОСТИ */
+:root {
+    --i18n-opacity: 1 !important;
+}
+
+.home-page [data-i18n] {
+    opacity: var(--i18n-opacity) !important;
+}
+
+/* 10. ФИКС ДЛЯ НАВИГАЦИИ И КНОПОК */
+.nav-link[data-i18n],
+.btn [data-i18n],
+a [data-i18n],
+button [data-i18n] {
+    opacity: 1 !important;
+    transition: opacity 0.05s ease !important;
 }
