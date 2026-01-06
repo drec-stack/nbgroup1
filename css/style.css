@@ -1,6 +1,4 @@
 /* style.css - ПОЛНЫЙ ФАЙЛ СТИЛЕЙ NB GROUP TECH */
-/* Версия: 3.0.0 | РАБОЧИЙ ВИДЕОФОН + SPECK DESIGN */
-/* Дата: 2024 | ПОЛНАЯ ВЕРСИЯ */
 
 :root {
     /* ОСНОВНЫЕ ЦВЕТА - СИНЯЯ ПАЛИТРА */
@@ -3462,48 +3460,4 @@ body.contacts-page .main-header.header-hidden {
     animation-play-state: paused !important;
 }
 
-/* ===== ФИНАЛЬНЫЕ ГАРАНТИИ ДЛЯ ВИДЕОФОНА ===== */
-/* ЭКСТРЕННЫЙ ФИКС - принудительное отображение */
-#video-bg,
-.video-bg {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Если все еще не видно - еще более агрессивный фикс */
-video[class*="video"],
-video.video-bg,
-#video-bg {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Для браузеров без object-fit */
-.no-objectfit .video-bg {
-    display: none !important;
-}
-
-.no-objectfit .video-bg-container {
-    background: url('../assets/images/parallax/bg-1.jpg') center/cover no-repeat !important;
-}
-
-/* Гарантия для iOS */
-@supports (-webkit-touch-callout: none) {
-    .video-bg {
-        object-fit: cover !important;
-        height: 100% !important;
-    }
-}
-
-/* Поддержка prefers-reduced-motion для видео */
-@media (prefers-reduced-motion: reduce) {
-    .video-bg {
-        display: none !important;
-    }
-    
-    .video-bg-container {
-        background: url('../assets/images/parallax/bg-1.jpg') center/cover no-repeat !important;
-    }
-}
+/* ===== КОНЕЦ ФАЙЛА ===== */
