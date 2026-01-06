@@ -1,4 +1,4 @@
-/* home.css*/
+/* home.css - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ ФОНА */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -18,6 +18,8 @@ body {
     overflow-x: hidden;
     position: relative;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -27,7 +29,7 @@ body {
     width: 100%;
 }
 
-/* ===== STATIC HERO BACKGROUND SYSTEM ===== */
+/* ===== СТАТИЧНЫЙ ФОН ГЕРОЯ - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ===== */
 .hero-background-container {
     position: fixed;
     top: 0;
@@ -37,6 +39,10 @@ body {
     z-index: -100;
     overflow: hidden;
     pointer-events: none;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform;
 }
 
 .hero-background-image {
@@ -45,28 +51,39 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 1;
-    filter: brightness(0.7);
-    transition: filter 0.5s ease;
+    
+    /* КРИТИЧЕСКИ ВАЖНО: настройки для максимального качества */
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    
+    /* Отключаем все фильтры и анимации, ухудшающие качество */
+    filter: none !important;
+    -webkit-filter: none !important;
+    animation: none !important;
+    -webkit-animation: none !important;
+    
+    /* Оптимизация качества изображения */
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+    image-rendering: pixelated !important;
+    -ms-interpolation-mode: nearest-neighbor !important;
+    
+    /* GPU ускорение и предотвращение размытия */
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    animation: backgroundZoom 30s ease-in-out infinite alternate;
+    z-index: 1;
 }
 
-@keyframes backgroundZoom {
-    0% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(1.05);
-    }
-}
-
-/* Затемнение для читаемости */
+/* Легкое затемнение для читаемости */
 .hero-background-overlay {
     position: absolute;
     top: 0;
@@ -77,9 +94,9 @@ body {
         to bottom,
         rgba(10, 10, 10, 0.1) 0%,
         rgba(10, 10, 10, 0.3) 20%,
-        rgba(10, 10, 10, 0.6) 50%,
-        rgba(10, 10, 10, 0.8) 80%,
-        rgba(10, 10, 10, 0.9) 100%
+        rgba(10, 10, 10, 0.5) 50%,
+        rgba(10, 10, 10, 0.7) 80%,
+        rgba(10, 10, 10, 0.85) 100%
     );
     z-index: 2;
     pointer-events: none;
@@ -846,7 +863,7 @@ body {
     transition: width 0.1s ease;
 }
 
-/* ===== АДАПТИВНОСТЬ ===== */
+/* ===== АДАПТИВНОСТЬ С ОПТИМИЗАЦИЕЙ КАЧЕСТВА ===== */
 @media (max-width: 1400px) {
     .speck-vertical-grid {
         max-width: 1200px;
@@ -895,8 +912,10 @@ body {
         font-size: 3.5rem;
     }
     
+    /* Оптимизация для качества на планшетах */
     .hero-background-image {
-        filter: brightness(0.6);
+        background-size: cover !important;
+        background-position: center center !important;
     }
     
     .speck-vertical-grid {
@@ -970,6 +989,13 @@ body {
     
     .hero-description p {
         font-size: 1.2rem;
+    }
+    
+    /* Оптимизация фона для планшетов */
+    .hero-background-image {
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-position: center center !important;
     }
     
     .speck-vertical-section {
@@ -1106,6 +1132,35 @@ body {
         max-width: 300px;
     }
     
+    /* КРИТИЧЕСКАЯ ОПТИМИЗАЦИЯ ФОНА НА МОБИЛЬНЫХ */
+    .hero-background-image {
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-position: center center !important;
+        background-repeat: no-repeat !important;
+        
+        /* Отключаем все сложные эффекты на мобильных */
+        filter: none !important;
+        -webkit-filter: none !important;
+        
+        /* Улучшаем качество рендеринга */
+        image-rendering: -webkit-optimize-contrast !important;
+        image-rendering: auto !important;
+        -webkit-font-smoothing: antialiased !important;
+    }
+    
+    /* Усиливаем затемнение для читаемости */
+    .hero-background-overlay {
+        background: linear-gradient(
+            to bottom,
+            rgba(10, 10, 10, 0.2) 0%,
+            rgba(10, 10, 10, 0.4) 20%,
+            rgba(10, 10, 10, 0.6) 50%,
+            rgba(10, 10, 10, 0.8) 80%,
+            rgba(10, 10, 10, 0.9) 100%
+        );
+    }
+    
     .speck-vertical-section {
         padding: 120px 0 80px;
     }
@@ -1217,6 +1272,18 @@ body {
         font-size: 1rem;
     }
     
+    /* Дополнительная оптимизация фона для маленьких экранов */
+    .hero-background-container {
+        position: fixed !important;
+        height: 100vh !important;
+    }
+    
+    .hero-background-image {
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-position: center center !important;
+    }
+    
     .speck-vertical-section {
         padding: 100px 0 60px;
     }
@@ -1319,6 +1386,13 @@ body {
         min-width: auto;
     }
     
+    /* Финальная оптимизация для очень маленьких экранов */
+    .hero-background-image {
+        background-size: cover !important;
+        background-position: center center !important;
+        image-rendering: auto !important;
+    }
+    
     .speck-block-title {
         font-size: 1.6rem;
     }
@@ -1390,12 +1464,7 @@ body {
     opacity: 0;
 }
 
-/* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ===== */
-
-/* Фикс для старых браузеров */
-.no-objectfit .hero-background-image {
-    background-attachment: scroll !important;
-}
+/* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ ===== */
 
 /* Гарантируем что фон не перекрывает интерактивные элементы */
 .hero-actions a,
@@ -1403,13 +1472,6 @@ body {
 .hero-description {
     position: relative;
     z-index: 100;
-}
-
-/* Фикс при печати */
-@media print {
-    .hero-background-container {
-        display: none !important;
-    }
 }
 
 /* Поддержка prefers-reduced-motion */
@@ -1421,4 +1483,56 @@ body {
     .speck-marquee-track {
         animation: none !important;
     }
+    
+    .content-section {
+        animation: none !important;
+        opacity: 1;
+    }
+    
+    .speck-vertical-block {
+        transition: none !important;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Фикс для старых браузеров */
+.no-objectfit .hero-background-image {
+    background-attachment: scroll !important;
+    background-position: center center !important;
+    background-size: cover !important;
+}
+
+/* Высокое разрешение экранов */
+@media (min-resolution: 192dpi),
+       (min-resolution: 2dppx) {
+    .hero-background-image {
+        background-size: cover !important;
+        background-position: center center !important;
+        /* Дополнительные настройки для HiDPI */
+        image-rendering: -webkit-optimize-contrast !important;
+        image-rendering: crisp-edges !important;
+    }
+}
+
+/* Фикс при печати */
+@media print {
+    .hero-background-container {
+        display: none !important;
+    }
+}
+
+/* Гарантированные настройки качества для всех фоновых изображений */
+[class*="background"],
+[style*="background-image"],
+.bg-image,
+.background-image {
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
 }
