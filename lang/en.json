@@ -389,7 +389,8 @@
     "intro": {
       "title": "Brandbook is the Foundation of Your Brand",
       "description": "A brandbook is not just a set of rules, but the foundation on which the entire company's image rests. I approach its creation as carefully as I do any product: I study the brand's character, its audience, its purpose. On this foundation of meanings, I build a system—from color and typography to the logic of presenting materials.",
-      "description2": "We develop brandbooks for companies of any scale. Want a cohesive visual system with well-thought-out elements? We'll make sure it becomes your powerful tool, not just a pretty folder 'for show'."
+      "description1": "We develop brandbooks for companies of any scale. Want a cohesive visual system with well-thought-out elements? We'll make sure it becomes your powerful tool, not just a pretty folder 'for show'.",
+      "description2": "Each brandbook we create individually, taking into account business features, target audience and market specifics."
     },
     "process": {
       "title": "Our Brandbook Process",
@@ -446,11 +447,34 @@
       "satisfaction": "Client Satisfaction",
       "support": "Support"
     },
-    "filter": {
+    "filters": {
       "all": "All",
       "web": "Web Design",
       "mobile": "Mobile Apps",
       "corporate": "Corporate"
+    },
+    "categories": {
+      "web": "Web Applications",
+      "mobile": "Mobile Applications"
+    },
+    "elements": {
+      "colors": "Colors",
+      "typography": "Typography"
+    },
+    "case1": {
+      "title": "Case 1: EdTech Web Platform",
+      "description": "Development of a brandbook for an educational platform with a focus on friendly and modern design.",
+      "typography": "Montserrat, Open Sans"
+    },
+    "case2": {
+      "title": "Case 2: FinTech Mobile App",
+      "description": "Creating identity for a financial application with an emphasis on security and reliability.",
+      "typography": "Inter, Roboto"
+    },
+    "case3": {
+      "title": "Case 3: Corporate Portal",
+      "description": "Development of a brandbook for a large corporation with international presence.",
+      "typography": "Helvetica Neue, Arial"
     }
   },
   "portfolio": {
