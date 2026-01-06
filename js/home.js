@@ -1,7 +1,5 @@
-// home.js - ПОЛНАЯ ВЕРСИЯ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ NB GROUP TECH
-// Версия: 4.0.1 | СТАТИЧНЫЙ ФОН (без видео)
-
-console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
+// home.js - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ ФОНА
+console.log('🎬 home.js loaded - OPTIMIZED FOR IMAGE QUALITY');
 
 (function() {
     'use strict';
@@ -11,22 +9,46 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
             this.isReducedMotion = window.matchMedia ? 
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
             
-            console.log('🏠 HomePage инициализирован (статичный фон)');
+            console.log('🏠 HomePage initialized (optimized for image quality)');
             
-            // Инициализация статичного фона
+            // Предзагрузка ресурсов
+            this.preloadResources();
+            
+            // Инициализация статичного фона с оптимизацией качества
             this.initializeHeroBackground();
             
             // Инициализация остальных компонентов
-            this.initialize();
+            this.initializeComponents();
         }
 
-        // ===== СТАТИЧНЫЙ ФОН ГЕРОЯ =====
+        // ПРЕДЗАГРУЗКА ВСЕХ РЕСУРСОВ
+        preloadResources() {
+            console.log('⚡ Preloading all resources...');
+            
+            // Предзагрузка фоновых изображений
+            const bgImages = [
+                'assets/images/parallax/bg-1.jpg',
+                'assets/images/parallax/bg-2.jpg',
+                'assets/images/parallax/bg-3.jpg',
+                'assets/images/parallax/bg-4.jpg'
+            ];
+            
+            bgImages.forEach(url => {
+                const img = new Image();
+                img.src = url;
+                img.onload = () => {
+                    console.log(`✅ Preloaded: ${url}`);
+                };
+            });
+        }
+
+        // ИНИЦИАЛИЗАЦИЯ СТАТИЧНОГО ФОНА ГЕРОЯ
         initializeHeroBackground() {
-            console.log('🎨 Инициализация статичного фона героя');
+            console.log('🎨 Initializing hero background with quality optimizations');
             
             const heroContainer = document.getElementById('hero-background-container');
             if (heroContainer) {
-                // Принудительно устанавливаем видимость
+                // Принудительно устанавливаем видимость и правильные стили
                 heroContainer.style.display = 'block';
                 heroContainer.style.visibility = 'visible';
                 heroContainer.style.opacity = '1';
@@ -37,49 +59,83 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
                 heroContainer.style.height = '100%';
                 heroContainer.style.zIndex = '-100';
                 heroContainer.style.pointerEvents = 'none';
+                heroContainer.style.webkitTransform = 'translateZ(0)';
+                heroContainer.style.transform = 'translateZ(0)';
+                heroContainer.style.backfaceVisibility = 'hidden';
                 
-                // Отключаем анимацию если пользователь предпочитает reduced motion
-                if (this.isReducedMotion) {
-                    const heroImage = heroContainer.querySelector('.hero-background-image');
-                    if (heroImage) {
-                        heroImage.style.animation = 'none';
+                const heroImage = heroContainer.querySelector('.hero-background-image');
+                if (heroImage) {
+                    // КРИТИЧЕСКИ ВАЖНЫЕ НАСТРОЙКИ ДЛЯ КАЧЕСТВА
+                    heroImage.style.backgroundSize = 'cover !important';
+                    heroImage.style.backgroundPosition = 'center center !important';
+                    heroImage.style.backgroundRepeat = 'no-repeat !important';
+                    
+                    // Отключаем все фильтры и анимации, ухудшающие качество
+                    heroImage.style.filter = 'none !important';
+                    heroImage.style.webkitFilter = 'none !important';
+                    heroImage.style.animation = 'none !important';
+                    heroImage.style.webkitAnimation = 'none !important';
+                    
+                    // Оптимизация качества изображения
+                    heroImage.style.imageRendering = '-webkit-optimize-contrast !important';
+                    heroImage.style.imageRendering = 'crisp-edges !important';
+                    heroImage.style.webkitFontSmoothing = 'antialiased !important';
+                    heroImage.style.mozOsxFontSmoothing = 'grayscale !important';
+                    
+                    // GPU ускорение
+                    heroImage.style.transform = 'translateZ(0) !important';
+                    heroImage.style.webkitTransform = 'translateZ(0) !important';
+                    heroImage.style.backfaceVisibility = 'hidden !important';
+                    
+                    // Для reduced motion
+                    if (this.isReducedMotion) {
+                        heroImage.style.transition = 'none !important';
                     }
+                    
+                    console.log('✅ Hero background optimized for maximum quality');
+                } else {
+                    console.warn('⚠️ Hero background image element not found');
                 }
-                
-                console.log('✅ Статичный фон героя инициализирован');
             } else {
-                console.warn('⚠️ Контейнер статичного фона не найден');
+                console.warn('⚠️ Hero background container not found');
             }
         }
 
-        // ===== ИНИЦИАЛИЗАЦИЯ ОСТАЛЬНЫХ КОМПОНЕНТОВ =====
-        initialize() {
-            console.log('🚀 Инициализация остальных компонентов...');
+        // ИНИЦИАЛИЗАЦИЯ ВСЕХ КОМПОНЕНТОВ
+        initializeComponents() {
+            console.log('🚀 Initializing all components with quality optimizations...');
             
-            this.initializeBasicAnimations();
-            this.initializeStatsCounter();
-            this.initializeSpeckVerticalBlocks();
-            this.initializeSpeckMarquee();
-            this.initializeScrollProgress();
-            this.initializeParallaxBackgrounds();
-            this.initializeClickableStats();
-            this.initializeCTAClickable();
-            
-            console.log('✅ Все компоненты инициализированы');
+            try {
+                this.initializeBasicAnimations();
+                this.initializeStatsCounter();
+                this.initializeSpeckVerticalBlocks();
+                this.initializeSpeckMarquee();
+                this.initializeScrollProgress();
+                this.initializeParallaxBackgrounds();
+                this.initializeClickableStats();
+                this.initializeCTAClickable();
+                
+                // Оптимизация производительности
+                this.optimizePerformance();
+                
+                console.log('✅ All components initialized with quality optimizations');
+            } catch (error) {
+                console.error('❌ Error during component initialization:', error);
+            }
         }
 
-        // ===== SPECK VERTICAL BLOCKS =====
+        // SPECK VERTICAL BLOCKS
         initializeSpeckVerticalBlocks() {
             const speckBlocks = document.querySelectorAll('.speck-vertical-block');
             
             if (!speckBlocks.length) {
-                console.log('⚠️ Вертикальные блоки не найдены');
+                console.log('⚠️ Speck vertical blocks not found');
                 return;
             }
             
-            console.log('🎨 Инициализация ' + speckBlocks.length + ' вертикальных блоков');
+            console.log('🎨 Initializing ' + speckBlocks.length + ' vertical blocks');
             
-            if (window.IntersectionObserver) {
+            if (window.IntersectionObserver && !this.isReducedMotion) {
                 const blockObserver = new IntersectionObserver((entries) => {
                     entries.forEach((entry, index) => {
                         if (entry.isIntersecting) {
@@ -96,35 +152,36 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
                 
                 speckBlocks.forEach(block => blockObserver.observe(block));
             } else {
+                // Fallback для старых браузеров или reduced motion
                 setTimeout(() => {
                     speckBlocks.forEach((block, index) => {
                         setTimeout(() => {
                             block.classList.add('visible');
-                        }, index * 200);
+                        }, this.isReducedMotion ? 0 : index * 200);
                     });
                 }, 500);
             }
         }
 
-        // ===== SPECK MARQUEE =====
+        // SPECK MARQUEE
         initializeSpeckMarquee() {
             const speckMarqueeTrack = document.getElementById('speckMarqueeTrack');
             if (!speckMarqueeTrack) {
-                console.warn('❌ Speck marquee track не найден');
+                console.warn('⚠️ Speck marquee track not found');
                 return;
             }
 
-            console.log('🎯 Инициализация Speck бегущей строки');
+            console.log('🎯 Initializing Speck marquee with performance optimizations');
 
             // Проверяем работает ли CSS анимация
             setTimeout(() => {
                 const style = window.getComputedStyle(speckMarqueeTrack);
                 
                 if (style.animationName === 'none' || this.isReducedMotion) {
-                    console.log('🚀 Запуск JS fallback для Speck бегущей строки');
+                    console.log('🚀 Starting JS fallback for Speck marquee');
                     this.runSpeckMarqueeJS(speckMarqueeTrack);
                 } else {
-                    console.log('✅ Speck бегущая строка работает через CSS');
+                    console.log('✅ Speck marquee working via CSS');
                     this.addSpeckMarqueeHoverHandlers(speckMarqueeTrack);
                 }
             }, 100);
@@ -132,12 +189,14 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
             // Проверка через 2 секунды
             setTimeout(() => {
                 const track = document.querySelector('.speck-marquee-track');
-                if (track) {
+                if (track && !track.classList.contains('js-fallback-active')) {
                     const rect = track.getBoundingClientRect();
-                    const isMoving = rect.left !== 0;
+                    const computedStyle = window.getComputedStyle(track);
+                    const isMoving = computedStyle.animationPlayState !== 'paused' && 
+                                    computedStyle.animationName !== 'none';
                     
-                    if (!isMoving && !track.classList.contains('js-fallback-active')) {
-                        console.log('⚠️ Бегущая строка не двигается, запускаем JS fallback');
+                    if (!isMoving) {
+                        console.log('⚠️ Marquee not moving, starting JS fallback');
                         this.runSpeckMarqueeJS(speckMarqueeTrack);
                     }
                 }
@@ -146,17 +205,17 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
 
         runSpeckMarqueeJS(track) {
             if (track.classList.contains('js-fallback-active')) {
-                console.log('⚠️ JS fallback уже активен');
+                console.log('⚠️ JS fallback already active');
                 return;
             }
 
             const content = track.querySelector('.speck-marquee-content');
             if (!content) {
-                console.error('❌ Speck marquee content не найден');
+                console.error('❌ Speck marquee content not found');
                 return;
             }
 
-            console.log('🔄 Запуск JS бегущей строки...');
+            console.log('🔄 Starting JS marquee with performance optimizations...');
 
             track.classList.add('js-fallback-active');
             track.style.animation = 'none';
@@ -173,8 +232,11 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
             let lastTime = 0;
             const fps = 60;
             const interval = 1000 / fps;
+            let rafActive = true;
 
             const animate = (currentTime) => {
+                if (!rafActive) return;
+                
                 if (!lastTime) lastTime = currentTime;
                 const deltaTime = currentTime - lastTime;
 
@@ -182,7 +244,7 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
                     position += speed;
                     
                     const contentWidth = content.scrollWidth / 3;
-                    if (position <= -contentWidth) {
+                    if (Math.abs(position) >= contentWidth) {
                         position = 0;
                     }
                     
@@ -192,16 +254,40 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
                     lastTime = currentTime - (deltaTime % interval);
                 }
                 
-                animationId = requestAnimationFrame(animate);
+                if (rafActive) {
+                    animationId = requestAnimationFrame(animate);
+                }
             };
 
+            // Запускаем анимацию
             animationId = requestAnimationFrame(animate);
             
-            this.addSpeckMarqueeHoverHandlers(track, () => isPaused = true, () => isPaused = false);
+            // Обработчики паузы/возобновления
+            const pauseMarquee = () => {
+                if (track.classList.contains('js-fallback-active')) {
+                    isPaused = true;
+                } else {
+                    track.style.animationPlayState = 'paused';
+                }
+                track.classList.add('paused');
+            };
+
+            const resumeMarquee = () => {
+                if (track.classList.contains('js-fallback-active')) {
+                    isPaused = false;
+                    lastTime = 0; // Сбрасываем время для плавного возобновления
+                } else {
+                    track.style.animationPlayState = 'running';
+                }
+                track.classList.remove('paused');
+            };
+
+            this.addSpeckMarqueeHoverHandlers(track, pauseMarquee, resumeMarquee);
             
+            // Сохраняем ID для возможной очистки
             track._marqueeAnimationId = animationId;
             
-            console.log('✅ Speck бегущая строка запущена через JS');
+            console.log('✅ Speck marquee running via JS');
         }
 
         addSpeckMarqueeHoverHandlers(track, pauseCallback = null, resumeCallback = null) {
@@ -229,26 +315,24 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
             if (section) {
                 section.addEventListener('mouseenter', pauseMarquee);
                 section.addEventListener('mouseleave', resumeMarquee);
-                section.addEventListener('touchstart', pauseMarquee);
-                section.addEventListener('touchend', resumeMarquee);
+                section.addEventListener('touchstart', pauseMarquee, { passive: true });
+                section.addEventListener('touchend', resumeMarquee, { passive: true });
             }
 
             track.addEventListener('mouseenter', pauseMarquee);
             track.addEventListener('mouseleave', resumeMarquee);
-            track.addEventListener('touchstart', pauseMarquee);
-            track.addEventListener('touchend', resumeMarquee);
         }
 
-        // ===== STATS COUNTER =====
+        // STATS COUNTER
         initializeStatsCounter() {
             const statNumbers = document.querySelectorAll('.stat-number-improved');
             
             if (!statNumbers.length) {
-                console.log('⚠️ Статистические числа не найдены');
+                console.log('⚠️ Stat numbers not found');
                 return;
             }
             
-            console.log('📊 Инициализация счетчика статистики: ' + statNumbers.length + ' элементов');
+            console.log('📊 Initializing stats counter: ' + statNumbers.length + ' elements');
             
             const animateNumber = (element, target) => {
                 let current = 0;
@@ -258,6 +342,8 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
                 const updateNumber = () => {
                     const elapsed = (Date.now ? Date.now() : new Date().getTime()) - startTime;
                     const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Easing function для плавности
                     const easeOutQuart = 1 - Math.pow(1 - progress, 4);
                     current = Math.floor(easeOutQuart * target);
                     
@@ -279,18 +365,14 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
                     }
                 };
                 
-                if (window.requestAnimationFrame) {
+                if (window.requestAnimationFrame && !this.isReducedMotion) {
                     requestAnimationFrame(updateNumber);
                 } else {
-                    const interval = setInterval(() => {
-                        current += Math.ceil(target / 50);
-                        if (current >= target) {
-                            current = target;
-                            clearInterval(interval);
-                            element.classList.add('counter-animate');
-                        }
-                        element.textContent = current;
-                    }, 40);
+                    // Fallback для старых браузеров или reduced motion
+                    element.textContent = target.toLocaleString ? 
+                        target.toLocaleString() : 
+                        target.toString();
+                    element.classList.add('counter-animate');
                 }
             };
             
@@ -316,21 +398,25 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
                 });
             };
             
-            window.addEventListener('scroll', checkVisibility);
-            window.addEventListener('resize', checkVisibility);
+            // Оптимизированный слушатель скролла
+            const throttledCheck = this.throttle(checkVisibility, 100);
+            window.addEventListener('scroll', throttledCheck, { passive: true });
+            window.addEventListener('resize', throttledCheck, { passive: true });
+            
+            // Первоначальная проверка
             checkVisibility();
         }
 
-        // ===== БАЗОВЫЕ АНИМАЦИИ =====
+        // БАЗОВЫЕ АНИМАЦИИ
         initializeBasicAnimations() {
             const sections = document.querySelectorAll('.content-section');
             
             if (!sections.length) {
-                console.log('⚠️ Секции контента не найдены');
+                console.log('⚠️ Content sections not found');
                 return;
             }
             
-            console.log('🎭 Инициализация базовых анимаций: ' + sections.length + ' секций');
+            console.log('🎭 Initializing basic animations: ' + sections.length + ' sections');
             
             const checkSections = () => {
                 const windowHeight = window.innerHeight || 
@@ -350,21 +436,24 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
                 });
             };
             
-            window.addEventListener('scroll', checkSections);
-            window.addEventListener('resize', checkSections);
-            checkSections();
+            const throttledCheck = this.throttle(checkSections, 100);
+            window.addEventListener('scroll', throttledCheck, { passive: true });
+            window.addEventListener('resize', throttledCheck, { passive: true });
+            
+            // Первоначальная проверка
+            setTimeout(checkSections, 300);
         }
 
-        // ===== PARALLAX BACKGROUNDS =====
+        // PARALLAX BACKGROUNDS
         initializeParallaxBackgrounds() {
             const contentSections = document.querySelectorAll('.content-section[data-bg-index]');
             
             if (!contentSections.length) {
-                console.log('⚠️ Секции с parallax фоном не найдены');
+                console.log('⚠️ Sections with parallax backgrounds not found');
                 return;
             }
             
-            console.log('🌄 Инициализация parallax фонов: ' + contentSections.length + ' секций');
+            console.log('🌄 Initializing parallax backgrounds: ' + contentSections.length + ' sections');
             
             const checkBackgrounds = () => {
                 const windowHeight = window.innerHeight || 
@@ -394,44 +483,50 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
                 }
             };
             
-            window.addEventListener('scroll', checkBackgrounds);
-            window.addEventListener('resize', checkBackgrounds);
-            checkBackgrounds();
+            const throttledCheck = this.throttle(checkBackgrounds, 100);
+            window.addEventListener('scroll', throttledCheck, { passive: true });
+            window.addEventListener('resize', throttledCheck, { passive: true });
+            
+            // Первоначальная установка
+            setTimeout(checkBackgrounds, 500);
         }
 
-        // ===== SCROLL PROGRESS =====
+        // SCROLL PROGRESS
         initializeScrollProgress() {
             const progressBar = document.querySelector('.scroll-progress-bar');
             if (!progressBar) {
-                console.log('⚠️ Прогресс-бар скролла не найден');
+                console.log('⚠️ Scroll progress bar not found');
                 return;
             }
             
-            console.log('📏 Инициализация прогресс-бара скролла');
+            console.log('📏 Initializing scroll progress bar');
             
             const updateProgress = () => {
                 const windowHeight = window.innerHeight;
                 const documentHeight = document.documentElement.scrollHeight - windowHeight;
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const progress = (scrollTop / documentHeight) * 100;
+                const progress = documentHeight > 0 ? (scrollTop / documentHeight) * 100 : 0;
                 
-                progressBar.style.width = Math.min(progress, 100) + '%';
+                progressBar.style.width = Math.min(Math.max(progress, 0), 100) + '%';
             };
             
-            window.addEventListener('scroll', updateProgress);
+            const throttledUpdate = this.throttle(updateProgress, 16);
+            window.addEventListener('scroll', throttledUpdate, { passive: true });
+            window.addEventListener('resize', throttledUpdate, { passive: true });
+            
             updateProgress();
         }
 
-        // ===== CLICKABLE ELEMENTS =====
+        // CLICKABLE ELEMENTS
         initializeClickableStats() {
             const statCards = document.querySelectorAll('.stat-card.clickable-stat-card');
             
             if (!statCards.length) {
-                console.log('⚠️ Кликабельные карточки статистики не найдены');
+                console.log('⚠️ Clickable stat cards not found');
                 return;
             }
             
-            console.log('🖱️ Инициализация кликабельных элементов: ' + statCards.length + ' карточек');
+            console.log('🖱️ Initializing clickable elements: ' + statCards.length + ' cards');
             
             statCards.forEach(card => {
                 if (!card.hasAttribute('tabindex')) {
@@ -452,11 +547,11 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
         initializeCTAClickable() {
             const ctaSection = document.querySelector('.cta-improved.clickable-cta');
             if (!ctaSection) {
-                console.log('⚠️ Кликабельная CTA секция не найдена');
+                console.log('⚠️ Clickable CTA section not found');
                 return;
             }
             
-            console.log('📞 Инициализация кликабельной CTA секции');
+            console.log('📞 Initializing clickable CTA section');
             
             if (!ctaSection.hasAttribute('tabindex')) {
                 ctaSection.setAttribute('tabindex', '0');
@@ -471,51 +566,132 @@ console.log('🎬 home.js загружен - СТАТИЧНЫЙ ФОН');
                 }
             });
         }
+
+        // ОПТИМИЗАЦИЯ ПРОИЗВОДИТЕЛЬНОСТИ
+        optimizePerformance() {
+            console.log('⚡ Applying performance optimizations...');
+            
+            // Отключаем сложные анимации на слабых устройствах
+            if (this.isLowPerformanceDevice()) {
+                console.log('📱 Low performance device detected, simplifying animations');
+                this.simplifyAnimations();
+            }
+            
+            // Оптимизация для reduced motion
+            if (this.isReducedMotion) {
+                console.log('♿ Reduced motion preference detected, disabling animations');
+                this.disableNonEssentialAnimations();
+            }
+        }
+        
+        isLowPerformanceDevice() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const memory = navigator.deviceMemory || 4;
+            const cores = navigator.hardwareConcurrency || 4;
+            
+            return isMobile && (memory < 4 || cores < 4);
+        }
+        
+        simplifyAnimations() {
+            // Упрощаем анимации на слабых устройствах
+            const animatedElements = document.querySelectorAll('.speck-vertical-block, .content-section');
+            animatedElements.forEach(el => {
+                el.style.transition = 'none';
+                el.classList.add('visible');
+            });
+        }
+        
+        disableNonEssentialAnimations() {
+            // Отключаем необязательные анимации
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.style.animation = 'none';
+                el.style.transition = 'none';
+            });
+        }
+
+        // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+        throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
     }
 
-    // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
+    // ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ
     function initializeHomePage() {
         // Проверяем, что мы на главной странице
         if (!document.body || !document.body.classList.contains('home-page')) {
-            console.log('⚠️ Это не главная страница, home.js не будет инициализирован');
+            console.log('⚠️ Not home page, home.js will not initialize');
             return;
         }
         
-        console.log('📄 ИНИЦИАЛИЗАЦИЯ ГЛАВНОЙ СТРАНИЦЫ NB GROUP TECH (статичный фон)');
-        console.log('🔧 Состояние загрузки DOM:', document.readyState);
+        console.log('📄 INITIALIZING HOME PAGE NB GROUP TECH (optimized for image quality)');
+        console.log('🔧 DOM loading state:', document.readyState);
         
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('✅ DOM полностью загружен');
-                console.log('🎬 Создание экземпляра HomePage...');
+                console.log('✅ DOM fully loaded');
+                console.log('🎬 Creating HomePage instance...');
                 try {
                     window.homePage = new HomePage();
-                    console.log('🎉 Главная страница успешно инициализирована (статичный фон)!');
+                    console.log('🎉 Home page successfully initialized with quality optimizations!');
                 } catch (error) {
-                    console.error('❌ Ошибка при инициализации HomePage:', error);
+                    console.error('❌ Error during HomePage initialization:', error);
+                    
+                    // Безопасный fallback
+                    const heroBg = document.querySelector('.hero-background-image');
+                    if (heroBg) {
+                        heroBg.style.backgroundSize = 'cover';
+                        heroBg.style.backgroundPosition = 'center center';
+                        heroBg.style.backgroundRepeat = 'no-repeat';
+                    }
                 }
             });
         } else {
-            console.log('✅ DOM уже загружен');
-            console.log('🎬 Создание экземпляра HomePage...');
+            console.log('✅ DOM already loaded');
+            console.log('🎬 Creating HomePage instance...');
             try {
                 window.homePage = new HomePage();
-                console.log('🎉 Главная страница успешно инициализирована (статичный фон)!');
+                console.log('🎉 Home page successfully initialized with quality optimizations!');
             } catch (error) {
-                console.error('❌ Ошибка при инициализации HomePage:', error);
+                console.error('❌ Error during HomePage initialization:', error);
+                
+                // Безопасный fallback
+                const heroBg = document.querySelector('.hero-background-image');
+                if (heroBg) {
+                    heroBg.style.backgroundSize = 'cover';
+                    heroBg.style.backgroundPosition = 'center center';
+                    heroBg.style.backgroundRepeat = 'no-repeat';
+                }
             }
         }
     }
     
-    // Автоматическая инициализация при загрузке скрипта
-    console.log('🚀 Запуск инициализации главной страницы...');
+    // Автоматическая инициализация
+    console.log('🚀 Starting home page initialization...');
     initializeHomePage();
     
-    // Экспортируем класс для глобального доступа
+    // Экспорт класса
     if (typeof window !== 'undefined') {
         window.HomePage = HomePage;
     }
     
-    console.log('✅ home.js полностью загружен и готов к работе (статичный фон)');
+    // Глобальная обработка ошибок
+    window.addEventListener('error', function(e) {
+        if (e.message && e.message.includes('HomePage') || 
+            e.filename && e.filename.includes('home.js')) {
+            console.error('🚨 Critical error in home.js:', e);
+        }
+    });
+    
+    console.log('✅ home.js fully loaded and ready (optimized for image quality)');
     
 })();
