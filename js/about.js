@@ -128,9 +128,9 @@ function animateSVGGradient(svgElement, index) {
         const circle = svgElement.querySelector('circle');
         if (!circle) return;
         
-        // Pulsing animation
+        // Пульсирующая анимация - используем let для изменяемых переменных
         let scale = 1;
-        const direction = 1;
+        let direction = 1;
         
         const pulse = () => {
             if (!svgElement) return;
