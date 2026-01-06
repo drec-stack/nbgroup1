@@ -1,4 +1,4 @@
-/* style.css - ПОЛНЫЙ ФАЙЛ СТИЛЕЙ NB GROUP TECH */
+/* style.css - ПОЛНЫЙ ФАЙЛ СТИЛЕЙ NB GROUP TECH (ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ) */
 
 :root {
     /* ОСНОВНЫЕ ЦВЕТА - СИНЯЯ ПАЛИТРА */
@@ -51,6 +51,11 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     padding-top: 80px; /* Отступ для фиксированного хедера */
+    
+    /* Оптимизация качества изображений для всего body */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
 }
 
 .container {
@@ -3460,4 +3465,163 @@ body.contacts-page .main-header.header-hidden {
     animation-play-state: paused !important;
 }
 
-/* ===== КОНЕЦ ФАЙЛА ===== */
+/* ===== КРИТИЧЕСКИЕ ФИКСЫ ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ ===== */
+
+/* Гарантированные настройки для ВСЕХ фоновых изображений */
+[class*="bg-"],
+[class*="background"],
+[class*="parallax"],
+.hero-background-image,
+.parallax-bg,
+.background-image,
+[style*="background-image"] {
+    /* КРИТИЧЕСКИ ВАЖНЫЕ НАСТРОЙКИ КАЧЕСТВА */
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;
+    
+    /* ОПТИМАЛЬНЫЕ НАСТРОЙКИ ФОНА */
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    
+    /* УБИРАЕМ ВСЕ ФИЛЬТРЫ, УХУДШАЮЩИЕ КАЧЕСТВО */
+    filter: none !important;
+    -webkit-filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    
+    /* GPU УСКОРЕНИЕ И ПРЕДОТВРАЩЕНИЕ РАЗМЫТИЯ */
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* ОСОБЫЕ ФИКСЫ ДЛЯ PARALLAX ФОНОВ */
+.parallax-bg {
+    background-attachment: scroll !important; /* Изменено с fixed для стабильности */
+}
+
+/* ФИКС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
+.hero-background-image {
+    animation: none !important; /* Убираем анимации, ухудшающие качество */
+    transition: none !important;
+}
+
+/* МОБИЛЬНАЯ ОПТИМИЗАЦИЯ КАЧЕСТВА */
+@media (max-width: 768px) {
+    [class*="bg-"],
+    [class*="background"],
+    [class*="parallax"],
+    .hero-background-image,
+    .parallax-bg {
+        /* Упрощаем настройки для производительности на мобильных */
+        background-attachment: scroll !important;
+        background-position: center center !important;
+        background-size: cover !important;
+        
+        /* Отключаем сложные эффекты */
+        image-rendering: auto !important;
+        -webkit-transform: none !important;
+        transform: none !important;
+        
+        /* Убираем все трансформации */
+        filter: none !important;
+        -webkit-filter: none !important;
+    }
+}
+
+/* ОПТИМИЗАЦИЯ ДЛЯ HIDPI/РЕТИНА ЭКРАНОВ */
+@media (min-resolution: 192dpi),
+       (-webkit-min-device-pixel-ratio: 2) {
+    [class*="bg-"],
+    [class*="background"],
+    [class*="parallax"],
+    .hero-background-image,
+    .parallax-bg {
+        image-rendering: -webkit-optimize-contrast !important;
+        background-size: cover !important;
+    }
+}
+
+/* ПОДДЕРЖКА REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+    [class*="bg-"],
+    [class*="background"],
+    [class*="parallax"],
+    .hero-background-image,
+    .parallax-bg {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ФИКС ДЛЯ ПЕЧАТИ */
+@media print {
+    [class*="bg-"],
+    [class*="background"],
+    [class*="parallax"],
+    .hero-background-image,
+    .parallax-bg {
+        display: none !important;
+    }
+}
+
+/* ОПТИМИЗАЦИЯ ВСЕХ ИЗОБРАЖЕНИЙ НА САЙТЕ */
+img,
+picture,
+svg,
+video {
+    max-width: 100%;
+    height: auto;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+
+/* ГАРАНТИЯ КАЧЕСТВА ДЛЯ КОНТЕЙНЕРОВ С ФОНАМИ */
+.bg-container,
+.background-container,
+.parallax-container {
+    overflow: hidden;
+    position: relative;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* ФИКС ДЛЯ IOS SAFARI */
+@supports (-webkit-touch-callout: none) {
+    [class*="bg-"],
+    [class*="background"],
+    [class*="parallax"],
+    .hero-background-image,
+    .parallax-bg {
+        background-attachment: scroll !important;
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+    }
+}
+
+/* ФИКС ДЛЯ FIREFOX */
+@-moz-document url-prefix() {
+    [class*="bg-"],
+    [class*="background"],
+    [class*="parallax"],
+    .hero-background-image,
+    .parallax-bg {
+        image-rendering: crisp-edges !important;
+    }
+}
+
+/* ГАРАНТИЯ ЧЕТКОСТИ ТЕКСТА НА ФОНАХ */
+.parallax-content,
+.hero-content,
+.content-overlay {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
