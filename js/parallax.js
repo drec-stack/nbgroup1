@@ -1,5 +1,5 @@
-// parallax.js - МОБИЛЬНАЯ ОПТИМИЗАЦИЯ (ПОЛНАЯ ВЕРСИЯ С ФИКСОМ)
-console.log('🎯 parallax.js loaded - MOBILE OPTIMIZED (4 backgrounds)');
+// parallax.js - ОПТИМИЗИРОВАН ДЛЯ МАКСИМАЛЬНОГО КАЧЕСТВА ИЗОБРАЖЕНИЙ
+console.log('🎯 parallax.js loaded - OPTIMIZED FOR IMAGE QUALITY (4 backgrounds)');
 
 class ScrollBackgroundChanger {
     constructor() {
@@ -13,69 +13,191 @@ class ScrollBackgroundChanger {
         this.lastScrollY = window.scrollY;
         this.scrollThreshold = 100;
         
-        // Фикс для мобильных
-        this.fixMobileIssues();
+        // Кэширование вычислений
+        this.windowHeight = window.innerHeight;
+        this.documentHeight = document.documentElement.scrollHeight;
+        
+        console.log(`📱 Device: ${this.isMobile ? 'Mobile' : 'Desktop'}`);
+        console.log(`🖼️ Found ${this.backgrounds.length} background images`);
+        
+        // Предзагрузка изображений для предотвращения размытия
+        this.preloadImages();
+        
+        // Применение оптимизаций
+        this.applyQualityOptimizations();
+        
+        // Инициализация
         this.init();
     }
     
-    checkIsMobile() {
-        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ ДЛЯ МАКСИМАЛЬНОГО КАЧЕСТВА
+    preloadImages() {
+        console.log('🖼️ Preloading background images for optimal quality...');
+        
+        const imageUrls = [
+            '../assets/images/parallax/bg-1.jpg',
+            '../assets/images/parallax/bg-2.jpg',
+            '../assets/images/parallax/bg-3.jpg',
+            '../assets/images/parallax/bg-4.jpg'
+        ];
+        
+        let loadedCount = 0;
+        const totalImages = imageUrls.length;
+        
+        imageUrls.forEach(url => {
+            const img = new Image();
+            img.src = url;
+            img.onload = () => {
+                loadedCount++;
+                console.log(`✅ Loaded: ${url} (${loadedCount}/${totalImages})`);
+                
+                // Когда все изображения загружены, применяем дополнительные оптимизации
+                if (loadedCount === totalImages) {
+                    console.log('🎉 All background images loaded successfully!');
+                    this.applyPostLoadOptimizations();
+                }
+            };
+            img.onerror = (e) => {
+                console.warn(`⚠️ Failed to load: ${url}`, e);
+                loadedCount++;
+            };
+        });
     }
     
-    fixMobileIssues() {
+    // ПРИМЕНЕНИЕ ОПТИМИЗАЦИЙ КАЧЕСТВА
+    applyQualityOptimizations() {
+        console.log('🎨 Applying quality optimizations to background images...');
+        
+        this.backgrounds.forEach((bg, index) => {
+            // Гарантируем настройки CSS для качества
+            bg.style.imageRendering = '-webkit-optimize-contrast';
+            bg.style.imageRendering = 'crisp-edges';
+            bg.style.webkitFontSmoothing = 'antialiased';
+            bg.style.mozOsxFontSmoothing = 'grayscale';
+            bg.style.backfaceVisibility = 'hidden';
+            bg.style.transform = 'translateZ(0)';
+            bg.style.willChange = 'opacity';
+            
+            // Убираем все фильтры, которые могут ухудшить качество
+            bg.style.filter = 'none';
+            bg.style.webkitFilter = 'none';
+            
+            // Оптимальные настройки фона
+            bg.style.backgroundSize = 'cover';
+            bg.style.backgroundPosition = 'center center';
+            bg.style.backgroundRepeat = 'no-repeat';
+            bg.style.backgroundAttachment = 'scroll';
+            
+            console.log(`✅ Optimized background #${index + 1}`);
+        });
+        
+        // Мобильная оптимизация
         if (this.isMobile) {
-            console.log('📱 Mobile device detected, applying fixes...');
+            this.applyMobileOptimizations();
+        }
+    }
+    
+    // ДОПОЛНИТЕЛЬНЫЕ ОПТИМИЗАЦИИ ПОСЛЕ ЗАГРУЗКИ
+    applyPostLoadOptimizations() {
+        console.log('⚡ Applying post-load optimizations...');
+        
+        // Принудительный reflow для фиксации рендеринга
+        this.backgrounds.forEach(bg => {
+            void bg.offsetHeight; // Trigger reflow
+        });
+        
+        // Установка активного фона
+        this.setBackground(0);
+    }
+    
+    // ОПТИМИЗАЦИИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ
+    applyMobileOptimizations() {
+        console.log('📱 Applying mobile-specific optimizations...');
+        
+        this.backgrounds.forEach(bg => {
+            // На мобильных используем scroll вместо fixed
+            bg.style.backgroundAttachment = 'scroll';
+            bg.style.backgroundPosition = 'center center';
+            bg.style.backgroundSize = 'cover';
             
-            // 1. Убираем горизонтальный скролл
-            document.documentElement.style.overflowX = 'hidden';
-            document.body.style.overflowX = 'hidden';
+            // Упрощаем переходы для производительности
+            bg.style.transition = 'opacity 0.4s ease';
             
-            // 2. Фиксируем фон
+            // Убираем сложные CSS свойства
+            bg.style.willChange = 'auto';
+            bg.style.transform = 'none';
+        });
+        
+        // Фикс для iOS
+        this.applyIOSFixes();
+    }
+    
+    // ФИКСЫ ДЛЯ iOS
+    applyIOSFixes() {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+            console.log('🍎 Applying iOS-specific fixes...');
+            
             this.backgrounds.forEach(bg => {
-                bg.style.backgroundAttachment = 'scroll';
-                bg.style.backgroundPosition = 'center center';
-                bg.style.backgroundSize = 'cover';
-                bg.style.left = '0';
-                bg.style.width = '100%';
-            });
-            
-            // 3. Добавляем fallback фон для контентных секций
-            this.sections.forEach(section => {
-                if (section.classList.contains('content-section')) {
-                    section.style.backgroundColor = 'var(--secondary)';
-                    section.style.position = 'relative';
-                    section.style.zIndex = '2';
-                }
+                // iOS хаки для фиксации фона
+                bg.style.webkitTransform = 'translate3d(0,0,0)';
+                bg.style.transform = 'translate3d(0,0,0)';
+                bg.style.webkitBackfaceVisibility = 'hidden';
+                
+                // Предотвращение масштабирования
+                bg.style.maxWidth = '100%';
+                bg.style.height = 'auto';
             });
         }
+    }
+    
+    checkIsMobile() {
+        const width = window.innerWidth;
+        const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+        
+        return width <= 768 || (mobileRegex.test(userAgent) && isTouch);
     }
     
     init() {
-        console.log('🎯 Initializing mobile-optimized background changes (4 backgrounds)...');
+        console.log('🚀 Initializing background changer with quality optimizations...');
         
-        if (this.backgrounds.length === 0) return;
-        
-        // Упрощенная логика для мобильных
-        if (this.isMobile) {
-            this.setupMobileBackgrounds();
-        } else {
-            this.setupDesktopBackgrounds();
+        if (this.backgrounds.length === 0) {
+            console.warn('⚠️ No background elements found');
+            return;
         }
         
+        // Настраиваем обработку скролла
+        if (this.isMobile) {
+            this.setupMobileScroll();
+        } else {
+            this.setupDesktopScroll();
+        }
+        
+        // Прогресс бар
         this.setupProgressBar();
+        
+        // Оптимизации производительности
         this.setupPerformanceOptimizations();
-        console.log(`✅ Background changer ready with ${this.backgrounds.length} backgrounds`);
+        
+        // Обработка ресайза
+        this.setupResizeHandler();
+        
+        console.log(`✅ Background changer ready with ${this.backgrounds.length} optimized backgrounds`);
     }
     
-    setupMobileBackgrounds() {
-        // На мобильных используем упрощенную логику смены фонов
+    setupMobileScroll() {
+        console.log('📱 Setting up mobile-optimized scroll...');
+        
+        // Упрощенная логика для мобильных
         this.setBackground(0);
         
         // Оптимизированный скролл для мобильных
-        this.throttledScroll = this.throttle(this.handleMobileScroll.bind(this), 50);
+        this.throttledScroll = this.throttle(this.handleMobileScroll.bind(this), 100);
         window.addEventListener('scroll', this.throttledScroll, { passive: true });
         
-        // Добавляем обработчик изменения ориентации
+        // Обработчик изменения ориентации
         window.addEventListener('orientationchange', () => {
             setTimeout(() => {
                 this.handleResize();
@@ -83,10 +205,11 @@ class ScrollBackgroundChanger {
         });
     }
     
-    setupDesktopBackgrounds() {
-        // Полная функциональность для десктопов
+    setupDesktopScroll() {
+        console.log('💻 Setting up desktop-optimized scroll...');
+        
         this.setBackground(0);
-        this.throttledScroll = this.throttle(this.handleScroll.bind(this), 16);
+        this.throttledScroll = this.throttle(this.handleDesktopScroll.bind(this), 16);
         window.addEventListener('scroll', this.throttledScroll, { passive: true });
         this.setupIntersectionObserver();
     }
@@ -95,48 +218,48 @@ class ScrollBackgroundChanger {
         if (this.isAnimating) return;
         
         const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
+        const windowHeight = this.windowHeight;
         
-        // Определяем новый индекс фона на основе позиции скролла (для 4 фонов)
+        // Простая логика для 4 фонов
         let newBgIndex = 0;
         
         if (scrollY < windowHeight * 0.5) {
-            newBgIndex = 0; // Первый фон
+            newBgIndex = 0;
         } else if (scrollY >= windowHeight * 0.5 && scrollY < windowHeight * 1.3) {
-            newBgIndex = 1; // Второй фон
+            newBgIndex = 1;
         } else if (scrollY >= windowHeight * 1.3 && scrollY < windowHeight * 2.3) {
-            newBgIndex = 2; // Третий фон
+            newBgIndex = 2;
         } else if (scrollY >= windowHeight * 2.3) {
-            newBgIndex = 3; // Четвертый фон
+            newBgIndex = 3;
         }
         
         // Меняем фон только если индекс изменился
-        if (newBgIndex !== this.currentBgIndex) {
+        if (newBgIndex !== this.currentBgIndex && newBgIndex < this.backgrounds.length) {
             this.setBackground(newBgIndex);
         }
         
         this.lastScrollY = scrollY;
     }
     
-    handleScroll() {
+    handleDesktopScroll() {
         if (this.isAnimating) return;
         
         const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
+        const windowHeight = this.windowHeight;
         
-        // Обновленная логика для 4 фонов
+        // Логика для 4 фонов на десктопе
         let newBgIndex = 0;
         
         if (scrollY < windowHeight * 0.5) {
-            newBgIndex = 0; // Первый фон
+            newBgIndex = 0;
         } else if (scrollY >= windowHeight * 0.5 && scrollY < windowHeight * 1.2) {
-            newBgIndex = 1; // Второй фон
+            newBgIndex = 1;
         } else if (scrollY >= windowHeight * 1.2 && scrollY < windowHeight * 2.0) {
-            newBgIndex = 2; // Третий фон
+            newBgIndex = 2;
         } else if (scrollY >= windowHeight * 2.0 && scrollY < windowHeight * 3.0) {
-            newBgIndex = 3; // Четвертый фон
+            newBgIndex = 3;
         } else {
-            newBgIndex = 0; // Возвращаемся к первому
+            newBgIndex = 0;
         }
         
         if (newBgIndex !== this.currentBgIndex && newBgIndex < this.backgrounds.length) {
@@ -145,6 +268,11 @@ class ScrollBackgroundChanger {
     }
     
     setupIntersectionObserver() {
+        if (!('IntersectionObserver' in window)) {
+            console.warn('⚠️ IntersectionObserver not supported');
+            return;
+        }
+        
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -165,11 +293,14 @@ class ScrollBackgroundChanger {
     }
     
     setupProgressBar() {
-        if (!this.progressBar) return;
+        if (!this.progressBar) {
+            console.log('⚠️ Progress bar element not found');
+            return;
+        }
         
         const updateProgress = () => {
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const windowHeight = this.windowHeight;
+            const documentHeight = this.documentHeight - windowHeight;
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const progress = (scrollTop / documentHeight) * 100;
             
@@ -177,18 +308,19 @@ class ScrollBackgroundChanger {
         };
         
         window.addEventListener('scroll', this.throttle(updateProgress, 16), { passive: true });
+        updateProgress();
     }
     
     setupPerformanceOptimizations() {
-        // Отключаем сложные анимации на слабых устройствах
+        // Проверяем низкопроизводительное устройство
         if (this.isLowPerformanceDevice()) {
-            console.log('📱 Low performance device detected, simplifying parallax');
+            console.log('📱 Low performance device detected, applying simplifications');
             this.simplifyForLowPerformance();
         }
         
-        // Оптимизация для reduced motion
+        // Проверяем reduced motion
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            console.log('♿ Reduced motion enabled, disabling parallax animations');
+            console.log('♿ Reduced motion enabled, simplifying animations');
             this.disableAnimations();
         }
     }
@@ -202,27 +334,40 @@ class ScrollBackgroundChanger {
     }
     
     simplifyForLowPerformance() {
-        // Оставляем только первый фон
+        // Оставляем только первый фон и упрощаем
         this.backgrounds.forEach((bg, index) => {
             if (index > 0) {
                 bg.style.display = 'none';
+            } else {
+                bg.style.transition = 'none';
+                bg.style.animation = 'none';
             }
         });
+        
+        // Упрощаем скролл
+        if (this.throttledScroll) {
+            window.removeEventListener('scroll', this.throttledScroll);
+            this.throttledScroll = this.throttle(this.handleMobileScroll.bind(this), 200);
+            window.addEventListener('scroll', this.throttledScroll, { passive: true });
+        }
     }
     
     disableAnimations() {
         this.backgrounds.forEach(bg => {
             bg.style.transition = 'none';
+            bg.style.animation = 'none';
         });
     }
     
     setBackground(index) {
-        if (this.isAnimating || index === this.currentBgIndex) return;
+        if (this.isAnimating || index === this.currentBgIndex || index >= this.backgrounds.length) {
+            return;
+        }
         
         this.isAnimating = true;
         this.currentBgIndex = index;
         
-        console.log(`🎨 Changing background to index: ${index}`);
+        console.log(`🎨 Changing to background #${index + 1}`);
         
         // Убираем active класс со всех фонов
         this.backgrounds.forEach(bg => {
@@ -230,29 +375,52 @@ class ScrollBackgroundChanger {
         });
         
         // Добавляем active класс к текущему фону
-        if (this.backgrounds[index]) {
-            this.backgrounds[index].classList.add('active');
+        const targetBg = this.backgrounds[index];
+        if (targetBg) {
+            targetBg.classList.add('active');
+            
+            // Принудительный reflow для плавного перехода
+            void targetBg.offsetHeight;
         }
         
         // Сбрасываем флаг анимации
+        const animationTime = this.isMobile ? 400 : 800;
         setTimeout(() => {
             this.isAnimating = false;
-        }, this.isMobile ? 800 : 1200);
+        }, animationTime);
     }
     
     handleResize() {
-        // Обновляем определение мобильного устройства
+        console.log('🔄 Handling resize/orientation change...');
+        
+        // Обновляем кэшированные значения
+        this.windowHeight = window.innerHeight;
+        this.documentHeight = document.documentElement.scrollHeight;
         this.isMobile = this.checkIsMobile();
         
-        // Применяем фиксы снова
-        this.fixMobileIssues();
+        // Применяем оптимизации снова
+        this.applyQualityOptimizations();
         
-        // Перезапускаем логику фонов
-        if (this.isMobile) {
-            this.setupMobileBackgrounds();
-        } else {
-            this.setupDesktopBackgrounds();
+        // Перезапускаем логику
+        if (this.throttledScroll) {
+            window.removeEventListener('scroll', this.throttledScroll);
         }
+        
+        if (this.isMobile) {
+            this.setupMobileScroll();
+        } else {
+            this.setupDesktopScroll();
+        }
+    }
+    
+    setupResizeHandler() {
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.handleResize();
+            }, 250);
+        });
     }
     
     // Вспомогательная функция для throttle
@@ -269,45 +437,60 @@ class ScrollBackgroundChanger {
         };
     }
     
-    // Очистка при уничтожении
+    // Очистка
     destroy() {
-        window.removeEventListener('scroll', this.throttledScroll);
+        if (this.throttledScroll) {
+            window.removeEventListener('scroll', this.throttledScroll);
+        }
+        
         this.backgrounds.forEach(bg => {
             bg.classList.remove('active');
         });
+        
+        console.log('🧹 Background changer destroyed');
     }
 }
 
-// Инициализация с проверкой поддержки
+// Инициализация при загрузке DOM
 document.addEventListener('DOMContentLoaded', function() {
     const parallaxBackgrounds = document.querySelectorAll('.parallax-bg');
     
     if (parallaxBackgrounds.length > 0) {
         try {
             window.parallaxInstance = new ScrollBackgroundChanger();
-            console.log(`✅ Parallax initialized with ${parallaxBackgrounds.length} backgrounds`);
+            console.log(`✅ Parallax system initialized with ${parallaxBackgrounds.length} optimized backgrounds`);
         } catch (error) {
-            console.error('❌ Error initializing parallax:', error);
+            console.error('❌ Error initializing parallax system:', error);
+            
             // Fallback: показываем только первый фон
             parallaxBackgrounds.forEach((bg, index) => {
-                if (index === 0) bg.classList.add('active');
-                else bg.style.display = 'none';
+                if (index === 0) {
+                    bg.classList.add('active');
+                    bg.style.display = 'block';
+                } else {
+                    bg.style.display = 'none';
+                }
             });
+        }
+    } else {
+        console.log('⚠️ No parallax backgrounds found on this page');
+    }
+});
+
+// Глобальный экспорт
+window.ScrollBackgroundChanger = ScrollBackgroundChanger;
+
+// Автоматическая обработка ошибок
+window.addEventListener('error', function(e) {
+    if (e.message && e.message.includes('parallax')) {
+        console.error('🚨 Critical parallax error:', e);
+        
+        // Безопасный fallback
+        const backgrounds = document.querySelectorAll('.parallax-bg');
+        if (backgrounds.length > 0) {
+            backgrounds[0].classList.add('active');
         }
     }
 });
 
-// Обработчик изменения размера окна
-let resizeTimeout;
-window.addEventListener('resize', function() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-        const currentInstance = window.parallaxInstance;
-        if (currentInstance) {
-            currentInstance.handleResize();
-        }
-    }, 250);
-});
-
-// Экспорт для глобального доступа
-window.ScrollBackgroundChanger = ScrollBackgroundChanger;
+console.log('✅ parallax.js loaded and ready');
