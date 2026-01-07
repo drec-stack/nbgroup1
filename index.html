@@ -6,10 +6,18 @@
     <title data-i18n="home.title">NBGROUP.TECH | Industrial Design & Manufacturing</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Кроссбраузерные полифилы CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    
+    <!-- Основные стили -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/parallax.css">
+    
+    <!-- Кроссбраузерные полифилы JS -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default%2Ces6%2Ces5%2CArray.prototype.includes%2CString.prototype.includes%2CPromise%2CObject.assign%2CElement.prototype.closest%2CrequestAnimationFrame%2CIntersectionObserver"></script>
     
     <!-- Компоненты -->
     <script src="js/components.js"></script>
@@ -18,6 +26,151 @@
     <script src="js/home.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/parallax.js"></script>
+    
+    <!-- Кроссбраузерные фиксы -->
+    <script>
+    // Определяем возможности браузера
+    (function() {
+        'use strict';
+        
+        var docElem = document.documentElement;
+        
+        // Проверяем поддержку CSS Grid
+        if (!window.CSS || !CSS.supports || !CSS.supports('display', 'grid')) {
+            docElem.classList.add('no-cssgrid');
+        }
+        
+        // Проверяем поддержку CSS переменных
+        if (!window.CSS || !CSS.supports || !CSS.supports('--test', '0')) {
+            docElem.classList.add('no-cssvariables');
+        }
+        
+        // Проверяем поддержку backdrop-filter
+        if (!window.CSS || !CSS.supports || !CSS.supports('backdrop-filter', 'blur(1px)')) {
+            docElem.classList.add('no-backdropfilter');
+        }
+        
+        // Проверяем поддержку CSS transforms
+        if (!window.CSS || !CSS.supports || !CSS.supports('transform', 'translateX(0)')) {
+            docElem.classList.add('no-css-transforms');
+        }
+        
+        // Проверяем поддержку flexbox
+        if (!window.CSS || !CSS.supports || !CSS.supports('display', 'flex')) {
+            docElem.classList.add('no-flexbox');
+        }
+        
+        // Проверяем поддержку параллакса
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || 
+            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            docElem.classList.add('no-parallax');
+        }
+        
+        // Проверяем старый Internet Explorer
+        if (/*@cc_on!@*/false || document.documentMode) {
+            docElem.classList.add('is-ie');
+            docElem.classList.add('ie' + document.documentMode);
+        }
+        
+        // Проверяем Safari
+        if (/constructor/i.test(window.HTMLElement) || 
+            (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || 
+            (typeof safari !== 'undefined' && safari.pushNotification))) {
+            docElem.classList.add('is-safari');
+        }
+        
+        // Проверяем Firefox
+        if (typeof InstallTrigger !== 'undefined') {
+            docElem.classList.add('is-firefox');
+        }
+        
+        // Проверяем Chrome
+        if (!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)) {
+            docElem.classList.add('is-chrome');
+        }
+        
+        // Добавляем класс для JavaScript
+        docElem.classList.remove('no-js');
+        docElem.classList.add('js');
+        
+        console.log('Browser capabilities detected:', {
+            hasCSSGrid: !docElem.classList.contains('no-cssgrid'),
+            hasCSSVariables: !docElem.classList.contains('no-cssvariables'),
+            hasBackdropFilter: !docElem.classList.contains('no-backdropfilter'),
+            hasCSSTransforms: !docElem.classList.contains('no-css-transforms'),
+            hasFlexbox: !docElem.classList.contains('no-flexbox'),
+            supportsParallax: !docElem.classList.contains('no-parallax')
+        });
+    })();
+    </script>
+    
+    <style>
+    /* Критические стили для кроссбраузерности */
+    .no-js .hero-background-image,
+    .no-css-transforms .hero-background-image,
+    .no-parallax .hero-background-image {
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-position: center center !important;
+    }
+    
+    .no-cssgrid .stats-grid-improved {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .no-cssgrid .stat-card {
+        flex: 1 0 200px;
+        max-width: 250px;
+        margin: 10px;
+    }
+    
+    .no-flexbox .speck-vertical-block {
+        display: block;
+    }
+    
+    .no-flexbox .speck-block-left,
+    .no-flexbox .speck-block-right {
+        width: 100%;
+        float: left;
+    }
+    
+    .no-flexbox .speck-feature-columns {
+        display: block;
+    }
+    
+    .no-flexbox .speck-feature-column {
+        margin-bottom: 20px;
+    }
+    
+    /* IE specific fixes */
+    .is-ie .hero-background-container {
+        position: absolute !important;
+    }
+    
+    .is-ie .parallax-bg-container {
+        display: none !important;
+    }
+    
+    .is-ie .hero::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('assets/images/parallax/bg-1.jpg') center center/cover no-repeat;
+        z-index: -1;
+        opacity: 0.7;
+    }
+    
+    /* Firefox fix for background attachment */
+    .is-firefox .hero-background-image,
+    .is-firefox .parallax-bg {
+        background-attachment: scroll !important;
+    }
+    </style>
 </head>
 <body>
     <!-- STATIC HERO BACKGROUND -->
@@ -360,5 +513,134 @@
 
     <!-- Footer Container -->
     <div id="footer-container"></div>
+    
+    <!-- Кроссбраузерные полифилы -->
+    <script>
+    // Добавляем класс no-js для обнаружения JavaScript
+    document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, 'js');
+    
+    // Полифил для requestAnimationFrame
+    (function() {
+        var lastTime = 0;
+        var vendors = ['webkit', 'moz'];
+        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+            window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+            window.cancelAnimationFrame = 
+              window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+        }
+    
+        if (!window.requestAnimationFrame) {
+            window.requestAnimationFrame = function(callback, element) {
+                var currTime = new Date().getTime();
+                var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+                  timeToCall);
+                lastTime = currTime + timeToCall;
+                return id;
+            };
+        }
+    
+        if (!window.cancelAnimationFrame) {
+            window.cancelAnimationFrame = function(id) {
+                clearTimeout(id);
+            };
+        }
+    }());
+    
+    // Полифил для IntersectionObserver
+    if (!window.IntersectionObserver) {
+        // Простой fallback
+        window.IntersectionObserver = function() {
+            this.observe = function() {};
+            this.unobserve = function() {};
+            this.disconnect = function() {};
+        };
+        window.IntersectionObserverEntry = function() {};
+    }
+    
+    // Полифил для Element.closest()
+    if (!Element.prototype.closest) {
+        Element.prototype.closest = function(s) {
+            var el = this;
+            if (!document.documentElement.contains(el)) return null;
+            do {
+                if (el.matches(s)) return el;
+                el = el.parentElement || el.parentNode;
+            } while (el !== null && el.nodeType === 1);
+            return null;
+        };
+    }
+    
+    // Полифил для NodeList.forEach
+    if (window.NodeList && !NodeList.prototype.forEach) {
+        NodeList.prototype.forEach = Array.prototype.forEach;
+    }
+    
+    // Полифил для String.includes
+    if (!String.prototype.includes) {
+        String.prototype.includes = function(search, start) {
+            if (typeof start !== 'number') {
+                start = 0;
+            }
+            if (start + search.length > this.length) {
+                return false;
+            } else {
+                return this.indexOf(search, start) !== -1;
+            }
+        };
+    }
+    
+    // Полифил для Array.includes
+    if (!Array.prototype.includes) {
+        Object.defineProperty(Array.prototype, 'includes', {
+            value: function(searchElement, fromIndex) {
+                if (this == null) {
+                    throw new TypeError('"this" is null or not defined');
+                }
+                var o = Object(this);
+                var len = o.length >>> 0;
+                if (len === 0) {
+                    return false;
+                }
+                var n = fromIndex | 0;
+                var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+                function sameValueZero(x, y) {
+                    return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
+                }
+                while (k < len) {
+                    if (sameValueZero(o[k], searchElement)) {
+                        return true;
+                    }
+                    k++;
+                }
+                return false;
+            }
+        });
+    }
+    
+    // Полифил для CSS.supports
+    if (!window.CSS || !window.CSS.supports) {
+        window.CSS = window.CSS || {};
+        window.CSS.supports = function(property, value) {
+            var style = document.createElement('div').style;
+            if (value === undefined) {
+                return property in style;
+            }
+            style.cssText = property + ':' + value;
+            return !!style[property];
+        };
+    }
+    
+    // Простой полифил для matchMedia
+    if (!window.matchMedia) {
+        window.matchMedia = function() {
+            return {
+                matches: false,
+                addListener: function() {},
+                removeListener: function() {}
+            };
+        };
+    }
+    </script>
 </body>
 </html>
