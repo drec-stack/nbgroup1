@@ -1,4 +1,4 @@
-/* parallax.css - ОПТИМИЗИРОВАН ДЛЯ МАКСИМАЛЬНОГО КАЧЕСТВА ИЗОБРАЖЕНИЙ */
+/* parallax.css - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ И КРОССБРАУЗЕРНОСТИ */
 
 /* Базовые стили для контейнера */
 .parallax-bg-container {
@@ -24,25 +24,24 @@
     width: 100%;
     height: 100%;
     
-    /* КРИТИЧЕСКИ ВАЖНО: настройки для максимального качества */
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: scroll !important; /* Изменено с fixed для стабильности */
+    /* Настройки для качества - БЕЗ !important */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Оставляем fixed для поддерживающих браузеров */
     
     /* Оптимизация качества изображения */
-    image-rendering: -webkit-optimize-contrast !important; /* Safari */
-    image-rendering: crisp-edges !important; /* Firefox, Chrome */
-    image-rendering: pixelated !important; /* Edge */
-    -ms-interpolation-mode: nearest-neighbor !important; /* IE */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
     
-    /* GPU ускорение и предотвращение размытия */
-    -webkit-backface-visibility: hidden !important;
-    backface-visibility: hidden !important;
-    -webkit-transform-style: preserve-3d !important;
-    transform-style: preserve-3d !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
+    /* GPU ускорение */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     
     /* Плавные переходы */
     transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -50,33 +49,35 @@
     will-change: opacity;
 }
 
+/* Fallback для браузеров без поддержки */
+.no-css-transforms .parallax-bg-container,
+.no-parallax .parallax-bg-container {
+    display: none;
+}
+
+.is-ie .parallax-bg-container {
+    display: none !important;
+}
+
 .parallax-bg.active {
     opacity: 1;
 }
 
-/* Конкретные фоновые изображения с жесткой оптимизацией */
+/* Конкретные фоновые изображения */
 #parallax-bg-1 { 
-    background-image: url('../assets/images/parallax/bg-1.jpg') !important;
-    background-size: cover !important;
-    background-position: center center !important;
+    background-image: url('../assets/images/parallax/bg-1.jpg');
 }
 
 #parallax-bg-2 { 
-    background-image: url('../assets/images/parallax/bg-2.jpg') !important;
-    background-size: cover !important;
-    background-position: center center !important;
+    background-image: url('../assets/images/parallax/bg-2.jpg');
 }
 
 #parallax-bg-3 { 
-    background-image: url('../assets/images/parallax/bg-3.jpg') !important;
-    background-size: cover !important;
-    background-position: center center !important;
+    background-image: url('../assets/images/parallax/bg-3.jpg');
 }
 
 #parallax-bg-4 { 
-    background-image: url('../assets/images/parallax/bg-4.jpg') !important;
-    background-size: cover !important;
-    background-position: center center !important;
+    background-image: url('../assets/images/parallax/bg-4.jpg');
 }
 
 /* Легкое затемнение для читаемости текста */
@@ -101,6 +102,27 @@
     position: relative;
     z-index: 2;
     overflow: hidden;
+}
+
+/* Fallback для IE */
+.is-ie .parallax-hero {
+    background: url('../assets/images/parallax/bg-1.jpg') center center/cover no-repeat;
+}
+
+.is-ie .parallax-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.is-ie .parallax-content {
+    position: relative;
+    z-index: 2;
 }
 
 .parallax-content {
@@ -186,13 +208,12 @@
         background-attachment: scroll !important;
         background-position: center center !important;
         background-size: cover !important;
-        /* Отключаем сложные анимации на мобильных */
         transition: opacity 0.4s ease !important;
     }
     
     /* Улучшаем качество изображений на мобильных */
     .parallax-bg::after {
-        background: rgba(0, 0, 0, 0.25) !important; /* Чуть сильнее затемнение для читаемости */
+        background: rgba(0, 0, 0, 0.25) !important;
     }
 }
 
@@ -237,7 +258,6 @@
     /* Усиливаем затемнение фона для лучшей читаемости */
     .parallax-bg::after {
         background: rgba(0, 0, 0, 0.35) !important;
-        backdrop-filter: none !important; /* Убираем размытие, т.к. оно ухудшает качество */
     }
     
     /* Улучшаем читаемость текста */
@@ -298,7 +318,6 @@
     /* Progress bar с прозрачностью */
     .scroll-progress {
         background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(5px);
     }
     
     .scroll-progress-bar {
@@ -359,7 +378,6 @@
 @supports (-webkit-touch-callout: none) {
     .parallax-bg {
         background-attachment: scroll !important;
-        /* iOS хаки для качества */
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
     }
@@ -373,16 +391,30 @@
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     .parallax-bg-container {
         position: absolute !important;
+        display: none !important;
     }
     
     .parallax-hero {
         height: auto;
         min-height: 100vh;
+        background: url('../assets/images/parallax/bg-1.jpg') center center/cover no-repeat;
+    }
+    
+    .parallax-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
     }
     
     .parallax-content {
         background: rgba(0, 0, 0, 0.5);
         padding: 40px 20px;
+        position: relative;
+        z-index: 2;
     }
     
     /* IE фикс качества изображений */
@@ -405,7 +437,6 @@
 @-moz-document url-prefix() {
     .parallax-bg {
         background-attachment: scroll !important;
-        /* Firefox оптимизация качества */
         image-rendering: crisp-edges !important;
     }
 }
@@ -423,4 +454,26 @@
         background-size: cover !important;
         background-position: center center !important;
     }
+}
+
+/* Кроссбраузерные гарантии */
+.no-js .parallax-bg,
+.no-css-transforms .parallax-bg {
+    display: none;
+}
+
+.no-js .parallax-hero,
+.no-css-transforms .parallax-hero {
+    background: url('../assets/images/parallax/bg-1.jpg') center center/cover no-repeat;
+}
+
+.no-js .parallax-hero::before,
+.no-css-transforms .parallax-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
 }
