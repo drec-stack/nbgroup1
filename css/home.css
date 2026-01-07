@@ -1,4 +1,4 @@
-/* home.css - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ ФОНА */
+/* home.css - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ И КРОССБРАУЗЕРНОСТИ */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -9,6 +9,12 @@
 
 html {
     scroll-behavior: smooth;
+}
+
+/* Fallback для старых браузеров */
+.no-js html,
+.no-css-transforms html {
+    scroll-behavior: auto;
 }
 
 body {
@@ -22,11 +28,23 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Fallback для старых браузеров */
+.is-ie body {
+    font-family: Arial, sans-serif;
+    -webkit-font-smoothing: auto;
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 30px;
     width: 100%;
+}
+
+/* Fallback для старых браузеров */
+.no-flexbox .container {
+    width: 90%;
+    margin: 0 auto;
 }
 
 /* ===== СТАТИЧНЫЙ ФОН ГЕРОЯ - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ===== */
@@ -45,6 +63,15 @@ body {
     will-change: transform;
 }
 
+/* Fallback для браузеров без поддержки */
+.no-css-transforms .hero-background-container,
+.no-parallax .hero-background-container,
+.is-ie .hero-background-container {
+    position: absolute;
+    -webkit-transform: none;
+    transform: none;
+}
+
 .hero-background-image {
     position: absolute;
     top: 0;
@@ -52,35 +79,52 @@ body {
     width: 100%;
     height: 100%;
     
-    /* КРИТИЧЕСКИ ВАЖНО: настройки для максимального качества */
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
+    /* Настройки для максимального качества - БЕЗ !important */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
     
     /* Отключаем все фильтры и анимации, ухудшающие качество */
-    filter: none !important;
-    -webkit-filter: none !important;
-    animation: none !important;
-    -webkit-animation: none !important;
+    filter: none;
+    -webkit-filter: none;
+    animation: none;
+    -webkit-animation: none;
     
     /* Оптимизация качества изображения */
-    image-rendering: -webkit-optimize-contrast !important;
-    image-rendering: crisp-edges !important;
-    image-rendering: pixelated !important;
-    -ms-interpolation-mode: nearest-neighbor !important;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
     
-    /* GPU ускорение и предотвращение размытия */
-    -webkit-backface-visibility: hidden !important;
-    backface-visibility: hidden !important;
-    -webkit-transform: translateZ(0) !important;
-    transform: translateZ(0) !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
+    /* GPU ускорение */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    display: block;
+    visibility: visible;
+    opacity: 1;
     z-index: 1;
+}
+
+/* Исправление для Firefox */
+.is-firefox .hero-background-image {
+    background-attachment: scroll;
+}
+
+/* Исправление для Safari */
+.is-safari .hero-background-image {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+/* Исправление для IE */
+.is-ie .hero-background-image {
+    background-attachment: scroll;
+    image-rendering: auto;
+    -ms-interpolation-mode: bicubic;
 }
 
 /* Легкое затемнение для читаемости */
@@ -124,12 +168,24 @@ body {
     z-index: 10;
 }
 
+/* Fallback для старых браузеров */
+.no-flexbox .hero {
+    display: block;
+    padding-top: 150px;
+    text-align: center;
+}
+
 .parallax-content {
     text-align: center;
     max-width: 1000px;
     margin: 0 auto;
     position: relative;
     z-index: 20;
+}
+
+.no-flexbox .parallax-content {
+    width: 90%;
+    margin: 0 auto;
 }
 
 .hero h1 {
@@ -139,14 +195,18 @@ body {
     letter-spacing: -0.03em;
     margin-bottom: 1.5rem;
     text-transform: uppercase;
-    /* Убрали text-shadow */
 }
 
 .hero h1 span {
     display: block;
 }
 
-/* ИСПРАВЛЕНИЕ: Убрали градиент и сделали обычный белый текст */
+/* Исправление для старых браузеров */
+.no-cssgrid .hero h1 span {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
 .hero h1 span:first-child {
     color: white !important;
     font-size: 6rem;
@@ -155,7 +215,6 @@ body {
     opacity: 1 !important;
 }
 
-/* ИСПРАВЛЕНИЕ: Убрали текст-тень и сделали обычный белый текст */
 .hero h1 span:nth-child(2) {
     color: white !important;
     font-size: 4.5rem;
@@ -164,7 +223,6 @@ body {
     opacity: 1 !important;
 }
 
-/* ИСПРАВЛЕНИЕ: Убрали text-shadow */
 .hero-subtitle {
     font-size: 2rem;
     color: rgba(255, 255, 255, 0.95) !important;
@@ -180,6 +238,11 @@ body {
     max-width: 900px;
     margin: 0 auto 3.5rem;
     padding: 0 20px;
+}
+
+.no-flexbox .hero-description {
+    width: 90%;
+    margin: 0 auto 2rem;
 }
 
 .hero-description p {
@@ -199,6 +262,18 @@ body {
     margin-top: 3rem;
     position: relative;
     z-index: 30;
+}
+
+/* Fallback для старых браузеров */
+.no-flexbox .hero-actions {
+    display: block;
+}
+
+.no-flexbox .hero-actions .btn {
+    display: block;
+    margin: 10px auto;
+    width: 80%;
+    max-width: 300px;
 }
 
 /* Кнопки */
@@ -221,6 +296,12 @@ body {
     z-index: 100;
 }
 
+/* Fallback для старых браузеров */
+.no-flexbox .btn {
+    display: inline-block;
+    text-align: center;
+}
+
 .btn-primary {
     background: linear-gradient(135deg, #0066ff 0%, #3399ff 100%);
     color: white;
@@ -233,11 +314,20 @@ body {
     background: linear-gradient(135deg, #0052cc 0%, #267ae6 100%);
 }
 
+.no-css-transforms .btn-primary:hover {
+    transform: none;
+    box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
+}
+
 .btn-secondary {
     background: rgba(255, 255, 255, 0.15);
     color: white;
     border: 2px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
+}
+
+.no-backdropfilter .btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .btn-secondary:hover {
@@ -246,12 +336,20 @@ body {
     transform: translateY(-3px);
 }
 
+.no-css-transforms .btn-secondary:hover {
+    transform: none;
+}
+
 .btn i {
     transition: transform 0.3s ease;
 }
 
 .btn:hover i {
     transform: translateX(5px);
+}
+
+.no-css-transforms .btn:hover i {
+    transform: none;
 }
 
 /* ===== SPECK VERTICAL SECTION ===== */
@@ -271,6 +369,20 @@ body {
     gap: 150px;
 }
 
+/* Fallback для старых браузеров */
+.no-flexbox .speck-vertical-grid,
+.no-cssgrid .speck-vertical-grid {
+    display: block;
+    max-width: 100%;
+}
+
+.no-flexbox .speck-vertical-block,
+.no-cssgrid .speck-vertical-block {
+    margin-bottom: 100px;
+    clear: both;
+    overflow: hidden;
+}
+
 .speck-vertical-block {
     display: flex;
     align-items: flex-start;
@@ -281,6 +393,21 @@ body {
     padding: 60px 0;
     position: relative;
     min-height: 500px;
+}
+
+/* Fallback для старых браузеров */
+.no-flexbox .speck-vertical-block,
+.no-css-transforms .speck-vertical-block {
+    display: block;
+    opacity: 1;
+    transform: none;
+    min-height: auto;
+}
+
+.no-js .speck-vertical-block,
+.no-css-transforms .speck-vertical-block {
+    opacity: 1;
+    transform: none;
 }
 
 .speck-vertical-block.visible {
@@ -295,6 +422,21 @@ body {
     position: sticky;
     top: 150px;
     align-self: flex-start;
+}
+
+/* Fallback для старых браузеров */
+.no-flexbox .speck-block-left,
+.no-cssgrid .speck-block-left {
+    float: left;
+    width: 30%;
+    text-align: left;
+    padding-top: 0;
+    position: static;
+    margin-bottom: 30px;
+}
+
+.no-position-sticky .speck-block-left {
+    position: static;
 }
 
 .speck-block-number {
@@ -314,6 +456,13 @@ body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     transition: all 0.4s ease;
+}
+
+/* Fallback для старых браузеров без background-clip */
+.no-backgroundclip .speck-block-number {
+    background: none;
+    color: #0066ff;
+    text-shadow: none;
 }
 
 .speck-block-number::after {
@@ -347,6 +496,18 @@ body {
     position: relative;
 }
 
+/* Fallback для старых браузеров */
+.no-flexbox .speck-block-right,
+.no-cssgrid .speck-block-right {
+    float: right;
+    width: 65%;
+    border-left: none;
+    padding-left: 0;
+    min-height: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 30px;
+}
+
 .speck-block-subtitle {
     font-size: 2.5rem;
     font-weight: 700;
@@ -378,6 +539,24 @@ body {
     margin-top: 60px;
 }
 
+/* Fallback для старых браузеров */
+.no-cssgrid .speck-feature-columns {
+    display: block;
+}
+
+.no-cssgrid .speck-feature-column {
+    display: block;
+    margin-bottom: 60px;
+    float: left;
+    width: 48%;
+    margin-right: 4%;
+}
+
+.no-cssgrid .speck-feature-column:nth-child(2n) {
+    margin-right: 0;
+    float: right;
+}
+
 .speck-feature-column {
     display: flex;
     flex-direction: column;
@@ -391,9 +570,18 @@ body {
     min-height: 250px;
 }
 
+.no-flexbox .speck-feature-column {
+    display: block;
+}
+
 .speck-feature-column:hover {
     background: rgba(255, 255, 255, 0.08);
     transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.no-css-transforms .speck-feature-column:hover {
+    transform: none;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -446,6 +634,12 @@ body {
     opacity: 1 !important;
 }
 
+.no-flexbox .speck-feature-item {
+    display: block;
+    position: relative;
+    padding-left: 40px;
+}
+
 .speck-feature-item:hover {
     color: white !important;
 }
@@ -459,15 +653,31 @@ body {
     margin-top: 5px;
 }
 
+.no-flexbox .speck-feature-icon {
+    position: absolute;
+    left: 0;
+    top: 15px;
+    margin-top: 0;
+}
+
 .speck-feature-item:hover .speck-feature-icon {
     color: #66b5ff;
     transform: translateX(5px);
+}
+
+.no-css-transforms .speck-feature-item:hover .speck-feature-icon {
+    color: #66b5ff;
+    transform: none;
 }
 
 .speck-feature-text {
     line-height: 1.7;
     flex: 1;
     font-weight: 500;
+}
+
+.no-flexbox .speck-feature-text {
+    display: block;
 }
 
 /* Разделительная линия между блоками */
@@ -484,6 +694,11 @@ body {
         rgba(255, 255, 255, 0.05),
         transparent
     );
+}
+
+.no-flexbox .speck-vertical-block:not(:last-child)::before {
+    left: 0;
+    bottom: -50px;
 }
 
 /* ===== SPECK MARQUEE SECTION ===== */
@@ -569,6 +784,19 @@ body {
     white-space: nowrap;
 }
 
+/* Fallback для старых браузеров */
+.no-css-animations .speck-marquee-track {
+    animation: none;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.no-flexbox .speck-marquee-track {
+    display: block;
+    white-space: nowrap;
+    width: auto;
+}
+
 .speck-marquee-track:hover {
     animation-play-state: paused;
 }
@@ -578,6 +806,10 @@ body {
     align-items: center;
     white-space: nowrap;
     gap: 0;
+}
+
+.no-flexbox .speck-marquee-content {
+    display: inline-block;
 }
 
 .speck-brand {
@@ -597,10 +829,20 @@ body {
     opacity: 1 !important;
 }
 
+.no-flexbox .speck-brand {
+    display: inline-block;
+    margin: 0 30px;
+}
+
 .speck-brand:hover {
     color: #ffffff !important;
     opacity: 1;
     transform: translateY(-3px);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.no-css-transforms .speck-brand:hover {
+    transform: none;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
@@ -631,6 +873,17 @@ body {
     }
 }
 
+/* Fallback для старых браузеров */
+.no-css-animations .speck-marquee-section {
+    overflow: hidden;
+}
+
+.no-css-animations .speck-marquee-content {
+    display: inline-block;
+    animation: none;
+    white-space: nowrap;
+}
+
 /* ===== STATS SECTION ===== */
 .stats-improved {
     padding: 140px 0;
@@ -646,6 +899,18 @@ body {
     position: relative;
 }
 
+/* Fallback для старых браузеров */
+.no-cssgrid .stats-grid-improved {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.no-flexbox .stats-grid-improved {
+    display: block;
+    text-align: center;
+}
+
 .stat-card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -659,6 +924,18 @@ body {
     cursor: pointer;
     text-decoration: none;
     color: inherit;
+    display: block;
+}
+
+.no-backdropfilter .stat-card {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.no-flexbox .stat-card {
+    display: inline-block;
+    width: 220px;
+    margin: 10px;
+    vertical-align: top;
 }
 
 .stat-card::before {
@@ -684,6 +961,11 @@ body {
         0 10px 30px rgba(0, 0, 0, 0.3);
     background: rgba(255, 255, 255, 0.08);
     transform: translateY(-5px);
+}
+
+.no-css-transforms .stat-card:hover {
+    transform: none;
+    box-shadow: 0 25px 50px rgba(255, 255, 255, 0.15);
 }
 
 .stat-icon {
@@ -824,6 +1106,11 @@ body {
     cursor: pointer;
 }
 
+.no-flexbox .btn-glow {
+    display: inline-block;
+    text-align: center;
+}
+
 .btn-glow::before {
     content: '';
     position: absolute;
@@ -849,12 +1136,20 @@ body {
     transform: translateY(-3px);
 }
 
+.no-css-transforms .btn-glow:hover {
+    transform: none;
+}
+
 .btn-glow i {
     transition: transform 0.4s ease;
 }
 
 .btn-glow:hover i {
     transform: translateX(8px) rotate(-15deg);
+}
+
+.no-css-transforms .btn-glow:hover i {
+    transform: none;
 }
 
 /* ===== ПРОГРЕСС-БАР СКРОЛЛА ===== */
@@ -873,6 +1168,107 @@ body {
     background: linear-gradient(90deg, #0066ff, #3399ff);
     width: 0%;
     transition: width 0.1s ease;
+}
+
+/* ===== КРИТИЧЕСКИЙ ФИКС ПРОЗРАЧНОСТИ ТЕКСТА ПРИ ПЕРЕКЛЮЧЕНИИ ЯЗЫКА ===== */
+
+/* 1. ВСЕГДА ВИДИМЫЙ ТЕКСТ НА ГЛАВНОЙ */
+.home-page [data-i18n] {
+    opacity: 1 !important;
+    color: inherit !important;
+    text-shadow: inherit !important;
+    transition: none !important;
+}
+
+/* 2. ОТКЛЮЧАЕМ АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА */
+.home-page.language-changing,
+.home-page.language-changed {
+    animation: none !important;
+}
+
+.home-page.language-changing [data-i18n],
+.home-page.language-changed [data-i18n] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+}
+
+/* 3. КРИТИЧЕСКИЙ ФИКС ДЛЯ ГЕРОЯ */
+.home-page .hero h1,
+.home-page .hero-subtitle,
+.home-page .hero-description p {
+    opacity: 1 !important;
+    color: white !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* 4. ФИКС ДЛЯ ВСЕХ ТЕКСТОВЫХ ЭЛЕМЕНТОВ */
+.home-page .stat-label-improved,
+.home-page .stat-number-improved,
+.home-page .speck-block-title,
+.home-page .speck-block-subtitle,
+.home-page .speck-column-title,
+.home-page .speck-feature-text,
+.home-page .speck-marquee-label,
+.home-page .speck-brand,
+.home-page .cta-text h2,
+.home-page .cta-text p {
+    opacity: 1 !important;
+    color: inherit !important;
+}
+
+/* 5. АВАРИЙНЫЙ ФИКС */
+.home-page *[style*="opacity"] {
+    opacity: 1 !important;
+}
+
+/* 6. МЕДИА-ЗАПРОСЫ ДЛЯ МОБИЛЬНЫХ */
+@media (max-width: 768px) {
+    .home-page [data-i18n] {
+        opacity: 1 !important;
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8) !important;
+    }
+}
+
+/* 7. ФИНАЛЬНАЯ ГАРАНТИЯ */
+.home-page body,
+.home-page .hero,
+.home-page .hero * {
+    opacity: 1 !important;
+}
+
+/* 8. ПЕРЕОПРЕДЕЛЕНИЕ АНИМАЦИЙ ЯЗЫКА */
+body.language-changing .home-page .hero h1,
+body.language-changing .home-page .hero-subtitle,
+body.language-changing .home-page .hero-description p,
+body.language-changed .home-page .hero h1,
+body.language-changed .home-page .hero-subtitle,
+body.language-changed .home-page .hero-description p {
+    opacity: 1 !important;
+    color: white !important;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* 9. ОТКЛЮЧАЕМ ОВЕРЛЕЙ ПЕРЕХОДА */
+.home-page .language-transition-overlay {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* 10. CSS ПЕРЕМЕННАЯ ДЛЯ ГАРАНТИИ */
+:root {
+    --language-text-opacity: 1 !important;
+}
+
+.home-page [data-i18n] {
+    opacity: var(--language-text-opacity) !important;
+}
+
+/* Fallback для старых браузеров без CSS переменных */
+.no-cssvariables .home-page [data-i18n] {
+    opacity: 1 !important;
 }
 
 /* ===== АДАПТИВНОСТЬ С ОПТИМИЗАЦИЕЙ КАЧЕСТВА ===== */
@@ -926,8 +1322,8 @@ body {
     
     /* Оптимизация для качества на планшетах */
     .hero-background-image {
-        background-size: cover !important;
-        background-position: center center !important;
+        background-size: cover;
+        background-position: center center;
     }
     
     .speck-vertical-grid {
@@ -1005,9 +1401,9 @@ body {
     
     /* Оптимизация фона для планшетов */
     .hero-background-image {
-        background-attachment: scroll !important;
-        background-size: cover !important;
-        background-position: center center !important;
+        background-attachment: scroll;
+        background-size: cover;
+        background-position: center center;
     }
     
     .speck-vertical-section {
@@ -1146,19 +1542,19 @@ body {
     
     /* КРИТИЧЕСКАЯ ОПТИМИЗАЦИЯ ФОНА НА МОБИЛЬНЫХ */
     .hero-background-image {
-        background-attachment: scroll !important;
-        background-size: cover !important;
-        background-position: center center !important;
-        background-repeat: no-repeat !important;
+        background-attachment: scroll;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
         
         /* Отключаем все сложные эффекты на мобильных */
-        filter: none !important;
-        -webkit-filter: none !important;
+        filter: none;
+        -webkit-filter: none;
         
         /* Улучшаем качество рендеринга */
-        image-rendering: -webkit-optimize-contrast !important;
-        image-rendering: auto !important;
-        -webkit-font-smoothing: antialiased !important;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: auto;
+        -webkit-font-smoothing: antialiased;
     }
     
     /* Усиливаем затемнение для читаемости */
@@ -1476,6 +1872,13 @@ body {
     opacity: 0;
 }
 
+/* Fallback для старых браузеров */
+.no-css-animations .content-section,
+.no-js .content-section {
+    animation: none;
+    opacity: 1;
+}
+
 /* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ ===== */
 
 /* Гарантируем что фон не перекрывает интерактивные элементы */
@@ -1521,7 +1924,6 @@ body {
     .hero-background-image {
         background-size: cover !important;
         background-position: center center !important;
-        /* Дополнительные настройки для HiDPI */
         image-rendering: -webkit-optimize-contrast !important;
         image-rendering: crisp-edges !important;
     }
@@ -1539,108 +1941,12 @@ body {
 [style*="background-image"],
 .bg-image,
 .background-image {
-    image-rendering: -webkit-optimize-contrast !important;
-    image-rendering: crisp-edges !important;
-    -ms-interpolation-mode: nearest-neighbor !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    -webkit-backface-visibility: hidden !important;
-    backface-visibility: hidden !important;
-}
-
-/* ===== КРИТИЧЕСКИЙ ФИКС ПРОЗРАЧНОСТИ ТЕКСТА ПРИ ПЕРЕКЛЮЧЕНИИ ЯЗЫКА ===== */
-
-/* 1. ВСЕГДА ВИДИМЫЙ ТЕКСТ НА ГЛАВНОЙ */
-.home-page [data-i18n] {
-    opacity: 1 !important;
-    color: inherit !important;
-    text-shadow: inherit !important;
-    transition: none !important;
-}
-
-/* 2. ОТКЛЮЧАЕМ АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА */
-.home-page.language-changing,
-.home-page.language-changed {
-    animation: none !important;
-}
-
-.home-page.language-changing [data-i18n],
-.home-page.language-changed [data-i18n] {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-    animation: none !important;
-}
-
-/* 3. КРИТИЧЕСКИЙ ФИКС ДЛЯ ГЕРОЯ */
-.home-page .hero h1,
-.home-page .hero-subtitle,
-.home-page .hero-description p {
-    opacity: 1 !important;
-    color: white !important;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8) !important;
-}
-
-/* 4. ФИКС ДЛЯ ВСЕХ ТЕКСТОВЫХ ЭЛЕМЕНТОВ */
-.home-page .stat-label-improved,
-.home-page .stat-number-improved,
-.home-page .speck-block-title,
-.home-page .speck-block-subtitle,
-.home-page .speck-column-title,
-.home-page .speck-feature-text,
-.home-page .speck-marquee-label,
-.home-page .speck-brand,
-.home-page .cta-text h2,
-.home-page .cta-text p {
-    opacity: 1 !important;
-    color: inherit !important;
-}
-
-/* 5. АВАРИЙНЫЙ ФИКС */
-.home-page *[style*="opacity"] {
-    opacity: 1 !important;
-}
-
-/* 6. МЕДИА-ЗАПРОСЫ ДЛЯ МОБИЛЬНЫХ */
-@media (max-width: 768px) {
-    .home-page [data-i18n] {
-        opacity: 1 !important;
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8) !important;
-    }
-}
-
-/* 7. ФИНАЛЬНАЯ ГАРАНТИЯ */
-.home-page body,
-.home-page .hero,
-.home-page .hero * {
-    opacity: 1 !important;
-}
-
-/* 8. ПЕРЕОПРЕДЕЛЕНИЕ АНИМАЦИЙ ЯЗЫКА */
-body.language-changing .home-page .hero h1,
-body.language-changing .home-page .hero-subtitle,
-body.language-changing .home-page .hero-description p,
-body.language-changed .home-page .hero h1,
-body.language-changed .home-page .hero-subtitle,
-body.language-changed .home-page .hero-description p {
-    opacity: 1 !important;
-    color: white !important;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8) !important;
-}
-
-/* 9. ОТКЛЮЧАЕМ ОВЕРЛЕЙ ПЕРЕХОДА */
-.home-page .language-transition-overlay {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-}
-
-/* 10. CSS ПЕРЕМЕННАЯ ДЛЯ ГАРАНТИИ */
-:root {
-    --language-text-opacity: 1 !important;
-}
-
-.home-page [data-i18n] {
-    opacity: var(--language-text-opacity) !important;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
