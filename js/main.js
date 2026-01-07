@@ -24,7 +24,7 @@ class DaehaaApp {
                            window.location.pathname === '/' || 
                            window.location.pathname === '');
         
-        console.log(`📄 Page type detected: ${this.isServicesPage ? 'Services' : this.isAboutPage ? 'About' : this.isHomePage ? 'Home' : 'Internal'}`);
+        //console.log(`📄 Page type detected: ${this.isServicesPage ? 'Services' : this.isAboutPage ? 'About' : this.isHomePage ? 'Home' : 'Internal'}`);
         
         this.init();
     }
@@ -1062,3 +1062,4 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log('✅ main.js loaded with NO HIDDEN BUTTONS - ready!');
+
