@@ -64,68 +64,98 @@
     </script>
     
 </head>
-<body>
-    <!-- PARALLAX BACKGROUND CONTAINER - 4 ФОНА БЕЗ OVERLAY -->
-    <div class="parallax-container" id="parallax-container">
-        <div class="parallax-layer active" data-index="0" style="background-image: url('assets/images/parallax/bg-1.jpg');"></div>
-        <div class="parallax-layer" data-index="1" style="background-image: url('assets/images/parallax/bg-2.jpg');"></div>
-        <div class="parallax-layer" data-index="2" style="background-image: url('assets/images/parallax/bg-3.jpg');"></div>
-        <div class="parallax-layer" data-index="3" style="background-image: url('assets/images/parallax/bg-4.jpg');"></div>
-        <!-- OVERLAY УДАЛЕН ДЛЯ ЯРКИХ ФОНОВ -->
+<body class="homepage-initialized background-system-initialized">
+    <!-- ENHANCED PARALLAX BACKGROUND SYSTEM -->
+    <div class="parallax-container" id="parallax-container" aria-hidden="true">
+        <!-- Фон 1 - Для Hero секции -->
+        <div class="parallax-layer active" 
+             data-index="0" 
+             style="background-image: url('assets/images/parallax/bg-1.jpg');"
+             role="presentation"
+             data-bg-name="hero-background">
+        </div>
+        
+        <!-- Фон 2 - Для Marquee секции -->
+        <div class="parallax-layer" 
+             data-index="1" 
+             style="background-image: url('assets/images/parallax/bg-2.jpg');"
+             role="presentation"
+             data-bg-name="marquee-background">
+        </div>
+        
+        <!-- Фон 3 - Для Stats секции -->
+        <div class="parallax-layer" 
+             data-index="2" 
+             style="background-image: url('assets/images/parallax/bg-3.jpg');"
+             role="presentation"
+             data-bg-name="stats-background">
+        </div>
+        
+        <!-- Фон 4 - Для CTA секции -->
+        <div class="parallax-layer" 
+             data-index="3" 
+             style="background-image: url('assets/images/parallax/bg-4.jpg');"
+             role="presentation"
+             data-bg-name="cta-background">
+        </div>
     </div>
 
     <!-- SCROLL PROGRESS BAR -->
-    <div class="scroll-progress">
+    <div class="scroll-progress" aria-hidden="true">
         <div class="scroll-progress-bar"></div>
     </div>
+
+    <!-- BACKGROUND INDICATOR (will be created by JS) -->
 
     <!-- Header Container -->
     <div id="header-container"></div>
 
     <!-- Hero Section -->
-    <section class="hero parallax-hero" data-bg-index="0">
+    <section class="hero parallax-hero content-on-background" data-bg-index="0" data-section="hero">
         <div class="container">
             <div class="parallax-content">
-                <h1>
-                    <span data-i18n="home.hero.titleLine1">NB GROUP TECH</span><br>
-                    <span data-i18n="home.hero.subtitle">Industrial Design & Manufacturing</span>
-                </h1>
-                
-                <p class="hero-subtitle" data-i18n="home.subtitle">Промышленная дизайн-студия полного цикла</p>
-                
-                <div class="hero-description">
-                    <p data-i18n="home.hero.description">
-                        Промышленная дизайн-студия полного цикла. Создаём продукты, которые сочетают эстетику, инженерную точность и производимую реализацию. Работаем системно: дизайн → инженерия → прототип → производство → упаковка → бренд-система. Наш подход основан на прозрачности, точности и ответственности за результат.
-                    </p>
-                </div>
-                
-                <div class="hero-actions">
-                    <a href="services.html" class="btn btn-primary">
-                        <span data-i18n="home.hero.ourServices">Наши Услуги</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="portfolio.html" class="btn btn-secondary">
-                        <span data-i18n="home.hero.viewWork">Смотреть Работы</span>
-                    </a>
+                <div class="text-backdrop-enhanced scale-in">
+                    <h1 class="fade-in-down">
+                        <span data-i18n="home.hero.titleLine1">NB GROUP TECH</span><br>
+                        <span class="fade-in-up delay-200" data-i18n="home.hero.subtitle">Industrial Design & Manufacturing</span>
+                    </h1>
+                    
+                    <p class="hero-subtitle fade-in-up delay-300" data-i18n="home.subtitle">Промышленная дизайн-студия полного цикла</p>
+                    
+                    <div class="hero-description fade-in-up delay-400">
+                        <p data-i18n="home.hero.description">
+                            Промышленная дизайн-студия полного цикла. Создаём продукты, которые сочетают эстетику, инженерную точность и производимую реализацию. Работаем системно: дизайн → инженерия → прототип → производство → упаковка → бренд-система. Наш подход основан на прозрачности, точности и ответственности за результат.
+                        </p>
+                    </div>
+                    
+                    <div class="hero-actions fade-in-up delay-500">
+                        <a href="services.html" class="btn btn-primary">
+                            <span data-i18n="home.hero.ourServices">Наши Услуги</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="portfolio.html" class="btn btn-secondary">
+                            <span data-i18n="home.hero.viewWork">Смотреть Работы</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Speck Design Vertical Blocks -->
-    <section class="speck-vertical-section content-section" data-bg-index="0">
+    <section class="speck-vertical-section content-section content-on-background" data-bg-index="0" data-section="process">
         <div class="container">
             <div class="speck-vertical-grid">
                 <!-- Блок 1: Strategy -->
-                <div class="speck-vertical-block" data-block-index="0">
-                    <div class="speck-block-left">
+                <div class="speck-vertical-block animated-element" data-block-index="0">
+                    <div class="speck-block-left fade-in-left">
                         <div class="speck-block-number">01</div>
                         <h3 class="speck-block-title">Strategy</h3>
                     </div>
-                    <div class="speck-block-right">
+                    <div class="speck-block-right fade-in-right delay-200">
                         <p class="speck-block-subtitle">Drive Innovation And Align Goals</p>
                         <div class="speck-feature-columns">
-                            <div class="speck-feature-column">
+                            <div class="speck-feature-column animated-element delay-300">
                                 <div class="speck-column-title">Versatile Strategy</div>
                                 <div class="speck-feature-list">
                                     <div class="speck-feature-item">
@@ -138,7 +168,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="speck-feature-column">
+                            <div class="speck-feature-column animated-element delay-400">
                                 <div class="speck-column-title">Design Strategy</div>
                                 <div class="speck-feature-list">
                                     <div class="speck-feature-item">
@@ -156,15 +186,15 @@
                 </div>
                 
                 <!-- Блок 2: Design -->
-                <div class="speck-vertical-block" data-block-index="1">
-                    <div class="speck-block-left">
+                <div class="speck-vertical-block animated-element" data-block-index="1">
+                    <div class="speck-block-left fade-in-left">
                         <div class="speck-block-number">02</div>
                         <h3 class="speck-block-title">Design</h3>
                     </div>
-                    <div class="speck-block-right">
+                    <div class="speck-block-right fade-in-right delay-200">
                         <p class="speck-block-subtitle">Create Engaging Product Experiences</p>
                         <div class="speck-feature-columns">
-                            <div class="speck-feature-column">
+                            <div class="speck-feature-column animated-element delay-300">
                                 <div class="speck-column-title">User Research & Strategy</div>
                                 <div class="speck-feature-list">
                                     <div class="speck-feature-item">
@@ -177,7 +207,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="speck-feature-column">
+                            <div class="speck-feature-column animated-element delay-400">
                                 <div class="speck-column-title">Brand & Visual Design</div>
                                 <div class="speck-feature-list">
                                     <div class="speck-feature-item">
@@ -195,15 +225,15 @@
                 </div>
                 
                 <!-- Блок 3: Engineering -->
-                <div class="speck-vertical-block" data-block-index="2">
-                    <div class="speck-block-left">
+                <div class="speck-vertical-block animated-element" data-block-index="2">
+                    <div class="speck-block-left fade-in-left">
                         <div class="speck-block-number">03</div>
                         <h3 class="speck-block-title">Engineering</h3>
                     </div>
-                    <div class="speck-block-right">
+                    <div class="speck-block-right fade-in-right delay-200">
                         <p class="speck-block-subtitle">Engineer Robust And Reliable Solutions</p>
                         <div class="speck-feature-columns">
-                            <div class="speck-feature-column">
+                            <div class="speck-feature-column animated-element delay-300">
                                 <div class="speck-column-title">Technical Feasibility</div>
                                 <div class="speck-feature-list">
                                     <div class="speck-feature-item">
@@ -216,7 +246,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="speck-feature-column">
+                            <div class="speck-feature-column animated-element delay-400">
                                 <div class="speck-column-title">Manufacturing Optimization</div>
                                 <div class="speck-feature-list">
                                     <div class="speck-feature-item">
@@ -234,15 +264,15 @@
                 </div>
                 
                 <!-- Блок 4: Manufacturing -->
-                <div class="speck-vertical-block" data-block-index="3">
-                    <div class="speck-block-left">
+                <div class="speck-vertical-block animated-element" data-block-index="3">
+                    <div class="speck-block-left fade-in-left">
                         <div class="speck-block-number">04</div>
                         <h3 class="speck-block-title">Manufacturing</h3>
                     </div>
-                    <div class="speck-block-right">
+                    <div class="speck-block-right fade-in-right delay-200">
                         <p class="speck-block-subtitle">Scale Production With Precision</p>
                         <div class="speck-feature-columns">
-                            <div class="speck-feature-column">
+                            <div class="speck-feature-column animated-element delay-300">
                                 <div class="speck-column-title">Supply Chain & Quality</div>
                                 <div class="speck-feature-list">
                                     <div class="speck-feature-item">
@@ -255,7 +285,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="speck-feature-column">
+                            <div class="speck-feature-column animated-element delay-400">
                                 <div class="speck-column-title">Production Scaling</div>
                                 <div class="speck-feature-list">
                                     <div class="speck-feature-item">
@@ -276,9 +306,9 @@
     </section>
 
     <!-- SPECK DESIGN MARQUEE SECTION -->
-    <section class="speck-marquee-section content-section" data-bg-index="1">
+    <section class="speck-marquee-section content-section content-on-background" data-bg-index="1" data-section="clients">
         <div class="container">
-            <div class="speck-marquee-wrapper">
+            <div class="speck-marquee-wrapper fade-in-up">
                 <p class="speck-marquee-label">TRUSTED BY INDUSTRY LEADERS</p>
                 
                 <!-- Маска с градиентными краями -->
@@ -325,16 +355,23 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="marquee-note fade-in delay-500">
+                    <p>Scroll or hover to pause animation</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Stats Section -->
-    <section class="stats-improved content-section" data-bg-index="2">
+    <section class="stats-improved content-section content-on-background" data-bg-index="2" data-section="stats">
         <div class="container">
+            <h2 class="section-title fade-in-down">Our Achievements</h2>
+            <p class="section-subtitle fade-in-up delay-200">Numbers that speak for themselves</p>
+            
             <div class="stats-grid-improved">
                 <!-- Проекты завершено -->
-                <a href="portfolio.html" class="stat-card clickable-stat-card">
+                <a href="portfolio.html" class="stat-card clickable-stat-card animated-element delay-300">
                     <div class="stat-icon">
                         <i class="fas fa-rocket"></i>
                     </div>
@@ -345,7 +382,7 @@
                 </a>
                 
                 <!-- Лет опыта -->
-                <a href="about.html" class="stat-card clickable-stat-card">
+                <a href="about.html" class="stat-card clickable-stat-card animated-element delay-400">
                     <div class="stat-icon">
                         <i class="fas fa-calendar-alt"></i>
                     </div>
@@ -356,7 +393,7 @@
                 </a>
                 
                 <!-- Довольных клиентов -->
-                <a href="about.html#clients" class="stat-card clickable-stat-card">
+                <a href="about.html#clients" class="stat-card clickable-stat-card animated-element delay-500">
                     <div class="stat-icon">
                         <i class="fas fa-heart"></i>
                     </div>
@@ -367,7 +404,7 @@
                 </a>
                 
                 <!-- Наград -->
-                <a href="about.html#awards" class="stat-card clickable-stat-card">
+                <a href="about.html#awards" class="stat-card clickable-stat-card animated-element delay-600">
                     <div class="stat-icon">
                         <i class="fas fa-trophy"></i>
                     </div>
@@ -381,14 +418,14 @@
     </section>
 
     <!-- CTA Section -->
-    <a href="contacts.html" class="cta-improved content-section clickable-cta" data-bg-index="3">
+    <a href="contacts.html" class="cta-improved content-section clickable-cta content-on-background" data-bg-index="3" data-section="cta">
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
-                    <h2 data-i18n="home.cta.title">Готовы начать проект?</h2>
-                    <p data-i18n="home.cta.description">Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
+                    <h2 class="fade-in-down" data-i18n="home.cta.title">Готовы начать проект?</h2>
+                    <p class="fade-in-up delay-200" data-i18n="home.cta.description">Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
                 </div>
-                <div class="cta-action">
+                <div class="cta-action fade-in-up delay-300">
                     <div class="btn btn-primary btn-large btn-glow">
                         <span data-i18n="home.cta.button">Связаться с нами</span>
                         <i class="fas fa-arrow-right"></i>
