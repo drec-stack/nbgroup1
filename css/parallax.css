@@ -1,4 +1,4 @@
-/* parallax.css - ПОЛНОСТЬЮ РАБОЧАЯ ВЕРСИЯ С ПЕРЕКЛЮЧЕНИЕМ ПРИ СКРОЛЛЕ */
+/* parallax.css - ПОЛНОСТЬЮ РАБОЧАЯ ВЕРСИЯ С ПЕРЕКЛЮЧЕНИЕМ ПРИ СКРОЛЛЕ - БЕЗ ЗАТЕМНЕНИЯ */
 
 /* ===== PARALLAX CONTAINER ===== */
 .parallax-container {
@@ -64,21 +64,15 @@
     transform: scale(1) !important;
 }
 
-/* ОЧЕНЬ ЛЕГКОЕ НАЛОЖЕНИЕ для читаемости (почти невидимое) */
+/* КОММЕНТИРУЕМ ИЛИ УДАЛЯЕМ ВЕСЬ OVERLAY - ЧТОБЫ ФОТО БЫЛИ ЯРКИМИ */
 .parallax-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(10, 10, 10, 0.01) 0%,
-        rgba(10, 10, 10, 0.02) 20%,
-        rgba(10, 10, 10, 0.03) 50%,
-        rgba(10, 10, 10, 0.04) 80%,
-        rgba(10, 10, 10, 0.05) 100%
-    );
+    /* ПОЛНОСТЬЮ УДАЛЯЕМ ФОН - ТЕПЕРЬ ПРОЗРАЧНЫЙ */
+    background: transparent !important;
     z-index: 2;
     pointer-events: none;
 }
@@ -199,16 +193,9 @@
         transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
     }
     
-    /* Очень легкое затемнение для мобильных */
+    /* НИКАКОГО ЗАТЕМНЕНИЯ НА МОБИЛЬНЫХ */
     .parallax-overlay {
-        background: linear-gradient(
-            to bottom,
-            rgba(10, 10, 10, 0.03) 0%,
-            rgba(10, 10, 10, 0.05) 20%,
-            rgba(10, 10, 10, 0.08) 50%,
-            rgba(10, 10, 10, 0.1) 80%,
-            rgba(10, 10, 10, 0.12) 100%
-        ) !important;
+        background: transparent !important;
     }
     
     .parallax-hero {
@@ -238,9 +225,9 @@
         padding: 140px 0 80px;
     }
     
-    /* Очень легкое затемнение для маленьких экранов */
+    /* НИКАКОГО ЗАТЕМНЕНИЯ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ */
     .parallax-overlay {
-        background: rgba(10, 10, 10, 0.08) !important;
+        background: transparent !important;
     }
     
     .content-section {
@@ -348,20 +335,10 @@
     z-index: 20 !important;
 }
 
-/* ОЧЕНЬ ЛЕГКОЕ затемнение для светлых фонов */
-.parallax-layer::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.02);
-    pointer-events: none;
-    z-index: 1;
-}
+/* УДАЛЯЕМ ДОПОЛНИТЕЛЬНОЕ ЗАТЕМНЕНИЕ ДЛЯ СВЕТЛЫХ ФОНОВ */
+/* .parallax-layer::after { ... } - КОММЕНТИРУЕМ ВЕСЬ ЭТОТ БЛОК */
 
-/* Активный слой должен быть почти прозрачным */
-.parallax-layer.active::after {
-    background: rgba(0, 0, 0, 0.01);
+/* Гарантируем яркие чистые фоны */
+.parallax-layer {
+    background-color: transparent !important;
 }
