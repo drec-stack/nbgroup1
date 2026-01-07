@@ -1,4 +1,4 @@
-/* home.css - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ И КРОССБРАУЗЕРНОСТИ */
+/* home.css - СТАБИЛЬНАЯ ВЕРСИЯ С ИСПРАВЛЕННЫМ ФОНОМ */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -47,8 +47,8 @@ body {
     margin: 0 auto;
 }
 
-/* ===== СТАТИЧНЫЙ ФОН ГЕРОЯ - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ===== */
-.hero-background-container {
+/* ===== СТАТИЧНЫЙ ФОН ГЕРОЯ - ИСПРАВЛЕННЫЙ ===== */
+.hero-background-static {
     position: fixed;
     top: 0;
     left: 0;
@@ -57,78 +57,27 @@ body {
     z-index: -100;
     overflow: hidden;
     pointer-events: none;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    will-change: transform;
 }
 
-/* Fallback для браузеров без поддержки */
-.no-css-transforms .hero-background-container,
-.no-parallax .hero-background-container,
-.is-ie .hero-background-container {
-    position: absolute;
-    -webkit-transform: none;
-    transform: none;
-}
-
-.hero-background-image {
+.hero-bg-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    
-    /* Настройки для максимального качества - БЕЗ !important */
+    background-image: url('../assets/images/parallax/bg-1.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    
-    /* Отключаем все фильтры и анимации, ухудшающие качество */
-    filter: none;
-    -webkit-filter: none;
-    animation: none;
-    -webkit-animation: none;
-    
-    /* Оптимизация качества изображения */
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
-    
-    /* GPU ускорение */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    
-    display: block;
-    visibility: visible;
+    background-attachment: fixed;
     opacity: 1;
+    visibility: visible;
+    display: block;
     z-index: 1;
 }
 
-/* Исправление для Firefox */
-.is-firefox .hero-background-image {
-    background-attachment: scroll;
-}
-
-/* Исправление для Safari */
-.is-safari .hero-background-image {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-}
-
-/* Исправление для IE */
-.is-ie .hero-background-image {
-    background-attachment: scroll;
-    image-rendering: auto;
-    -ms-interpolation-mode: bicubic;
-}
-
 /* Легкое затемнение для читаемости */
-.hero-background-overlay {
+.hero-bg-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -146,13 +95,34 @@ body {
     pointer-events: none;
 }
 
-/* Убираем все стили видео-фона */
+/* Убираем все старые стили видео-фона */
 .video-background-container,
 .video-background,
 .video-overlay,
 .video-controls,
 .video-fallback {
     display: none !important;
+}
+
+/* Убираем параллакс контейнер */
+.parallax-bg-container {
+    display: none !important;
+}
+
+/* Исправление для Firefox */
+.is-firefox .hero-bg-image {
+    background-attachment: scroll;
+}
+
+/* Исправление для Safari */
+.is-safari .hero-bg-image {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+/* Исправление для IE */
+.is-ie .hero-bg-image {
+    background-attachment: scroll;
 }
 
 /* ===== HERO SECTION ===== */
@@ -175,7 +145,7 @@ body {
     text-align: center;
 }
 
-.parallax-content {
+.hero-content {
     text-align: center;
     max-width: 1000px;
     margin: 0 auto;
@@ -183,7 +153,7 @@ body {
     z-index: 20;
 }
 
-.no-flexbox .parallax-content {
+.no-flexbox .hero-content {
     width: 90%;
     margin: 0 auto;
 }
@@ -1170,9 +1140,7 @@ body {
     transition: width 0.1s ease;
 }
 
-/* ===== КРИТИЧЕСКИЙ ФИКС ПРОЗРАЧНОСТИ ТЕКСТА ПРИ ПЕРЕКЛЮЧЕНИИ ЯЗЫКА ===== */
-
-/* 1. ВСЕГДА ВИДИМЫЙ ТЕКСТ НА ГЛАВНОЙ */
+/* ===== КРИТИЧЕСКИЙ ФИКС ПРОЗРАЧНОСТИ ТЕКСТА ===== */
 .home-page [data-i18n] {
     opacity: 1 !important;
     color: inherit !important;
@@ -1180,21 +1148,6 @@ body {
     transition: none !important;
 }
 
-/* 2. ОТКЛЮЧАЕМ АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА */
-.home-page.language-changing,
-.home-page.language-changed {
-    animation: none !important;
-}
-
-.home-page.language-changing [data-i18n],
-.home-page.language-changed [data-i18n] {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-    animation: none !important;
-}
-
-/* 3. КРИТИЧЕСКИЙ ФИКС ДЛЯ ГЕРОЯ */
 .home-page .hero h1,
 .home-page .hero-subtitle,
 .home-page .hero-description p {
@@ -1203,7 +1156,6 @@ body {
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8) !important;
 }
 
-/* 4. ФИКС ДЛЯ ВСЕХ ТЕКСТОВЫХ ЭЛЕМЕНТОВ */
 .home-page .stat-label-improved,
 .home-page .stat-number-improved,
 .home-page .speck-block-title,
@@ -1218,60 +1170,7 @@ body {
     color: inherit !important;
 }
 
-/* 5. АВАРИЙНЫЙ ФИКС */
-.home-page *[style*="opacity"] {
-    opacity: 1 !important;
-}
-
-/* 6. МЕДИА-ЗАПРОСЫ ДЛЯ МОБИЛЬНЫХ */
-@media (max-width: 768px) {
-    .home-page [data-i18n] {
-        opacity: 1 !important;
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8) !important;
-    }
-}
-
-/* 7. ФИНАЛЬНАЯ ГАРАНТИЯ */
-.home-page body,
-.home-page .hero,
-.home-page .hero * {
-    opacity: 1 !important;
-}
-
-/* 8. ПЕРЕОПРЕДЕЛЕНИЕ АНИМАЦИЙ ЯЗЫКА */
-body.language-changing .home-page .hero h1,
-body.language-changing .home-page .hero-subtitle,
-body.language-changing .home-page .hero-description p,
-body.language-changed .home-page .hero h1,
-body.language-changed .home-page .hero-subtitle,
-body.language-changed .home-page .hero-description p {
-    opacity: 1 !important;
-    color: white !important;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8) !important;
-}
-
-/* 9. ОТКЛЮЧАЕМ ОВЕРЛЕЙ ПЕРЕХОДА */
-.home-page .language-transition-overlay {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-}
-
-/* 10. CSS ПЕРЕМЕННАЯ ДЛЯ ГАРАНТИИ */
-:root {
-    --language-text-opacity: 1 !important;
-}
-
-.home-page [data-i18n] {
-    opacity: var(--language-text-opacity) !important;
-}
-
-/* Fallback для старых браузеров без CSS переменных */
-.no-cssvariables .home-page [data-i18n] {
-    opacity: 1 !important;
-}
-
-/* ===== АДАПТИВНОСТЬ С ОПТИМИЗАЦИЕЙ КАЧЕСТВА ===== */
+/* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 1400px) {
     .speck-vertical-grid {
         max-width: 1200px;
@@ -1318,12 +1217,6 @@ body.language-changed .home-page .hero-description p {
     
     .hero h1 span:nth-child(2) {
         font-size: 3.5rem;
-    }
-    
-    /* Оптимизация для качества на планшетах */
-    .hero-background-image {
-        background-size: cover;
-        background-position: center center;
     }
     
     .speck-vertical-grid {
@@ -1399,11 +1292,9 @@ body.language-changed .home-page .hero-description p {
         font-size: 1.2rem;
     }
     
-    /* Оптимизация фона для планшетов */
-    .hero-background-image {
+    /* Исправление фона для планшетов */
+    .hero-bg-image {
         background-attachment: scroll;
-        background-size: cover;
-        background-position: center center;
     }
     
     .speck-vertical-section {
@@ -1541,32 +1432,15 @@ body.language-changed .home-page .hero-description p {
     }
     
     /* КРИТИЧЕСКАЯ ОПТИМИЗАЦИЯ ФОНА НА МОБИЛЬНЫХ */
-    .hero-background-image {
-        background-attachment: scroll;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        
-        /* Отключаем все сложные эффекты на мобильных */
-        filter: none;
-        -webkit-filter: none;
-        
-        /* Улучшаем качество рендеринга */
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: auto;
-        -webkit-font-smoothing: antialiased;
+    .hero-bg-image {
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-position: center center !important;
     }
     
     /* Усиливаем затемнение для читаемости */
-    .hero-background-overlay {
-        background: linear-gradient(
-            to bottom,
-            rgba(10, 10, 10, 0.2) 0%,
-            rgba(10, 10, 10, 0.4) 20%,
-            rgba(10, 10, 10, 0.6) 50%,
-            rgba(10, 10, 10, 0.8) 80%,
-            rgba(10, 10, 10, 0.9) 100%
-        );
+    .hero-bg-overlay {
+        background: rgba(0, 0, 0, 0.4) !important;
     }
     
     .speck-vertical-section {
@@ -1681,12 +1555,7 @@ body.language-changed .home-page .hero-description p {
     }
     
     /* Дополнительная оптимизация фона для маленьких экранов */
-    .hero-background-container {
-        position: fixed !important;
-        height: 100vh !important;
-    }
-    
-    .hero-background-image {
+    .hero-bg-image {
         background-attachment: scroll !important;
         background-size: cover !important;
         background-position: center center !important;
@@ -1795,10 +1664,9 @@ body.language-changed .home-page .hero-description p {
     }
     
     /* Финальная оптимизация для очень маленьких экранов */
-    .hero-background-image {
+    .hero-bg-image {
         background-size: cover !important;
         background-position: center center !important;
-        image-rendering: auto !important;
     }
     
     .speck-block-title {
@@ -1879,19 +1747,9 @@ body.language-changed .home-page .hero-description p {
     opacity: 1;
 }
 
-/* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ ===== */
-
-/* Гарантируем что фон не перекрывает интерактивные элементы */
-.hero-actions a,
-.parallax-content,
-.hero-description {
-    position: relative;
-    z-index: 100;
-}
-
 /* Поддержка prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-    .hero-background-image {
+    .hero-bg-image {
         animation: none !important;
     }
     
@@ -1912,7 +1770,7 @@ body.language-changed .home-page .hero-description p {
 }
 
 /* Фикс для старых браузеров */
-.no-objectfit .hero-background-image {
+.no-objectfit .hero-bg-image {
     background-attachment: scroll !important;
     background-position: center center !important;
     background-size: cover !important;
@@ -1921,32 +1779,15 @@ body.language-changed .home-page .hero-description p {
 /* Высокое разрешение экранов */
 @media (min-resolution: 192dpi),
        (min-resolution: 2dppx) {
-    .hero-background-image {
+    .hero-bg-image {
         background-size: cover !important;
         background-position: center center !important;
-        image-rendering: -webkit-optimize-contrast !important;
-        image-rendering: crisp-edges !important;
     }
 }
 
 /* Фикс при печати */
 @media print {
-    .hero-background-container {
+    .hero-background-static {
         display: none !important;
     }
-}
-
-/* Гарантированные настройки качества для всех фоновых изображений */
-[class*="background"],
-[style*="background-image"],
-.bg-image,
-.background-image {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
 }
