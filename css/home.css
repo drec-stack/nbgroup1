@@ -1,4 +1,4 @@
-/* home.css - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ И КРОССБРАУЗЕРНОСТИ */
+/* home.css - ПОЛНОСТЬЮ ИСПРАВЛЕННЫЙ ФАЙЛ ДЛЯ 4 ФОНОВ */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -47,46 +47,49 @@ body {
     margin: 0 auto;
 }
 
-/* ===== СТАТИЧНЫЙ ФОН ГЕРОЯ - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ===== */
+/* ===== СТАТИЧНЫЙ ФОН ГЕРОЯ - ИСПРАВЛЕН ДЛЯ 4 ФОНОВ ===== */
 .hero-background-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -100;
-    overflow: hidden;
-    pointer-events: none;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    will-change: transform;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: -100 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    will-change: transform !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 /* Fallback для браузеров без поддержки */
 .no-css-transforms .hero-background-container,
 .no-parallax .hero-background-container,
 .is-ie .hero-background-container {
-    position: absolute;
-    -webkit-transform: none;
-    transform: none;
+    position: absolute !important;
+    -webkit-transform: none !important;
+    transform: none !important;
 }
 
 .hero-background-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     
-    /* Настройки для максимального качества */
+    /* ГАРАНТИРОВАННЫЕ НАСТРОЙКИ ДЛЯ ПЕРВОГО ФОНА */
     background-image: url('../assets/images/parallax/bg-1.jpg') !important;
     background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     
-    /* Отключаем все фильтры и анимации, ухудшающие качество */
+    /* Отключаем все фильтры и анимации */
     filter: none !important;
     -webkit-filter: none !important;
     animation: none !important;
@@ -105,7 +108,7 @@ body {
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
     
-    /* Гарантированная видимость */
+    /* ГАРАНТИРОВАННАЯ ВИДИМОСТЬ */
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -1173,105 +1176,199 @@ body {
     transition: width 0.1s ease;
 }
 
-/* ===== КРИТИЧЕСКИЙ ФИКС ПРОЗРАЧНОСТИ ТЕКСТА ===== */
+/* ===== ГАРАНТИРОВАННЫЙ ФИКС ДЛЯ 4 ФОНОВ ===== */
 
-/* 1. ВСЕГДА ВИДИМЫЙ ТЕКСТ НА ГЛАВНОЙ */
-.home-page [data-i18n] {
+/* 1. ГАРАНТИЯ ВИДИМОСТИ ВСЕХ КОНТЕЙНЕРОВ */
+body.home-page .hero-background-container,
+body.home-page .parallax-bg-container {
     opacity: 1 !important;
-    color: inherit !important;
-    text-shadow: inherit !important;
-    transition: none !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
-/* 2. ОТКЛЮЧАЕМ АНИМАЦИИ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА */
-.home-page.language-changing,
-.home-page.language-changed {
-    animation: none !important;
+/* 2. ГАРАНТИЯ ДЛЯ ПАРАЛЛАКС ФОНОВ */
+body.home-page .parallax-bg {
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
-.home-page.language-changing [data-i18n],
-.home-page.language-changed [data-i18n] {
+/* 3. КОНКРЕТНЫЕ ФОНОВЫЕ ИЗОБРАЖЕНИЯ */
+body.home-page #parallax-bg-1 { 
+    background-image: url('../assets/images/parallax/bg-1.jpg') !important; 
+}
+body.home-page #parallax-bg-2 { 
+    background-image: url('../assets/images/parallax/bg-2.jpg') !important; 
+}
+body.home-page #parallax-bg-3 { 
+    background-image: url('../assets/images/parallax/bg-3.jpg') !important; 
+}
+body.home-page #parallax-bg-4 { 
+    background-image: url('../assets/images/parallax/bg-4.jpg') !important; 
+}
+
+/* 4. АКТИВНЫЕ ФОНЫ */
+body.home-page .parallax-bg.active {
     opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-    animation: none !important;
+    z-index: 2 !important;
 }
 
-/* 3. КРИТИЧЕСКИЙ ФИКС ДЛЯ ГЕРОЯ */
-.home-page .hero h1,
-.home-page .hero-subtitle,
-.home-page .hero-description p {
+/* 5. ПЕРВЫЙ ФОН ВСЕГДА ВИДЕН */
+body.home-page #parallax-bg-1 {
     opacity: 1 !important;
-    color: white !important;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8) !important;
+    z-index: 1 !important;
 }
 
-/* 4. ФИКС ДЛЯ ВСЕХ ТЕКСТОВЫХ ЭЛЕМЕНТОВ */
-.home-page .stat-label-improved,
-.home-page .stat-number-improved,
-.home-page .speck-block-title,
-.home-page .speck-block-subtitle,
-.home-page .speck-column-title,
-.home-page .speck-feature-text,
-.home-page .speck-marquee-label,
-.home-page .speck-brand,
-.home-page .cta-text h2,
-.home-page .cta-text p {
+/* 6. СТАТИЧНЫЙ ФОН ГЕРОЯ */
+body.home-page .hero-background-image {
+    background-image: url('../assets/images/parallax/bg-1.jpg') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
     opacity: 1 !important;
-    color: inherit !important;
+    z-index: 1 !important;
 }
 
-/* 5. АВАРИЙНЫЙ ФИКС */
-.home-page *[style*="opacity"] {
+/* 7. FALLBACK ДЛЯ JS/CSS ПРОБЛЕМ */
+body.home-page.no-js .hero-background-image,
+body.home-page.no-parallax .hero-background-image,
+body.home-page.no-css-transforms .hero-background-image {
     opacity: 1 !important;
 }
 
-/* 6. МЕДИА-ЗАПРОСЫ ДЛЯ МОБИЛЬНЫХ */
+body.home-page.no-js #parallax-bg-1,
+body.home-page.no-parallax #parallax-bg-1,
+body.home-page.no-css-transforms #parallax-bg-1 {
+    opacity: 1 !important;
+    z-index: 1 !important;
+    background-image: url('../assets/images/parallax/bg-1.jpg') !important;
+}
+
+/* 8. МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ФОНОВ */
 @media (max-width: 768px) {
-    .home-page [data-i18n] {
-        opacity: 1 !important;
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8) !important;
+    body.home-page .hero-background-image,
+    body.home-page .parallax-bg {
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-position: center center !important;
+    }
+    
+    body.home-page .hero-background-container {
+        height: 100vh !important;
+        position: fixed !important;
+    }
+    
+    body.home-page .hero-background-overlay {
+        background: linear-gradient(
+            to bottom,
+            rgba(10, 10, 10, 0.3) 0%,
+            rgba(10, 10, 10, 0.5) 20%,
+            rgba(10, 10, 10, 0.7) 50%,
+            rgba(10, 10, 10, 0.8) 80%,
+            rgba(10, 10, 10, 0.9) 100%
+        ) !important;
     }
 }
 
-/* 7. ФИНАЛЬНАЯ ГАРАНТИЯ */
-.home-page body,
-.home-page .hero,
-.home-page .hero * {
-    opacity: 1 !important;
+/* ===== АНИМАЦИИ ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* 8. ПЕРЕОПРЕДЕЛЕНИЕ АНИМАЦИЙ ЯЗЫКА */
-body.language-changing .home-page .hero h1,
-body.language-changing .home-page .hero-subtitle,
-body.language-changing .home-page .hero-description p,
-body.language-changed .home-page .hero h1,
-body.language-changed .home-page .hero-subtitle,
-body.language-changed .home-page .hero-description p {
-    opacity: 1 !important;
-    color: white !important;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8) !important;
+.content-section {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
 }
 
-/* 9. ОТКЛЮЧАЕМ ОВЕРЛЕЙ ПЕРЕХОДА */
-.home-page .language-transition-overlay {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
+/* Fallback для старых браузеров */
+.no-css-animations .content-section,
+.no-js .content-section {
+    animation: none;
+    opacity: 1;
 }
 
-/* 10. CSS ПЕРЕМЕННАЯ ДЛЯ ГАРАНТИИ */
-:root {
-    --language-text-opacity: 1 !important;
+/* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ===== */
+
+/* Гарантируем что фон не перекрывает интерактивные элементы */
+.hero-actions a,
+.parallax-content,
+.hero-description {
+    position: relative;
+    z-index: 100;
 }
 
-.home-page [data-i18n] {
-    opacity: var(--language-text-opacity) !important;
+/* Поддержка prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .hero-background-image {
+        animation: none !important;
+    }
+    
+    .speck-marquee-track {
+        animation: none !important;
+    }
+    
+    .content-section {
+        animation: none !important;
+        opacity: 1;
+    }
+    
+    .speck-vertical-block {
+        transition: none !important;
+        opacity: 1;
+        transform: none;
+    }
 }
 
-/* Fallback для старых браузеров без CSS переменных */
-.no-cssvariables .home-page [data-i18n] {
-    opacity: 1 !important;
+/* Фикс для старых браузеров */
+.no-objectfit .hero-background-image {
+    background-attachment: scroll !important;
+    background-position: center center !important;
+    background-size: cover !important;
+}
+
+/* Высокое разрешение экранов */
+@media (min-resolution: 192dpi),
+       (min-resolution: 2dppx) {
+    .hero-background-image {
+        background-size: cover !important;
+        background-position: center center !important;
+        image-rendering: -webkit-optimize-contrast !important;
+        image-rendering: crisp-edges !important;
+    }
+}
+
+/* Фикс при печати */
+@media print {
+    .hero-background-container {
+        display: none !important;
+    }
+}
+
+/* Гарантированные настройки качества для всех фоновых изображений */
+[class*="background"],
+[style*="background-image"],
+.bg-image,
+.background-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
@@ -1856,100 +1953,4 @@ body.language-changed .home-page .hero-description p {
     .speck-marquee-mask::after {
         width: 40px;
     }
-}
-
-/* ===== АНИМАЦИИ ===== */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.content-section {
-    animation: fadeInUp 0.8s ease-out forwards;
-    opacity: 0;
-}
-
-/* Fallback для старых браузеров */
-.no-css-animations .content-section,
-.no-js .content-section {
-    animation: none;
-    opacity: 1;
-}
-
-/* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ===== */
-
-/* Гарантируем что фон не перекрывает интерактивные элементы */
-.hero-actions a,
-.parallax-content,
-.hero-description {
-    position: relative;
-    z-index: 100;
-}
-
-/* Поддержка prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-    .hero-background-image {
-        animation: none !important;
-    }
-    
-    .speck-marquee-track {
-        animation: none !important;
-    }
-    
-    .content-section {
-        animation: none !important;
-        opacity: 1;
-    }
-    
-    .speck-vertical-block {
-        transition: none !important;
-        opacity: 1;
-        transform: none;
-    }
-}
-
-/* Фикс для старых браузеров */
-.no-objectfit .hero-background-image {
-    background-attachment: scroll !important;
-    background-position: center center !important;
-    background-size: cover !important;
-}
-
-/* Высокое разрешение экранов */
-@media (min-resolution: 192dpi),
-       (min-resolution: 2dppx) {
-    .hero-background-image {
-        background-size: cover !important;
-        background-position: center center !important;
-        image-rendering: -webkit-optimize-contrast !important;
-        image-rendering: crisp-edges !important;
-    }
-}
-
-/* Фикс при печати */
-@media print {
-    .hero-background-container {
-        display: none !important;
-    }
-}
-
-/* Гарантированные настройки качества для всех фоновых изображений */
-[class*="background"],
-[style*="background-image"],
-.bg-image,
-.background-image {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
 }
