@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="home.title">NBGROUP.TECH | Industrial Design & Manufacturing</title>
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Кроссбраузерные полифилы CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     
     <!-- Основные стили -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/home.css">
-    <link rel="stylesheet" href="assets/css/home-background.css"> <!-- НОВЫЙ ФАЙЛ -->
-    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    
+    <!-- Новый файл для фона главной страницы -->
+    <link rel="stylesheet" href="css/home-background.css">
     
     <!-- Кроссбраузерные полифилы JS -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default%2Ces6%2Ces5%2CArray.prototype.includes%2CString.prototype.includes%2CPromise%2CObject.assign%2CElement.prototype.closest%2CrequestAnimationFrame%2CIntersectionObserver"></script>
+    <script src="https://cdn.jsdelivr.net/npm/core-js-bundle@3.33.2/minified.min.js"></script>
     
     <!-- Компоненты -->
     <script src="js/components.js"></script>
@@ -53,6 +54,20 @@
         bgImages.forEach(function(url) {
             var img = new Image();
             img.src = url;
+        });
+        
+        // Загрузка CSS файлов с fallback
+        var cssFiles = [
+            'css/style.css',
+            'css/home.css',
+            'css/home-background.css'
+        ];
+        
+        cssFiles.forEach(function(url) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = url;
+            document.head.appendChild(link);
         });
     })();
     </script>
@@ -403,7 +418,7 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
     
-    <!-- Кроссбраузерные полифилы -->
+    <!-- Альтернативный полифил -->
     <script>
     // Добавляем класс no-js для обнаружения JavaScript
     document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, 'js');
@@ -529,6 +544,21 @@
             };
         };
     }
+    
+    // Fallback для несуществующих файлов CSS
+    setTimeout(function() {
+        var styleSheets = document.styleSheets;
+        for (var i = 0; i < styleSheets.length; i++) {
+            try {
+                var rules = styleSheets[i].cssRules;
+                if (!rules) {
+                    console.log('CSS файл не загружен: ' + styleSheets[i].href);
+                }
+            } catch(e) {
+                // Игнорируем ошибки CORS
+            }
+        }
+    }, 1000);
     </script>
 </body>
 </html>
