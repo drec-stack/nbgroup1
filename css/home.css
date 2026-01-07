@@ -1,4 +1,4 @@
-/* home.css - ПОЛНАЯ ВЕРСИЯ С РАБОТАЮЩИМИ ФОНАМИ */
+/* home.css - БАЗОВАЯ ВЕРСИЯ БЕЗ ПАРАЛЛАКС-ФОНОВ */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -14,7 +14,7 @@ html {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: transparent !important;
+    background: #0a0a0a !important;
     color: white;
     overflow-x: hidden;
     position: relative;
@@ -42,7 +42,7 @@ body {
     z-index: 10;
 }
 
-.parallax-content {
+.hero-content {
     text-align: center;
     max-width: 1000px;
     margin: 0 auto;
@@ -724,10 +724,6 @@ body {
     overflow: hidden;
 }
 
-.cta-improved:hover {
-    background: rgba(255, 255, 255, 0.02) !important;
-}
-
 .cta-content-improved {
     max-width: 900px;
     margin: 0 auto;
@@ -838,26 +834,31 @@ body {
     transform: translateX(8px) rotate(-15deg);
 }
 
-/* ===== ФОНОВАЯ СИСТЕМА ===== */
-
-/* Гарантируем что контент поверх фона */
-.parallax-hero,
-.content-section,
-.speck-vertical-section,
-.speck-marquee-section,
-.stats-improved,
-.cta-improved {
-    position: relative;
-    z-index: 10 !important;
+/* ===== ПРОГРЕСС-БАР СКРОЛЛА ===== */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 9999;
 }
 
-/* УЛУЧШАЕМ ЧИТАЕМОСТЬ ТЕКСТА НА ФОНЕ */
-.parallax-content h1,
-.parallax-content h2,
-.parallax-content h3,
-.parallax-content p,
-.parallax-content .hero-subtitle,
-.parallax-content .hero-description,
+.scroll-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #0066ff, #3399ff);
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+/* ===== УЛУЧШАЕМ ЧИТАЕМОСТЬ ТЕКСТА ===== */
+.hero-content h1,
+.hero-content h2,
+.hero-content h3,
+.hero-content p,
+.hero-subtitle,
+.hero-description,
 .content-section h1,
 .content-section h2,
 .content-section h3,
@@ -894,67 +895,6 @@ body {
     box-shadow: 
         0 20px 40px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* ===== ПРОГРЕСС-БАР СКРОЛЛА ===== */
-.scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 9999;
-}
-
-.scroll-progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #0066ff, #3399ff);
-    width: 0%;
-    transition: width 0.1s ease;
-}
-
-/* ===== КРИТИЧЕСКИЕ ФИКСЫ ДЛЯ ФОНОВ ===== */
-
-/* Темный оверлей для лучшей читаемости */
-.hero::after,
-.speck-vertical-section::after,
-.speck-marquee-section::after,
-.stats-improved::after,
-.cta-improved::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 1;
-    pointer-events: none;
-}
-
-.parallax-content,
-.speck-vertical-section > .container,
-.speck-marquee-section > .container,
-.stats-improved > .container,
-.cta-improved > .container {
-    position: relative;
-    z-index: 2;
-}
-
-/* ФИКС: Гарантируем видимость параллакс-слоев */
-.parallax-container {
-    z-index: -5 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-/* Принудительно показываем активный слой */
-.parallax-layer.active {
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
-    z-index: 1 !important;
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
@@ -1512,21 +1452,4 @@ body {
     .btn-glow::before {
         display: none;
     }
-}
-
-/* ===== АВАРИЙНЫЙ ФИКС ФОНОВ ===== */
-@media screen and (max-width: 1024px) {
-    .parallax-layer {
-        background-attachment: scroll !important;
-    }
-}
-
-/* Принудительно показываем фон если JS сломался */
-.no-js .parallax-layer {
-    opacity: 1 !important;
-    display: block !important;
-}
-
-.no-js .parallax-layer:nth-child(n+2) {
-    display: none !important;
 }
