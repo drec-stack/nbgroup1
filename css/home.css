@@ -1,4 +1,4 @@
-/* home.css - СТИЛИ ГЛАВНОЙ СТРАНИЦЫ (БЕЗ PARALLAX) */
+/* home.css - ПОЛНАЯ ВЕРСИЯ С УСОВЕРШЕНСТВОВАННОЙ СИСТЕМОЙ ФОНОВ */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -129,6 +129,33 @@ body {
     min-width: 200px;
     position: relative;
     z-index: 100;
+    overflow: hidden;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        0 5px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.7s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
 }
 
 .btn-primary {
@@ -527,6 +554,13 @@ body {
     width: 60%;
 }
 
+.marquee-note {
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
 @keyframes speckMarquee {
     0% {
         transform: translateX(0);
@@ -542,6 +576,23 @@ body {
     background: transparent;
     position: relative;
     z-index: 5;
+}
+
+.section-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 20px;
+    color: white !important;
+    opacity: 1 !important;
+}
+
+.section-subtitle {
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-align: center;
+    margin-bottom: 60px;
+    opacity: 1 !important;
 }
 
 .stats-grid-improved {
@@ -760,6 +811,71 @@ body {
 
 .btn-glow:hover i {
     transform: translateX(8px) rotate(-15deg);
+}
+
+/* ===== УСОВЕРШЕНСТВОВАННЫЕ СТИЛИ ДЛЯ ФОНОВОЙ СИСТЕМЫ ===== */
+
+/* Гарантируем что контент поверх фона */
+.parallax-hero,
+.content-section,
+.speck-vertical-section,
+.speck-marquee-section,
+.stats-improved,
+.cta-improved {
+    position: relative;
+    z-index: 10 !important;
+}
+
+/* Улучшаем читаемость текста на фоне */
+.parallax-content h1,
+.parallax-content h2,
+.parallax-content h3,
+.parallax-content p,
+.parallax-content .hero-subtitle,
+.parallax-content .hero-description,
+.content-section h1,
+.content-section h2,
+.content-section h3,
+.content-section p,
+.speck-block-title,
+.speck-block-subtitle,
+.speck-feature-text,
+.speck-brand,
+.stat-number-improved,
+.stat-label-improved,
+.cta-text h2,
+.cta-text p {
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.7),
+        0 1px 8px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(0, 0, 0, 0.3) !important;
+    position: relative;
+    z-index: 20;
+}
+
+/* Улучшенный задник для текста */
+.text-backdrop-enhanced {
+    display: inline-block;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0.3) 50%,
+        rgba(0, 0, 0, 0.2) 100%
+    );
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 25px 35px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Эффект при наведении на элементы на фоне */
+.content-section:hover {
+    background: rgba(255, 255, 255, 0.01);
+    transition: background 0.5s ease;
 }
 
 /* ===== ПРОГРЕСС-БАР СКРОЛЛА ===== */
@@ -1326,5 +1442,13 @@ body {
     
     .speck-feature-column:hover {
         transform: none !important;
+    }
+    
+    .btn::before {
+        display: none;
+    }
+    
+    .btn-glow::before {
+        display: none;
     }
 }
