@@ -1,4 +1,4 @@
-/* home.css - ПОЛНАЯ ВЕРСИЯ С УСОВЕРШЕНСТВОВАННОЙ СИСТЕМОЙ ФОНОВ */
+/* home.css - ПОЛНАЯ ВЕРСИЯ С ПРОЗРАЧНОСТЬЮ И ВИДИМЫМИ ПАРАЛЛАКС-ФОНАМИ */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -13,7 +13,7 @@ html {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #0a0a0a;
+    background: transparent !important; /* Прозрачный фон */
     color: white;
     overflow-x: hidden;
     position: relative;
@@ -29,7 +29,7 @@ body {
     width: 100%;
 }
 
-/* ===== HERO SECTION ===== */
+/* ===== HERO SECTION - ПРОЗРАЧНАЯ ===== */
 .hero {
     min-height: 100vh;
     padding: 220px 0 120px;
@@ -37,7 +37,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
+    background: transparent !important; /* Полностью прозрачная */
     overflow: hidden;
     z-index: 10;
 }
@@ -96,9 +96,20 @@ body {
 .hero-description p {
     font-size: 1.4rem;
     line-height: 1.8;
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(255, 255, 255, 0.95) !important; /* Более яркий текст */
     margin-bottom: 1.5rem;
     opacity: 1 !important;
+}
+
+/* СТЕКЛЯННЫЙ ФОН ДЛЯ ОПИСАНИЯ */
+.hero-description {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border-radius: 20px;
+    padding: 40px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    margin: 40px auto 3.5rem !important;
 }
 
 .hero-actions {
@@ -111,7 +122,7 @@ body {
     z-index: 30;
 }
 
-/* Кнопки */
+/* Кнопки - стеклянный эффект */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -130,12 +141,9 @@ body {
     position: relative;
     z-index: 100;
     overflow: hidden;
-    box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.4),
-        0 5px 15px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 .btn::before {
@@ -159,7 +167,7 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #0066ff 0%, #3399ff 100%);
+    background: rgba(0, 102, 255, 0.25) !important; /* Полупрозрачный синий */
     color: white;
     box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
 }
@@ -167,19 +175,18 @@ body {
 .btn-primary:hover {
     transform: translateY(-3px);
     box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
-    background: linear-gradient(135deg, #0052cc 0%, #267ae6 100%);
+    background: rgba(0, 102, 255, 0.35) !important;
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1) !important; /* Стеклянный белый */
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
     transform: translateY(-3px);
 }
 
@@ -191,11 +198,11 @@ body {
     transform: translateX(5px);
 }
 
-/* ===== SPECK VERTICAL SECTION ===== */
+/* ===== SPECK VERTICAL SECTION - ПРОЗРАЧНАЯ ===== */
 .speck-vertical-section {
     padding: 200px 0 150px;
     position: relative;
-    background: transparent;
+    background: transparent !important; /* Полностью прозрачная */
     overflow: hidden;
     z-index: 5;
 }
@@ -312,13 +319,16 @@ body {
     margin-top: 60px;
 }
 
+/* КАРТОЧКИ СТРАТЕГИИ - СТЕКЛЯННЫЙ ЭФФЕКТ */
 .speck-feature-column {
     display: flex;
     flex-direction: column;
     padding: 40px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.07) !important; /* Очень прозрачный стеклянный фон */
+    backdrop-filter: blur(20px) !important; /* Сильный размытие для стекла */
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
@@ -326,9 +336,14 @@ body {
 }
 
 .speck-feature-column:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.12) !important; /* При наведении - светлее */
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.4),
+        0 10px 20px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 .speck-column-title {
@@ -372,7 +387,7 @@ body {
     gap: 25px;
     margin-bottom: 35px;
     font-size: 1.3rem;
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(255, 255, 255, 0.95) !important; /* Яркий текст */
     transition: all 0.4s ease;
     padding: 15px 0;
     position: relative;
@@ -420,10 +435,10 @@ body {
     );
 }
 
-/* ===== SPECK MARQUEE SECTION ===== */
+/* ===== SPECK MARQUEE SECTION - ПРОЗРАЧНАЯ ===== */
 .speck-marquee-section {
     padding: 120px 0;
-    background: transparent;
+    background: transparent !important; /* Прозрачная */
     position: relative;
     overflow: hidden;
     z-index: 5;
@@ -435,7 +450,7 @@ body {
 
 .speck-marquee-label {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8) !important; /* Более яркий */
     text-transform: uppercase;
     letter-spacing: 3px;
     margin-bottom: 30px;
@@ -472,19 +487,20 @@ body {
     pointer-events: none;
 }
 
+/* Градиенты теперь полупрозрачные для видимости фона */
 .speck-marquee-mask::before {
     left: 0;
     background: linear-gradient(90deg, 
-        #0a0a0a 0%, 
-        rgba(10, 10, 10, 0.8) 50%,
+        rgba(10, 10, 10, 0.7) 0%, 
+        rgba(10, 10, 10, 0.3) 50%,
         transparent 100%);
 }
 
 .speck-marquee-mask::after {
     right: 0;
     background: linear-gradient(270deg, 
-        #0a0a0a 0%, 
-        rgba(10, 10, 10, 0.8) 50%,
+        rgba(10, 10, 10, 0.7) 0%, 
+        rgba(10, 10, 10, 0.3) 50%,
         transparent 100%);
 }
 
@@ -517,7 +533,7 @@ body {
 .speck-brand {
     font-size: 1.8rem;
     font-weight: 800;
-    color: rgba(255, 255, 255, 0.8) !important;
+    color: rgba(255, 255, 255, 0.9) !important; /* Яркий текст */
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     padding: 0 50px;
     white-space: nowrap;
@@ -528,12 +544,14 @@ body {
     letter-spacing: 1px;
     font-family: 'Inter', sans-serif;
     opacity: 1 !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Тень для читаемости */
 }
 
 .speck-brand:hover {
     color: #ffffff !important;
     opacity: 1;
     transform: translateY(-3px);
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
 }
 
 .speck-brand::after {
@@ -557,7 +575,7 @@ body {
 .marquee-note {
     margin-top: 30px;
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.7) !important; /* Ярче */
     font-style: italic;
 }
 
@@ -570,10 +588,10 @@ body {
     }
 }
 
-/* ===== STATS SECTION ===== */
+/* ===== STATS SECTION - ПРОЗРАЧНАЯ ===== */
 .stats-improved {
     padding: 140px 0;
-    background: transparent;
+    background: transparent !important; /* Прозрачная */
     position: relative;
     z-index: 5;
 }
@@ -589,7 +607,7 @@ body {
 
 .section-subtitle {
     font-size: 1.4rem;
-    color: rgba(255, 255, 255, 0.8) !important;
+    color: rgba(255, 255, 255, 0.9) !important; /* Ярче */
     text-align: center;
     margin-bottom: 60px;
     opacity: 1 !important;
@@ -602,13 +620,15 @@ body {
     position: relative;
 }
 
+/* КАРТОЧКИ СТАТИСТИКИ - СТЕКЛЯННЫЕ */
 .stat-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.08) !important; /* Стеклянный фон */
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 24px;
     padding: 50px 35px;
     text-align: center;
-    backdrop-filter: blur(15px);
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     overflow: hidden;
@@ -635,12 +655,14 @@ body {
 }
 
 .stat-card:hover {
-    border-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3) !important;
     box-shadow: 
-        0 25px 50px rgba(255, 255, 255, 0.15),
-        0 10px 30px rgba(0, 0, 0, 0.3);
-    background: rgba(255, 255, 255, 0.08);
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 10px 30px rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12) !important;
     transform: translateY(-5px);
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
 }
 
 .stat-icon {
@@ -676,7 +698,7 @@ body {
 }
 
 .stat-label-improved {
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(255, 255, 255, 0.95) !important; /* Ярче */
     font-size: 1.2rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -690,10 +712,10 @@ body {
     letter-spacing: 2px;
 }
 
-/* ===== CTA SECTION ===== */
+/* ===== CTA SECTION - ПРОЗРАЧНАЯ ===== */
 .cta-improved {
     padding: 140px 0;
-    background: transparent;
+    background: transparent !important;
     position: relative;
     z-index: 5;
     cursor: pointer;
@@ -704,7 +726,7 @@ body {
 }
 
 .cta-improved:hover {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.02) !important;
 }
 
 .cta-content-improved {
@@ -733,7 +755,7 @@ body {
 
 .cta-text p {
     font-size: 1.4rem;
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(255, 255, 255, 0.95) !important; /* Ярче */
     margin-bottom: 50px;
     line-height: 1.6;
     max-width: 700px;
@@ -760,7 +782,7 @@ body {
 .btn-glow {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #0066ff 0%, #3399ff 100%);
+    background: rgba(0, 102, 255, 0.25) !important; /* Полупрозрачный синий */
     color: white;
     border: none;
     padding: 22px 45px;
@@ -778,6 +800,9 @@ body {
     justify-content: center;
     text-decoration: none;
     cursor: pointer;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(0, 102, 255, 0.3) !important;
 }
 
 .btn-glow::before {
@@ -801,8 +826,9 @@ body {
         0 25px 50px rgba(0, 102, 255, 0.5),
         0 10px 30px rgba(0, 102, 255, 0.3),
         0 0 100px rgba(0, 102, 255, 0.2);
-    background: linear-gradient(135deg, #0052cc 0%, #267ae6 100%);
+    background: rgba(0, 102, 255, 0.35) !important;
     transform: translateY(-3px);
+    border: 1px solid rgba(0, 102, 255, 0.4) !important;
 }
 
 .btn-glow i {
@@ -826,7 +852,7 @@ body {
     z-index: 10 !important;
 }
 
-/* Улучшаем читаемость текста на фоне */
+/* УЛУЧШАЕМ ЧИТАЕМОСТЬ ТЕКСТА НА ФОНЕ */
 .parallax-content h1,
 .parallax-content h2,
 .parallax-content h3,
@@ -844,11 +870,15 @@ body {
 .stat-number-improved,
 .stat-label-improved,
 .cta-text h2,
-.cta-text p {
+.cta-text p,
+.section-title,
+.section-subtitle,
+.speck-column-title {
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.7),
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7),
         0 1px 8px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(0, 0, 0, 0.3) !important;
+        0 0 60px rgba(0, 0, 0, 0.4) !important;
     position: relative;
     z-index: 20;
 }
@@ -856,26 +886,15 @@ body {
 /* Улучшенный задник для текста */
 .text-backdrop-enhanced {
     display: inline-block;
-    background: linear-gradient(
-        135deg,
-        rgba(0, 0, 0, 0.5) 0%,
-        rgba(0, 0, 0, 0.3) 50%,
-        rgba(0, 0, 0, 0.2) 100%
-    );
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.25) !important; /* Темное стекло */
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
     border-radius: 20px;
-    padding: 25px 35px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 30px 40px !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 20px 40px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* Эффект при наведении на элементы на фоне */
-.content-section:hover {
-    background: rgba(255, 255, 255, 0.01);
-    transition: background 0.5s ease;
 }
 
 /* ===== ПРОГРЕСС-БАР СКРОЛЛА ===== */
@@ -894,6 +913,24 @@ body {
     background: linear-gradient(90deg, #0066ff, #3399ff);
     width: 0%;
     transition: width 0.1s ease;
+}
+
+/* ===== НОВЫЕ СТИЛИ: ПРОЗРАЧНОСТЬ ДЛЯ ХЕДЕРА И ФУТЕРА ===== */
+
+/* Хедер - стеклянный эффект */
+.main-header {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Футер - темное стекло */
+.main-footer {
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
@@ -1450,5 +1487,39 @@ body {
     
     .btn-glow::before {
         display: none;
+    }
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ ДЛЯ ЧИТАЕМОСТИ ===== */
+
+/* Усиливаем тень для всех текстовых элементов */
+h1, h2, h3, h4, h5, h6,
+p, span, li, a:not(.btn) {
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.8),
+        0 1px 10px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Специальные улучшения для кнопок на ярком фоне */
+.btn {
+    text-shadow: 
+        0 1px 15px rgba(0, 0, 0, 0.7),
+        0 1px 8px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Улучшаем разделительные линии */
+.speck-block-right {
+    border-left: 3px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Фикс для слишком яркого фона на мобильных */
+@media (max-width: 768px) {
+    .text-backdrop-enhanced,
+    .hero-description,
+    .speck-feature-column,
+    .stat-card {
+        background: rgba(0, 0, 0, 0.4) !important;
+        backdrop-filter: blur(25px) !important;
+        -webkit-backdrop-filter: blur(25px) !important;
     }
 }
