@@ -1,0 +1,104 @@
+/* home-background.css - ОТДЕЛЬНЫЙ ФОН ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
+
+/* ===== ФОНОВАЯ СИСТЕМА ТОЛЬКО ДЛЯ ГЛАВНОЙ ===== */
+body.home-page .bg-layers-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+body.home-page .bg-layers-container.loaded {
+    opacity: 1;
+}
+
+body.home-page .bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateZ(0);
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+body.home-page .bg-layer.active {
+    opacity: 1;
+}
+
+/* Эффект параллакса для фона */
+body.home-page .bg-layer {
+    transform: translateY(0) scale(1.05);
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Эффект затемнения фона */
+body.home-page .bg-layer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+/* ===== СБРОС ФОНА ДЛЯ ДРУГИХ СТРАНИЦ ===== */
+body:not(.home-page) .bg-layers-container {
+    display: none !important;
+}
+
+body:not(.home-page) .bg-layer {
+    display: none !important;
+}
+
+/* ===== ФОН ДЛЯ ДРУГИХ СТРАНИЦ - СТАНДАРТНЫЙ ЧЕРНЫЙ ===== */
+body:not(.home-page) {
+    background: #0a0a0a !important;
+    background-image: none !important;
+}
+
+/* Убедимся, что на других страницах нет параллакс фона */
+body:not(.home-page) .parallax-bg,
+body:not(.home-page) .parallax-container,
+body:not(.home-page) .background-layers {
+    display: none !important;
+}
+
+/* ===== МОБИЛЬНАЯ АДАПТИВНОСТЬ ===== */
+@media (max-width: 768px) {
+    body.home-page .bg-layer {
+        background-attachment: scroll !important;
+    }
+    
+    body.home-page .bg-layers-container {
+        height: 100%;
+    }
+}
+
+/* Поддержка reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    body.home-page .bg-layer {
+        transition: opacity 0.5s ease !important;
+        animation: none !important;
+    }
+    
+    body.home-page .bg-layer {
+        transform: none !important;
+    }
+}
