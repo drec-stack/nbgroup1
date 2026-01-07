@@ -1,17 +1,20 @@
-// home.js - КОМПОНЕНТЫ ГЛАВНОЙ СТРАНИЦЫ (БЕЗ ЛОГИКИ ФОНОВ)
+// home.js - ПОЛНАЯ ВЕРСИЯ С ИНТЕГРАЦИЕЙ ФОНОВОЙ СИСТЕМЫ
 
-console.log('🎬 home.js loaded - MAIN COMPONENTS ONLY');
+console.log('🎬 home.js loaded - ENHANCED VERSION WITH BACKGROUND SYSTEM INTEGRATION');
 
-// ===== MAIN HOMEPAGE CLASS =====
-class HomePage {
+// ===== ENHANCED HOMEPAGE CLASS =====
+class EnhancedHomePage {
     constructor() {
         this.isReducedMotion = window.matchMedia ? 
             window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
         
-        console.log('🏠 HomePage initialized (backgrounds handled by parallax.js)');
+        console.log('🏠 EnhancedHomePage initialized');
         
         // Инициализация всех компонентов
         this.initializeComponents();
+        
+        // Интеграция с системой фонов
+        this.setupBackgroundSystemIntegration();
     }
 
     // ИНИЦИАЛИЗАЦИЯ ВСЕХ КОМПОНЕНТОВ
@@ -26,6 +29,7 @@ class HomePage {
             this.initializeScrollProgress();
             this.initializeClickableStats();
             this.initializeCTAClickable();
+            this.initializeSectionBackgrounds();
             
             // Оптимизация производительности
             this.optimizePerformance();
@@ -36,7 +40,325 @@ class HomePage {
         }
     }
 
-    // SPECK VERTICAL BLOCKS
+    // ИНТЕГРАЦИЯ С СИСТЕМОЙ ФОНОВ
+    setupBackgroundSystemIntegration() {
+        console.log('🎨 Setting up background system integration...');
+        
+        // Ждем инициализации системы фонов
+        this.waitForBackgroundSystem().then(() => {
+            console.log('✅ Background system integration ready');
+            
+            // Настраиваем слушатели событий
+            this.setupBackgroundEventListeners();
+            
+            // Настраиваем интерактивность секций
+            this.setupSectionBackgroundInteractions();
+            
+            // Запускаем эффекты для текущего фона
+            this.applyEffectsForCurrentBackground();
+        }).catch(error => {
+            console.warn('⚠️ Background system not available:', error);
+        });
+    }
+    
+    waitForBackgroundSystem() {
+        return new Promise((resolve, reject) => {
+            let attempts = 0;
+            const maxAttempts = 50; // 5 секунд
+            
+            const checkSystem = () => {
+                attempts++;
+                
+                if (typeof window.backgroundSystem !== 'undefined' && 
+                    window.backgroundSystem.getInstance() !== null) {
+                    resolve();
+                } else if (attempts >= maxAttempts) {
+                    reject(new Error('Background system timeout'));
+                } else {
+                    setTimeout(checkSystem, 100);
+                }
+            };
+            
+            checkSystem();
+        });
+    }
+    
+    setupBackgroundEventListeners() {
+        // Слушаем события смены фона
+        document.addEventListener('backgroundChanged', (event) => {
+            this.onBackgroundChange(event.detail);
+        });
+        
+        // Слушаем клики на секциях для переключения фона
+        document.addEventListener('click', (e) => {
+            const section = e.target.closest('[data-bg-index]');
+            if (section && window.backgroundSystem) {
+                const bgIndex = parseInt(section.getAttribute('data-bg-index'));
+                const currentBg = window.backgroundSystem.getInstance()?.currentIndex;
+                
+                if (bgIndex !== currentBg) {
+                    window.backgroundSystem.switchTo(bgIndex);
+                    
+                    // Плавная прокрутка к секции
+                    section.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    }
+    
+    onBackgroundChange(detail) {
+        const { index, total, timestamp } = detail;
+        console.log(`🎨 Background changed to ${index + 1}/${total} at ${timestamp}`);
+        
+        // Добавляем эффекты при смене фона
+        this.addBackgroundChangeEffects(index);
+        
+        // Обновляем активную секцию
+        this.updateActiveSection(index);
+        
+        // Адаптируем контент под фон
+        this.adaptContentToBackground(index);
+    }
+    
+    addBackgroundChangeEffects(bgIndex) {
+        // Добавляем различные эффекты в зависимости от фона
+        switch(bgIndex) {
+            case 0: // Hero background
+                this.addHeroBackgroundEffects();
+                break;
+            case 1: // Marquee background
+                this.addMarqueeBackgroundEffects();
+                break;
+            case 2: // Stats background
+                this.addStatsBackgroundEffects();
+                break;
+            case 3: // CTA background
+                this.addCTABackgroundEffects();
+                break;
+        }
+    }
+    
+    addHeroBackgroundEffects() {
+        // Эффекты для первого фона
+        const heroSection = document.querySelector('.hero');
+        if (heroSection) {
+            heroSection.classList.add('highlight-section');
+            setTimeout(() => {
+                heroSection.classList.remove('highlight-section');
+            }, 2000);
+        }
+        
+        // Плавное появление элементов
+        this.animateSectionElements('.hero', 'fade-in-up');
+    }
+    
+    addMarqueeBackgroundEffects() {
+        // Эффекты для второго фона
+        const marqueeSection = document.querySelector('.speck-marquee-section');
+        if (marqueeSection) {
+            marqueeSection.classList.add('highlight-section');
+            setTimeout(() => {
+                marqueeSection.classList.remove('highlight-section');
+            }, 2000);
+        }
+        
+        // Ускорение/замедление маркера
+        this.controlMarqueeSpeed(1.5);
+        setTimeout(() => this.controlMarqueeSpeed(1), 1500);
+    }
+    
+    addStatsBackgroundEffects() {
+        // Эффекты для третьего фона
+        const statsSection = document.querySelector('.stats-improved');
+        if (statsSection) {
+            statsSection.classList.add('highlight-section');
+            setTimeout(() => {
+                statsSection.classList.remove('highlight-section');
+            }, 2000);
+        }
+        
+        // Анимация счетчиков
+        this.animateStatsCounters();
+    }
+    
+    addCTABackgroundEffects() {
+        // Эффекты для четвертого фона
+        const ctaSection = document.querySelector('.cta-improved');
+        if (ctaSection) {
+            ctaSection.classList.add('highlight-section');
+            setTimeout(() => {
+                ctaSection.classList.remove('highlight-section');
+            }, 2000);
+        }
+        
+        // Пульсация кнопки CTA
+        this.pulseCTAButton();
+    }
+    
+    controlMarqueeSpeed(speedMultiplier) {
+        const marqueeTrack = document.getElementById('speckMarqueeTrack');
+        if (marqueeTrack) {
+            const currentSpeed = parseFloat(
+                window.getComputedStyle(marqueeTrack).animationDuration
+            ) || 40;
+            
+            marqueeTrack.style.animationDuration = `${currentSpeed / speedMultiplier}s`;
+        }
+    }
+    
+    animateStatsCounters() {
+        const statNumbers = document.querySelectorAll('.stat-number-improved:not(.animated)');
+        statNumbers.forEach((stat, index) => {
+            setTimeout(() => {
+                if (!stat.classList.contains('animated')) {
+                    const target = parseInt(stat.getAttribute('data-target')) || 0;
+                    if (target > 0) {
+                        this.animateNumber(stat, target);
+                        stat.classList.add('animated');
+                    }
+                }
+            }, index * 200);
+        });
+    }
+    
+    pulseCTAButton() {
+        const ctaButton = document.querySelector('.btn-glow');
+        if (ctaButton) {
+            ctaButton.classList.add('pulse-animation');
+            setTimeout(() => {
+                ctaButton.classList.remove('pulse-animation');
+            }, 3000);
+        }
+    }
+    
+    updateActiveSection(bgIndex) {
+        // Убираем активность у всех секций
+        document.querySelectorAll('[data-bg-index]').forEach(section => {
+            section.classList.remove('active-section');
+        });
+        
+        // Добавляем активность текущей секции
+        const activeSection = document.querySelector(`[data-bg-index="${bgIndex}"]`);
+        if (activeSection) {
+            activeSection.classList.add('active-section');
+        }
+    }
+    
+    adaptContentToBackground(bgIndex) {
+        // Адаптируем стили контента под текущий фон
+        const contentElements = document.querySelectorAll('.content-on-background');
+        
+        contentElements.forEach(element => {
+            element.classList.remove('on-bg-0', 'on-bg-1', 'on-bg-2', 'on-bg-3');
+            element.classList.add(`on-bg-${bgIndex}`);
+            
+            // Добавляем специальные стили для каждого фона
+            switch(bgIndex) {
+                case 0:
+                    element.style.color = 'white';
+                    break;
+                case 1:
+                    element.style.color = 'rgba(255, 255, 255, 0.95)';
+                    break;
+                case 2:
+                    element.style.color = 'rgba(255, 255, 255, 0.9)';
+                    break;
+                case 3:
+                    element.style.color = 'rgba(255, 255, 255, 0.85)';
+                    break;
+            }
+        });
+    }
+    
+    animateSectionElements(sectionSelector, animationClass) {
+        const section = document.querySelector(sectionSelector);
+        if (!section) return;
+        
+        const elements = section.querySelectorAll('.animated-element, h1, h2, h3, p, .btn');
+        elements.forEach((el, index) => {
+            el.classList.remove('fade-in-up', 'fade-in-down', 'fade-in-left', 'fade-in-right', 'scale-in');
+            
+            setTimeout(() => {
+                el.classList.add(animationClass);
+                el.style.animationDelay = `${index * 0.1}s`;
+            }, 50);
+        });
+    }
+    
+    applyEffectsForCurrentBackground() {
+        const bgManager = window.backgroundSystem?.getInstance();
+        if (bgManager) {
+            const currentBg = bgManager.currentIndex;
+            this.addBackgroundChangeEffects(currentBg);
+            this.updateActiveSection(currentBg);
+        }
+    }
+
+    // СПЕЦИАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ СЕКЦИЙ ДЛЯ ФОНОВ
+    initializeSectionBackgrounds() {
+        console.log('🎨 Initializing section backgrounds...');
+        
+        // Добавляем классы для каждой секции
+        document.querySelectorAll('[data-bg-index]').forEach(section => {
+            const bgIndex = section.getAttribute('data-bg-index');
+            section.classList.add(`section-bg-${bgIndex}`);
+            
+            // Добавляем эффект при наведении
+            section.addEventListener('mouseenter', () => {
+                if (window.backgroundSystem && !this.isAnimatingBackground) {
+                    const currentBg = window.backgroundSystem.getInstance()?.currentIndex;
+                    const targetBg = parseInt(bgIndex);
+                    
+                    if (targetBg !== currentBg) {
+                        section.classList.add('section-hover');
+                    }
+                }
+            });
+            
+            section.addEventListener('mouseleave', () => {
+                section.classList.remove('section-hover');
+            });
+        });
+    }
+
+    setupSectionBackgroundInteractions() {
+        // Настраиваем отслеживание видимости секций для авто-переключения
+        if ('IntersectionObserver' in window) {
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bgIndex = entry.target.getAttribute('data-bg-index');
+                        if (bgIndex !== null && window.backgroundSystem) {
+                            const currentBg = window.backgroundSystem.getInstance()?.currentIndex;
+                            const targetBg = parseInt(bgIndex);
+                            
+                            if (targetBg !== currentBg && !this.isAnimatingBackground) {
+                                this.isAnimatingBackground = true;
+                                
+                                window.backgroundSystem.switchTo(targetBg);
+                                
+                                setTimeout(() => {
+                                    this.isAnimatingBackground = false;
+                                }, 1000);
+                            }
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.3,
+                rootMargin: '0px 0px -100px 0px'
+            });
+            
+            document.querySelectorAll('[data-bg-index]').forEach(section => {
+                sectionObserver.observe(section);
+            });
+        }
+    }
+
+    // SPECK VERTICAL BLOCKS (обновленная версия)
     initializeSpeckVerticalBlocks() {
         const speckBlocks = document.querySelectorAll('.speck-vertical-block');
         
@@ -53,6 +375,14 @@ class HomePage {
                     if (entry.isIntersecting) {
                         setTimeout(() => {
                             entry.target.classList.add('visible');
+                            
+                            // Добавляем анимации для внутренних элементов
+                            const leftBlock = entry.target.querySelector('.speck-block-left');
+                            const rightBlock = entry.target.querySelector('.speck-block-right');
+                            
+                            if (leftBlock) leftBlock.classList.add('animated');
+                            if (rightBlock) rightBlock.classList.add('animated');
+                            
                         }, index * 200);
                         blockObserver.unobserve(entry.target);
                     }
@@ -75,7 +405,7 @@ class HomePage {
         }
     }
 
-    // SPECK MARQUEE
+    // SPECK MARQUEE (обновленная версия)
     initializeSpeckMarquee() {
         const speckMarqueeTrack = document.getElementById('speckMarqueeTrack');
         if (!speckMarqueeTrack) {
@@ -235,7 +565,7 @@ class HomePage {
         track.addEventListener('mouseleave', resumeMarquee);
     }
 
-    // STATS COUNTER
+    // STATS COUNTER (обновленная версия)
     initializeStatsCounter() {
         const statNumbers = document.querySelectorAll('.stat-number-improved');
         
@@ -246,7 +576,7 @@ class HomePage {
         
         console.log('📊 Initializing stats counter: ' + statNumbers.length + ' elements');
         
-        const animateNumber = (element, target) => {
+        this.animateNumber = (element, target) => {
             let current = 0;
             const duration = 2000;
             const startTime = Date.now ? Date.now() : new Date().getTime();
@@ -303,7 +633,7 @@ class HomePage {
                 if (isVisible && !stat.classList.contains('animated')) {
                     const target = parseInt(stat.getAttribute('data-target')) || 0;
                     if (target > 0) {
-                        animateNumber(stat, target);
+                        this.animateNumber(stat, target);
                         stat.classList.add('animated');
                     }
                 }
@@ -319,7 +649,7 @@ class HomePage {
         checkVisibility();
     }
 
-    // БАЗОВЫЕ АНИМАЦИИ
+    // БАЗОВЫЕ АНИМАЦИИ (обновленная версия)
     initializeBasicAnimations() {
         const sections = document.querySelectorAll('.content-section');
         
@@ -344,6 +674,14 @@ class HomePage {
                 
                 if (isVisible && !section.classList.contains('animated')) {
                     section.classList.add('animated');
+                    
+                    // Добавляем анимации для элементов внутри
+                    const animatedElements = section.querySelectorAll('.animated-element');
+                    animatedElements.forEach((el, index) => {
+                        setTimeout(() => {
+                            el.classList.add('fade-in-up');
+                        }, index * 100);
+                    });
                 }
             });
         };
@@ -356,7 +694,7 @@ class HomePage {
         setTimeout(checkSections, 300);
     }
 
-    // SCROLL PROGRESS
+    // SCROLL PROGRESS (обновленная версия)
     initializeScrollProgress() {
         const progressBar = document.querySelector('.scroll-progress-bar');
         if (!progressBar) {
@@ -373,6 +711,17 @@ class HomePage {
             const progress = documentHeight > 0 ? (scrollTop / documentHeight) * 100 : 0;
             
             progressBar.style.width = Math.min(Math.max(progress, 0), 100) + '%';
+            
+            // Добавляем цвет в зависимости от прогресса
+            if (progress < 25) {
+                progressBar.style.background = 'linear-gradient(90deg, #0066ff, #3399ff)';
+            } else if (progress < 50) {
+                progressBar.style.background = 'linear-gradient(90deg, #3399ff, #00ccff)';
+            } else if (progress < 75) {
+                progressBar.style.background = 'linear-gradient(90deg, #00ccff, #0099ff)';
+            } else {
+                progressBar.style.background = 'linear-gradient(90deg, #0099ff, #0066ff)';
+            }
         };
         
         const throttledUpdate = this.throttle(updateProgress, 16);
@@ -447,6 +796,9 @@ class HomePage {
             console.log('♿ Reduced motion preference detected, disabling animations');
             this.disableNonEssentialAnimations();
         }
+        
+        // Ленивая загрузка изображений
+        this.setupLazyLoading();
     }
     
     isLowPerformanceDevice() {
@@ -459,10 +811,11 @@ class HomePage {
     
     simplifyAnimations() {
         // Упрощаем анимации на слабых устройствах
-        const animatedElements = document.querySelectorAll('.speck-vertical-block, .content-section');
+        const animatedElements = document.querySelectorAll('.speck-vertical-block, .content-section, .animated-element');
         animatedElements.forEach(el => {
             el.style.transition = 'none';
             el.classList.add('visible');
+            el.classList.remove('fade-in-up', 'fade-in-down', 'fade-in-left', 'fade-in-right', 'scale-in');
         });
     }
     
@@ -473,6 +826,25 @@ class HomePage {
             el.style.animation = 'none';
             el.style.transition = 'none';
         });
+    }
+    
+    setupLazyLoading() {
+        if ('IntersectionObserver' in window) {
+            const lazyImages = document.querySelectorAll('img[data-src]');
+            
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            lazyImages.forEach(img => imageObserver.observe(img));
+        }
     }
 
     // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
@@ -488,48 +860,121 @@ class HomePage {
             }
         };
     }
+    
+    // Геттер для текущего фона
+    get currentBackground() {
+        const bgManager = window.backgroundSystem?.getInstance();
+        return bgManager ? bgManager.currentIndex : 0;
+    }
+    
+    // Метод для переключения фона
+    switchBackground(index) {
+        if (window.backgroundSystem) {
+            window.backgroundSystem.switchTo(index);
+        }
+    }
+    
+    // Метод для получения информации о фоне
+    getBackgroundInfo() {
+        const bgManager = window.backgroundSystem?.getInstance();
+        if (bgManager) {
+            return {
+                current: bgManager.currentIndex,
+                total: bgManager.layers.length,
+                isAnimating: bgManager.isAnimating
+            };
+        }
+        return null;
+    }
 }
 
 // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
-function initializeHomePage() {
+function initializeEnhancedHomePage() {
     // Проверяем, что мы на главной странице
     if (!document.body || !document.body.classList.contains('home-page')) {
-        console.log('⚠️ Not home page, home.js will not initialize');
+        console.log('⚠️ Not home page, enhanced home.js will not initialize');
         return;
     }
     
-    console.log('📄 INITIALIZING HOME PAGE');
+    console.log('📄 INITIALIZING ENHANCED HOME PAGE');
     
     // Гарантированный запуск после полной загрузки
-    function startHomePage() {
-        console.log('🎬 Creating HomePage instance...');
+    function startEnhancedHomePage() {
+        console.log('🎬 Creating EnhancedHomePage instance...');
         try {
-            window.homePage = new HomePage();
-            console.log('🎉 Home page successfully initialized!');
+            window.enhancedHomePage = new EnhancedHomePage();
+            console.log('🎉 Enhanced home page successfully initialized with background system!');
             
-            // Добавляем финальный класс
-            document.body.classList.add('homepage-initialized');
+            // Добавляем финальные классы
+            document.body.classList.add('enhanced-homepage-initialized');
+            
+            // Экспортируем для глобального доступа
+            window.HomePage = EnhancedHomePage;
+            
         } catch (error) {
-            console.error('❌ Error during HomePage initialization:', error);
+            console.error('❌ Error during EnhancedHomePage initialization:', error);
+            
+            // Fallback на базовую версию
+            try {
+                const BasicHomePage = class {
+                    constructor() {
+                        this.initializeBasicAnimations();
+                        this.initializeStatsCounter();
+                        this.initializeScrollProgress();
+                    }
+                    
+                    initializeBasicAnimations() {
+                        document.querySelectorAll('.content-section').forEach(section => {
+                            section.classList.add('animated');
+                        });
+                    }
+                    
+                    initializeStatsCounter() {
+                        document.querySelectorAll('.stat-number-improved').forEach(stat => {
+                            const target = parseInt(stat.getAttribute('data-target')) || 0;
+                            stat.textContent = target;
+                        });
+                    }
+                    
+                    initializeScrollProgress() {
+                        const bar = document.querySelector('.scroll-progress-bar');
+                        if (bar) bar.style.width = '0%';
+                    }
+                };
+                
+                window.homePage = new BasicHomePage();
+                console.log('🔄 Fallback to basic homepage initialized');
+            } catch (fallbackError) {
+                console.error('❌ Fallback also failed:', fallbackError);
+            }
         }
     }
     
     // Запускаем после загрузки DOM
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', startHomePage);
+        document.addEventListener('DOMContentLoaded', startEnhancedHomePage);
     } else {
-        startHomePage();
+        startEnhancedHomePage();
     }
 }
 
 // АВТОМАТИЧЕСКИЙ ЗАПУСК
-console.log('🚀 Starting home page initialization...');
-initializeHomePage();
+console.log('🚀 Starting enhanced home page initialization...');
+initializeEnhancedHomePage();
 
 // Экспорт класса для отладки
 if (typeof window !== 'undefined') {
-    window.HomePage = HomePage;
+    window.EnhancedHomePage = EnhancedHomePage;
 }
+
+// Глобальные методы для работы с фоновой системой
+window.backgroundControls = {
+    next: () => window.backgroundSystem?.nextBackground?.(),
+    prev: () => window.backgroundSystem?.prevBackground?.(),
+    switchTo: (index) => window.backgroundSystem?.switchTo?.(index),
+    getCurrent: () => window.backgroundSystem?.getInstance()?.currentIndex,
+    getTotal: () => window.backgroundSystem?.getInstance()?.layers?.length
+};
 
 // Глобальная обработка ошибок
 window.addEventListener('error', function(e) {
@@ -539,4 +984,4 @@ window.addEventListener('error', function(e) {
     }
 });
 
-console.log('✅ home.js fully loaded');
+console.log('✅ Enhanced home.js fully loaded with background system integration');
