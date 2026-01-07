@@ -1,70 +1,73 @@
-// parallax.js - ИСПРАВЛЕННАЯ ВЕРСИЯ ДЛЯ 4 ФОНОВ
-console.log('🎯 parallax.js loaded - FIXED VERSION (4 backgrounds)');
+// parallax.js - ПОЛНОСТЬЮ РАБОЧАЯ ВЕРСИЯ С ПЕРЕКЛЮЧЕНИЕМ ПРИ СКРОЛЛЕ
+
+console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
 
 (function() {
     'use strict';
     
-    class ScrollBackgroundChanger {
+    // ===== PARALLAX SCROLL MANAGER =====
+    class ParallaxScrollManager {
         constructor() {
-            this.backgrounds = document.querySelectorAll('.parallax-bg');
-            this.sections = document.querySelectorAll('.content-section[data-bg-index]');
-            this.currentBgIndex = 0;
+            this.layers = document.querySelectorAll('.parallax-layer');
+            this.container = document.getElementById('parallax-container');
+            this.sections = document.querySelectorAll('[data-bg-index]');
+            this.currentIndex = 0;
             this.isAnimating = false;
+            this.lastScrollY = 0;
+            this.scrollThreshold = 100; // Минимальная разница скролла для переключения
             this.isMobile = this.checkIsMobile();
+            this.isReducedMotion = window.matchMedia ? 
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
             
-            console.log(`🖼️ Found ${this.backgrounds.length} background images`);
+            console.log(`🖼️ Found ${this.layers.length} parallax layers`);
             console.log(`📱 Device: ${this.isMobile ? 'Mobile' : 'Desktop'}`);
+            console.log(`♿ Reduced motion: ${this.isReducedMotion ? 'Yes' : 'No'}`);
             
-            // ГАРАНТИРУЕМ ЧТО ФОНЫ ВИДНЫ
-            this.guaranteeBackgrounds();
+            // Гарантируем что система работает
+            this.guaranteeVisibility();
             
             // Инициализация
             this.init();
         }
         
-        // ГАРАНТИЯ ВИДИМОСТИ ФОНОВ
-        guaranteeBackgrounds() {
-            console.log('🔧 Guaranteeing background visibility...');
+        checkIsMobile() {
+            var width = window.innerWidth || document.documentElement.clientWidth;
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            var mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
             
-            // 1. Гарантируем что контейнер виден
-            const container = document.querySelector('.parallax-bg-container');
-            if (container) {
-                container.style.display = 'block';
-                container.style.opacity = '1';
-                container.style.visibility = 'visible';
-                container.style.zIndex = '-1';
-            }
-            
-            // 2. Гарантируем что все фоны имеют правильные настройки
-            this.backgrounds.forEach((bg, index) => {
-                if (bg) {
-                    // Устанавливаем фоновые изображения напрямую
-                    const bgNumber = index + 1;
-                    bg.style.backgroundImage = `url('./assets/images/parallax/bg-${bgNumber}.jpg')`;
-                    bg.style.backgroundSize = 'cover';
-                    bg.style.backgroundPosition = 'center center';
-                    bg.style.backgroundRepeat = 'no-repeat';
-                    bg.style.opacity = index === 0 ? '1' : '0';
-                    bg.style.zIndex = index === 0 ? '1' : '0';
-                    
-                    // Добавляем активный класс к первому фону
-                    if (index === 0) {
-                        bg.classList.add('active');
-                    }
-                    
-                    console.log(`✅ Background ${bgNumber} guaranteed`);
-                }
-            });
-            
-            // 3. Предзагрузка изображений
-            this.preloadImages();
-            
-            console.log('✅ All backgrounds guaranteed to be visible');
+            return width <= 768 || mobileRegex.test(userAgent);
         }
         
-        // ПРЕЗАГРУЗКА ИЗОБРАЖЕНИЙ
+        // ГАРАНТИЯ ВИДИМОСТИ
+        guaranteeVisibility() {
+            console.log('🔧 Guaranteeing parallax visibility...');
+            
+            // 1. Гарантируем что контейнер виден
+            if (this.container) {
+                this.container.style.display = 'block';
+                this.container.style.opacity = '1';
+                this.container.style.visibility = 'visible';
+                console.log('✅ Parallax container guaranteed');
+            }
+            
+            // 2. Гарантируем что первый слой активен
+            if (this.layers.length > 0) {
+                const firstLayer = this.layers[0];
+                firstLayer.classList.add('active');
+                firstLayer.style.opacity = '1';
+                firstLayer.style.zIndex = '1';
+                console.log('✅ First parallax layer activated');
+            }
+            
+            // 3. Предзагрузка всех изображений
+            this.preloadImages();
+            
+            console.log('✅ Parallax visibility guaranteed');
+        }
+        
+        // ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ
         preloadImages() {
-            console.log('🖼️ Preloading background images...');
+            console.log('🖼️ Preloading parallax images...');
             
             const imageUrls = [
                 'assets/images/parallax/bg-1.jpg',
@@ -84,16 +87,15 @@ console.log('🎯 parallax.js loaded - FIXED VERSION (4 backgrounds)');
                     console.log(`✅ Loaded: ${url} (${loadedCount}/${totalImages})`);
                     
                     if (loadedCount === totalImages) {
-                        console.log('🎉 All background images loaded successfully!');
-                        // Помечаем body что изображения загружены
-                        document.body.classList.add('backgrounds-loaded');
+                        console.log('🎉 All parallax images loaded successfully!');
+                        document.body.classList.add('parallax-images-loaded');
                     }
                 };
                 img.onerror = (e) => {
                     console.warn(`⚠️ Failed to load: ${url}`, e);
                     loadedCount++;
                     
-                    // Если изображение не загрузилось, пробуем альтернативный путь
+                    // Пробуем альтернативный путь
                     const altUrl = url.replace('assets/', './assets/');
                     console.log(`🔄 Trying alternative path: ${altUrl}`);
                     
@@ -103,88 +105,67 @@ console.log('🎯 parallax.js loaded - FIXED VERSION (4 backgrounds)');
             });
         }
         
-        checkIsMobile() {
-            var width = window.innerWidth || document.documentElement.clientWidth;
-            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            var mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-            
-            return width <= 768 || mobileRegex.test(userAgent);
-        }
-        
-        getScrollY() {
-            return window.pageYOffset || 
-                   document.documentElement.scrollTop || 
-                   document.body.scrollTop || 
-                   0;
-        }
-        
+        // ИНИЦИАЛИЗАЦИЯ
         init() {
-            console.log('🚀 Initializing background changer...');
+            console.log('🚀 Initializing parallax scroll manager...');
             
-            if (!this.backgrounds.length) {
-                console.warn('⚠️ No background elements found');
+            if (!this.layers.length) {
+                console.warn('⚠️ No parallax layers found');
                 return;
             }
             
-            // Проверяем reduced motion
-            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            // Если reduced motion - упрощаем анимации
+            if (this.isReducedMotion) {
                 console.log('♿ Reduced motion enabled, simplifying animations');
-                // Показываем только первый фон
-                this.setBackground(0);
-                return;
+                this.simplifyAnimations();
             }
             
             // Настраиваем обработку скролла
             this.setupScrollHandler();
             
-            // Первоначальная установка
-            this.setBackground(0);
+            // Инициализируем отслеживание секций
+            this.setupSectionTracking();
             
             // Помечаем body что параллакс инициализирован
             document.body.classList.add('parallax-initialized');
             
-            console.log(`✅ Background changer ready with ${this.backgrounds.length} backgrounds`);
+            console.log(`✅ Parallax scroll manager ready with ${this.layers.length} layers`);
         }
         
+        // УПРОЩЕНИЕ АНИМАЦИЙ ДЛЯ REDUCED MOTION
+        simplifyAnimations() {
+            this.layers.forEach(layer => {
+                layer.style.transition = 'opacity 0.3s ease';
+                layer.style.transform = 'none';
+            });
+        }
+        
+        // НАСТРОЙКА ОБРАБОТКИ СКРОЛЛА
         setupScrollHandler() {
-            var self = this;
-            var lastScrollY = this.getScrollY();
-            var ticking = false;
+            let ticking = false;
+            const self = this;
             
             function update() {
-                if (self.isAnimating) return;
+                const scrollY = window.pageYOffset || 
+                              document.documentElement.scrollTop || 
+                              document.body.scrollTop || 0;
                 
-                var scrollY = self.getScrollY();
-                var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+                // Вычисляем разницу скролла
+                const scrollDelta = Math.abs(scrollY - self.lastScrollY);
                 
-                // Определяем какой фон показывать на основе скролла
-                var newBgIndex = 0;
-                
-                // Для 4 фонов - настройте эти значения по необходимости
-                var scrollThresholds = [
-                    windowHeight * 0.5,    // Переход к bg-2
-                    windowHeight * 1.3,    // Переход к bg-3  
-                    windowHeight * 2.3,    // Переход к bg-4
-                    windowHeight * 3.5     // Возврат к bg-1
-                ];
-                
-                if (scrollY < scrollThresholds[0]) {
-                    newBgIndex = 0; // bg-1
-                } else if (scrollY >= scrollThresholds[0] && scrollY < scrollThresholds[1]) {
-                    newBgIndex = 1; // bg-2
-                } else if (scrollY >= scrollThresholds[1] && scrollY < scrollThresholds[2]) {
-                    newBgIndex = 2; // bg-3
-                } else if (scrollY >= scrollThresholds[2] && scrollY < scrollThresholds[3]) {
-                    newBgIndex = 3; // bg-4
-                } else {
-                    newBgIndex = 0; // bg-1 (вернулись в начало)
+                // Обновляем только если достаточно прокрутили
+                if (scrollDelta > self.scrollThreshold || scrollY < 100) {
+                    self.lastScrollY = scrollY;
+                    
+                    // Определяем индекс фона на основе скролла
+                    const newIndex = self.calculateBackgroundIndex(scrollY);
+                    
+                    // Переключаем фон если нужно
+                    if (newIndex !== self.currentIndex && !self.isAnimating) {
+                        self.switchToLayer(newIndex);
+                    }
                 }
                 
-                if (newBgIndex !== self.currentBgIndex) {
-                    self.setBackground(newBgIndex);
-                }
-                
-                lastScrollY = scrollY;
                 ticking = false;
             }
             
@@ -201,83 +182,175 @@ console.log('🎯 parallax.js loaded - FIXED VERSION (4 backgrounds)');
             // Обработка ресайза
             window.addEventListener('resize', function() {
                 self.isMobile = self.checkIsMobile();
+                self.lastScrollY = window.pageYOffset || 
+                                 document.documentElement.scrollTop || 
+                                 document.body.scrollTop || 0;
             }, { passive: true });
         }
         
-        setBackground(index) {
-            if (this.isAnimating || index === this.currentBgIndex || index >= this.backgrounds.length) {
+        // ВЫЧИСЛЕНИЕ ИНДЕКСА ФОНА НА ОСНОВЕ СКРОЛЛА
+        calculateBackgroundIndex(scrollY) {
+            const windowHeight = window.innerHeight || 
+                               document.documentElement.clientHeight || 
+                               document.body.clientHeight;
+            
+            // Как на speckdesign.com - переключение на основе позиции скролла
+            // Настройте эти значения под вашу страницу
+            
+            // Позиции переключения (в пикселях от верха)
+            const switchPoints = [
+                0,                          // 0% - начало страницы
+                windowHeight * 0.8,         // 80% высоты окна
+                windowHeight * 1.8,         // 180% высоты окна  
+                windowHeight * 2.8,         // 280% высоты окна
+                windowHeight * 10           // Конец (для возврата)
+            ];
+            
+            // Определяем текущий индекс
+            if (scrollY < switchPoints[1]) {
+                return 0; // Первый фон
+            } else if (scrollY >= switchPoints[1] && scrollY < switchPoints[2]) {
+                return 1; // Второй фон
+            } else if (scrollY >= switchPoints[2] && scrollY < switchPoints[3]) {
+                return 2; // Третий фон
+            } else if (scrollY >= switchPoints[3] && scrollY < switchPoints[4]) {
+                return 3; // Четвертый фон
+            } else {
+                return 0; // Возвращаемся к первому
+            }
+        }
+        
+        // ОТСЛЕЖИВАНИЕ СЕКЦИЙ ДЛЯ ТОЧНОГО ПЕРЕКЛЮЧЕНИЯ
+        setupSectionTracking() {
+            if (!this.sections.length) {
+                console.log('⚠️ No sections with data-bg-index found');
+                return;
+            }
+            
+            console.log(`🎯 Found ${this.sections.length} sections for tracking`);
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: this.isMobile ? 0.1 : 0.3
+            };
+            
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bgIndex = parseInt(entry.target.getAttribute('data-bg-index')) || 0;
+                        
+                        if (bgIndex !== this.currentIndex && !this.isAnimating) {
+                            console.log(`🎯 Section entered view: switching to background ${bgIndex + 1}`);
+                            this.switchToLayer(bgIndex);
+                        }
+                    }
+                });
+            }, observerOptions);
+            
+            // Наблюдаем за всеми секциями
+            this.sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+        }
+        
+        // ПЕРЕКЛЮЧЕНИЕ НА ОПРЕДЕЛЕННЫЙ СЛОЙ
+        switchToLayer(index) {
+            if (this.isAnimating || index === this.currentIndex || index >= this.layers.length) {
                 return;
             }
             
             this.isAnimating = true;
-            this.currentBgIndex = index;
+            const oldIndex = this.currentIndex;
+            this.currentIndex = index;
             
-            console.log(`🎨 Changing to background #${index + 1}`);
+            console.log(`🎨 Switching from background ${oldIndex + 1} to ${index + 1}`);
             
-            // Убираем active класс со всех фонов
-            for (var i = 0; i < this.backgrounds.length; i++) {
-                this.backgrounds[i].classList.remove('active');
-                this.backgrounds[i].style.zIndex = '0';
+            // Находим старый и новый слои
+            const oldLayer = this.layers[oldIndex];
+            const newLayer = this.layers[index];
+            
+            if (!newLayer) {
+                console.warn(`⚠️ Layer ${index} not found`);
+                this.isAnimating = false;
+                return;
             }
             
-            // Добавляем active класс к текущему фону
-            var targetBg = this.backgrounds[index];
-            if (targetBg) {
-                targetBg.classList.add('active');
-                targetBg.style.zIndex = '2';
+            // Убираем активный класс со старого слоя
+            if (oldLayer) {
+                oldLayer.classList.remove('active');
+                oldLayer.style.zIndex = '0';
                 
-                // Плавное появление
+                // Плавно скрываем старый слой
                 setTimeout(() => {
-                    targetBg.style.opacity = '1';
-                }, 10);
+                    oldLayer.style.opacity = '0';
+                }, 50);
             }
             
-            // Плавно скрываем неактивные фоны
-            for (var i = 0; i < this.backgrounds.length; i++) {
-                if (i !== index) {
-                    this.backgrounds[i].style.opacity = '0';
-                }
-            }
+            // Добавляем активный класс к новому слою
+            newLayer.classList.add('active');
+            newLayer.style.zIndex = '1';
+            
+            // Плавно показываем новый слой
+            setTimeout(() => {
+                newLayer.style.opacity = '1';
+            }, 100);
             
             // Сбрасываем флаг анимации
-            var self = this;
+            const self = this;
             setTimeout(function() {
                 self.isAnimating = false;
-            }, 800);
+                console.log(`✅ Background switched to ${index + 1}`);
+            }, this.isReducedMotion ? 300 : 1200);
+        }
+        
+        // РУЧНОЕ ПЕРЕКЛЮЧЕНИЕ (для отладки)
+        goToLayer(index) {
+            this.switchToLayer(index);
+        }
+        
+        nextLayer() {
+            const nextIndex = (this.currentIndex + 1) % this.layers.length;
+            this.switchToLayer(nextIndex);
+        }
+        
+        prevLayer() {
+            const prevIndex = (this.currentIndex - 1 + this.layers.length) % this.layers.length;
+            this.switchToLayer(prevIndex);
         }
     }
     
-    // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ DOM
-    function initializeParallax() {
-        console.log('🏁 Starting parallax initialization...');
+    // ===== ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ =====
+    function initializeParallaxSystem() {
+        console.log('🏁 Starting parallax system initialization...');
         
         // Проверяем, есть ли параллакс элементы на странице
-        var parallaxBackgrounds = document.querySelectorAll('.parallax-bg');
+        const parallaxLayers = document.querySelectorAll('.parallax-layer');
         
-        if (!parallaxBackgrounds.length) {
-            console.log('⚠️ No parallax backgrounds found on this page');
+        if (!parallaxLayers.length) {
+            console.log('⚠️ No parallax layers found on this page');
             return;
         }
         
-        console.log(`🎯 Found ${parallaxBackgrounds.length} parallax backgrounds`);
+        console.log(`🎯 Found ${parallaxLayers.length} parallax layers`);
         
-        // ГАРАНТИЯ: Показываем первый фон сразу (даже до JS)
-        const firstBg = document.getElementById('parallax-bg-1');
-        if (firstBg) {
+        // ГАРАНТИЯ: Показываем первый слой сразу (даже до JS)
+        const firstLayer = document.querySelector('.parallax-layer');
+        if (firstLayer) {
             // Устанавливаем стили напрямую
-            firstBg.style.backgroundImage = "url('./assets/images/parallax/bg-1.jpg')";
-            firstBg.style.backgroundSize = 'cover';
-            firstBg.style.backgroundPosition = 'center center';
-            firstBg.style.backgroundRepeat = 'no-repeat';
-            firstBg.style.opacity = '1';
-            firstBg.style.zIndex = '1';
-            firstBg.classList.add('active');
+            firstLayer.style.backgroundImage = "url('assets/images/parallax/bg-1.jpg')";
+            firstLayer.style.backgroundSize = 'cover';
+            firstLayer.style.backgroundPosition = 'center center';
+            firstLayer.style.backgroundRepeat = 'no-repeat';
+            firstLayer.style.opacity = '1';
+            firstLayer.style.zIndex = '1';
+            firstLayer.classList.add('active');
             
-            console.log('✅ First background guaranteed visible');
+            console.log('✅ First layer guaranteed visible');
         }
         
         // Гарантируем видимость контейнера
-        const container = document.querySelector('.parallax-bg-container');
+        const container = document.getElementById('parallax-container');
         if (container) {
             container.style.display = 'block';
             container.style.opacity = '1';
@@ -286,16 +359,16 @@ console.log('🎯 parallax.js loaded - FIXED VERSION (4 backgrounds)');
         
         // Инициализируем параллакс систему
         try {
-            window.parallaxInstance = new ScrollBackgroundChanger();
-            console.log(`✅ Parallax system initialized with ${parallaxBackgrounds.length} backgrounds`);
+            window.parallaxManager = new ParallaxScrollManager();
+            console.log(`✅ Parallax system initialized with ${parallaxLayers.length} layers`);
         } catch (error) {
             console.error('❌ Error initializing parallax system:', error);
             
-            // Fallback: показываем только первый фон
-            if (firstBg) {
-                firstBg.style.opacity = '1';
-                firstBg.style.zIndex = '1';
-                firstBg.classList.add('active');
+            // Fallback: показываем только первый слой
+            if (firstLayer) {
+                firstLayer.style.opacity = '1';
+                firstLayer.style.zIndex = '1';
+                firstLayer.classList.add('active');
             }
             
             // Добавляем класс для отладки
@@ -303,34 +376,31 @@ console.log('🎯 parallax.js loaded - FIXED VERSION (4 backgrounds)');
         }
     }
     
+    // ===== ГАРАНТИРОВАННЫЙ ЗАПУСК =====
+    
     // Ждем загрузки DOM
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeParallax);
+        document.addEventListener('DOMContentLoaded', initializeParallaxSystem);
     } else {
-        initializeParallax();
-    }
-    
-    // Глобальный экспорт
-    if (typeof window !== 'undefined') {
-        window.ScrollBackgroundChanger = ScrollBackgroundChanger;
+        initializeParallaxSystem();
     }
     
     // АВТОМАТИЧЕСКИЙ FALLBACK - проверяем через 3 секунды
     window.addEventListener('load', function() {
-        console.log('🌅 Page fully loaded, checking backgrounds...');
+        console.log('🌅 Page fully loaded, checking parallax...');
         
         setTimeout(function() {
-            const firstBg = document.getElementById('parallax-bg-1');
-            if (firstBg) {
-                const computedStyle = window.getComputedStyle(firstBg);
+            const firstLayer = document.querySelector('.parallax-layer');
+            if (firstLayer) {
+                const computedStyle = window.getComputedStyle(firstLayer);
                 const isVisible = computedStyle.opacity === '1' || computedStyle.opacity === '1.0';
                 
                 if (!isVisible) {
-                    console.log('🚨 EMERGENCY: Background not visible after 3 seconds!');
+                    console.log('🚨 EMERGENCY: Parallax layer not visible after 3 seconds!');
                     
                     // Применяем nuclear fix
-                    firstBg.style.cssText = `
-                        background-image: url('./assets/images/parallax/bg-1.jpg') !important;
+                    firstLayer.style.cssText = `
+                        background-image: url('assets/images/parallax/bg-1.jpg') !important;
                         background-size: cover !important;
                         background-position: center center !important;
                         background-repeat: no-repeat !important;
@@ -345,8 +415,10 @@ console.log('🎯 parallax.js loaded - FIXED VERSION (4 backgrounds)');
                         visibility: visible !important;
                     `;
                     
+                    firstLayer.classList.add('active');
+                    
                     // Гарантируем что контейнер виден
-                    const container = document.querySelector('.parallax-bg-container');
+                    const container = document.getElementById('parallax-container');
                     if (container) {
                         container.style.cssText = `
                             display: block !important;
@@ -357,18 +429,23 @@ console.log('🎯 parallax.js loaded - FIXED VERSION (4 backgrounds)');
                             left: 0 !important;
                             width: 100% !important;
                             height: 100% !important;
-                            z-index: -1 !important;
+                            z-index: -100 !important;
                         `;
                     }
                     
-                    document.body.classList.add('background-failed', 'emergency-fix-applied');
+                    document.body.classList.add('parallax-failed', 'emergency-fix-applied');
                 } else {
-                    console.log('✅ Backgrounds are visible, everything is OK');
-                    document.body.classList.add('backgrounds-ok');
+                    console.log('✅ Parallax is visible, everything is OK');
+                    document.body.classList.add('parallax-ok');
                 }
             }
         }, 3000);
     });
     
-    console.log('✅ parallax.js loaded and ready');
+    // ===== ГЛОБАЛЬНЫЙ ЭКСПОРТ =====
+    if (typeof window !== 'undefined') {
+        window.ParallaxScrollManager = ParallaxScrollManager;
+    }
+    
+    console.log('✅ parallax.js loaded and ready for scroll-based switching');
 })();
