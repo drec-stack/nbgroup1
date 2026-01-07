@@ -1,4 +1,4 @@
-/* parallax.css - ПОЛНОСТЬЮ РАБОЧАЯ ВЕРСИЯ С ПЕРЕКЛЮЧЕНИЕМ ПРИ СКРОЛЛЕ - БЕЗ ЗАТЕМНЕНИЯ */
+/* parallax.css - ПОЛНОСТЬЮ РАБОЧАЯ ВЕРСИЯ БЕЗ ЧЕРНЫХ ОВЕРЛЕЕВ */
 
 /* ===== PARALLAX CONTAINER ===== */
 .parallax-container {
@@ -24,7 +24,7 @@
     will-change: transform;
 }
 
-/* Каждый слой параллакса */
+/* Каждый слой параллакса - БЕЗ ЗАТЕМНЕНИЯ */
 .parallax-layer {
     position: absolute !important;
     top: 0 !important;
@@ -42,7 +42,7 @@
     opacity: 0 !important;
     transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
     
-    /* ОПТИМИЗАЦИЯ */
+    /* ОПТИМИЗАЦИЯ И ЯРКОСТЬ */
     image-rendering: -webkit-optimize-contrast !important;
     image-rendering: crisp-edges !important;
     -webkit-backface-visibility: hidden !important;
@@ -51,30 +51,28 @@
     transform: translateZ(0) !important;
     will-change: opacity !important;
     
-    /* Эффект масштабирования как на speckdesign.com */
+    /* Эффект масштабирования */
     transform: scale(1.05);
     transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
                 transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    
+    /* ВАЖНО: УБИРАЕМ ВСЕ ПСЕВДОЭЛЕМЕНТЫ ДЛЯ ЗАТЕМНЕНИЯ */
 }
 
-/* Активный слой */
+/* УДАЛЯЕМ ВСЕ ::after и ::before которые создают черный фон */
+.parallax-layer::before,
+.parallax-layer::after {
+    display: none !important;
+    content: none !important;
+    background: transparent !important;
+}
+
+/* Активный слой - ЯРКИЙ БЕЗ ЗАТЕМНЕНИЯ */
 .parallax-layer.active {
     opacity: 1 !important;
     z-index: 1 !important;
     transform: scale(1) !important;
-}
-
-/* КОММЕНТИРУЕМ ИЛИ УДАЛЯЕМ ВЕСЬ OVERLAY - ЧТОБЫ ФОТО БЫЛИ ЯРКИМИ */
-.parallax-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* ПОЛНОСТЬЮ УДАЛЯЕМ ФОН - ТЕПЕРЬ ПРОЗРАЧНЫЙ */
-    background: transparent !important;
-    z-index: 2;
-    pointer-events: none;
+    filter: brightness(1.1) !important; /* Слегка увеличиваем яркость */
 }
 
 /* ===== HERO SECTION STYLES ===== */
@@ -122,7 +120,7 @@
     opacity: 1 !important;
 }
 
-/* Усиление тени для лучшей читаемости на светлых фонах */
+/* Усиление тени для лучшей читаемости */
 .parallax-content h1 {
     text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6) !important;
 }
@@ -193,11 +191,6 @@
         transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
     }
     
-    /* НИКАКОГО ЗАТЕМНЕНИЯ НА МОБИЛЬНЫХ */
-    .parallax-overlay {
-        background: transparent !important;
-    }
-    
     .parallax-hero {
         padding: 180px 0 100px;
     }
@@ -225,11 +218,6 @@
         padding: 140px 0 80px;
     }
     
-    /* НИКАКОГО ЗАТЕМНЕНИЯ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ */
-    .parallax-overlay {
-        background: transparent !important;
-    }
-    
     .content-section {
         padding: 80px 0 !important;
     }
@@ -251,21 +239,6 @@
 
 .no-js .parallax-layer:not(:first-child) {
     display: none !important;
-}
-
-/* Для старых браузеров без CSS transforms */
-.no-css-transforms .parallax-layer {
-    transform: none !important;
-    transition: opacity 0.8s ease !important;
-}
-
-/* Для Internet Explorer */
-.is-ie .parallax-container {
-    position: absolute !important;
-}
-
-.is-ie .parallax-layer {
-    background-attachment: scroll !important;
 }
 
 /* ===== PREFERS-REDUCED-MOTION SUPPORT ===== */
@@ -304,13 +277,6 @@
     }
 }
 
-/* Chrome/Edge оптимизация */
-@media screen and (-webkit-min-device-pixel-ratio: 2) {
-    .parallax-layer {
-        image-rendering: -webkit-optimize-contrast !important;
-    }
-}
-
 /* Гарантируем качество на HiDPI экранах */
 @media (min-resolution: 192dpi) {
     .parallax-layer {
@@ -335,10 +301,17 @@
     z-index: 20 !important;
 }
 
-/* УДАЛЯЕМ ДОПОЛНИТЕЛЬНОЕ ЗАТЕМНЕНИЕ ДЛЯ СВЕТЛЫХ ФОНОВ */
-/* .parallax-layer::after { ... } - КОММЕНТИРУЕМ ВЕСЬ ЭТОТ БЛОК */
+/* ФИНАЛЬНЫЙ ФИКС: Убираем любой черный overlay */
+.parallax-layer::after {
+    display: none !important;
+}
 
 /* Гарантируем яркие чистые фоны */
 .parallax-layer {
     background-color: transparent !important;
+}
+
+/* Усиливаем яркость для всех фонов */
+.parallax-layer.active {
+    filter: brightness(1.15) saturate(1.05) !important;
 }
