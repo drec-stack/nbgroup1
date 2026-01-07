@@ -1,8 +1,6 @@
-// ============================================================================
-// about.js - WORKING VERSION WITH SVG PLACEHOLDERS
-// ============================================================================
+// about.js - FINAL VERSION WITH REAL TEAM PHOTOS
 
-console.log('🚀 about.js loaded - WORKING VERSION');
+console.log('🚀 about.js loaded - REAL TEAM PHOTOS VERSION');
 
 // Safe DOM operations wrapper
 const safe = {
@@ -79,87 +77,216 @@ const safe = {
     }
 };
 
-// ============================================================================
-// TEAM PHOTOS ANIMATIONS (USING SVG PLACEHOLDERS)
-// ============================================================================
 
-function animateTeamPhotos() {
-    console.log('🎭 Animating team photos...');
+// TEAM PHOTOS MANAGEMENT - REAL PHOTOS
+
+
+function initTeamPhotos() {
+    console.log('🖼️ Initializing team photos...');
     
     const teamMembers = safe.getAll('.team-member');
-    const memberPhotos = safe.getAll('.member-photo svg');
+    const memberPhotos = safe.getAll('.member-photo img');
     
     console.log(`👥 Found ${teamMembers.length} team members`);
-    console.log(`🖼️ Found ${memberPhotos.length} SVG photos`);
+    console.log(`📸 Found ${memberPhotos.length} team photos`);
     
-    if (teamMembers.length === 0) return;
+    if (memberPhotos.length === 0) {
+        console.warn('⚠️ No team photos found, using fallback');
+        setupFallbackPhotos();
+        return;
+    }
     
-    // Animate each member with delay
-    teamMembers.forEach((member, index) => {
-        if (!member) return;
+    // Preload images with fallback handling
+    preloadTeamPhotos(memberPhotos);
+    
+    // Setup photo interactions
+    setupPhotoInteractions(teamMembers);
+    
+    // Animate photos on load
+    animatePhotosOnLoad(memberPhotos);
+}
+
+function preloadTeamPhotos(photos) {
+    photos.forEach((img, index) => {
+        if (!img || !img.src) return;
         
-        setTimeout(() => {
-            // Add animation class
-            safe.addClass(member, 'animated');
-            
-            // Animate SVG photo
-            const photo = member.querySelector('.member-photo svg');
-            if (photo) {
-                safe.setStyle(photo, {
+        // Mark as loading
+        const container = img.parentElement;
+        if (container) {
+            safe.addClass(container, 'loading');
+        }
+        
+        // Preload image
+        const preloadImg = new Image();
+        preloadImg.src = img.src;
+        
+        preloadImg.onload = () => {
+            console.log(`✅ Photo ${index + 1} loaded successfully: ${img.src}`);
+            if (container) {
+                safe.removeClass(container, 'loading');
+                safe.setStyle(img, {
                     opacity: '1',
                     transform: 'scale(1)',
                     transition: 'all 0.6s ease'
                 });
-                
-                // Animate the gradient
-                animateSVGGradient(photo, index);
             }
-            
-            console.log(`✨ Animated team member ${index + 1}`);
-        }, index * 200);
+        };
+        
+        preloadImg.onerror = () => {
+            console.error(`❌ Failed to load photo: ${img.src}`);
+            if (container) {
+                safe.removeClass(container, 'loading');
+                // Fallback will be handled by onerror attribute in HTML
+            }
+        };
     });
 }
 
-function animateSVGGradient(svgElement, index) {
-    if (!svgElement) return;
+function setupFallbackPhotos() {
+    const photoContainers = safe.getAll('.member-photo');
     
-    try {
-        // Get circle element
-        const circle = svgElement.querySelector('circle');
-        if (!circle) return;
-        
-        // Пульсирующая анимация - используем let для изменяемых переменных
-        let scale = 1;
-        let direction = 1;
-        
-        const pulse = () => {
-            if (!svgElement) return;
-            
-            scale += 0.002 * direction;
-            if (scale > 1.02) direction = -1;
-            if (scale < 0.98) direction = 1;
-            
-            safe.setStyle(svgElement, {
-                transform: `scale(${scale})`,
-                transition: 'transform 2s ease-in-out'
-            });
-            
-            setTimeout(pulse, 50);
-        };
-        
-        // Start pulsing after delay
-        setTimeout(() => {
-            pulse();
-        }, 1000 + (index * 500));
-        
-    } catch (error) {
-        console.error('❌ Error animating SVG gradient:', error);
-    }
+    photoContainers.forEach((container, index) => {
+        if (!container.querySelector('svg')) {
+            const initials = ['SN', 'UI', 'EK'][index] || 'TM';
+            container.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+                    <defs>
+                        <linearGradient id="grad${initials}" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#00aaff;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="120" cy="120" r="118" fill="url(#grad${initials})" stroke="#00aaff" stroke-width="4"/>
+                    <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="80" 
+                          fill="white" text-anchor="middle" dy="0.35em" font-weight="bold">
+                        ${initials}
+                    </text>
+                </svg>
+            `;
+        }
+    });
 }
 
-// ============================================================================
+function setupPhotoInteractions(teamMembers) {
+    const isMobile = window.innerWidth <= 768;
+    
+    teamMembers.forEach((member, index) => {
+        if (!member) return;
+        
+        const photoContainer = member.querySelector('.member-photo');
+        const img = member.querySelector('.member-photo img');
+        
+        if (!photoContainer) return;
+        
+        // Desktop hover effects
+        if (!isMobile) {
+            safe.on(member, 'mouseenter', function() {
+                safe.setStyle(this, {
+                    transform: 'translateY(-10px)',
+                    boxShadow: '0 20px 40px rgba(0, 102, 255, 0.3)',
+                    transition: 'all 0.3s ease'
+                });
+                
+                if (img) {
+                    safe.setStyle(img, {
+                        transform: 'scale(1.05)',
+                        transition: 'transform 0.4s ease'
+                    });
+                }
+                
+                // Animate social icons
+                const socialIcons = this.querySelectorAll('.member-social a');
+                socialIcons.forEach((icon, i) => {
+                    setTimeout(() => {
+                        safe.setStyle(icon, {
+                            transform: 'translateY(-5px)',
+                            transition: 'transform 0.3s ease'
+                        });
+                    }, i * 100);
+                });
+            });
+            
+            safe.on(member, 'mouseleave', function() {
+                safe.setStyle(this, {
+                    transform: 'translateY(0)',
+                    boxShadow: 'none'
+                });
+                
+                if (img) {
+                    safe.setStyle(img, {
+                        transform: 'scale(1)'
+                    });
+                }
+                
+                // Reset social icons
+                const socialIcons = this.querySelectorAll('.member-social a');
+                socialIcons.forEach(icon => {
+                    safe.setStyle(icon, { transform: 'translateY(0)' });
+                });
+            });
+        }
+        
+        // Mobile touch effects
+        if (isMobile) {
+            safe.on(photoContainer, 'touchstart', function(e) {
+                e.preventDefault();
+                safe.setStyle(this, {
+                    transform: 'scale(0.95)'
+                });
+                if (img) {
+                    safe.setStyle(img, {
+                        transform: 'scale(0.98)'
+                    });
+                }
+            });
+            
+            safe.on(photoContainer, 'touchend', function() {
+                safe.setStyle(this, {
+                    transform: 'scale(1)'
+                });
+                if (img) {
+                    safe.setStyle(img, {
+                        transform: 'scale(1)'
+                    });
+                }
+            });
+        }
+    });
+}
+
+function animatePhotosOnLoad(photos) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    if (entry.target) {
+                        safe.setStyle(entry.target, {
+                            opacity: '1',
+                            transform: 'scale(1)',
+                            transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                        });
+                    }
+                }, index * 200);
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    photos.forEach(photo => {
+        if (photo) {
+            safe.setStyle(photo, {
+                opacity: '0',
+                transform: 'scale(0.9)'
+            });
+            observer.observe(photo);
+        }
+    });
+}
+
+
 // HEADER SETUP FOR ABOUT PAGE
-// ============================================================================
+
 
 function setupHeaderForAboutPage() {
     console.log('🔧 Setting up header for about page...');
@@ -188,19 +315,19 @@ function setupHeaderForAboutPage() {
     }
 }
 
-// ============================================================================
+
 // MAIN INITIALIZATION FUNCTION
-// ============================================================================
+
 
 function initAbout() {
-    console.log('🎯 Initializing about page...');
+    console.log('🎯 Initializing about page with real photos...');
     
     try {
         // 1. Setup header
         setupHeaderForAboutPage();
         
-        // 2. Animate team photos (SVG placeholders)
-        animateTeamPhotos();
+        // 2. Initialize team photos (REAL PHOTOS)
+        initTeamPhotos();
         
         // 3. Setup page functionalities
         setupPageFunctionalities();
@@ -208,33 +335,30 @@ function initAbout() {
         // 4. Start content animations
         startContentAnimations();
         
-        console.log('✅ About page fully initialized');
+        console.log('✅ About page fully initialized with real photos');
     } catch (error) {
         console.error('❌ Error in initAbout:', error);
     }
 }
 
-// ============================================================================
+
 // PAGE FUNCTIONALITIES SETUP
-// ============================================================================
+
 
 function setupPageFunctionalities() {
     console.log('⚙️ Setting up page functionalities...');
     
     try {
-        // 1. Team member interactions
-        setupTeamMemberInteractions();
-        
-        // 2. Story statistics animation
+        // 1. Story statistics animation
         setupStoryStats();
         
-        // 3. Service cards animation
+        // 2. Service cards animation
         setupServiceCards();
         
-        // 4. CTA button effects
+        // 3. CTA button effects
         setupCTAEffects();
         
-        // 5. Scroll animations
+        // 4. Scroll animations
         setupScrollAnimations();
         
         console.log('✅ All page functionalities initialized');
@@ -243,94 +367,9 @@ function setupPageFunctionalities() {
     }
 }
 
-// ============================================================================
-// TEAM MEMBER INTERACTIONS
-// ============================================================================
 
-function setupTeamMemberInteractions() {
-    const teamMembers = safe.getAll('.team-member');
-    const isMobile = window.innerWidth <= 768;
-    
-    console.log(`👥 Setting up interactions for ${teamMembers.length} team members`);
-    
-    teamMembers.forEach((member, index) => {
-        if (!member) return;
-        
-        // Desktop hover effects
-        if (!isMobile) {
-            safe.on(member, 'mouseenter', function() {
-                safe.setStyle(this, {
-                    transform: 'translateY(-10px)',
-                    boxShadow: '0 20px 40px rgba(0, 102, 255, 0.3)',
-                    transition: 'all 0.3s ease'
-                });
-                
-                // Animate SVG photo
-                const svg = this.querySelector('.member-photo svg');
-                if (svg) {
-                    safe.setStyle(svg, {
-                        transform: 'scale(1.1) rotate(5deg)',
-                        transition: 'all 0.4s ease'
-                    });
-                }
-                
-                // Animate social icons
-                const socialIcons = this.querySelectorAll('.member-social a');
-                socialIcons.forEach((icon, i) => {
-                    setTimeout(() => {
-                        safe.setStyle(icon, {
-                            transform: 'translateY(-5px)',
-                            transition: 'transform 0.3s ease'
-                        });
-                    }, i * 100);
-                });
-            });
-            
-            safe.on(member, 'mouseleave', function() {
-                safe.setStyle(this, {
-                    transform: 'translateY(0)',
-                    boxShadow: 'none'
-                });
-                
-                // Reset SVG photo
-                const svg = this.querySelector('.member-photo svg');
-                if (svg) {
-                    safe.setStyle(svg, {
-                        transform: 'scale(1) rotate(0deg)'
-                    });
-                }
-                
-                // Reset social icons
-                const socialIcons = this.querySelectorAll('.member-social a');
-                socialIcons.forEach(icon => {
-                    safe.setStyle(icon, { transform: 'translateY(0)' });
-                });
-            });
-        }
-        
-        // Mobile touch effects
-        if (isMobile) {
-            safe.on(member, 'touchstart', function(e) {
-                e.preventDefault();
-                safe.setStyle(this, {
-                    transform: 'scale(0.98)',
-                    opacity: '0.9'
-                });
-            });
-            
-            safe.on(member, 'touchend', function() {
-                safe.setStyle(this, {
-                    transform: 'scale(1)',
-                    opacity: '1'
-                });
-            });
-        }
-    });
-}
-
-// ============================================================================
 // STORY STATISTICS ANIMATION
-// ============================================================================
+
 
 function setupStoryStats() {
     const storyStats = safe.getAll('.story-stat');
@@ -416,9 +455,9 @@ function animateCounter(element) {
     }
 }
 
-// ============================================================================
+
 // SERVICE CARDS ANIMATIONS
-// ============================================================================
+
 
 function setupServiceCards() {
     const serviceCards = safe.getAll('.speck-service-card');
@@ -467,9 +506,9 @@ function setupServiceCards() {
     });
 }
 
-// ============================================================================
+
 // CTA EFFECTS
-// ============================================================================
+
 
 function setupCTAEffects() {
     const ctaButton = safe.get('.about-cta .btn');
@@ -532,9 +571,8 @@ function setupCTAEffects() {
     }
 }
 
-// ============================================================================
 // SCROLL ANIMATIONS
-// ============================================================================
+
 
 function setupScrollAnimations() {
     const sections = safe.getAll('section');
@@ -560,9 +598,7 @@ function setupScrollAnimations() {
     });
 }
 
-// ============================================================================
 // CONTENT ANIMATIONS
-// ============================================================================
 
 function startContentAnimations() {
     console.log('🎭 Starting content animations...');
@@ -600,9 +636,8 @@ function startContentAnimations() {
     }
 }
 
-// ============================================================================
 // MOBILE OPTIMIZATIONS
-// ============================================================================
+
 
 function setupMobileOptimizations() {
     const isMobile = window.innerWidth <= 768;
@@ -632,9 +667,7 @@ function setupMobileOptimizations() {
     }
 }
 
-// ============================================================================
 // INITIALIZATION AND EVENT HANDLERS
-// ============================================================================
 
 // DOM Ready initialization
 document.addEventListener('DOMContentLoaded', function() {
@@ -652,6 +685,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Export for global access
 window.initAbout = initAbout;
-window.animateTeamPhotos = animateTeamPhotos;
+window.initTeamPhotos = initTeamPhotos;
 
-console.log('✅ about.js fully loaded');
+console.log('✅ about.js fully loaded - REAL TEAM PHOTOS VERSION');
