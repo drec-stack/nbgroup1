@@ -1,4 +1,4 @@
-/* parallax.css - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ И КРОССБРАУЗЕРНОСТИ */
+/* parallax.css - ИСПРАВЛЕННАЯ ВЕРСИЯ ДЛЯ 4 ФОНОВ */
 
 /* Базовые стили для контейнера */
 .parallax-bg-container {
@@ -14,6 +14,9 @@
     transform: translateZ(0);
     backface-visibility: hidden;
     will-change: transform;
+    opacity: 1;
+    visibility: visible;
+    display: block !important;
 }
 
 /* Основной стиль для фоновых изображений */
@@ -24,11 +27,11 @@
     width: 100%;
     height: 100%;
     
-    /* Настройки для качества - БЕЗ !important */
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed; /* Оставляем fixed для поддерживающих браузеров */
+    /* НАСТРОЙКИ ДЛЯ КАЧЕСТВА */
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll;
     
     /* Оптимизация качества изображения */
     image-rendering: -webkit-optimize-contrast;
@@ -49,35 +52,33 @@
     will-change: opacity;
 }
 
-/* Fallback для браузеров без поддержки */
-.no-css-transforms .parallax-bg-container,
-.no-parallax .parallax-bg-container {
-    display: none;
-}
-
-.is-ie .parallax-bg-container {
-    display: none !important;
-}
-
+/* АКТИВНЫЙ ФОН */
 .parallax-bg.active {
-    opacity: 1;
+    opacity: 1 !important;
+    z-index: 1 !important;
+}
+
+/* ПЕРВЫЙ ФОН ВСЕГДА АКТИВЕН ПО УМОЛЧАНИЮ */
+#parallax-bg-1 {
+    opacity: 1 !important;
+    z-index: 1 !important;
 }
 
 /* Конкретные фоновые изображения */
 #parallax-bg-1 { 
-    background-image: url('../assets/images/parallax/bg-1.jpg');
+    background-image: url('../assets/images/parallax/bg-1.jpg') !important;
 }
 
 #parallax-bg-2 { 
-    background-image: url('../assets/images/parallax/bg-2.jpg');
+    background-image: url('../assets/images/parallax/bg-2.jpg') !important;
 }
 
 #parallax-bg-3 { 
-    background-image: url('../assets/images/parallax/bg-3.jpg');
+    background-image: url('../assets/images/parallax/bg-3.jpg') !important;
 }
 
 #parallax-bg-4 { 
-    background-image: url('../assets/images/parallax/bg-4.jpg');
+    background-image: url('../assets/images/parallax/bg-4.jpg') !important;
 }
 
 /* Легкое затемнение для читаемости текста */
@@ -102,27 +103,6 @@
     position: relative;
     z-index: 2;
     overflow: hidden;
-}
-
-/* Fallback для IE */
-.is-ie .parallax-hero {
-    background: url('../assets/images/parallax/bg-1.jpg') center center/cover no-repeat;
-}
-
-.is-ie .parallax-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 1;
-}
-
-.is-ie .parallax-content {
-    position: relative;
-    z-index: 2;
 }
 
 .parallax-content {
@@ -196,36 +176,47 @@
     z-index: 1000;
 }
 
-/* ===== КРОССБРАУЗЕРНАЯ МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===== */
-@media (max-width: 1024px) {
-    .parallax-bg-container {
-        width: 100vw !important;
-        height: 100vh !important;
-        position: fixed !important;
-    }
-    
-    .parallax-bg {
-        background-attachment: scroll !important;
-        background-position: center center !important;
-        background-size: cover !important;
-        transition: opacity 0.4s ease !important;
-    }
-    
-    /* Улучшаем качество изображений на мобильных */
-    .parallax-bg::after {
-        background: rgba(0, 0, 0, 0.25) !important;
-    }
+/* ===== ГАРАНТИРОВАННЫЕ ФИКСЫ ДЛЯ ЧЕРНОГО ФОНА ===== */
+
+/* 1. ГАРАНТИЯ ВИДИМОСТИ КОНТЕЙНЕРА */
+.no-js .parallax-bg-container,
+.no-css-transforms .parallax-bg-container,
+.is-ie .parallax-bg-container {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
+/* 2. ГАРАНТИЯ ВИДИМОСТИ ПЕРВОГО ФОНА */
+.no-js #parallax-bg-1,
+.no-css-transforms #parallax-bg-1,
+.is-ie #parallax-bg-1 {
+    display: block !important;
+    opacity: 1 !important;
+    background-image: url('../assets/images/parallax/bg-1.jpg') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+}
+
+/* 3. СКРЫВАЕМ ОСТАЛЬНЫЕ ФОНЫ ЕСЛИ JS/TRANSFORMS НЕ РАБОТАЮТ */
+.no-js #parallax-bg-2,
+.no-js #parallax-bg-3,
+.no-js #parallax-bg-4,
+.no-css-transforms #parallax-bg-2,
+.no-css-transforms #parallax-bg-3,
+.no-css-transforms #parallax-bg-4 {
+    display: none !important;
+}
+
+/* 4. МОБИЛЬНАЯ ОПТИМИЗАЦИЯ */
 @media (max-width: 768px) {
-    /* Убираем горизонтальный скролл */
-    html, body {
-        max-width: 100vw;
-        overflow-x: hidden;
-        position: relative;
-    }
-    
-    /* Фиксируем контейнер фона */
     .parallax-bg-container {
         position: fixed !important;
         top: 0 !important;
@@ -235,7 +226,6 @@
         z-index: -1;
     }
     
-    /* Оптимизация фоновых изображений для мобильных */
     .parallax-bg {
         background-attachment: scroll !important;
         background-position: center center !important;
@@ -245,14 +235,6 @@
         left: 0 !important;
         top: 0 !important;
         position: absolute !important;
-        
-        /* Отключаем все эффекты, ухудшающие качество */
-        filter: none !important;
-        -webkit-filter: none !important;
-        
-        /* Гарантируем четкость */
-        image-rendering: -webkit-optimize-contrast !important;
-        -webkit-font-smoothing: antialiased !important;
     }
     
     /* Усиливаем затемнение фона для лучшей читаемости */
@@ -260,7 +242,6 @@
         background: rgba(0, 0, 0, 0.35) !important;
     }
     
-    /* Улучшаем читаемость текста */
     .parallax-content {
         text-align: center !important;
         padding: 25px 20px !important;
@@ -300,7 +281,6 @@
         border: 1px solid rgba(255, 255, 255, 0.3);
     }
     
-    /* Прозрачный фон для других секций */
     .content-section {
         padding: 60px 0 !important;
         background-color: transparent !important;
@@ -308,14 +288,6 @@
         z-index: 2;
     }
     
-    /* Убираем лишние отступы у контейнеров */
-    .container {
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-        max-width: 100% !important;
-    }
-    
-    /* Progress bar с прозрачностью */
     .scroll-progress {
         background: rgba(255, 255, 255, 0.05);
     }
@@ -351,21 +323,6 @@
     }
 }
 
-@media (max-width: 375px) {
-    .parallax-content h1 {
-        font-size: 1.8rem !important;
-    }
-    
-    .parallax-content p {
-        font-size: 0.95rem !important;
-    }
-    
-    .parallax-content {
-        padding: 15px 10px !important;
-        margin: 0 8px !important;
-    }
-}
-
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
     .parallax-bg {
@@ -384,43 +341,6 @@
     
     .parallax-bg-container {
         height: -webkit-fill-available !important;
-    }
-}
-
-/* Исправления для IE и старых браузеров */
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-    .parallax-bg-container {
-        position: absolute !important;
-        display: none !important;
-    }
-    
-    .parallax-hero {
-        height: auto;
-        min-height: 100vh;
-        background: url('../assets/images/parallax/bg-1.jpg') center center/cover no-repeat;
-    }
-    
-    .parallax-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-    }
-    
-    .parallax-content {
-        background: rgba(0, 0, 0, 0.5);
-        padding: 40px 20px;
-        position: relative;
-        z-index: 2;
-    }
-    
-    /* IE фикс качества изображений */
-    .parallax-bg {
-        image-rendering: auto !important;
-        -ms-interpolation-mode: bicubic !important;
     }
 }
 
@@ -457,23 +377,13 @@
 }
 
 /* Кроссбраузерные гарантии */
-.no-js .parallax-bg,
-.no-css-transforms .parallax-bg {
-    display: none;
+.no-js .parallax-bg:not(#parallax-bg-1),
+.no-css-transforms .parallax-bg:not(#parallax-bg-1) {
+    display: none !important;
 }
 
-.no-js .parallax-hero,
-.no-css-transforms .parallax-hero {
-    background: url('../assets/images/parallax/bg-1.jpg') center center/cover no-repeat;
-}
-
-.no-js .parallax-hero::before,
-.no-css-transforms .parallax-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+/* ГАРАНТИЯ: ТЕКСТ ВИДЕН НА ФОНЕ */
+.home-page .parallax-content * {
+    position: relative;
+    z-index: 10;
 }
