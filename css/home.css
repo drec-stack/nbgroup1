@@ -1,62 +1,4 @@
-/* home.css - С ФОНОВОЙ СИСТЕМОЙ ПАРАЛЛАКСА */
-
-/* ===== ФОНОВАЯ СИСТЕМА ===== */
-.bg-layers-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 1.5s ease;
-}
-
-.bg-layers-container.loaded {
-    opacity: 1;
-}
-
-.bg-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0;
-    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translateZ(0);
-    will-change: opacity, transform;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-}
-
-.bg-layer.active {
-    opacity: 1;
-}
-
-/* Эффект параллакса для фона */
-.bg-layer {
-    transform: translateY(0) scale(1.05);
-    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Эффект затемнения фона */
-.bg-layer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 1;
-}
+/* home.css - СТИЛИ ГЛАВНОЙ СТРАНИЦЫ БЕЗ ФОНОВОЙ СИСТЕМЫ */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -67,12 +9,10 @@
 
 html {
     scroll-behavior: smooth;
-    background-color: #0a0a0a !important;
 }
 
-body {
+body.home-page {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #0a0a0a !important;
     color: white;
     overflow-x: hidden;
     position: relative;
@@ -992,28 +932,6 @@ body {
     box-shadow: 
         0 20px 40px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* ===== АДАПТИВНОСТЬ ДЛЯ ФОНА ===== */
-@media (max-width: 768px) {
-    .bg-layer {
-        background-attachment: scroll !important;
-    }
-    
-    .bg-layers-container {
-        height: 100%;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .bg-layer {
-        transition: opacity 0.5s ease !important;
-        animation: none !important;
-    }
-    
-    .bg-layer {
-        transform: none !important;
-    }
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
