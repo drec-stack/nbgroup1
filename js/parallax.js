@@ -1,79 +1,104 @@
-// parallax.js - ЧИСТАЯ ВЕРСИЯ БЕЗ OVERLAY
+// parallax.js - СОВЕРШЕННО НОВАЯ СИСТЕМА СМЕНЫ ФОНОВ ПРИ СКРОЛЛЕ
 
-console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING WITHOUT OVERLAY');
+console.log('🎨 parallax.js loaded - ENHANCED BACKGROUND SWITCHING SYSTEM');
 
 (function() {
     'use strict';
     
-    // ===== PARALLAX SCROLL MANAGER =====
-    class ParallaxScrollManager {
+    // ===== УСОВЕРШЕНСТВОВАННЫЙ МЕНЕДЖЕР ФОНОВ =====
+    class EnhancedBackgroundManager {
         constructor() {
+            // Основные элементы
             this.layers = document.querySelectorAll('.parallax-layer');
-            this.container = document.getElementById('parallax-container');
             this.sections = document.querySelectorAll('[data-bg-index]');
             this.currentIndex = 0;
+            
+            // Состояние
             this.isAnimating = false;
             this.lastScrollY = 0;
-            this.scrollThreshold = 80;
-            this.isMobile = this.checkIsMobile();
-            this.isReducedMotion = window.matchMedia ? 
-                window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+            this.scrollThreshold = 50;
+            this.isMobile = this.checkIfMobile();
+            this.isReducedMotion = this.checkReducedMotion();
             
-            console.log(`🖼️ Found ${this.layers.length} parallax layers - NO OVERLAY`);
+            // Производительность
+            this.rafId = null;
+            this.lastScrollUpdate = 0;
+            this.scrollUpdateDelay = 16; // ~60fps
             
-            // Гарантируем что система работает
-            this.guaranteeVisibility();
+            console.log(`🖼️ Found ${this.layers.length} background layers`);
             
             // Инициализация
             this.init();
         }
         
-        checkIsMobile() {
-            var width = window.innerWidth || document.documentElement.clientWidth;
-            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            var mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+        // ===== МЕТОДЫ ИНИЦИАЛИЗАЦИИ =====
+        
+        checkIfMobile() {
+            const width = window.innerWidth;
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
             
             return width <= 768 || mobileRegex.test(userAgent);
         }
         
-        // ГАРАНТИЯ ВИДИМОСТИ
-        guaranteeVisibility() {
-            console.log('🔧 Guaranteeing parallax visibility...');
+        checkReducedMotion() {
+            return window.matchMedia ? 
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+        }
+        
+        init() {
+            console.log('🚀 Initializing enhanced background system...');
             
-            // 1. Гарантируем что контейнер виден
-            if (this.container) {
-                this.container.style.display = 'block';
-                this.container.style.opacity = '1';
-                this.container.style.visibility = 'visible';
-                console.log('✅ Parallax container guaranteed');
+            if (!this.layers.length) {
+                console.warn('⚠️ No background layers found');
+                return;
             }
             
-            // 2. Гарантируем что первый слой активен
-            if (this.layers.length > 0) {
-                const firstLayer = this.layers[0];
+            // 1. Гарантируем видимость первого слоя
+            this.guaranteeFirstLayer();
+            
+            // 2. Предзагружаем все изображения
+            this.preloadAllImages();
+            
+            // 3. Создаем индикаторы
+            this.createBackgroundIndicators();
+            
+            // 4. Настраиваем обработку скролла
+            this.setupScrollHandler();
+            
+            // 5. Настраиваем отслеживание секций
+            this.setupSectionTracking();
+            
+            // 6. Настраиваем интерактивность
+            this.setupInteractivity();
+            
+            // 7. Помечаем что система инициализирована
+            document.body.classList.add('background-system-initialized');
+            
+            console.log(`✅ Background system ready with ${this.layers.length} layers`);
+        }
+        
+        guaranteeFirstLayer() {
+            const firstLayer = this.layers[0];
+            if (firstLayer) {
                 firstLayer.classList.add('active');
                 firstLayer.style.opacity = '1';
                 firstLayer.style.zIndex = '1';
-                
-                console.log('✅ First parallax layer activated');
+                console.log('✅ First background layer activated');
             }
-            
-            // 3. Предзагрузка всех изображений
-            this.preloadImages();
-            
-            console.log('✅ Parallax visibility guaranteed');
         }
         
-        // ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ
-        preloadImages() {
-            console.log('🖼️ Preloading parallax images...');
+        preloadAllImages() {
+            console.log('🖼️ Preloading background images...');
             
-            const imageUrls = [
-                'assets/images/parallax/bg-1.jpg',
-                'assets/images/parallax/bg-2.jpg',
-                'assets/images/parallax/bg-3.jpg',
-                'assets/images/parallax/bg-4.jpg'
-            ];
+            const imageUrls = [];
+            this.layers.forEach(layer => {
+                const bgImage = layer.style.backgroundImage;
+                if (bgImage) {
+                    const url = bgImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
+                    imageUrls.push(url);
+                }
+            });
             
             let loadedCount = 0;
             const totalImages = imageUrls.length;
@@ -83,152 +108,231 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING WITHOUT
                 img.src = url;
                 img.onload = () => {
                     loadedCount++;
-                    console.log(`✅ Loaded: ${url} (${loadedCount}/${totalImages})`);
+                    console.log(`✅ Loaded: ${loadedCount}/${totalImages}`);
                     
                     if (loadedCount === totalImages) {
-                        console.log('🎉 All parallax images loaded successfully!');
-                        document.body.classList.add('parallax-images-loaded');
+                        console.log('🎉 All background images loaded!');
+                        document.body.classList.add('background-images-loaded');
+                        
+                        // Улучшаем качество после загрузки
+                        this.enhanceImageQuality();
                     }
                 };
                 img.onerror = (e) => {
                     console.warn(`⚠️ Failed to load: ${url}`, e);
                     loadedCount++;
-                    
-                    // Пробуем альтернативный путь
-                    const altUrl = url.replace('assets/', './assets/');
-                    console.log(`🔄 Trying alternative path: ${altUrl}`);
-                    
-                    const altImg = new Image();
-                    altImg.src = altUrl;
                 };
             });
         }
         
-        // ИНИЦИАЛИЗАЦИЯ
-        init() {
-            console.log('🚀 Initializing parallax scroll manager...');
-            
-            if (!this.layers.length) {
-                console.warn('⚠️ No parallax layers found');
-                return;
-            }
-            
-            // Если reduced motion - упрощаем анимации
-            if (this.isReducedMotion) {
-                console.log('♿ Reduced motion enabled, simplifying animations');
-                this.simplifyAnimations();
-            }
-            
-            // Настраиваем обработку скролла
-            this.setupScrollHandler();
-            
-            // Инициализируем отслеживание секций
-            this.setupSectionTracking();
-            
-            // Помечаем body что параллакс инициализирован
-            document.body.classList.add('parallax-initialized');
-            
-            console.log(`✅ Parallax scroll manager ready with ${this.layers.length} layers - NO OVERLAY`);
-        }
-        
-        // УПРОЩЕНИЕ АНИМАЦИЙ ДЛЯ REDUCED MOTION
-        simplifyAnimations() {
+        enhanceImageQuality() {
+            // После загрузки всех изображений можно применять улучшения
             this.layers.forEach(layer => {
-                layer.style.transition = 'opacity 0.3s ease';
-                layer.style.transform = 'none';
+                if (!layer.classList.contains('enhanced')) {
+                    layer.style.imageRendering = 'auto';
+                    layer.style.backfaceVisibility = 'hidden';
+                    layer.classList.add('enhanced');
+                }
             });
         }
         
-        // НАСТРОЙКА ОБРАБОТКИ СКРОЛЛА
+        createBackgroundIndicators() {
+            // Удаляем старые индикаторы если есть
+            const oldIndicator = document.querySelector('.background-indicator');
+            if (oldIndicator) oldIndicator.remove();
+            
+            // Создаем контейнер
+            const indicator = document.createElement('div');
+            indicator.className = 'background-indicator';
+            indicator.setAttribute('aria-label', 'Background selection');
+            
+            // Создаем точки для каждого фона
+            for (let i = 0; i < this.layers.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = `indicator-dot ${i === this.currentIndex ? 'active' : ''}`;
+                dot.setAttribute('data-index', i);
+                dot.setAttribute('role', 'button');
+                dot.setAttribute('tabindex', '0');
+                dot.setAttribute('aria-label', `Switch to background ${i + 1}`);
+                
+                // Добавляем всплывающую подсказку
+                const tooltip = document.createElement('div');
+                tooltip.className = 'indicator-tooltip';
+                tooltip.textContent = `Background ${i + 1}`;
+                dot.appendChild(tooltip);
+                
+                indicator.appendChild(dot);
+            }
+            
+            document.body.appendChild(indicator);
+            console.log('🎯 Background indicators created');
+        }
+        
+        // ===== ОБРАБОТКА СКРОЛЛА =====
+        
         setupScrollHandler() {
+            if (this.isReducedMotion) {
+                console.log('♿ Reduced motion enabled, using simple scroll handler');
+                this.setupSimpleScroll();
+                return;
+            }
+            
             let ticking = false;
             const self = this;
             
-            function update() {
+            const updateScroll = () => {
+                const currentTime = Date.now();
+                
+                // Ограничиваем частоту обновлений
+                if (currentTime - this.lastScrollUpdate < this.scrollUpdateDelay) {
+                    ticking = false;
+                    return;
+                }
+                
                 const scrollY = window.pageYOffset || 
                               document.documentElement.scrollTop || 
                               document.body.scrollTop || 0;
                 
-                // Вычисляем разницу скролла
-                const scrollDelta = Math.abs(scrollY - self.lastScrollY);
+                // Вычисляем направление и скорость скролла
+                const scrollDelta = scrollY - this.lastScrollY;
+                const scrollSpeed = Math.abs(scrollDelta);
+                this.lastScrollY = scrollY;
                 
-                // Обновляем только если достаточно прокрутили
-                if (scrollDelta > self.scrollThreshold || scrollY < 100) {
-                    self.lastScrollY = scrollY;
-                    
-                    // Определяем индекс фона на основе скролла
-                    const newIndex = self.calculateBackgroundIndex(scrollY);
-                    
-                    // Переключаем фон если нужно
-                    if (newIndex !== self.currentIndex && !self.isAnimating) {
-                        self.switchToLayer(newIndex);
-                    }
+                // Обновляем прогресс-бар
+                this.updateScrollProgress(scrollY);
+                
+                // Определяем фон на основе позиции скролла
+                const newIndex = this.calculateBackgroundFromScroll(scrollY);
+                
+                // Переключаем фон если нужно
+                if (newIndex !== this.currentIndex && !this.isAnimating) {
+                    // Учитываем скорость скролла для плавности
+                    const transitionDuration = Math.max(800, Math.min(1500, 1500 - scrollSpeed * 5));
+                    this.switchToBackground(newIndex, transitionDuration);
                 }
                 
+                // Обновляем параллакс-эффект
+                this.updateParallaxEffect(scrollY);
+                
+                this.lastScrollUpdate = currentTime;
                 ticking = false;
-            }
+            };
             
-            function onScroll() {
+            const onScroll = () => {
                 if (!ticking) {
-                    requestAnimationFrame(update);
+                    self.rafId = requestAnimationFrame(updateScroll);
                     ticking = true;
                 }
-            }
+            };
             
-            // Оптимизированный слушатель скролла
+            // Оптимизированный слушатель
             window.addEventListener('scroll', onScroll, { passive: true });
             
             // Обработка ресайза
-            window.addEventListener('resize', function() {
-                self.isMobile = self.checkIsMobile();
-                self.lastScrollY = window.pageYOffset || 
+            window.addEventListener('resize', () => {
+                this.isMobile = this.checkIfMobile();
+                this.lastScrollY = window.pageYOffset || 
                                  document.documentElement.scrollTop || 
                                  document.body.scrollTop || 0;
+                this.updateScrollProgress(this.lastScrollY);
             }, { passive: true });
+            
+            // Очистка при размонтировании
+            window.addEventListener('beforeunload', () => {
+                if (this.rafId) {
+                    cancelAnimationFrame(this.rafId);
+                }
+            });
+            
+            console.log('📜 Scroll handler initialized');
         }
         
-        // ВЫЧИСЛЕНИЕ ИНДЕКСА ФОНА НА ОСНОВЕ СКРОЛЛА
-        calculateBackgroundIndex(scrollY) {
-            const windowHeight = window.innerHeight || 
-                               document.documentElement.clientHeight || 
-                               document.body.clientHeight;
+        setupSimpleScroll() {
+            // Простая версия для reduced motion
+            const self = this;
             
-            // Позиции переключения (в пикселях от верха)
-            const switchPoints = [
-                0,                          // 0% - начало страницы
-                windowHeight * 0.8,         // 80% высоты окна
-                windowHeight * 1.8,         // 180% высоты окна  
-                windowHeight * 2.8,         // 280% высоты окна
-                windowHeight * 10           // Конец (для возврата)
-            ];
+            const onScroll = () => {
+                const scrollY = window.pageYOffset || 
+                              document.documentElement.scrollTop || 
+                              document.body.scrollTop || 0;
+                
+                const newIndex = this.calculateBackgroundFromScroll(scrollY);
+                if (newIndex !== this.currentIndex && !this.isAnimating) {
+                    this.switchToBackground(newIndex, 300);
+                }
+                
+                this.updateScrollProgress(scrollY);
+            };
             
-            // Определяем текущий индекс
-            if (scrollY < switchPoints[1]) {
-                return 0; // Первый фон
-            } else if (scrollY >= switchPoints[1] && scrollY < switchPoints[2]) {
-                return 1; // Второй фон
-            } else if (scrollY >= switchPoints[2] && scrollY < switchPoints[3]) {
-                return 2; // Третий фон
-            } else if (scrollY >= switchPoints[3] && scrollY < switchPoints[4]) {
-                return 3; // Четвертый фон
-            } else {
-                return 0; // Возвращаемся к первому
+            window.addEventListener('scroll', onScroll, { passive: true });
+        }
+        
+        calculateBackgroundFromScroll(scrollY) {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            
+            // Безопасная проверка на ноль
+            if (documentHeight <= 0) return 0;
+            
+            const scrollPercent = (scrollY / documentHeight) * 100;
+            const layersCount = this.layers.length;
+            
+            // Распределяем проценты равномерно между фонами
+            const percentPerLayer = 100 / layersCount;
+            
+            for (let i = 0; i < layersCount; i++) {
+                if (scrollPercent < (i + 1) * percentPerLayer) {
+                    return i;
+                }
+            }
+            
+            // Если что-то пошло не так, возвращаем последний
+            return layersCount - 1;
+        }
+        
+        updateScrollProgress(scrollY) {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            
+            if (documentHeight <= 0) return;
+            
+            const progress = (scrollY / documentHeight) * 100;
+            const progressBar = document.querySelector('.scroll-progress-bar');
+            
+            if (progressBar) {
+                progressBar.style.width = Math.min(Math.max(progress, 0), 100) + '%';
             }
         }
         
-        // ОТСЛЕЖИВАНИЕ СЕКЦИЙ ДЛЯ ТОЧНОГО ПЕРЕКЛЮЧЕНИЯ
+        updateParallaxEffect(scrollY) {
+            if (this.isReducedMotion || this.isMobile) return;
+            
+            const parallaxFactor = 0.1;
+            const parallaxOffset = scrollY * parallaxFactor;
+            
+            this.layers.forEach((layer, index) => {
+                if (layer.classList.contains('active')) {
+                    const intensity = 0.5 + (index * 0.1);
+                    const yOffset = parallaxOffset * intensity;
+                    layer.style.transform = `scale(1.05) translateY(${yOffset}px)`;
+                }
+            });
+        }
+        
+        // ===== ОТСЛЕЖИВАНИЕ СЕКЦИЙ =====
+        
         setupSectionTracking() {
-            if (!this.sections.length) {
-                console.log('⚠️ No sections with data-bg-index found');
+            if (!this.sections.length || !('IntersectionObserver' in window)) {
+                console.log('⚠️ Section tracking not available');
                 return;
             }
             
-            console.log(`🎯 Found ${this.sections.length} sections for tracking`);
+            console.log(`🎯 Setting up section tracking for ${this.sections.length} sections`);
             
             const observerOptions = {
                 root: null,
-                rootMargin: '0px',
-                threshold: this.isMobile ? 0.1 : 0.3
+                rootMargin: this.isMobile ? '0px 0px -20% 0px' : '0px 0px -30% 0px',
+                threshold: 0.1
             };
             
             const sectionObserver = new IntersectionObserver((entries) => {
@@ -237,8 +341,16 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING WITHOUT
                         const bgIndex = parseInt(entry.target.getAttribute('data-bg-index')) || 0;
                         
                         if (bgIndex !== this.currentIndex && !this.isAnimating) {
-                            console.log(`🎯 Section entered view: switching to background ${bgIndex + 1}`);
-                            this.switchToLayer(bgIndex);
+                            console.log(`🎯 Section in view: switching to background ${bgIndex + 1}`);
+                            this.switchToBackground(bgIndex);
+                            
+                            // Прокручиваем немного чтобы показать эффект
+                            if (!this.isMobile) {
+                                entry.target.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }
                         }
                     }
                 });
@@ -250,104 +362,252 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING WITHOUT
             });
         }
         
-        // ПЕРЕКЛЮЧЕНИЕ НА ОПРЕДЕЛЕННЫЙ СЛОЙ
-        switchToLayer(index) {
-            if (this.isAnimating || index === this.currentIndex || index >= this.layers.length) {
+        // ===== ПЕРЕКЛЮЧЕНИЕ ФОНОВ =====
+        
+        switchToBackground(targetIndex, duration = 1200) {
+            if (this.isAnimating || 
+                targetIndex === this.currentIndex || 
+                targetIndex >= this.layers.length) {
                 return;
             }
             
             this.isAnimating = true;
-            const oldIndex = this.currentIndex;
-            this.currentIndex = index;
+            const previousIndex = this.currentIndex;
+            this.currentIndex = targetIndex;
             
-            console.log(`🎨 Switching from background ${oldIndex + 1} to ${index + 1}`);
+            console.log(`🔄 Switching background: ${previousIndex + 1} → ${targetIndex + 1}`);
             
-            // Находим старый и новый слои
-            const oldLayer = this.layers[oldIndex];
-            const newLayer = this.layers[index];
+            // Находим слои
+            const oldLayer = this.layers[previousIndex];
+            const newLayer = this.layers[targetIndex];
             
             if (!newLayer) {
-                console.warn(`⚠️ Layer ${index} not found`);
+                console.warn(`⚠️ Background ${targetIndex} not found`);
                 this.isAnimating = false;
                 return;
             }
             
-            // Убираем активный класс со старого слоя
+            // Плавный переход
             if (oldLayer) {
+                // Пометим старый слой как уходящий
+                oldLayer.classList.add('exiting');
                 oldLayer.classList.remove('active');
-                oldLayer.style.zIndex = '0';
                 
-                // Плавно скрываем старый слой
+                // Задержка перед полным скрытием
                 setTimeout(() => {
+                    oldLayer.classList.remove('exiting');
+                    oldLayer.style.zIndex = '0';
                     oldLayer.style.opacity = '0';
-                }, 50);
+                }, duration * 0.3);
             }
             
-            // Добавляем активный класс к новому слою
-            newLayer.classList.add('active');
+            // Подготовим новый слой
             newLayer.style.zIndex = '1';
+            newLayer.classList.add('active');
             
-            // Плавно показываем новый слой (ЧИСТЫЙ БЕЗ ЗАТЕМНЕНИЯ)
+            // Плавное появление с задержкой
             setTimeout(() => {
                 newLayer.style.opacity = '1';
-            }, 100);
+                
+                // Обновляем индикаторы
+                this.updateIndicators();
+                
+                // Генерируем событие для других скриптов
+                this.dispatchBackgroundChangeEvent(targetIndex);
+                
+                // Сбрасываем флаг анимации
+                setTimeout(() => {
+                    this.isAnimating = false;
+                    console.log(`✅ Background switched to ${targetIndex + 1}`);
+                }, duration * 0.2);
+            }, duration * 0.1);
+        }
+        
+        updateIndicators() {
+            const indicators = document.querySelectorAll('.indicator-dot');
+            indicators.forEach((indicator, index) => {
+                const isActive = index === this.currentIndex;
+                indicator.classList.toggle('active', isActive);
+                indicator.setAttribute('aria-pressed', isActive);
+                indicator.setAttribute('aria-label', 
+                    isActive ? 
+                    `Current background ${index + 1}` : 
+                    `Switch to background ${index + 1}`
+                );
+            });
+        }
+        
+        dispatchBackgroundChangeEvent(index) {
+            const event = new CustomEvent('backgroundChanged', {
+                detail: {
+                    index: index,
+                    total: this.layers.length,
+                    timestamp: Date.now()
+                },
+                bubbles: true
+            });
+            document.dispatchEvent(event);
+        }
+        
+        // ===== ИНТЕРАКТИВНОСТЬ =====
+        
+        setupInteractivity() {
+            // Клики по индикаторам
+            document.addEventListener('click', (e) => {
+                const indicator = e.target.closest('.indicator-dot');
+                if (indicator) {
+                    e.preventDefault();
+                    const index = parseInt(indicator.getAttribute('data-index'));
+                    if (!isNaN(index) && index !== this.currentIndex) {
+                        this.switchToBackground(index);
+                        
+                        // Находим соответствующую секцию и прокручиваем к ней
+                        const targetSection = document.querySelector(`[data-bg-index="${index}"]`);
+                        if (targetSection) {
+                            targetSection.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                }
+            });
             
-            // Сбрасываем флаг анимации
-            const self = this;
-            setTimeout(function() {
-                self.isAnimating = false;
-                console.log(`✅ Background switched to ${index + 1}`);
-            }, this.isReducedMotion ? 300 : 800);
+            // Клавиатурная навигация
+            document.addEventListener('keydown', (e) => {
+                if (e.target.closest('.background-indicator')) {
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        const prevIndex = (this.currentIndex - 1 + this.layers.length) % this.layers.length;
+                        this.switchToBackground(prevIndex);
+                    } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        const nextIndex = (this.currentIndex + 1) % this.layers.length;
+                        this.switchToBackground(nextIndex);
+                    } else if (e.key === 'Home') {
+                        e.preventDefault();
+                        this.switchToBackground(0);
+                    } else if (e.key === 'End') {
+                        e.preventDefault();
+                        this.switchToBackground(this.layers.length - 1);
+                    }
+                }
+            });
+            
+            // Swipe жесты для мобильных
+            if (this.isMobile) {
+                this.setupSwipeGestures();
+            }
+        }
+        
+        setupSwipeGestures() {
+            let touchStartX = 0;
+            let touchStartY = 0;
+            
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            document.addEventListener('touchend', (e) => {
+                if (!touchStartX || !touchStartY) return;
+                
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                
+                const diffX = touchStartX - touchEndX;
+                const diffY = touchStartY - touchEndY;
+                
+                // Если это горизонтальный свайп (X > Y)
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        // Свайп влево - следующий фон
+                        const nextIndex = (this.currentIndex + 1) % this.layers.length;
+                        this.switchToBackground(nextIndex);
+                    } else {
+                        // Свайп вправо - предыдущий фон
+                        const prevIndex = (this.currentIndex - 1 + this.layers.length) % this.layers.length;
+                        this.switchToBackground(prevIndex);
+                    }
+                }
+                
+                touchStartX = 0;
+                touchStartY = 0;
+            }, { passive: true });
+        }
+        
+        // ===== ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ =====
+        
+        getCurrentBackground() {
+            return this.currentIndex + 1;
+        }
+        
+        getTotalBackgrounds() {
+            return this.layers.length;
+        }
+        
+        goToNextBackground() {
+            const nextIndex = (this.currentIndex + 1) % this.layers.length;
+            this.switchToBackground(nextIndex);
+            return nextIndex;
+        }
+        
+        goToPreviousBackground() {
+            const prevIndex = (this.currentIndex - 1 + this.layers.length) % this.layers.length;
+            this.switchToBackground(prevIndex);
+            return prevIndex;
+        }
+        
+        // ===== ОЧИСТКА =====
+        
+        destroy() {
+            if (this.rafId) {
+                cancelAnimationFrame(this.rafId);
+            }
+            
+            // Удаляем индикаторы
+            const indicator = document.querySelector('.background-indicator');
+            if (indicator) indicator.remove();
+            
+            // Удаляем обработчики
+            window.removeEventListener('scroll', this.handleScroll);
+            window.removeEventListener('resize', this.handleResize);
+            
+            console.log('🧹 Background system destroyed');
         }
     }
     
-    // ===== ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ =====
-    function initializeParallaxSystem() {
-        console.log('🏁 Starting parallax system initialization...');
+    // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
+    
+    let backgroundManager = null;
+    
+    function initializeBackgroundSystem() {
+        console.log('🎨 Starting enhanced background system...');
         
-        // Проверяем, есть ли параллакс элементы на странице
-        const parallaxLayers = document.querySelectorAll('.parallax-layer');
+        // Проверяем есть ли фоновые слои
+        const hasBackgroundLayers = document.querySelectorAll('.parallax-layer').length > 0;
         
-        if (!parallaxLayers.length) {
-            console.log('⚠️ No parallax layers found on this page');
+        if (!hasBackgroundLayers) {
+            console.log('⚠️ No background layers found on this page');
             return;
         }
         
-        console.log(`🎯 Found ${parallaxLayers.length} parallax layers`);
-        
-        // ГАРАНТИЯ: Показываем первый слой сразу
-        const firstLayer = document.querySelector('.parallax-layer');
-        if (firstLayer) {
-            firstLayer.style.backgroundImage = "url('assets/images/parallax/bg-1.jpg')";
-            firstLayer.style.backgroundSize = 'cover';
-            firstLayer.style.backgroundPosition = 'center center';
-            firstLayer.style.backgroundRepeat = 'no-repeat';
-            firstLayer.style.opacity = '1';
-            firstLayer.style.zIndex = '1';
-            firstLayer.classList.add('active');
-            
-            console.log('✅ First layer guaranteed visible - CLEAN NO OVERLAY');
-        }
-        
-        // Гарантируем видимость контейнера
-        const container = document.getElementById('parallax-container');
-        if (container) {
-            container.style.display = 'block';
-            container.style.opacity = '1';
-            container.style.visibility = 'visible';
-        }
-        
-        // Инициализируем параллакс систему
         try {
-            window.parallaxManager = new ParallaxScrollManager();
-            console.log(`✅ Parallax system initialized - CLEAN VERSION`);
-        } catch (error) {
-            console.error('❌ Error initializing parallax system:', error);
+            // Инициализируем систему
+            backgroundManager = new EnhancedBackgroundManager();
             
-            // Fallback: показываем только первый слой
+            // Экспортируем для глобального доступа
+            window.BackgroundManager = backgroundManager;
+            
+            console.log('✅ Enhanced background system initialized successfully');
+            
+        } catch (error) {
+            console.error('❌ Failed to initialize background system:', error);
+            
+            // Fallback: показываем только первый фон
+            const firstLayer = document.querySelector('.parallax-layer');
             if (firstLayer) {
                 firstLayer.style.opacity = '1';
-                firstLayer.style.zIndex = '1';
                 firstLayer.classList.add('active');
             }
         }
@@ -355,52 +615,43 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING WITHOUT
     
     // ===== ГАРАНТИРОВАННЫЙ ЗАПУСК =====
     
-    // Ждем загрузки DOM
+    // Ждем готовности DOM
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeParallaxSystem);
+        document.addEventListener('DOMContentLoaded', initializeBackgroundSystem);
     } else {
-        initializeParallaxSystem();
+        initializeBackgroundSystem();
     }
     
-    // АВТОМАТИЧЕСКИЙ FALLBACK - проверяем через 3 секунды
-    window.addEventListener('load', function() {
-        console.log('🌅 Page fully loaded, checking parallax...');
-        
-        setTimeout(function() {
-            const firstLayer = document.querySelector('.parallax-layer.active');
-            if (firstLayer) {
-                const computedStyle = window.getComputedStyle(firstLayer);
-                const isVisible = parseFloat(computedStyle.opacity) > 0.5;
+    // Аварийное восстановление через 5 секунд
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const activeLayer = document.querySelector('.parallax-layer.active');
+            if (!activeLayer || window.getComputedStyle(activeLayer).opacity < 0.1) {
+                console.warn('🚨 Emergency background fix applied');
                 
-                if (!isVisible) {
-                    console.log('🚨 EMERGENCY: Parallax layer not visible after 3 seconds!');
-                    
-                    // Применяем nuclear fix
-                    firstLayer.style.cssText = `
-                        background-image: url('assets/images/parallax/bg-1.jpg') !important;
-                        background-size: cover !important;
-                        background-position: center center !important;
-                        background-repeat: no-repeat !important;
-                        opacity: 1 !important;
-                        z-index: 1 !important;
-                        position: absolute !important;
-                        top: 0 !important;
-                        left: 0 !important;
-                        width: 100% !important;
-                        height: 100% !important;
-                        display: block !important;
-                        visibility: visible !important;
-                    `;
-                    
-                    firstLayer.classList.add('active');
-                    
-                    document.body.classList.add('emergency-fix-applied');
-                } else {
-                    console.log('✅ Parallax is visible, everything is OK');
-                }
+                // Принудительно показываем первый слой
+                const layers = document.querySelectorAll('.parallax-layer');
+                layers.forEach((layer, index) => {
+                    layer.style.opacity = index === 0 ? '1' : '0';
+                    layer.classList.toggle('active', index === 0);
+                    layer.style.zIndex = index === 0 ? '1' : '0';
+                });
+                
+                document.body.classList.add('emergency-background-fix');
             }
-        }, 3000);
+        }, 5000);
     });
     
-    console.log('✅ parallax.js loaded - CLEAN VERSION WITHOUT OVERLAY');
+    // ===== ГЛОБАЛЬНЫЙ API =====
+    
+    window.backgroundSystem = {
+        initialize: initializeBackgroundSystem,
+        getInstance: () => backgroundManager,
+        nextBackground: () => backgroundManager?.goToNextBackground(),
+        prevBackground: () => backgroundManager?.goToPreviousBackground(),
+        switchTo: (index) => backgroundManager?.switchToBackground(index),
+        destroy: () => backgroundManager?.destroy()
+    };
+    
+    console.log('✅ Enhanced background system loaded and ready');
 })();
