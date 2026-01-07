@@ -7,7 +7,7 @@
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: -100 !important;
+    z-index: -10 !important; /* Изменено с -100 на -10 */
     overflow: hidden !important;
     pointer-events: none !important;
     
@@ -15,6 +15,9 @@
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     will-change: transform;
+    
+    /* Гарантированный фон */
+    background: #0a0a0a;
 }
 
 /* Каждый слой фона */
@@ -29,11 +32,12 @@
     background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
     
     /* Эффекты перехода */
     opacity: 0 !important;
-    transform: scale(1.1) !important;
-    filter: brightness(0.9) blur(0px) !important;
+    transform: scale(1.05) !important;
+    filter: brightness(0.8) blur(0px) !important;
     
     /* Плавный переход */
     transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -43,6 +47,10 @@
     will-change: opacity, transform, filter;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    
+    /* Гарантируем видимость */
+    display: block !important;
+    visibility: visible !important;
 }
 
 /* Активный слой */
@@ -56,7 +64,7 @@
 /* Слой в процессе ухода */
 .parallax-layer.exiting {
     opacity: 0.3 !important;
-    filter: brightness(0.8) blur(2px) !important;
+    filter: brightness(0.7) blur(3px) !important;
 }
 
 /* ===== ИНДИКАТОР ФОНОВ ===== */
@@ -311,4 +319,23 @@
     .scroll-progress {
         display: none !important;
     }
+}
+
+/* ===== ГАРАНТИРОВАННЫЙ ФОН ДЛЯ ОШИБОК ===== */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a;
+    z-index: -1000;
+}
+
+/* Усиление видимости активного слоя */
+.parallax-layer.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
