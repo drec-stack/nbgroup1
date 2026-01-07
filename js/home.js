@@ -1,5 +1,5 @@
-// home.js - ИСПРАВЛЕНИЯ ДЛЯ ПАРАЛЛАКСА
-console.log('🎬 home.js loaded - PARALLAX FIXES');
+// home.js - ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ ФОНА
+console.log('🎬 home.js loaded - OPTIMIZED FOR IMAGE QUALITY');
 
 (function() {
     'use strict';
@@ -9,51 +9,24 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
             this.isReducedMotion = window.matchMedia ? 
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
             
-            console.log('🏠 HomePage initialized (parallax fixes)');
+            console.log('🏠 HomePage initialized (optimized for image quality)');
             
-            // Инициализация статичного фона героя
+            // Предзагрузка ресурсов
+            this.preloadResources();
+            
+            // Инициализация статичного фона с оптимизацией качества
             this.initializeHeroBackground();
             
             // Инициализация остальных компонентов
             this.initializeComponents();
         }
 
-        // ИНИЦИАЛИЗАЦИЯ СТАТИЧНОГО ФОНА ГЕРОЯ
-        initializeHeroBackground() {
-            console.log('🎨 Initializing hero background');
+        // ПРЕДЗАГРУЗКА ВСЕХ РЕСУРСОВ
+        preloadResources() {
+            console.log('⚡ Preloading all resources...');
             
-            const heroBg = document.querySelector('.hero-background-image');
-            if (heroBg) {
-                // Гарантируем что фон загружен и виден
-                heroBg.style.backgroundImage = "url('./assets/images/parallax/bg-1.jpg')";
-                heroBg.style.backgroundSize = "cover";
-                heroBg.style.backgroundPosition = "center center";
-                heroBg.style.backgroundRepeat = "no-repeat";
-                heroBg.style.opacity = "1";
-                heroBg.style.visibility = "visible";
-                heroBg.style.display = "block";
-                
-                // Для мобильных устройств
-                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    heroBg.style.backgroundAttachment = "scroll";
-                } else {
-                    heroBg.style.backgroundAttachment = "fixed";
-                }
-                
-                console.log('✅ Hero background initialized');
-            } else {
-                console.warn('⚠️ Hero background element not found');
-            }
-            
-            // Предзагрузка всех фоновых изображений для параллакса
-            this.preloadParallaxImages();
-        }
-
-        // ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ ПАРАЛЛАКСА
-        preloadParallaxImages() {
-            console.log('🖼️ Preloading parallax images...');
-            
-            const images = [
+            // Предзагрузка фоновых изображений
+            const bgImages = [
                 './assets/images/parallax/bg-1.jpg',
                 './assets/images/parallax/bg-2.jpg',
                 './assets/images/parallax/bg-3.jpg',
@@ -61,9 +34,9 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
             ];
             
             let loadedCount = 0;
-            const totalImages = images.length;
+            const totalImages = bgImages.length;
             
-            images.forEach(url => {
+            bgImages.forEach(url => {
                 const img = new Image();
                 img.src = url;
                 img.onload = () => {
@@ -71,9 +44,9 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
                     console.log(`✅ Preloaded: ${url} (${loadedCount}/${totalImages})`);
                     
                     if (loadedCount === totalImages) {
-                        console.log('🎉 All parallax images loaded successfully!');
+                        console.log('🎉 All images loaded successfully!');
                         
-                        // После загрузки всех изображений активируем первый фон параллакса
+                        // После загрузки всех изображений активируем первый параллакс фон
                         setTimeout(() => {
                             const firstParallaxBg = document.getElementById('parallax-bg-1');
                             if (firstParallaxBg) {
@@ -90,9 +63,81 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
             });
         }
 
+        // ИНИЦИАЛИЗАЦИЯ СТАТИЧНОГО ФОНА ГЕРОЯ
+        initializeHeroBackground() {
+            console.log('🎨 Initializing hero background with quality optimizations');
+            
+            const heroContainer = document.getElementById('hero-background-container');
+            if (heroContainer) {
+                // Принудительно устанавливаем видимость и правильные стили
+                heroContainer.style.display = 'block';
+                heroContainer.style.visibility = 'visible';
+                heroContainer.style.opacity = '1';
+                heroContainer.style.position = 'fixed';
+                heroContainer.style.top = '0';
+                heroContainer.style.left = '0';
+                heroContainer.style.width = '100%';
+                heroContainer.style.height = '100%';
+                heroContainer.style.zIndex = '-100';
+                heroContainer.style.pointerEvents = 'none';
+                heroContainer.style.webkitTransform = 'translateZ(0)';
+                heroContainer.style.transform = 'translateZ(0)';
+                heroContainer.style.backfaceVisibility = 'hidden';
+                
+                const heroImage = heroContainer.querySelector('.hero-background-image');
+                if (heroImage) {
+                    // КРИТИЧЕСКИ ВАЖНЫЕ НАСТРОЙКИ ДЛЯ КАЧЕСТВА
+                    heroImage.style.backgroundImage = "url('./assets/images/parallax/bg-1.jpg')";
+                    heroImage.style.backgroundSize = 'cover';
+                    heroImage.style.backgroundPosition = 'center center';
+                    heroImage.style.backgroundRepeat = 'no-repeat';
+                    
+                    // Для мобильных устройств
+                    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                        heroImage.style.backgroundAttachment = 'scroll';
+                    } else {
+                        heroImage.style.backgroundAttachment = 'fixed';
+                    }
+                    
+                    // Отключаем все фильтры и анимации, ухудшающие качество
+                    heroImage.style.filter = 'none';
+                    heroImage.style.webkitFilter = 'none';
+                    heroImage.style.animation = 'none';
+                    heroImage.style.webkitAnimation = 'none';
+                    
+                    // Оптимизация качества изображения
+                    heroImage.style.imageRendering = '-webkit-optimize-contrast';
+                    heroImage.style.imageRendering = 'crisp-edges';
+                    heroImage.style.webkitFontSmoothing = 'antialiased';
+                    heroImage.style.mozOsxFontSmoothing = 'grayscale';
+                    
+                    // GPU ускорение
+                    heroImage.style.transform = 'translateZ(0)';
+                    heroImage.style.webkitTransform = 'translateZ(0)';
+                    heroImage.style.backfaceVisibility = 'hidden';
+                    
+                    // Для reduced motion
+                    if (this.isReducedMotion) {
+                        heroImage.style.transition = 'none';
+                    }
+                    
+                    // Гарантированная видимость
+                    heroImage.style.opacity = '1';
+                    heroImage.style.visibility = 'visible';
+                    heroImage.style.display = 'block';
+                    
+                    console.log('✅ Hero background optimized for maximum quality');
+                } else {
+                    console.warn('⚠️ Hero background image element not found');
+                }
+            } else {
+                console.warn('⚠️ Hero background container not found');
+            }
+        }
+
         // ИНИЦИАЛИЗАЦИЯ ВСЕХ КОМПОНЕНТОВ
         initializeComponents() {
-            console.log('🚀 Initializing all components...');
+            console.log('🚀 Initializing all components with quality optimizations...');
             
             try {
                 this.initializeBasicAnimations();
@@ -100,13 +145,14 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
                 this.initializeSpeckVerticalBlocks();
                 this.initializeSpeckMarquee();
                 this.initializeScrollProgress();
+                this.initializeParallaxBackgrounds();
                 this.initializeClickableStats();
                 this.initializeCTAClickable();
                 
                 // Оптимизация производительности
                 this.optimizePerformance();
                 
-                console.log('✅ All components initialized');
+                console.log('✅ All components initialized with quality optimizations');
             } catch (error) {
                 console.error('❌ Error during component initialization:', error);
             }
@@ -159,20 +205,36 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
                 return;
             }
 
-            console.log('🎯 Initializing Speck marquee');
+            console.log('🎯 Initializing Speck marquee with performance optimizations');
 
             // Проверяем работает ли CSS анимация
             setTimeout(() => {
                 const style = window.getComputedStyle(speckMarqueeTrack);
                 
                 if (style.animationName === 'none' || this.isReducedMotion) {
-                    console.log('🔄 Starting JS fallback for Speck marquee');
+                    console.log('🚀 Starting JS fallback for Speck marquee');
                     this.runSpeckMarqueeJS(speckMarqueeTrack);
                 } else {
                     console.log('✅ Speck marquee working via CSS');
                     this.addSpeckMarqueeHoverHandlers(speckMarqueeTrack);
                 }
             }, 100);
+
+            // Проверка через 2 секунды
+            setTimeout(() => {
+                const track = document.querySelector('.speck-marquee-track');
+                if (track && !track.classList.contains('js-fallback-active')) {
+                    const rect = track.getBoundingClientRect();
+                    const computedStyle = window.getComputedStyle(track);
+                    const isMoving = computedStyle.animationPlayState !== 'paused' && 
+                                    computedStyle.animationName !== 'none';
+                    
+                    if (!isMoving) {
+                        console.log('⚠️ Marquee not moving, starting JS fallback');
+                        this.runSpeckMarqueeJS(speckMarqueeTrack);
+                    }
+                }
+            }, 2000);
         }
 
         runSpeckMarqueeJS(track) {
@@ -187,7 +249,7 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
                 return;
             }
 
-            console.log('🔄 Starting JS marquee...');
+            console.log('🔄 Starting JS marquee with performance optimizations...');
 
             track.classList.add('js-fallback-active');
             track.style.animation = 'none';
@@ -201,12 +263,18 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
             const speed = -1.2;
             let animationId = null;
             let isPaused = false;
+            let lastTime = 0;
+            const fps = 60;
+            const interval = 1000 / fps;
             let rafActive = true;
 
-            const animate = () => {
+            const animate = (currentTime) => {
                 if (!rafActive) return;
                 
-                if (!isPaused) {
+                if (!lastTime) lastTime = currentTime;
+                const deltaTime = currentTime - lastTime;
+
+                if (deltaTime > interval && !isPaused) {
                     position += speed;
                     
                     const contentWidth = content.scrollWidth / 3;
@@ -216,6 +284,8 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
                     
                     track.style.transform = `translateX(${position}px)`;
                     track.style.webkitTransform = `translateX(${position}px)`;
+                    
+                    lastTime = currentTime - (deltaTime % interval);
                 }
                 
                 if (rafActive) {
@@ -239,6 +309,7 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
             const resumeMarquee = () => {
                 if (track.classList.contains('js-fallback-active')) {
                     isPaused = false;
+                    lastTime = 0; // Сбрасываем время для плавного возобновления
                 } else {
                     track.style.animationPlayState = 'running';
                 }
@@ -407,6 +478,53 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
             setTimeout(checkSections, 300);
         }
 
+        // PARALLAX BACKGROUNDS
+        initializeParallaxBackgrounds() {
+            const contentSections = document.querySelectorAll('.content-section[data-bg-index]');
+            
+            if (!contentSections.length) {
+                console.log('⚠️ Sections with parallax backgrounds not found');
+                return;
+            }
+            
+            console.log('🌄 Initializing parallax backgrounds: ' + contentSections.length + ' sections');
+            
+            const checkBackgrounds = () => {
+                const windowHeight = window.innerHeight || 
+                                   document.documentElement.clientHeight || 
+                                   document.body.clientHeight;
+                let activeIndex = 0;
+                
+                for (const section of contentSections) {
+                    const rect = section.getBoundingClientRect();
+                    const isVisible = (
+                        rect.top <= windowHeight * 0.5 &&
+                        rect.bottom >= windowHeight * 0.5
+                    );
+                    
+                    if (isVisible) {
+                        activeIndex = parseInt(section.getAttribute('data-bg-index')) || 0;
+                        break;
+                    }
+                }
+                
+                const backgrounds = document.querySelectorAll('.parallax-bg');
+                backgrounds.forEach(bg => bg.classList.remove('active'));
+                
+                const targetBg = document.getElementById('parallax-bg-' + (parseInt(activeIndex) + 1));
+                if (targetBg) {
+                    targetBg.classList.add('active');
+                }
+            };
+            
+            const throttledCheck = this.throttle(checkBackgrounds, 100);
+            window.addEventListener('scroll', throttledCheck, { passive: true });
+            window.addEventListener('resize', throttledCheck, { passive: true });
+            
+            // Первоначальная установка
+            setTimeout(checkBackgrounds, 500);
+        }
+
         // SCROLL PROGRESS
         initializeScrollProgress() {
             const progressBar = document.querySelector('.scroll-progress-bar');
@@ -549,7 +667,7 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
             return;
         }
         
-        console.log('📄 INITIALIZING HOME PAGE NB GROUP TECH (parallax fixes)');
+        console.log('📄 INITIALIZING HOME PAGE NB GROUP TECH (optimized for image quality)');
         console.log('🔧 DOM loading state:', document.readyState);
         
         if (document.readyState === 'loading') {
@@ -558,7 +676,7 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
                 console.log('🎬 Creating HomePage instance...');
                 try {
                     window.homePage = new HomePage();
-                    console.log('🎉 Home page successfully initialized with parallax!');
+                    console.log('🎉 Home page successfully initialized with quality optimizations!');
                 } catch (error) {
                     console.error('❌ Error during HomePage initialization:', error);
                     
@@ -585,7 +703,7 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
             console.log('🎬 Creating HomePage instance...');
             try {
                 window.homePage = new HomePage();
-                console.log('🎉 Home page successfully initialized with parallax!');
+                console.log('🎉 Home page successfully initialized with quality optimizations!');
             } catch (error) {
                 console.error('❌ Error during HomePage initialization:', error);
                 
@@ -626,6 +744,6 @@ console.log('🎬 home.js loaded - PARALLAX FIXES');
         }
     });
     
-    console.log('✅ home.js fully loaded and ready (parallax fixes)');
+    console.log('✅ home.js fully loaded and ready (optimized for image quality)');
     
 })();
