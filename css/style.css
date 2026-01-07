@@ -1,4 +1,4 @@
-/* style.css - ПОЛНЫЙ ФАЙЛ СТИЛЕЙ NB GROUP TECH (ОПТИМИЗИРОВАН ДЛЯ КАЧЕСТВА ИЗОБРАЖЕНИЙ) */
+/* style.css - ПОЛНЫЙ ФАЙЛ СТИЛЕЙ NB GROUP TECH С ПРОЗРАЧНОСТЬЮ ДЛЯ ПАРАЛЛАКС-ФОНОВ */
 
 :root {
     /* ОСНОВНЫЕ ЦВЕТА - СИНЯЯ ПАЛИТРА */
@@ -9,13 +9,13 @@
     --blue-glow: 0 8px 25px rgba(0, 102, 255, 0.3);
     
     /* ОСНОВНЫЕ ЦВЕТА */
-    --primary: #0a0a0a;
-    --secondary: #1a1a1a;
+    --primary: transparent !important; /* ПРОЗРАЧНЫЙ ДЛЯ ВИДИМОСТИ ФОНОВ */
+    --secondary: rgba(26, 26, 26, 0.3); /* Полупрозрачный */
     --accent: #0066ff;
     --accent-gradient: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
     --text: #ffffff;
-    --light-text: #a0a0a0;
-    --border: #333333;
+    --light-text: rgba(255, 255, 255, 0.9); /* Более яркий для читаемости */
+    --border: rgba(255, 255, 255, 0.2); /* Полупрозрачный */
     --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     
     /* ДОПОЛНИТЕЛЬНЫЕ ЦВЕТА */
@@ -44,7 +44,7 @@ html {
 }
 
 body {
-    background-color: var(--primary);
+    background-color: transparent !important; /* КРИТИЧЕСКИ ВАЖНО: прозрачный фон */
     color: var(--text);
     line-height: 1.6;
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
@@ -68,7 +68,7 @@ body {
 /* ===== SPECK DESIGN MARQUEE SECTION - ТОЧНО КАК НА SPECKDESIGN.COM ===== */
 .speck-marquee-section {
     padding: 100px 0;
-    background-color: var(--primary);
+    background-color: transparent !important; /* ПРОЗРАЧНЫЙ ФОН */
     position: relative;
     overflow: hidden;
 }
@@ -82,13 +82,14 @@ body {
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.9) !important; /* Более яркий */
     margin-bottom: 40px;
     text-align: center;
     display: block;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8) !important; /* Тень для читаемости */
 }
 
-/* Маска с градиентными краями */
+/* Маска с градиентными краями - ПОЛУПРОЗРАЧНАЯ */
 .speck-marquee-mask {
     position: relative;
     overflow: hidden;
@@ -160,6 +161,9 @@ body {
     opacity: 0.9;
     position: relative;
     display: inline-block;
+    text-shadow: 
+        0 3px 20px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7) !important; /* Усиленная тень */
 }
 
 .speck-brand:hover {
@@ -176,7 +180,7 @@ body {
     animation-play-state: paused;
 }
 
-/* Градиентные края для эффекта исчезновения */
+/* Градиентные края для эффекта исчезновения - ПОЛУПРОЗРАЧНЫЕ */
 .speck-marquee-mask::before,
 .speck-marquee-mask::after {
     content: '';
@@ -190,12 +194,12 @@ body {
 
 .speck-marquee-mask::before {
     left: 0;
-    background: linear-gradient(to right, var(--primary), transparent);
+    background: linear-gradient(to right, rgba(10, 10, 10, 0.8), transparent);
 }
 
 .speck-marquee-mask::after {
     right: 0;
-    background: linear-gradient(to left, var(--primary), transparent);
+    background: linear-gradient(to left, rgba(10, 10, 10, 0.8), transparent);
 }
 
 /* ===== ЗАКРУГЛЕННЫЙ ПРОЗРАЧНЫЙ GLASS HEADER ===== */
@@ -208,16 +212,16 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px 0;
-    background: rgba(255, 255, 255, 0.05) !important; /* ЧИСТОЕ СТЕКЛО */
+    background: rgba(255, 255, 255, 0.08) !important; /* ПРОЗРАЧНОЕ СТЕКЛО */
     z-index: 1000;
     border-radius: 20px;
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(30px) saturate(180%);
     box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.1),
         inset 0 0 20px rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     
     /* Анимация */
     opacity: 1;
@@ -226,23 +230,23 @@ body {
 
 /* Эффект при скролле - легкое затемнение */
 .main-header.scrolled {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(30px) saturate(200%);
-    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    background: rgba(255, 255, 255, 0.12) !important; /* Немного темнее */
+    backdrop-filter: blur(35px) saturate(200%);
+    -webkit-backdrop-filter: blur(35px) saturate(200%);
     box-shadow: 
         0 12px 40px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.12),
         inset 0 0 25px rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     padding: 15px 0;
 }
 
 /* Эффект при наведении */
 .main-header:hover {
-    background: rgba(255, 255, 255, 0.07) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(30px) saturate(200%);
-    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    backdrop-filter: blur(35px) saturate(200%);
+    -webkit-backdrop-filter: blur(35px) saturate(200%);
 }
 
 /* Хедер скрыт (только для главной) */
@@ -321,6 +325,7 @@ body {
     font-weight: 700;
     background: none !important;
     -webkit-text-fill-color: white !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important; /* Тень для читаемости */
 }
 
 /* ===== НАВИГАЦИЯ ===== */
@@ -330,7 +335,7 @@ body {
 }
 
 .nav-link {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95) !important; /* Более яркий */
     text-decoration: none;
     font-weight: 500;
     font-size: 15px;
@@ -339,19 +344,21 @@ body {
     padding: 8px 16px;
     border-radius: 8px;
     backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05); /* Полупрозрачный фон */
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important; /* Тень для читаемости */
 }
 
 .nav-link:hover,
 .nav-link.active {
-    color: white;
-    background: rgba(255, 255, 255, 0.12);
+    color: white !important;
+    background: rgba(255, 255, 255, 0.15) !important; /* БЕЛЫЙ ПРОЗРАЧНЫЙ ФОН */
     transform: translateY(-2px);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8) !important;
 }
 
 .nav-link.active {
-    background: rgba(255, 255, 255, 0.15) !important; /* БЕЛЫЙ ПРОЗРАЧНЫЙ ФОН */
-    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* БЕЛАЯ ГРАНИЦА */
+    background: rgba(255, 255, 255, 0.18) !important; /* БЕЛЫЙ ПРОЗРАЧНЫЙ ФОН */
+    border: 1px solid rgba(255, 255, 255, 0.25) !important; /* БЕЛАЯ ГРАНИЦА */
 }
 
 .nav-link::after {
@@ -390,7 +397,7 @@ body {
     gap: 15px;
 }
 
-/* ===== КНОПКИ ===== */
+/* ===== КНОПКИ - СТЕКЛЯННЫЙ ЭФФЕКТ ===== */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -403,36 +410,40 @@ body {
     cursor: pointer;
     transition: var(--transition);
     gap: 8px;
+    backdrop-filter: blur(15px) !important; /* Стеклянный эффект */
+    -webkit-backdrop-filter: blur(15px) !important;
 }
 
 .btn-primary {
-    background: white !important; /* БЕЛЫЙ ФОН */
-    color: #0a0a0a !important; /* ЧЕРНЫЙ ТЕКСТ для контраста */
+    background: rgba(255, 255, 255, 0.15) !important; /* ПРОЗРАЧНЫЙ БЕЛЫЙ */
+    color: white !important;
     font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7) !important;
 }
 
 .btn-primary:hover {
-    background: white !important;
-    color: #0a0a0a !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
 }
 
 /* КНОПКА В ХЕДЕРЕ */
 .header-actions .btn-primary {
-    background: white !important;
-    color: #0a0a0a !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
     font-weight: 700;
-    backdrop-filter: none !important;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
     box-shadow: 
         0 4px 20px rgba(255, 255, 255, 0.15),
         0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .header-actions .btn-primary:hover {
-    background: white !important;
-    color: #0a0a0a !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
     transform: translateY(-2px);
     box-shadow: 
         0 8px 30px rgba(255, 255, 255, 0.25),
@@ -440,16 +451,17 @@ body {
 }
 
 .btn-secondary {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.08) !important; /* ПРОЗРАЧНЫЙ */
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-radius: 10px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15) !important;
     color: white;
-    border-color: white;
+    border-color: rgba(255, 255, 255, 0.3) !important;
     transform: translateY(-2px);
 }
 
@@ -482,17 +494,17 @@ body {
 .language-switcher {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.1) !important; /* Более прозрачный */
     border-radius: 25px;
     padding: 4px;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    -webkit-backdrop-filter: blur(15px);
-    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
     min-width: 120px;
     height: 40px;
     box-shadow: 
-        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
         0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -503,7 +515,7 @@ body {
     padding: 8px 16px;
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.9) !important; /* Более яркий */
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -514,10 +526,11 @@ body {
     min-width: 56px;
     justify-content: center;
     flex: 1;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .lang-btn.active {
-    color: white;
+    color: white !important;
     font-weight: 600;
 }
 
@@ -527,16 +540,16 @@ body {
     left: 4px;
     width: calc(50% - 4px);
     height: calc(100% - 8px);
-    background: rgba(255, 255, 255, 0.25) !important; /* БЕЛЫЙ ИНДИКАТОР */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.3) !important; /* БЕЛЫЙ ИНДИКАТОР */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border-radius: 20px;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 1;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* БЕЛАЯ ГРАНИЦА */
+    border: 1px solid rgba(255, 255, 255, 0.25) !important; /* БЕЛАЯ ГРАНИЦА */
     box-shadow: 
-        0 4px 12px rgba(255, 255, 255, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        0 4px 12px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .language-switcher[data-current-lang="en"] .lang-slider {
@@ -553,8 +566,8 @@ body {
 }
 
 .lang-btn:hover:not(.active) {
-    color: white;
-    background: rgba(255, 255, 255, 0.08);
+    color: white !important;
+    background: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* ===== КРИТИЧЕСКИЙ ФИКС: УБИРАЕМ ВСЕ СКРЫТЫЕ КНОПКИ ХЕДЕРА ===== */
@@ -605,16 +618,17 @@ body {
     }
 }
 
-/* ===== ЧЕРНЫЙ FOOTER ===== */
+/* ===== ПРОЗРАЧНЫЙ FOOTER СО СТЕКЛЯННЫМ ЭФФЕКТОМ ===== */
 .main-footer {
-    background: #000000;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    background: rgba(0, 0, 0, 0.6) !important; /* ПРОЗРАЧНЫЙ ЧЕРНЫЙ */
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.6) 0%, rgba(26, 26, 26, 0.4) 100%);
     padding: 80px 0 30px;
-    border-top: 1px solid #333;
+    border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 20px 20px 0 0;
     margin-top: 40px;
-    backdrop-filter: blur(10px);
-    border: 1px solid #333;
+    backdrop-filter: blur(25px) !important; /* Стеклянный эффект */
+    -webkit-backdrop-filter: blur(25px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 100;
@@ -632,6 +646,7 @@ body {
     margin-bottom: 20px;
     font-weight: 700;
     color: white;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .footer-logo {
@@ -667,13 +682,15 @@ body {
     font-size: 20px;
     background: none !important;
     -webkit-text-fill-color: white !important;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .footer-description {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9) !important; /* Более яркий */
     line-height: 1.6;
     margin-bottom: 30px;
     font-size: 15px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .social-links {
@@ -687,34 +704,36 @@ body {
     justify-content: center;
     width: 45px;
     height: 45px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1) !important; /* ПРОЗРАЧНЫЙ */
     border-radius: 12px;
     color: white;
     text-decoration: none;
     transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     font-size: 18px;
+    backdrop-filter: blur(10px) !important;
 }
 
 .social-link:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.2) !important;
     transform: translateY(-3px);
     border-radius: 15px;
+    border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .social-link.telegram:hover {
-    background: rgba(0, 136, 204, 0.3);
-    border-color: #0088cc;
+    background: rgba(0, 136, 204, 0.3) !important;
+    border-color: #0088cc !important;
 }
 
 .social-link.whatsapp:hover {
-    background: rgba(37, 211, 102, 0.3);
-    border-color: #25d366;
+    background: rgba(37, 211, 102, 0.3) !important;
+    border-color: #25d366 !important;
 }
 
 .social-link.instagram:hover {
-    background: rgba(228, 64, 95, 0.3);
-    border-color: #e4405f;
+    background: rgba(228, 64, 95, 0.3) !important;
+    border-color: #e4405f !important;
 }
 
 .footer-links {
@@ -726,18 +745,19 @@ body {
 }
 
 .footer-links a {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9) !important; /* Более яркий */
     text-decoration: none;
     transition: color 0.3s;
     padding: 5px 0;
     display: block;
     border-radius: 5px;
     font-size: 14px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .footer-links a:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
+    color: white !important;
+    background: rgba(255, 255, 255, 0.08) !important;
     padding-left: 10px;
 }
 
@@ -745,14 +765,15 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9) !important; /* Более яркий */
     margin-bottom: 10px;
     padding: 5px 0;
     font-size: 14px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .contact-info p i {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9) !important;
     width: 20px;
     text-align: center;
 }
@@ -769,31 +790,33 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9) !important;
     text-decoration: none;
     transition: all 0.3s ease;
     padding: 10px 15px;
     border-radius: 10px;
     font-size: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.08) !important; /* ПРОЗРАЧНЫЙ */
+    backdrop-filter: blur(10px) !important;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .messenger-contact:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+    color: white !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
     transform: translateX(5px);
 }
 
 .messenger-contact.telegram:hover {
-    border-color: #0088cc;
-    background: rgba(0, 136, 204, 0.1);
+    border-color: #0088cc !important;
+    background: rgba(0, 136, 204, 0.15) !important;
 }
 
 .messenger-contact.whatsapp:hover {
-    border-color: #25d366;
-    background: rgba(37, 211, 102, 0.1);
+    border-color: #25d366 !important;
+    background: rgba(37, 211, 102, 0.15) !important;
 }
 
 .messenger-contact svg {
@@ -810,9 +833,10 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: rgba(255, 255, 255, 0.9) !important; /* Более яркий */
     font-size: 14px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .footer-legal {
@@ -821,30 +845,33 @@ body {
 }
 
 .footer-legal a {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9) !important;
     text-decoration: none;
     transition: color 0.3s;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 14px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .footer-legal a:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
+    color: white !important;
+    background: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* ===== ОСНОВНЫЕ СТИЛИ СОДЕРЖИМОГО ===== */
+/* ===== ОСНОВНЫЕ СТИЛИ СОДЕРЖИМОГО - ВСЕ ПРОЗРАЧНЫЕ ===== */
 .hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
+    background: transparent !important; /* КРИТИЧЕСКИ ВАЖНО */
 }
 
 .section {
     padding: 100px 0;
+    background: transparent !important; /* ВСЕ СЕКЦИИ ПРОЗРАЧНЫЕ */
 }
 
 .section-header {
@@ -861,6 +888,9 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7) !important; /* Усиленная тень */
 }
 
 .section-subtitle {
@@ -871,6 +901,9 @@ body {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.8),
+        0 1px 12px rgba(0, 0, 0, 0.6) !important; /* Тень для читаемости */
 }
 
 .page-title {
@@ -881,6 +914,9 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 4px 30px rgba(0, 0, 0, 0.9),
+        0 3px 20px rgba(0, 0, 0, 0.7) !important; /* Усиленная тень */
 }
 
 .page-subtitle {
@@ -889,12 +925,17 @@ body {
     line-height: 1.6;
     max-width: 800px;
     margin: 0 auto;
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.8),
+        0 1px 12px rgba(0, 0, 0, 0.6) !important; /* Тень для читаемости */
 }
 
-/* ===== КАРТОЧКИ ===== */
+/* ===== КАРТОЧКИ - СТЕКЛЯННЫЙ ЭФФЕКТ ===== */
 .card {
-    background: var(--secondary);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.08) !important; /* ПРОЗРАЧНЫЙ СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 15px;
     padding: 2rem;
     transition: var(--transition);
@@ -902,8 +943,9 @@ body {
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: var(--primary-blue);
+    border-color: var(--primary-blue) !important;
     box-shadow: 0 10px 30px rgba(0, 102, 255, 0.2);
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 /* ===== СЕТКИ ===== */
@@ -996,7 +1038,7 @@ body {
 /* ===== SERVICES SPECIFIC STYLES ===== */
 .services-hero {
     padding: 160px 0 80px;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .services-hero-content {
@@ -1007,7 +1049,7 @@ body {
 
 .services-nav {
     padding: 40px 0;
-    background: var(--primary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 80px;
@@ -1039,6 +1081,7 @@ body {
     padding: 10px 0;
     position: relative;
     transition: var(--transition);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .services-navigation .nav-item:hover,
@@ -1059,6 +1102,7 @@ body {
 .service-detail {
     padding: 120px 0;
     border-bottom: 1px solid var(--border);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .service-detail:last-child {
@@ -1076,12 +1120,16 @@ body {
     color: var(--accent);
     margin-bottom: 20px;
     letter-spacing: 2px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .service-title {
     font-size: 3rem;
     font-weight: 800;
     line-height: 1.2;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .service-content {
@@ -1096,6 +1144,7 @@ body {
     color: var(--light-text);
     line-height: 1.6;
     margin-bottom: 40px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .service-features {
@@ -1107,11 +1156,13 @@ body {
     font-size: 1.2rem;
     margin-bottom: 10px;
     font-weight: 700;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .feature p {
     color: var(--light-text);
     line-height: 1.6;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .service-stats {
@@ -1123,9 +1174,10 @@ body {
 .service-stats .stat {
     text-align: center;
     padding: 30px 20px;
-    background: var(--secondary);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
     border-radius: 10px;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 .stat-value {
@@ -1136,6 +1188,7 @@ body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 10px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .stat-label {
@@ -1143,11 +1196,12 @@ body {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .process-overview {
     padding: 120px 0;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .process-timeline {
@@ -1159,9 +1213,10 @@ body {
 .process-phase {
     text-align: center;
     padding: 40px 30px;
-    background: var(--primary);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
     border-radius: 10px;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     transition: var(--transition);
     position: relative;
     overflow: hidden;
@@ -1169,7 +1224,8 @@ body {
 
 .process-phase:hover {
     transform: translateY(-10px);
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .phase-number {
@@ -1182,6 +1238,7 @@ body {
     margin-bottom: 20px;
     transition: var(--transition);
     display: block;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .process-phase:hover .phase-number {
@@ -1193,17 +1250,19 @@ body {
     margin-bottom: 15px;
     font-weight: 700;
     color: var(--text);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .process-phase p {
     color: var(--light-text);
     line-height: 1.6;
     margin: 0;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .services-cta {
     padding: 120px 0;
-    background: var(--primary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
     text-align: center;
 }
 
@@ -1215,6 +1274,9 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .services-cta .cta-content p {
@@ -1224,12 +1286,13 @@ body {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 /* ===== ABOUT SPECIFIC STYLES ===== */
 .about-hero {
     padding: 160px 0 80px;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .about-hero-content {
@@ -1240,6 +1303,7 @@ body {
 
 .our-story {
     padding: 120px 0;
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .story-content {
@@ -1257,6 +1321,9 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .story-text p {
@@ -1264,6 +1331,7 @@ body {
     color: var(--light-text);
     line-height: 1.6;
     margin-bottom: 30px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .story-stats {
@@ -1284,6 +1352,7 @@ body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 10px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .story-stat .stat-label {
@@ -1291,26 +1360,29 @@ body {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .story-image {
-    background: var(--secondary);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
     border-radius: 15px;
     height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 .image-placeholder {
     color: var(--light-text);
     font-size: 1.2rem;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .our-values {
     padding: 120px 0;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .values-grid {
@@ -1322,15 +1394,17 @@ body {
 .value-card {
     text-align: center;
     padding: 40px 30px;
-    background: var(--primary);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
     border-radius: 15px;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     transition: var(--transition);
 }
 
 .value-card:hover {
     transform: translateY(-10px);
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .value-icon {
@@ -1350,15 +1424,18 @@ body {
     font-size: 1.5rem;
     margin-bottom: 15px;
     font-weight: 700;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .value-card p {
     color: var(--light-text);
     line-height: 1.6;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .our-team {
     padding: 120px 0;
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .team-grid {
@@ -1370,55 +1447,62 @@ body {
 .team-member {
     text-align: center;
     padding: 40px 30px;
-    background: var(--secondary);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
     border-radius: 15px;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     transition: var(--transition);
 }
 
 .team-member:hover {
     transform: translateY(-5px);
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .member-photo {
     width: 120px;
     height: 120px;
-    background: var(--primary);
+    background: rgba(255, 255, 255, 0.1) !important; /* ПРОЗРАЧНЫЙ */
+    backdrop-filter: blur(10px) !important;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 20px;
-    border: 3px solid var(--accent);
+    border: 3px solid var(--accent) !important;
 }
 
 .photo-placeholder {
     color: var(--light-text);
     font-size: 1.5rem;
     font-weight: 700;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .member-name {
     font-size: 1.3rem;
     font-weight: 700;
     margin-bottom: 10px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .member-role {
     color: var(--accent);
     font-weight: 600;
     margin-bottom: 15px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .member-bio {
     color: var(--light-text);
     line-height: 1.6;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .about-cta {
     padding: 120px 0;
-    background: var(--primary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
     text-align: center;
 }
 
@@ -1430,6 +1514,9 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .about-cta .cta-content p {
@@ -1439,12 +1526,13 @@ body {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 /* ===== CONTACTS SPECIFIC STYLES ===== */
 .contact-hero {
     padding: 160px 0 80px;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .contact-hero-content {
@@ -1459,6 +1547,7 @@ body {
 
 .contact-cards {
     padding: 80px 0;
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .cards-grid {
@@ -1468,8 +1557,9 @@ body {
 }
 
 .contact-card {
-    background: var(--secondary);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 15px;
     padding: 40px 30px;
     text-align: center;
@@ -1478,7 +1568,8 @@ body {
 
 .contact-card:hover {
     transform: translateY(-10px);
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .card-icon {
@@ -1498,12 +1589,14 @@ body {
     font-size: 1.5rem;
     margin-bottom: 20px;
     font-weight: 700;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .contact-card p {
     color: var(--light-text);
     line-height: 1.6;
     margin-bottom: 20px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .card-hours,
@@ -1511,6 +1604,7 @@ body {
     font-size: 0.9rem;
     color: var(--accent);
     margin-bottom: 20px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .card-link {
@@ -1521,6 +1615,7 @@ body {
     text-decoration: none;
     font-weight: 600;
     transition: var(--transition);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .card-link:hover {
@@ -1530,7 +1625,7 @@ body {
 
 .contact-main {
     padding: 80px 0;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .contact-layout {
@@ -1551,12 +1646,16 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .form-header p {
     font-size: 1.2rem;
     color: var(--light-text);
     line-height: 1.6;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .contact-form {
@@ -1586,6 +1685,7 @@ body {
     margin-bottom: 8px;
     font-weight: 600;
     color: var(--text);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .form-group input,
@@ -1593,8 +1693,9 @@ body {
 .form-group textarea {
     width: 100%;
     padding: 15px 50px 15px 20px;
-    background: var(--primary);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.1) !important; /* ПРОЗРАЧНЫЙ */
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-radius: 10px;
     color: var(--text);
     font-size: 1rem;
@@ -1605,8 +1706,9 @@ body {
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
     box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15) !important;
 }
 
 .form-group textarea {
@@ -1636,11 +1738,13 @@ body {
     font-size: 1.5rem;
     margin-bottom: 15px;
     font-weight: 700;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .info-section p {
     color: var(--light-text);
     margin-bottom: 25px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .social-grid {
@@ -1652,8 +1756,9 @@ body {
     display: flex;
     align-items: center;
     padding: 20px;
-    background: var(--primary);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 10px;
     text-decoration: none;
     color: var(--text);
@@ -1663,19 +1768,20 @@ body {
 
 .social-card:hover {
     transform: translateX(5px);
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .social-card.telegram:hover {
-    border-color: #0088cc;
+    border-color: #0088cc !important;
 }
 
 .social-card.instagram:hover {
-    border-color: #e4405f;
+    border-color: #e4405f !important;
 }
 
 .social-card.whatsapp:hover {
-    border-color: #25d366;
+    border-color: #25d366 !important;
 }
 
 .social-icon {
@@ -1698,11 +1804,13 @@ body {
     font-size: 1.1rem;
     margin-bottom: 5px;
     font-weight: 600;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .social-info span {
     color: var(--light-text);
     font-size: 0.9rem;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .social-arrow {
@@ -1716,13 +1824,15 @@ body {
 }
 
 .faq-accordion {
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 10px;
     overflow: hidden;
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(15px) !important;
 }
 
 .faq-item {
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 .faq-item:last-child {
@@ -1736,16 +1846,18 @@ body {
     align-items: center;
     cursor: pointer;
     transition: var(--transition);
+    background: transparent !important;
 }
 
 .faq-question:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08) !important;
 }
 
 .faq-question h4 {
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .faq-question i {
@@ -1774,22 +1886,25 @@ body {
     color: var(--light-text);
     line-height: 1.6;
     margin: 0;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .map-section {
     padding: 80px 0;
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .map-container {
     border-radius: 15px;
     overflow: hidden;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 .map-placeholder {
     position: relative;
     height: 400px;
-    background: var(--secondary);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1818,11 +1933,13 @@ body {
     font-size: 2rem;
     margin-bottom: 20px;
     font-weight: 700;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .map-info p {
     margin-bottom: 10px;
     line-height: 1.6;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .map-actions {
@@ -1841,7 +1958,7 @@ body {
 /* ===== PORTFOLIO SPECIFIC STYLES ===== */
 .portfolio-hero {
     padding: 160px 0 80px;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .portfolio-hero-content {
@@ -1852,8 +1969,8 @@ body {
 
 .portfolio-filter {
     padding: 40px 0;
-    background: var(--primary);
-    border-bottom: 1px solid var(--border);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 .filter-nav {
@@ -1865,24 +1982,27 @@ body {
 
 .filter-btn {
     padding: 12px 24px;
-    background: transparent;
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.08) !important; /* ПРОЗРАЧНЫЙ */
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-radius: 25px;
     color: var(--light-text);
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .filter-btn:hover,
 .filter-btn.active {
-    background: var(--accent);
+    background: rgba(0, 102, 255, 0.3) !important; /* ПРОЗРАЧНЫЙ СИНИЙ */
     color: white;
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
 }
 
 .portfolio-grid-section {
     padding: 80px 0;
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .portfolio-grid {
@@ -1903,8 +2023,9 @@ body {
 }
 
 .project-card {
-    background: var(--secondary);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 15px;
     overflow: hidden;
     transition: var(--transition);
@@ -1912,17 +2033,19 @@ body {
 
 .project-card:hover {
     transform: translateY(-10px);
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
     box-shadow: 0 20px 40px rgba(0, 102, 255, 0.2);
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .project-image {
     height: 300px;
-    background: var(--primary);
+    background: rgba(255, 255, 255, 0.1) !important; /* ПРОЗРАЧНЫЙ */
+    backdrop-filter: blur(10px) !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 .project-info {
@@ -1932,24 +2055,27 @@ body {
 .project-category {
     display: inline-block;
     padding: 6px 12px;
-    background: var(--blue-light-bg);
+    background: rgba(0, 102, 255, 0.2) !important; /* ПРОЗРАЧНЫЙ СИНИЙ */
     color: var(--accent);
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 600;
     margin-bottom: 15px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .project-title {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 15px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .project-description {
     color: var(--light-text);
     line-height: 1.6;
     margin-bottom: 20px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .project-meta {
@@ -1961,6 +2087,7 @@ body {
 .meta-item {
     color: var(--light-text);
     font-size: 0.9rem;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .project-link {
@@ -1971,6 +2098,7 @@ body {
     text-decoration: none;
     font-weight: 600;
     transition: var(--transition);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .project-link:hover {
@@ -1980,7 +2108,7 @@ body {
 
 .testimonials {
     padding: 120px 0;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .testimonials-grid {
@@ -1990,8 +2118,9 @@ body {
 }
 
 .testimonial-card {
-    background: var(--primary);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 15px;
     padding: 40px;
     transition: var(--transition);
@@ -1999,7 +2128,8 @@ body {
 
 .testimonial-card:hover {
     transform: translateY(-5px);
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .testimonial-content {
@@ -2011,6 +2141,7 @@ body {
     line-height: 1.6;
     font-style: italic;
     color: var(--text);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .testimonial-author {
@@ -2021,17 +2152,19 @@ body {
 .author-name {
     font-weight: 700;
     margin-bottom: 5px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .author-company {
     color: var(--light-text);
     font-size: 0.9rem;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* ===== BRANDBOOK SPECIFIC STYLES ===== */
 .brandbook-hero {
     padding: 160px 0 80px;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .brandbook-hero-content {
@@ -2042,6 +2175,7 @@ body {
 
 .brandbook-intro {
     padding: 120px 0;
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .intro-content {
@@ -2057,6 +2191,9 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .intro-text p {
@@ -2064,11 +2201,12 @@ body {
     color: var(--light-text);
     line-height: 1.6;
     margin-bottom: 30px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .brandbook-cases {
     padding: 120px 0;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .brand-cases-grid {
@@ -2077,8 +2215,9 @@ body {
 }
 
 .brand-case {
-    background: var(--primary);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 15px;
     overflow: hidden;
     transition: var(--transition);
@@ -2086,12 +2225,13 @@ body {
 
 .brand-case:hover {
     transform: translateY(-5px);
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .case-header {
     padding: 30px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -2102,21 +2242,24 @@ body {
     font-weight: 600;
     color: var(--accent);
     letter-spacing: 2px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .case-title {
     font-size: 1.5rem;
     font-weight: 700;
     flex: 1;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .case-category {
     padding: 6px 12px;
-    background: var(--blue-light-bg);
+    background: rgba(0, 102, 255, 0.2) !important; /* ПРОЗРАЧНЫЙ СИНИЙ */
     color: var(--accent);
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 600;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
 }
 
 .case-content {
@@ -2130,6 +2273,7 @@ body {
     color: var(--light-text);
     line-height: 1.6;
     margin-bottom: 20px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .case-elements {
@@ -2142,6 +2286,7 @@ body {
     font-size: 1.1rem;
     margin-bottom: 15px;
     font-weight: 600;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .color-palette {
@@ -2153,7 +2298,7 @@ body {
     width: 60px;
     height: 60px;
     border-radius: 10px;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 .placeholder-color-1 { background: #0066ff; }
@@ -2162,7 +2307,7 @@ body {
 
 .brandbook-cta {
     padding: 120px 0;
-    background: var(--primary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
     text-align: center;
 }
 
@@ -2174,6 +2319,9 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .brandbook-cta .cta-content p {
@@ -2183,6 +2331,7 @@ body {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 /* ===== HOME SPECIFIC STYLES ===== */
@@ -2193,6 +2342,7 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
+    background: transparent !important; /* КРИТИЧЕСКИ ВАЖНО */
 }
 
 .parallax-content h1 {
@@ -2204,6 +2354,9 @@ body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     line-height: 1.1;
+    text-shadow: 
+        0 4px 30px rgba(0, 0, 0, 0.9),
+        0 3px 20px rgba(0, 0, 0, 0.7) !important;
 }
 
 .parallax-content p {
@@ -2214,6 +2367,9 @@ body {
     margin-left: auto;
     margin-right: auto;
     line-height: 1.6;
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.8),
+        0 1px 12px rgba(0, 0, 0, 0.6) !important;
 }
 
 .hero-actions {
@@ -2230,6 +2386,7 @@ body {
     transform: translateX(-50%);
     text-align: center;
     color: var(--light-text);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .scroll-arrow {
@@ -2256,6 +2413,7 @@ body {
 
 .clients-section {
     padding: 120px 0;
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .clients-content {
@@ -2270,6 +2428,7 @@ body {
     letter-spacing: 2px;
     margin-bottom: 40px;
     display: block;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .marquee-container {
@@ -2295,6 +2454,7 @@ body {
     font-weight: 700;
     color: var(--text);
     white-space: nowrap;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .separator {
@@ -2313,7 +2473,7 @@ body {
 
 .services-preview {
     padding: 120px 0;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .services-grid {
@@ -2323,8 +2483,9 @@ body {
 }
 
 .service-card {
-    background: var(--primary);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 15px;
     padding: 40px 30px;
     text-align: center;
@@ -2333,7 +2494,8 @@ body {
 
 .service-card:hover {
     transform: translateY(-10px);
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .service-icon {
@@ -2353,12 +2515,14 @@ body {
     font-size: 1.5rem;
     margin-bottom: 15px;
     font-weight: 700;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .service-card p {
     color: var(--light-text);
     line-height: 1.6;
     margin-bottom: 20px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .service-link {
@@ -2369,6 +2533,7 @@ body {
     text-decoration: none;
     font-weight: 600;
     transition: var(--transition);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .service-link:hover {
@@ -2378,6 +2543,7 @@ body {
 
 .stats-improved {
     padding: 120px 0;
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .stats-grid-improved {
@@ -2387,8 +2553,9 @@ body {
 }
 
 .stat-card {
-    background: var(--secondary);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.08) !important; /* СТЕКЛЯННЫЙ */
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 15px;
     padding: 40px 30px;
     text-align: center;
@@ -2397,7 +2564,8 @@ body {
 
 .stat-card:hover {
     transform: translateY(-5px);
-    border-color: var(--accent);
+    border-color: var(--accent) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .stat-icon {
@@ -2425,6 +2593,7 @@ body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 10px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .stat-label-improved {
@@ -2432,11 +2601,12 @@ body {
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 .cta-improved {
     padding: 120px 0;
-    background: var(--secondary);
+    background: transparent !important; /* ПРОЗРАЧНЫЙ */
 }
 
 .cta-content-improved {
@@ -2454,12 +2624,16 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .cta-text p {
     font-size: 1.3rem;
     color: var(--light-text);
     line-height: 1.6;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .cta-action {
@@ -2486,7 +2660,7 @@ body {
         right: 0 !important;
         margin: 0 !important;
         transform: none !important;
-        background: rgba(10, 10, 20, 0.95) !important;
+        background: rgba(10, 10, 20, 0.85) !important; /* Полупрозрачный темный */
         backdrop-filter: blur(30px) saturate(180%) !important;
         -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -2496,7 +2670,7 @@ body {
     }
     
     .main-header.scrolled {
-        background: rgba(10, 10, 20, 0.98) !important;
+        background: rgba(10, 10, 20, 0.9) !important;
         padding: 10px 0 !important;
     }
     
@@ -2937,21 +3111,21 @@ body {
 /* ===== DARK MODE ENHANCEMENTS ===== */
 @media (prefers-color-scheme: dark) {
     .main-header {
-        background: rgba(255, 255, 255, 0.05) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
     }
     
     .main-header.scrolled {
-        background: rgba(255, 255, 255, 0.08) !important;
+        background: rgba(255, 255, 255, 0.12) !important;
     }
     
     @media (max-width: 768px) {
         .main-header {
-            background: rgba(10, 10, 20, 0.95) !important;
+            background: rgba(10, 10, 20, 0.85) !important;
         }
     }
     
     .main-footer {
-        background: #000000 !important;
+        background: rgba(0, 0, 0, 0.6) !important;
     }
 }
 
@@ -2998,24 +3172,24 @@ body {
     font-weight: 800;
 }
 
-/* ===== ГЛАВНАЯ СТРАНИЦА - БОЛЕЕ ПРОЗРАЧНЫЙ ===== */
+/* ===== ГЛАВНАЯ СТРАНИЦА - ПРОЗРАЧНЫЙ ===== */
 body.home-page .main-header {
-    background: rgba(255, 255, 255, 0.03) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
 }
 
 body.home-page .main-header.scrolled {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 /* ===== ВНУТРЕННИЕ СТРАНИЦЫ - ТАКОЙ ЖЕ ПРОЗРАЧНЫЙ ===== */
 body.internal-page .main-header {
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(25px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
 }
 
 body.internal-page .main-header.scrolled {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 /* ===== SERVICES/ABOUT PAGE - ФИКСИРОВАННЫЙ ХЕДЕР БЕЗ АНИМАЦИЙ ===== */
@@ -3039,24 +3213,24 @@ body.about-page .main-header.header-hidden {
 /* ===== ПОДДЕРЖКА БЕЗ BACKDROP-FILTER ===== */
 @supports not (backdrop-filter: blur(10px)) {
     .main-header {
-        background: rgba(15, 20, 35, 0.98) !important;
+        background: rgba(15, 20, 35, 0.9) !important;
     }
     
     .main-header.scrolled {
-        background: rgba(15, 20, 35, 0.99) !important;
+        background: rgba(15, 20, 35, 0.95) !important;
     }
     
     .language-switcher {
-        background: rgba(255, 255, 255, 0.12) !important;
+        background: rgba(255, 255, 255, 0.15) !important;
     }
     
     @media (max-width: 768px) {
         .main-header {
-            background: rgba(10, 10, 20, 0.98) !important;
+            background: rgba(10, 10, 20, 0.95) !important;
         }
         
         .main-nav {
-            background: rgba(10, 10, 20, 0.99) !important;
+            background: rgba(10, 10, 20, 0.98) !important;
         }
     }
 }
@@ -3075,7 +3249,7 @@ body.about-page .main-header.header-hidden {
     100% {
         opacity: 1;
         transform: translateX(-50%) translateY(0);
-        backdrop-filter: blur(25px) saturate(180%);
+        backdrop-filter: blur(30px) saturate(180%);
     }
 }
 
@@ -3083,7 +3257,7 @@ body.about-page .main-header.header-hidden {
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
     backdrop-filter: blur(35px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
     box-shadow: 
         0 15px 45px rgba(0, 0, 0, 0.4),
@@ -3130,9 +3304,9 @@ body.home-page .main-header,
 body.portfolio-page .main-header,
 body.brandbook-page .main-header,
 body.contacts-page .main-header {
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(25px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
 }
 
 body.services-page .main-header.scrolled,
@@ -3141,9 +3315,9 @@ body.home-page .main-header.scrolled,
 body.portfolio-page .main-header.scrolled,
 body.brandbook-page .main-header.scrolled,
 body.contacts-page .main-header.scrolled {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(30px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(35px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
 }
 
 /* ===== ФИНАЛЬНЫЕ ФИКСЫ ДЛЯ БЕЛЫХ ЭЛЕМЕНТОВ ХЕДЕРА ===== */
@@ -3171,21 +3345,21 @@ body.contacts-page .main-header.scrolled {
 .header-actions .btn-primary,
 .header-actions .btn-primary:hover,
 .header-actions .btn-primary:active {
-    background: white !important;
-    color: #0a0a0a !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 /* 4. Гарантируем белый индикатор переключателя языка */
 .lang-slider {
-    background: rgba(255, 255, 255, 0.25) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 /* 5. Гарантируем белую активную навигацию */
 .nav-link.active {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.18) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 .nav-link.active::after {
@@ -3195,8 +3369,8 @@ body.contacts-page .main-header.scrolled {
 
 /* 6. Для других кнопок (если есть в контенте) */
 .btn-primary:not(.header-actions .btn-primary) {
-    background: white !important;
-    color: #0a0a0a !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
 }
 
 /* 7. Мобильная версия */
@@ -3211,16 +3385,16 @@ body.contacts-page .main-header.scrolled {
     }
     
     .header-actions .btn-primary {
-        background: white !important;
-        color: #0a0a0a !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: white !important;
     }
     
     .lang-slider {
-        background: rgba(255, 255, 255, 0.25) !important;
+        background: rgba(255, 255, 255, 0.3) !important;
     }
     
     .nav-link.active {
-        background: rgba(255, 255, 255, 0.15) !important;
+        background: rgba(255, 255, 255, 0.18) !important;
     }
 }
 
@@ -3624,4 +3798,162 @@ video {
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ ПРОЗРАЧНОСТИ ===== */
+
+/* ВСЕ СЕКЦИИ ПРОЗРАЧНЫЕ ДЛЯ ВИДИМОСТИ ПАРАЛЛАКС-ФОНОВ */
+.content-section,
+.section,
+.hero,
+.services-hero,
+.about-hero,
+.portfolio-hero,
+.brandbook-hero,
+.contact-hero,
+.speck-vertical-section,
+.speck-marquee-section,
+.stats-improved,
+.cta-improved,
+.services-preview,
+.our-story,
+.our-values,
+.our-team,
+.about-cta,
+.process-overview,
+.services-cta,
+.brandbook-intro,
+.brandbook-cases,
+.brandbook-cta,
+.testimonials,
+.contact-cards,
+.contact-main,
+.map-section,
+.clients-section,
+.parallax-hero {
+    background: transparent !important;
+}
+
+/* УСИЛЕННЫЕ ТЕНИ ТЕКСТА ДЛЯ ЧИТАЕМОСТИ НА ФОНЕ */
+h1, h2, h3, h4, h5, h6,
+p, span, li, a:not(.btn) {
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9),
+        0 2px 15px rgba(0, 0, 0, 0.7),
+        0 1px 8px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* УЛУЧШЕНИЕ ЧИТАЕМОСТИ МЕЛКОГО ТЕКСТА */
+small, .small-text, .note, .caption {
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.8),
+        0 1px 12px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* УЛУЧШЕНИЕ ВИДИМОСТИ ИКОНОК */
+i, .icon, .fa, .fas, .far, .fab {
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* ФИКС ДЛЯ ТЕКСТА НА КНОПКАХ */
+.btn {
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.8),
+        0 1px 12px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* ФИКС ДЛЯ БЕГУЩЕЙ СТРОКИ */
+.speck-brand {
+    text-shadow: 
+        0 4px 30px rgba(0, 0, 0, 0.9),
+        0 3px 20px rgba(0, 0, 0, 0.7),
+        0 2px 15px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* УЛУЧШЕНИЕ ВИДИМОСТИ ГРАНИЦ НА СВЕТЛОМ ФОНЕ */
+[class*="border"],
+.border,
+.border-top,
+.border-bottom,
+.border-left,
+.border-right {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* СТЕКЛЯННЫЙ ЭФФЕКТ ДЛЯ ВСЕХ КАРТОЧЕК */
+.card,
+.stat-card,
+.service-card,
+.value-card,
+.team-member,
+.contact-card,
+.testimonial-card,
+.brand-case,
+.process-phase,
+.project-card {
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.card:hover,
+.stat-card:hover,
+.service-card:hover,
+.value-card:hover,
+.team-member:hover,
+.contact-card:hover,
+.testimonial-card:hover,
+.brand-case:hover,
+.process-phase:hover,
+.project-card:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* УЛУЧШЕНИЕ ВИДИМОСТИ ФОРМ */
+input, textarea, select {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+input:focus, textarea:focus, select:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ФИНАЛЬНЫЙ ФИКС: ГАРАНТИЯ ПРОЗРАЧНОСТИ */
+body {
+    background: transparent !important;
+}
+
+main {
+    background: transparent !important;
+}
+
+/* УСИЛЕНИЕ КОНТРАСТА НА МОБИЛЬНЫХ */
+@media (max-width: 768px) {
+    h1, h2, h3, h4, h5, h6 {
+        text-shadow: 
+            0 4px 30px rgba(0, 0, 0, 0.95),
+            0 3px 20px rgba(0, 0, 0, 0.85),
+            0 2px 15px rgba(0, 0, 0, 0.75) !important;
+    }
+    
+    .card,
+    .stat-card,
+    .service-card,
+    .value-card,
+    .team-member,
+    .contact-card,
+    .testimonial-card,
+    .brand-case,
+    .process-phase,
+    .project-card {
+        background: rgba(0, 0, 0, 0.4) !important;
+        backdrop-filter: blur(25px) !important;
+        -webkit-backdrop-filter: blur(25px) !important;
+    }
 }
