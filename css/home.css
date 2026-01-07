@@ -1,4 +1,4 @@
-/* home.css - ПОЛНОСТЬЮ ИСПРАВЛЕННЫЙ ФАЙЛ ДЛЯ 4 ФОНОВ */
+/* home.css - СТИЛИ ГЛАВНОЙ СТРАНИЦЫ (БЕЗ PARALLAX) */
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -9,12 +9,6 @@
 
 html {
     scroll-behavior: smooth;
-}
-
-/* Fallback для старых браузеров */
-.no-js html,
-.no-css-transforms html {
-    scroll-behavior: auto;
 }
 
 body {
@@ -28,137 +22,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Fallback для старых браузеров */
-.is-ie body {
-    font-family: Arial, sans-serif;
-    -webkit-font-smoothing: auto;
-}
-
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 30px;
     width: 100%;
-}
-
-/* Fallback для старых браузеров */
-.no-flexbox .container {
-    width: 90%;
-    margin: 0 auto;
-}
-
-/* ===== СТАТИЧНЫЙ ФОН ГЕРОЯ - ИСПРАВЛЕН ДЛЯ 4 ФОНОВ ===== */
-.hero-background-container {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    z-index: -100 !important;
-    overflow: hidden !important;
-    pointer-events: none !important;
-    -webkit-transform: translateZ(0) !important;
-    transform: translateZ(0) !important;
-    backface-visibility: hidden !important;
-    will-change: transform !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
-}
-
-/* Fallback для браузеров без поддержки */
-.no-css-transforms .hero-background-container,
-.no-parallax .hero-background-container,
-.is-ie .hero-background-container {
-    position: absolute !important;
-    -webkit-transform: none !important;
-    transform: none !important;
-}
-
-.hero-background-image {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    
-    /* ГАРАНТИРОВАННЫЕ НАСТРОЙКИ ДЛЯ ПЕРВОГО ФОНА */
-    background-image: url('../assets/images/parallax/bg-1.jpg') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    
-    /* Отключаем все фильтры и анимации */
-    filter: none !important;
-    -webkit-filter: none !important;
-    animation: none !important;
-    -webkit-animation: none !important;
-    
-    /* Оптимизация качества изображения */
-    image-rendering: -webkit-optimize-contrast !important;
-    image-rendering: crisp-edges !important;
-    -ms-interpolation-mode: nearest-neighbor !important;
-    
-    /* GPU ускорение */
-    -webkit-backface-visibility: hidden !important;
-    backface-visibility: hidden !important;
-    -webkit-transform: translateZ(0) !important;
-    transform: translateZ(0) !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
-    
-    /* ГАРАНТИРОВАННАЯ ВИДИМОСТЬ */
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    z-index: 1 !important;
-}
-
-/* Исправление для Firefox */
-.is-firefox .hero-background-image {
-    background-attachment: scroll !important;
-}
-
-/* Исправление для Safari */
-.is-safari .hero-background-image {
-    -webkit-transform: translate3d(0, 0, 0) !important;
-    transform: translate3d(0, 0, 0) !important;
-}
-
-/* Исправление для IE */
-.is-ie .hero-background-image {
-    background-attachment: scroll !important;
-    image-rendering: auto !important;
-    -ms-interpolation-mode: bicubic !important;
-}
-
-/* Легкое затемнение для читаемости */
-.hero-background-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(10, 10, 10, 0.1) 0%,
-        rgba(10, 10, 10, 0.3) 20%,
-        rgba(10, 10, 10, 0.5) 50%,
-        rgba(10, 10, 10, 0.7) 80%,
-        rgba(10, 10, 10, 0.85) 100%
-    );
-    z-index: 2;
-    pointer-events: none;
-}
-
-/* Убираем все стили видео-фона */
-.video-background-container,
-.video-background,
-.video-overlay,
-.video-controls,
-.video-fallback {
-    display: none !important;
 }
 
 /* ===== HERO SECTION ===== */
@@ -174,24 +42,12 @@ body {
     z-index: 10;
 }
 
-/* Fallback для старых браузеров */
-.no-flexbox .hero {
-    display: block;
-    padding-top: 150px;
-    text-align: center;
-}
-
 .parallax-content {
     text-align: center;
     max-width: 1000px;
     margin: 0 auto;
     position: relative;
     z-index: 20;
-}
-
-.no-flexbox .parallax-content {
-    width: 90%;
-    margin: 0 auto;
 }
 
 .hero h1 {
@@ -207,17 +63,10 @@ body {
     display: block;
 }
 
-/* Исправление для старых браузеров */
-.no-cssgrid .hero h1 span {
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
 .hero h1 span:first-child {
     color: white !important;
     font-size: 6rem;
     margin-bottom: 0.5rem;
-    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8) !important;
     opacity: 1 !important;
 }
 
@@ -225,7 +74,6 @@ body {
     color: white !important;
     font-size: 4.5rem;
     font-weight: 700;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
     opacity: 1 !important;
 }
 
@@ -236,7 +84,6 @@ body {
     font-weight: 500;
     letter-spacing: 0.5px;
     line-height: 1.4;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
     opacity: 1 !important;
 }
 
@@ -246,17 +93,11 @@ body {
     padding: 0 20px;
 }
 
-.no-flexbox .hero-description {
-    width: 90%;
-    margin: 0 auto 2rem;
-}
-
 .hero-description p {
     font-size: 1.4rem;
     line-height: 1.8;
     color: rgba(255, 255, 255, 0.9) !important;
     margin-bottom: 1.5rem;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7) !important;
     opacity: 1 !important;
 }
 
@@ -268,18 +109,6 @@ body {
     margin-top: 3rem;
     position: relative;
     z-index: 30;
-}
-
-/* Fallback для старых браузеров */
-.no-flexbox .hero-actions {
-    display: block;
-}
-
-.no-flexbox .hero-actions .btn {
-    display: block;
-    margin: 10px auto;
-    width: 80%;
-    max-width: 300px;
 }
 
 /* Кнопки */
@@ -302,12 +131,6 @@ body {
     z-index: 100;
 }
 
-/* Fallback для старых браузеров */
-.no-flexbox .btn {
-    display: inline-block;
-    text-align: center;
-}
-
 .btn-primary {
     background: linear-gradient(135deg, #0066ff 0%, #3399ff 100%);
     color: white;
@@ -320,20 +143,11 @@ body {
     background: linear-gradient(135deg, #0052cc 0%, #267ae6 100%);
 }
 
-.no-css-transforms .btn-primary:hover {
-    transform: none;
-    box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
-}
-
 .btn-secondary {
     background: rgba(255, 255, 255, 0.15);
     color: white;
     border: 2px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
-}
-
-.no-backdropfilter .btn-secondary {
-    background: rgba(255, 255, 255, 0.2);
 }
 
 .btn-secondary:hover {
@@ -342,20 +156,12 @@ body {
     transform: translateY(-3px);
 }
 
-.no-css-transforms .btn-secondary:hover {
-    transform: none;
-}
-
 .btn i {
     transition: transform 0.3s ease;
 }
 
 .btn:hover i {
     transform: translateX(5px);
-}
-
-.no-css-transforms .btn:hover i {
-    transform: none;
 }
 
 /* ===== SPECK VERTICAL SECTION ===== */
@@ -375,20 +181,6 @@ body {
     gap: 150px;
 }
 
-/* Fallback для старых браузеров */
-.no-flexbox .speck-vertical-grid,
-.no-cssgrid .speck-vertical-grid {
-    display: block;
-    max-width: 100%;
-}
-
-.no-flexbox .speck-vertical-block,
-.no-cssgrid .speck-vertical-block {
-    margin-bottom: 100px;
-    clear: both;
-    overflow: hidden;
-}
-
 .speck-vertical-block {
     display: flex;
     align-items: flex-start;
@@ -399,21 +191,6 @@ body {
     padding: 60px 0;
     position: relative;
     min-height: 500px;
-}
-
-/* Fallback для старых браузеров */
-.no-flexbox .speck-vertical-block,
-.no-css-transforms .speck-vertical-block {
-    display: block;
-    opacity: 1;
-    transform: none;
-    min-height: auto;
-}
-
-.no-js .speck-vertical-block,
-.no-css-transforms .speck-vertical-block {
-    opacity: 1;
-    transform: none;
 }
 
 .speck-vertical-block.visible {
@@ -430,21 +207,6 @@ body {
     align-self: flex-start;
 }
 
-/* Fallback для старых браузеров */
-.no-flexbox .speck-block-left,
-.no-cssgrid .speck-block-left {
-    float: left;
-    width: 30%;
-    text-align: left;
-    padding-top: 0;
-    position: static;
-    margin-bottom: 30px;
-}
-
-.no-position-sticky .speck-block-left {
-    position: static;
-}
-
 .speck-block-number {
     font-size: 1.8rem;
     font-weight: 900;
@@ -455,20 +217,11 @@ body {
     display: inline-block;
     padding-bottom: 25px;
     line-height: 1;
-    text-shadow: 0 0 20px rgba(0, 102, 255, 0.6),
-                 0 0 40px rgba(0, 102, 255, 0.3);
     background: linear-gradient(135deg, #0066ff 0%, #66b5ff 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     transition: all 0.4s ease;
-}
-
-/* Fallback для старых браузеров без background-clip */
-.no-backgroundclip .speck-block-number {
-    background: none;
-    color: #0066ff;
-    text-shadow: none;
 }
 
 .speck-block-number::after {
@@ -488,7 +241,6 @@ body {
     line-height: 1;
     margin: 0;
     letter-spacing: -1.5px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
     transition: all 0.3s ease;
     opacity: 1 !important;
 }
@@ -500,18 +252,6 @@ body {
     padding-top: 40px;
     min-height: 450px;
     position: relative;
-}
-
-/* Fallback для старых браузеров */
-.no-flexbox .speck-block-right,
-.no-cssgrid .speck-block-right {
-    float: right;
-    width: 65%;
-    border-left: none;
-    padding-left: 0;
-    min-height: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    padding-top: 30px;
 }
 
 .speck-block-subtitle {
@@ -545,24 +285,6 @@ body {
     margin-top: 60px;
 }
 
-/* Fallback для старых браузеров */
-.no-cssgrid .speck-feature-columns {
-    display: block;
-}
-
-.no-cssgrid .speck-feature-column {
-    display: block;
-    margin-bottom: 60px;
-    float: left;
-    width: 48%;
-    margin-right: 4%;
-}
-
-.no-cssgrid .speck-feature-column:nth-child(2n) {
-    margin-right: 0;
-    float: right;
-}
-
 .speck-feature-column {
     display: flex;
     flex-direction: column;
@@ -576,18 +298,9 @@ body {
     min-height: 250px;
 }
 
-.no-flexbox .speck-feature-column {
-    display: block;
-}
-
 .speck-feature-column:hover {
     background: rgba(255, 255, 255, 0.08);
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-.no-css-transforms .speck-feature-column:hover {
-    transform: none;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -640,12 +353,6 @@ body {
     opacity: 1 !important;
 }
 
-.no-flexbox .speck-feature-item {
-    display: block;
-    position: relative;
-    padding-left: 40px;
-}
-
 .speck-feature-item:hover {
     color: white !important;
 }
@@ -659,31 +366,15 @@ body {
     margin-top: 5px;
 }
 
-.no-flexbox .speck-feature-icon {
-    position: absolute;
-    left: 0;
-    top: 15px;
-    margin-top: 0;
-}
-
 .speck-feature-item:hover .speck-feature-icon {
     color: #66b5ff;
     transform: translateX(5px);
-}
-
-.no-css-transforms .speck-feature-item:hover .speck-feature-icon {
-    color: #66b5ff;
-    transform: none;
 }
 
 .speck-feature-text {
     line-height: 1.7;
     flex: 1;
     font-weight: 500;
-}
-
-.no-flexbox .speck-feature-text {
-    display: block;
 }
 
 /* Разделительная линия между блоками */
@@ -700,11 +391,6 @@ body {
         rgba(255, 255, 255, 0.05),
         transparent
     );
-}
-
-.no-flexbox .speck-vertical-block:not(:last-child)::before {
-    left: 0;
-    bottom: -50px;
 }
 
 /* ===== SPECK MARQUEE SECTION ===== */
@@ -790,19 +476,6 @@ body {
     white-space: nowrap;
 }
 
-/* Fallback для старых браузеров */
-.no-css-animations .speck-marquee-track {
-    animation: none;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.no-flexbox .speck-marquee-track {
-    display: block;
-    white-space: nowrap;
-    width: auto;
-}
-
 .speck-marquee-track:hover {
     animation-play-state: paused;
 }
@@ -812,10 +485,6 @@ body {
     align-items: center;
     white-space: nowrap;
     gap: 0;
-}
-
-.no-flexbox .speck-marquee-content {
-    display: inline-block;
 }
 
 .speck-brand {
@@ -831,25 +500,13 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
     font-family: 'Inter', sans-serif;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     opacity: 1 !important;
-}
-
-.no-flexbox .speck-brand {
-    display: inline-block;
-    margin: 0 30px;
 }
 
 .speck-brand:hover {
     color: #ffffff !important;
     opacity: 1;
     transform: translateY(-3px);
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-}
-
-.no-css-transforms .speck-brand:hover {
-    transform: none;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .speck-brand::after {
@@ -879,17 +536,6 @@ body {
     }
 }
 
-/* Fallback для старых браузеров */
-.no-css-animations .speck-marquee-section {
-    overflow: hidden;
-}
-
-.no-css-animations .speck-marquee-content {
-    display: inline-block;
-    animation: none;
-    white-space: nowrap;
-}
-
 /* ===== STATS SECTION ===== */
 .stats-improved {
     padding: 140px 0;
@@ -903,18 +549,6 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 40px;
     position: relative;
-}
-
-/* Fallback для старых браузеров */
-.no-cssgrid .stats-grid-improved {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.no-flexbox .stats-grid-improved {
-    display: block;
-    text-align: center;
 }
 
 .stat-card {
@@ -931,17 +565,6 @@ body {
     text-decoration: none;
     color: inherit;
     display: block;
-}
-
-.no-backdropfilter .stat-card {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.no-flexbox .stat-card {
-    display: inline-block;
-    width: 220px;
-    margin: 10px;
-    vertical-align: top;
 }
 
 .stat-card::before {
@@ -969,11 +592,6 @@ body {
     transform: translateY(-5px);
 }
 
-.no-css-transforms .stat-card:hover {
-    transform: none;
-    box-shadow: 0 25px 50px rgba(255, 255, 255, 0.15);
-}
-
 .stat-icon {
     font-size: 3.5rem;
     margin-bottom: 25px;
@@ -985,7 +603,6 @@ body {
 
 .stat-card:hover .stat-icon {
     color: #66b5ff;
-    text-shadow: 0 0 20px rgba(102, 181, 255, 0.5);
 }
 
 .stat-content {
@@ -1112,11 +729,6 @@ body {
     cursor: pointer;
 }
 
-.no-flexbox .btn-glow {
-    display: inline-block;
-    text-align: center;
-}
-
 .btn-glow::before {
     content: '';
     position: absolute;
@@ -1142,20 +754,12 @@ body {
     transform: translateY(-3px);
 }
 
-.no-css-transforms .btn-glow:hover {
-    transform: none;
-}
-
 .btn-glow i {
     transition: transform 0.4s ease;
 }
 
 .btn-glow:hover i {
     transform: translateX(8px) rotate(-15deg);
-}
-
-.no-css-transforms .btn-glow:hover i {
-    transform: none;
 }
 
 /* ===== ПРОГРЕСС-БАР СКРОЛЛА ===== */
@@ -1174,201 +778,6 @@ body {
     background: linear-gradient(90deg, #0066ff, #3399ff);
     width: 0%;
     transition: width 0.1s ease;
-}
-
-/* ===== ГАРАНТИРОВАННЫЙ ФИКС ДЛЯ 4 ФОНОВ ===== */
-
-/* 1. ГАРАНТИЯ ВИДИМОСТИ ВСЕХ КОНТЕЙНЕРОВ */
-body.home-page .hero-background-container,
-body.home-page .parallax-bg-container {
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
-}
-
-/* 2. ГАРАНТИЯ ДЛЯ ПАРАЛЛАКС ФОНОВ */
-body.home-page .parallax-bg {
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-}
-
-/* 3. КОНКРЕТНЫЕ ФОНОВЫЕ ИЗОБРАЖЕНИЯ */
-body.home-page #parallax-bg-1 { 
-    background-image: url('../assets/images/parallax/bg-1.jpg') !important; 
-}
-body.home-page #parallax-bg-2 { 
-    background-image: url('../assets/images/parallax/bg-2.jpg') !important; 
-}
-body.home-page #parallax-bg-3 { 
-    background-image: url('../assets/images/parallax/bg-3.jpg') !important; 
-}
-body.home-page #parallax-bg-4 { 
-    background-image: url('../assets/images/parallax/bg-4.jpg') !important; 
-}
-
-/* 4. АКТИВНЫЕ ФОНЫ */
-body.home-page .parallax-bg.active {
-    opacity: 1 !important;
-    z-index: 2 !important;
-}
-
-/* 5. ПЕРВЫЙ ФОН ВСЕГДА ВИДЕН */
-body.home-page #parallax-bg-1 {
-    opacity: 1 !important;
-    z-index: 1 !important;
-}
-
-/* 6. СТАТИЧНЫЙ ФОН ГЕРОЯ */
-body.home-page .hero-background-image {
-    background-image: url('../assets/images/parallax/bg-1.jpg') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    opacity: 1 !important;
-    z-index: 1 !important;
-}
-
-/* 7. FALLBACK ДЛЯ JS/CSS ПРОБЛЕМ */
-body.home-page.no-js .hero-background-image,
-body.home-page.no-parallax .hero-background-image,
-body.home-page.no-css-transforms .hero-background-image {
-    opacity: 1 !important;
-}
-
-body.home-page.no-js #parallax-bg-1,
-body.home-page.no-parallax #parallax-bg-1,
-body.home-page.no-css-transforms #parallax-bg-1 {
-    opacity: 1 !important;
-    z-index: 1 !important;
-    background-image: url('../assets/images/parallax/bg-1.jpg') !important;
-}
-
-/* 8. МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ФОНОВ */
-@media (max-width: 768px) {
-    body.home-page .hero-background-image,
-    body.home-page .parallax-bg {
-        background-attachment: scroll !important;
-        background-size: cover !important;
-        background-position: center center !important;
-    }
-    
-    body.home-page .hero-background-container {
-        height: 100vh !important;
-        position: fixed !important;
-    }
-    
-    body.home-page .hero-background-overlay {
-        background: linear-gradient(
-            to bottom,
-            rgba(10, 10, 10, 0.3) 0%,
-            rgba(10, 10, 10, 0.5) 20%,
-            rgba(10, 10, 10, 0.7) 50%,
-            rgba(10, 10, 10, 0.8) 80%,
-            rgba(10, 10, 10, 0.9) 100%
-        ) !important;
-    }
-}
-
-/* ===== АНИМАЦИИ ===== */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.content-section {
-    animation: fadeInUp 0.8s ease-out forwards;
-    opacity: 0;
-}
-
-/* Fallback для старых браузеров */
-.no-css-animations .content-section,
-.no-js .content-section {
-    animation: none;
-    opacity: 1;
-}
-
-/* ===== СПЕЦИАЛЬНЫЕ ФИКСЫ ===== */
-
-/* Гарантируем что фон не перекрывает интерактивные элементы */
-.hero-actions a,
-.parallax-content,
-.hero-description {
-    position: relative;
-    z-index: 100;
-}
-
-/* Поддержка prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-    .hero-background-image {
-        animation: none !important;
-    }
-    
-    .speck-marquee-track {
-        animation: none !important;
-    }
-    
-    .content-section {
-        animation: none !important;
-        opacity: 1;
-    }
-    
-    .speck-vertical-block {
-        transition: none !important;
-        opacity: 1;
-        transform: none;
-    }
-}
-
-/* Фикс для старых браузеров */
-.no-objectfit .hero-background-image {
-    background-attachment: scroll !important;
-    background-position: center center !important;
-    background-size: cover !important;
-}
-
-/* Высокое разрешение экранов */
-@media (min-resolution: 192dpi),
-       (min-resolution: 2dppx) {
-    .hero-background-image {
-        background-size: cover !important;
-        background-position: center center !important;
-        image-rendering: -webkit-optimize-contrast !important;
-        image-rendering: crisp-edges !important;
-    }
-}
-
-/* Фикс при печати */
-@media print {
-    .hero-background-container {
-        display: none !important;
-    }
-}
-
-/* Гарантированные настройки качества для всех фоновых изображений */
-[class*="background"],
-[style*="background-image"],
-.bg-image,
-.background-image {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
@@ -1418,12 +827,6 @@ body.home-page.no-css-transforms #parallax-bg-1 {
     
     .hero h1 span:nth-child(2) {
         font-size: 3.5rem;
-    }
-    
-    /* Оптимизация для качества на планшетах */
-    .hero-background-image {
-        background-size: cover;
-        background-position: center center;
     }
     
     .speck-vertical-grid {
@@ -1497,13 +900,6 @@ body.home-page.no-css-transforms #parallax-bg-1 {
     
     .hero-description p {
         font-size: 1.2rem;
-    }
-    
-    /* Оптимизация фона для планшетов */
-    .hero-background-image {
-        background-attachment: scroll;
-        background-size: cover;
-        background-position: center center;
     }
     
     .speck-vertical-section {
@@ -1640,35 +1036,6 @@ body.home-page.no-css-transforms #parallax-bg-1 {
         max-width: 300px;
     }
     
-    /* КРИТИЧЕСКАЯ ОПТИМИЗАЦИЯ ФОНА НА МОБИЛЬНЫХ */
-    .hero-background-image {
-        background-attachment: scroll !important;
-        background-size: cover !important;
-        background-position: center center !important;
-        background-repeat: no-repeat !important;
-        
-        /* Отключаем все сложные эффекты на мобильных */
-        filter: none !important;
-        -webkit-filter: none !important;
-        
-        /* Улучшаем качество рендеринга */
-        image-rendering: -webkit-optimize-contrast !important;
-        image-rendering: auto !important;
-        -webkit-font-smoothing: antialiased !important;
-    }
-    
-    /* Усиливаем затемнение для читаемости */
-    .hero-background-overlay {
-        background: linear-gradient(
-            to bottom,
-            rgba(10, 10, 10, 0.2) 0%,
-            rgba(10, 10, 10, 0.4) 20%,
-            rgba(10, 10, 10, 0.6) 50%,
-            rgba(10, 10, 10, 0.8) 80%,
-            rgba(10, 10, 10, 0.9) 100%
-        ) !important;
-    }
-    
     .speck-vertical-section {
         padding: 120px 0 80px;
     }
@@ -1780,18 +1147,6 @@ body.home-page.no-css-transforms #parallax-bg-1 {
         font-size: 1rem;
     }
     
-    /* Дополнительная оптимизация фона для маленьких экранов */
-    .hero-background-container {
-        position: fixed !important;
-        height: 100vh !important;
-    }
-    
-    .hero-background-image {
-        background-attachment: scroll !important;
-        background-size: cover !important;
-        background-position: center center !important;
-    }
-    
     .speck-vertical-section {
         padding: 100px 0 60px;
     }
@@ -1894,13 +1249,6 @@ body.home-page.no-css-transforms #parallax-bg-1 {
         min-width: auto;
     }
     
-    /* Финальная оптимизация для очень маленьких экранов */
-    .hero-background-image {
-        background-size: cover !important;
-        background-position: center center !important;
-        image-rendering: auto !important;
-    }
-    
     .speck-block-title {
         font-size: 1.6rem;
     }
@@ -1952,5 +1300,31 @@ body.home-page.no-css-transforms #parallax-bg-1 {
     .speck-marquee-mask::before,
     .speck-marquee-mask::after {
         width: 40px;
+    }
+}
+
+/* Поддержка prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .speck-marquee-track {
+        animation: none !important;
+    }
+    
+    .content-section {
+        animation: none !important;
+        opacity: 1;
+    }
+    
+    .speck-vertical-block {
+        transition: none !important;
+        opacity: 1;
+        transform: none;
+    }
+    
+    .btn:hover {
+        transform: none !important;
+    }
+    
+    .speck-feature-column:hover {
+        transform: none !important;
     }
 }
