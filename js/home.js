@@ -1,335 +1,14 @@
-// home.js - ПОЛНОСТЬЮ ИСПРАВЛЕННЫЙ ФАЙЛ ДЛЯ 4 ФОНОВ
-console.log('🎬 home.js loaded - FULLY FIXED VERSION');
+// home.js - КОМПОНЕНТЫ ГЛАВНОЙ СТРАНИЦЫ (БЕЗ ЛОГИКИ ФОНОВ)
 
-// ГАРАНТИРОВАННЫЙ ФИКС ДЛЯ ФОНОВ (ПЕРВЫЙ БЛОК)
-(function() {
-    'use strict';
-    
-    console.log('🔧 APPLYING GUARANTEED BACKGROUND FIXES...');
-    
-    // Функция для гарантированной установки всех фонов
-    function guaranteeAllBackgrounds() {
-        console.log('🎨 Guaranteeing all 4 backgrounds...');
-        
-        // 1. ГАРАНТИЯ ДЛЯ СТАТИЧНОГО ФОНА ГЕРОЯ
-        const heroBg = document.querySelector('.hero-background-image');
-        if (heroBg) {
-            // Принудительно устанавливаем все настройки
-            heroBg.style.cssText = `
-                background-image: url('./assets/images/parallax/bg-1.jpg') !important;
-                background-size: cover !important;
-                background-position: center center !important;
-                background-repeat: no-repeat !important;
-                background-attachment: fixed !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                display: block !important;
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100% !important;
-                height: 100% !important;
-                z-index: 1 !important;
-                filter: none !important;
-                -webkit-filter: none !important;
-                image-rendering: -webkit-optimize-contrast !important;
-                image-rendering: crisp-edges !important;
-                -webkit-font-smoothing: antialiased !important;
-                -moz-osx-font-smoothing: grayscale !important;
-            `;
-            
-            console.log('✅ Hero background guaranteed');
-        }
-        
-        // 2. ГАРАНТИЯ ДЛЯ PARALLAX ФОНОВ (4 фона)
-        const parallaxBgs = document.querySelectorAll('.parallax-bg');
-        const bgPaths = [
-            './assets/images/parallax/bg-1.jpg',
-            './assets/images/parallax/bg-2.jpg',
-            './assets/images/parallax/bg-3.jpg',
-            './assets/images/parallax/bg-4.jpg'
-        ];
-        
-        parallaxBgs.forEach((bg, index) => {
-            if (index < bgPaths.length) {
-                const bgNumber = index + 1;
-                const isActive = index === 0;
-                
-                // Принудительно устанавливаем все настройки
-                bg.style.cssText = `
-                    background-image: url('${bgPaths[index]}') !important;
-                    background-size: cover !important;
-                    background-position: center center !important;
-                    background-repeat: no-repeat !important;
-                    background-attachment: scroll !important;
-                    opacity: ${isActive ? '1' : '0'} !important;
-                    visibility: visible !important;
-                    display: block !important;
-                    position: absolute !important;
-                    top: 0 !important;
-                    left: 0 !important;
-                    width: 100% !important;
-                    height: 100% !important;
-                    z-index: ${isActive ? '1' : '0'} !important;
-                    filter: none !important;
-                    -webkit-filter: none !important;
-                    image-rendering: -webkit-optimize-contrast !important;
-                    image-rendering: crisp-edges !important;
-                    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                `;
-                
-                // Добавляем активный класс к первому фону
-                if (isActive) {
-                    bg.classList.add('active');
-                }
-                
-                console.log(`✅ Parallax background ${bgNumber} guaranteed (${isActive ? 'active' : 'inactive'})`);
-            }
-        });
-        
-        // 3. ГАРАНТИЯ ДЛЯ PARALLAX КОНТЕЙНЕРА
-        const parallaxContainer = document.querySelector('.parallax-bg-container');
-        if (parallaxContainer) {
-            parallaxContainer.style.cssText = `
-                display: block !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100% !important;
-                height: 100% !important;
-                z-index: -1 !important;
-                overflow: hidden !important;
-                pointer-events: none !important;
-                -webkit-transform: translateZ(0) !important;
-                transform: translateZ(0) !important;
-                backface-visibility: hidden !important;
-            `;
-            
-            console.log('✅ Parallax container guaranteed');
-        }
-        
-        // 4. ГАРАНТИЯ ДЛЯ ГЕРОЯ КОНТЕЙНЕРА
-        const heroContainer = document.getElementById('hero-background-container');
-        if (heroContainer) {
-            heroContainer.style.cssText = `
-                display: block !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100% !important;
-                height: 100% !important;
-                z-index: -100 !important;
-                overflow: hidden !important;
-                pointer-events: none !important;
-            `;
-            
-            console.log('✅ Hero container guaranteed');
-        }
-        
-        // 5. ПРЕДЗАГРУЗКА ВСЕХ ИЗОБРАЖЕНИЙ
-        preloadAllImages();
-        
-        // Помечаем что фиксы применены
-        document.body.classList.add('backgrounds-guaranteed');
-        console.log('🎉 All 4 backgrounds guaranteed!');
-    }
-    
-    // Функция предзагрузки всех изображений
-    function preloadAllImages() {
-        console.log('🖼️ Preloading all background images...');
-        
-        const imageUrls = [
-            './assets/images/parallax/bg-1.jpg',
-            './assets/images/parallax/bg-2.jpg',
-            './assets/images/parallax/bg-3.jpg',
-            './assets/images/parallax/bg-4.jpg'
-        ];
-        
-        let loadedCount = 0;
-        const totalImages = imageUrls.length;
-        
-        imageUrls.forEach(url => {
-            const img = new Image();
-            img.src = url;
-            img.onload = () => {
-                loadedCount++;
-                console.log(`✅ Preloaded: ${url} (${loadedCount}/${totalImages})`);
-                
-                if (loadedCount === totalImages) {
-                    console.log('🌟 All 4 background images preloaded successfully!');
-                    document.body.classList.add('backgrounds-preloaded');
-                }
-            };
-            img.onerror = (e) => {
-                console.warn(`⚠️ Failed to preload: ${url}`, e);
-                loadedCount++;
-                
-                // Пробуем альтернативный путь
-                const altUrl = url.replace('./assets/', 'assets/');
-                console.log(`🔄 Trying alternative path: ${altUrl}`);
-                
-                const altImg = new Image();
-                altImg.src = altUrl;
-            };
-        });
-    }
-    
-    // Функция проверки видимости фонов
-    function verifyBackgrounds() {
-        console.log('🔍 Verifying background visibility...');
-        
-        let allGood = true;
-        
-        // Проверяем статичный фон
-        const heroBg = document.querySelector('.hero-background-image');
-        if (heroBg) {
-            const heroStyle = window.getComputedStyle(heroBg);
-            if (heroStyle.opacity === '0' || heroStyle.backgroundImage === 'none') {
-                console.warn('⚠️ Hero background not visible');
-                allGood = false;
-            }
-        }
-        
-        // Проверяем первый параллакс фон
-        const firstParallaxBg = document.getElementById('parallax-bg-1');
-        if (firstParallaxBg) {
-            const parallaxStyle = window.getComputedStyle(firstParallaxBg);
-            if (parallaxStyle.opacity === '0') {
-                console.warn('⚠️ First parallax background not visible');
-                allGood = false;
-                
-                // Применяем emergency fix
-                firstParallaxBg.style.opacity = '1';
-                firstParallaxBg.style.zIndex = '1';
-            }
-        }
-        
-        if (allGood) {
-            console.log('✅ All backgrounds are visible');
-            document.body.classList.add('backgrounds-verified');
-        } else {
-            console.log('⚠️ Some backgrounds need fixing');
-            document.body.classList.add('backgrounds-need-fix');
-        }
-        
-        return allGood;
-    }
-    
-    // Emergency fix на случай если фоны не видны
-    function applyEmergencyFix() {
-        console.log('🚨 APPLYING EMERGENCY BACKGROUND FIX...');
-        
-        // 1. Принудительно показываем первый параллакс фон
-        const firstBg = document.getElementById('parallax-bg-1');
-        if (firstBg) {
-            firstBg.style.cssText = `
-                background-image: url('./assets/images/parallax/bg-1.jpg') !important;
-                background-size: cover !important;
-                background-position: center center !important;
-                background-repeat: no-repeat !important;
-                opacity: 1 !important;
-                z-index: 1 !important;
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100% !important;
-                height: 100% !important;
-                display: block !important;
-                visibility: visible !important;
-            `;
-            
-            firstBg.classList.add('active', 'emergency-fixed');
-        }
-        
-        // 2. Гарантируем что контейнер виден
-        const container = document.querySelector('.parallax-bg-container');
-        if (container) {
-            container.style.cssText = `
-                display: block !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100% !important;
-                height: 100% !important;
-                z-index: -1 !important;
-            `;
-        }
-        
-        // 3. Добавляем класс для отслеживания
-        document.body.classList.add('emergency-fix-applied');
-        console.log('✅ Emergency fix applied');
-    }
-    
-    // Основная функция инициализации
-    function initializeBackgrounds() {
-        console.log('🏁 INITIALIZING BACKGROUND SYSTEM...');
-        
-        // Применяем гарантии
-        guaranteeAllBackgrounds();
-        
-        // Проверяем через 2 секунды
-        setTimeout(() => {
-            const isVerified = verifyBackgrounds();
-            
-            if (!isVerified) {
-                console.log('🔄 Backgrounds not verified, applying emergency fix...');
-                applyEmergencyFix();
-                
-                // Проверяем еще раз через 1 секунду
-                setTimeout(() => {
-                    verifyBackgrounds();
-                }, 1000);
-            }
-        }, 2000);
-        
-        // Финальная проверка после полной загрузки
-        window.addEventListener('load', () => {
-            console.log('🌅 Page fully loaded, final background check...');
-            
-            setTimeout(() => {
-                const finalCheck = verifyBackgrounds();
-                
-                if (!finalCheck) {
-                    console.log('🚨 FINAL WARNING: Backgrounds still not visible!');
-                    document.body.classList.add('backgrounds-failed');
-                    
-                    // Последняя попытка
-                    applyEmergencyFix();
-                } else {
-                    console.log('🎊 SUCCESS: All 4 backgrounds working perfectly!');
-                    document.body.classList.add('backgrounds-success');
-                }
-            }, 500);
-        });
-    }
-    
-    // Запускаем инициализацию
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeBackgrounds);
-    } else {
-        initializeBackgrounds();
-    }
-    
-    // Экспортируем функции для отладки
-    window.guaranteeBackgrounds = guaranteeAllBackgrounds;
-    window.verifyBackgrounds = verifyBackgrounds;
-    window.applyEmergencyFix = applyEmergencyFix;
-    
-})();
+console.log('🎬 home.js loaded - MAIN COMPONENTS ONLY');
 
-// ОСНОВНОЙ КЛАСС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ (ПРОДОЛЖЕНИЕ)
+// ===== MAIN HOMEPAGE CLASS =====
 class HomePage {
     constructor() {
         this.isReducedMotion = window.matchMedia ? 
             window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
         
-        console.log('🏠 HomePage initialized (with 4 background fix)');
+        console.log('🏠 HomePage initialized (backgrounds handled by parallax.js)');
         
         // Инициализация всех компонентов
         this.initializeComponents();
@@ -337,7 +16,7 @@ class HomePage {
 
     // ИНИЦИАЛИЗАЦИЯ ВСЕХ КОМПОНЕНТОВ
     initializeComponents() {
-        console.log('🚀 Initializing all components...');
+        console.log('🚀 Initializing components...');
         
         try {
             this.initializeBasicAnimations();
@@ -345,7 +24,6 @@ class HomePage {
             this.initializeSpeckVerticalBlocks();
             this.initializeSpeckMarquee();
             this.initializeScrollProgress();
-            this.initializeParallaxBackgrounds();
             this.initializeClickableStats();
             this.initializeCTAClickable();
             
@@ -678,78 +356,6 @@ class HomePage {
         setTimeout(checkSections, 300);
     }
 
-    // PARALLAX BACKGROUNDS (управление 4 фонами)
-    initializeParallaxBackgrounds() {
-        console.log('🌄 Initializing parallax backgrounds management...');
-        
-        const contentSections = document.querySelectorAll('.content-section[data-bg-index]');
-        
-        if (!contentSections.length) {
-            console.log('⚠️ Sections with parallax backgrounds not found');
-            return;
-        }
-        
-        console.log('🎯 Found ' + contentSections.length + ' sections with backgrounds');
-        
-        const checkBackgrounds = () => {
-            const windowHeight = window.innerHeight || 
-                               document.documentElement.clientHeight || 
-                               document.body.clientHeight;
-            let activeIndex = 0;
-            
-            // Находим текущую секцию
-            for (const section of contentSections) {
-                const rect = section.getBoundingClientRect();
-                const isVisible = (
-                    rect.top <= windowHeight * 0.5 &&
-                    rect.bottom >= windowHeight * 0.5
-                );
-                
-                if (isVisible) {
-                    activeIndex = parseInt(section.getAttribute('data-bg-index')) || 0;
-                    break;
-                }
-            }
-            
-            // Устанавливаем активный фон
-            this.setActiveParallaxBackground(activeIndex);
-        };
-        
-        const throttledCheck = this.throttle(checkBackgrounds, 100);
-        window.addEventListener('scroll', throttledCheck, { passive: true });
-        window.addEventListener('resize', throttledCheck, { passive: true });
-        
-        // Первоначальная установка
-        setTimeout(checkBackgrounds, 500);
-    }
-    
-    // Установка активного параллакс фона
-    setActiveParallaxBackground(index) {
-        const backgrounds = document.querySelectorAll('.parallax-bg');
-        
-        if (index >= backgrounds.length) {
-            console.warn(`⚠️ Background index ${index} out of range (max ${backgrounds.length})`);
-            return;
-        }
-        
-        // Убираем active класс со всех фонов
-        backgrounds.forEach(bg => {
-            bg.classList.remove('active');
-            bg.style.opacity = '0';
-            bg.style.zIndex = '0';
-        });
-        
-        // Добавляем active класс к текущему фону
-        const targetBg = backgrounds[index];
-        if (targetBg) {
-            targetBg.classList.add('active');
-            targetBg.style.opacity = '1';
-            targetBg.style.zIndex = '1';
-            
-            console.log(`🎨 Active background: #${index + 1}`);
-        }
-    }
-
     // SCROLL PROGRESS
     initializeScrollProgress() {
         const progressBar = document.querySelector('.scroll-progress-bar');
@@ -884,37 +490,22 @@ class HomePage {
     }
 }
 
-// ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ ГЛАВНОЙ СТРАНИЦЫ
+// ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
     // Проверяем, что мы на главной странице
     if (!document.body || !document.body.classList.contains('home-page')) {
-        console.log('⚠️ Not home page, home.js will not initialize full HomePage');
+        console.log('⚠️ Not home page, home.js will not initialize');
         return;
     }
     
-    console.log('📄 INITIALIZING HOME PAGE WITH 4 BACKGROUNDS');
-    console.log('🔧 DOM loading state:', document.readyState);
+    console.log('📄 INITIALIZING HOME PAGE');
     
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('✅ DOM fully loaded');
-            console.log('🎬 Creating HomePage instance...');
-            try {
-                window.homePage = new HomePage();
-                console.log('🎉 Home page successfully initialized with 4 backgrounds!');
-                
-                // Добавляем финальный класс
-                document.body.classList.add('homepage-initialized');
-            } catch (error) {
-                console.error('❌ Error during HomePage initialization:', error);
-            }
-        });
-    } else {
-        console.log('✅ DOM already loaded');
+    // Гарантированный запуск после полной загрузки
+    function startHomePage() {
         console.log('🎬 Creating HomePage instance...');
         try {
             window.homePage = new HomePage();
-            console.log('🎉 Home page successfully initialized with 4 backgrounds!');
+            console.log('🎉 Home page successfully initialized!');
             
             // Добавляем финальный класс
             document.body.classList.add('homepage-initialized');
@@ -922,13 +513,20 @@ function initializeHomePage() {
             console.error('❌ Error during HomePage initialization:', error);
         }
     }
+    
+    // Запускаем после загрузки DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startHomePage);
+    } else {
+        startHomePage();
+    }
 }
 
-// Автоматическая инициализация
+// АВТОМАТИЧЕСКИЙ ЗАПУСК
 console.log('🚀 Starting home page initialization...');
 initializeHomePage();
 
-// Экспорт класса
+// Экспорт класса для отладки
 if (typeof window !== 'undefined') {
     window.HomePage = HomePage;
 }
@@ -941,4 +539,4 @@ window.addEventListener('error', function(e) {
     }
 });
 
-console.log('✅ home.js fully loaded and ready for 4 backgrounds');
+console.log('✅ home.js fully loaded');
