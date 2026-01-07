@@ -1,4 +1,62 @@
-/* home.css - БАЗОВАЯ ВЕРСИЯ БЕЗ ПАРАЛЛАКС-ФОНОВ */
+/* home.css - С ФОНОВОЙ СИСТЕМОЙ ПАРАЛЛАКСА */
+
+/* ===== ФОНОВАЯ СИСТЕМА ===== */
+.bg-layers-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+.bg-layers-container.loaded {
+    opacity: 1;
+}
+
+.bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateZ(0);
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.bg-layer.active {
+    opacity: 1;
+}
+
+/* Эффект параллакса для фона */
+.bg-layer {
+    transform: translateY(0) scale(1.05);
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Эффект затемнения фона */
+.bg-layer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -30,6 +88,14 @@ body {
     width: 100%;
 }
 
+/* Убедимся, что контент поверх фона */
+.content-section,
+.header,
+.footer {
+    position: relative;
+    z-index: 10;
+}
+
 /* ===== HERO SECTION ===== */
 .hero {
     min-height: 100vh;
@@ -39,7 +105,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    z-index: 10;
+    z-index: 20;
 }
 
 .hero-content {
@@ -47,7 +113,7 @@ body {
     max-width: 1000px;
     margin: 0 auto;
     position: relative;
-    z-index: 20;
+    z-index: 30;
 }
 
 .hero h1 {
@@ -103,13 +169,14 @@ body {
 
 /* СТЕКЛЯННЫЙ ФОН ДЛЯ ОПИСАНИЯ */
 .hero-description {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(10, 10, 10, 0.7) !important;
     backdrop-filter: blur(15px) !important;
     -webkit-backdrop-filter: blur(15px) !important;
     border-radius: 20px;
     padding: 40px !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     margin: 40px auto 3.5rem !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 .hero-actions {
@@ -119,7 +186,7 @@ body {
     flex-wrap: wrap;
     margin-top: 3rem;
     position: relative;
-    z-index: 30;
+    z-index: 40;
 }
 
 /* Кнопки - стеклянный эффект */
@@ -204,7 +271,7 @@ body {
     position: relative;
     background: transparent !important;
     overflow: hidden;
-    z-index: 5;
+    z-index: 15;
 }
 
 .speck-vertical-grid {
@@ -239,6 +306,10 @@ body {
     position: sticky;
     top: 150px;
     align-self: flex-start;
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
 }
 
 .speck-block-number {
@@ -277,6 +348,7 @@ body {
     letter-spacing: -1.5px;
     transition: all 0.3s ease;
     opacity: 1 !important;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
 }
 
 .speck-block-right {
@@ -286,6 +358,10 @@ body {
     padding-top: 40px;
     min-height: 450px;
     position: relative;
+    background: rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 40px;
 }
 
 .speck-block-subtitle {
@@ -298,6 +374,7 @@ body {
     padding-bottom: 35px;
     transition: all 0.3s ease;
     opacity: 1 !important;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
 }
 
 .speck-block-subtitle::after {
@@ -325,7 +402,7 @@ body {
     flex-direction: column;
     padding: 40px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.07) !important;
+    background: rgba(15, 15, 15, 0.8) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
@@ -333,13 +410,14 @@ body {
     position: relative;
     overflow: hidden;
     min-height: 250px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .speck-feature-column:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(20, 20, 20, 0.9) !important;
     transform: translateY(-5px);
     box-shadow: 
-        0 25px 50px rgba(0, 0, 0, 0.4),
+        0 25px 50px rgba(0, 0, 0, 0.5),
         0 10px 20px rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(25px) !important;
     -webkit-backdrop-filter: blur(25px) !important;
@@ -357,6 +435,7 @@ body {
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
     opacity: 1 !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
 .speck-column-title::after {
@@ -441,11 +520,16 @@ body {
     background: transparent !important;
     position: relative;
     overflow: hidden;
-    z-index: 5;
+    z-index: 15;
 }
 
 .speck-marquee-wrapper {
     text-align: center;
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .speck-marquee-label {
@@ -490,16 +574,16 @@ body {
 .speck-marquee-mask::before {
     left: 0;
     background: linear-gradient(90deg, 
-        rgba(10, 10, 10, 0.7) 0%, 
-        rgba(10, 10, 10, 0.3) 50%,
+        rgba(10, 10, 10, 0.9) 0%, 
+        rgba(10, 10, 10, 0.5) 50%,
         transparent 100%);
 }
 
 .speck-marquee-mask::after {
     right: 0;
     background: linear-gradient(270deg, 
-        rgba(10, 10, 10, 0.7) 0%, 
-        rgba(10, 10, 10, 0.3) 50%,
+        rgba(10, 10, 10, 0.9) 0%, 
+        rgba(10, 10, 10, 0.5) 50%,
         transparent 100%);
 }
 
@@ -543,7 +627,7 @@ body {
     letter-spacing: 1px;
     font-family: 'Inter', sans-serif;
     opacity: 1 !important;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .speck-brand:hover {
@@ -592,7 +676,7 @@ body {
     padding: 140px 0;
     background: transparent !important;
     position: relative;
-    z-index: 5;
+    z-index: 15;
 }
 
 .section-title {
@@ -602,6 +686,7 @@ body {
     margin-bottom: 20px;
     color: white !important;
     opacity: 1 !important;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
 }
 
 .section-subtitle {
@@ -610,6 +695,7 @@ body {
     text-align: center;
     margin-bottom: 60px;
     opacity: 1 !important;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
 }
 
 .stats-grid-improved {
@@ -621,7 +707,7 @@ body {
 
 /* КАРТОЧКИ СТАТИСТИКИ - СТЕКЛЯННЫЕ */
 .stat-card {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(15, 15, 15, 0.8) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
@@ -635,6 +721,7 @@ body {
     text-decoration: none;
     color: inherit;
     display: block;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .stat-card::before {
@@ -658,7 +745,7 @@ body {
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.5),
         0 10px 30px rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(20, 20, 20, 0.9) !important;
     transform: translateY(-5px);
     backdrop-filter: blur(25px) !important;
     -webkit-backdrop-filter: blur(25px) !important;
@@ -690,6 +777,7 @@ body {
     line-height: 1;
     transition: all 0.4s ease;
     opacity: 1 !important;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
 }
 
 .stat-card:hover .stat-number-improved {
@@ -704,6 +792,7 @@ body {
     letter-spacing: 1.5px;
     transition: all 0.3s ease;
     opacity: 1 !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
 .stat-card:hover .stat-label-improved {
@@ -716,7 +805,7 @@ body {
     padding: 140px 0;
     background: transparent !important;
     position: relative;
-    z-index: 5;
+    z-index: 15;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
@@ -731,6 +820,12 @@ body {
     position: relative;
     z-index: 2;
     padding: 0 20px;
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    padding: 60px 40px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 }
 
 .cta-text h2 {
@@ -742,6 +837,7 @@ body {
     letter-spacing: -0.02em;
     transition: all 0.4s ease;
     opacity: 1 !important;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
 }
 
 .cta-improved:hover .cta-text h2 {
@@ -758,6 +854,7 @@ body {
     margin-right: auto;
     transition: all 0.3s ease;
     opacity: 1 !important;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
 }
 
 .cta-improved:hover .cta-text p {
@@ -895,6 +992,28 @@ body {
     box-shadow: 
         0 20px 40px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ ФОНА ===== */
+@media (max-width: 768px) {
+    .bg-layer {
+        background-attachment: scroll !important;
+    }
+    
+    .bg-layers-container {
+        height: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bg-layer {
+        transition: opacity 0.5s ease !important;
+        animation: none !important;
+    }
+    
+    .bg-layer {
+        transform: none !important;
+    }
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
