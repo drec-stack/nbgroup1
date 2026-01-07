@@ -1,4 +1,4 @@
-/* parallax.css - ПОЛНОСТЬЮ РАБОЧАЯ ВЕРСИЯ БЕЗ ЧЕРНЫХ ОВЕРЛЕЕВ */
+/* parallax.css - СОВЕРШЕННО НОВАЯ СИСТЕМА ФОНОВ */
 
 /* ===== PARALLAX CONTAINER ===== */
 .parallax-container {
@@ -10,21 +10,14 @@
     z-index: -100 !important;
     overflow: hidden !important;
     pointer-events: none !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
     
     /* Оптимизация производительности */
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-perspective: 1000;
-    perspective: 1000;
     will-change: transform;
 }
 
-/* Каждый слой параллакса - БЕЗ ЗАТЕМНЕНИЯ */
+/* Каждый слой фона */
 .parallax-layer {
     position: absolute !important;
     top: 0 !important;
@@ -32,231 +25,255 @@
     width: 100% !important;
     height: 100% !important;
     
-    /* ОСНОВНЫЕ НАСТРОЙКИ ФОНА */
+    /* Основные настройки фона */
     background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
     
-    /* ПЛАВНЫЕ ПЕРЕХОДЫ */
+    /* Эффекты перехода */
     opacity: 0 !important;
-    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    transform: scale(1.1) !important;
+    filter: brightness(0.9) blur(0px) !important;
     
-    /* ОПТИМИЗАЦИЯ И ЯРКОСТЬ */
-    image-rendering: -webkit-optimize-contrast !important;
-    image-rendering: crisp-edges !important;
-    -webkit-backface-visibility: hidden !important;
-    backface-visibility: hidden !important;
-    -webkit-transform: translateZ(0) !important;
-    transform: translateZ(0) !important;
-    will-change: opacity !important;
+    /* Плавный переход */
+    transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition-property: opacity, transform, filter !important;
     
-    /* Эффект масштабирования */
-    transform: scale(1.05);
-    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-    
-    /* ВАЖНО: УБИРАЕМ ВСЕ ПСЕВДОЭЛЕМЕНТЫ ДЛЯ ЗАТЕМНЕНИЯ */
+    /* Оптимизация */
+    will-change: opacity, transform, filter;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
-/* УДАЛЯЕМ ВСЕ ::after и ::before которые создают черный фон */
-.parallax-layer::before,
-.parallax-layer::after {
-    display: none !important;
-    content: none !important;
-    background: transparent !important;
-}
-
-/* Активный слой - ЯРКИЙ БЕЗ ЗАТЕМНЕНИЯ */
+/* Активный слой */
 .parallax-layer.active {
     opacity: 1 !important;
-    z-index: 1 !important;
     transform: scale(1) !important;
-    filter: brightness(1.1) !important; /* Слегка увеличиваем яркость */
+    filter: brightness(1) blur(0px) !important;
+    z-index: 1 !important;
 }
 
-/* ===== HERO SECTION STYLES ===== */
-.parallax-hero {
-    min-height: 100vh;
-    padding: 220px 0 120px;
-    position: relative;
+/* Слой в процессе ухода */
+.parallax-layer.exiting {
+    opacity: 0.3 !important;
+    filter: brightness(0.8) blur(2px) !important;
+}
+
+/* ===== ИНДИКАТОР ФОНОВ ===== */
+.background-indicator {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10000;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent !important;
-    overflow: hidden;
-    z-index: 10;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(10, 10, 10, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease;
 }
 
-.parallax-content {
-    text-align: center;
-    max-width: 1000px;
-    margin: 0 auto;
+.background-indicator:hover {
+    background: rgba(10, 10, 10, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.indicator-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    z-index: 20;
-    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    overflow: hidden;
+}
+
+.indicator-dot:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.2);
+}
+
+.indicator-dot.active {
+    background: #0066ff;
+    border-color: #3399ff;
+    box-shadow: 0 0 15px rgba(0, 102, 255, 0.7);
+    transform: scale(1.3);
+    animation: pulseDot 2s infinite;
+}
+
+.indicator-dot.active::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes pulseDot {
+    0%, 100% { box-shadow: 0 0 15px rgba(0, 102, 255, 0.7); }
+    50% { box-shadow: 0 0 25px rgba(0, 102, 255, 0.9); }
+}
+
+.indicator-tooltip {
+    position: absolute;
+    right: 50px;
+    background: rgba(10, 10, 10, 0.9);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    white-space: nowrap;
     opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Анимация появления контента */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.indicator-dot:hover .indicator-tooltip {
+    opacity: 1;
+    transform: translateX(0);
 }
 
-/* Контент должен быть виден на фоне */
-.parallax-content h1,
-.parallax-content p,
-.parallax-content .hero-subtitle,
-.parallax-content .hero-description p {
-    color: white !important;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
-    opacity: 1 !important;
-}
-
-/* Усиление тени для лучшей читаемости */
-.parallax-content h1 {
-    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6) !important;
-}
-
-/* ===== CONTENT SECTIONS ===== */
-.content-section {
-    position: relative;
-    z-index: 5;
-    background: transparent !important;
-    padding: 150px 0;
-    overflow: hidden;
-}
-
-/* Гарантируем что контент виден */
-.content-section .container {
-    position: relative;
-    z-index: 10;
-}
-
-/* Усиливаем тень текста в секциях для читаемости */
-.speck-vertical-section h1,
-.speck-vertical-section h2,
-.speck-vertical-section h3,
-.speck-vertical-section p,
-.speck-vertical-section .speck-block-title,
-.speck-vertical-section .speck-block-subtitle,
-.speck-vertical-section .speck-feature-item,
-.speck-marquee-section .speck-brand,
-.stats-improved .stat-number-improved,
-.stats-improved .stat-label-improved,
-.cta-improved h2,
-.cta-improved p {
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4) !important;
-    opacity: 1 !important;
-}
-
-/* ===== SCROLL PROGRESS BAR ===== */
+/* ===== ПРОГРЕСС СКРОЛЛА ===== */
 .scroll-progress {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.1);
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
     z-index: 9999;
+    backdrop-filter: blur(10px);
 }
 
 .scroll-progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #0066ff, #3399ff);
+    background: linear-gradient(90deg, 
+        #0066ff 0%, 
+        #00ccff 25%, 
+        #0099ff 50%, 
+        #0066ff 75%, 
+        #0033cc 100%);
     width: 0%;
-    transition: width 0.1s ease;
+    transition: width 0.2s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.scroll-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.3) 50%, 
+        transparent 100%);
+    animation: progressShine 2s infinite;
+}
+
+@keyframes progressShine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* ===== УЛУЧШЕНИЯ ДЛЯ КОНТЕНТА ===== */
+.content-on-background {
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6),
+                 0 1px 5px rgba(0, 0, 0, 0.4),
+                 0 0 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Задний фон для лучшей читаемости текста */
+.text-backdrop {
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.1) 100%
+    );
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===== */
 @media (max-width: 768px) {
     .parallax-container {
-        position: fixed !important;
-        height: 100vh !important;
+        background-attachment: scroll !important;
     }
     
     .parallax-layer {
         background-attachment: scroll !important;
-        background-size: cover !important;
-        background-position: center center !important;
-        
-        /* Более быстрые переходы на мобильных */
-        transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
     
-    .parallax-hero {
-        padding: 180px 0 100px;
+    .background-indicator {
+        right: 15px;
+        padding: 10px;
+        gap: 10px;
+        background: rgba(10, 10, 10, 0.5);
     }
     
-    .parallax-content {
-        padding: 0 20px;
-        animation: none;
-        opacity: 1;
+    .indicator-dot {
+        width: 12px;
+        height: 12px;
     }
     
-    /* Усиливаем тени текста для мобильных */
-    .parallax-content h1,
-    .parallax-content p,
-    .content-section * {
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7) !important;
-    }
-    
-    .content-section {
-        padding: 100px 0 !important;
+    .scroll-progress {
+        height: 3px;
     }
 }
 
 @media (max-width: 480px) {
-    .parallax-hero {
-        padding: 140px 0 80px;
+    .background-indicator {
+        right: 10px;
+        transform: translateY(-50%) scale(0.9);
     }
     
-    .content-section {
-        padding: 80px 0 !important;
+    .indicator-dot {
+        width: 10px;
+        height: 10px;
     }
 }
 
-/* ===== КРОССБРАУЗЕРНЫЕ ГАРАНТИИ ===== */
-
-/* Для браузеров без JS */
-.no-js .parallax-container {
-    display: block !important;
-    opacity: 1 !important;
-}
-
-.no-js .parallax-layer:first-child {
-    opacity: 1 !important;
-    z-index: 1 !important;
-    display: block !important;
-}
-
-.no-js .parallax-layer:not(:first-child) {
-    display: none !important;
-}
-
-/* ===== PREFERS-REDUCED-MOTION SUPPORT ===== */
+/* ===== ПОДДЕРЖКА REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
     .parallax-layer {
         transition: opacity 0.3s ease !important;
         transform: none !important;
+        filter: none !important;
     }
     
-    .parallax-content {
-        animation: none !important;
-        opacity: 1 !important;
+    .indicator-dot.active {
+        animation: none;
+    }
+    
+    .scroll-progress-bar::after {
+        animation: none;
     }
 }
 
-/* ===== FIXES FOR SPECIFIC BROWSERS ===== */
+/* ===== КРОССБРАУЗЕРНЫЕ ИСПРАВЛЕНИЯ ===== */
 
-/* iOS Safari */
+/* Для iOS */
 @supports (-webkit-touch-callout: none) {
     .parallax-container {
         height: -webkit-fill-available !important;
@@ -264,54 +281,34 @@
     
     .parallax-layer {
         background-attachment: scroll !important;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
     }
 }
 
-/* Firefox */
+/* Для Firefox */
 @-moz-document url-prefix() {
     .parallax-layer {
-        background-attachment: scroll !important;
         image-rendering: auto !important;
     }
-}
-
-/* Гарантируем качество на HiDPI экранах */
-@media (min-resolution: 192dpi) {
-    .parallax-layer {
-        background-size: cover !important;
-        background-position: center center !important;
+    
+    .text-backdrop {
+        backdrop-filter: blur(2px);
     }
 }
 
-/* Фикс при печати */
+/* Для старых браузеров */
+.no-cssfilters .parallax-layer {
+    filter: none !important;
+}
+
+.no-backdropfilter .text-backdrop {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* Улучшение для печати */
 @media print {
-    .parallax-container {
+    .parallax-container,
+    .background-indicator,
+    .scroll-progress {
         display: none !important;
     }
-}
-
-/* Гарантируем что интерактивные элементы поверх фона */
-.hero-actions a,
-.btn,
-.parallax-content,
-.content-section .container {
-    position: relative;
-    z-index: 20 !important;
-}
-
-/* ФИНАЛЬНЫЙ ФИКС: Убираем любой черный overlay */
-.parallax-layer::after {
-    display: none !important;
-}
-
-/* Гарантируем яркие чистые фоны */
-.parallax-layer {
-    background-color: transparent !important;
-}
-
-/* Усиливаем яркость для всех фонов */
-.parallax-layer.active {
-    filter: brightness(1.15) saturate(1.05) !important;
 }
