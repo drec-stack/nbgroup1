@@ -40,11 +40,32 @@
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             docElem.classList.add('mobile-device');
         }
+        
+        // Предзагрузка фоновых изображений
+        var bgImages = [
+            'assets/images/parallax/bg-1.jpg',
+            'assets/images/parallax/bg-2.jpg',
+            'assets/images/parallax/bg-3.jpg',
+            'assets/images/parallax/bg-4.jpg'
+        ];
+        
+        bgImages.forEach(function(url) {
+            var img = new Image();
+            img.src = url;
+        });
     })();
     </script>
     
 </head>
 <body class="homepage-initialized">
+    <!-- ФОНОВЫЕ СЛОИ -->
+    <div class="bg-layers-container">
+        <div class="bg-layer active" style="background-image: url('assets/images/parallax/bg-1.jpg');"></div>
+        <div class="bg-layer" style="background-image: url('assets/images/parallax/bg-2.jpg');"></div>
+        <div class="bg-layer" style="background-image: url('assets/images/parallax/bg-3.jpg');"></div>
+        <div class="bg-layer" style="background-image: url('assets/images/parallax/bg-4.jpg');"></div>
+    </div>
+
     <!-- SCROLL PROGRESS BAR -->
     <div class="scroll-progress" aria-hidden="true">
         <div class="scroll-progress-bar"></div>
@@ -54,7 +75,7 @@
     <div id="header-container"></div>
 
     <!-- Hero Section -->
-    <section class="hero content-section">
+    <section class="hero content-section" data-bg-section="0">
         <div class="container">
             <div class="hero-content">
                 <div class="text-backdrop-enhanced scale-in">
@@ -86,7 +107,7 @@
     </section>
 
     <!-- Speck Design Vertical Blocks -->
-    <section class="speck-vertical-section content-section">
+    <section class="speck-vertical-section content-section" data-bg-section="1">
         <div class="container">
             <div class="speck-vertical-grid">
                 <!-- Блок 1: Strategy -->
@@ -249,7 +270,7 @@
     </section>
 
     <!-- SPECK DESIGN MARQUEE SECTION -->
-    <section class="speck-marquee-section content-section">
+    <section class="speck-marquee-section content-section" data-bg-section="2">
         <div class="container">
             <div class="speck-marquee-wrapper fade-in-up">
                 <p class="speck-marquee-label">TRUSTED BY INDUSTRY LEADERS</p>
@@ -307,7 +328,7 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="stats-improved content-section">
+    <section class="stats-improved content-section" data-bg-section="3">
         <div class="container">
             <h2 class="section-title fade-in-down">Our Achievements</h2>
             <p class="section-subtitle fade-in-up delay-200">Numbers that speak for themselves</p>
@@ -361,7 +382,7 @@
     </section>
 
     <!-- CTA Section -->
-    <a href="contacts.html" class="cta-improved content-section clickable-cta">
+    <a href="contacts.html" class="cta-improved content-section clickable-cta" data-bg-section="3">
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
