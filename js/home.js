@@ -64,7 +64,7 @@ class EnhancedHomePage {
     waitForBackgroundSystem() {
         return new Promise((resolve, reject) => {
             let attempts = 0;
-            const maxAttempts = 50; // 5 секунд
+            const maxAttempts = 50;
             
             const checkSystem = () => {
                 attempts++;
@@ -254,22 +254,6 @@ class EnhancedHomePage {
         contentElements.forEach(element => {
             element.classList.remove('on-bg-0', 'on-bg-1', 'on-bg-2', 'on-bg-3');
             element.classList.add(`on-bg-${bgIndex}`);
-            
-            // Добавляем специальные стили для каждого фона
-            switch(bgIndex) {
-                case 0:
-                    element.style.color = 'white';
-                    break;
-                case 1:
-                    element.style.color = 'rgba(255, 255, 255, 0.95)';
-                    break;
-                case 2:
-                    element.style.color = 'rgba(255, 255, 255, 0.9)';
-                    break;
-                case 3:
-                    element.style.color = 'rgba(255, 255, 255, 0.85)';
-                    break;
-            }
         });
     }
     
@@ -305,22 +289,6 @@ class EnhancedHomePage {
         document.querySelectorAll('[data-bg-index]').forEach(section => {
             const bgIndex = section.getAttribute('data-bg-index');
             section.classList.add(`section-bg-${bgIndex}`);
-            
-            // Добавляем эффект при наведении
-            section.addEventListener('mouseenter', () => {
-                if (window.backgroundSystem && !this.isAnimatingBackground) {
-                    const currentBg = window.backgroundSystem.getInstance()?.currentIndex;
-                    const targetBg = parseInt(bgIndex);
-                    
-                    if (targetBg !== currentBg) {
-                        section.classList.add('section-hover');
-                    }
-                }
-            });
-            
-            section.addEventListener('mouseleave', () => {
-                section.classList.remove('section-hover');
-            });
         });
     }
 
@@ -358,7 +326,7 @@ class EnhancedHomePage {
         }
     }
 
-    // SPECK VERTICAL BLOCKS (обновленная версия)
+    // SPECK VERTICAL BLOCKS
     initializeSpeckVerticalBlocks() {
         const speckBlocks = document.querySelectorAll('.speck-vertical-block');
         
@@ -375,14 +343,6 @@ class EnhancedHomePage {
                     if (entry.isIntersecting) {
                         setTimeout(() => {
                             entry.target.classList.add('visible');
-                            
-                            // Добавляем анимации для внутренних элементов
-                            const leftBlock = entry.target.querySelector('.speck-block-left');
-                            const rightBlock = entry.target.querySelector('.speck-block-right');
-                            
-                            if (leftBlock) leftBlock.classList.add('animated');
-                            if (rightBlock) rightBlock.classList.add('animated');
-                            
                         }, index * 200);
                         blockObserver.unobserve(entry.target);
                     }
@@ -394,7 +354,6 @@ class EnhancedHomePage {
             
             speckBlocks.forEach(block => blockObserver.observe(block));
         } else {
-            // Fallback для старых браузеров или reduced motion
             setTimeout(() => {
                 speckBlocks.forEach((block, index) => {
                     setTimeout(() => {
@@ -405,7 +364,7 @@ class EnhancedHomePage {
         }
     }
 
-    // SPECK MARQUEE (обновленная версия)
+    // SPECK MARQUEE
     initializeSpeckMarquee() {
         const speckMarqueeTrack = document.getElementById('speckMarqueeTrack');
         if (!speckMarqueeTrack) {
@@ -415,7 +374,6 @@ class EnhancedHomePage {
 
         console.log('🎯 Initializing Speck marquee');
 
-        // Проверяем работает ли CSS анимация
         setTimeout(() => {
             const style = window.getComputedStyle(speckMarqueeTrack);
             
@@ -428,11 +386,9 @@ class EnhancedHomePage {
             }
         }, 100);
 
-        // Проверка через 2 секунды
         setTimeout(() => {
             const track = document.querySelector('.speck-marquee-track');
             if (track && !track.classList.contains('js-fallback-active')) {
-                const rect = track.getBoundingClientRect();
                 const computedStyle = window.getComputedStyle(track);
                 const isMoving = computedStyle.animationPlayState !== 'paused' && 
                                 computedStyle.animationName !== 'none';
@@ -447,7 +403,6 @@ class EnhancedHomePage {
 
     runSpeckMarqueeJS(track) {
         if (track.classList.contains('js-fallback-active')) {
-            console.log('⚠️ JS fallback already active');
             return;
         }
 
@@ -463,7 +418,6 @@ class EnhancedHomePage {
         track.style.animation = 'none';
         track.style.webkitAnimation = 'none';
         
-        // Дублируем контент для бесконечного эффекта
         const originalContent = content.innerHTML;
         content.innerHTML = originalContent + originalContent + originalContent;
         
@@ -501,10 +455,8 @@ class EnhancedHomePage {
             }
         };
 
-        // Запускаем анимацию
         animationId = requestAnimationFrame(animate);
         
-        // Обработчики паузы/возобновления
         const pauseMarquee = () => {
             if (track.classList.contains('js-fallback-active')) {
                 isPaused = true;
@@ -526,7 +478,6 @@ class EnhancedHomePage {
 
         this.addSpeckMarqueeHoverHandlers(track, pauseMarquee, resumeMarquee);
         
-        // Сохраняем ID для возможной очистки
         track._marqueeAnimationId = animationId;
         
         console.log('✅ Speck marquee running via JS');
@@ -565,7 +516,7 @@ class EnhancedHomePage {
         track.addEventListener('mouseleave', resumeMarquee);
     }
 
-    // STATS COUNTER (обновленная версия)
+    // STATS COUNTER
     initializeStatsCounter() {
         const statNumbers = document.querySelectorAll('.stat-number-improved');
         
@@ -585,7 +536,6 @@ class EnhancedHomePage {
                 const elapsed = (Date.now ? Date.now() : new Date().getTime()) - startTime;
                 const progress = Math.min(elapsed / duration, 1);
                 
-                // Easing function для плавности
                 const easeOutQuart = 1 - Math.pow(1 - progress, 4);
                 current = Math.floor(easeOutQuart * target);
                 
@@ -610,7 +560,6 @@ class EnhancedHomePage {
             if (window.requestAnimationFrame && !this.isReducedMotion) {
                 requestAnimationFrame(updateNumber);
             } else {
-                // Fallback для старых браузеров или reduced motion
                 element.textContent = target.toLocaleString ? 
                     target.toLocaleString() : 
                     target.toString();
@@ -640,16 +589,14 @@ class EnhancedHomePage {
             });
         };
         
-        // Оптимизированный слушатель скролла
         const throttledCheck = this.throttle(checkVisibility, 100);
         window.addEventListener('scroll', throttledCheck, { passive: true });
         window.addEventListener('resize', throttledCheck, { passive: true });
         
-        // Первоначальная проверка
         checkVisibility();
     }
 
-    // БАЗОВЫЕ АНИМАЦИИ (обновленная версия)
+    // БАЗОВЫЕ АНИМАЦИИ
     initializeBasicAnimations() {
         const sections = document.querySelectorAll('.content-section');
         
@@ -675,7 +622,6 @@ class EnhancedHomePage {
                 if (isVisible && !section.classList.contains('animated')) {
                     section.classList.add('animated');
                     
-                    // Добавляем анимации для элементов внутри
                     const animatedElements = section.querySelectorAll('.animated-element');
                     animatedElements.forEach((el, index) => {
                         setTimeout(() => {
@@ -690,11 +636,10 @@ class EnhancedHomePage {
         window.addEventListener('scroll', throttledCheck, { passive: true });
         window.addEventListener('resize', throttledCheck, { passive: true });
         
-        // Первоначальная проверка
         setTimeout(checkSections, 300);
     }
 
-    // SCROLL PROGRESS (обновленная версия)
+    // SCROLL PROGRESS
     initializeScrollProgress() {
         const progressBar = document.querySelector('.scroll-progress-bar');
         if (!progressBar) {
@@ -712,7 +657,6 @@ class EnhancedHomePage {
             
             progressBar.style.width = Math.min(Math.max(progress, 0), 100) + '%';
             
-            // Добавляем цвет в зависимости от прогресса
             if (progress < 25) {
                 progressBar.style.background = 'linear-gradient(90deg, #0066ff, #3399ff)';
             } else if (progress < 50) {
@@ -785,19 +729,16 @@ class EnhancedHomePage {
     optimizePerformance() {
         console.log('⚡ Applying performance optimizations...');
         
-        // Отключаем сложные анимации на слабых устройствах
         if (this.isLowPerformanceDevice()) {
             console.log('📱 Low performance device detected, simplifying animations');
             this.simplifyAnimations();
         }
         
-        // Оптимизация для reduced motion
         if (this.isReducedMotion) {
             console.log('♿ Reduced motion preference detected, disabling animations');
             this.disableNonEssentialAnimations();
         }
         
-        // Ленивая загрузка изображений
         this.setupLazyLoading();
     }
     
@@ -810,7 +751,6 @@ class EnhancedHomePage {
     }
     
     simplifyAnimations() {
-        // Упрощаем анимации на слабых устройствах
         const animatedElements = document.querySelectorAll('.speck-vertical-block, .content-section, .animated-element');
         animatedElements.forEach(el => {
             el.style.transition = 'none';
@@ -820,7 +760,6 @@ class EnhancedHomePage {
     }
     
     disableNonEssentialAnimations() {
-        // Отключаем необязательные анимации
         const allElements = document.querySelectorAll('*');
         allElements.forEach(el => {
             el.style.animation = 'none';
@@ -861,20 +800,17 @@ class EnhancedHomePage {
         };
     }
     
-    // Геттер для текущего фона
     get currentBackground() {
         const bgManager = window.backgroundSystem?.getInstance();
         return bgManager ? bgManager.currentIndex : 0;
     }
     
-    // Метод для переключения фона
     switchBackground(index) {
         if (window.backgroundSystem) {
             window.backgroundSystem.switchTo(index);
         }
     }
     
-    // Метод для получения информации о фоне
     getBackgroundInfo() {
         const bgManager = window.backgroundSystem?.getInstance();
         if (bgManager) {
@@ -890,7 +826,6 @@ class EnhancedHomePage {
 
 // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeEnhancedHomePage() {
-    // Проверяем, что мы на главной странице
     if (!document.body || !document.body.classList.contains('home-page')) {
         console.log('⚠️ Not home page, enhanced home.js will not initialize');
         return;
@@ -898,23 +833,19 @@ function initializeEnhancedHomePage() {
     
     console.log('📄 INITIALIZING ENHANCED HOME PAGE');
     
-    // Гарантированный запуск после полной загрузки
     function startEnhancedHomePage() {
         console.log('🎬 Creating EnhancedHomePage instance...');
         try {
             window.enhancedHomePage = new EnhancedHomePage();
             console.log('🎉 Enhanced home page successfully initialized with background system!');
             
-            // Добавляем финальные классы
             document.body.classList.add('enhanced-homepage-initialized');
             
-            // Экспортируем для глобального доступа
             window.HomePage = EnhancedHomePage;
             
         } catch (error) {
             console.error('❌ Error during EnhancedHomePage initialization:', error);
             
-            // Fallback на базовую версию
             try {
                 const BasicHomePage = class {
                     constructor() {
@@ -950,7 +881,6 @@ function initializeEnhancedHomePage() {
         }
     }
     
-    // Запускаем после загрузки DOM
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', startEnhancedHomePage);
     } else {
@@ -958,16 +888,13 @@ function initializeEnhancedHomePage() {
     }
 }
 
-// АВТОМАТИЧЕСКИЙ ЗАПУСК
 console.log('🚀 Starting enhanced home page initialization...');
 initializeEnhancedHomePage();
 
-// Экспорт класса для отладки
 if (typeof window !== 'undefined') {
     window.EnhancedHomePage = EnhancedHomePage;
 }
 
-// Глобальные методы для работы с фоновой системой
 window.backgroundControls = {
     next: () => window.backgroundSystem?.nextBackground?.(),
     prev: () => window.backgroundSystem?.prevBackground?.(),
@@ -976,7 +903,6 @@ window.backgroundControls = {
     getTotal: () => window.backgroundSystem?.getInstance()?.layers?.length
 };
 
-// Глобальная обработка ошибок
 window.addEventListener('error', function(e) {
     if (e.message && e.message.includes('HomePage') || 
         e.filename && e.filename.includes('home.js')) {
