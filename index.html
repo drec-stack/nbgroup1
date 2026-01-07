@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/parallax.css">
     
     <!-- Кроссбраузерные полифилы JS -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default%2Ces6%2Ces5%2CArray.prototype.includes%2CString.prototype.includes%2CPromise%2CObject.assign%2CElement.prototype.closest%2CrequestAnimationFrame%2CIntersectionObserver"></script>
@@ -25,7 +24,6 @@
     <script src="js/main.js"></script>
     <script src="js/home.js"></script>
     <script src="js/animations.js"></script>
-    <script src="js/parallax.js"></script>
     
     <!-- Кроссбраузерные фиксы -->
     <script>
@@ -42,194 +40,23 @@
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             docElem.classList.add('mobile-device');
         }
-        
-        // ПРЕДВАРИТЕЛЬНАЯ ЗАГРУЗКА ФОНОВ - ИСПРАВЛЕННАЯ ВЕРСИЯ
-        window.addEventListener('load', function() {
-            console.log('🖼️ Starting image preload...');
-            
-            const bgImages = [
-                'assets/images/parallax/bg-1.jpg',
-                'assets/images/parallax/bg-2.jpg', 
-                'assets/images/parallax/bg-3.jpg',
-                'assets/images/parallax/bg-4.jpg'
-            ];
-            
-            let loaded = 0;
-            let hasErrors = false;
-            
-            bgImages.forEach((url, index) => {
-                const img = new Image();
-                img.src = url;
-                img.onload = () => {
-                    loaded++;
-                    const fileName = url.substring(url.lastIndexOf('/') + 1);
-                    console.log(`✅ Background ${index + 1} loaded: ${fileName} (${loaded}/4)`);
-                    
-                    // Обновляем соответствующий слой
-                    const layer = document.querySelector(`.parallax-layer[data-index="${index}"]`);
-                    if (layer) {
-                        // Гарантируем что URL правильный
-                        const correctUrl = `url('${url}')`;
-                        if (layer.style.backgroundImage !== correctUrl) {
-                            layer.style.backgroundImage = correctUrl;
-                            console.log(`🔄 Updated layer ${index} with image: ${fileName}`);
-                        }
-                    }
-                    
-                    if (loaded === bgImages.length && !hasErrors) {
-                        console.log('🎉 All 4 background images loaded successfully!');
-                        document.body.classList.add('all-backgrounds-loaded');
-                        
-                        // Убеждаемся что первый слой виден
-                        setTimeout(() => {
-                            const firstLayer = document.querySelector('.parallax-layer[data-index="0"]');
-                            if (firstLayer) {
-                                firstLayer.style.opacity = '1';
-                                firstLayer.style.visibility = 'visible';
-                                firstLayer.classList.add('active');
-                                console.log('🔧 First layer forced to be visible');
-                            }
-                        }, 200);
-                    }
-                };
-                img.onerror = (e) => {
-                    hasErrors = true;
-                    loaded++;
-                    console.error(`❌ Failed to load background ${index + 1}:`, url, e);
-                    
-                    // Устанавливаем фолбэк цвет для этого слоя
-                    const layer = document.querySelector(`.parallax-layer[data-index="${index}"]`);
-                    if (layer) {
-                        const fallbackColors = [
-                            'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-                            'linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%)',
-                            'linear-gradient(135deg, #16213e 0%, #0f3460 100%)',
-                            'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
-                        ];
-                        layer.style.background = fallbackColors[index];
-                        console.log(`⚠️ Layer ${index} set to fallback color`);
-                    }
-                    
-                    if (loaded === bgImages.length) {
-                        console.log(`⚠️ Image preload finished with errors: ${loaded - hasErrors} loaded, ${hasErrors} failed`);
-                        document.body.classList.add('images-load-finished');
-                    }
-                };
-            });
-            
-            // Гарантируем что параллакс контейнер виден
-            const parallaxContainer = document.querySelector('.parallax-container');
-            if (parallaxContainer) {
-                parallaxContainer.style.opacity = '1';
-                parallaxContainer.style.visibility = 'visible';
-                parallaxContainer.style.display = 'block';
-            }
-        });
-        
-        // АВАРИЙНЫЙ ФИКС: Гарантируем что хоть что-то видно
-        setTimeout(() => {
-            const parallaxContainer = document.querySelector('.parallax-container');
-            const firstLayer = document.querySelector('.parallax-layer[data-index="0"]');
-            
-            if (parallaxContainer && firstLayer) {
-                const containerVisible = window.getComputedStyle(parallaxContainer).opacity > 0.1;
-                const layerVisible = window.getComputedStyle(firstLayer).opacity > 0.1;
-                
-                if (!containerVisible || !layerVisible) {
-                    console.warn('🚨 EMERGENCY: Applying emergency background visibility fix');
-                    
-                    // Показываем контейнер
-                    parallaxContainer.style.cssText = `
-                        opacity: 1 !important;
-                        visibility: visible !important;
-                        display: block !important;
-                        z-index: -5 !important;
-                    `;
-                    
-                    // Показываем первый слой
-                    firstLayer.style.cssText = `
-                        opacity: 1 !important;
-                        visibility: visible !important;
-                        display: block !important;
-                        z-index: 1 !important;
-                        background-size: cover !important;
-                        background-position: center !important;
-                        background-repeat: no-repeat !important;
-                    `;
-                    
-                    // Устанавливаем правильное изображение
-                    if (!firstLayer.style.backgroundImage || firstLayer.style.backgroundImage === 'none') {
-                        firstLayer.style.backgroundImage = "url('assets/images/parallax/bg-1.jpg')";
-                    }
-                    
-                    firstLayer.classList.add('active');
-                    
-                    // Скрываем остальные слои
-                    document.querySelectorAll('.parallax-layer:not([data-index="0"])').forEach(layer => {
-                        layer.style.opacity = '0';
-                        layer.style.zIndex = '0';
-                        layer.classList.remove('active');
-                    });
-                    
-                    document.body.classList.add('emergency-fix-applied');
-                    console.log('✅ Emergency background fix applied');
-                }
-            }
-        }, 5000);
     })();
     </script>
     
 </head>
-<body class="homepage-initialized background-system-initialized">
-    <!-- ENHANCED PARALLAX BACKGROUND SYSTEM -->
-    <div class="parallax-container" id="parallax-container" aria-hidden="true">
-        <!-- Фон 1 - Для Hero секции -->
-        <div class="parallax-layer active" 
-             data-index="0" 
-             style="background-image: url('assets/images/parallax/bg-1.jpg'); background-size: cover; background-position: center center; background-repeat: no-repeat;"
-             role="presentation"
-             data-bg-name="hero-background">
-        </div>
-        
-        <!-- Фон 2 - Для Marquee секции -->
-        <div class="parallax-layer" 
-             data-index="1" 
-             style="background-image: url('assets/images/parallax/bg-2.jpg'); background-size: cover; background-position: center center; background-repeat: no-repeat;"
-             role="presentation"
-             data-bg-name="marquee-background">
-        </div>
-        
-        <!-- Фон 3 - Для Stats секции -->
-        <div class="parallax-layer" 
-             data-index="2" 
-             style="background-image: url('assets/images/parallax/bg-3.jpg'); background-size: cover; background-position: center center; background-repeat: no-repeat;"
-             role="presentation"
-             data-bg-name="stats-background">
-        </div>
-        
-        <!-- Фон 4 - Для CTA секции -->
-        <div class="parallax-layer" 
-             data-index="3" 
-             style="background-image: url('assets/images/parallax/bg-4.jpg'); background-size: cover; background-position: center center; background-repeat: no-repeat;"
-             role="presentation"
-             data-bg-name="cta-background">
-        </div>
-    </div>
-
+<body class="homepage-initialized">
     <!-- SCROLL PROGRESS BAR -->
     <div class="scroll-progress" aria-hidden="true">
         <div class="scroll-progress-bar"></div>
     </div>
 
-    <!-- BACKGROUND INDICATOR (will be created by JS) -->
-
     <!-- Header Container -->
     <div id="header-container"></div>
 
     <!-- Hero Section -->
-    <section class="hero parallax-hero content-on-background" data-bg-index="0" data-section="hero">
+    <section class="hero content-section">
         <div class="container">
-            <div class="parallax-content">
+            <div class="hero-content">
                 <div class="text-backdrop-enhanced scale-in">
                     <h1 class="fade-in-down">
                         <span data-i18n="home.hero.titleLine1">NB GROUP TECH</span><br>
@@ -259,7 +86,7 @@
     </section>
 
     <!-- Speck Design Vertical Blocks -->
-    <section class="speck-vertical-section content-section content-on-background" data-bg-index="0" data-section="process">
+    <section class="speck-vertical-section content-section">
         <div class="container">
             <div class="speck-vertical-grid">
                 <!-- Блок 1: Strategy -->
@@ -422,7 +249,7 @@
     </section>
 
     <!-- SPECK DESIGN MARQUEE SECTION -->
-    <section class="speck-marquee-section content-section content-on-background" data-bg-index="1" data-section="clients">
+    <section class="speck-marquee-section content-section">
         <div class="container">
             <div class="speck-marquee-wrapper fade-in-up">
                 <p class="speck-marquee-label">TRUSTED BY INDUSTRY LEADERS</p>
@@ -480,7 +307,7 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="stats-improved content-section content-on-background" data-bg-index="2" data-section="stats">
+    <section class="stats-improved content-section">
         <div class="container">
             <h2 class="section-title fade-in-down">Our Achievements</h2>
             <p class="section-subtitle fade-in-up delay-200">Numbers that speak for themselves</p>
@@ -534,7 +361,7 @@
     </section>
 
     <!-- CTA Section -->
-    <a href="contacts.html" class="cta-improved content-section clickable-cta content-on-background" data-bg-index="3" data-section="cta">
+    <a href="contacts.html" class="cta-improved content-section clickable-cta">
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
@@ -680,70 +507,6 @@
             };
         };
     }
-    
-    // ГАРАНТИЯ ВИДИМОСТИ ФОНА
-    (function() {
-        // Проверяем и исправляем видимость фона при загрузке
-        function checkAndFixBackground() {
-            const parallaxContainer = document.getElementById('parallax-container');
-            const firstLayer = document.querySelector('.parallax-layer[data-index="0"]');
-            
-            if (!parallaxContainer || !firstLayer) return;
-            
-            // Проверяем видимость через 1 секунду после загрузки
-            setTimeout(() => {
-                const containerStyle = window.getComputedStyle(parallaxContainer);
-                const layerStyle = window.getComputedStyle(firstLayer);
-                
-                const containerVisible = parseFloat(containerStyle.opacity) > 0.1 && containerStyle.visibility !== 'hidden';
-                const layerVisible = parseFloat(layerStyle.opacity) > 0.1 && layerStyle.visibility !== 'hidden';
-                
-                if (!containerVisible || !layerVisible) {
-                    console.log('🔧 Applying visibility fix for background');
-                    
-                    // Исправляем контейнер
-                    parallaxContainer.style.opacity = '1';
-                    parallaxContainer.style.visibility = 'visible';
-                    parallaxContainer.style.display = 'block';
-                    parallaxContainer.style.zIndex = '-5';
-                    
-                    // Исправляем первый слой
-                    firstLayer.style.opacity = '1';
-                    firstLayer.style.visibility = 'visible';
-                    firstLayer.style.display = 'block';
-                    firstLayer.style.zIndex = '1';
-                    firstLayer.classList.add('active');
-                    
-                    // Убеждаемся что есть изображение
-                    if (!firstLayer.style.backgroundImage || firstLayer.style.backgroundImage === 'none') {
-                        firstLayer.style.backgroundImage = "url('assets/images/parallax/bg-1.jpg')";
-                        firstLayer.style.backgroundSize = 'cover';
-                        firstLayer.style.backgroundPosition = 'center center';
-                        firstLayer.style.backgroundRepeat = 'no-repeat';
-                    }
-                    
-                    // Скрываем остальные слои
-                    document.querySelectorAll('.parallax-layer:not([data-index="0"])').forEach(layer => {
-                        layer.style.opacity = '0';
-                        layer.style.zIndex = '0';
-                        layer.classList.remove('active');
-                    });
-                    
-                    document.body.classList.add('background-fixed-on-load');
-                }
-            }, 1000);
-        }
-        
-        // Запускаем проверку
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', checkAndFixBackground);
-        } else {
-            checkAndFixBackground();
-        }
-        
-        // Дополнительная проверка через 3 секунды
-        setTimeout(checkAndFixBackground, 3000);
-    })();
     </script>
 </body>
 </html>
