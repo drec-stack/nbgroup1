@@ -1,14 +1,20 @@
-// home.js - БАЗОВАЯ ВЕРСИЯ БЕЗ ПАРАЛЛАКС-СИСТЕМЫ
+// home.js - С ФОНОВОЙ СИСТЕМОЙ ПАРАЛЛАКСА
 
-console.log('🏠 home.js loaded - BASIC VERSION WITHOUT BACKGROUND SYSTEM');
+console.log('🏠 home.js loaded - WITH BACKGROUND PARALLAX SYSTEM');
 
-// ===== БАЗОВЫЙ КЛАСС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ =====
-class BasicHomePage {
+// ===== КЛАСС ГЛАВНОЙ СТРАНИЦЫ С ФОНОМ =====
+class HomePageWithBackground {
     constructor() {
         this.isReducedMotion = window.matchMedia ? 
             window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
         
-        console.log('🏠 BasicHomePage initialized');
+        this.bgLayers = null;
+        this.totalLayers = 4;
+        this.currentLayer = 0;
+        this.isScrolling = false;
+        this.scrollTimeout = null;
+        
+        console.log('🏠 HomePageWithBackground initialized');
         
         // Инициализация всех компонентов
         this.initializeComponents();
@@ -16,9 +22,10 @@ class BasicHomePage {
 
     // ИНИЦИАЛИЗАЦИЯ ВСЕХ КОМПОНЕНТОВ
     initializeComponents() {
-        console.log('🚀 Initializing components...');
+        console.log('🚀 Initializing components with background system...');
         
         try {
+            this.initializeBackgroundSystem();
             this.initializeBasicAnimations();
             this.initializeStatsCounter();
             this.initializeSpeckVerticalBlocks();
@@ -34,6 +41,207 @@ class BasicHomePage {
         } catch (error) {
             console.error('❌ Error during component initialization:', error);
         }
+    }
+
+    // ФОНОВАЯ СИСТЕМА
+    initializeBackgroundSystem() {
+        const bgContainer = document.querySelector('.bg-layers-container');
+        this.bgLayers = document.querySelectorAll('.bg-layer');
+        
+        if (!bgContainer || !this.bgLayers.length) {
+            console.warn('⚠️ Background layers not found, falling back to basic version');
+            return;
+        }
+        
+        console.log('🎨 Initializing background system with ' + this.bgLayers.length + ' layers');
+        
+        // Предзагрузка изображений
+        this.preloadBackgroundImages();
+        
+        // Активация контейнера
+        setTimeout(() => {
+            bgContainer.classList.add('loaded');
+            console.log('✅ Background container loaded');
+        }, 300);
+        
+        // Инициализация отслеживания скролла
+        this.setupScrollTracking();
+        
+        // Параллакс эффект
+        if (!this.isReducedMotion) {
+            this.setupParallaxEffect();
+        }
+        
+        // Связь с секциями
+        this.linkSectionsToBackground();
+    }
+    
+    preloadBackgroundImages() {
+        const imageUrls = [
+            'assets/images/parallax/bg-1.jpg',
+            'assets/images/parallax/bg-2.jpg',
+            'assets/images/parallax/bg-3.jpg',
+            'assets/images/parallax/bg-4.jpg'
+        ];
+        
+        let loadedCount = 0;
+        const totalImages = imageUrls.length;
+        
+        imageUrls.forEach(url => {
+            const img = new Image();
+            img.onload = () => {
+                loadedCount++;
+                console.log(`🖼️ Background image loaded: ${loadedCount}/${totalImages}`);
+                
+                if (loadedCount === totalImages) {
+                    console.log('✅ All background images loaded');
+                    this.onBackgroundImagesLoaded();
+                }
+            };
+            
+            img.onerror = () => {
+                console.error(`❌ Failed to load background image: ${url}`);
+                loadedCount++;
+                
+                if (loadedCount === totalImages) {
+                    this.onBackgroundImagesLoaded();
+                }
+            };
+            
+            img.src = url;
+        });
+    }
+    
+    onBackgroundImagesLoaded() {
+        console.log('🎯 Background images ready, enabling transitions');
+        
+        // Включаем плавные переходы после загрузки
+        this.bgLayers.forEach(layer => {
+            layer.style.transition = 'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+        });
+    }
+    
+    setupScrollTracking() {
+        console.log('📊 Setting up scroll tracking for background layers');
+        
+        const updateBackgroundOnScroll = () => {
+            if (this.isScrolling) return;
+            
+            const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            
+            // Вычисляем процент прокрутки
+            const scrollPercent = documentHeight > 0 ? 
+                Math.min(scrollPosition / documentHeight, 1) : 0;
+            
+            // Определяем текущий слой на основе процента прокрутки
+            const newLayer = Math.min(
+                Math.floor(scrollPercent * this.totalLayers),
+                this.totalLayers - 1
+            );
+            
+            // Если слой изменился
+            if (newLayer !== this.currentLayer) {
+                this.switchToLayer(newLayer);
+            }
+            
+            // Эффект параллакса для каждого слоя
+            this.applyParallaxToLayers(scrollPosition);
+        };
+        
+        // Дебаунс для оптимизации
+        const throttledUpdate = this.throttle(updateBackgroundOnScroll, 16);
+        
+        // Слушатель скролла
+        window.addEventListener('scroll', throttledUpdate, { passive: true });
+        
+        // Инициализация при загрузке
+        setTimeout(updateBackgroundOnScroll, 100);
+        
+        console.log('✅ Scroll tracking initialized');
+    }
+    
+    switchToLayer(layerIndex) {
+        if (layerIndex < 0 || layerIndex >= this.totalLayers || layerIndex === this.currentLayer) {
+            return;
+        }
+        
+        console.log(`🔄 Switching to background layer ${layerIndex + 1}`);
+        
+        // Убираем активный класс у всех слоев
+        this.bgLayers.forEach(layer => {
+            layer.classList.remove('active');
+        });
+        
+        // Добавляем активный класс новому слою
+        this.bgLayers[layerIndex].classList.add('active');
+        this.currentLayer = layerIndex;
+        
+        // Добавляем класс для анимации на body
+        document.body.classList.add('bg-transitioning');
+        setTimeout(() => {
+            document.body.classList.remove('bg-transitioning');
+        }, 1200);
+    }
+    
+    applyParallaxToLayers(scrollPosition) {
+        if (this.isReducedMotion) return;
+        
+        this.bgLayers.forEach((layer, index) => {
+            const speed = 0.3 + (index * 0.1); // Разная скорость для разных слоев
+            const yPos = -(scrollPosition * speed * 0.1);
+            
+            // Только для активного и предыдущего слоев для производительности
+            if (index === this.currentLayer || index === this.currentLayer - 1) {
+                layer.style.transform = `translateY(${yPos}px) scale(1.05)`;
+            }
+        });
+    }
+    
+    setupParallaxEffect() {
+        console.log('🌀 Setting up parallax effect');
+        
+        // Добавляем слушатель скролла для параллакса
+        const updateParallax = () => {
+            const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+            this.applyParallaxToLayers(scrollPosition);
+        };
+        
+        const throttledParallax = this.throttle(updateParallax, 16);
+        window.addEventListener('scroll', throttledParallax, { passive: true });
+        
+        // Инициализация
+        updateParallax();
+    }
+    
+    linkSectionsToBackground() {
+        const sections = document.querySelectorAll('[data-bg-section]');
+        
+        if (!sections.length) {
+            console.log('⚠️ No sections with data-bg-section attribute found');
+            return;
+        }
+        
+        console.log(`🔗 Linking ${sections.length} sections to background`);
+        
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionLayer = parseInt(entry.target.getAttribute('data-bg-section'));
+                    if (!isNaN(sectionLayer)) {
+                        this.switchToLayer(sectionLayer);
+                    }
+                }
+            });
+        }, {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        });
+        
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
     }
 
     // SPECK VERTICAL BLOCKS
@@ -467,6 +675,14 @@ class BasicHomePage {
             el.classList.add('visible');
             el.classList.remove('fade-in-up', 'fade-in-down', 'fade-in-left', 'fade-in-right', 'scale-in');
         });
+        
+        // Упрощаем фоновую систему
+        if (this.bgLayers) {
+            this.bgLayers.forEach(layer => {
+                layer.style.transition = 'opacity 0.5s ease';
+                layer.style.transform = 'none';
+            });
+        }
     }
     
     disableNonEssentialAnimations() {
@@ -475,6 +691,13 @@ class BasicHomePage {
             el.style.animation = 'none';
             el.style.transition = 'none';
         });
+        
+        // Отключаем параллакс
+        if (this.bgLayers) {
+            this.bgLayers.forEach(layer => {
+                layer.style.transform = 'none';
+            });
+        }
     }
     
     setupLazyLoading() {
@@ -518,18 +741,21 @@ function initializeHomePage() {
         return;
     }
     
-    console.log('📄 INITIALIZING HOME PAGE');
+    console.log('📄 INITIALIZING HOME PAGE WITH BACKGROUND SYSTEM');
     
     function startHomePage() {
-        console.log('🎬 Creating BasicHomePage instance...');
+        console.log('🎬 Creating HomePageWithBackground instance...');
         try {
-            window.homePage = new BasicHomePage();
-            console.log('🎉 Home page successfully initialized!');
+            window.homePage = new HomePageWithBackground();
+            console.log('🎉 Home page with background successfully initialized!');
             
             document.body.classList.add('homepage-initialized');
             
+            // Добавляем класс для поддержки фоновой системы
+            document.body.classList.add('has-background-system');
+            
         } catch (error) {
-            console.error('❌ Error during HomePage initialization:', error);
+            console.error('❌ Error during HomePageWithBackground initialization:', error);
             
             try {
                 // Простейший fallback
@@ -537,6 +763,12 @@ function initializeHomePage() {
                     const target = parseInt(stat.getAttribute('data-target')) || 0;
                     stat.textContent = target;
                 });
+                
+                // Показываем только первый фон
+                const bgLayers = document.querySelectorAll('.bg-layer');
+                if (bgLayers.length > 0) {
+                    bgLayers[0].classList.add('active');
+                }
                 
                 console.log('🔄 Basic fallback applied');
             } catch (fallbackError) {
@@ -552,11 +784,11 @@ function initializeHomePage() {
     }
 }
 
-console.log('🚀 Starting home page initialization...');
+console.log('🚀 Starting home page with background initialization...');
 initializeHomePage();
 
 if (typeof window !== 'undefined') {
-    window.HomePage = BasicHomePage;
+    window.HomePageWithBackground = HomePageWithBackground;
 }
 
 window.addEventListener('error', function(e) {
@@ -566,4 +798,4 @@ window.addEventListener('error', function(e) {
     }
 });
 
-console.log('✅ home.js fully loaded');
+console.log('✅ home.js with background system fully loaded');
