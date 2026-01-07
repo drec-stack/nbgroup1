@@ -1,6 +1,6 @@
-// parallax.js - ПОЛНОСТЬЮ РАБОЧАЯ ВЕРСИЯ С ПЕРЕКЛЮЧЕНИЕМ ПРИ СКРОЛЛЕ
+// parallax.js - ЧИСТАЯ ВЕРСИЯ БЕЗ OVERLAY
 
-console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
+console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING WITHOUT OVERLAY');
 
 (function() {
     'use strict';
@@ -14,14 +14,12 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
             this.currentIndex = 0;
             this.isAnimating = false;
             this.lastScrollY = 0;
-            this.scrollThreshold = 80; // Уменьшенный порог для более плавного переключения
+            this.scrollThreshold = 80;
             this.isMobile = this.checkIsMobile();
             this.isReducedMotion = window.matchMedia ? 
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
             
-            console.log(`🖼️ Found ${this.layers.length} parallax layers`);
-            console.log(`📱 Device: ${this.isMobile ? 'Mobile' : 'Desktop'}`);
-            console.log(`♿ Reduced motion: ${this.isReducedMotion ? 'Yes' : 'No'}`);
+            console.log(`🖼️ Found ${this.layers.length} parallax layers - NO OVERLAY`);
             
             // Гарантируем что система работает
             this.guaranteeVisibility();
@@ -57,13 +55,6 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
                 firstLayer.style.opacity = '1';
                 firstLayer.style.zIndex = '1';
                 
-                // Убеждаемся что overlay не мешает
-                const overlay = document.querySelector('.parallax-overlay');
-                if (overlay) {
-                    overlay.style.opacity = '1';
-                    overlay.style.pointerEvents = 'none';
-                }
-                
                 console.log('✅ First parallax layer activated');
             }
             
@@ -97,11 +88,6 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
                     if (loadedCount === totalImages) {
                         console.log('🎉 All parallax images loaded successfully!');
                         document.body.classList.add('parallax-images-loaded');
-                        
-                        // Показываем все слои после загрузки
-                        setTimeout(() => {
-                            this.showAllLayersBriefly();
-                        }, 500);
                     }
                 };
                 img.onerror = (e) => {
@@ -115,25 +101,6 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
                     const altImg = new Image();
                     altImg.src = altUrl;
                 };
-            });
-        }
-        
-        // Кратковременно показываем все слои для проверки
-        showAllLayersBriefly() {
-            console.log('👁️ Brief visibility check for all layers...');
-            
-            this.layers.forEach((layer, index) => {
-                setTimeout(() => {
-                    layer.style.opacity = '0.7';
-                    layer.style.zIndex = '10';
-                    
-                    setTimeout(() => {
-                        if (index !== this.currentIndex) {
-                            layer.style.opacity = '0';
-                            layer.style.zIndex = '0';
-                        }
-                    }, 500);
-                }, index * 300);
             });
         }
         
@@ -161,24 +128,7 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
             // Помечаем body что параллакс инициализирован
             document.body.classList.add('parallax-initialized');
             
-            // Убираем лишний overlay если он слишком темный
-            this.adjustOverlayOpacity();
-            
-            console.log(`✅ Parallax scroll manager ready with ${this.layers.length} layers`);
-        }
-        
-        // Регулировка прозрачности overlay
-        adjustOverlayOpacity() {
-            const overlay = document.querySelector('.parallax-overlay');
-            if (overlay) {
-                // Делаем overlay очень прозрачным
-                overlay.style.opacity = '0.3';
-                
-                // Добавляем класс для легкой версии
-                overlay.classList.add('light-overlay');
-                
-                console.log('✨ Adjusted overlay to light version');
-            }
+            console.log(`✅ Parallax scroll manager ready with ${this.layers.length} layers - NO OVERLAY`);
         }
         
         // УПРОЩЕНИЕ АНИМАЦИЙ ДЛЯ REDUCED MOTION
@@ -337,15 +287,9 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
             newLayer.classList.add('active');
             newLayer.style.zIndex = '1';
             
-            // Плавно показываем новый слой (БЕЗ ЗАТЕМНЕНИЯ)
+            // Плавно показываем новый слой (ЧИСТЫЙ БЕЗ ЗАТЕМНЕНИЯ)
             setTimeout(() => {
                 newLayer.style.opacity = '1';
-                
-                // Убираем любое дополнительное затемнение
-                const overlay = newLayer.querySelector('.parallax-overlay');
-                if (overlay) {
-                    overlay.style.opacity = '0.3';
-                }
             }, 100);
             
             // Сбрасываем флаг анимации
@@ -353,26 +297,7 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
             setTimeout(function() {
                 self.isAnimating = false;
                 console.log(`✅ Background switched to ${index + 1}`);
-                
-                // Добавляем класс для отладки
-                document.body.classList.remove('bg-' + (oldIndex + 1));
-                document.body.classList.add('bg-' + (index + 1));
-            }, this.isReducedMotion ? 300 : 800); // Укороченная анимация
-        }
-        
-        // РУЧНОЕ ПЕРЕКЛЮЧЕНИЕ (для отладки)
-        goToLayer(index) {
-            this.switchToLayer(index);
-        }
-        
-        nextLayer() {
-            const nextIndex = (this.currentIndex + 1) % this.layers.length;
-            this.switchToLayer(nextIndex);
-        }
-        
-        prevLayer() {
-            const prevIndex = (this.currentIndex - 1 + this.layers.length) % this.layers.length;
-            this.switchToLayer(prevIndex);
+            }, this.isReducedMotion ? 300 : 800);
         }
     }
     
@@ -390,10 +315,9 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
         
         console.log(`🎯 Found ${parallaxLayers.length} parallax layers`);
         
-        // ГАРАНТИЯ: Показываем первый слой сразу (даже до JS)
+        // ГАРАНТИЯ: Показываем первый слой сразу
         const firstLayer = document.querySelector('.parallax-layer');
         if (firstLayer) {
-            // Устанавливаем стили напрямую
             firstLayer.style.backgroundImage = "url('assets/images/parallax/bg-1.jpg')";
             firstLayer.style.backgroundSize = 'cover';
             firstLayer.style.backgroundPosition = 'center center';
@@ -402,14 +326,7 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
             firstLayer.style.zIndex = '1';
             firstLayer.classList.add('active');
             
-            // Гарантируем легкий overlay
-            const overlay = document.querySelector('.parallax-overlay');
-            if (overlay) {
-                overlay.style.opacity = '0.3';
-                overlay.classList.add('light-version');
-            }
-            
-            console.log('✅ First layer guaranteed visible with light overlay');
+            console.log('✅ First layer guaranteed visible - CLEAN NO OVERLAY');
         }
         
         // Гарантируем видимость контейнера
@@ -423,7 +340,7 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
         // Инициализируем параллакс систему
         try {
             window.parallaxManager = new ParallaxScrollManager();
-            console.log(`✅ Parallax system initialized with ${parallaxLayers.length} layers`);
+            console.log(`✅ Parallax system initialized - CLEAN VERSION`);
         } catch (error) {
             console.error('❌ Error initializing parallax system:', error);
             
@@ -433,9 +350,6 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
                 firstLayer.style.zIndex = '1';
                 firstLayer.classList.add('active');
             }
-            
-            // Добавляем класс для отладки
-            document.body.classList.add('parallax-failed');
         }
     }
     
@@ -480,42 +394,13 @@ console.log('🎯 parallax.js loaded - SCROLL-BASED BACKGROUND SWITCHING');
                     
                     firstLayer.classList.add('active');
                     
-                    // Гарантируем легкий overlay
-                    const overlay = document.querySelector('.parallax-overlay');
-                    if (overlay) {
-                        overlay.style.opacity = '0.3';
-                        overlay.style.cssText = `
-                            background: rgba(0, 0, 0, 0.03) !important;
-                            pointer-events: none !important;
-                        `;
-                    }
-                    
-                    document.body.classList.add('parallax-failed', 'emergency-fix-applied');
+                    document.body.classList.add('emergency-fix-applied');
                 } else {
                     console.log('✅ Parallax is visible, everything is OK');
-                    document.body.classList.add('parallax-ok');
                 }
             }
         }, 3000);
     });
     
-    // ===== ГЛОБАЛЬНЫЙ ЭКСПОРТ =====
-    if (typeof window !== 'undefined') {
-        window.ParallaxScrollManager = ParallaxScrollManager;
-        
-        // Добавляем глобальные функции для отладки
-        window.debugParallax = function() {
-            console.log('🔍 Parallax Debug Info:');
-            console.log('- Layers:', document.querySelectorAll('.parallax-layer').length);
-            console.log('- Current index:', window.parallaxManager?.currentIndex);
-            console.log('- Is animating:', window.parallaxManager?.isAnimating);
-            
-            document.querySelectorAll('.parallax-layer').forEach((layer, i) => {
-                const style = window.getComputedStyle(layer);
-                console.log(`Layer ${i}: opacity=${style.opacity}, z-index=${style.zIndex}, active=${layer.classList.contains('active')}`);
-            });
-        };
-    }
-    
-    console.log('✅ parallax.js loaded and ready for scroll-based switching');
+    console.log('✅ parallax.js loaded - CLEAN VERSION WITHOUT OVERLAY');
 })();
