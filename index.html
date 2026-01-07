@@ -25,166 +25,13 @@
     <script src="js/main.js"></script>
     <script src="js/home.js"></script>
     <script src="js/animations.js"></script>
-    <script src="js/parallax.js"></script>
     
-    <!-- Кроссбраузерные фиксы -->
-    <script>
-    // Определяем возможности браузера
-    (function() {
-        'use strict';
-        
-        var docElem = document.documentElement;
-        
-        // Проверяем поддержку CSS Grid
-        if (!window.CSS || !CSS.supports || !CSS.supports('display', 'grid')) {
-            docElem.classList.add('no-cssgrid');
-        }
-        
-        // Проверяем поддержку CSS переменных
-        if (!window.CSS || !CSS.supports || !CSS.supports('--test', '0')) {
-            docElem.classList.add('no-cssvariables');
-        }
-        
-        // Проверяем поддержку backdrop-filter
-        if (!window.CSS || !CSS.supports || !CSS.supports('backdrop-filter', 'blur(1px)')) {
-            docElem.classList.add('no-backdropfilter');
-        }
-        
-        // Проверяем поддержку CSS transforms
-        if (!window.CSS || !CSS.supports || !CSS.supports('transform', 'translateX(0)')) {
-            docElem.classList.add('no-css-transforms');
-        }
-        
-        // Проверяем поддержку flexbox
-        if (!window.CSS || !CSS.supports || !CSS.supports('display', 'flex')) {
-            docElem.classList.add('no-flexbox');
-        }
-        
-        // Проверяем поддержку параллакса
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || 
-            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            docElem.classList.add('no-parallax');
-        }
-        
-        // Проверяем старый Internet Explorer
-        if (/*@cc_on!@*/false || document.documentMode) {
-            docElem.classList.add('is-ie');
-            docElem.classList.add('ie' + document.documentMode);
-        }
-        
-        // Проверяем Safari
-        if (/constructor/i.test(window.HTMLElement) || 
-            (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || 
-            (typeof safari !== 'undefined' && safari.pushNotification))) {
-            docElem.classList.add('is-safari');
-        }
-        
-        // Проверяем Firefox
-        if (typeof InstallTrigger !== 'undefined') {
-            docElem.classList.add('is-firefox');
-        }
-        
-        // Проверяем Chrome
-        if (!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)) {
-            docElem.classList.add('is-chrome');
-        }
-        
-        // Добавляем класс для JavaScript
-        docElem.classList.remove('no-js');
-        docElem.classList.add('js');
-        
-        console.log('Browser capabilities detected:', {
-            hasCSSGrid: !docElem.classList.contains('no-cssgrid'),
-            hasCSSVariables: !docElem.classList.contains('no-cssvariables'),
-            hasBackdropFilter: !docElem.classList.contains('no-backdropfilter'),
-            hasCSSTransforms: !docElem.classList.contains('no-css-transforms'),
-            hasFlexbox: !docElem.classList.contains('no-flexbox'),
-            supportsParallax: !docElem.classList.contains('no-parallax')
-        });
-    })();
-    </script>
-    
-    <style>
-    /* Критические стили для кроссбраузерности */
-    .no-js .hero-background-image,
-    .no-css-transforms .hero-background-image,
-    .no-parallax .hero-background-image {
-        background-attachment: scroll !important;
-        background-size: cover !important;
-        background-position: center center !important;
-    }
-    
-    .no-cssgrid .stats-grid-improved {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .no-cssgrid .stat-card {
-        flex: 1 0 200px;
-        max-width: 250px;
-        margin: 10px;
-    }
-    
-    .no-flexbox .speck-vertical-block {
-        display: block;
-    }
-    
-    .no-flexbox .speck-block-left,
-    .no-flexbox .speck-block-right {
-        width: 100%;
-        float: left;
-    }
-    
-    .no-flexbox .speck-feature-columns {
-        display: block;
-    }
-    
-    .no-flexbox .speck-feature-column {
-        margin-bottom: 20px;
-    }
-    
-    /* IE specific fixes */
-    .is-ie .hero-background-container {
-        position: absolute !important;
-    }
-    
-    .is-ie .parallax-bg-container {
-        display: none !important;
-    }
-    
-    .is-ie .hero::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('assets/images/parallax/bg-1.jpg') center center/cover no-repeat;
-        z-index: -1;
-        opacity: 0.7;
-    }
-    
-    /* Firefox fix for background attachment */
-    .is-firefox .hero-background-image,
-    .is-firefox .parallax-bg {
-        background-attachment: scroll !important;
-    }
-    </style>
 </head>
 <body>
     <!-- STATIC HERO BACKGROUND -->
-    <div class="hero-background-container" id="hero-background-container">
-        <div class="hero-background-image" style="background-image: url('assets/images/parallax/bg-1.jpg');"></div>
-        <div class="hero-background-overlay"></div>
-    </div>
-
-    <!-- PARALLAX BACKGROUNDS (для остальных секций) -->
-    <div class="parallax-bg-container">
-        <div id="parallax-bg-1" class="parallax-bg"></div>
-        <div id="parallax-bg-2" class="parallax-bg"></div>
-        <div id="parallax-bg-3" class="parallax-bg"></div>
-        <div id="parallax-bg-4" class="parallax-bg"></div>
+    <div class="hero-background-static">
+        <div class="hero-bg-image"></div>
+        <div class="hero-bg-overlay"></div>
     </div>
 
     <!-- SCROLL PROGRESS BAR -->
@@ -196,9 +43,9 @@
     <div id="header-container"></div>
 
     <!-- Hero Section -->
-    <section class="hero parallax-hero">
+    <section class="hero">
         <div class="container">
-            <div class="parallax-content">
+            <div class="hero-content">
                 <h1>
                     <span data-i18n="home.hero.titleLine1">NB GROUP TECH</span><br>
                     <span data-i18n="home.hero.subtitle">Industrial Design & Manufacturing</span>
@@ -226,7 +73,7 @@
     </section>
 
     <!-- Speck Design Vertical Blocks -->
-    <section class="speck-vertical-section content-section" data-bg-index="0">
+    <section class="speck-vertical-section content-section">
         <div class="container">
             <div class="speck-vertical-grid">
                 <!-- Блок 1: Strategy -->
@@ -389,7 +236,7 @@
     </section>
 
     <!-- SPECK DESIGN MARQUEE SECTION -->
-    <section class="speck-marquee-section content-section" data-bg-index="1">
+    <section class="speck-marquee-section content-section">
         <div class="container">
             <div class="speck-marquee-wrapper">
                 <p class="speck-marquee-label">TRUSTED BY INDUSTRY LEADERS</p>
@@ -443,7 +290,7 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="stats-improved content-section" data-bg-index="2">
+    <section class="stats-improved content-section">
         <div class="container">
             <div class="stats-grid-improved">
                 <!-- Проекты завершено -->
@@ -494,7 +341,7 @@
     </section>
 
     <!-- CTA Section -->
-    <a href="contacts.html" class="cta-improved content-section clickable-cta" data-bg-index="3">
+    <a href="contacts.html" class="cta-improved content-section clickable-cta">
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
