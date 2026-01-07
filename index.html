@@ -25,13 +25,40 @@
     <script src="js/main.js"></script>
     <script src="js/home.js"></script>
     <script src="js/animations.js"></script>
+    <script src="js/parallax.js"></script>
+    
+    <!-- Кроссбраузерные фиксы -->
+    <script>
+    (function() {
+        'use strict';
+        
+        var docElem = document.documentElement;
+        
+        // Добавляем класс для JavaScript
+        docElem.classList.remove('no-js');
+        docElem.classList.add('js');
+        
+        // Для стабильности фона
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            docElem.classList.add('mobile-device');
+        }
+    })();
+    </script>
     
 </head>
 <body>
     <!-- STATIC HERO BACKGROUND -->
-    <div class="hero-background-static">
-        <div class="hero-bg-image"></div>
-        <div class="hero-bg-overlay"></div>
+    <div class="hero-background-container" id="hero-background-container">
+        <div class="hero-background-image" style="background-image: url('./assets/images/parallax/bg-1.jpg');"></div>
+        <div class="hero-background-overlay"></div>
+    </div>
+
+    <!-- PARALLAX BACKGROUNDS (для остальных секций) -->
+    <div class="parallax-bg-container">
+        <div id="parallax-bg-1" class="parallax-bg"></div>
+        <div id="parallax-bg-2" class="parallax-bg"></div>
+        <div id="parallax-bg-3" class="parallax-bg"></div>
+        <div id="parallax-bg-4" class="parallax-bg"></div>
     </div>
 
     <!-- SCROLL PROGRESS BAR -->
@@ -43,9 +70,9 @@
     <div id="header-container"></div>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero parallax-hero">
         <div class="container">
-            <div class="hero-content">
+            <div class="parallax-content">
                 <h1>
                     <span data-i18n="home.hero.titleLine1">NB GROUP TECH</span><br>
                     <span data-i18n="home.hero.subtitle">Industrial Design & Manufacturing</span>
@@ -73,7 +100,7 @@
     </section>
 
     <!-- Speck Design Vertical Blocks -->
-    <section class="speck-vertical-section content-section">
+    <section class="speck-vertical-section content-section" data-bg-index="0">
         <div class="container">
             <div class="speck-vertical-grid">
                 <!-- Блок 1: Strategy -->
@@ -236,7 +263,7 @@
     </section>
 
     <!-- SPECK DESIGN MARQUEE SECTION -->
-    <section class="speck-marquee-section content-section">
+    <section class="speck-marquee-section content-section" data-bg-index="1">
         <div class="container">
             <div class="speck-marquee-wrapper">
                 <p class="speck-marquee-label">TRUSTED BY INDUSTRY LEADERS</p>
@@ -290,7 +317,7 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="stats-improved content-section">
+    <section class="stats-improved content-section" data-bg-index="2">
         <div class="container">
             <div class="stats-grid-improved">
                 <!-- Проекты завершено -->
@@ -341,7 +368,7 @@
     </section>
 
     <!-- CTA Section -->
-    <a href="contacts.html" class="cta-improved content-section clickable-cta">
+    <a href="contacts.html" class="cta-improved content-section clickable-cta" data-bg-index="3">
         <div class="container">
             <div class="cta-content-improved">
                 <div class="cta-text">
