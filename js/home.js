@@ -1,20 +1,17 @@
-// home.js - ПОЛНАЯ ВЕРСИЯ С ИНТЕГРАЦИЕЙ ФОНОВОЙ СИСТЕМЫ
+// home.js - БАЗОВАЯ ВЕРСИЯ БЕЗ ПАРАЛЛАКС-СИСТЕМЫ
 
-console.log('🎬 home.js loaded - ENHANCED VERSION WITH BACKGROUND SYSTEM INTEGRATION');
+console.log('🏠 home.js loaded - BASIC VERSION WITHOUT BACKGROUND SYSTEM');
 
-// ===== ENHANCED HOMEPAGE CLASS =====
-class EnhancedHomePage {
+// ===== БАЗОВЫЙ КЛАСС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ =====
+class BasicHomePage {
     constructor() {
         this.isReducedMotion = window.matchMedia ? 
             window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
         
-        console.log('🏠 EnhancedHomePage initialized');
+        console.log('🏠 BasicHomePage initialized');
         
         // Инициализация всех компонентов
         this.initializeComponents();
-        
-        // Интеграция с системой фонов
-        this.setupBackgroundSystemIntegration();
     }
 
     // ИНИЦИАЛИЗАЦИЯ ВСЕХ КОМПОНЕНТОВ
@@ -29,7 +26,6 @@ class EnhancedHomePage {
             this.initializeScrollProgress();
             this.initializeClickableStats();
             this.initializeCTAClickable();
-            this.initializeSectionBackgrounds();
             
             // Оптимизация производительности
             this.optimizePerformance();
@@ -37,292 +33,6 @@ class EnhancedHomePage {
             console.log('✅ All components initialized');
         } catch (error) {
             console.error('❌ Error during component initialization:', error);
-        }
-    }
-
-    // ИНТЕГРАЦИЯ С СИСТЕМОЙ ФОНОВ
-    setupBackgroundSystemIntegration() {
-        console.log('🎨 Setting up background system integration...');
-        
-        // Ждем инициализации системы фонов
-        this.waitForBackgroundSystem().then(() => {
-            console.log('✅ Background system integration ready');
-            
-            // Настраиваем слушатели событий
-            this.setupBackgroundEventListeners();
-            
-            // Настраиваем интерактивность секций
-            this.setupSectionBackgroundInteractions();
-            
-            // Запускаем эффекты для текущего фона
-            this.applyEffectsForCurrentBackground();
-        }).catch(error => {
-            console.warn('⚠️ Background system not available:', error);
-        });
-    }
-    
-    waitForBackgroundSystem() {
-        return new Promise((resolve, reject) => {
-            let attempts = 0;
-            const maxAttempts = 50;
-            
-            const checkSystem = () => {
-                attempts++;
-                
-                if (typeof window.backgroundSystem !== 'undefined' && 
-                    window.backgroundSystem.getInstance() !== null) {
-                    resolve();
-                } else if (attempts >= maxAttempts) {
-                    reject(new Error('Background system timeout'));
-                } else {
-                    setTimeout(checkSystem, 100);
-                }
-            };
-            
-            checkSystem();
-        });
-    }
-    
-    setupBackgroundEventListeners() {
-        // Слушаем события смены фона
-        document.addEventListener('backgroundChanged', (event) => {
-            this.onBackgroundChange(event.detail);
-        });
-        
-        // Слушаем клики на секциях для переключения фона
-        document.addEventListener('click', (e) => {
-            const section = e.target.closest('[data-bg-index]');
-            if (section && window.backgroundSystem) {
-                const bgIndex = parseInt(section.getAttribute('data-bg-index'));
-                const currentBg = window.backgroundSystem.getInstance()?.currentIndex;
-                
-                if (bgIndex !== currentBg) {
-                    window.backgroundSystem.switchTo(bgIndex);
-                    
-                    // Плавная прокрутка к секции
-                    section.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-    }
-    
-    onBackgroundChange(detail) {
-        const { index, total, timestamp } = detail;
-        console.log(`🎨 Background changed to ${index + 1}/${total} at ${timestamp}`);
-        
-        // Добавляем эффекты при смене фона
-        this.addBackgroundChangeEffects(index);
-        
-        // Обновляем активную секцию
-        this.updateActiveSection(index);
-        
-        // Адаптируем контент под фон
-        this.adaptContentToBackground(index);
-    }
-    
-    addBackgroundChangeEffects(bgIndex) {
-        // Добавляем различные эффекты в зависимости от фона
-        switch(bgIndex) {
-            case 0: // Hero background
-                this.addHeroBackgroundEffects();
-                break;
-            case 1: // Marquee background
-                this.addMarqueeBackgroundEffects();
-                break;
-            case 2: // Stats background
-                this.addStatsBackgroundEffects();
-                break;
-            case 3: // CTA background
-                this.addCTABackgroundEffects();
-                break;
-        }
-    }
-    
-    addHeroBackgroundEffects() {
-        // Эффекты для первого фона
-        const heroSection = document.querySelector('.hero');
-        if (heroSection) {
-            heroSection.classList.add('highlight-section');
-            setTimeout(() => {
-                heroSection.classList.remove('highlight-section');
-            }, 2000);
-        }
-        
-        // Плавное появление элементов
-        this.animateSectionElements('.hero', 'fade-in-up');
-    }
-    
-    addMarqueeBackgroundEffects() {
-        // Эффекты для второго фона
-        const marqueeSection = document.querySelector('.speck-marquee-section');
-        if (marqueeSection) {
-            marqueeSection.classList.add('highlight-section');
-            setTimeout(() => {
-                marqueeSection.classList.remove('highlight-section');
-            }, 2000);
-        }
-        
-        // Ускорение/замедление маркера
-        this.controlMarqueeSpeed(1.5);
-        setTimeout(() => this.controlMarqueeSpeed(1), 1500);
-    }
-    
-    addStatsBackgroundEffects() {
-        // Эффекты для третьего фона
-        const statsSection = document.querySelector('.stats-improved');
-        if (statsSection) {
-            statsSection.classList.add('highlight-section');
-            setTimeout(() => {
-                statsSection.classList.remove('highlight-section');
-            }, 2000);
-        }
-        
-        // Анимация счетчиков
-        this.animateStatsCounters();
-    }
-    
-    addCTABackgroundEffects() {
-        // Эффекты для четвертого фона
-        const ctaSection = document.querySelector('.cta-improved');
-        if (ctaSection) {
-            ctaSection.classList.add('highlight-section');
-            setTimeout(() => {
-                ctaSection.classList.remove('highlight-section');
-            }, 2000);
-        }
-        
-        // Пульсация кнопки CTA
-        this.pulseCTAButton();
-    }
-    
-    controlMarqueeSpeed(speedMultiplier) {
-        const marqueeTrack = document.getElementById('speckMarqueeTrack');
-        if (marqueeTrack) {
-            const currentSpeed = parseFloat(
-                window.getComputedStyle(marqueeTrack).animationDuration
-            ) || 40;
-            
-            marqueeTrack.style.animationDuration = `${currentSpeed / speedMultiplier}s`;
-        }
-    }
-    
-    animateStatsCounters() {
-        const statNumbers = document.querySelectorAll('.stat-number-improved:not(.animated)');
-        statNumbers.forEach((stat, index) => {
-            setTimeout(() => {
-                if (!stat.classList.contains('animated')) {
-                    const target = parseInt(stat.getAttribute('data-target')) || 0;
-                    if (target > 0) {
-                        this.animateNumber(stat, target);
-                        stat.classList.add('animated');
-                    }
-                }
-            }, index * 200);
-        });
-    }
-    
-    pulseCTAButton() {
-        const ctaButton = document.querySelector('.btn-glow');
-        if (ctaButton) {
-            ctaButton.classList.add('pulse-animation');
-            setTimeout(() => {
-                ctaButton.classList.remove('pulse-animation');
-            }, 3000);
-        }
-    }
-    
-    updateActiveSection(bgIndex) {
-        // Убираем активность у всех секций
-        document.querySelectorAll('[data-bg-index]').forEach(section => {
-            section.classList.remove('active-section');
-        });
-        
-        // Добавляем активность текущей секции
-        const activeSection = document.querySelector(`[data-bg-index="${bgIndex}"]`);
-        if (activeSection) {
-            activeSection.classList.add('active-section');
-        }
-    }
-    
-    adaptContentToBackground(bgIndex) {
-        // Адаптируем стили контента под текущий фон
-        const contentElements = document.querySelectorAll('.content-on-background');
-        
-        contentElements.forEach(element => {
-            element.classList.remove('on-bg-0', 'on-bg-1', 'on-bg-2', 'on-bg-3');
-            element.classList.add(`on-bg-${bgIndex}`);
-        });
-    }
-    
-    animateSectionElements(sectionSelector, animationClass) {
-        const section = document.querySelector(sectionSelector);
-        if (!section) return;
-        
-        const elements = section.querySelectorAll('.animated-element, h1, h2, h3, p, .btn');
-        elements.forEach((el, index) => {
-            el.classList.remove('fade-in-up', 'fade-in-down', 'fade-in-left', 'fade-in-right', 'scale-in');
-            
-            setTimeout(() => {
-                el.classList.add(animationClass);
-                el.style.animationDelay = `${index * 0.1}s`;
-            }, 50);
-        });
-    }
-    
-    applyEffectsForCurrentBackground() {
-        const bgManager = window.backgroundSystem?.getInstance();
-        if (bgManager) {
-            const currentBg = bgManager.currentIndex;
-            this.addBackgroundChangeEffects(currentBg);
-            this.updateActiveSection(currentBg);
-        }
-    }
-
-    // СПЕЦИАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ СЕКЦИЙ ДЛЯ ФОНОВ
-    initializeSectionBackgrounds() {
-        console.log('🎨 Initializing section backgrounds...');
-        
-        // Добавляем классы для каждой секции
-        document.querySelectorAll('[data-bg-index]').forEach(section => {
-            const bgIndex = section.getAttribute('data-bg-index');
-            section.classList.add(`section-bg-${bgIndex}`);
-        });
-    }
-
-    setupSectionBackgroundInteractions() {
-        // Настраиваем отслеживание видимости секций для авто-переключения
-        if ('IntersectionObserver' in window) {
-            const sectionObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const bgIndex = entry.target.getAttribute('data-bg-index');
-                        if (bgIndex !== null && window.backgroundSystem) {
-                            const currentBg = window.backgroundSystem.getInstance()?.currentIndex;
-                            const targetBg = parseInt(bgIndex);
-                            
-                            if (targetBg !== currentBg && !this.isAnimatingBackground) {
-                                this.isAnimatingBackground = true;
-                                
-                                window.backgroundSystem.switchTo(targetBg);
-                                
-                                setTimeout(() => {
-                                    this.isAnimatingBackground = false;
-                                }, 1000);
-                            }
-                        }
-                    }
-                });
-            }, {
-                threshold: 0.3,
-                rootMargin: '0px 0px -100px 0px'
-            });
-            
-            document.querySelectorAll('[data-bg-index]').forEach(section => {
-                sectionObserver.observe(section);
-            });
         }
     }
 
@@ -799,82 +509,36 @@ class EnhancedHomePage {
             }
         };
     }
-    
-    get currentBackground() {
-        const bgManager = window.backgroundSystem?.getInstance();
-        return bgManager ? bgManager.currentIndex : 0;
-    }
-    
-    switchBackground(index) {
-        if (window.backgroundSystem) {
-            window.backgroundSystem.switchTo(index);
-        }
-    }
-    
-    getBackgroundInfo() {
-        const bgManager = window.backgroundSystem?.getInstance();
-        if (bgManager) {
-            return {
-                current: bgManager.currentIndex,
-                total: bgManager.layers.length,
-                isAnimating: bgManager.isAnimating
-            };
-        }
-        return null;
-    }
 }
 
 // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
-function initializeEnhancedHomePage() {
+function initializeHomePage() {
     if (!document.body || !document.body.classList.contains('home-page')) {
-        console.log('⚠️ Not home page, enhanced home.js will not initialize');
+        console.log('⚠️ Not home page, home.js will not initialize');
         return;
     }
     
-    console.log('📄 INITIALIZING ENHANCED HOME PAGE');
+    console.log('📄 INITIALIZING HOME PAGE');
     
-    function startEnhancedHomePage() {
-        console.log('🎬 Creating EnhancedHomePage instance...');
+    function startHomePage() {
+        console.log('🎬 Creating BasicHomePage instance...');
         try {
-            window.enhancedHomePage = new EnhancedHomePage();
-            console.log('🎉 Enhanced home page successfully initialized with background system!');
+            window.homePage = new BasicHomePage();
+            console.log('🎉 Home page successfully initialized!');
             
-            document.body.classList.add('enhanced-homepage-initialized');
-            
-            window.HomePage = EnhancedHomePage;
+            document.body.classList.add('homepage-initialized');
             
         } catch (error) {
-            console.error('❌ Error during EnhancedHomePage initialization:', error);
+            console.error('❌ Error during HomePage initialization:', error);
             
             try {
-                const BasicHomePage = class {
-                    constructor() {
-                        this.initializeBasicAnimations();
-                        this.initializeStatsCounter();
-                        this.initializeScrollProgress();
-                    }
-                    
-                    initializeBasicAnimations() {
-                        document.querySelectorAll('.content-section').forEach(section => {
-                            section.classList.add('animated');
-                        });
-                    }
-                    
-                    initializeStatsCounter() {
-                        document.querySelectorAll('.stat-number-improved').forEach(stat => {
-                            const target = parseInt(stat.getAttribute('data-target')) || 0;
-                            stat.textContent = target;
-                        });
-                    }
-                    
-                    initializeScrollProgress() {
-                        const bar = document.querySelector('.scroll-progress-bar');
-                        if (bar) bar.style.width = '0%';
-                    }
-                };
+                // Простейший fallback
+                document.querySelectorAll('.stat-number-improved').forEach(stat => {
+                    const target = parseInt(stat.getAttribute('data-target')) || 0;
+                    stat.textContent = target;
+                });
                 
-                window.homePage = new BasicHomePage();
-                console.log('🔄 Fallback to basic homepage initialized');
+                console.log('🔄 Basic fallback applied');
             } catch (fallbackError) {
                 console.error('❌ Fallback also failed:', fallbackError);
             }
@@ -882,26 +546,18 @@ function initializeEnhancedHomePage() {
     }
     
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', startEnhancedHomePage);
+        document.addEventListener('DOMContentLoaded', startHomePage);
     } else {
-        startEnhancedHomePage();
+        startHomePage();
     }
 }
 
-console.log('🚀 Starting enhanced home page initialization...');
-initializeEnhancedHomePage();
+console.log('🚀 Starting home page initialization...');
+initializeHomePage();
 
 if (typeof window !== 'undefined') {
-    window.EnhancedHomePage = EnhancedHomePage;
+    window.HomePage = BasicHomePage;
 }
-
-window.backgroundControls = {
-    next: () => window.backgroundSystem?.nextBackground?.(),
-    prev: () => window.backgroundSystem?.prevBackground?.(),
-    switchTo: (index) => window.backgroundSystem?.switchTo?.(index),
-    getCurrent: () => window.backgroundSystem?.getInstance()?.currentIndex,
-    getTotal: () => window.backgroundSystem?.getInstance()?.layers?.length
-};
 
 window.addEventListener('error', function(e) {
     if (e.message && e.message.includes('HomePage') || 
@@ -910,4 +566,4 @@ window.addEventListener('error', function(e) {
     }
 });
 
-console.log('✅ Enhanced home.js fully loaded with background system integration');
+console.log('✅ home.js fully loaded');
