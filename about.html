@@ -236,21 +236,10 @@
                 <!-- Member 1: Spartak Nukhsan -->
                 <div class="team-member">
                     <div class="member-photo">
-                        <!-- SVG placeholder с инициалами -->
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" style="display: block;">
-                            <defs>
-                                <linearGradient id="gradSN" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#00aaff;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <circle cx="120" cy="120" r="118" fill="url(#gradSN)" stroke="#00aaff" stroke-width="4"/>
-                            <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="80" 
-                                  fill="white" text-anchor="middle" dy="0.35em" font-weight="bold">
-                                SN
-                            </text>
-                            <circle cx="120" cy="120" r="118" fill="transparent" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
-                        </svg>
+                        <img src="assets/images/team/spartak-nukhsan.jpg" 
+                             alt="Спартак Нухсан"
+                             loading="lazy"
+                             onerror="handleTeamPhotoError(this, 'SN')">
                     </div>
                     <h3 class="member-name" data-i18n="about.team.spartak.name">Спартак Нухсан</h3>
                     <div class="member-role" data-i18n="about.team.spartak.role">Основатель, креативный директор, Архитектор брендов, дизайнер</div>
@@ -271,21 +260,10 @@
                 <!-- Member 2: Urmat Ismailov -->
                 <div class="team-member">
                     <div class="member-photo">
-                        <!-- SVG placeholder с инициалами -->
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" style="display: block;">
-                            <defs>
-                                <linearGradient id="gradUI" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#00aaff;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#0066ff;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <circle cx="120" cy="120" r="118" fill="url(#gradUI)" stroke="#0066ff" stroke-width="4"/>
-                            <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="80" 
-                                  fill="white" text-anchor="middle" dy="0.35em" font-weight="bold">
-                                UI
-                            </text>
-                            <circle cx="120" cy="120" r="118" fill="transparent" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
-                        </svg>
+                        <img src="assets/images/team/urmat-ismailov.jpg" 
+                             alt="Исмаилов Урмат"
+                             loading="lazy"
+                             onerror="handleTeamPhotoError(this, 'UI')">
                     </div>
                     <h3 class="member-name" data-i18n="about.team.urmat.name">Исмаилов Урмат</h3>
                     <div class="member-role" data-i18n="about.team.urmat.role">Сооснователь и операционный директор</div>
@@ -306,21 +284,10 @@
                 <!-- Member 3: Elena Kiryanova -->
                 <div class="team-member">
                     <div class="member-photo">
-                        <!-- SVG placeholder с инициалами -->
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" style="display: block;">
-                            <defs>
-                                <linearGradient id="gradEK" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#ff66aa;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#ffaa00;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <circle cx="120" cy="120" r="118" fill="url(#gradEK)" stroke="#ffaa00" stroke-width="4"/>
-                            <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="80" 
-                                  fill="white" text-anchor="middle" dy="0.35em" font-weight="bold">
-                                EK
-                            </text>
-                            <circle cx="120" cy="120" r="118" fill="transparent" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
-                        </svg>
+                        <img src="assets/images/team/elena-kiryanova.jpg" 
+                             alt="Елена Кирьянова"
+                             loading="lazy"
+                             onerror="handleTeamPhotoError(this, 'EK')">
                     </div>
                     <h3 class="member-name" data-i18n="about.team.elena.name">Елена Кирьянова</h3>
                     <div class="member-role" data-i18n="about.team.elena.role">Директор NB Group Company, стратег по развитию брендов</div>
@@ -371,8 +338,27 @@
     <script>
         // Функция для обработки ошибок загрузки фото
         function handleTeamPhotoError(img, initials) {
-            console.warn('⚠️ Failed to load team photo, using SVG placeholder');
-            return; // Уже используем SVG placeholder
+            console.warn(`⚠️ Failed to load team photo for ${initials}, using fallback`);
+            
+            // Создаем SVG placeholder как запасной вариант
+            const parent = img.parentElement;
+            if (parent) {
+                parent.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+                        <defs>
+                            <linearGradient id="grad${initials}" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#00aaff;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="120" cy="120" r="118" fill="url(#grad${initials})" stroke="#00aaff" stroke-width="4"/>
+                        <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="80" 
+                              fill="white" text-anchor="middle" dy="0.35em" font-weight="bold">
+                            ${initials}
+                        </text>
+                    </svg>
+                `;
+            }
         }
 
         window.handleTeamPhotoError = handleTeamPhotoError;
