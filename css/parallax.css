@@ -1,158 +1,171 @@
-/* parallax.css - ИСПРАВЛЕННАЯ ВЕРСИЯ ДЛЯ 4 ФОНОВ */
+/* parallax.css - ПОЛНОСТЬЮ РАБОЧАЯ ВЕРСИЯ С ПЕРЕКЛЮЧЕНИЕМ ПРИ СКРОЛЛЕ */
 
-/* Базовые стили для контейнера */
-.parallax-bg-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
+/* ===== PARALLAX CONTAINER ===== */
+.parallax-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: -100 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    
+    /* Оптимизация производительности */
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
     will-change: transform;
-    opacity: 1;
-    visibility: visible;
-    display: block !important;
 }
 
-/* Основной стиль для фоновых изображений */
-.parallax-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+/* Каждый слой параллакса */
+.parallax-layer {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     
-    /* НАСТРОЙКИ ДЛЯ КАЧЕСТВА */
+    /* ОСНОВНЫЕ НАСТРОЙКИ ФОНА */
     background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
-    background-attachment: scroll;
+    background-attachment: fixed !important;
     
-    /* Оптимизация качества изображения */
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
+    /* ПЛАВНЫЕ ПЕРЕХОДЫ */
+    opacity: 0 !important;
+    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
     
-    /* GPU ускорение */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* ОПТИМИЗАЦИЯ */
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+    will-change: opacity !important;
     
-    /* Плавные переходы */
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0;
-    will-change: opacity;
+    /* Эффект масштабирования как на speckdesign.com */
+    transform: scale(1.05);
+    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
-/* АКТИВНЫЙ ФОН */
-.parallax-bg.active {
+/* Активный слой */
+.parallax-layer.active {
     opacity: 1 !important;
     z-index: 1 !important;
+    transform: scale(1) !important;
 }
 
-/* ПЕРВЫЙ ФОН ВСЕГДА АКТИВЕН ПО УМОЛЧАНИЮ */
-#parallax-bg-1 {
-    opacity: 1 !important;
-    z-index: 1 !important;
-}
-
-/* Конкретные фоновые изображения */
-#parallax-bg-1 { 
-    background-image: url('../assets/images/parallax/bg-1.jpg') !important;
-}
-
-#parallax-bg-2 { 
-    background-image: url('../assets/images/parallax/bg-2.jpg') !important;
-}
-
-#parallax-bg-3 { 
-    background-image: url('../assets/images/parallax/bg-3.jpg') !important;
-}
-
-#parallax-bg-4 { 
-    background-image: url('../assets/images/parallax/bg-4.jpg') !important;
-}
-
-/* Легкое затемнение для читаемости текста */
-.parallax-bg::after {
-    content: '';
+/* Наложение для читаемости (легче чем на speckdesign.com) */
+.parallax-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.15);
+    background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 10, 0.05) 0%,
+        rgba(10, 10, 10, 0.1) 20%,
+        rgba(10, 10, 10, 0.2) 50%,
+        rgba(10, 10, 10, 0.3) 80%,
+        rgba(10, 10, 10, 0.4) 100%
+    );
+    z-index: 2;
     pointer-events: none;
-    z-index: 1;
 }
 
-/* Hero Section */
+/* ===== HERO SECTION STYLES ===== */
 .parallax-hero {
-    height: 100vh;
+    min-height: 100vh;
+    padding: 220px 0 120px;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    z-index: 2;
+    background: transparent !important;
     overflow: hidden;
+    z-index: 10;
 }
 
 .parallax-content {
     text-align: center;
-    color: white;
-    max-width: 800px;
-    padding: 0 20px;
+    max-width: 1000px;
+    margin: 0 auto;
     position: relative;
-    z-index: 3;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    z-index: 20;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    opacity: 0;
 }
 
+/* Анимация появления контента */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Контент должен быть виден на фоне */
+.parallax-content h1,
+.parallax-content p,
+.parallax-content .hero-subtitle,
+.parallax-content .hero-description p {
+    color: white !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important;
+    opacity: 1 !important;
+}
+
+/* Усиление тени для лучшей читаемости на светлых фонах */
 .parallax-content h1 {
-    font-size: 4rem;
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 30px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8) !important;
 }
 
-.parallax-content p {
-    font-size: 1.3rem;
-    margin-bottom: 40px;
-    line-height: 1.6;
-}
-
-.hero-actions {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-/* Content Sections */
+/* ===== CONTENT SECTIONS ===== */
 .content-section {
     position: relative;
-    z-index: 3;
-    background: transparent;
-    padding: 100px 0;
+    z-index: 5;
+    background: transparent !important;
+    padding: 150px 0;
     overflow: hidden;
 }
 
-/* Убедимся что контент виден на фонах */
-.clients-section,
-.services-preview,
-.stats-improved,
-.cta-improved {
-    background: transparent !important;
+/* Гарантируем что контент виден */
+.content-section .container {
+    position: relative;
+    z-index: 10;
 }
 
-/* Scroll Progress Bar */
+/* Усиливаем тень текста в секциях для читаемости */
+.speck-vertical-section h1,
+.speck-vertical-section h2,
+.speck-vertical-section h3,
+.speck-vertical-section p,
+.speck-vertical-section .speck-block-title,
+.speck-vertical-section .speck-block-subtitle,
+.speck-vertical-section .speck-feature-item,
+.speck-marquee-section .speck-brand,
+.stats-improved .stat-number-improved,
+.stats-improved .stat-label-improved,
+.cta-improved h2,
+.cta-improved p {
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5) !important;
+    opacity: 1 !important;
+}
+
+/* ===== SCROLL PROGRESS BAR ===== */
 .scroll-progress {
     position: fixed;
     top: 0;
@@ -160,230 +173,195 @@
     width: 100%;
     height: 3px;
     background: rgba(255, 255, 255, 0.1);
-    z-index: 1000;
+    z-index: 9999;
 }
 
 .scroll-progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #0066ff, #00aaff);
+    background: linear-gradient(90deg, #0066ff, #3399ff);
     width: 0%;
     transition: width 0.1s ease;
 }
 
-/* Хедер над фонами */
-.main-header {
-    position: relative;
-    z-index: 1000;
-}
-
-/* ===== ГАРАНТИРОВАННЫЕ ФИКСЫ ДЛЯ ЧЕРНОГО ФОНА ===== */
-
-/* 1. ГАРАНТИЯ ВИДИМОСТИ КОНТЕЙНЕРА */
-.no-js .parallax-bg-container,
-.no-css-transforms .parallax-bg-container,
-.is-ie .parallax-bg-container {
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-/* 2. ГАРАНТИЯ ВИДИМОСТИ ПЕРВОГО ФОНА */
-.no-js #parallax-bg-1,
-.no-css-transforms #parallax-bg-1,
-.is-ie #parallax-bg-1 {
-    display: block !important;
-    opacity: 1 !important;
-    background-image: url('../assets/images/parallax/bg-1.jpg') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 1 !important;
-}
-
-/* 3. СКРЫВАЕМ ОСТАЛЬНЫЕ ФОНЫ ЕСЛИ JS/TRANSFORMS НЕ РАБОТАЮТ */
-.no-js #parallax-bg-2,
-.no-js #parallax-bg-3,
-.no-js #parallax-bg-4,
-.no-css-transforms #parallax-bg-2,
-.no-css-transforms #parallax-bg-3,
-.no-css-transforms #parallax-bg-4 {
-    display: none !important;
-}
-
-/* 4. МОБИЛЬНАЯ ОПТИМИЗАЦИЯ */
+/* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===== */
 @media (max-width: 768px) {
-    .parallax-bg-container {
+    .parallax-container {
         position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
         height: 100vh !important;
-        z-index: -1;
     }
     
-    .parallax-bg {
+    .parallax-layer {
         background-attachment: scroll !important;
-        background-position: center center !important;
         background-size: cover !important;
-        width: 100% !important;
-        height: 100% !important;
-        left: 0 !important;
-        top: 0 !important;
-        position: absolute !important;
+        background-position: center center !important;
+        
+        /* Более быстрые переходы на мобильных */
+        transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
     }
     
-    /* Усиливаем затемнение фона для лучшей читаемости */
-    .parallax-bg::after {
-        background: rgba(0, 0, 0, 0.35) !important;
+    /* Усиливаем затемнение для мобильных */
+    .parallax-overlay {
+        background: linear-gradient(
+            to bottom,
+            rgba(10, 10, 10, 0.2) 0%,
+            rgba(10, 10, 10, 0.3) 20%,
+            rgba(10, 10, 10, 0.4) 50%,
+            rgba(10, 10, 10, 0.5) 80%,
+            rgba(10, 10, 10, 0.6) 100%
+        ) !important;
+    }
+    
+    .parallax-hero {
+        padding: 180px 0 100px;
     }
     
     .parallax-content {
-        text-align: center !important;
-        padding: 25px 20px !important;
-        margin: 0 15px !important;
-        backdrop-filter: blur(10px);
-        background: rgba(0, 0, 0, 0.4);
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        padding: 0 20px;
+        animation: none;
+        opacity: 1;
     }
     
-    .parallax-content h1 {
-        font-size: 2.5rem !important;
-        line-height: 1.2;
-        text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
-    }
-    
-    .parallax-content p {
-        font-size: 1.1rem !important;
-        margin-bottom: 30px;
-        color: rgba(255, 255, 255, 0.95);
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
-    }
-    
-    .hero-actions {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-    
-    .hero-actions .btn {
-        width: 100%;
-        max-width: 280px;
-        justify-content: center;
-        backdrop-filter: blur(10px);
-        background: rgba(255, 255, 255, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Усиливаем тени текста для мобильных */
+    .parallax-content h1,
+    .parallax-content p,
+    .content-section * {
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8) !important;
     }
     
     .content-section {
-        padding: 60px 0 !important;
-        background-color: transparent !important;
-        position: relative;
-        z-index: 2;
-    }
-    
-    .scroll-progress {
-        background: rgba(255, 255, 255, 0.05);
-    }
-    
-    .scroll-progress-bar {
-        background: linear-gradient(90deg, #0066ff, #00aaff);
+        padding: 100px 0 !important;
     }
 }
 
 @media (max-width: 480px) {
-    .parallax-content h1 {
-        font-size: 2rem !important;
+    .parallax-hero {
+        padding: 140px 0 80px;
     }
     
-    .parallax-content p {
-        font-size: 1rem !important;
+    /* Еще сильнее затемнение для маленьких экранов */
+    .parallax-overlay {
+        background: rgba(10, 10, 10, 0.4) !important;
+    }
+    
+    .content-section {
+        padding: 80px 0 !important;
+    }
+}
+
+/* ===== КРОССБРАУЗЕРНЫЕ ГАРАНТИИ ===== */
+
+/* Для браузеров без JS */
+.no-js .parallax-container {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+.no-js .parallax-layer:first-child {
+    opacity: 1 !important;
+    z-index: 1 !important;
+    display: block !important;
+}
+
+.no-js .parallax-layer:not(:first-child) {
+    display: none !important;
+}
+
+/* Для старых браузеров без CSS transforms */
+.no-css-transforms .parallax-layer {
+    transform: none !important;
+    transition: opacity 0.8s ease !important;
+}
+
+/* Для Internet Explorer */
+.is-ie .parallax-container {
+    position: absolute !important;
+}
+
+.is-ie .parallax-layer {
+    background-attachment: scroll !important;
+}
+
+/* ===== PREFERS-REDUCED-MOTION SUPPORT ===== */
+@media (prefers-reduced-motion: reduce) {
+    .parallax-layer {
+        transition: opacity 0.3s ease !important;
+        transform: none !important;
     }
     
     .parallax-content {
-        padding: 20px 15px !important;
-        margin: 0 10px !important;
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(15px);
-    }
-    
-    .hero-actions .btn {
-        max-width: 100%;
-    }
-    
-    /* Усиливаем прозрачность параллакс фона для маленьких экранов */
-    .parallax-bg::after {
-        background: rgba(0, 0, 0, 0.4) !important;
+        animation: none !important;
+        opacity: 1 !important;
     }
 }
 
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-    .parallax-bg {
-        transition: none !important;
-        background-attachment: scroll !important;
-    }
-}
+/* ===== FIXES FOR SPECIFIC BROWSERS ===== */
 
-/* Fix for iOS Safari */
+/* iOS Safari */
 @supports (-webkit-touch-callout: none) {
-    .parallax-bg {
+    .parallax-container {
+        height: -webkit-fill-available !important;
+    }
+    
+    .parallax-layer {
         background-attachment: scroll !important;
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
     }
-    
-    .parallax-bg-container {
-        height: -webkit-fill-available !important;
-    }
 }
 
-/* Для браузеров без backdrop-filter */
-.no-backdropfilter .parallax-content {
-    background: rgba(0, 0, 0, 0.6) !important;
-}
-
-.no-backdropfilter .parallax-bg::after {
-    background: rgba(0, 0, 0, 0.4) !important;
-}
-
-/* Firefox специфичные правки */
+/* Firefox */
 @-moz-document url-prefix() {
-    .parallax-bg {
+    .parallax-layer {
         background-attachment: scroll !important;
-        image-rendering: crisp-edges !important;
+        image-rendering: auto !important;
     }
 }
 
 /* Chrome/Edge оптимизация */
 @media screen and (-webkit-min-device-pixel-ratio: 2) {
-    .parallax-bg {
+    .parallax-layer {
         image-rendering: -webkit-optimize-contrast !important;
     }
 }
 
-/* Гарантируем, что изображения всегда загружаются в максимальном качестве */
+/* Гарантируем качество на HiDPI экранах */
 @media (min-resolution: 192dpi) {
-    .parallax-bg {
+    .parallax-layer {
         background-size: cover !important;
         background-position: center center !important;
     }
 }
 
-/* Кроссбраузерные гарантии */
-.no-js .parallax-bg:not(#parallax-bg-1),
-.no-css-transforms .parallax-bg:not(#parallax-bg-1) {
-    display: none !important;
+/* Фикс при печати */
+@media print {
+    .parallax-container {
+        display: none !important;
+    }
 }
 
-/* ГАРАНТИЯ: ТЕКСТ ВИДЕН НА ФОНЕ */
-.home-page .parallax-content * {
+/* Гарантируем что интерактивные элементы поверх фона */
+.hero-actions a,
+.btn,
+.parallax-content,
+.content-section .container {
     position: relative;
-    z-index: 10;
+    z-index: 20 !important;
+}
+
+/* Дополнительное затемнение для светлых фонов */
+.parallax-layer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Активный слой должен быть светлее */
+.parallax-layer.active::after {
+    background: rgba(0, 0, 0, 0.05);
 }
