@@ -72,12 +72,12 @@ class DaehaaApp {
             '.menu-container'
         ];
         
-        // ДОБАВЛЯЕМ НОВЫЕ СЕЛЕКТОРЫ ДЛЯ READY-СЕКЦИИ
+        // ДОБАВЛЯЕМ НОВЫЕ СЕЛЕКТОРЫ ДЛЯ FLOATING-СЕКЦИИ
         hiddenSelectors.push(
-            '.ready-section a:not(.ready-button)',
-            '.ready-section button:not(.ready-button)',
-            '.ready-section [href]:not(.ready-button)',
-            '.ready-section [role="button"]:not(.ready-button)'
+            '.floating-section a:not(.floating-button)',
+            '.floating-section button:not(.floating-button)',
+            '.floating-section [href]:not(.floating-button)',
+            '.floating-section [role="button"]:not(.floating-button)'
         );
         
         hiddenSelectors.forEach(selector => {
@@ -100,27 +100,27 @@ class DaehaaApp {
         document.removeEventListener('click', this.handleMobileMenuClick);
         document.removeEventListener('keydown', this.handleMobileMenuEscape);
         
-        // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА ДЛЯ READY-СЕКЦИИ
+        // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА ДЛЯ FLOATING-СЕКЦИИ
         setTimeout(() => {
-            const readySection = document.querySelector('.ready-section');
-            if (readySection) {
-                console.log('🔍 Checking Ready section for hidden elements...');
+            const floatingSection = document.querySelector('.floating-section');
+            if (floatingSection) {
+                console.log('🔍 Checking Floating section for hidden elements...');
                 
                 // Находим все элементы внутри секции кроме кнопки
-                const allElements = readySection.querySelectorAll('*');
+                const allElements = floatingSection.querySelectorAll('*');
                 allElements.forEach(el => {
                     // Пропускаем саму кнопку и её дочерние элементы
-                    if (el.classList.contains('ready-button') || el.closest('.ready-button')) {
+                    if (el.classList.contains('floating-button') || el.closest('.floating-button')) {
                         return;
                     }
                     
                     // Удаляем все интерактивные элементы кроме кнопки
                     if (
-                        (el.tagName === 'A' && !el.classList.contains('ready-button')) ||
-                        (el.tagName === 'BUTTON' && !el.classList.contains('ready-button')) ||
-                        el.getAttribute('href') && !el.classList.contains('ready-button') ||
+                        (el.tagName === 'A' && !el.classList.contains('floating-button')) ||
+                        (el.tagName === 'BUTTON' && !el.classList.contains('floating-button')) ||
+                        el.getAttribute('href') && !el.classList.contains('floating-button') ||
                         el.getAttribute('onclick') ||
-                        el.getAttribute('role') === 'button' && !el.classList.contains('ready-button')
+                        el.getAttribute('role') === 'button' && !el.classList.contains('floating-button')
                     ) {
                         el.style.display = 'none';
                         el.style.visibility = 'hidden';
@@ -130,7 +130,7 @@ class DaehaaApp {
                     }
                 });
                 
-                console.log('✅ Ready section cleaned');
+                console.log('✅ Floating section cleaned');
             }
         }, 100);
         
