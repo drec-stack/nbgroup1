@@ -1,4 +1,4 @@
-/* animations.css - COMPREHENSIVE ANIMATIONS LIBRARY */
+/* animations.css - COMPREHENSIVE ANIMATIONS LIBRARY (БЕЗ БЕГУЩЕЙ СТРОКИ) */
 
 :root {
     --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -9,62 +9,6 @@
     --animation-duration-fast: 0.3s;
     --animation-duration-normal: 0.6s;
     --animation-duration-slow: 1s;
-}
-
-/* ===== SPECK MARQUEE ANIMATIONS - НОВЫЙ РАЗДЕЛ ===== */
-
-/* Основная анимация бегущей строки как на speckdesign.com */
-@keyframes speckMarquee {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-/* Анимация для бегущей строки Speck */
-.speck-marquee-track {
-    animation: speckMarquee 40s linear infinite;
-    animation-play-state: running;
-    will-change: transform;
-}
-
-/* Медленная версия для больших экранов */
-@media (min-width: 1200px) {
-    .speck-marquee-track {
-        animation: speckMarquee 50s linear infinite;
-    }
-}
-
-/* Быстрая версия для мобильных */
-@media (max-width: 768px) {
-    .speck-marquee-track {
-        animation: speckMarquee 30s linear infinite;
-    }
-}
-
-/* Супер быстрая версия для очень маленьких экранов */
-@media (max-width: 480px) {
-    .speck-marquee-track {
-        animation: speckMarquee 25s linear infinite;
-    }
-}
-
-/* Пауза при наведении */
-.speck-marquee-track:hover,
-.speck-marquee-section:hover .speck-marquee-track {
-    animation-play-state: paused;
-}
-
-/* Класс для JavaScript fallback */
-.speck-marquee-track.js-fallback-active {
-    animation: none !important;
-}
-
-/* Состояние паузы */
-.speck-marquee-track.paused {
-    animation-play-state: paused !important;
 }
 
 /* ===== SMOOTH HEADER HIDE ANIMATIONS ===== */
@@ -804,62 +748,6 @@
     75% { transform: rotate(5deg); }
 }
 
-/* ===== БЕГУЩАЯ СТРОКА CSS АНИМАЦИИ (старая) ===== */
-.marquee-animate-left {
-    animation: marqueeLeft 40s linear infinite;
-}
-
-.marquee-animate-right {
-    animation: marqueeRight 40s linear infinite;
-}
-
-@keyframes marqueeLeft {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@keyframes marqueeRight {
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
-
-.marquee-container:hover .marquee-animate-left,
-.marquee-container:hover .marquee-animate-right {
-    animation-play-state: paused;
-}
-
-.marquee-infinite-wrapper {
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-    will-change: transform;
-}
-
-@media (max-width: 768px) {
-    .marquee-animate-left {
-        animation: marqueeLeft 30s linear infinite;
-    }
-    
-    .marquee-animate-right {
-        animation: marqueeRight 30s linear infinite;
-    }
-}
-
-@media (max-width: 480px) {
-    .marquee-animate-left,
-    .marquee-animate-right {
-        animation-duration: 25s;
-    }
-}
-
 /* ===== ACCESSIBILITY & PERFORMANCE ===== */
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -870,13 +758,7 @@
         transition-duration: 0.01ms !important;
     }
     
-    /* Отключаем все анимации бегущих строк */
-    .marquee-animate-left,
-    .marquee-animate-right,
-    .speck-marquee-track {
-        animation: none !important;
-    }
-    
+    /* Отключаем все анимации */
     .pulse, .pulse-glow, .glow, .spin-slow, .spin-medium, .spin-fast {
         animation: none !important;
     }
@@ -974,7 +856,6 @@
     transition: opacity 0.3s ease !important; /* Уменьшаем время перехода */
 }
 
-/* ИСПРАВЛЕНИЕ: Уменьшаем прозрачность (было 0.5, стало 0.95) */
 .language-changing [data-i18n] {
     opacity: 0.95 !important; /* Почти не видно разницы */
     color: inherit !important;
@@ -1220,11 +1101,6 @@
     }
 }
 
-.marquee-hover-pause:hover .marquee-animate-left,
-.marquee-hover-pause:hover .marquee-animate-right {
-    animation-play-state: paused;
-}
-
 .progress-grow {
     animation: progressGrow 0.3s ease;
 }
@@ -1325,7 +1201,7 @@
     animation: titlePulse 0.5s ease;
 }
 
-/* ===== ENHANCED SPECK BLOCK ANIMATIONS (как на speckdesign.com) ===== */
+/* ===== ENHANCED SPECK BLOCK ANIMATIONS ===== */
 
 /* УЛУЧШЕННЫЕ АНИМАЦИИ ДЛЯ ЦИФР */
 @keyframes speckNumberAppear {
@@ -1701,23 +1577,6 @@
 .hero-description { animation-delay: 0.6s; }
 .hero-actions { animation-delay: 0.8s; }
 
-/* Анимация для бегущей строки при загрузке */
-@keyframes marqueeFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.speck-marquee-section {
-    animation: marqueeFadeIn 1s ease 1s forwards;
-    opacity: 0;
-}
-
 /* Плавная анимация для всего содержимого секции */
 .content-section.animate-section {
     animation: sectionReveal 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -1892,7 +1751,6 @@
     .stat-card.animate-in,
     .cta-improved.animate-glow,
     .hero .parallax-content > *,
-    .speck-marquee-section,
     .content-section.animate-section,
     .speck-vertical-block:hover .speck-block-number,
     .float-element,
@@ -1916,8 +1774,7 @@
     .stat-card,
     .cta-improved,
     .hero .parallax-content > *,
-    .content-section,
-    .speck-marquee-section {
+    .content-section {
         opacity: 1 !important;
         transform: none !important;
     }
@@ -1928,7 +1785,6 @@
     }
     
     .hero .parallax-content > *,
-    .speck-marquee-section,
     .content-section {
         animation-delay: 0s !important;
     }
@@ -2294,133 +2150,6 @@
 
 .finish-loading {
     animation: finishLoading 0.5s ease forwards;
-}
-
-/* ===== ДОПОЛНИТЕЛЬНЫЕ АНИМАЦИИ ДЛЯ СПЕК БРЕНДОВ ===== */
-@keyframes speckBrandGlow {
-    0%, 100% {
-        text-shadow: 
-            0 0 10px rgba(255, 255, 255, 0.3),
-            0 0 20px rgba(255, 255, 255, 0.2);
-    }
-    50% {
-        text-shadow: 
-            0 0 20px rgba(255, 255, 255, 0.6),
-            0 0 40px rgba(255, 255, 255, 0.4),
-            0 0 60px rgba(255, 255, 255, 0.2);
-    }
-}
-
-.speck-brand.glow-animate {
-    animation: speckBrandGlow 3s ease-in-out infinite;
-}
-
-/* Анимация для плавного появления бегущей строки */
-@keyframes speckMarqueeFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.speck-marquee-track.initial-fade {
-    animation: 
-        speckMarqueeFadeIn 1s ease forwards,
-        speckMarquee 40s linear infinite 1s;
-}
-
-/* Анимация для паузы при наведении с эффектом замедления */
-@keyframes speckMarqueeSlowdown {
-    0% {
-        animation-timing-function: linear;
-    }
-    100% {
-        animation-timing-function: ease-out;
-    }
-}
-
-.speck-marquee-track.slowing-down {
-    animation: speckMarquee 40s linear infinite;
-    animation-play-state: running;
-    transition: animation-play-state 0.5s ease;
-}
-
-.speck-marquee-track.slowing-down:hover {
-    animation-play-state: paused;
-}
-
-/* Анимация для эффекта мерцания на брендах */
-@keyframes speckBrandFlicker {
-    0%, 100% {
-        opacity: 0.9;
-    }
-    50% {
-        opacity: 1;
-    }
-}
-
-.speck-brand.flicker {
-    animation: speckBrandFlicker 2s ease-in-out infinite;
-}
-
-/* Рандомные задержки для мерцания */
-.speck-brand:nth-child(1) { animation-delay: 0.1s; }
-.speck-brand:nth-child(2) { animation-delay: 0.3s; }
-.speck-brand:nth-child(3) { animation-delay: 0.5s; }
-.speck-brand:nth-child(4) { animation-delay: 0.7s; }
-.speck-brand:nth-child(5) { animation-delay: 0.9s; }
-.speck-brand:nth-child(6) { animation-delay: 1.1s; }
-.speck-brand:nth-child(7) { animation-delay: 1.3s; }
-.speck-brand:nth-child(8) { animation-delay: 1.5s; }
-.speck-brand:nth-child(9) { animation-delay: 1.7s; }
-.speck-brand:nth-child(10) { animation-delay: 1.9s; }
-
-/* Анимация для загрузки бегущей строки */
-@keyframes speckMarqueeLoad {
-    0% {
-        width: 0;
-        opacity: 0;
-    }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        width: 100%;
-        opacity: 1;
-    }
-}
-
-.speck-marquee-container.loading::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #0066ff, transparent);
-    animation: speckMarqueeLoad 2s ease-in-out forwards;
-    z-index: 10;
-}
-
-/* Анимация для отскока при паузе */
-@keyframes speckMarqueeBounce {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(5px);
-    }
-}
-
-.speck-marquee-track.bounce-on-pause {
-    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-
-.speck-marquee-track.bounce-on-pause:hover {
-    animation: speckMarqueeBounce 0.5s ease;
 }
 
 /* ===== КРИТИЧЕСКИЕ ИСПРАВЛЕНИЯ АНИМАЦИЙ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА ===== */
