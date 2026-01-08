@@ -44,15 +44,15 @@ console.log('🏠 home.js loaded - VISIBLE BACKGROUND WITH FLOATING TEXT, NO BLA
 
 // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
-    console.log('📄 INITIALIZING HOME PAGE WITH VISIBLE BACKGROUND - NO BLACK OVERLAY');
+    console.log('📄 INITIALIZING HOME PAGE WITH FLOATING TEXT - NO BACKGROUNDS ANYWHERE');
     
     // 1. ГАРАНТИРУЕМ КЛАСС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
     document.body.classList.add('home-page');
     document.documentElement.classList.add('home-page');
     
-    // 2. ЭКСТРЕННЫЙ CSS ФИКС - ВИСЯЩИЙ ТЕКСТ БЕЗ ФОНА И ЧЕРНОГО OVERLAY
+    // 2. ЭКСТРЕННЫЙ CSS ФИКС - ВИСЯЩИЙ ТЕКСТ БЕЗ ВСЕХ ФОНОВ
     const emergencyCSS = `
-        /* ЭКСТРЕННЫЙ ФИКС: УДАЛИТЬ ВСЕ ЧЕРНЫЕ ФОНЫ И OVERLAY */
+        /* ЭКСТРЕННЫЙ ФИКС: УДАЛИТЬ ВСЕ ФОНЫ И OVERLAY */
         body.home-page {
             background: transparent !important;
             background-color: transparent !important;
@@ -116,8 +116,14 @@ function initializeHomePage() {
             background-image: url('assets/images/parallax/bg-4.jpg') !important;
         }
         
-        /* ВИСЯЩИЙ ТЕКСТ - БЕЗ ФОНА */
-        .hero-content > div:not(.hero-actions) {
+        /* ВИСЯЩИЙ ТЕКСТ - БЕЗ ВСЕХ ФОНОВ */
+        .hero-content > div:not(.hero-actions),
+        .speck-block-left,
+        .speck-block-right,
+        .speck-feature-column,
+        .stat-card,
+        .floating-content,
+        .stats-grid-improved > * {
             background: transparent !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
@@ -125,6 +131,7 @@ function initializeHomePage() {
             box-shadow: none !important;
             padding: 0 !important;
             margin: 0 !important;
+            border-radius: 0 !important;
         }
         
         .hero-description {
@@ -139,12 +146,23 @@ function initializeHomePage() {
         /* УЛУЧШАЕМ ВИДИМОСТЬ ТЕКСТА */
         .hero h1,
         .hero-subtitle,
-        .hero-description p {
+        .hero-description p,
+        .section-title,
+        .section-subtitle,
+        .speck-block-title,
+        .speck-block-subtitle,
+        .speck-column-title,
+        .speck-feature-text,
+        .stat-number-improved,
+        .stat-label-improved,
+        .floating-title,
+        .floating-subtitle {
             text-shadow: 
-                0 4px 35px rgba(0, 0, 0, 0.95),
-                0 3px 30px rgba(0, 0, 0, 0.9),
-                0 2px 25px rgba(0, 0, 0, 0.85) !important;
-            color: rgba(255, 255, 255, 0.98) !important;
+                0 5px 45px rgba(0, 0, 0, 0.99),
+                0 4px 40px rgba(0, 0, 0, 0.98),
+                0 3px 35px rgba(0, 0, 0, 0.97),
+                0 2px 30px rgba(0, 0, 0, 0.96) !important;
+            color: rgba(255, 255, 255, 0.99) !important;
             position: relative;
             z-index: 20;
         }
@@ -155,22 +173,22 @@ function initializeHomePage() {
             background-color: transparent !important;
         }
         
-        /* ФИКС ДЛЯ СТЕКЛЯННЫХ КАРТОЧЕК (остальные элементы) */
-        .speck-feature-column,
-        .stat-card,
-        .floating-content {
-            background: rgba(255, 255, 255, 0.1) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        }
-        
-        /* СТЕКЛЯННЫЙ ЭФФЕКТ ТОЛЬКО ДЛЯ КНОПОК */
-        .hero-actions .btn {
+        /* ТОЛЬКО КНОПКИ СТЕКЛЯННЫЕ */
+        .hero-actions .btn,
+        .floating-button {
             background: rgba(0, 102, 255, 0.25) !important;
             backdrop-filter: blur(15px) !important;
             -webkit-backdrop-filter: blur(15px) !important;
             border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            text-shadow: none !important;
+        }
+        
+        /* УДАЛИТЬ ВСЕ ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ */
+        .speck-block-number::after,
+        .speck-block-subtitle::after,
+        .speck-column-title::after,
+        .speck-vertical-block:not(:last-child)::before {
+            display: none !important;
         }
         
         /* УДАЛИТЬ ВСЕ ДОПОЛНИТЕЛЬНЫЕ OVERLAY */
@@ -181,6 +199,13 @@ function initializeHomePage() {
             opacity: 0 !important;
             visibility: hidden !important;
         }
+        
+        /* УЛУЧШЕННЫЕ ИКОНКИ */
+        .stat-icon,
+        .speck-feature-icon {
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7)) 
+                   drop-shadow(0 0 30px rgba(255, 255, 255, 0.5));
+        }
     `;
     
     // ВСТАВЛЯЕМ ЭКСТРЕННЫЙ CSS
@@ -188,14 +213,14 @@ function initializeHomePage() {
     style.textContent = emergencyCSS;
     document.head.appendChild(style);
     
-    console.log('✅ Emergency CSS injected - NO black overlay');
+    console.log('✅ Emergency CSS injected - ALL text floating without backgrounds');
     
     // 3. ПРИНУДИТЕЛЬНАЯ АКТИВАЦИЯ ФОНОВЫХ СЛОЕВ БЕЗ OVERLAY
     setTimeout(() => {
         const bgLayers = document.querySelectorAll('.bg-layer');
         const bgContainer = document.querySelector('.bg-layers-container');
         
-        console.log(`🎨 Found ${bgLayers.length} background layers - activating WITHOUT overlay`);
+        console.log(`🎨 Found ${bgLayers.length} background layers - activating WITHOUT any overlays`);
         
         if (bgLayers.length > 0) {
             // Активируем ВСЕ слои БЕЗ темного overlay
@@ -228,9 +253,18 @@ function initializeHomePage() {
             createBackgroundLayers();
         }
         
-        // 4. Убираем все фоны с текстовых блоков
-        const textContainers = document.querySelectorAll('.text-backdrop-enhanced, .hero-description');
-        textContainers.forEach(container => {
+        // 4. Убираем все фоны со ВСЕХ текстовых блоков
+        const allTextContainers = document.querySelectorAll(`
+            .text-backdrop-enhanced, 
+            .hero-description,
+            .speck-block-left,
+            .speck-block-right,
+            .speck-feature-column,
+            .stat-card,
+            .floating-content
+        `);
+        
+        allTextContainers.forEach(container => {
             if (container && container.style) {
                 container.style.backgroundColor = 'transparent';
                 container.style.backdropFilter = 'none';
@@ -238,7 +272,7 @@ function initializeHomePage() {
                 container.style.border = 'none';
                 container.style.boxShadow = 'none';
                 container.style.padding = '0';
-                container.style.margin = '0 auto';
+                container.style.margin = '0';
             }
         });
         
@@ -251,7 +285,26 @@ function initializeHomePage() {
             }
         });
         
-        console.log('✅ All black overlays removed - floating text effect applied');
+        // 5. Усиливаем тени для ВСЕХ текстов
+        const allTextElements = document.querySelectorAll(`
+            h1, h2, h3, h4, h5, h6,
+            p, span, div[class*="text"],
+            .section-title, .section-subtitle,
+            .speck-block-title, .speck-block-subtitle,
+            .speck-column-title, .speck-feature-text,
+            .stat-number-improved, .stat-label-improved,
+            .floating-title, .floating-subtitle
+        `);
+        
+        allTextElements.forEach(text => {
+            if (text && text.style) {
+                text.style.textShadow = '0 5px 45px rgba(0, 0, 0, 0.99), 0 4px 40px rgba(0, 0, 0, 0.98), 0 3px 35px rgba(0, 0, 0, 0.97), 0 2px 30px rgba(0, 0, 0, 0.96)';
+                text.style.color = 'rgba(255, 255, 255, 0.99)';
+                text.style.fontWeight = '900';
+            }
+        });
+        
+        console.log('✅ ALL backgrounds removed - floating text effect applied everywhere');
     }, 100);
     
     // Функция создания фоновых слоев БЕЗ overlay
@@ -296,7 +349,6 @@ function initializeHomePage() {
                 z-index: ${4 - index};
             `;
             
-            // НЕ добавляем темное наложение - оставляем чистые изображения
             container.appendChild(layer);
         });
         
@@ -347,9 +399,7 @@ function initializeBasicFunctions() {
         progressBar.style.width = `${scrollPercent}%`;
     }
     
-    // 4. УДАЛЕН КОД ДЛЯ БЕГУЩЕЙ СТРОКИ
-    
-    // 5. ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА И OVERLAY
+    // 4. ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА И OVERLAY
     setTimeout(() => {
         // Убираем любые возможные фоны
         const heroText = document.querySelector('.hero-content > div');
@@ -437,7 +487,7 @@ window.addEventListener('load', () => {
         }
         
         // ФИНАЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА
-        const textBlocks = document.querySelectorAll('.hero-content > div, .hero-description');
+        const textBlocks = document.querySelectorAll('.hero-content > div, .hero-description, .speck-block-left, .speck-block-right, .speck-feature-column, .stat-card, .floating-content');
         textBlocks.forEach(block => {
             if (block && block.style) {
                 block.style.backgroundColor = 'transparent';
