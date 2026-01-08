@@ -1,6 +1,6 @@
-/* home.css - СТИЛИ ГЛАВНОЙ СТРАНИЦЫ С РАБОЧИМ ФОНОМ */
+/* home.css - СТИЛИ ГЛАВНОЙ СТРАНИЦЫ БЕЗ ФОНОВ */
 
-/* ===== КРИТИЧЕСКИЙ ФИКС: ПРОЗРАЧНЫЙ ФОН И ТЕКСТ ===== */
+/* ===== ЧЕРНЫЙ ФОН ===== */
 body.home-page {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: white;
@@ -9,72 +9,9 @@ body.home-page {
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: transparent !important;
-    background-color: transparent !important;
+    background: #0a0a0a !important;
+    background-color: #0a0a0a !important;
     background-image: none !important;
-}
-
-/* ===== ФОНОВАЯ СИСТЕМА - ВИДИМАЯ ===== */
-.bg-layers-container {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100vh !important;
-    z-index: 1 !important;
-    overflow: hidden;
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
-    pointer-events: none;
-}
-
-.bg-layer {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    opacity: 1 !important;
-    display: block !important;
-    visibility: visible !important;
-    z-index: 1;
-}
-
-/* ВСЕ 4 ФОНА ВИДНЫ */
-.bg-layer:nth-child(1) {
-    background-image: url('assets/images/parallax/bg-1.jpg') !important;
-    z-index: 4;
-}
-
-.bg-layer:nth-child(2) {
-    background-image: url('assets/images/parallax/bg-2.jpg') !important;
-    z-index: 3;
-}
-
-.bg-layer:nth-child(3) {
-    background-image: url('assets/images/parallax/bg-3.jpg') !important;
-    z-index: 2;
-}
-
-.bg-layer:nth-child(4) {
-    background-image: url('assets/images/parallax/bg-4.jpg') !important;
-    z-index: 1;
-}
-
-/* ТЕМНОЕ НАЛОЖЕНИЕ ДЛЯ ЧИТАЕМОСТИ */
-.bg-layer::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: rgba(0, 0, 0, 0.4) !important;
-    z-index: 1 !important;
 }
 
 /* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
@@ -95,14 +32,6 @@ html {
     width: 100%;
 }
 
-/* Убедимся, что контент поверх фона */
-.content-section,
-.header,
-.footer {
-    position: relative;
-    z-index: 10;
-}
-
 /* ===== HERO SECTION ===== */
 .hero {
     min-height: 100vh;
@@ -113,7 +42,7 @@ html {
     justify-content: center;
     overflow: hidden;
     z-index: 20;
-    background: transparent !important;
+    background: #0a0a0a !important;
 }
 
 .hero-content {
@@ -131,10 +60,6 @@ html {
     letter-spacing: -0.03em;
     margin-bottom: 1.5rem;
     text-transform: uppercase;
-    text-shadow: 
-        0 4px 30px rgba(0, 0, 0, 0.95),
-        0 3px 25px rgba(0, 0, 0, 0.9),
-        0 2px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .hero h1 span {
@@ -163,9 +88,6 @@ html {
     letter-spacing: 0.5px;
     line-height: 1.4;
     opacity: 1 !important;
-    text-shadow: 
-        0 3px 25px rgba(0, 0, 0, 0.9),
-        0 2px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .hero-description {
@@ -180,14 +102,11 @@ html {
     color: rgba(255, 255, 255, 0.95) !important;
     margin-bottom: 1.5rem;
     opacity: 1 !important;
-    text-shadow: 
-        0 3px 25px rgba(0, 0, 0, 0.9),
-        0 2px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 /* СТЕКЛЯННЫЙ ФОН ДЛЯ ОПИСАНИЯ */
 .hero-description {
-    background: rgba(10, 10, 10, 0.7) !important;
+    background: rgba(20, 20, 20, 0.8) !important;
     backdrop-filter: blur(15px) !important;
     -webkit-backdrop-filter: blur(15px) !important;
     border-radius: 20px;
@@ -287,7 +206,7 @@ html {
 .speck-vertical-section {
     padding: 200px 0 150px;
     position: relative;
-    background: transparent !important;
+    background: #0a0a0a !important;
     overflow: hidden;
     z-index: 15;
 }
@@ -324,7 +243,7 @@ html {
     position: sticky;
     top: 150px;
     align-self: flex-start;
-    background: rgba(10, 10, 10, 0.7);
+    background: rgba(20, 20, 20, 0.8);
     backdrop-filter: blur(10px);
     border-radius: 15px;
     padding: 30px;
@@ -366,7 +285,6 @@ html {
     letter-spacing: -1.5px;
     transition: all 0.3s ease;
     opacity: 1 !important;
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8) !important;
 }
 
 .speck-block-right {
@@ -376,7 +294,7 @@ html {
     padding-top: 40px;
     min-height: 450px;
     position: relative;
-    background: rgba(10, 10, 10, 0.5);
+    background: rgba(20, 20, 20, 0.6);
     backdrop-filter: blur(10px);
     border-radius: 15px;
     padding: 40px;
@@ -392,7 +310,6 @@ html {
     padding-bottom: 35px;
     transition: all 0.3s ease;
     opacity: 1 !important;
-    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
 }
 
 .speck-block-subtitle::after {
@@ -420,7 +337,7 @@ html {
     flex-direction: column;
     padding: 40px;
     border-radius: 20px;
-    background: rgba(15, 15, 15, 0.8) !important;
+    background: rgba(25, 25, 25, 0.8) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
@@ -432,7 +349,7 @@ html {
 }
 
 .speck-feature-column:hover {
-    background: rgba(20, 20, 20, 0.9) !important;
+    background: rgba(30, 30, 30, 0.9) !important;
     transform: translateY(-5px);
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.5),
@@ -453,7 +370,6 @@ html {
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
     opacity: 1 !important;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 .speck-column-title::after {
@@ -535,7 +451,7 @@ html {
 /* ===== SPECK MARQUEE SECTION ===== */
 .speck-marquee-section {
     padding: 120px 0;
-    background: transparent !important;
+    background: #0a0a0a !important;
     position: relative;
     overflow: hidden;
     z-index: 15;
@@ -543,7 +459,7 @@ html {
 
 .speck-marquee-wrapper {
     text-align: center;
-    background: rgba(10, 10, 10, 0.6);
+    background: rgba(20, 20, 20, 0.8);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 40px;
@@ -592,16 +508,16 @@ html {
 .speck-marquee-mask::before {
     left: 0;
     background: linear-gradient(90deg, 
-        rgba(10, 10, 10, 0.9) 0%, 
-        rgba(10, 10, 10, 0.5) 50%,
+        rgba(20, 20, 20, 0.9) 0%, 
+        rgba(20, 20, 20, 0.5) 50%,
         transparent 100%);
 }
 
 .speck-marquee-mask::after {
     right: 0;
     background: linear-gradient(270deg, 
-        rgba(10, 10, 10, 0.9) 0%, 
-        rgba(10, 10, 10, 0.5) 50%,
+        rgba(20, 20, 20, 0.9) 0%, 
+        rgba(20, 20, 20, 0.5) 50%,
         transparent 100%);
 }
 
@@ -645,14 +561,12 @@ html {
     letter-spacing: 1px;
     font-family: 'Inter', sans-serif;
     opacity: 1 !important;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8) !important;
 }
 
 .speck-brand:hover {
     color: #ffffff !important;
     opacity: 1;
     transform: translateY(-3px);
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8) !important;
 }
 
 .speck-brand::after {
@@ -692,7 +606,7 @@ html {
 /* ===== STATS SECTION ===== */
 .stats-improved {
     padding: 140px 0;
-    background: transparent !important;
+    background: #0a0a0a !important;
     position: relative;
     z-index: 15;
 }
@@ -704,9 +618,6 @@ html {
     margin-bottom: 20px;
     color: white !important;
     opacity: 1 !important;
-    text-shadow: 
-        0 3px 25px rgba(0, 0, 0, 0.9),
-        0 2px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .section-subtitle {
@@ -715,9 +626,6 @@ html {
     text-align: center;
     margin-bottom: 60px;
     opacity: 1 !important;
-    text-shadow: 
-        0 3px 25px rgba(0, 0, 0, 0.9),
-        0 2px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .stats-grid-improved {
@@ -729,7 +637,7 @@ html {
 
 /* КАРТОЧКИ СТАТИСТИКИ - СТЕКЛЯННЫЕ */
 .stat-card {
-    background: rgba(15, 15, 15, 0.8) !important;
+    background: rgba(25, 25, 25, 0.8) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
@@ -767,7 +675,7 @@ html {
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.5),
         0 10px 30px rgba(255, 255, 255, 0.1);
-    background: rgba(20, 20, 20, 0.9) !important;
+    background: rgba(30, 30, 30, 0.9) !important;
     transform: translateY(-5px);
     backdrop-filter: blur(25px) !important;
     -webkit-backdrop-filter: blur(25px) !important;
@@ -799,9 +707,6 @@ html {
     line-height: 1;
     transition: all 0.4s ease;
     opacity: 1 !important;
-    text-shadow: 
-        0 3px 25px rgba(0, 0, 0, 0.9),
-        0 2px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .stat-card:hover .stat-number-improved {
@@ -816,9 +721,6 @@ html {
     letter-spacing: 1.5px;
     transition: all 0.3s ease;
     opacity: 1 !important;
-    text-shadow: 
-        0 2px 15px rgba(0, 0, 0, 0.8),
-        0 1px 10px rgba(0, 0, 0, 0.7) !important;
 }
 
 .stat-card:hover .stat-label-improved {
@@ -829,7 +731,7 @@ html {
 /* ===== CTA SECTION ===== */
 .cta-improved {
     padding: 140px 0;
-    background: transparent !important;
+    background: #0a0a0a !important;
     position: relative;
     z-index: 15;
     cursor: pointer;
@@ -846,7 +748,7 @@ html {
     position: relative;
     z-index: 2;
     padding: 0 20px;
-    background: rgba(10, 10, 10, 0.7);
+    background: rgba(20, 20, 20, 0.8);
     backdrop-filter: blur(20px);
     border-radius: 30px;
     padding: 60px 40px;
@@ -863,9 +765,6 @@ html {
     letter-spacing: -0.02em;
     transition: all 0.4s ease;
     opacity: 1 !important;
-    text-shadow: 
-        0 4px 30px rgba(0, 0, 0, 0.95),
-        0 3px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .cta-improved:hover .cta-text h2 {
@@ -882,9 +781,6 @@ html {
     margin-right: auto;
     transition: all 0.3s ease;
     opacity: 1 !important;
-    text-shadow: 
-        0 3px 25px rgba(0, 0, 0, 0.9),
-        0 2px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .cta-improved:hover .cta-text p {
@@ -959,69 +855,6 @@ html {
 
 .btn-glow:hover i {
     transform: translateX(8px) rotate(-15deg);
-}
-
-/* ===== ПРОГРЕСС-БАР СКРОЛЛА ===== */
-.scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 9999;
-}
-
-.scroll-progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #0066ff, #3399ff);
-    width: 0%;
-    transition: width 0.1s ease;
-}
-
-/* ===== УЛУЧШАЕМ ЧИТАЕМОСТЬ ТЕКСТА ===== */
-.hero-content h1,
-.hero-content h2,
-.hero-content h3,
-.hero-content p,
-.hero-subtitle,
-.hero-description,
-.content-section h1,
-.content-section h2,
-.content-section h3,
-.content-section p,
-.speck-block-title,
-.speck-block-subtitle,
-.speck-feature-text,
-.speck-brand,
-.stat-number-improved,
-.stat-label-improved,
-.cta-text h2,
-.cta-text p,
-.section-title,
-.section-subtitle,
-.speck-column-title {
-    text-shadow: 
-        0 3px 25px rgba(0, 0, 0, 0.9),
-        0 2px 15px rgba(0, 0, 0, 0.7),
-        0 1px 8px rgba(0, 0, 0, 0.5),
-        0 0 60px rgba(0, 0, 0, 0.4) !important;
-    position: relative;
-    z-index: 20;
-}
-
-/* Улучшенный задник для текста */
-.text-backdrop-enhanced {
-    display: inline-block;
-    background: rgba(0, 0, 0, 0.25) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-    border-radius: 20px;
-    padding: 30px 40px !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
@@ -1551,11 +1384,6 @@ html {
 @media (prefers-reduced-motion: reduce) {
     .speck-marquee-track {
         animation: none !important;
-    }
-    
-    .content-section {
-        animation: none !important;
-        opacity: 1;
     }
     
     .speck-vertical-block {
