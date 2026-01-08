@@ -1,15 +1,15 @@
-// home.js - ИСПРАВЛЕННЫЙ С ФИКСОМ ДЛЯ ФОНА ГЛАВНОЙ СТРАНИЦЫ
-console.log('🏠 home.js loaded - FORCING HOME PAGE BACKGROUND');
+// home.js - ИСПРАВЛЕННЫЙ С ВИСЯЩИМ ТЕКСТОМ
+console.log('🏠 home.js loaded - VISIBLE BACKGROUND WITH FLOATING TEXT');
 
 // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
-    console.log('📄 INITIALIZING HOME PAGE WITH VISIBLE BACKGROUND');
+    console.log('📄 INITIALIZING HOME PAGE WITH VISIBLE BACKGROUND AND FLOATING TEXT');
     
     // 1. ГАРАНТИРУЕМ КЛАСС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
     document.body.classList.add('home-page');
     document.documentElement.classList.add('home-page');
     
-    // 2. ЭКСТРЕННЫЙ CSS ФИКС - УБИРАЕМ БЕЛЫЙ ФОН И ПОКАЗЫВАЕМ ФОНЫ
+    // 2. ЭКСТРЕННЫЙ CSS ФИКС - ВИСЯЩИЙ ТЕКСТ БЕЗ ФОНА
     const emergencyCSS = `
         /* ЭКСТРЕННЫЙ ФИКС: ВСЕ ФОНЫ ВИДНЫ */
         body.home-page {
@@ -78,37 +78,40 @@ function initializeHomePage() {
             z-index: 5 !important;
         }
         
-        /* ДЕЛАЕМ СЕКЦИИ ПРОЗРАЧНЫМИ */
-        .hero, 
-        .content-section,
-        .section {
+        /* ВИСЯЩИЙ ТЕКСТ - БЕЗ ФОНА */
+        .hero-content > div:not(.hero-actions) {
             background: transparent !important;
-            position: relative;
-            z-index: 10;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .hero-description {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
         }
         
         /* УЛУЧШАЕМ ВИДИМОСТЬ ТЕКСТА */
         .hero h1,
         .hero-subtitle,
-        .hero-description p,
-        .section-title,
-        .section-subtitle,
-        .cta-text h2,
-        .speck-block-title,
-        .speck-block-subtitle,
-        .speck-brand,
-        .stat-number-improved,
-        .stat-label-improved {
+        .hero-description p {
             text-shadow: 
-                0 3px 25px rgba(0, 0, 0, 0.95),
-                0 2px 20px rgba(0, 0, 0, 0.85),
-                0 1px 15px rgba(0, 0, 0, 0.75) !important;
+                0 4px 35px rgba(0, 0, 0, 0.95),
+                0 3px 30px rgba(0, 0, 0, 0.9),
+                0 2px 25px rgba(0, 0, 0, 0.85) !important;
+            color: rgba(255, 255, 255, 0.98) !important;
             position: relative;
             z-index: 20;
         }
         
-        /* ФИКС ДЛЯ СТЕКЛЯННЫХ КАРТОЧЕК */
-        .text-backdrop-enhanced,
+        /* ФИКС ДЛЯ СТЕКЛЯННЫХ КАРТОЧЕК (остальные элементы) */
         .speck-feature-column,
         .stat-card,
         .speck-marquee-wrapper,
@@ -118,6 +121,14 @@ function initializeHomePage() {
             -webkit-backdrop-filter: blur(20px) !important;
             border: 1px solid rgba(255, 255, 255, 0.15) !important;
         }
+        
+        /* СТЕКЛЯННЫЙ ЭФФЕКТ ТОЛЬКО ДЛЯ КНОПОК */
+        .hero-actions .btn {
+            background: rgba(0, 102, 255, 0.25) !important;
+            backdrop-filter: blur(15px) !important;
+            -webkit-backdrop-filter: blur(15px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        }
     `;
     
     // ВСТАВЛЯЕМ ЭКСТРЕННЫЙ CSS
@@ -125,7 +136,7 @@ function initializeHomePage() {
     style.textContent = emergencyCSS;
     document.head.appendChild(style);
     
-    console.log('✅ Emergency CSS injected');
+    console.log('✅ Emergency CSS injected for floating text');
     
     // 3. ПРИНУДИТЕЛЬНАЯ АКТИВАЦИЯ ФОНОВЫХ СЛОЕВ
     setTimeout(() => {
@@ -157,9 +168,17 @@ function initializeHomePage() {
             createBackgroundLayers();
         }
         
-        // 4. Убираем белый фон со всего
-        document.body.style.backgroundColor = 'transparent';
-        document.body.style.backgroundImage = 'none';
+        // 4. Убираем все фоны с текстовых блоков
+        const textContainers = document.querySelectorAll('.text-backdrop-enhanced, .hero-description');
+        textContainers.forEach(container => {
+            container.style.backgroundColor = 'transparent';
+            container.style.backdropFilter = 'none';
+            container.style.webkitBackdropFilter = 'none';
+            container.style.border = 'none';
+            container.style.boxShadow = 'none';
+            container.style.padding = '0';
+            container.style.margin = '0 auto';
+        });
         
         // Убираем фон со всех секций
         const sections = document.querySelectorAll('section, .hero, .content-section');
@@ -167,7 +186,7 @@ function initializeHomePage() {
             section.style.backgroundColor = 'transparent';
         });
         
-        console.log('✅ White background removed from all elements');
+        console.log('✅ Floating text effect applied - no backgrounds');
     }, 100);
     
     // Функция создания фоновых слоев
@@ -289,11 +308,25 @@ function initializeBasicFunctions() {
         });
     }
     
+    // 5. ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА
+    setTimeout(() => {
+        // Убираем любые возможные фоны
+        const heroText = document.querySelector('.hero-content > div');
+        if (heroText) {
+            heroText.style.backgroundColor = 'transparent';
+            heroText.style.background = 'transparent';
+            heroText.style.backdropFilter = 'none';
+            heroText.style.webkitBackdropFilter = 'none';
+            heroText.style.border = 'none';
+            heroText.style.boxShadow = 'none';
+        }
+    }, 300);
+    
     console.log('✅ Basic functions initialized');
 }
 
 // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
-console.log('🚀 Starting home page initialization...');
+console.log('🚀 Starting home page initialization with floating text...');
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeHomePage);
@@ -303,9 +336,9 @@ if (document.readyState === 'loading') {
 
 // ГЛОБАЛЬНЫЙ ФИКС ДЛЯ ВСЕХ СТРАНИЦ
 window.addEventListener('load', () => {
-    console.log('🌍 Page fully loaded, applying final fixes...');
+    console.log('🌍 Page fully loaded, applying final fixes for floating text...');
     
-    // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА ФОНА
+    // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА ФОНА И ТЕКСТА
     setTimeout(() => {
         const bgContainer = document.querySelector('.bg-layers-container');
         const bgLayers = document.querySelectorAll('.bg-layer');
@@ -322,13 +355,29 @@ window.addEventListener('load', () => {
             
             console.log('✅ Final background check passed');
         }
+        
+        // ФИНАЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА
+        const textBlocks = document.querySelectorAll('.hero-content > div, .hero-description');
+        textBlocks.forEach(block => {
+            if (block) {
+                block.style.backgroundColor = 'transparent';
+                block.style.background = 'transparent';
+                block.style.backdropFilter = 'none';
+                block.style.webkitBackdropFilter = 'none';
+                block.style.border = 'none';
+                block.style.boxShadow = 'none';
+                block.style.padding = '0';
+            }
+        });
+        
+        console.log('✅ Final text transparency check passed');
     }, 500);
 });
 
 // ГЛОБАЛЬНАЯ ФУНКЦИЯ ДЛЯ ПЕРЕЗАПУСКА ФОНА
 window.reinitializeHomeBackground = function() {
-    console.log('🔄 Reinitializing home background...');
+    console.log('🔄 Reinitializing home background with floating text...');
     initializeHomePage();
 };
 
-console.log('✅ home.js loaded - will force home page background');
+console.log('✅ home.js loaded - will create floating text effect');
