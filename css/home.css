@@ -663,6 +663,197 @@ html {
     transform: translateX(5px);
 }
 
+/* ===== ВИСЯЩИЙ ТЕКСТ ДЛЯ SPECK FEATURE COLUMNS ===== */
+/* Специальные стили для Strategy блока (data-block-index="0") */
+.speck-vertical-block[data-block-index="0"] .speck-feature-column {
+    /* УБРАТЬ ВСЕ ФОНЫ, РАМКИ, ТЕНИ */
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    
+    /* УБРАТЬ ВСЕ ЭФФЕКТЫ */
+    transform: none !important;
+    min-height: auto !important;
+    transition: none !important;
+    overflow: visible !important;
+}
+
+/* Убрать hover эффекты для Strategy колонок */
+.speck-vertical-block[data-block-index="0"] .speck-feature-column:hover {
+    background: transparent !important;
+    transform: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+}
+
+/* Стили для заголовков колонок в Strategy блоке */
+.speck-vertical-block[data-block-index="0"] .speck-column-title {
+    font-size: 2.5rem !important;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.98) !important;
+    margin-bottom: 35px;
+    padding-bottom: 0 !important;
+    text-align: left;
+    text-shadow: 
+        0 4px 35px rgba(0, 0, 0, 0.95),
+        0 3px 30px rgba(0, 0, 0, 0.9),
+        0 2px 25px rgba(0, 0, 0, 0.85) !important;
+    opacity: 1 !important;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+/* Убрать подчеркивание под заголовками */
+.speck-vertical-block[data-block-index="0"] .speck-column-title::after {
+    display: none !important;
+}
+
+/* Список элементов в Strategy блоке */
+.speck-vertical-block[data-block-index="0"] .speck-feature-list {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none;
+}
+
+/* Элементы списка - висящий текст */
+.speck-vertical-block[data-block-index="0"] .speck-feature-item {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 20px !important;
+    margin-bottom: 30px !important;
+    font-size: 1.5rem !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    transition: none !important;
+    padding: 0 !important;
+    cursor: default !important;
+    text-shadow: 
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
+    opacity: 1 !important;
+    line-height: 1.6;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* Убрать hover эффекты на элементах */
+.speck-vertical-block[data-block-index="0"] .speck-feature-item:hover {
+    color: rgba(255, 255, 255, 0.95) !important;
+    transform: none !important;
+}
+
+/* Иконки стрелок для висящего текста */
+.speck-vertical-block[data-block-index="0"] .speck-feature-icon {
+    color: #0066ff !important;
+    font-weight: 900;
+    font-size: 2.2rem !important;
+    min-width: 30px;
+    transition: none !important;
+    margin-top: 2px;
+    text-shadow: 
+        0 2px 25px rgba(0, 102, 255, 0.8),
+        0 1px 20px rgba(0, 102, 255, 0.6) !important;
+    opacity: 1 !important;
+}
+
+/* Убрать hover на иконках */
+.speck-vertical-block[data-block-index="0"] .speck-feature-item:hover .speck-feature-icon {
+    transform: none !important;
+    color: #0066ff !important;
+}
+
+/* Текст элементов - висящий */
+.speck-vertical-block[data-block-index="0"] .speck-feature-text {
+    line-height: 1.6;
+    flex: 1;
+    font-weight: 500;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+/* Специально для текста "Use this area!" */
+.speck-vertical-block[data-block-index="0"] .speck-feature-item:last-child .speck-feature-text {
+    font-style: italic;
+    opacity: 0.9;
+}
+
+/* Убираем фон и эффекты с родительского контейнера для Strategy блока */
+.speck-vertical-block[data-block-index="0"] .speck-block-right {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-left: none !important;
+    border-radius: 0 !important;
+    padding: 40px 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Убираем фон с заголовка Strategy блока */
+.speck-vertical-block[data-block-index="0"] .speck-block-subtitle {
+    color: rgba(255, 255, 255, 0.98) !important;
+    text-shadow: 
+        0 4px 35px rgba(0, 0, 0, 0.95),
+        0 3px 30px rgba(0, 0, 0, 0.9) !important;
+    margin-bottom: 60px !important;
+}
+
+/* Убираем подчеркивание под заголовком Strategy блока */
+.speck-vertical-block[data-block-index="0"] .speck-block-subtitle::after {
+    display: none !important;
+}
+
+/* Убираем фон с левой части Strategy блока */
+.speck-vertical-block[data-block-index="0"] .speck-block-left {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-radius: 0 !important;
+    padding: 0 30px 0 0 !important;
+    margin: 0 !important;
+}
+
+/* Делаем текст в левой части Strategy блока висящим */
+.speck-vertical-block[data-block-index="0"] .speck-block-title {
+    color: rgba(255, 255, 255, 0.98) !important;
+    text-shadow: 
+        0 4px 35px rgba(0, 0, 0, 0.95),
+        0 3px 30px rgba(0, 0, 0, 0.9) !important;
+}
+
+.speck-vertical-block[data-block-index="0"] .speck-block-number {
+    color: rgba(255, 255, 255, 0.7) !important;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Убираем градиентный background-clip для номера */
+.speck-vertical-block[data-block-index="0"] .speck-block-number {
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+/* Убираем полоску под номером */
+.speck-vertical-block[data-block-index="0"] .speck-block-number::after {
+    display: none !important;
+}
+
+/* Убираем разделительную линию между блоками для Strategy */
+.speck-vertical-block[data-block-index="0"]:not(:last-child)::before {
+    display: none !important;
+}
+
 /* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 1400px) {
     .hero h1 {
@@ -729,6 +920,21 @@ html {
     .floating-content {
         background: transparent !important;
         padding: 50px;
+    }
+    
+    /* Адаптивность для висящего текста Strategy блока */
+    .speck-vertical-block[data-block-index="0"] .speck-column-title {
+        font-size: 2.2rem !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-feature-item {
+        font-size: 1.4rem !important;
+        gap: 18px !important;
+        margin-bottom: 25px !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-feature-icon {
+        font-size: 2rem !important;
     }
 }
 
@@ -810,6 +1016,21 @@ html {
     .floating-content {
         background: transparent !important;
         padding: 45px;
+    }
+    
+    /* Адаптивность для висящего текста Strategy блока */
+    .speck-vertical-block[data-block-index="0"] .speck-column-title {
+        font-size: 2rem !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-feature-item {
+        font-size: 1.3rem !important;
+        gap: 15px !important;
+        margin-bottom: 22px !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-feature-icon {
+        font-size: 1.8rem !important;
     }
 }
 
@@ -935,6 +1156,26 @@ html {
         background: transparent !important;
         padding: 40px 30px;
     }
+    
+    /* Адаптивность для висящего текста Strategy блока */
+    .speck-vertical-block[data-block-index="0"] .speck-column-title {
+        font-size: 1.8rem !important;
+        margin-bottom: 25px !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-feature-item {
+        font-size: 1.25rem !important;
+        gap: 15px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-feature-icon {
+        font-size: 1.7rem !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-block-subtitle {
+        margin-bottom: 40px !important;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1052,6 +1293,27 @@ html {
         background: transparent !important;
         padding: 35px 25px;
     }
+    
+    /* Адаптивность для висящего текста Strategy блока */
+    .speck-vertical-block[data-block-index="0"] .speck-column-title {
+        font-size: 1.6rem !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-feature-item {
+        font-size: 1.2rem !important;
+        gap: 12px !important;
+        margin-bottom: 18px !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-feature-icon {
+        font-size: 1.5rem !important;
+        margin-top: 0 !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-block-subtitle {
+        margin-bottom: 30px !important;
+    }
 }
 
 @media (max-width: 576px) {
@@ -1157,6 +1419,21 @@ html {
         background: transparent !important;
         padding: 30px 20px;
     }
+    
+    /* Адаптивность для висящего текста Strategy блока */
+    .speck-vertical-block[data-block-index="0"] .speck-column-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-feature-item {
+        font-size: 1.15rem !important;
+        gap: 10px !important;
+        margin-bottom: 16px !important;
+    }
+    
+    .speck-vertical-block[data-block-index="0"] .speck-feature-icon {
+        font-size: 1.4rem !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1258,6 +1535,13 @@ html {
     
     .floating-button:hover {
         transform: none !important;
+    }
+    
+    /* Убираем тень текста при prefers-reduced-motion */
+    .speck-vertical-block[data-block-index="0"] .speck-column-title,
+    .speck-vertical-block[data-block-index="0"] .speck-feature-item,
+    .speck-vertical-block[data-block-index="0"] .speck-feature-text {
+        text-shadow: none !important;
     }
 }
 
