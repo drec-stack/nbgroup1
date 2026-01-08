@@ -125,8 +125,6 @@ html {
     letter-spacing: 0.3px;
 }
 
-/* СТЕКЛЯННЫЙ ФОН УБРАН - ТЕКСТ ВИСИТ В ВОЗДУХЕ */
-
 .hero-actions {
     display: flex;
     gap: 25px;
@@ -137,7 +135,6 @@ html {
     z-index: 40;
 }
 
-/* Кнопки - стеклянный эффект */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -343,7 +340,6 @@ html {
     margin-top: 60px;
 }
 
-/* КАРТОЧКИ СТРАТЕГИИ - СТЕКЛЯННЫЙ ЭФФЕКТ */
 .speck-feature-column {
     display: flex;
     flex-direction: column;
@@ -444,7 +440,6 @@ html {
     font-weight: 500;
 }
 
-/* Разделительная линия между блоками */
 .speck-vertical-block:not(:last-child)::before {
     content: '';
     position: absolute;
@@ -475,6 +470,10 @@ html {
     margin-bottom: 20px;
     color: white !important;
     opacity: 1 !important;
+    text-shadow: 
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9),
+        0 1px 25px rgba(0, 0, 0, 0.85) !important;
 }
 
 .section-subtitle {
@@ -483,6 +482,9 @@ html {
     text-align: center;
     margin-bottom: 60px;
     opacity: 1 !important;
+    text-shadow: 
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .stats-grid-improved {
@@ -492,7 +494,6 @@ html {
     position: relative;
 }
 
-/* КАРТОЧКИ СТАТИСТИКИ - СТЕКЛЯННЫЕ */
 .stat-card {
     background: rgba(25, 25, 25, 0.8) !important;
     backdrop-filter: blur(20px) !important;
@@ -585,33 +586,7 @@ html {
     letter-spacing: 2px;
 }
 
-/* ===== ВИСЯЩИЙ ТЕКСТ - ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ===== */
-.text-backdrop-enhanced {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-/* УСИЛЕННЫЕ ТЕНИ ДЛЯ ВСЕГО ТЕКСТА НА ГЛАВНОЙ */
-.hero h1 span,
-.hero-subtitle,
-.hero-description p,
-.section-title,
-.section-subtitle,
-.speck-block-title,
-.speck-block-subtitle {
-    text-shadow: 
-        0 3px 35px rgba(0, 0, 0, 0.95),
-        0 2px 30px rgba(0, 0, 0, 0.9),
-        0 1px 25px rgba(0, 0, 0, 0.85) !important;
-}
-
-/* ===== ВИСЯЩАЯ СЕКЦИЯ ===== */
+/* ===== ВИСЯЩАЯ СЕКЦИЯ "Готовы начать ваш проект?" ===== */
 .floating-section {
     padding: 140px 0;
     background: transparent !important;
@@ -624,12 +599,13 @@ html {
     max-width: 800px;
     margin: 0 auto;
     padding: 60px;
-    background: rgba(25, 25, 25, 0.8) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    /* ВИСЯЩИЙ ТЕКСТ - БЕЗ ФОНА И БЕЗ РАМКИ */
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
 }
 
 .floating-title {
@@ -638,18 +614,27 @@ html {
     color: white !important;
     margin-bottom: 20px;
     line-height: 1.1;
+    text-shadow: 
+        0 4px 35px rgba(0, 0, 0, 0.95),
+        0 3px 30px rgba(0, 0, 0, 0.9),
+        0 2px 25px rgba(0, 0, 0, 0.85) !important;
 }
 
 .floating-subtitle {
     font-size: 1.4rem;
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(255, 255, 255, 0.95) !important;
     margin-bottom: 40px;
     line-height: 1.6;
+    text-shadow: 
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .floating-button {
     display: inline-block;
-    background: rgba(0, 102, 255, 0.25);
+    /* ТОЛЬКО КНОПКА ИМЕЕТ СТЕКЛЯННЫЙ ЭФФЕКТ */
+    background: rgba(0, 102, 255, 0.25) !important;
     color: white;
     padding: 18px 40px;
     border-radius: 50px;
@@ -663,7 +648,7 @@ html {
 }
 
 .floating-button:hover {
-    background: rgba(0, 102, 255, 0.35);
+    background: rgba(0, 102, 255, 0.35) !important;
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
     border-color: rgba(255, 255, 255, 0.3);
@@ -731,6 +716,19 @@ html {
     
     .speck-vertical-block:not(:last-child)::before {
         left: 280px;
+    }
+    
+    .floating-title {
+        font-size: 3rem;
+    }
+    
+    .floating-subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .floating-content {
+        background: transparent !important;
+        padding: 50px;
     }
 }
 
@@ -802,11 +800,16 @@ html {
     }
     
     .floating-title {
-        font-size: 3rem;
+        font-size: 2.8rem;
     }
     
     .floating-subtitle {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+    }
+    
+    .floating-content {
+        background: transparent !important;
+        padding: 45px;
     }
 }
 
@@ -920,11 +923,17 @@ html {
     .floating-subtitle {
         font-size: 1.1rem;
         max-width: 600px;
+        margin: 0 auto 35px;
     }
     
     .floating-button {
         padding: 16px 35px;
         font-size: 1rem;
+    }
+    
+    .floating-content {
+        background: transparent !important;
+        padding: 40px 30px;
     }
 }
 
@@ -1031,11 +1040,17 @@ html {
     .floating-subtitle {
         font-size: 1rem;
         max-width: 500px;
+        margin: 0 auto 30px;
     }
     
     .floating-button {
         padding: 14px 30px;
         font-size: 0.9rem;
+    }
+    
+    .floating-content {
+        background: transparent !important;
+        padding: 35px 25px;
     }
 }
 
@@ -1122,10 +1137,6 @@ html {
         padding: 80px 0;
     }
     
-    .floating-content {
-        padding: 40px 20px;
-    }
-    
     .floating-title {
         font-size: 2rem;
         margin: 15px 0;
@@ -1134,12 +1145,17 @@ html {
     .floating-subtitle {
         font-size: 0.95rem;
         max-width: 400px;
-        margin-bottom: 30px;
+        margin: 0 auto 25px;
     }
     
     .floating-button {
         padding: 12px 25px;
         font-size: 0.85rem;
+    }
+    
+    .floating-content {
+        background: transparent !important;
+        padding: 30px 20px;
     }
 }
 
@@ -1206,11 +1222,17 @@ html {
     .floating-subtitle {
         font-size: 0.9rem;
         max-width: 350px;
+        margin: 0 auto 20px;
     }
     
     .floating-button {
         padding: 10px 20px;
         font-size: 0.8rem;
+    }
+    
+    .floating-content {
+        background: transparent !important;
+        padding: 25px 15px;
     }
 }
 
@@ -1247,4 +1269,15 @@ html {
     box-shadow: none !important;
     padding: 0 !important;
     margin: 0 !important;
+}
+
+/* ГАРАНТИЯ ЧТО ФОНОВЫЕ СЛОИ БЕЗ OVERLAY */
+.bg-layer::before,
+.bg-layer::after,
+[class*="overlay"],
+[class*="dark-bg"],
+[class*="black-bg"] {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
 }
