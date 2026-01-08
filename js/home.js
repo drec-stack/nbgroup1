@@ -1,5 +1,5 @@
-// home.js - ИСПРАВЛЕННЫЙ С ВИСЯЩИМ ТЕКСТОМ И БЕЗ ЧЕРНОГО OVERLAY
-console.log('🏠 home.js loaded - VISIBLE BACKGROUND WITH FLOATING TEXT, NO BLACK OVERLAY');
+// home.js - ИСПРАВЛЕННЫЙ С ВИСЯЩИМ ТЕКСТОМ ВО ВСЕХ БЛОКАХ
+console.log('🏠 home.js loaded - VISIBLE BACKGROUND WITH FLOATING TEXT IN ALL BLOCKS, NO BLACK OVERLAY');
 
 // ===== ЭКСТРЕННЫЙ ФИКС - ПРОВЕРКА ДОСТУПНОСТИ DOM =====
 (function immediateFix() {
@@ -54,7 +54,7 @@ function initializeHomePage() {
     document.body.classList.add('home-page');
     document.documentElement.classList.add('home-page');
     
-    // 2. ЭКСТРЕННЫЙ CSS ФИКС - ВИСЯЩИЙ ТЕКСТ БЕЗ ФОНА И ЧЕРНОГО OVERLAY
+    // 2. ЭКСТРЕННЫЙ CSS ФИКС - ВИСЯЩИЙ ТЕКСТ БЕЗ ФОНА И ЧЕРНОГО OVERLAY ДЛЯ ВСЕХ БЛОКОВ
     const emergencyCSS = `
         /* ЭКСТРЕННЫЙ ФИКС: УДАЛИТЬ ВСЕ ЧЕРНЫЕ ФОНЫ И OVERLAY */
         body.home-page {
@@ -120,7 +120,7 @@ function initializeHomePage() {
             background-image: url('assets/images/parallax/bg-4.jpg') !important;
         }
         
-        /* ВИСЯЩИЙ ТЕКСТ - БЕЗ ФОНА */
+        /* ВИСЯЩИЙ ТЕКСТ - БЕЗ ФОНА ВО ВСЕХ БЛОКАХ */
         .hero-content > div:not(.hero-actions) {
             background: transparent !important;
             backdrop-filter: none !important;
@@ -161,10 +161,14 @@ function initializeHomePage() {
             z-index: 20;
         }
         
-        /* УЛУЧШАЕМ ВИДИМОСТЬ ТЕКСТА */
+        /* УЛУЧШАЕМ ВИДИМОСТЬ ТЕКСТА ВО ВСЕХ БЛОКАХ */
         .hero h1,
         .hero-subtitle,
-        .hero-description p {
+        .hero-description p,
+        .speck-block-title,
+        .speck-block-subtitle,
+        .speck-column-title,
+        .speck-feature-item {
             text-shadow: 
                 0 4px 35px rgba(0, 0, 0, 0.95),
                 0 3px 30px rgba(0, 0, 0, 0.9),
@@ -174,14 +178,16 @@ function initializeHomePage() {
             z-index: 20;
         }
         
-        /* УБРАТЬ ФОН С ВСЕХ СЕКЦИЙ */
-        section, .section, .hero, .content-section {
+        /* УБРАТЬ ФОН С ВСЕХ СЕКЦИЙ И БЛОКОВ */
+        section, .section, .hero, .content-section,
+        .speck-vertical-block, .speck-block-left, .speck-block-right,
+        .speck-feature-column, .speck-feature-item {
             background: transparent !important;
             background-color: transparent !important;
         }
         
-        /* ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА STRATEGY БЛОКА */
-        .speck-vertical-block[data-block-index="0"] .speck-feature-column {
+        /* ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА ВО ВСЕХ БЛОКАХ */
+        .speck-feature-column {
             background: transparent !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
@@ -191,23 +197,10 @@ function initializeHomePage() {
             margin: 0 !important;
         }
         
-        .speck-vertical-block[data-block-index="0"] .speck-column-title {
-            text-shadow: 
-                0 4px 35px rgba(0, 0, 0, 0.95),
-                0 3px 30px rgba(0, 0, 0, 0.9),
-                0 2px 25px rgba(0, 0, 0, 0.85) !important;
-        }
-        
-        .speck-vertical-block[data-block-index="0"] .speck-feature-item {
-            text-shadow: 
-                0 3px 30px rgba(0, 0, 0, 0.95),
-                0 2px 25px rgba(0, 0, 0, 0.9),
-                0 1px 20px rgba(0, 0, 0, 0.85) !important;
-        }
-        
-        /* СТЕКЛЯННЫЙ ЭФФЕКТ ТОЛЬКО ДЛЯ КНОПОК И ОСТАЛЬНЫХ БЛОКОВ */
+        /* СТЕКЛЯННЫЙ ЭФФЕКТ ТОЛЬКО ДЛЯ КНОПОК И СТАТИСТИКИ */
         .hero-actions .btn,
-        .floating-button {
+        .floating-button,
+        .stat-card {
             background: rgba(0, 102, 255, 0.25) !important;
             backdrop-filter: blur(15px) !important;
             -webkit-backdrop-filter: blur(15px) !important;
@@ -229,7 +222,7 @@ function initializeHomePage() {
     style.textContent = emergencyCSS;
     document.head.appendChild(style);
     
-    console.log('✅ Emergency CSS injected - NO black overlay');
+    console.log('✅ Emergency CSS injected - NO black overlay for all blocks');
     
     // 3. ПРИНУДИТЕЛЬНАЯ АКТИВАЦИЯ ФОНОВЫХ СЛОЕВ БЕЗ OVERLAY
     setTimeout(() => {
@@ -265,7 +258,7 @@ function initializeHomePage() {
             createBackgroundLayers();
         }
         
-        // 4. Убираем все фоны с текстовых блоков
+        // 4. Убираем все фоны с текстовых блоков ВО ВСЕХ БЛОКАХ
         const textContainers = document.querySelectorAll('.text-backdrop-enhanced, .hero-description, .floating-content');
         textContainers.forEach(container => {
             if (container && container.style) {
@@ -279,16 +272,16 @@ function initializeHomePage() {
             }
         });
         
-        // 5. ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА STRATEGY БЛОКА
-        const strategyBlock = document.querySelector('.speck-vertical-block[data-block-index="0"]');
-        if (strategyBlock) {
-            const strategyColumns = strategyBlock.querySelectorAll('.speck-feature-column');
-            const strategyItems = strategyBlock.querySelectorAll('.speck-feature-item');
-            const strategyRightBlock = strategyBlock.querySelector('.speck-block-right');
-            const strategyLeftBlock = strategyBlock.querySelector('.speck-block-left');
+        // 5. ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА ВО ВСЕХ SPECK БЛОКАХ
+        const speckBlocks = document.querySelectorAll('.speck-vertical-block');
+        speckBlocks.forEach((block, blockIndex) => {
+            const speckColumns = block.querySelectorAll('.speck-feature-column');
+            const speckItems = block.querySelectorAll('.speck-feature-item');
+            const speckRightBlock = block.querySelector('.speck-block-right');
+            const speckLeftBlock = block.querySelector('.speck-block-left');
             
-            // Убираем фон с колонок Strategy
-            strategyColumns.forEach(col => {
+            // Убираем фон с колонок
+            speckColumns.forEach(col => {
                 if (col && col.style) {
                     col.style.backgroundColor = 'transparent';
                     col.style.background = 'transparent';
@@ -302,7 +295,7 @@ function initializeHomePage() {
             });
             
             // Убираем фон с элементов списка
-            strategyItems.forEach(item => {
+            speckItems.forEach(item => {
                 if (item && item.style) {
                     item.style.backgroundColor = 'transparent';
                     item.style.background = 'transparent';
@@ -311,30 +304,30 @@ function initializeHomePage() {
                 }
             });
             
-            // Убираем фон с правого блока Strategy
-            if (strategyRightBlock && strategyRightBlock.style) {
-                strategyRightBlock.style.backgroundColor = 'transparent';
-                strategyRightBlock.style.background = 'transparent';
-                strategyRightBlock.style.backdropFilter = 'none';
-                strategyRightBlock.style.webkitBackdropFilter = 'none';
-                strategyRightBlock.style.border = 'none';
-                strategyRightBlock.style.boxShadow = 'none';
-                strategyRightBlock.style.padding = '40px 0';
-                strategyRightBlock.style.borderLeft = 'none';
+            // Убираем фон с правого блока
+            if (speckRightBlock && speckRightBlock.style) {
+                speckRightBlock.style.backgroundColor = 'transparent';
+                speckRightBlock.style.background = 'transparent';
+                speckRightBlock.style.backdropFilter = 'none';
+                speckRightBlock.style.webkitBackdropFilter = 'none';
+                speckRightBlock.style.border = 'none';
+                speckRightBlock.style.boxShadow = 'none';
+                speckRightBlock.style.padding = '40px 0';
+                speckRightBlock.style.borderLeft = 'none';
             }
             
-            // Убираем фон с левого блока Strategy
-            if (strategyLeftBlock && strategyLeftBlock.style) {
-                strategyLeftBlock.style.backgroundColor = 'transparent';
-                strategyLeftBlock.style.background = 'transparent';
-                strategyLeftBlock.style.backdropFilter = 'none';
-                strategyLeftBlock.style.webkitBackdropFilter = 'none';
-                strategyLeftBlock.style.border = 'none';
-                strategyLeftBlock.style.boxShadow = 'none';
+            // Убираем фон с левого блока
+            if (speckLeftBlock && speckLeftBlock.style) {
+                speckLeftBlock.style.backgroundColor = 'transparent';
+                speckLeftBlock.style.background = 'transparent';
+                speckLeftBlock.style.backdropFilter = 'none';
+                speckLeftBlock.style.webkitBackdropFilter = 'none';
+                speckLeftBlock.style.border = 'none';
+                speckLeftBlock.style.boxShadow = 'none';
             }
             
-            console.log('✅ Strategy block floating text applied');
-        }
+            console.log(`✅ Speck block ${blockIndex + 1} floating text applied`);
+        });
         
         // Убираем фон со всех секций
         const sections = document.querySelectorAll('section, .hero, .content-section');
@@ -352,7 +345,7 @@ function initializeHomePage() {
             floatingSection.style.background = 'transparent';
         }
         
-        console.log('✅ All black overlays removed - floating text effect applied');
+        console.log('✅ All black overlays removed - floating text effect applied to ALL blocks');
     }, 100);
     
     function createBackgroundLayers() {
@@ -410,7 +403,7 @@ function initializeHomePage() {
 }
 
 function initializeBasicFunctions() {
-    console.log('🔄 Initializing basic functions...');
+    console.log('🔄 Initializing basic functions for ALL floating text blocks...');
     
     // 1. ИНИЦИАЛИЗАЦИЯ СТАТИСТИКИ
     const statNumbers = document.querySelectorAll('.stat-number-improved');
@@ -445,7 +438,7 @@ function initializeBasicFunctions() {
         progressBar.style.width = `${scrollPercent}%`;
     }
     
-    // 4. ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА И OVERLAY
+    // 4. ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА И OVERLAY ВО ВСЕХ БЛОКАХ
     setTimeout(() => {
         // Убираем любые возможные фоны
         const heroText = document.querySelector('.hero-content > div');
@@ -470,11 +463,11 @@ function initializeBasicFunctions() {
             floatingContent.style.padding = '0';
         }
         
-        // ФИКС ДЛЯ STRATEGY БЛОКА
-        const strategyBlock = document.querySelector('.speck-vertical-block[data-block-index="0"]');
-        if (strategyBlock) {
-            const strategyElements = strategyBlock.querySelectorAll('.speck-feature-column, .speck-feature-item, .speck-block-right, .speck-block-left');
-            strategyElements.forEach(el => {
+        // ФИКС ДЛЯ ВСЕХ SPECK БЛОКОВ
+        const speckBlocks = document.querySelectorAll('.speck-vertical-block');
+        speckBlocks.forEach((block, blockIndex) => {
+            const speckElements = block.querySelectorAll('.speck-feature-column, .speck-feature-item, .speck-block-right, .speck-block-left');
+            speckElements.forEach(el => {
                 if (el && el.style) {
                     el.style.backgroundColor = 'transparent';
                     el.style.background = 'transparent';
@@ -484,7 +477,8 @@ function initializeBasicFunctions() {
                     el.style.boxShadow = 'none';
                 }
             });
-        }
+            console.log(`✅ Final fix for speck block ${blockIndex + 1} applied`);
+        });
         
         // Убираем все overlay элементы
         const overlayElements = document.querySelectorAll('[class*="overlay"], [class*="dark-bg"], [class*="black"]');
@@ -506,11 +500,11 @@ function initializeBasicFunctions() {
         
     }, 300);
     
-    console.log('✅ Basic functions initialized');
+    console.log('✅ Basic functions initialized for ALL blocks');
 }
 
 // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
-console.log('🚀 Starting home page initialization WITHOUT black overlay...');
+console.log('🚀 Starting home page initialization WITHOUT black overlay for ALL blocks...');
 
 function safeInitialize() {
     if (document.readyState === 'loading') {
@@ -527,7 +521,7 @@ safeInitialize();
 
 // ГЛОБАЛЬНЫЙ ФИКС ДЛЯ ВСЕХ СТРАНИЦ
 window.addEventListener('load', () => {
-    console.log('🌍 Page fully loaded, applying final fixes WITHOUT black overlay...');
+    console.log('🌍 Page fully loaded, applying final fixes WITHOUT black overlay for ALL blocks...');
     
     setTimeout(() => {
         const bgContainer = document.querySelector('.bg-layers-container');
@@ -565,13 +559,13 @@ window.addEventListener('load', () => {
             floatingContent.style.padding = '0';
         }
         
-        // ФИНАЛЬНЫЙ ФИКС ДЛЯ STRATEGY БЛОКА
-        const strategyBlock = document.querySelector('.speck-vertical-block[data-block-index="0"]');
-        if (strategyBlock) {
-            const strategyColumns = strategyBlock.querySelectorAll('.speck-feature-column');
-            const strategyItems = strategyBlock.querySelectorAll('.speck-feature-item');
+        // ФИНАЛЬНЫЙ ФИКС ДЛЯ ВСЕХ SPECK БЛОКОВ
+        const speckBlocks = document.querySelectorAll('.speck-vertical-block');
+        speckBlocks.forEach((block, blockIndex) => {
+            const speckColumns = block.querySelectorAll('.speck-feature-column');
+            const speckItems = block.querySelectorAll('.speck-feature-item');
             
-            strategyColumns.forEach(col => {
+            speckColumns.forEach(col => {
                 if (col && col.style) {
                     col.style.backgroundColor = 'transparent';
                     col.style.background = 'transparent';
@@ -583,7 +577,7 @@ window.addEventListener('load', () => {
                 }
             });
             
-            strategyItems.forEach(item => {
+            speckItems.forEach(item => {
                 if (item && item.style) {
                     item.style.backgroundColor = 'transparent';
                     item.style.background = 'transparent';
@@ -591,8 +585,8 @@ window.addEventListener('load', () => {
                 }
             });
             
-            console.log('✅ Final Strategy block floating text fix applied');
-        }
+            console.log(`✅ Final floating text fix for speck block ${blockIndex + 1} applied`);
+        });
         
         // ФИНАЛЬНЫЙ ФИКС ДЛЯ ВСЕГО ТЕКСТА
         const textBlocks = document.querySelectorAll('.hero-content > div, .hero-description, .floating-title, .floating-subtitle');
@@ -630,14 +624,14 @@ window.addEventListener('load', () => {
             }
         });
         
-        console.log('✅ Final black overlay removal complete');
+        console.log('✅ Final black overlay removal complete for ALL blocks');
     }, 500);
 });
 
 // ГЛОБАЛЬНАЯ ФУНКЦИЯ ДЛЯ ПЕРЕЗАПУСКА ФОНА
 window.reinitializeHomeBackground = function() {
-    console.log('🔄 Reinitializing home background WITHOUT black overlay...');
+    console.log('🔄 Reinitializing home background WITHOUT black overlay for ALL blocks...');
     initializeHomePage();
 };
 
-console.log('✅ home.js loaded - will create floating text effect WITHOUT black overlay');
+console.log('✅ home.js loaded - will create floating text effect for ALL blocks WITHOUT black overlay');
