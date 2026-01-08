@@ -38,6 +38,7 @@ html, body {
     overflow-x: hidden;
     position: relative;
     background: transparent !important;
+    background-color: transparent !important;
 }
 
 html {
@@ -1276,9 +1277,36 @@ p, span, li, a:not(.btn) {
         0 1px 8px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* ФИНАЛЬНЫЙ ФИКС: ПРОЗРАЧНЫЙ ФОН ДЛЯ ВСЕХ */
-body {
+/* ===== КРИТИЧЕСКИЙ ФИКС: УДАЛИТЬ ВСЕ ЧЕРНЫЕ OVERLAY И ФОНЫ ===== */
+body, html,
+body.home-page,
+.bg-layers-container,
+.bg-layer,
+.bg-layer::before,
+.bg-layer::after,
+section, .section, .hero, .content-section,
+.speck-vertical-section, .speck-marquee-section,
+.stats-improved, .cta-improved {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
+}
+
+/* УДАЛИТЬ ВСЕ OVERLAY */
+body::before, body::after,
+html::before, html::after,
+.bg-layer::before, .bg-layer::after,
+[class*="overlay"]::before, [class*="overlay"]::after,
+[class*="dark"]::before, [class*="dark"]::after {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    background: transparent !important;
+    content: none !important;
+}
+
+/* ГАРАНТИРОВАТЬ ВИДИМОСТЬ ФОНОВЫХ ИЗОБРАЖЕНИЙ */
+.bg-layer {
+    opacity: 1 !important;
+    filter: none !important;
 }
