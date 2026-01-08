@@ -13,76 +13,150 @@
     <!-- Основные стили -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/animations.css">
     
     <!-- Фон главной страницы -->
     <link rel="stylesheet" href="css/home-background.css">
     
-    <!-- СТИЛЬ ДЛЯ ВИСЯЩЕГО ТЕКСТА -->
+    <!-- СТИЛЬ ДЛЯ НОВЫХ БЛОКОВ SPECK DESIGN -->
     <style>
-        /* === ФОН ГАРАНТИЯ === */
-        body.home-page {
-            background: transparent !important;
-        }
-        
-        .bg-layers-container {
-            display: block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-        
-        .bg-layer {
-            opacity: 1 !important;
-            display: block !important;
-            visibility: visible !important;
-        }
-        
-        /* === ВИСЯЩИЙ ТЕКСТ БЕЗ ФОНА === */
-        .text-backdrop-enhanced {
-            background: transparent !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            border: none !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-        
-        .hero-description {
-            background: transparent !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            border: none !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-            padding: 0 !important;
-            margin: 2rem auto 3rem !important;
-        }
-        
-        /* УСИЛЕННЫЕ ТЕНИ ТЕКСТА */
-        .hero h1 span,
-        .hero-subtitle,
-        .hero-description p {
-            text-shadow: 
-                0 3px 30px rgba(0, 0, 0, 0.95),
-                0 2px 25px rgba(0, 0, 0, 0.85),
-                0 1px 20px rgba(0, 0, 0, 0.75) !important;
-            color: rgba(255, 255, 255, 0.98) !important;
-        }
-        
-        /* ПРИНУДИТЕЛЬНО ПРЕДЗАГРУЖАЕМ ИЗОБРАЖЕНИЯ */
-        body::after {
-            content: '';
-            position: fixed;
-            width: 0;
-            height: 0;
+        /* ФИКС ФОНА ДЛЯ НОВЫХ БЛОКОВ */
+        .speck-design-block {
+            position: relative;
+            z-index: 20;
+            background: rgba(15, 15, 15, 0.85) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 20px !important;
             overflow: hidden;
-            z-index: -9999;
-            background-image: 
-                url('assets/images/parallax/bg-1.jpg'),
-                url('assets/images/parallax/bg-2.jpg'),
-                url('assets/images/parallax/bg-3.jpg'),
-                url('assets/images/parallax/bg-4.jpg');
+        }
+        
+        .speck-design-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(0, 102, 255, 0.05) 0%, 
+                rgba(0, 102, 255, 0.02) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Улучшенная читаемость текста */
+        .speck-design-block *:not(.btn):not(i) {
+            color: rgba(255, 255, 255, 0.95) !important;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+        }
+        
+        .speck-design-block h2,
+        .speck-design-block h3,
+        .speck-design-block .section-title {
+            color: #ffffff !important;
+            font-weight: 700;
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7) !important;
+        }
+        
+        /* Иконки */
+        .speck-design-block i {
+            color: #0066ff !important;
+            text-shadow: 0 2px 15px rgba(0, 102, 255, 0.7) !important;
+        }
+        
+        /* Карточки проектов */
+        .project-card {
+            background: rgba(25, 25, 25, 0.9) !important;
+            backdrop-filter: blur(15px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 16px !important;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            background: rgba(30, 30, 30, 0.95) !important;
+            border-color: rgba(0, 102, 255, 0.3) !important;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 10px 30px rgba(0, 102, 255, 0.2);
+        }
+        
+        /* FAQ аккордеон */
+        .faq-item {
+            background: rgba(25, 25, 25, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 12px !important;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            background: rgba(30, 30, 30, 0.9) !important;
+            color: white !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .faq-answer {
+            background: rgba(20, 20, 20, 0.9) !important;
+        }
+        
+        /* Журналы */
+        .journal-item {
+            background: rgba(25, 25, 25, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 12px !important;
+            padding: 25px !important;
+            transition: all 0.3s ease;
+        }
+        
+        .journal-item:hover {
+            background: rgba(30, 30, 30, 0.9) !important;
+            border-color: rgba(0, 102, 255, 0.3) !important;
+            transform: translateX(10px);
+        }
+        
+        /* Услуги */
+        .service-item {
+            background: rgba(25, 25, 25, 0.9) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 16px !important;
+            padding: 40px 30px !important;
+            transition: all 0.3s ease;
+        }
+        
+        .service-item:hover {
+            background: rgba(30, 30, 30, 0.95) !important;
+            border-color: rgba(0, 102, 255, 0.3) !important;
+            transform: translateY(-8px);
+        }
+        
+        /* Заголовки секций */
+        .section-title {
+            position: relative;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #0066ff, #66b5ff);
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 60px;
         }
     </style>
     
@@ -162,7 +236,7 @@
                         </p>
                     </div>
                     
-                    <!-- ДОБАВЛЕННОЕ ИЗОБРАЖЕНИЕ -->
+                    <!-- Изображение в герое -->
                     <div class="hero-image fade-in-up delay-450">
                         <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Industrial Design Project" loading="lazy">
                     </div>
@@ -181,425 +255,449 @@
         </div>
     </section>
 
-    <!-- Speck Vertical Section -->
-    <section class="speck-vertical-section content-section" data-bg-section="1">
+    <!-- БЛОК PROJETS ИЗ SPECK DESIGN (УЛУЧШЕННЫЙ) -->
+    <section class="projects-section content-section speck-design-block" data-bg-section="2">
         <div class="container">
-            <div class="speck-vertical-grid">
-                <!-- Блок 1: Strategy -->
-                <div class="speck-vertical-block animated-element" data-block-index="0">
-                    <div class="speck-block-left fade-in-left">
-                        <div class="speck-block-number">01</div>
-                        <h3 class="speck-block-title">Strategy</h3>
-                    </div>
-                    <div class="speck-block-right fade-in-right delay-200">
-                        <p class="speck-block-subtitle">Drive Innovation And Align Goals</p>
-                        <div class="speck-feature-columns">
-                            <!-- Versatile Strategy - ВИСЯЩИЙ ТЕКСТ -->
-                            <div class="speck-feature-column animated-element delay-300">
-                                <div class="speck-column-title">Versatile Strategy</div>
-                                <div class="speck-feature-list">
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Human-centric designs</span>
-                                    </div>
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Balance of engineering and human needs</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Design Strategy - ВИСЯЩИЙ ТЕКСТ -->
-                            <div class="speck-feature-column animated-element delay-400">
-                                <div class="speck-column-title">Design Strategy</div>
-                                <div class="speck-feature-list">
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Modern and cutting-edge techniques</span>
-                                    </div>
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Use this area!</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Блок 2: Design -->
-                <div class="speck-vertical-block animated-element" data-block-index="1">
-                    <div class="speck-block-left fade-in-left">
-                        <div class="speck-block-number">02</div>
-                        <h3 class="speck-block-title">Design</h3>
-                    </div>
-                    <div class="speck-block-right fade-in-right delay-200">
-                        <p class="speck-block-subtitle">Create Engaging Product Experiences</p>
-                        <div class="speck-feature-columns">
-                            <!-- User Research & Strategy - ВИСЯЩИЙ ТЕКСТ -->
-                            <div class="speck-feature-column animated-element delay-300">
-                                <div class="speck-column-title">User Research & Strategy</div>
-                                <div class="speck-feature-list">
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">User research and insights</span>
-                                    </div>
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Concept development</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Brand & Visual Design - ВИСЯЩИЙ ТЕКСТ -->
-                            <div class="speck-feature-column animated-element delay-400">
-                                <div class="speck-column-title">Brand & Visual Design</div>
-                                <div class="speck-feature-list">
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Dual design systems</span>
-                                    </div>
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">UI/UX design implementation</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Блок 3: Engineering -->
-                <div class="speck-vertical-block animated-element" data-block-index="2">
-                    <div class="speck-block-left fade-in-left">
-                        <div class="speck-block-number">03</div>
-                        <h3 class="speck-block-title">Engineering</h3>
-                    </div>
-                    <div class="speck-block-right fade-in-right delay-200">
-                        <p class="speck-block-subtitle">Engineer Robust And Reliable Solutions</p>
-                        <div class="speck-feature-columns">
-                            <!-- Technical Feasibility - ВИСЯЩИЙ ТЕКСТ -->
-                            <div class="speck-feature-column animated-element delay-300">
-                                <div class="speck-column-title">Technical Feasibility</div>
-                                <div class="speck-feature-list">
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Technical feasibility analysis</span>
-                                    </div>
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Prototype development</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Manufacturing Optimization - ВИСЯЩИЙ ТЕКСТ -->
-                            <div class="speck-feature-column animated-element delay-400">
-                                <div class="speck-column-title">Manufacturing Optimization</div>
-                                <div class="speck-feature-list">
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Manufacturing optimization</span>
-                                    </div>
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Production process design</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Блок 4: Manufacturing -->
-                <div class="speck-vertical-block animated-element" data-block-index="3">
-                    <div class="speck-block-left fade-in-left">
-                        <div class="speck-block-number">04</div>
-                        <h3 class="speck-block-title">Manufacturing</h3>
-                    </div>
-                    <div class="speck-block-right fade-in-right delay-200">
-                        <p class="speck-block-subtitle">Scale Production With Precision</p>
-                        <div class="speck-feature-columns">
-                            <!-- Supply Chain & Quality - ВИСЯЩИЙ ТЕКСТ -->
-                            <div class="speck-feature-column animated-element delay-300">
-                                <div class="speck-column-title">Supply Chain & Quality</div>
-                                <div class="speck-feature-list">
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Supply chain management</span>
-                                    </div>
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Quality assurance</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Production Scaling - ВИСЯЩИЙ ТЕКСТ -->
-                            <div class="speck-feature-column animated-element delay-400">
-                                <div class="speck-column-title">Production Scaling</div>
-                                <div class="speck-feature-list">
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Production scaling</span>
-                                    </div>
-                                    <div class="speck-feature-item">
-                                        <span class="speck-feature-icon">→</span>
-                                        <span class="speck-feature-text">Continuous improvement</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- БЛОК PROJETS ИЗ SPECK DESIGN -->
-    <section class="projects-section content-section" data-bg-section="2">
-        <div class="container">
-            <h2 class="section-title fade-in-down">Projects</h2>
-            <p class="section-subtitle fade-in-up delay-200">Our latest design projects and innovations</p>
+            <h2 class="section-title fade-in-down">Our Projects</h2>
+            <p class="section-subtitle fade-in-up delay-200">Latest innovations and design solutions that transform industries</p>
             
             <div class="projects-grid">
-                <!-- Google Schaft Robot -->
+                <!-- Project 1 -->
                 <div class="project-card fade-in-up delay-300">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Google Schaft Robot" loading="lazy">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Industrial Robotics Design" loading="lazy">
+                        <div class="project-category">Robotics</div>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Google Schaft Robot</h3>
-                        <p class="project-description">A protective and aesthetic skin fold. Google's robot</p>
+                        <h3 class="project-title">Industrial Robotics System</h3>
+                        <p class="project-description">Complete redesign of automated manufacturing robotics with enhanced safety features and human-robot collaboration interface.</p>
+                        <div class="project-meta">
+                            <span class="project-year">2024</span>
+                            <span class="project-tag">Product Design</span>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Monolith - Motion Medical -->
+                <!-- Project 2 -->
                 <div class="project-card fade-in-up delay-400">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Monolith - Motion Medical" loading="lazy">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Medical Device Innovation" loading="lazy">
+                        <div class="project-category">Medical</div>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Monolith - Motion Medical</h3>
-                        <p class="project-description">A new standard in medical devices</p>
+                        <h3 class="project-title">Advanced Medical Diagnostic Device</h3>
+                        <p class="project-description">Ergonomic and user-friendly diagnostic equipment with integrated AI analysis for early disease detection.</p>
+                        <div class="project-meta">
+                            <span class="project-year">2023</span>
+                            <span class="project-tag">UX/UI Design</span>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Helic Hair Labs -->
+                <!-- Project 3 -->
                 <div class="project-card fade-in-up delay-500">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Helic Hair Labs" loading="lazy">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Consumer Electronics" loading="lazy">
+                        <div class="project-category">Electronics</div>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Helic Hair Labs</h3>
-                        <p class="project-description">Curf Definer - Innovating the art of curfy hair styling</p>
+                        <h3 class="project-title">Smart Home Ecosystem</h3>
+                        <p class="project-description">Unified product family for home automation with seamless connectivity and minimalist aesthetic.</p>
+                        <div class="project-meta">
+                            <span class="project-year">2024</span>
+                            <span class="project-tag">Industrial Design</span>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Omron Robotics -->
+                <!-- Project 4 -->
                 <div class="project-card fade-in-up delay-600">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Omron Robotics" loading="lazy">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Automotive Design" loading="lazy">
+                        <div class="project-category">Automotive</div>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Omron Robotics</h3>
-                        <p class="project-description">Autonomous material handling with ROEQ Omron</p>
+                        <h3 class="project-title">Electric Vehicle Charging Station</h3>
+                        <p class="project-description">Public charging infrastructure with intuitive interface, durability for outdoor use, and brand integration.</p>
+                        <div class="project-meta">
+                            <span class="project-year">2023</span>
+                            <span class="project-tag">Product Engineering</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats-improved content-section" data-bg-section="3">
-        <div class="container">
-            <h2 class="section-title fade-in-down">Our Achievements</h2>
-            <p class="section-subtitle fade-in-up delay-200">Numbers that speak for themselves</p>
             
-            <div class="stats-grid-improved">
-                <!-- Проекты завершено -->
-                <a href="portfolio.html" class="stat-card clickable-stat-card animated-element delay-300">
-                    <div class="stat-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <div class="stat-content">
-                        <div class="stat-number-improved" data-target="150">0</div>
-                        <div class="stat-label-improved" data-i18n="home.stats.projects">Проектов завершено</div>
-                    </div>
-                </a>
-                
-                <!-- Лет опыта -->
-                <a href="about.html" class="stat-card clickable-stat-card animated-element delay-400">
-                    <div class="stat-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <div class="stat-content">
-                        <div class="stat-number-improved" data-target="12">0</div>
-                        <div class="stat-label-improved" data-i18n="home.stats.years">Лет опыта</div>
-                    </div>
-                </a>
-                
-                <!-- Довольных клиентов -->
-                <a href="about.html#clients" class="stat-card clickable-stat-card animated-element delay-500">
-                    <div class="stat-icon">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <div class="stat-content">
-                        <div class="stat-number-improved" data-target="98">0</div>
-                        <div class="stat-label-improved" data-i18n="home.stats.satisfaction">Довольных клиентов</div>
-                    </div>
-                </a>
-                
-                <!-- Наград -->
-                <a href="about.html#awards" class="stat-card clickable-stat-card animated-element delay-600">
-                    <div class="stat-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <div class="stat-content">
-                        <div class="stat-number-improved" data-target="25">0</div>
-                        <div class="stat-label-improved" data-i18n="home.stats.awards">Наград</div>
-                    </div>
+            <div class="projects-actions fade-in-up delay-700">
+                <a href="portfolio.html" class="btn btn-primary">
+                    <span>View All Projects</span>
+                    <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- БЛОК SERVICES ИЗ SPECK DESIGN -->
-    <section class="services-section content-section" data-bg-section="4">
+    <!-- БЛОК SERVICES ИЗ SPECK DESIGN (УЛУЧШЕННЫЙ) -->
+    <section class="services-section content-section speck-design-block" data-bg-section="4">
         <div class="container">
-            <h2 class="section-title fade-in-down">Services</h2>
-            <p class="section-subtitle fade-in-up delay-200">Comprehensive design and engineering solutions</p>
+            <h2 class="section-title fade-in-down">Our Services</h2>
+            <p class="section-subtitle fade-in-up delay-200">Comprehensive design and engineering solutions tailored to your needs</p>
             
             <div class="services-grid">
+                <!-- Service 1 -->
                 <div class="service-item fade-in-up delay-300">
-                    <i class="fas fa-lightbulb"></i>
+                    <div class="service-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
                     <h3>Product Design Consulting</h3>
+                    <p class="service-description">Strategic guidance through the entire product development lifecycle from concept to market launch.</p>
+                    <ul class="service-features">
+                        <li>Concept Development</li>
+                        <li>Market Analysis</li>
+                        <li>Design Strategy</li>
+                    </ul>
                 </div>
+                
+                <!-- Service 2 -->
                 <div class="service-item fade-in-up delay-350">
-                    <i class="fas fa-search"></i>
-                    <h3>User Research And Insights</h3>
+                    <div class="service-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>User Research & Insights</h3>
+                    <p class="service-description">Deep understanding of user needs through ethnographic studies and usability testing.</p>
+                    <ul class="service-features">
+                        <li>User Testing</li>
+                        <li>Market Research</li>
+                        <li>Behavior Analysis</li>
+                    </ul>
                 </div>
+                
+                <!-- Service 3 -->
                 <div class="service-item fade-in-up delay-400">
-                    <i class="fas fa-palette"></i>
-                    <h3>Brand Design</h3>
+                    <div class="service-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Brand & Visual Design</h3>
+                    <p class="service-description">Creating compelling visual identities that resonate with target audiences and market positioning.</p>
+                    <ul class="service-features">
+                        <li>Brand Identity</li>
+                        <li>Visual Systems</li>
+                        <li>Packaging Design</li>
+                    </ul>
                 </div>
+                
+                <!-- Service 4 -->
                 <div class="service-item fade-in-up delay-450">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>Research And Strategy</h3>
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Research & Strategy</h3>
+                    <p class="service-description">Data-driven insights and strategic planning to guide product development decisions.</p>
+                    <ul class="service-features">
+                        <li>Competitive Analysis</li>
+                        <li>Trend Forecasting</li>
+                        <li>Business Strategy</li>
+                    </ul>
                 </div>
+                
+                <!-- Service 5 -->
                 <div class="service-item fade-in-up delay-500">
-                    <i class="fas fa-project-diagram"></i>
-                    <h3>Information Strategy</h3>
+                    <div class="service-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3>Innovation Strategy</h3>
+                    <p class="service-description">Transforming groundbreaking ideas into practical, market-ready products and solutions.</p>
+                    <ul class="service-features">
+                        <li>Ideation Workshops</li>
+                        <li>Technology Scouting</li>
+                        <li>Innovation Roadmaps</li>
+                    </ul>
+                </div>
+                
+                <!-- Service 6 -->
+                <div class="service-item fade-in-up delay-550">
+                    <div class="service-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <h3>Manufacturing Support</h3>
+                    <p class="service-description">End-to-end production guidance from prototyping to mass manufacturing and quality control.</p>
+                    <ul class="service-features">
+                        <li>DFM Analysis</li>
+                        <li>Supply Chain Management</li>
+                        <li>Quality Assurance</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- БЛОК JOURNALS ИЗ SPECK DESIGN -->
-    <section class="journals-section content-section" data-bg-section="5">
+    <!-- БЛОК JOURNALS ИЗ SPECK DESIGN (УЛУЧШЕННЫЙ) -->
+    <section class="journals-section content-section speck-design-block" data-bg-section="5">
         <div class="container">
-            <h2 class="section-title fade-in-down">Journals</h2>
-            <p class="section-subtitle fade-in-up delay-200">Latest insights and articles from our team</p>
+            <h2 class="section-title fade-in-down">Industry Insights</h2>
+            <p class="section-subtitle fade-in-up delay-200">Latest articles, research, and perspectives from our design team</p>
             
             <div class="journals-list">
+                <!-- Journal 1 -->
                 <article class="journal-item fade-in-up delay-300">
-                    <span class="journal-date">2.4.25</span>
+                    <div class="journal-header">
+                        <span class="journal-category">Design Thinking</span>
+                        <span class="journal-date">April 2, 2024</span>
+                    </div>
                     <h3 class="journal-title">How to Choose an Industrial and Product Design Company</h3>
-                    <a href="#" class="journal-link">Read more <i class="fas fa-arrow-right"></i></a>
+                    <p class="journal-excerpt">Key considerations and evaluation criteria for selecting the right design partner for your project...</p>
+                    <div class="journal-footer">
+                        <a href="#" class="journal-link">Read Article <i class="fas fa-arrow-right"></i></a>
+                        <span class="journal-read-time">5 min read</span>
+                    </div>
                 </article>
                 
+                <!-- Journal 2 -->
                 <article class="journal-item fade-in-up delay-350">
-                    <span class="journal-date">10.4.24</span>
-                    <h3 class="journal-title">Cultural Influences On Product Design, Part 4: Uncertainty Avoidance</h3>
-                    <a href="#" class="journal-link">Read more <i class="fas fa-arrow-right"></i></a>
+                    <div class="journal-header">
+                        <span class="journal-category">Cultural Design</span>
+                        <span class="journal-date">March 28, 2024</span>
+                    </div>
+                    <h3 class="journal-title">Cultural Influences on Product Design: Uncertainty Avoidance</h3>
+                    <p class="journal-excerpt">Exploring how cultural attitudes toward uncertainty shape product interactions and user experiences...</p>
+                    <div class="journal-footer">
+                        <a href="#" class="journal-link">Read Article <i class="fas fa-arrow-right"></i></a>
+                        <span class="journal-read-time">7 min read</span>
+                    </div>
                 </article>
                 
+                <!-- Journal 3 -->
                 <article class="journal-item fade-in-up delay-400">
-                    <span class="journal-date">6.3.24</span>
+                    <div class="journal-header">
+                        <span class="journal-category">Methodology</span>
+                        <span class="journal-date">March 15, 2024</span>
+                    </div>
                     <h3 class="journal-title">Deep Dive: What is Human Centered Design</h3>
-                    <a href="#" class="journal-link">Read more <i class="fas fa-arrow-right"></i></a>
+                    <p class="journal-excerpt">Comprehensive guide to HCD methodology with case studies and practical implementation strategies...</p>
+                    <div class="journal-footer">
+                        <a href="#" class="journal-link">Read Article <i class="fas fa-arrow-right"></i></a>
+                        <span class="journal-read-time">8 min read</span>
+                    </div>
                 </article>
                 
+                <!-- Journal 4 -->
                 <article class="journal-item fade-in-up delay-450">
-                    <span class="journal-date">23.2.24</span>
-                    <h3 class="journal-title">The Intelligent Product Revolution: A Designers Journey</h3>
-                    <a href="#" class="journal-link">Read more <i class="fas fa-arrow-right"></i></a>
+                    <div class="journal-header">
+                        <span class="journal-category">Innovation</span>
+                        <span class="journal-date">February 23, 2024</span>
+                    </div>
+                    <h3 class="journal-title">The Intelligent Product Revolution: A Designer's Journey</h3>
+                    <p class="journal-excerpt">How AI and IoT are transforming product design and creating new opportunities for innovation...</p>
+                    <div class="journal-footer">
+                        <a href="#" class="journal-link">Read Article <i class="fas fa-arrow-right"></i></a>
+                        <span class="journal-read-time">6 min read</span>
+                    </div>
                 </article>
             </div>
             
             <div class="journals-actions fade-in-up delay-500">
                 <a href="#" class="btn btn-secondary">
-                    <span>All Journals</span>
+                    <span>View All Articles</span>
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- БЛОК FAQ ИЗ SPECK DESIGN -->
-    <section class="faq-section content-section" data-bg-section="6">
+    <!-- БЛОК FAQ ИЗ SPECK DESIGN (УЛУЧШЕННЫЙ) -->
+    <section class="faq-section content-section speck-design-block" data-bg-section="6">
         <div class="container">
-            <h2 class="section-title fade-in-down">FAQ</h2>
-            <p class="section-subtitle fade-in-up delay-200">Frequently asked questions about our services</p>
+            <h2 class="section-title fade-in-down">Frequently Asked Questions</h2>
+            <p class="section-subtitle fade-in-up delay-200">Get answers to common questions about our design process and services</p>
             
             <div class="faq-list">
+                <!-- FAQ 1 -->
                 <div class="faq-item fade-in-up delay-300">
                     <button class="faq-question">
-                        <span>What does a product design company do?</span>
+                        <div class="faq-question-content">
+                            <h4>What does a product design company do?</h4>
+                            <p class="faq-question-hint">Understanding our comprehensive service offering</p>
+                        </div>
                         <i class="fas fa-plus"></i>
                     </button>
                     <div class="faq-answer">
-                        <p>A product design company specializes in creating innovative, user-centered products that balance aesthetics, functionality, and manufacturability. We handle everything from initial concept to production-ready designs.</p>
+                        <p>A product design company specializes in creating innovative, user-centered products that balance aesthetics, functionality, and manufacturability. We handle everything from initial market research and concept development to detailed design, prototyping, testing, and production support. Our multidisciplinary approach ensures that every aspect of the product—from user experience to engineering feasibility—is carefully considered and optimized.</p>
+                        <div class="faq-details">
+                            <h5>Our process includes:</h5>
+                            <ul>
+                                <li><strong>Research & Strategy:</strong> Market analysis, user research, competitive benchmarking</li>
+                                <li><strong>Concept Development:</strong> Ideation, sketching, concept validation</li>
+                                <li><strong>Design & Engineering:</strong> Detailed design, 3D modeling, engineering analysis</li>
+                                <li><strong>Prototyping & Testing:</strong> Physical/digital prototypes, user testing, refinement</li>
+                                <li><strong>Production Support:</strong> Manufacturing guidance, quality assurance</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 
+                <!-- FAQ 2 -->
                 <div class="faq-item fade-in-up delay-350">
                     <button class="faq-question">
-                        <span>What is the difference between product design and industrial design?</span>
+                        <div class="faq-question-content">
+                            <h4>What is the difference between product design and industrial design?</h4>
+                            <p class="faq-question-hint">Clarifying design disciplines and specializations</p>
+                        </div>
                         <i class="fas fa-plus"></i>
                     </button>
                     <div class="faq-answer">
-                        <p>Industrial design focuses on the physical appearance and user interaction of mass-produced products. Product design is broader, encompassing the entire product development process including research, strategy, engineering, and user experience.</p>
+                        <p><strong>Industrial design</strong> focuses primarily on the physical appearance, ergonomics, and user interaction of mass-produced products. It deals with form, materials, manufacturing processes, and how users physically interact with products.</p>
+                        <p><strong>Product design</strong> is a broader discipline that encompasses the entire product development process. It includes industrial design but also extends to research, strategy, user experience, engineering, and business considerations. Product designers think about the complete product ecosystem, including digital interfaces, services, and business models.</p>
+                        <p>At NB Group, we practice integrated product design that combines both disciplines for holistic solutions.</p>
                     </div>
                 </div>
                 
+                <!-- FAQ 3 -->
                 <div class="faq-item fade-in-up delay-400">
                     <button class="faq-question">
-                        <span>What is design thinking?</span>
+                        <div class="faq-question-content">
+                            <h4>What is design thinking?</h4>
+                            <p class="faq-question-hint">Our human-centered problem-solving approach</p>
+                        </div>
                         <i class="fas fa-plus"></i>
                     </button>
                     <div class="faq-answer">
-                        <p>Design thinking is a human-centered problem-solving approach that involves empathy, ideation, prototyping, and testing. It helps create innovative solutions that truly meet user needs and business goals.</p>
+                        <p>Design thinking is a human-centered problem-solving methodology that emphasizes empathy, collaboration, and experimentation. It's an iterative process that helps teams understand users, challenge assumptions, redefine problems, and create innovative solutions.</p>
+                        <div class="design-thinking-steps">
+                            <div class="step">
+                                <h5>1. Empathize</h5>
+                                <p>Understand user needs, emotions, and experiences through observation and engagement</p>
+                            </div>
+                            <div class="step">
+                                <h5>2. Define</h5>
+                                <p>Articulate the core problem based on user insights and research findings</p>
+                            </div>
+                            <div class="step">
+                                <h5>3. Ideate</h5>
+                                <p>Generate diverse creative solutions through brainstorming and exploration</p>
+                            </div>
+                            <div class="step">
+                                <h5>4. Prototype</h5>
+                                <p>Create tangible representations of ideas for testing and feedback</p>
+                            </div>
+                            <div class="step">
+                                <h5>5. Test</h5>
+                                <p>Validate solutions with real users and iterate based on feedback</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
+                <!-- FAQ 4 -->
                 <div class="faq-item fade-in-up delay-450">
                     <button class="faq-question">
-                        <span>Who owns the rights to the designs once completed?</span>
+                        <div class="faq-question-content">
+                            <h4>Who owns the rights to the designs once completed?</h4>
+                            <p class="faq-question-hint">Intellectual property and rights transfer</p>
+                        </div>
                         <i class="fas fa-plus"></i>
                     </button>
                     <div class="faq-answer">
-                        <p>Typically, clients retain full ownership of the designs once all payments are completed. We provide clear IP agreements to ensure your rights are protected throughout the project.</p>
+                        <p>Intellectual property rights are clearly defined in our project agreements. Typically, once the design project is completed and all payments are made, full ownership of the designs is transferred to the client. This includes all design files, documentation, and associated intellectual property.</p>
+                        <p><strong>Key aspects of our IP policy:</strong></p>
+                        <ul>
+                            <li><strong>Client Ownership:</strong> You retain full rights to use, modify, and commercialize the designs</li>
+                            <li><strong>Clear Documentation:</strong> All IP transfer details are specified in our project contracts</li>
+                            <li><strong>Portfolio Rights:</strong> We typically request permission to showcase completed work in our portfolio</li>
+                            <li><strong>Background IP:</strong> Any pre-existing IP brought to the project remains with its original owner</li>
+                        </ul>
+                        <p>We recommend consulting with legal counsel for specific IP concerns, and we're happy to work with your legal team to ensure all agreements meet your requirements.</p>
                     </div>
                 </div>
+                
+                <!-- FAQ 5 -->
+                <div class="faq-item fade-in-up delay-500">
+                    <button class="faq-question">
+                        <div class="faq-question-content">
+                            <h4>What does a product design consultancy do?</h4>
+                            <p class="faq-question-hint">The role of external design expertise</p>
+                        </div>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>A product design consultancy acts as an external expert partner that brings specialized skills, fresh perspectives, and proven methodologies to product development. We complement internal teams by providing:</p>
+                        <div class="consultancy-services">
+                            <div class="service-point">
+                                <i class="fas fa-bullseye"></i>
+                                <div>
+                                    <h5>Objective Perspective</h5>
+                                    <p>Unbiased insights free from internal politics or preconceptions</p>
+                                </div>
+                            </div>
+                            <div class="service-point">
+                                <i class="fas fa-tools"></i>
+                                <div>
+                                    <h5>Specialized Expertise</h5>
+                                    <p>Deep knowledge in specific areas like UX, engineering, or manufacturing</p>
+                                </div>
+                            </div>
+                            <div class="service-point">
+                                <i class="fas fa-rocket"></i>
+                                <div>
+                                    <h5>Accelerated Development</h5>
+                                    <p>Faster time-to-market through efficient processes and focused effort</p>
+                                </div>
+                            </div>
+                            <div class="service-point">
+                                <i class="fas fa-shield-alt"></i>
+                                <div>
+                                    <h5>Risk Mitigation</h5>
+                                    <p>Validation and testing to reduce development risks and costs</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p>We work as an extension of your team, collaborating closely to achieve your business goals while bringing our specialized design expertise to the table.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-actions fade-in-up delay-550">
+                <p class="faq-contact">Still have questions? <a href="contacts.html" class="text-link">Contact our team <i class="fas fa-arrow-right"></i></a></p>
             </div>
         </div>
     </section>
 
     <!-- ВИСЯЩАЯ СЕКЦИЯ -->
-    <section class="floating-section content-section" data-bg-section="7">
+    <section class="floating-section content-section speck-design-block" data-bg-section="7">
         <div class="container">
             <div class="floating-content">
-                <h2 class="floating-title">Готовы начать ваш проект?</h2>
+                <h2 class="floating-title">Start Your Design Journey</h2>
                 <p class="floating-subtitle">
-                    Обсудим, как мы можем воплотить вашу продуктовую идею в жизнь
+                    Transform your ideas into successful products with our expert design and engineering team
                 </p>
                 
-                <!-- ДОПОЛНИТЕЛЬНОЕ ИЗОБРАЖЕНИЕ -->
+                <!-- Изображение в CTA -->
                 <div class="floating-image fade-in-up delay-300">
-                    <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Start Your Project" loading="lazy">
+                    <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Start Your Project with NB Group" loading="lazy">
                 </div>
                 
-                <a href="contacts.html" class="btn btn-primary floating-button fade-in-up delay-400">
-                    Связаться
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+                <div class="floating-features fade-in-up delay-350">
+                    <div class="feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Free initial consultation</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Detailed project proposal</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Transparent pricing</span>
+                    </div>
+                </div>
+                
+                <div class="floating-actions fade-in-up delay-400">
+                    <a href="contacts.html" class="btn btn-primary floating-button">
+                        Schedule a Consultation
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="portfolio.html" class="btn btn-secondary">
+                        View Case Studies
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -612,109 +710,132 @@
     // Добавляем класс no-js для обнаружения JavaScript
     document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, 'js');
     
-    // ЭКСТРЕННЫЙ JS ФИКС ДЛЯ ФОНА
+    // ФИКС ДЛЯ НОВЫХ БЛОКОВ SPECK DESIGN
     (function() {
-        console.log('🚨 FORCING BACKGROUND TO BE VISIBLE');
+        console.log('🚀 Initializing Speck Design blocks...');
         
-        // 1. Гарантируем что класс home-page есть
+        // Гарантируем что класс home-page есть
         if (!document.body.classList.contains('home-page')) {
             document.body.classList.add('home-page');
-            console.log('✅ Added home-page class to body');
         }
         
-        // 2. ПРИНУДИТЕЛЬНО ПОКАЗЫВАЕМ ФОНОВЫЕ СЛОИ
+        // Принудительно показываем фоновые слои
         setTimeout(function() {
-            // Находим все фоновые слои
             var bgLayers = document.querySelectorAll('.bg-layer');
             var bgContainer = document.querySelector('.bg-layers-container');
             
-            console.log('🎨 Found ' + bgLayers.length + ' background layers');
-            
             if (bgLayers.length > 0) {
-                // ПРИНУДИТЕЛЬНО ДЕЛАЕМ ВСЕ СЛОИ ВИДИМЫМИ
                 bgLayers.forEach(function(layer) {
                     layer.style.opacity = '1';
                     layer.style.display = 'block';
                     layer.style.visibility = 'visible';
-                    layer.classList.add('active');
                 });
                 
-                // Показываем контейнер
                 if (bgContainer) {
                     bgContainer.style.display = 'block';
                     bgContainer.style.opacity = '1';
                     bgContainer.style.visibility = 'visible';
-                    console.log('✅ Background container activated');
                 }
-                
-                console.log('✅ All ' + bgLayers.length + ' background layers activated');
-            } else {
-                console.error('❌ No background layers found!');
-                // Создаем фоновые слои динамически
-                createBackgroundLayers();
             }
             
-            // 3. Убираем белый фон со всего
-            document.body.style.backgroundColor = 'transparent';
-            document.body.style.backgroundImage = 'none';
-            document.documentElement.style.backgroundColor = 'transparent';
-            
-            // 4. Убираем фон со всех секций
-            var sections = document.querySelectorAll('.hero, .content-section, .section');
-            sections.forEach(function(section) {
-                section.style.backgroundColor = 'transparent';
+            // Добавляем классы для новых блоков
+            var speckBlocks = document.querySelectorAll('.speck-design-block');
+            speckBlocks.forEach(function(block, index) {
+                setTimeout(function() {
+                    block.classList.add('speck-block-loaded');
+                }, index * 200);
             });
             
-            console.log('✅ White background removed from all elements');
-        }, 50);
+            console.log('✅ Speck Design blocks initialized');
+        }, 100);
         
-        function createBackgroundLayers() {
-            console.log('🔄 Creating background layers dynamically...');
+        // Инициализация FAQ
+        function initFAQ() {
+            var faqItems = document.querySelectorAll('.faq-item');
             
-            var container = document.createElement('div');
-            container.className = 'bg-layers-container';
-            container.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                z-index: 1;
-                opacity: 1;
-                display: block;
-            `;
-            
-            var images = [
-                'assets/images/parallax/bg-1.jpg',
-                'assets/images/parallax/bg-2.jpg',
-                'assets/images/parallax/bg-3.jpg',
-                'assets/images/parallax/bg-4.jpg'
-            ];
-            
-            images.forEach(function(src, index) {
-                var layer = document.createElement('div');
-                layer.className = 'bg-layer active';
-                layer.style.cssText = `
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-image: url('${src}');
-                    background-size: cover;
-                    background-position: center;
-                    opacity: 1;
-                    display: block;
-                    z-index: ${10 - index};
-                `;
-                container.appendChild(layer);
+            faqItems.forEach(function(item) {
+                var question = item.querySelector('.faq-question');
+                var answer = item.querySelector('.faq-answer');
+                
+                if (answer) {
+                    answer.style.maxHeight = '0';
+                    answer.style.overflow = 'hidden';
+                    answer.style.transition = 'max-height 0.4s ease, padding 0.4s ease';
+                }
+                
+                if (question) {
+                    question.addEventListener('click', function() {
+                        // Закрываем другие открытые вопросы
+                        faqItems.forEach(function(otherItem) {
+                            if (otherItem !== item && otherItem.classList.contains('active')) {
+                                otherItem.classList.remove('active');
+                                var otherAnswer = otherItem.querySelector('.faq-answer');
+                                var otherIcon = otherItem.querySelector('.fa-question i');
+                                
+                                if (otherAnswer) {
+                                    otherAnswer.style.maxHeight = '0';
+                                    otherAnswer.style.paddingTop = '0';
+                                    otherAnswer.style.paddingBottom = '0';
+                                }
+                                
+                                if (otherIcon) {
+                                    otherIcon.classList.remove('fa-minus');
+                                    otherIcon.classList.add('fa-plus');
+                                }
+                            }
+                        });
+                        
+                        // Переключаем текущий вопрос
+                        var isActive = item.classList.contains('active');
+                        var icon = question.querySelector('i');
+                        
+                        if (isActive) {
+                            item.classList.remove('active');
+                            if (answer) {
+                                answer.style.maxHeight = '0';
+                                answer.style.paddingTop = '0';
+                                answer.style.paddingBottom = '0';
+                            }
+                            if (icon) {
+                                icon.classList.remove('fa-minus');
+                                icon.classList.add('fa-plus');
+                            }
+                        } else {
+                            item.classList.add('active');
+                            if (answer) {
+                                answer.style.maxHeight = answer.scrollHeight + 'px';
+                                answer.style.paddingTop = '25px';
+                                answer.style.paddingBottom = '25px';
+                            }
+                            if (icon) {
+                                icon.classList.remove('fa-plus');
+                                icon.classList.add('fa-minus');
+                            }
+                        }
+                    });
+                }
             });
             
-            document.body.insertBefore(container, document.body.firstChild);
-            console.log('✅ Background layers created dynamically');
+            // Автоматически открываем первый вопрос
+            setTimeout(function() {
+                if (faqItems.length > 0) {
+                    var firstItem = faqItems[0];
+                    var firstQuestion = firstItem.querySelector('.faq-question');
+                    if (firstQuestion) {
+                        firstQuestion.click();
+                    }
+                }
+            }, 1500);
         }
         
-        console.log('🛡️ Background protection activated');
+        // Запускаем инициализацию после загрузки DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initFAQ);
+        } else {
+            initFAQ();
+        }
+        
+        console.log('🛠️ Speck Design enhancements applied');
     })();
     </script>
 </body>
