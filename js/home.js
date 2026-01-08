@@ -1,6 +1,47 @@
 // home.js - ИСПРАВЛЕННЫЙ С ВИСЯЩИМ ТЕКСТОМ И БЕЗ ЧЕРНОГО OVERLAY
 console.log('🏠 home.js loaded - VISIBLE BACKGROUND WITH FLOATING TEXT, NO BLACK OVERLAY');
 
+// ===== ЭКСТРЕННЫЙ ФИКС - ПРОВЕРКА ДОСТУПНОСТИ DOM =====
+(function immediateFix() {
+    'use strict';
+    
+    // Проверяем что document.body существует
+    function safeImmediateFix() {
+        if (!document.body) {
+            console.log('⚠️ document.body not ready, retrying...');
+            setTimeout(safeImmediateFix, 50);
+            return;
+        }
+        
+        console.log('🚨 IMMEDIATE FIX: Removing black background on load');
+        
+        // Немедленно убираем черный фон
+        document.body.style.backgroundColor = 'transparent';
+        document.documentElement.style.backgroundColor = 'transparent';
+        
+        // Убираем overlay с фоновых слоев если они уже есть
+        const bgLayers = document.querySelectorAll('.bg-layer');
+        bgLayers.forEach(layer => {
+            if (layer && layer.style) {
+                // Убираем opacity overlay
+                if (layer.style.opacity && parseFloat(layer.style.opacity) < 1) {
+                    layer.style.opacity = '1';
+                }
+                
+                // Убираем фильтры
+                if (layer.style.filter && layer.style.filter.includes('brightness')) {
+                    layer.style.filter = 'none';
+                }
+            }
+        });
+        
+        console.log('✅ Immediate black background fix applied');
+    }
+    
+    // Запускаем безопасный фикс
+    safeImmediateFix();
+})();
+
 // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
     console.log('📄 INITIALIZING HOME PAGE WITH VISIBLE BACKGROUND - NO BLACK OVERLAY');
@@ -160,21 +201,23 @@ function initializeHomePage() {
         if (bgLayers.length > 0) {
             // Активируем ВСЕ слои БЕЗ темного overlay
             bgLayers.forEach((layer, index) => {
-                layer.style.opacity = '1';
-                layer.style.display = 'block';
-                layer.style.visibility = 'visible';
-                layer.classList.add('active');
-                
-                // Убираем любой inline overlay из background
-                if (layer.style.background && layer.style.background.includes('rgba(0,0,0')) {
-                    layer.style.background = layer.style.background.replace(/rgba\(0,\s*0,\s*0,\s*[0-9.]+\),?\s*/g, '');
+                if (layer && layer.style) {
+                    layer.style.opacity = '1';
+                    layer.style.display = 'block';
+                    layer.style.visibility = 'visible';
+                    layer.classList.add('active');
+                    
+                    // Убираем любой inline overlay из background
+                    if (layer.style.background && layer.style.background.includes('rgba(0,0,0')) {
+                        layer.style.background = layer.style.background.replace(/rgba\(0,\s*0,\s*0,\s*[0-9.]+\),?\s*/g, '');
+                    }
+                    
+                    console.log(`✅ Background layer ${index + 1} activated WITHOUT overlay`);
                 }
-                
-                console.log(`✅ Background layer ${index + 1} activated WITHOUT overlay`);
             });
             
             // Показываем контейнер
-            if (bgContainer) {
+            if (bgContainer && bgContainer.style) {
                 bgContainer.style.display = 'block';
                 bgContainer.style.opacity = '1';
                 bgContainer.style.visibility = 'visible';
@@ -189,20 +232,24 @@ function initializeHomePage() {
         // 4. Убираем все фоны с текстовых блоков
         const textContainers = document.querySelectorAll('.text-backdrop-enhanced, .hero-description');
         textContainers.forEach(container => {
-            container.style.backgroundColor = 'transparent';
-            container.style.backdropFilter = 'none';
-            container.style.webkitBackdropFilter = 'none';
-            container.style.border = 'none';
-            container.style.boxShadow = 'none';
-            container.style.padding = '0';
-            container.style.margin = '0 auto';
+            if (container && container.style) {
+                container.style.backgroundColor = 'transparent';
+                container.style.backdropFilter = 'none';
+                container.style.webkitBackdropFilter = 'none';
+                container.style.border = 'none';
+                container.style.boxShadow = 'none';
+                container.style.padding = '0';
+                container.style.margin = '0 auto';
+            }
         });
         
         // Убираем фон со всех секций
         const sections = document.querySelectorAll('section, .hero, .content-section');
         sections.forEach(section => {
-            section.style.backgroundColor = 'transparent';
-            section.style.background = 'transparent';
+            if (section && section.style) {
+                section.style.backgroundColor = 'transparent';
+                section.style.background = 'transparent';
+            }
         });
         
         console.log('✅ All black overlays removed - floating text effect applied');
@@ -254,8 +301,10 @@ function initializeHomePage() {
             container.appendChild(layer);
         });
         
-        document.body.insertBefore(container, document.body.firstChild);
-        console.log('✅ Background layers created WITHOUT overlays');
+        if (document.body) {
+            document.body.insertBefore(container, document.body.firstChild);
+            console.log('✅ Background layers created WITHOUT overlays');
+        }
     }
     
     // 5. ЗАПУСКАЕМ БАЗОВЫЕ ФУНКЦИИ
@@ -284,7 +333,7 @@ function initializeBasicFunctions() {
     
     // 3. ПРОГРЕСС БАР СКРОЛЛА
     const progressBar = document.querySelector('.scroll-progress-bar');
-    if (progressBar) {
+    if (progressBar && progressBar.style) {
         window.addEventListener('scroll', () => {
             const scrollTop = window.pageYOffset;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -301,7 +350,7 @@ function initializeBasicFunctions() {
     
     // 4. НАСТРОЙКА БЕГУЩЕЙ СТРОКИ
     const marqueeTrack = document.querySelector('.speck-marquee-track');
-    if (marqueeTrack) {
+    if (marqueeTrack && marqueeTrack.style) {
         // Гарантируем что анимация работает
         marqueeTrack.style.animationPlayState = 'running';
         
@@ -319,7 +368,7 @@ function initializeBasicFunctions() {
     setTimeout(() => {
         // Убираем любые возможные фоны
         const heroText = document.querySelector('.hero-content > div');
-        if (heroText) {
+        if (heroText && heroText.style) {
             heroText.style.backgroundColor = 'transparent';
             heroText.style.background = 'transparent';
             heroText.style.backdropFilter = 'none';
@@ -331,14 +380,20 @@ function initializeBasicFunctions() {
         // Убираем все overlay элементы
         const overlayElements = document.querySelectorAll('[class*="overlay"], [class*="dark-bg"], [class*="black"]');
         overlayElements.forEach(el => {
-            el.style.display = 'none';
-            el.style.opacity = '0';
-            el.style.visibility = 'hidden';
+            if (el && el.style) {
+                el.style.display = 'none';
+                el.style.opacity = '0';
+                el.style.visibility = 'hidden';
+            }
         });
         
         // Убираем черный фон с body и html
-        document.body.style.backgroundColor = 'transparent';
-        document.documentElement.style.backgroundColor = 'transparent';
+        if (document.body && document.body.style) {
+            document.body.style.backgroundColor = 'transparent';
+        }
+        if (document.documentElement && document.documentElement.style) {
+            document.documentElement.style.backgroundColor = 'transparent';
+        }
         
     }, 300);
     
@@ -348,11 +403,22 @@ function initializeBasicFunctions() {
 // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
 console.log('🚀 Starting home page initialization WITHOUT black overlay...');
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeHomePage);
-} else {
-    initializeHomePage();
+// Безопасная инициализация с проверкой DOM
+function safeInitialize() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeHomePage);
+    } else if (document.body) {
+        // DOM уже загружен и body доступен
+        initializeHomePage();
+    } else {
+        // Body еще не доступен, ждем
+        console.log('⚠️ Waiting for document.body to be ready...');
+        setTimeout(safeInitialize, 50);
+    }
 }
+
+// Запускаем безопасную инициализацию
+safeInitialize();
 
 // ГЛОБАЛЬНЫЙ ФИКС ДЛЯ ВСЕХ СТРАНИЦ
 window.addEventListener('load', () => {
@@ -365,16 +431,20 @@ window.addEventListener('load', () => {
         
         if (bgContainer && bgLayers.length > 0) {
             // Гарантируем видимость БЕЗ overlay
-            bgContainer.style.display = 'block';
-            bgContainer.style.opacity = '1';
+            if (bgContainer.style) {
+                bgContainer.style.display = 'block';
+                bgContainer.style.opacity = '1';
+            }
             
             bgLayers.forEach(layer => {
-                layer.style.opacity = '1';
-                layer.style.display = 'block';
-                
-                // Финалная проверка - убираем остатки overlay
-                if (layer.style.background && layer.style.background.includes('rgba(0,0,0')) {
-                    layer.style.background = layer.style.background.replace(/rgba\(0,\s*0,\s*0,\s*[0-9.]+\),?\s*/g, '');
+                if (layer && layer.style) {
+                    layer.style.opacity = '1';
+                    layer.style.display = 'block';
+                    
+                    // Финалная проверка - убираем остатки overlay
+                    if (layer.style.background && layer.style.background.includes('rgba(0,0,0')) {
+                        layer.style.background = layer.style.background.replace(/rgba\(0,\s*0,\s*0,\s*[0-9.]+\),?\s*/g, '');
+                    }
                 }
             });
             
@@ -384,7 +454,7 @@ window.addEventListener('load', () => {
         // ФИНАЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА
         const textBlocks = document.querySelectorAll('.hero-content > div, .hero-description');
         textBlocks.forEach(block => {
-            if (block) {
+            if (block && block.style) {
                 block.style.backgroundColor = 'transparent';
                 block.style.background = 'transparent';
                 block.style.backdropFilter = 'none';
@@ -396,10 +466,14 @@ window.addEventListener('load', () => {
         });
         
         // УДАЛЯЕМ ВСЕ ОСТАТКИ ЧЕРНОГО ФОНА
-        document.body.style.background = 'transparent';
-        document.body.style.backgroundColor = 'transparent';
-        document.documentElement.style.background = 'transparent';
-        document.documentElement.style.backgroundColor = 'transparent';
+        if (document.body && document.body.style) {
+            document.body.style.background = 'transparent';
+            document.body.style.backgroundColor = 'transparent';
+        }
+        if (document.documentElement && document.documentElement.style) {
+            document.documentElement.style.background = 'transparent';
+            document.documentElement.style.backgroundColor = 'transparent';
+        }
         
         // Удаляем элементы с черным фоном
         const allElements = document.querySelectorAll('*');
@@ -423,34 +497,5 @@ window.reinitializeHomeBackground = function() {
     console.log('🔄 Reinitializing home background WITHOUT black overlay...');
     initializeHomePage();
 };
-
-// ЭКСТРЕННЫЙ ФИКС ДЛЯ НЕМЕДЛЕННОГО УДАЛЕНИЯ ЧЕРНОГО OVERLAY
-(function immediateFix() {
-    'use strict';
-    
-    console.log('🚨 IMMEDIATE FIX: Removing black background on load');
-    
-    // Немедленно убираем черный фон
-    document.body.style.backgroundColor = 'transparent';
-    document.documentElement.style.backgroundColor = 'transparent';
-    
-    // Убираем overlay с фоновых слоев если они уже есть
-    const bgLayers = document.querySelectorAll('.bg-layer');
-    bgLayers.forEach(layer => {
-        if (layer && layer.style) {
-            // Убираем opacity overlay
-            if (layer.style.opacity && parseFloat(layer.style.opacity) < 1) {
-                layer.style.opacity = '1';
-            }
-            
-            // Убираем фильтры
-            if (layer.style.filter && layer.style.filter.includes('brightness')) {
-                layer.style.filter = 'none';
-            }
-        }
-    });
-    
-    console.log('✅ Immediate black background fix applied');
-})();
 
 console.log('✅ home.js loaded - will create floating text effect WITHOUT black overlay');
