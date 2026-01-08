@@ -31,15 +31,35 @@ body.home-page {
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
-    opacity: 0 !important;
-    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    opacity: 1 !important; /* ИЗМЕНИЛ: было 0, стало 1 */
     display: block !important;
     visibility: visible !important;
 }
 
+/* ВСЕ 4 СЛОЯ СЕЙЧАС ВИДНЫ СРАЗУ */
+.bg-layer:nth-child(1) {
+    background-image: url('assets/images/parallax/bg-1.jpg') !important;
+    z-index: 4;
+}
+
+.bg-layer:nth-child(2) {
+    background-image: url('assets/images/parallax/bg-2.jpg') !important;
+    z-index: 3;
+}
+
+.bg-layer:nth-child(3) {
+    background-image: url('assets/images/parallax/bg-3.jpg') !important;
+    z-index: 2;
+}
+
+.bg-layer:nth-child(4) {
+    background-image: url('assets/images/parallax/bg-4.jpg') !important;
+    z-index: 1;
+}
+
+/* УБРАТЬ АКТИВНЫЙ КЛАСС - ВСЕ ВИДНЫ */
 .bg-layer.active {
     opacity: 1 !important;
-    z-index: 2 !important;
 }
 
 /* ЧЕРНЫЙ ОВЕРЛЕЙ ДЛЯ ЧИТАЕМОСТИ */
@@ -51,7 +71,7 @@ body.home-page {
     width: 100% !important;
     height: 100% !important;
     background: rgba(0, 0, 0, 0.4) !important;
-    z-index: 1 !important;
+    z-index: 5 !important;
 }
 
 /* ===== УБИРАЕМ ФОН ДЛЯ ДРУГИХ СТРАНИЦ ===== */
@@ -133,6 +153,6 @@ body.home-page .cta-content-improved {
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
     .bg-layer {
-        transition: opacity 0.5s ease !important;
+        transition: none !important;
     }
 }
