@@ -1,4 +1,4 @@
-/* style.css - СТИЛИ NB GROUP TECH С ЧЕРНЫМ ФОНОМ */
+/* style.css - СТИЛИ NB GROUP TECH БЕЗ ЧЕРНОГО ФОНА */
 
 :root {
     /* ОСНОВНЫЕ ЦВЕТА - СИНЯЯ ПАЛИТРА */
@@ -37,7 +37,7 @@ html, body {
     max-width: 100%;
     overflow-x: hidden;
     position: relative;
-    background: #0a0a0a !important;
+    background: transparent !important;
 }
 
 html {
@@ -45,8 +45,8 @@ html {
 }
 
 body {
-    background: #0a0a0a !important;
-    background-color: #0a0a0a !important;
+    background: transparent !important;
+    background-color: transparent !important;
     background-image: none !important;
     color: var(--text);
     line-height: 1.6;
@@ -1276,9 +1276,9 @@ p, span, li, a:not(.btn) {
         0 1px 8px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* ФИНАЛЬНЫЙ ФИКС: ЧЕРНЫЙ ФОН ДЛЯ ВСЕХ */
+/* ФИНАЛЬНЫЙ ФИКС: ПРОЗРАЧНЫЙ ФОН ДЛЯ ВСЕХ */
 body {
-    background: #0a0a0a !important;
-    background-color: #0a0a0a !important;
+    background: transparent !important;
+    background-color: transparent !important;
     background-image: none !important;
 }
