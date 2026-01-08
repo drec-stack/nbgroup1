@@ -14,134 +14,41 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
     
-    <!-- Новый файл для фона главной страницы -->
+    <!-- Фон главной страницы -->
     <link rel="stylesheet" href="css/home-background.css">
     
-    <!-- ЭКСТРЕННЫЙ ФИКС ДЛЯ ФОНА ГЛАВНОЙ СТРАНИЦЫ -->
+    <!-- ЭКСТРЕННЫЙ ФИКС ДЛЯ ФОНА -->
     <style>
-        /* === ШАГ 1: УБИРАЕМ ВЕСЬ БЕЛЫЙ ФОН === */
-        body {
-            background: transparent !important;
-            background-color: transparent !important;
-            background-image: none !important;
-        }
-        
-        html, body {
+        /* === ГАРАНТИЯ: ФОН ВИДЕН ВСЕГДА === */
+        body.home-page {
             background: transparent !important;
         }
         
-        /* === ШАГ 2: ПРИНУДИТЕЛЬНО ПОКАЗЫВАЕМ ФОНОВЫЕ СЛОИ === */
         .bg-layers-container {
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100vh !important;
-            z-index: 1 !important;
-            pointer-events: none !important;
         }
         
         .bg-layer {
+            opacity: 1 !important;
             display: block !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background-size: cover !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            transition: opacity 1s ease !important;
+            visibility: visible !important;
         }
         
-        .bg-layer.active {
-            opacity: 1 !important;
-            z-index: 2 !important;
-        }
-        
-        /* ЧЕРНЫЙ ОВЕРЛЕЙ ДЛЯ ЧИТАЕМОСТИ */
-        .bg-layer::before {
-            content: '' !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: rgba(0, 0, 0, 0.5) !important;
-            z-index: 1 !important;
-        }
-        
-        /* === ШАГ 3: ДЕЛАЕМ ВСЕ СЕКЦИИ ПРОЗРАЧНЫМИ === */
-        .hero,
-        .content-section,
-        .section,
-        .speck-vertical-section,
-        .speck-marquee-section,
-        .stats-improved,
-        .cta-improved {
-            background: transparent !important;
-        }
-        
-        /* === ШАГ 4: УЛУЧШАЕМ ВИДИМОСТЬ ТЕКСТА === */
-        .hero h1,
-        .hero-subtitle,
-        .hero-description p,
-        .section-title,
-        .section-subtitle,
-        .cta-text h2,
-        .speck-block-title,
-        .speck-block-subtitle,
-        .speck-brand,
-        .stat-number-improved,
-        .stat-label-improved {
-            text-shadow: 
-                0 4px 30px rgba(0, 0, 0, 0.95),
-                0 3px 25px rgba(0, 0, 0, 0.9),
-                0 2px 20px rgba(0, 0, 0, 0.85) !important;
-            position: relative;
-            z-index: 20;
-        }
-        
-        /* === ШАГ 5: СТЕКЛЯННЫЕ ЭЛЕМЕНТЫ ДОЛЖНЫ БЫТЬ ВИДНЫ === */
-        .text-backdrop-enhanced,
-        .speck-feature-column,
-        .stat-card,
-        .speck-marquee-wrapper,
-        .cta-content-improved,
-        .speck-block-left,
-        .speck-block-right {
-            background: rgba(0, 0, 0, 0.6) !important;
-            backdrop-filter: blur(15px) !important;
-            -webkit-backdrop-filter: blur(15px) !important;
-        }
-        
-        /* === ШАГ 6: УБИРАЕМ ВСЕ ДРУГИЕ ФОНЫ === */
-        * {
-            background-color: transparent !important;
-        }
-        
-        /* === ШАГ 7: ГАРАНТИРУЕМ ЧТО ПЕРВЫЙ ФОН АКТИВЕН === */
-        .bg-layer:nth-child(1) {
-            opacity: 1 !important;
-        }
-        
-        /* === ШАГ 8: МОБИЛЬНАЯ ОПТИМИЗАЦИЯ === */
-        @media (max-width: 768px) {
-            .bg-layers-container {
-                height: 100% !important;
-            }
-            
-            .text-backdrop-enhanced,
-            .speck-feature-column,
-            .stat-card,
-            .speck-marquee-wrapper,
-            .cta-content-improved {
-                background: rgba(0, 0, 0, 0.7) !important;
-            }
+        /* ПРИНУДИТЕЛЬНО ПРЕДЗАГРУЖАЕМ ИЗОБРАЖЕНИЯ */
+        body::after {
+            content: '';
+            position: fixed;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            z-index: -9999;
+            background-image: 
+                url('assets/images/parallax/bg-1.jpg'),
+                url('assets/images/parallax/bg-2.jpg'),
+                url('assets/images/parallax/bg-3.jpg'),
+                url('assets/images/parallax/bg-4.jpg');
         }
     </style>
     
@@ -160,15 +67,13 @@
     (function() {
         'use strict';
         
-        var docElem = document.documentElement;
-        
         // Добавляем класс для JavaScript
-        docElem.classList.remove('no-js');
-        docElem.classList.add('js');
+        document.documentElement.classList.remove('no-js');
+        document.documentElement.classList.add('js');
         
         // Для стабильности фона
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            docElem.classList.add('mobile-device');
+            document.documentElement.classList.add('mobile-device');
         }
         
         // Предзагрузка фоновых изображений
@@ -184,27 +89,14 @@
             img.src = url;
         });
         
-        // Загрузка CSS файлов с fallback
-        var cssFiles = [
-            'css/style.css',
-            'css/home.css',
-            'css/home-background.css'
-        ];
-        
-        cssFiles.forEach(function(url) {
-            var link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = url;
-            document.head.appendChild(link);
-        });
     })();
     </script>
     
 </head>
-<body class="home-page"> <!-- УБЕДИТЕСЬ ЧТО ЕСТЬ КЛАСС home-page -->
+<body class="home-page">
     <!-- ФОНОВЫЕ СЛОИ ТОЛЬКО ДЛЯ ГЛАВНОЙ -->
-    <div class="bg-layers-container" style="display: block; opacity: 1;">
-        <div class="bg-layer active" style="background-image: url('assets/images/parallax/bg-1.jpg'); opacity: 1;"></div>
+    <div class="bg-layers-container">
+        <div class="bg-layer" style="background-image: url('assets/images/parallax/bg-1.jpg');"></div>
         <div class="bg-layer" style="background-image: url('assets/images/parallax/bg-2.jpg');"></div>
         <div class="bg-layer" style="background-image: url('assets/images/parallax/bg-3.jpg');"></div>
         <div class="bg-layer" style="background-image: url('assets/images/parallax/bg-4.jpg');"></div>
@@ -551,201 +443,109 @@
     // Добавляем класс no-js для обнаружения JavaScript
     document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, 'js');
     
-    // Полифил для requestAnimationFrame
+    // ЭКСТРЕННЫЙ JS ФИКС ДЛЯ ФОНА
     (function() {
-        var lastTime = 0;
-        var vendors = ['webkit', 'moz'];
-        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-            window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-            window.cancelAnimationFrame = 
-              window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
-        }
-    
-        if (!window.requestAnimationFrame) {
-            window.requestAnimationFrame = function(callback, element) {
-                var currTime = new Date().getTime();
-                var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-                var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
-                  timeToCall);
-                lastTime = currTime + timeToCall;
-                return id;
-            };
-        }
-    
-        if (!window.cancelAnimationFrame) {
-            window.cancelAnimationFrame = function(id) {
-                clearTimeout(id);
-            };
-        }
-    }());
-    
-    // Полифил для IntersectionObserver
-    if (!window.IntersectionObserver) {
-        window.IntersectionObserver = function() {
-            this.observe = function() {};
-            this.unobserve = function() {};
-            this.disconnect = function() {};
-        };
-        window.IntersectionObserverEntry = function() {};
-    }
-    
-    // Полифил для Element.closest()
-    if (!Element.prototype.closest) {
-        Element.prototype.closest = function(s) {
-            var el = this;
-            if (!document.documentElement.contains(el)) return null;
-            do {
-                if (el.matches(s)) return el;
-                el = el.parentElement || el.parentNode;
-            } while (el !== null && el.nodeType === 1);
-            return null;
-        };
-    }
-    
-    // Полифил для NodeList.forEach
-    if (window.NodeList && !NodeList.prototype.forEach) {
-        NodeList.prototype.forEach = Array.prototype.forEach;
-    }
-    
-    // Полифил для String.includes
-    if (!String.prototype.includes) {
-        String.prototype.includes = function(search, start) {
-            if (typeof start !== 'number') {
-                start = 0;
-            }
-            if (start + search.length > this.length) {
-                return false;
-            } else {
-                return this.indexOf(search, start) !== -1;
-            }
-        };
-    }
-    
-    // Полифил для Array.includes
-    if (!Array.prototype.includes) {
-        Object.defineProperty(Array.prototype, 'includes', {
-            value: function(searchElement, fromIndex) {
-                if (this == null) {
-                    throw new TypeError('"this" is null or not defined');
-                }
-                var o = Object(this);
-                var len = o.length >>> 0;
-                if (len === 0) {
-                    return false;
-                }
-                var n = fromIndex | 0;
-                var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
-                function sameValueZero(x, y) {
-                    return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
-                }
-                while (k < len) {
-                    if (sameValueZero(o[k], searchElement)) {
-                        return true;
-                    }
-                    k++;
-                }
-                return false;
-            }
-        });
-    }
-    
-    // Полифил для CSS.supports
-    if (!window.CSS || !window.CSS.supports) {
-        window.CSS = window.CSS || {};
-        window.CSS.supports = function(property, value) {
-            var style = document.createElement('div').style;
-            if (value === undefined) {
-                return property in style;
-            }
-            style.cssText = property + ':' + value;
-            return !!style[property];
-        };
-    }
-    
-    // Простой полифил для matchMedia
-    if (!window.matchMedia) {
-        window.matchMedia = function() {
-            return {
-                matches: false,
-                addListener: function() {},
-                removeListener: function() {}
-            };
-        };
-    }
-    
-    // Fallback для несуществующих файлов CSS
-    setTimeout(function() {
-        var styleSheets = document.styleSheets;
-        for (var i = 0; i < styleSheets.length; i++) {
-            try {
-                var rules = styleSheets[i].cssRules;
-                if (!rules) {
-                    console.log('CSS файл не загружен: ' + styleSheets[i].href);
-                }
-            } catch(e) {
-                // Игнорируем ошибки CORS
-            }
-        }
-    }, 1000);
-    
-    // ===== ЭКСТРЕННЫЙ JS ФИКС ДЛЯ ФОНА =====
-    (function() {
-        console.log('🚨 EMERGENCY BACKGROUND FIX APPLIED');
+        console.log('🚨 FORCING BACKGROUND TO BE VISIBLE');
         
-        // 1. Убедиться что класс home-page есть
+        // 1. Гарантируем что класс home-page есть
         if (!document.body.classList.contains('home-page')) {
             document.body.classList.add('home-page');
             console.log('✅ Added home-page class to body');
         }
         
-        // 2. Активировать фоновые слои
+        // 2. ПРИНУДИТЕЛЬНО ПОКАЗЫВАЕМ ФОНОВЫЕ СЛОИ
         setTimeout(function() {
+            // Находим все фоновые слои
             var bgLayers = document.querySelectorAll('.bg-layer');
+            var bgContainer = document.querySelector('.bg-layers-container');
+            
             console.log('🎨 Found ' + bgLayers.length + ' background layers');
             
             if (bgLayers.length > 0) {
-                // Деактивировать все слои
+                // ПРИНУДИТЕЛЬНО ДЕЛАЕМ ВСЕ СЛОИ ВИДИМЫМИ
                 bgLayers.forEach(function(layer) {
-                    layer.classList.remove('active');
-                    layer.style.opacity = '0';
+                    layer.style.opacity = '1';
+                    layer.style.display = 'block';
+                    layer.style.visibility = 'visible';
+                    layer.classList.add('active');
                 });
                 
-                // Активировать первый слой
-                bgLayers[0].classList.add('active');
-                bgLayers[0].style.opacity = '1';
-                console.log('✅ First background layer activated');
-                
-                // Показать контейнер
-                var container = document.querySelector('.bg-layers-container');
-                if (container) {
-                    container.style.display = 'block';
-                    container.style.opacity = '1';
+                // Показываем контейнер
+                if (bgContainer) {
+                    bgContainer.style.display = 'block';
+                    bgContainer.style.opacity = '1';
+                    bgContainer.style.visibility = 'visible';
                     console.log('✅ Background container activated');
                 }
+                
+                console.log('✅ All ' + bgLayers.length + ' background layers activated');
             } else {
                 console.error('❌ No background layers found!');
+                // Создаем фоновые слои динамически
+                createBackgroundLayers();
             }
             
-            // 3. Убрать белый фон со всего
+            // 3. Убираем белый фон со всего
             document.body.style.backgroundColor = 'transparent';
             document.body.style.backgroundImage = 'none';
             document.documentElement.style.backgroundColor = 'transparent';
             
-            console.log('✅ White background removed');
-        }, 100);
+            // 4. Убираем фон со всех секций
+            var sections = document.querySelectorAll('.hero, .content-section, .section');
+            sections.forEach(function(section) {
+                section.style.backgroundColor = 'transparent';
+            });
+            
+            console.log('✅ White background removed from all elements');
+        }, 50);
         
-        // 4. Перехватываем все попытки изменить фон
-        var originalSetProperty = CSSStyleDeclaration.prototype.setProperty;
-        CSSStyleDeclaration.prototype.setProperty = function(name, value, priority) {
-            if (name.includes('background') && value && 
-                (value.includes('white') || value.includes('#fff') || value.includes('#ffffff'))) {
-                console.warn('🚫 Blocked white background:', name, value);
-                return; // Блокируем установку белого фона
-            }
-            return originalSetProperty.apply(this, arguments);
-        };
+        function createBackgroundLayers() {
+            console.log('🔄 Creating background layers dynamically...');
+            
+            var container = document.createElement('div');
+            container.className = 'bg-layers-container';
+            container.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                z-index: 1;
+                opacity: 1;
+                display: block;
+            `;
+            
+            var images = [
+                'assets/images/parallax/bg-1.jpg',
+                'assets/images/parallax/bg-2.jpg',
+                'assets/images/parallax/bg-3.jpg',
+                'assets/images/parallax/bg-4.jpg'
+            ];
+            
+            images.forEach(function(src, index) {
+                var layer = document.createElement('div');
+                layer.className = 'bg-layer active';
+                layer.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-image: url('${src}');
+                    background-size: cover;
+                    background-position: center;
+                    opacity: 1;
+                    display: block;
+                    z-index: ${10 - index};
+                `;
+                container.appendChild(layer);
+            });
+            
+            document.body.insertBefore(container, document.body.firstChild);
+            console.log('✅ Background layers created dynamically');
+        }
         
-        console.log('🛡️ White background protection activated');
+        console.log('🛡️ Background protection activated');
     })();
     </script>
 </body>
