@@ -180,16 +180,32 @@ function initializeHomePage() {
             background-color: transparent !important;
         }
         
-        /* ФИКС ДЛЯ СТЕКЛЯННЫХ КАРТОЧЕК (остальные элементы) */
-        .speck-feature-column,
-        .stat-card {
-            background: rgba(25, 25, 25, 0.8) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        /* ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА STRATEGY БЛОКА */
+        .speck-vertical-block[data-block-index="0"] .speck-feature-column {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
         
-        /* СТЕКЛЯННЫЙ ЭФФЕКТ ТОЛЬКО ДЛЯ КНОПОК */
+        .speck-vertical-block[data-block-index="0"] .speck-column-title {
+            text-shadow: 
+                0 4px 35px rgba(0, 0, 0, 0.95),
+                0 3px 30px rgba(0, 0, 0, 0.9),
+                0 2px 25px rgba(0, 0, 0, 0.85) !important;
+        }
+        
+        .speck-vertical-block[data-block-index="0"] .speck-feature-item {
+            text-shadow: 
+                0 3px 30px rgba(0, 0, 0, 0.95),
+                0 2px 25px rgba(0, 0, 0, 0.9),
+                0 1px 20px rgba(0, 0, 0, 0.85) !important;
+        }
+        
+        /* СТЕКЛЯННЫЙ ЭФФЕКТ ТОЛЬКО ДЛЯ КНОПОК И ОСТАЛЬНЫХ БЛОКОВ */
         .hero-actions .btn,
         .floating-button {
             background: rgba(0, 102, 255, 0.25) !important;
@@ -263,6 +279,63 @@ function initializeHomePage() {
             }
         });
         
+        // 5. ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА STRATEGY БЛОКА
+        const strategyBlock = document.querySelector('.speck-vertical-block[data-block-index="0"]');
+        if (strategyBlock) {
+            const strategyColumns = strategyBlock.querySelectorAll('.speck-feature-column');
+            const strategyItems = strategyBlock.querySelectorAll('.speck-feature-item');
+            const strategyRightBlock = strategyBlock.querySelector('.speck-block-right');
+            const strategyLeftBlock = strategyBlock.querySelector('.speck-block-left');
+            
+            // Убираем фон с колонок Strategy
+            strategyColumns.forEach(col => {
+                if (col && col.style) {
+                    col.style.backgroundColor = 'transparent';
+                    col.style.background = 'transparent';
+                    col.style.backdropFilter = 'none';
+                    col.style.webkitBackdropFilter = 'none';
+                    col.style.border = 'none';
+                    col.style.boxShadow = 'none';
+                    col.style.padding = '0';
+                    col.style.margin = '0';
+                }
+            });
+            
+            // Убираем фон с элементов списка
+            strategyItems.forEach(item => {
+                if (item && item.style) {
+                    item.style.backgroundColor = 'transparent';
+                    item.style.background = 'transparent';
+                    item.style.padding = '0';
+                    item.style.margin = '0 0 30px 0';
+                }
+            });
+            
+            // Убираем фон с правого блока Strategy
+            if (strategyRightBlock && strategyRightBlock.style) {
+                strategyRightBlock.style.backgroundColor = 'transparent';
+                strategyRightBlock.style.background = 'transparent';
+                strategyRightBlock.style.backdropFilter = 'none';
+                strategyRightBlock.style.webkitBackdropFilter = 'none';
+                strategyRightBlock.style.border = 'none';
+                strategyRightBlock.style.boxShadow = 'none';
+                strategyRightBlock.style.padding = '40px 0';
+                strategyRightBlock.style.borderLeft = 'none';
+            }
+            
+            // Убираем фон с левого блока Strategy
+            if (strategyLeftBlock && strategyLeftBlock.style) {
+                strategyLeftBlock.style.backgroundColor = 'transparent';
+                strategyLeftBlock.style.background = 'transparent';
+                strategyLeftBlock.style.backdropFilter = 'none';
+                strategyLeftBlock.style.webkitBackdropFilter = 'none';
+                strategyLeftBlock.style.border = 'none';
+                strategyLeftBlock.style.boxShadow = 'none';
+            }
+            
+            console.log('✅ Strategy block floating text applied');
+        }
+        
         // Убираем фон со всех секций
         const sections = document.querySelectorAll('section, .hero, .content-section');
         sections.forEach(section => {
@@ -332,7 +405,7 @@ function initializeHomePage() {
         }
     }
     
-    // 5. ЗАПУСКАЕМ БАЗОВЫЕ ФУНКЦИИ
+    // 6. ЗАПУСКАЕМ БАЗОВЫЕ ФУНКЦИИ
     initializeBasicFunctions();
 }
 
@@ -395,6 +468,22 @@ function initializeBasicFunctions() {
             floatingContent.style.border = 'none';
             floatingContent.style.boxShadow = 'none';
             floatingContent.style.padding = '0';
+        }
+        
+        // ФИКС ДЛЯ STRATEGY БЛОКА
+        const strategyBlock = document.querySelector('.speck-vertical-block[data-block-index="0"]');
+        if (strategyBlock) {
+            const strategyElements = strategyBlock.querySelectorAll('.speck-feature-column, .speck-feature-item, .speck-block-right, .speck-block-left');
+            strategyElements.forEach(el => {
+                if (el && el.style) {
+                    el.style.backgroundColor = 'transparent';
+                    el.style.background = 'transparent';
+                    el.style.backdropFilter = 'none';
+                    el.style.webkitBackdropFilter = 'none';
+                    el.style.border = 'none';
+                    el.style.boxShadow = 'none';
+                }
+            });
         }
         
         // Убираем все overlay элементы
@@ -474,6 +563,35 @@ window.addEventListener('load', () => {
             floatingContent.style.border = 'none';
             floatingContent.style.boxShadow = 'none';
             floatingContent.style.padding = '0';
+        }
+        
+        // ФИНАЛЬНЫЙ ФИКС ДЛЯ STRATEGY БЛОКА
+        const strategyBlock = document.querySelector('.speck-vertical-block[data-block-index="0"]');
+        if (strategyBlock) {
+            const strategyColumns = strategyBlock.querySelectorAll('.speck-feature-column');
+            const strategyItems = strategyBlock.querySelectorAll('.speck-feature-item');
+            
+            strategyColumns.forEach(col => {
+                if (col && col.style) {
+                    col.style.backgroundColor = 'transparent';
+                    col.style.background = 'transparent';
+                    col.style.backdropFilter = 'none';
+                    col.style.webkitBackdropFilter = 'none';
+                    col.style.border = 'none';
+                    col.style.boxShadow = 'none';
+                    col.style.padding = '0';
+                }
+            });
+            
+            strategyItems.forEach(item => {
+                if (item && item.style) {
+                    item.style.backgroundColor = 'transparent';
+                    item.style.background = 'transparent';
+                    item.style.padding = '0';
+                }
+            });
+            
+            console.log('✅ Final Strategy block floating text fix applied');
         }
         
         // ФИНАЛЬНЫЙ ФИКС ДЛЯ ВСЕГО ТЕКСТА
