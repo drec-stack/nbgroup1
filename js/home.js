@@ -1,5 +1,5 @@
-// home.js - ИСПРАВЛЕННЫЙ С ВИСЯЩИМ ТЕКСТОМ ВО ВСЕХ БЛОКАХ
-console.log('🏠 home.js loaded - VISIBLE BACKGROUND WITH FLOATING TEXT IN ALL BLOCKS, NO BLACK OVERLAY');
+// home.js - ИСПРАВЛЕННЫЙ С ВИСЯЩИМ ТЕКСТОМ И НОВЫМИ БЛОКАМИ SPECK DESIGN
+console.log('🏠 home.js loaded - VISIBLE BACKGROUND WITH FLOATING TEXT AND SPECK DESIGN BLOCKS');
 
 // ===== ЭКСТРЕННЫЙ ФИКС - ПРОВЕРКА ДОСТУПНОСТИ DOM =====
 (function immediateFix() {
@@ -48,7 +48,7 @@ console.log('🏠 home.js loaded - VISIBLE BACKGROUND WITH FLOATING TEXT IN ALL 
 
 // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
-    console.log('📄 INITIALIZING HOME PAGE WITH VISIBLE BACKGROUND - NO BLACK OVERLAY');
+    console.log('📄 INITIALIZING HOME PAGE WITH SPECK DESIGN BLOCKS');
     
     // 1. ГАРАНТИРУЕМ КЛАСС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
     document.body.classList.add('home-page');
@@ -121,7 +121,11 @@ function initializeHomePage() {
         }
         
         /* ВИСЯЩИЙ ТЕКСТ - БЕЗ ФОНА ВО ВСЕХ БЛОКАХ */
-        .hero-content > div:not(.hero-actions) {
+        .hero-content > div:not(.hero-actions),
+        .projects-grid,
+        .services-grid,
+        .journals-list,
+        .faq-list {
             background: transparent !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
@@ -131,7 +135,11 @@ function initializeHomePage() {
             margin: 0 !important;
         }
         
-        .hero-description {
+        .hero-description,
+        .project-card,
+        .service-item,
+        .journal-item,
+        .faq-item {
             background: transparent !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
@@ -168,7 +176,16 @@ function initializeHomePage() {
         .speck-block-title,
         .speck-block-subtitle,
         .speck-column-title,
-        .speck-feature-item {
+        .speck-feature-item,
+        .section-title,
+        .section-subtitle,
+        .project-title,
+        .project-description,
+        .service-item h3,
+        .journal-title,
+        .journal-date,
+        .faq-question,
+        .faq-answer p {
             text-shadow: 
                 0 4px 35px rgba(0, 0, 0, 0.95),
                 0 3px 30px rgba(0, 0, 0, 0.9),
@@ -181,13 +198,21 @@ function initializeHomePage() {
         /* УБРАТЬ ФОН С ВСЕХ СЕКЦИЙ И БЛОКОВ */
         section, .section, .hero, .content-section,
         .speck-vertical-block, .speck-block-left, .speck-block-right,
-        .speck-feature-column, .speck-feature-item {
+        .speck-feature-column, .speck-feature-item,
+        .projects-section, .project-card,
+        .services-section, .service-item,
+        .journals-section, .journal-item,
+        .faq-section, .faq-item {
             background: transparent !important;
             background-color: transparent !important;
         }
         
         /* ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА ВО ВСЕХ БЛОКАХ */
-        .speck-feature-column {
+        .speck-feature-column,
+        .project-card,
+        .service-item,
+        .journal-item,
+        .faq-item {
             background: transparent !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
@@ -200,7 +225,8 @@ function initializeHomePage() {
         /* СТЕКЛЯННЫЙ ЭФФЕКТ ТОЛЬКО ДЛЯ КНОПОК И СТАТИСТИКИ */
         .hero-actions .btn,
         .floating-button,
-        .stat-card {
+        .stat-card,
+        .journals-actions .btn {
             background: rgba(0, 102, 255, 0.25) !important;
             backdrop-filter: blur(15px) !important;
             -webkit-backdrop-filter: blur(15px) !important;
@@ -259,7 +285,7 @@ function initializeHomePage() {
         }
         
         // 4. Убираем все фоны с текстовых блоков ВО ВСЕХ БЛОКАХ
-        const textContainers = document.querySelectorAll('.text-backdrop-enhanced, .hero-description, .floating-content');
+        const textContainers = document.querySelectorAll('.text-backdrop-enhanced, .hero-description, .floating-content, .project-content, .service-item, .journal-item, .faq-item');
         textContainers.forEach(container => {
             if (container && container.style) {
                 container.style.backgroundColor = 'transparent';
@@ -345,6 +371,52 @@ function initializeHomePage() {
             floatingSection.style.background = 'transparent';
         }
         
+        // ФИКС ДЛЯ НОВЫХ SPECK БЛОКОВ
+        const projectCards = document.querySelectorAll('.project-card');
+        const serviceItems = document.querySelectorAll('.service-item');
+        const journalItems = document.querySelectorAll('.journal-item');
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        projectCards.forEach(card => {
+            if (card && card.style) {
+                card.style.backgroundColor = 'transparent';
+                card.style.backdropFilter = 'none';
+                card.style.webkitBackdropFilter = 'none';
+                card.style.border = 'none';
+                card.style.boxShadow = 'none';
+            }
+        });
+        
+        serviceItems.forEach(item => {
+            if (item && item.style) {
+                item.style.backgroundColor = 'transparent';
+                item.style.backdropFilter = 'none';
+                item.style.webkitBackdropFilter = 'none';
+                item.style.border = 'none';
+                item.style.boxShadow = 'none';
+            }
+        });
+        
+        journalItems.forEach(item => {
+            if (item && item.style) {
+                item.style.backgroundColor = 'transparent';
+                item.style.backdropFilter = 'none';
+                item.style.webkitBackdropFilter = 'none';
+                item.style.border = 'none';
+                item.style.boxShadow = 'none';
+            }
+        });
+        
+        faqItems.forEach(item => {
+            if (item && item.style) {
+                item.style.backgroundColor = 'transparent';
+                item.style.backdropFilter = 'none';
+                item.style.webkitBackdropFilter = 'none';
+                item.style.border = 'none';
+                item.style.boxShadow = 'none';
+            }
+        });
+        
         console.log('✅ All black overlays removed - floating text effect applied to ALL blocks');
     }, 100);
     
@@ -403,7 +475,7 @@ function initializeHomePage() {
 }
 
 function initializeBasicFunctions() {
-    console.log('🔄 Initializing basic functions for ALL floating text blocks...');
+    console.log('🔄 Initializing basic functions for ALL blocks...');
     
     // 1. ИНИЦИАЛИЗАЦИЯ СТАТИСТИКИ
     const statNumbers = document.querySelectorAll('.stat-number-improved');
@@ -422,7 +494,31 @@ function initializeBasicFunctions() {
         }, index * 200);
     });
     
-    // 3. ПРОГРЕСС БАР СКРОЛЛА
+    // 3. АНИМАЦИЯ ДЛЯ HERO IMAGE
+    const heroImage = document.querySelector('.hero-image');
+    if (heroImage) {
+        heroImage.style.opacity = '0';
+        setTimeout(() => {
+            heroImage.style.transition = 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+            heroImage.style.opacity = '1';
+            heroImage.style.transform = 'perspective(1000px) rotateX(1deg) translateY(0)';
+        }, 450);
+        
+        // Hover эффект
+        heroImage.addEventListener('mouseenter', function() {
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                this.style.transform = 'perspective(1000px) rotateX(0deg) translateY(-10px)';
+            }
+        });
+        
+        heroImage.addEventListener('mouseleave', function() {
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                this.style.transform = 'perspective(1000px) rotateX(1deg) translateY(0)';
+            }
+        });
+    }
+    
+    // 4. ПРОГРЕСС БАР СКРОЛЛА
     const progressBar = document.querySelector('.scroll-progress-bar');
     if (progressBar && progressBar.style) {
         window.addEventListener('scroll', () => {
@@ -438,7 +534,10 @@ function initializeBasicFunctions() {
         progressBar.style.width = `${scrollPercent}%`;
     }
     
-    // 4. ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА И OVERLAY ВО ВСЕХ БЛОКАХ
+    // 5. ИНИЦИАЛИЗАЦИЯ FAQ (АККОРДЕОН)
+    initializeFAQ();
+    
+    // 6. ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА И OVERLAY ВО ВСЕХ БЛОКАХ
     setTimeout(() => {
         // Убираем любые возможные фоны
         const heroText = document.querySelector('.hero-content > div');
@@ -503,8 +602,59 @@ function initializeBasicFunctions() {
     console.log('✅ Basic functions initialized for ALL blocks');
 }
 
+// ===== ИНИЦИАЛИЗАЦИЯ FAQ АККОРДЕОНА =====
+function initializeFAQ() {
+    console.log('❓ Initializing FAQ accordion...');
+    
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        if (question) {
+            question.addEventListener('click', () => {
+                // Закрываем все открытые элементы
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                        const otherAnswer = otherItem.querySelector('.faq-answer');
+                        if (otherAnswer) {
+                            otherAnswer.style.maxHeight = '0';
+                        }
+                    }
+                });
+                
+                // Переключаем текущий элемент
+                item.classList.toggle('active');
+                
+                const answer = item.querySelector('.faq-answer');
+                if (answer) {
+                    if (item.classList.contains('active')) {
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                    } else {
+                        answer.style.maxHeight = '0';
+                    }
+                }
+            });
+        }
+    });
+    
+    // Автоматически открываем первый вопрос
+    if (faqItems.length > 0) {
+        setTimeout(() => {
+            faqItems[0].classList.add('active');
+            const firstAnswer = faqItems[0].querySelector('.faq-answer');
+            if (firstAnswer) {
+                firstAnswer.style.maxHeight = firstAnswer.scrollHeight + 'px';
+            }
+        }, 1000);
+    }
+    
+    console.log(`✅ FAQ initialized with ${faqItems.length} items`);
+}
+
 // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
-console.log('🚀 Starting home page initialization WITHOUT black overlay for ALL blocks...');
+console.log('🚀 Starting home page initialization with SPECK DESIGN blocks...');
 
 function safeInitialize() {
     if (document.readyState === 'loading') {
@@ -521,7 +671,7 @@ safeInitialize();
 
 // ГЛОБАЛЬНЫЙ ФИКС ДЛЯ ВСЕХ СТРАНИЦ
 window.addEventListener('load', () => {
-    console.log('🌍 Page fully loaded, applying final fixes WITHOUT black overlay for ALL blocks...');
+    console.log('🌍 Page fully loaded, applying final fixes for SPECK DESIGN blocks...');
     
     setTimeout(() => {
         const bgContainer = document.querySelector('.bg-layers-container');
@@ -559,37 +709,58 @@ window.addEventListener('load', () => {
             floatingContent.style.padding = '0';
         }
         
-        // ФИНАЛЬНЫЙ ФИКС ДЛЯ ВСЕХ SPECK БЛОКОВ
-        const speckBlocks = document.querySelectorAll('.speck-vertical-block');
-        speckBlocks.forEach((block, blockIndex) => {
-            const speckColumns = block.querySelectorAll('.speck-feature-column');
-            const speckItems = block.querySelectorAll('.speck-feature-item');
-            
-            speckColumns.forEach(col => {
-                if (col && col.style) {
-                    col.style.backgroundColor = 'transparent';
-                    col.style.background = 'transparent';
-                    col.style.backdropFilter = 'none';
-                    col.style.webkitBackdropFilter = 'none';
-                    col.style.border = 'none';
-                    col.style.boxShadow = 'none';
-                    col.style.padding = '0';
-                }
-            });
-            
-            speckItems.forEach(item => {
-                if (item && item.style) {
-                    item.style.backgroundColor = 'transparent';
-                    item.style.background = 'transparent';
-                    item.style.padding = '0';
-                }
-            });
-            
-            console.log(`✅ Final floating text fix for speck block ${blockIndex + 1} applied`);
+        // ФИНАЛЬНЫЙ ФИКС ДЛЯ ВСЕХ БЛОКОВ SPECK DESIGN
+        const projectCards = document.querySelectorAll('.project-card');
+        const serviceItems = document.querySelectorAll('.service-item');
+        const journalItems = document.querySelectorAll('.journal-item');
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        projectCards.forEach(card => {
+            if (card && card.style) {
+                card.style.backgroundColor = 'transparent';
+                card.style.background = 'transparent';
+                card.style.backdropFilter = 'none';
+                card.style.webkitBackdropFilter = 'none';
+                card.style.border = 'none';
+                card.style.boxShadow = 'none';
+            }
+        });
+        
+        serviceItems.forEach(item => {
+            if (item && item.style) {
+                item.style.backgroundColor = 'transparent';
+                item.style.background = 'transparent';
+                item.style.backdropFilter = 'none';
+                item.style.webkitBackdropFilter = 'none';
+                item.style.border = 'none';
+                item.style.boxShadow = 'none';
+            }
+        });
+        
+        journalItems.forEach(item => {
+            if (item && item.style) {
+                item.style.backgroundColor = 'transparent';
+                item.style.background = 'transparent';
+                item.style.backdropFilter = 'none';
+                item.style.webkitBackdropFilter = 'none';
+                item.style.border = 'none';
+                item.style.boxShadow = 'none';
+            }
+        });
+        
+        faqItems.forEach(item => {
+            if (item && item.style) {
+                item.style.backgroundColor = 'transparent';
+                item.style.background = 'transparent';
+                item.style.backdropFilter = 'none';
+                item.style.webkitBackdropFilter = 'none';
+                item.style.border = 'none';
+                item.style.boxShadow = 'none';
+            }
         });
         
         // ФИНАЛЬНЫЙ ФИКС ДЛЯ ВСЕГО ТЕКСТА
-        const textBlocks = document.querySelectorAll('.hero-content > div, .hero-description, .floating-title, .floating-subtitle');
+        const textBlocks = document.querySelectorAll('.hero-content > div, .hero-description, .floating-title, .floating-subtitle, .project-content, .service-item h3, .journal-title, .faq-question');
         textBlocks.forEach(block => {
             if (block && block.style) {
                 block.style.backgroundColor = 'transparent';
@@ -624,14 +795,27 @@ window.addEventListener('load', () => {
             }
         });
         
-        console.log('✅ Final black overlay removal complete for ALL blocks');
+        console.log('✅ Final black overlay removal complete for ALL SPECK DESIGN blocks');
     }, 500);
 });
 
 // ГЛОБАЛЬНАЯ ФУНКЦИЯ ДЛЯ ПЕРЕЗАПУСКА ФОНА
 window.reinitializeHomeBackground = function() {
-    console.log('🔄 Reinitializing home background WITHOUT black overlay for ALL blocks...');
+    console.log('🔄 Reinitializing home background with SPECK DESIGN blocks...');
     initializeHomePage();
 };
 
-console.log('✅ home.js loaded - will create floating text effect for ALL blocks WITHOUT black overlay');
+// ФУНКЦИЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ FAQ
+window.toggleFAQ = function(index) {
+    const faqItems = document.querySelectorAll('.faq-item');
+    const item = faqItems[index];
+    
+    if (item) {
+        const question = item.querySelector('.faq-question');
+        if (question) {
+            question.click();
+        }
+    }
+};
+
+console.log('✅ home.js loaded - SPECK DESIGN blocks ready!');
