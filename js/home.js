@@ -1,17 +1,17 @@
-// home.js - ИСПРАВЛЕННЫЙ С ФИКСОМ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
-console.log('🏠 home.js loaded - FORCING HOME PAGE INIT');
+// home.js - ИСПРАВЛЕННЫЙ С ФИКСОМ ДЛЯ ФОНА ГЛАВНОЙ СТРАНИЦЫ
+console.log('🏠 home.js loaded - FORCING HOME PAGE BACKGROUND');
 
 // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
-    console.log('📄 FORCE INITIALIZING HOME PAGE WITH BACKGROUND');
+    console.log('📄 INITIALIZING HOME PAGE WITH VISIBLE BACKGROUND');
     
-    // ПРИНУДИТЕЛЬНО ДОБАВЛЯЕМ КЛАСС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
+    // 1. ГАРАНТИРУЕМ КЛАСС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
     document.body.classList.add('home-page');
     document.documentElement.classList.add('home-page');
     
-    // ЭКСТРЕННЫЙ CSS ФИКС - УБИРАЕМ БЕЛЫЙ ФОН
+    // 2. ЭКСТРЕННЫЙ CSS ФИКС - УБИРАЕМ БЕЛЫЙ ФОН И ПОКАЗЫВАЕМ ФОНЫ
     const emergencyCSS = `
-        /* ЭКСТРЕННЫЙ ФИКС: УБИРАЕМ БЕЛЫЙ ФОН */
+        /* ЭКСТРЕННЫЙ ФИКС: ВСЕ ФОНЫ ВИДНЫ */
         body.home-page {
             background: transparent !important;
             background-color: transparent !important;
@@ -29,11 +29,12 @@ function initializeHomePage() {
             left: 0 !important;
             width: 100% !important;
             height: 100vh !important;
+            pointer-events: none;
         }
         
         .bg-layer {
             display: block !important;
-            opacity: 0 !important;
+            opacity: 1 !important;
             position: absolute !important;
             top: 0 !important;
             left: 0 !important;
@@ -41,15 +42,31 @@ function initializeHomePage() {
             height: 100% !important;
             background-size: cover !important;
             background-position: center !important;
-            transition: opacity 1s ease !important;
+            visibility: visible !important;
         }
         
-        .bg-layer.active {
-            opacity: 1 !important;
-            z-index: 2 !important;
+        /* ВСЕ 4 СЛОЯ ВИДНЫ */
+        .bg-layer:nth-child(1) {
+            z-index: 4;
+            background-image: url('assets/images/parallax/bg-1.jpg') !important;
         }
         
-        /* ЧЕРНЫЙ НАЛОЖЕНИЕ ДЛЯ ЧИТАЕМОСТИ */
+        .bg-layer:nth-child(2) {
+            z-index: 3;
+            background-image: url('assets/images/parallax/bg-2.jpg') !important;
+        }
+        
+        .bg-layer:nth-child(3) {
+            z-index: 2;
+            background-image: url('assets/images/parallax/bg-3.jpg') !important;
+        }
+        
+        .bg-layer:nth-child(4) {
+            z-index: 1;
+            background-image: url('assets/images/parallax/bg-4.jpg') !important;
+        }
+        
+        /* ТЕМНОЕ НАЛОЖЕНИЕ ДЛЯ ЧИТАЕМОСТИ */
         .bg-layer::before {
             content: '' !important;
             position: absolute !important;
@@ -58,7 +75,7 @@ function initializeHomePage() {
             width: 100% !important;
             height: 100% !important;
             background: rgba(0, 0, 0, 0.4) !important;
-            z-index: 1 !important;
+            z-index: 5 !important;
         }
         
         /* ДЕЛАЕМ СЕКЦИИ ПРОЗРАЧНЫМИ */
@@ -90,11 +107,6 @@ function initializeHomePage() {
             z-index: 20;
         }
         
-        /* УБИРАЕМ ВСЕ ДРУГИЕ ФОНЫ */
-        body.home-page * {
-            background-color: transparent !important;
-        }
-        
         /* ФИКС ДЛЯ СТЕКЛЯННЫХ КАРТОЧЕК */
         .text-backdrop-enhanced,
         .speck-feature-column,
@@ -104,6 +116,7 @@ function initializeHomePage() {
             background: rgba(0, 0, 0, 0.5) !important;
             backdrop-filter: blur(20px) !important;
             -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
         }
     `;
     
@@ -114,21 +127,28 @@ function initializeHomePage() {
     
     console.log('✅ Emergency CSS injected');
     
-    // АКТИВИРУЕМ ПЕРВЫЙ ФОНОВЫЙ СЛОЙ
+    // 3. ПРИНУДИТЕЛЬНАЯ АКТИВАЦИЯ ФОНОВЫХ СЛОЕВ
     setTimeout(() => {
         const bgLayers = document.querySelectorAll('.bg-layer');
+        const bgContainer = document.querySelector('.bg-layers-container');
+        
         console.log(`🎨 Found ${bgLayers.length} background layers`);
         
         if (bgLayers.length > 0) {
-            // Активируем только первый слой
-            bgLayers[0].classList.add('active');
-            console.log('✅ First background layer activated');
+            // Активируем ВСЕ слои
+            bgLayers.forEach((layer, index) => {
+                layer.style.opacity = '1';
+                layer.style.display = 'block';
+                layer.style.visibility = 'visible';
+                layer.classList.add('active');
+                console.log(`✅ Background layer ${index + 1} activated`);
+            });
             
             // Показываем контейнер
-            const container = document.querySelector('.bg-layers-container');
-            if (container) {
-                container.classList.add('loaded');
-                container.style.opacity = '1';
+            if (bgContainer) {
+                bgContainer.style.display = 'block';
+                bgContainer.style.opacity = '1';
+                bgContainer.style.visibility = 'visible';
                 console.log('✅ Background container activated');
             }
         } else {
@@ -136,8 +156,21 @@ function initializeHomePage() {
             // Создаем фоновые слои динамически если их нет
             createBackgroundLayers();
         }
+        
+        // 4. Убираем белый фон со всего
+        document.body.style.backgroundColor = 'transparent';
+        document.body.style.backgroundImage = 'none';
+        
+        // Убираем фон со всех секций
+        const sections = document.querySelectorAll('section, .hero, .content-section');
+        sections.forEach(section => {
+            section.style.backgroundColor = 'transparent';
+        });
+        
+        console.log('✅ White background removed from all elements');
     }, 100);
     
+    // Функция создания фоновых слоев
     function createBackgroundLayers() {
         console.log('🔄 Creating background layers dynamically...');
         
@@ -151,6 +184,8 @@ function initializeHomePage() {
             height: 100vh;
             z-index: 1;
             opacity: 1;
+            display: block;
+            pointer-events: none;
         `;
         
         const images = [
@@ -162,8 +197,7 @@ function initializeHomePage() {
         
         images.forEach((src, index) => {
             const layer = document.createElement('div');
-            layer.className = 'bg-layer';
-            if (index === 0) layer.classList.add('active');
+            layer.className = 'bg-layer active';
             layer.style.cssText = `
                 position: absolute;
                 top: 0;
@@ -173,9 +207,24 @@ function initializeHomePage() {
                 background-image: url('${src}');
                 background-size: cover;
                 background-position: center;
-                opacity: ${index === 0 ? '1' : '0'};
-                transition: opacity 1s ease;
+                opacity: 1;
+                display: block;
+                z-index: ${4 - index};
             `;
+            
+            // Добавляем темное наложение
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 1;
+            `;
+            layer.appendChild(overlay);
+            
             container.appendChild(layer);
         });
         
@@ -183,7 +232,7 @@ function initializeHomePage() {
         console.log('✅ Background layers created dynamically');
     }
     
-    // ЗАПУСКАЕМ БАЗОВЫЕ ФУНКЦИИ
+    // 5. ЗАПУСКАЕМ БАЗОВЫЕ ФУНКЦИИ
     initializeBasicFunctions();
 }
 
@@ -213,8 +262,30 @@ function initializeBasicFunctions() {
         window.addEventListener('scroll', () => {
             const scrollTop = window.pageYOffset;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (scrollTop / docHeight) * 100;
+            const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
             progressBar.style.width = `${scrollPercent}%`;
+        });
+        
+        // Инициализируем начальное состояние
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = `${scrollPercent}%`;
+    }
+    
+    // 4. НАСТРОЙКА БЕГУЩЕЙ СТРОКИ
+    const marqueeTrack = document.querySelector('.speck-marquee-track');
+    if (marqueeTrack) {
+        // Гарантируем что анимация работает
+        marqueeTrack.style.animationPlayState = 'running';
+        
+        // Обработчик паузы при наведении
+        marqueeTrack.addEventListener('mouseenter', () => {
+            marqueeTrack.style.animationPlayState = 'paused';
+        });
+        
+        marqueeTrack.addEventListener('mouseleave', () => {
+            marqueeTrack.style.animationPlayState = 'running';
         });
     }
     
@@ -222,7 +293,7 @@ function initializeBasicFunctions() {
 }
 
 // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
-console.log('🚀 Starting FORCED home page initialization...');
+console.log('🚀 Starting home page initialization...');
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeHomePage);
@@ -234,14 +305,30 @@ if (document.readyState === 'loading') {
 window.addEventListener('load', () => {
     console.log('🌍 Page fully loaded, applying final fixes...');
     
-    // УБЕДИТЕСЬ ЧТО ФОН УБРАН
-    document.body.style.backgroundColor = 'transparent';
-    document.body.style.backgroundImage = 'none';
-    
-    // УБЕДИТЕСЬ ЧТО КЛАСС ЕСТЬ
-    if (!document.body.classList.contains('home-page')) {
-        document.body.classList.add('home-page');
-    }
+    // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА ФОНА
+    setTimeout(() => {
+        const bgContainer = document.querySelector('.bg-layers-container');
+        const bgLayers = document.querySelectorAll('.bg-layer');
+        
+        if (bgContainer && bgLayers.length > 0) {
+            // Гарантируем видимость
+            bgContainer.style.display = 'block';
+            bgContainer.style.opacity = '1';
+            
+            bgLayers.forEach(layer => {
+                layer.style.opacity = '1';
+                layer.style.display = 'block';
+            });
+            
+            console.log('✅ Final background check passed');
+        }
+    }, 500);
 });
 
-console.log('✅ FORCED home.js loaded - will force home page background');
+// ГЛОБАЛЬНАЯ ФУНКЦИЯ ДЛЯ ПЕРЕЗАПУСКА ФОНА
+window.reinitializeHomeBackground = function() {
+    console.log('🔄 Reinitializing home background...');
+    initializeHomePage();
+};
+
+console.log('✅ home.js loaded - will force home page background');
