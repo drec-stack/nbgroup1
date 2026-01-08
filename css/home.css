@@ -897,6 +897,201 @@ html {
         0 1px 25px rgba(0, 0, 0, 0.85) !important;
 }
 
+/* ===== МАЛЬЧИСЕ ВИСЯЩИЙ ТЕКСТ ===== */
+.malchise-section {
+    min-height: 100vh;
+    padding: 220px 0 120px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 25;
+    background: transparent !important;
+}
+
+.malchise-floating-content {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 30;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    animation: float-text 6s ease-in-out infinite;
+}
+
+@keyframes float-text {
+    0%, 100% {
+        transform: translateY(0) rotate(0.5deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(-0.5deg);
+    }
+}
+
+.malchise-title {
+    font-size: 7rem !important;
+    font-weight: 1000;
+    line-height: 1 !important;
+    letter-spacing: -0.03em;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    text-shadow: 
+        0 5px 40px rgba(0, 0, 0, 0.95),
+        0 4px 35px rgba(0, 0, 0, 0.9),
+        0 3px 30px rgba(0, 0, 0, 0.85),
+        0 2px 25px rgba(0, 0, 0, 0.8) !important;
+    color: rgba(255, 255, 255, 0.98) !important;
+    position: relative;
+    display: block;
+}
+
+.malchise-subtitle {
+    font-size: 2.2rem !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    margin: 2.5rem auto 4rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    line-height: 1.6;
+    max-width: 800px;
+    text-shadow: 
+        0 4px 35px rgba(0, 0, 0, 0.95),
+        0 3px 30px rgba(0, 0, 0, 0.9),
+        0 2px 25px rgba(0, 0, 0, 0.85) !important;
+    position: relative;
+    z-index: 2;
+}
+
+/* Убираем все скрытые ссылки в этой секции */
+.malchise-section a:not(.malchise-button),
+.malchise-section button:not(.malchise-button),
+.malchise-section [href]:not(.malchise-button),
+.malchise-section [role="button"]:not(.malchise-button) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Декоративные элементы для эффекта воздуха */
+.malchise-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 102, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(102, 51, 153, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255, 51, 102, 0.03) 0%, transparent 60%);
+    z-index: 1;
+    pointer-events: none;
+    animation: background-pulse 15s ease-in-out infinite alternate;
+}
+
+@keyframes background-pulse {
+    0% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+}
+
+/* Специальная кнопка для этой секции */
+.malchise-button {
+    margin-top: 4rem;
+    position: relative;
+    z-index: 40;
+    background: rgba(0, 102, 255, 0.3) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    padding: 1.3rem 3.5rem !important;
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    border-radius: 50px !important;
+    box-shadow: 
+        0 15px 40px rgba(0, 102, 255, 0.4),
+        0 5px 20px rgba(0, 102, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+    color: white !important;
+    text-decoration: none !important;
+    min-width: 250px !important;
+}
+
+.malchise-button:hover {
+    background: rgba(0, 102, 255, 0.4) !important;
+    transform: translateY(-5px) scale(1.05) !important;
+    box-shadow: 
+        0 25px 60px rgba(0, 102, 255, 0.5),
+        0 10px 30px rgba(0, 102, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 50px rgba(0, 102, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    letter-spacing: 2px !important;
+}
+
+.malchise-button:active {
+    transform: translateY(-2px) scale(1.02) !important;
+}
+
+.malchise-button i {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0.9;
+}
+
+.malchise-button:hover i {
+    transform: translateX(8px) rotate(-15deg);
+    opacity: 1;
+}
+
+/* Парящие частицы в воздухе */
+.malchise-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100px 100px, 150px 150px, 200px 200px, 250px 250px;
+    z-index: 0;
+    pointer-events: none;
+    animation: particles-float 20s linear infinite;
+}
+
+@keyframes particles-float {
+    0% {
+        background-position: 0 0, 0 0, 0 0, 0 0;
+    }
+    100% {
+        background-position: 100px 100px, 150px 150px, 200px 200px, 250px 250px;
+    }
+}
+
 /* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 1400px) {
     .hero h1 {
@@ -950,6 +1145,14 @@ html {
     
     .speck-vertical-block:not(:last-child)::before {
         left: 280px;
+    }
+    
+    .malchise-title {
+        font-size: 6rem !important;
+    }
+    
+    .malchise-subtitle {
+        font-size: 2rem !important;
     }
 }
 
@@ -1019,6 +1222,19 @@ html {
     .speck-brand {
         font-size: 1.6rem;
         padding: 0 40px;
+    }
+    
+    .malchise-title {
+        font-size: 5rem !important;
+    }
+    
+    .malchise-subtitle {
+        font-size: 1.8rem !important;
+    }
+    
+    .malchise-button {
+        padding: 1.2rem 3rem !important;
+        font-size: 1.2rem !important;
     }
 }
 
@@ -1138,6 +1354,25 @@ html {
     .speck-marquee-mask::before,
     .speck-marquee-mask::after {
         width: 100px;
+    }
+    
+    .malchise-section {
+        padding: 180px 0 100px;
+    }
+    
+    .malchise-title {
+        font-size: 4.2rem !important;
+    }
+    
+    .malchise-subtitle {
+        font-size: 1.7rem !important;
+        margin: 2rem auto 3rem;
+    }
+    
+    .malchise-button {
+        padding: 1.1rem 2.5rem !important;
+        font-size: 1.1rem !important;
+        min-width: 220px !important;
     }
 }
 
@@ -1261,6 +1496,30 @@ html {
     .speck-marquee-mask::after {
         width: 70px;
     }
+    
+    .malchise-section {
+        padding: 150px 0 80px;
+    }
+    
+    .malchise-title {
+        font-size: 3.5rem !important;
+    }
+    
+    .malchise-subtitle {
+        font-size: 1.5rem !important;
+        margin: 1.8rem auto 2.5rem;
+        padding: 0 20px;
+    }
+    
+    .malchise-button {
+        padding: 1rem 2.2rem !important;
+        font-size: 1rem !important;
+        min-width: 200px !important;
+    }
+    
+    .malchise-floating-content {
+        animation: float-text 8s ease-in-out infinite;
+    }
 }
 
 @media (max-width: 576px) {
@@ -1369,6 +1628,26 @@ html {
     .speck-marquee-mask::after {
         width: 50px;
     }
+    
+    .malchise-section {
+        padding: 130px 0 60px;
+    }
+    
+    .malchise-title {
+        font-size: 2.8rem !important;
+    }
+    
+    .malchise-subtitle {
+        font-size: 1.3rem !important;
+        margin: 1.5rem auto 2rem;
+        padding: 0 15px;
+    }
+    
+    .malchise-button {
+        padding: 0.9rem 2rem !important;
+        font-size: 0.95rem !important;
+        min-width: 180px !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1446,6 +1725,21 @@ html {
     .speck-marquee-mask::after {
         width: 40px;
     }
+    
+    .malchise-title {
+        font-size: 2.4rem !important;
+    }
+    
+    .malchise-subtitle {
+        font-size: 1.2rem !important;
+    }
+    
+    .malchise-button {
+        padding: 0.8rem 1.8rem !important;
+        font-size: 0.9rem !important;
+        min-width: 160px !important;
+        gap: 10px !important;
+    }
 }
 
 /* Поддержка prefers-reduced-motion */
@@ -1474,6 +1768,19 @@ html {
     
     .btn-glow::before {
         display: none;
+    }
+    
+    .malchise-floating-content {
+        animation: none !important;
+    }
+    
+    .malchise-section::before,
+    .malchise-section::after {
+        animation: none !important;
+    }
+    
+    .malchise-button:hover {
+        transform: translateY(-2px) !important;
     }
 }
 
