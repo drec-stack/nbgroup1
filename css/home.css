@@ -1,4 +1,4 @@
-/* home.css - СТИЛИ ГЛАВНОЙ СТРАНИЦЫ С ВИСЯЩИМ ТЕКСТОМ ВО ВСЕХ БЛОКАХ */
+/* home.css - СТИЛИ ГЛАВНОЙ СТРАНИЦЫ С ВИСЯЩИМ ТЕКСТОМ И НОВЫМИ БЛОКАМИ SPECK DESIGN */
 
 /* ===== ЧЕРНЫЙ ФОН ===== */
 body.home-page {
@@ -123,6 +123,42 @@ html {
         0 1px 20px rgba(0, 0, 0, 0.85) !important;
     font-weight: 500;
     letter-spacing: 0.3px;
+}
+
+/* HERO IMAGE STYLES */
+.hero-image {
+    max-width: 1000px;
+    margin: 3rem auto 4rem;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    z-index: 25;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 10px 30px rgba(0, 102, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transform: perspective(1000px) rotateX(1deg);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-image:hover {
+    transform: perspective(1000px) rotateX(0deg) translateY(-10px);
+    box-shadow: 
+        0 35px 70px rgba(0, 0, 0, 0.6),
+        0 15px 40px rgba(0, 102, 255, 0.4),
+        0 0 60px rgba(0, 102, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-image:hover img {
+    transform: scale(1.05);
 }
 
 .hero-actions {
@@ -454,6 +490,81 @@ html {
     display: none !important;
 }
 
+/* ===== PROJETS SECTION (SPECK DESIGN) ===== */
+.projects-section {
+    padding: 180px 0;
+    background: transparent !important;
+    position: relative;
+    z-index: 15;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+}
+
+.project-card {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    overflow: hidden;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.project-card:hover {
+    transform: translateY(-15px);
+}
+
+.project-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+}
+
+.project-card:hover .project-image img {
+    transform: scale(1.1);
+}
+
+.project-content {
+    padding: 0;
+    background: transparent !important;
+}
+
+.project-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white !important;
+    margin-bottom: 12px;
+    line-height: 1.3;
+    text-shadow: 
+        0 3px 25px rgba(0, 0, 0, 0.95),
+        0 2px 20px rgba(0, 0, 0, 0.9) !important;
+}
+
+.project-description {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85) !important;
+    line-height: 1.6;
+    margin: 0;
+    text-shadow: 
+        0 2px 15px rgba(0, 0, 0, 0.9) !important;
+}
+
 /* ===== STATS SECTION ===== */
 .stats-improved {
     padding: 140px 0;
@@ -585,6 +696,210 @@ html {
     letter-spacing: 2px;
 }
 
+/* ===== SERVICES SECTION (SPECK DESIGN) ===== */
+.services-section {
+    padding: 180px 0;
+    background: transparent !important;
+    position: relative;
+    z-index: 15;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 60px;
+}
+
+.service-item {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    padding: 40px 30px;
+    text-align: center;
+    border-radius: 0 !important;
+    transition: transform 0.4s ease;
+    position: relative;
+}
+
+.service-item:hover {
+    transform: translateY(-10px);
+}
+
+.service-item i {
+    font-size: 3.5rem;
+    color: #0066ff;
+    margin-bottom: 25px;
+    text-shadow: 
+        0 2px 20px rgba(0, 102, 255, 0.7),
+        0 1px 15px rgba(0, 102, 255, 0.5) !important;
+}
+
+.service-item h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: white !important;
+    margin: 0;
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.9),
+        0 1px 15px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* ===== JOURNALS SECTION (SPECK DESIGN) ===== */
+.journals-section {
+    padding: 180px 0;
+    background: transparent !important;
+    position: relative;
+    z-index: 15;
+}
+
+.journals-list {
+    max-width: 800px;
+    margin: 60px auto 0;
+}
+
+.journal-item {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    padding: 35px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.journal-item:hover {
+    border-bottom-color: rgba(0, 102, 255, 0.5);
+    transform: translateX(10px);
+}
+
+.journal-date {
+    font-size: 1rem;
+    color: #0066ff !important;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 10px;
+    text-shadow: 
+        0 1px 15px rgba(0, 102, 255, 0.6) !important;
+}
+
+.journal-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: white !important;
+    margin: 0 0 15px 0;
+    line-height: 1.4;
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.9),
+        0 1px 15px rgba(0, 0, 0, 0.8) !important;
+}
+
+.journal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #66b5ff !important;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.journal-link:hover {
+    color: #99ccff !important;
+    gap: 12px;
+}
+
+.journal-link i {
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.journal-link:hover i {
+    transform: translateX(5px);
+}
+
+.journals-actions {
+    text-align: center;
+    margin-top: 60px;
+}
+
+/* ===== FAQ SECTION (SPECK DESIGN) ===== */
+.faq-section {
+    padding: 180px 0;
+    background: transparent !important;
+    position: relative;
+    z-index: 15;
+}
+
+.faq-list {
+    max-width: 800px;
+    margin: 60px auto 0;
+}
+
+.faq-item {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    margin-bottom: 20px;
+    border-radius: 0 !important;
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100%;
+    padding: 25px 30px;
+    background: transparent !important;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: white !important;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    text-shadow: 
+        0 2px 15px rgba(0, 0, 0, 0.9) !important;
+}
+
+.faq-question:hover {
+    color: #66b5ff !important;
+    border-bottom-color: rgba(0, 102, 255, 0.3);
+}
+
+.faq-question i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    padding: 0 30px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    background: transparent !important;
+}
+
+.faq-item.active .faq-answer {
+    padding: 25px 30px;
+    max-height: 500px;
+}
+
+.faq-answer p {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin: 0;
+    text-shadow: 
+        0 1px 10px rgba(0, 0, 0, 0.85) !important;
+}
+
 /* ===== ВИСЯЩАЯ СЕКЦИЯ "Готовы начать ваш проект?" ===== */
 .floating-section {
     padding: 140px 0;
@@ -628,6 +943,21 @@ html {
         0 3px 30px rgba(0, 0, 0, 0.95),
         0 2px 25px rgba(0, 0, 0, 0.9),
         0 1px 20px rgba(0, 0, 0, 0.85) !important;
+}
+
+.floating-image {
+    max-width: 800px;
+    margin: 2rem auto 3rem;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.floating-image img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .floating-button {
@@ -684,6 +1014,11 @@ html {
         font-size: 1.5rem !important;
     }
     
+    .hero-image {
+        max-width: 900px;
+        margin: 2.5rem auto 3.5rem;
+    }
+    
     .speck-vertical-grid {
         max-width: 1200px;
         gap: 120px;
@@ -723,6 +1058,18 @@ html {
         font-size: 2rem !important;
     }
     
+    .projects-grid {
+        gap: 30px;
+    }
+    
+    .project-image {
+        height: 280px;
+    }
+    
+    .project-title {
+        font-size: 1.8rem;
+    }
+    
     .floating-title {
         font-size: 3rem;
     }
@@ -732,8 +1079,11 @@ html {
     }
     
     .floating-content {
-        background: transparent !important;
         padding: 50px;
+    }
+    
+    .floating-image {
+        max-width: 700px;
     }
 }
 
@@ -756,6 +1106,11 @@ html {
     
     .hero-description p {
         font-size: 1.4rem !important;
+    }
+    
+    .hero-image {
+        max-width: 800px;
+        margin: 2rem auto 3rem;
     }
     
     .speck-vertical-grid {
@@ -798,8 +1153,30 @@ html {
         font-size: 1.8rem !important;
     }
     
+    .projects-grid {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .project-image {
+        height: 300px;
+    }
+    
     .stats-improved {
         padding: 100px 0;
+    }
+    
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .faq-list {
+        max-width: 700px;
     }
     
     .floating-title {
@@ -811,8 +1188,11 @@ html {
     }
     
     .floating-content {
-        background: transparent !important;
         padding: 45px;
+    }
+    
+    .floating-image {
+        max-width: 600px;
     }
 }
 
@@ -839,6 +1219,12 @@ html {
     
     .hero-description p {
         font-size: 1.3rem !important;
+    }
+    
+    .hero-image {
+        max-width: 700px;
+        margin: 1.5rem auto 2.5rem;
+        border-radius: 14px;
     }
     
     .speck-vertical-section {
@@ -905,12 +1291,69 @@ html {
         font-size: 1.7rem !important;
     }
     
+    .projects-section {
+        padding: 120px 0;
+    }
+    
+    .project-image {
+        height: 250px;
+    }
+    
+    .project-title {
+        font-size: 1.6rem;
+    }
+    
     .stats-improved {
         padding: 100px 0;
     }
     
     .stat-number-improved {
         font-size: 4rem;
+    }
+    
+    .services-section {
+        padding: 120px 0;
+    }
+    
+    .services-grid {
+        gap: 20px;
+    }
+    
+    .service-item {
+        padding: 30px 20px;
+    }
+    
+    .service-item i {
+        font-size: 3rem;
+    }
+    
+    .service-item h3 {
+        font-size: 1.4rem;
+    }
+    
+    .journals-section {
+        padding: 120px 0;
+    }
+    
+    .journal-title {
+        font-size: 1.6rem;
+    }
+    
+    .faq-section {
+        padding: 120px 0;
+    }
+    
+    .faq-question {
+        font-size: 1.3rem;
+        padding: 20px 25px;
+    }
+    
+    .faq-answer {
+        padding: 0 25px;
+    }
+    
+    .faq-item.active .faq-answer {
+        padding: 20px 25px;
     }
     
     .floating-section {
@@ -933,8 +1376,12 @@ html {
     }
     
     .floating-content {
-        background: transparent !important;
         padding: 40px 30px;
+    }
+    
+    .floating-image {
+        max-width: 500px;
+        margin: 1.5rem auto 2.5rem;
     }
 }
 
@@ -965,6 +1412,15 @@ html {
     
     .hero-description p {
         font-size: 1.2rem !important;
+    }
+    
+    .hero-image {
+        max-width: 95%;
+        margin: 1.5rem auto 2.5rem;
+        border-radius: 12px;
+        box-shadow: 
+            0 15px 35px rgba(0, 0, 0, 0.5),
+            0 5px 20px rgba(0, 102, 255, 0.3);
     }
     
     .hero-actions {
@@ -1015,6 +1471,23 @@ html {
         margin-top: 0 !important;
     }
     
+    .projects-section {
+        padding: 100px 0;
+    }
+    
+    .project-image {
+        height: 220px;
+        margin-bottom: 20px;
+    }
+    
+    .project-title {
+        font-size: 1.4rem;
+    }
+    
+    .project-description {
+        font-size: 1rem;
+    }
+    
     .stats-improved {
         padding: 80px 0;
     }
@@ -1036,6 +1509,48 @@ html {
         font-size: 1rem;
     }
     
+    .services-section {
+        padding: 100px 0;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+    
+    .journals-section {
+        padding: 100px 0;
+    }
+    
+    .journal-item {
+        padding: 25px 0;
+    }
+    
+    .journal-title {
+        font-size: 1.4rem;
+    }
+    
+    .faq-section {
+        padding: 100px 0;
+    }
+    
+    .faq-question {
+        font-size: 1.2rem;
+        padding: 18px 20px;
+    }
+    
+    .faq-answer {
+        padding: 0 20px;
+    }
+    
+    .faq-item.active .faq-answer {
+        padding: 18px 20px;
+    }
+    
+    .faq-answer p {
+        font-size: 1.1rem;
+    }
+    
     .floating-title {
         font-size: 2.2rem;
     }
@@ -1052,8 +1567,13 @@ html {
     }
     
     .floating-content {
-        background: transparent !important;
         padding: 35px 25px;
+    }
+    
+    .floating-image {
+        max-width: 400px;
+        margin: 1rem auto 2rem;
+        border-radius: 12px;
     }
 }
 
@@ -1084,6 +1604,10 @@ html {
     
     .hero-description p {
         font-size: 1.1rem !important;
+    }
+    
+    .hero-image {
+        margin: 0.5rem auto 2rem;
     }
     
     .speck-vertical-section {
@@ -1121,6 +1645,23 @@ html {
         font-size: 1.4rem !important;
     }
     
+    .section-title {
+        font-size: 2.5rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+    
+    .projects-section {
+        padding: 80px 0;
+    }
+    
+    .project-image {
+        height: 200px;
+    }
+    
     .stats-grid-improved {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -1132,6 +1673,26 @@ html {
     
     .stat-number-improved {
         font-size: 3rem;
+    }
+    
+    .services-section {
+        padding: 80px 0;
+    }
+    
+    .journals-section {
+        padding: 80px 0;
+    }
+    
+    .journal-item {
+        padding: 20px 0;
+    }
+    
+    .journal-title {
+        font-size: 1.3rem;
+    }
+    
+    .faq-section {
+        padding: 80px 0;
     }
     
     .floating-section {
@@ -1155,8 +1716,12 @@ html {
     }
     
     .floating-content {
-        background: transparent !important;
         padding: 30px 20px;
+    }
+    
+    .floating-image {
+        max-width: 350px;
+        margin: 0.5rem auto 1.5rem;
     }
 }
 
@@ -1181,6 +1746,10 @@ html {
         padding: 14px 25px;
         font-size: 0.9rem;
         min-width: auto;
+    }
+    
+    .hero-image {
+        margin: 0 auto 1.5rem;
     }
     
     .speck-block-title {
@@ -1210,6 +1779,22 @@ html {
         font-size: 1.3rem !important;
     }
     
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+    }
+    
+    .project-image {
+        height: 180px;
+    }
+    
+    .project-title {
+        font-size: 1.2rem;
+    }
+    
     .stat-card {
         padding: 20px 15px;
     }
@@ -1220,6 +1805,35 @@ html {
     
     .stat-label-improved {
         font-size: 0.9rem;
+    }
+    
+    .service-item {
+        padding: 25px 15px;
+    }
+    
+    .service-item i {
+        font-size: 2.5rem;
+    }
+    
+    .service-item h3 {
+        font-size: 1.2rem;
+    }
+    
+    .journal-title {
+        font-size: 1.2rem;
+    }
+    
+    .faq-question {
+        font-size: 1.1rem;
+        padding: 15px 18px;
+    }
+    
+    .faq-answer {
+        padding: 0 18px;
+    }
+    
+    .faq-item.active .faq-answer {
+        padding: 15px 18px;
     }
     
     .floating-title {
@@ -1238,8 +1852,11 @@ html {
     }
     
     .floating-content {
-        background: transparent !important;
         padding: 25px 15px;
+    }
+    
+    .floating-image {
+        max-width: 300px;
     }
 }
 
@@ -1263,12 +1880,39 @@ html {
         transform: none !important;
     }
     
+    .project-card:hover {
+        transform: none !important;
+    }
+    
+    .project-card:hover .project-image img {
+        transform: none !important;
+    }
+    
+    .service-item:hover {
+        transform: none !important;
+    }
+    
+    .journal-item:hover {
+        transform: none !important;
+    }
+    
+    .journal-link:hover i {
+        transform: none !important;
+    }
+    
     /* Убираем тень текста при prefers-reduced-motion */
     .speck-column-title,
     .speck-feature-item,
     .speck-feature-text,
     .speck-block-title,
-    .speck-block-subtitle {
+    .speck-block-subtitle,
+    .project-title,
+    .project-description,
+    .journal-title,
+    .faq-question,
+    .faq-answer p,
+    .floating-title,
+    .floating-subtitle {
         text-shadow: none !important;
     }
 }
