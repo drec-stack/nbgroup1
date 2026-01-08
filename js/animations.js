@@ -1,5 +1,5 @@
-// Animations controller - SIMPLIFIED VERSION (no mobile menu animations)
-console.log('🚀 Animations.js loaded - SIMPLIFIED VERSION');
+// Animations controller - COMPLETE VERSION with all SPECK DESIGN animations
+console.log('🚀 Animations.js loaded - COMPLETE VERSION WITH SPECK DESIGN ANIMATIONS');
 
 // Safe DOM access utility
 const safeDOM = {
@@ -63,14 +63,19 @@ class NBAnimations {
 
     init() {
         try {
-            console.log('🎬 Initializing animations...');
+            console.log('🎬 Initializing all animations...');
             this.setupScrollAnimations();
             this.setupCounterAnimation();
             this.setupParallax();
             this.setupSpeckBlockAnimations();
             this.setupSpeckColumnHover();
             this.setupSpeckGlowEffects();
-            console.log('✅ Animations initialized successfully');
+            this.setupHeroImageAnimation();
+            this.setupProjectsAnimations();
+            this.setupServicesAnimations();
+            this.setupJournalsAnimations();
+            this.setupFAQAnimations();
+            console.log('✅ All animations initialized successfully');
         } catch (error) {
             console.error('❌ Error in animations init:', error);
         }
@@ -346,62 +351,416 @@ class NBAnimations {
         }
     }
 
-    // Анимация при клике на Speck колонки
-    setupSpeckColumnClick() {
+    // ===== HERO IMAGE ANIMATIONS =====
+    
+    setupHeroImageAnimation() {
         try {
-            const columns = safeDOM.queryAll('.speck-feature-column.clickable-column');
-            
-            columns.forEach(column => {
-                if (!column) return;
+            const heroImage = safeDOM.query('.hero-image');
+            if (heroImage) {
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting && entry.target) {
+                                safeDOM.addClass(entry.target, 'revealed');
+                                
+                                // Анимируем внутреннее изображение
+                                const img = entry.target.querySelector('img');
+                                if (img && img.style) {
+                                    setTimeout(() => {
+                                        img.style.opacity = '1';
+                                        img.style.transform = 'scale(1)';
+                                    }, 200);
+                                }
+                            }
+                        });
+                    },
+                    { threshold: 0.3 }
+                );
                 
-                column.addEventListener('click', (e) => {
+                observer.observe(heroImage);
+                
+                // Добавляем hover эффект
+                heroImage.addEventListener('mouseenter', () => {
                     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                        safeDOM.addClass(column, 'column-clicked');
-                        
-                        // Удаляем класс после анимации
-                        setTimeout(() => {
-                            safeDOM.removeClass(column, 'column-clicked');
-                        }, 300);
-                        
-                        // Показываем эффект нажатия на весь блок
-                        const block = column.closest('.speck-vertical-block');
-                        if (block) {
-                            safeDOM.addClass(block, 'block-clicked');
-                            setTimeout(() => {
-                                safeDOM.removeClass(block, 'block-clicked');
-                            }, 500);
-                        }
+                        safeDOM.addClass(heroImage, 'pulse-glow');
                     }
                 });
-            });
+                
+                heroImage.addEventListener('mouseleave', () => {
+                    safeDOM.removeClass(heroImage, 'pulse-glow');
+                });
+                
+                console.log('✅ Hero image animation initialized');
+            }
         } catch (error) {
-            console.error('❌ Error in speck column click:', error);
+            console.error('❌ Error in hero image animation:', error);
         }
     }
 
-    // Анимация при скролле Speck элементов
-    setupSpeckScrollAnimations() {
+    // ===== PROJECTS ANIMATIONS =====
+    
+    setupProjectsAnimations() {
         try {
-            const featureItems = safeDOM.queryAll('.speck-feature-item');
+            const projectCards = safeDOM.queryAll('.project-card');
             const observer = new IntersectionObserver(
                 (entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting && entry.target) {
-                            safeDOM.addClass(entry.target, 'scroll-animated');
+                            safeDOM.addClass(entry.target, 'revealed');
+                            
+                            // Анимируем изображение
+                            const image = entry.target.querySelector('.project-image img');
+                            if (image && image.style) {
+                                setTimeout(() => {
+                                    image.style.transform = 'scale(1)';
+                                }, 300);
+                            }
+                            
+                            // Анимируем контент
+                            const content = entry.target.querySelector('.project-content');
+                            if (content && content.style) {
+                                setTimeout(() => {
+                                    content.style.opacity = '1';
+                                    content.style.transform = 'translateY(0)';
+                                }, 400);
+                            }
                         }
                     });
                 },
-                {
-                    threshold: 0.2,
-                    rootMargin: '0px 0px -50px 0px'
-                }
+                { threshold: 0.2 }
             );
 
-            featureItems.forEach(item => {
-                if (item) observer.observe(item);
+            projectCards.forEach(card => {
+                if (card) {
+                    // Инициализация начального состояния
+                    const image = card.querySelector('.project-image img');
+                    const content = card.querySelector('.project-content');
+                    
+                    if (image && image.style) {
+                        image.style.transform = 'scale(1.05)';
+                        image.style.transition = 'transform 0.8s ease';
+                    }
+                    
+                    if (content && content.style) {
+                        content.style.opacity = '0';
+                        content.style.transform = 'translateY(20px)';
+                        content.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    }
+                    
+                    observer.observe(card);
+                }
             });
+            
+            console.log(`🎨 Projects animations initialized for ${projectCards.length} cards`);
         } catch (error) {
-            console.error('❌ Error in speck scroll animations:', error);
+            console.error('❌ Error in projects animations:', error);
+        }
+    }
+
+    // ===== SERVICES ANIMATIONS =====
+    
+    setupServicesAnimations() {
+        try {
+            const serviceItems = safeDOM.queryAll('.service-item');
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.target) {
+                            safeDOM.addClass(entry.target, 'revealed');
+                            
+                            // Анимируем иконку
+                            const icon = entry.target.querySelector('i');
+                            if (icon && icon.style) {
+                                setTimeout(() => {
+                                    icon.style.opacity = '1';
+                                    icon.style.transform = 'scale(1) rotate(0deg)';
+                                }, 200);
+                            }
+                            
+                            // Анимируем заголовок
+                            const title = entry.target.querySelector('h3');
+                            if (title && title.style) {
+                                setTimeout(() => {
+                                    title.style.opacity = '1';
+                                    title.style.transform = 'translateY(0)';
+                                }, 300);
+                            }
+                        }
+                    });
+                },
+                { threshold: 0.2 }
+            );
+
+            serviceItems.forEach((item, index) => {
+                if (item) {
+                    // Инициализация начального состояния
+                    const icon = item.querySelector('i');
+                    const title = item.querySelector('h3');
+                    
+                    if (icon && icon.style) {
+                        icon.style.opacity = '0';
+                        icon.style.transform = 'scale(0.5) rotate(-180deg)';
+                        icon.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    }
+                    
+                    if (title && title.style) {
+                        title.style.opacity = '0';
+                        title.style.transform = 'translateY(20px)';
+                        title.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    }
+                    
+                    // Задержка для stagger эффекта
+                    setTimeout(() => {
+                        observer.observe(item);
+                    }, index * 100);
+                    
+                    // Hover эффект
+                    item.addEventListener('mouseenter', () => {
+                        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                            safeDOM.addClass(item, 'hover-animate');
+                        }
+                    });
+                    
+                    item.addEventListener('mouseleave', () => {
+                        safeDOM.removeClass(item, 'hover-animate');
+                    });
+                }
+            });
+            
+            console.log(`⚙️ Services animations initialized for ${serviceItems.length} items`);
+        } catch (error) {
+            console.error('❌ Error in services animations:', error);
+        }
+    }
+
+    // ===== JOURNALS ANIMATIONS =====
+    
+    setupJournalsAnimations() {
+        try {
+            const journalItems = safeDOM.queryAll('.journal-item');
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.target) {
+                            safeDOM.addClass(entry.target, 'revealed');
+                            
+                            // Анимируем дату
+                            const date = entry.target.querySelector('.journal-date');
+                            if (date && date.style) {
+                                setTimeout(() => {
+                                    date.style.opacity = '1';
+                                    date.style.transform = 'translateX(0)';
+                                }, 200);
+                            }
+                            
+                            // Анимируем заголовок
+                            const title = entry.target.querySelector('.journal-title');
+                            if (title && title.style) {
+                                setTimeout(() => {
+                                    title.style.opacity = '1';
+                                    title.style.transform = 'translateX(0)';
+                                }, 300);
+                            }
+                            
+                            // Анимируем ссылку
+                            const link = entry.target.querySelector('.journal-link');
+                            if (link && link.style) {
+                                setTimeout(() => {
+                                    link.style.opacity = '1';
+                                    link.style.transform = 'translateX(0)';
+                                }, 400);
+                            }
+                        }
+                    });
+                },
+                { threshold: 0.2 }
+            );
+
+            journalItems.forEach((item, index) => {
+                if (item) {
+                    // Инициализация начального состояния
+                    const date = item.querySelector('.journal-date');
+                    const title = item.querySelector('.journal-title');
+                    const link = item.querySelector('.journal-link');
+                    
+                    if (date && date.style) {
+                        date.style.opacity = '0';
+                        date.style.transform = 'translateX(-20px)';
+                        date.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    }
+                    
+                    if (title && title.style) {
+                        title.style.opacity = '0';
+                        title.style.transform = 'translateX(-20px)';
+                        title.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    }
+                    
+                    if (link && link.style) {
+                        link.style.opacity = '0';
+                        link.style.transform = 'translateX(-20px)';
+                        link.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    }
+                    
+                    // Задержка для stagger эффекта
+                    setTimeout(() => {
+                        observer.observe(item);
+                    }, index * 150);
+                    
+                    // Hover эффект
+                    item.addEventListener('mouseenter', () => {
+                        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                            safeDOM.addClass(item, 'hover-animate');
+                        }
+                    });
+                    
+                    item.addEventListener('mouseleave', () => {
+                        safeDOM.removeClass(item, 'hover-animate');
+                    });
+                }
+            });
+            
+            console.log(`📰 Journals animations initialized for ${journalItems.length} items`);
+        } catch (error) {
+            console.error('❌ Error in journals animations:', error);
+        }
+    }
+
+    // ===== FAQ ANIMATIONS =====
+    
+    setupFAQAnimations() {
+        try {
+            const faqItems = safeDOM.queryAll('.faq-item');
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.target) {
+                            safeDOM.addClass(entry.target, 'revealed');
+                            
+                            // Анимируем вопрос
+                            const question = entry.target.querySelector('.faq-question');
+                            if (question && question.style) {
+                                setTimeout(() => {
+                                    question.style.opacity = '1';
+                                    question.style.transform = 'translateY(0)';
+                                }, 200);
+                            }
+                        }
+                    });
+                },
+                { threshold: 0.2 }
+            );
+
+            faqItems.forEach((item, index) => {
+                if (item) {
+                    // Инициализация начального состояния
+                    const question = item.querySelector('.faq-question');
+                    const answer = item.querySelector('.faq-answer');
+                    
+                    if (question && question.style) {
+                        question.style.opacity = '0';
+                        question.style.transform = 'translateY(20px)';
+                        question.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    }
+                    
+                    if (answer && answer.style) {
+                        answer.style.transition = 'max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, padding 0.4s ease';
+                    }
+                    
+                    // Задержка для stagger эффекта
+                    setTimeout(() => {
+                        observer.observe(item);
+                    }, index * 100);
+                    
+                    // Настройка клика на вопрос
+                    const questionBtn = item.querySelector('.faq-question');
+                    if (questionBtn) {
+                        questionBtn.addEventListener('click', () => {
+                            // Закрываем все другие открытые вопросы
+                            faqItems.forEach(otherItem => {
+                                if (otherItem !== item && otherItem.classList.contains('active')) {
+                                    safeDOM.removeClass(otherItem, 'active');
+                                    const otherAnswer = otherItem.querySelector('.faq-answer');
+                                    if (otherAnswer) {
+                                        otherAnswer.style.maxHeight = '0';
+                                        otherAnswer.style.paddingTop = '0';
+                                        otherAnswer.style.paddingBottom = '0';
+                                    }
+                                }
+                            });
+                            
+                            // Переключаем текущий вопрос
+                            const isActive = item.classList.contains('active');
+                            if (isActive) {
+                                safeDOM.removeClass(item, 'active');
+                                if (answer) {
+                                    answer.style.maxHeight = '0';
+                                    answer.style.paddingTop = '0';
+                                    answer.style.paddingBottom = '0';
+                                }
+                            } else {
+                                safeDOM.addClass(item, 'active');
+                                if (answer) {
+                                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                                    answer.style.paddingTop = '25px';
+                                    answer.style.paddingBottom = '25px';
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+            
+            // Автоматически открываем первый вопрос
+            if (faqItems.length > 0) {
+                setTimeout(() => {
+                    const firstItem = faqItems[0];
+                    const firstAnswer = firstItem.querySelector('.faq-answer');
+                    safeDOM.addClass(firstItem, 'active');
+                    if (firstAnswer) {
+                        firstAnswer.style.maxHeight = firstAnswer.scrollHeight + 'px';
+                        firstAnswer.style.paddingTop = '25px';
+                        firstAnswer.style.paddingBottom = '25px';
+                    }
+                }, 1500);
+            }
+            
+            console.log(`❓ FAQ animations initialized for ${faqItems.length} items`);
+        } catch (error) {
+            console.error('❌ Error in FAQ animations:', error);
+        }
+    }
+
+    // ===== FLOATING IMAGE ANIMATIONS =====
+    
+    setupFloatingImageAnimation() {
+        try {
+            const floatingImage = safeDOM.query('.floating-image');
+            if (floatingImage) {
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting && entry.target) {
+                                safeDOM.addClass(entry.target, 'revealed');
+                                
+                                // Анимируем изображение
+                                const img = entry.target.querySelector('img');
+                                if (img && img.style) {
+                                    setTimeout(() => {
+                                        img.style.opacity = '1';
+                                        img.style.transform = 'scale(1)';
+                                    }, 200);
+                                }
+                            }
+                        });
+                    },
+                    { threshold: 0.3 }
+                );
+                
+                observer.observe(floatingImage);
+                console.log('✅ Floating image animation initialized');
+            }
+        } catch (error) {
+            console.error('❌ Error in floating image animation:', error);
         }
     }
 
@@ -438,18 +797,20 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
         window.NBAnimations = new NBAnimations();
         
-        // Добавить класс для активации анимаций Speck
+        // Добавить класс для активации всех анимаций
         setTimeout(() => {
             safeDOM.addClass(document.body, 'speck-animations-loaded');
+            safeDOM.addClass(document.body, 'speck-animations-ready');
             
-            // Инициализировать анимации Speck блоков
+            // Инициализировать все анимации
             if (window.NBAnimations && window.NBAnimations.initSpeckAnimations) {
                 window.NBAnimations.initSpeckAnimations();
             }
         }, 1000);
         
-        // Анимация при загрузке страницы для Speck блоков
+        // Анимация при загрузке страницы для всех блоков
         window.addEventListener('load', () => {
+            // Speck блоки
             const speckBlocks = safeDOM.queryAll('.speck-vertical-block');
             speckBlocks.forEach((block, index) => {
                 setTimeout(() => {
@@ -460,6 +821,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }, index * 200);
             });
+            
+            // Project карточки
+            const projectCards = safeDOM.queryAll('.project-card');
+            projectCards.forEach((card, index) => {
+                setTimeout(() => {
+                    if (card && card.style) {
+                        card.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }
+                }, index * 150);
+            });
+            
+            // Service элементы
+            const serviceItems = safeDOM.queryAll('.service-item');
+            serviceItems.forEach((item, index) => {
+                setTimeout(() => {
+                    if (item && item.style) {
+                        item.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }
+                }, index * 100);
+            });
+            
+            console.log('📊 All animations loaded and initialized');
         });
     } catch (error) {
         console.error('❌ Error in DOMContentLoaded for animations:', error);
@@ -656,7 +1043,7 @@ function initSpeckBlockEffects() {
     }
 }
 
-// Initialize all Speck animations on page load
+// Initialize all animations on page load
 document.addEventListener('DOMContentLoaded', function() {
     try {
         // Wait a bit for everything to load
@@ -675,9 +1062,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 safeDOM.addClass(firstBlock, 'visible');
                 safeDOM.addClass(firstBlock, 'full-reveal');
             }
+            
+            console.log('✅ All speck animations initialized');
         }, 500);
     } catch (error) {
-        console.error('❌ Error in speck animations initialization:', error);
+        console.error('❌ Error in animations initialization:', error);
     }
 });
 
@@ -686,7 +1075,7 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     try {
         safeDOM.addClass(document.body, 'reduced-motion');
         
-        // Disable all Speck animations
+        // Disable all animations
         const style = document.createElement('style');
         style.textContent = `
             .speck-vertical-block,
@@ -694,7 +1083,13 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             .speck-feature-item,
             .speck-block-number,
             .speck-block-title,
-            .speck-block-subtitle {
+            .speck-block-subtitle,
+            .hero-image,
+            .project-card,
+            .service-item,
+            .journal-item,
+            .faq-item,
+            .floating-image {
                 animation: none !important;
                 transition: none !important;
                 opacity: 1 !important;
@@ -703,7 +1098,11 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             
             .speck-vertical-block.visible,
             .speck-feature-column,
-            .speck-feature-item {
+            .speck-feature-item,
+            .project-card.revealed,
+            .service-item.revealed,
+            .journal-item.revealed,
+            .faq-item.revealed {
                 opacity: 1 !important;
                 transform: none !important;
             }
@@ -723,4 +1122,15 @@ window.addEventListener('error', function(event) {
     }
 });
 
-console.log('✅ animations.js loaded and ready');
+// Export functions for global use
+window.toggleFAQItem = function(index) {
+    const faqItems = safeDOM.queryAll('.faq-item');
+    if (faqItems[index]) {
+        const questionBtn = faqItems[index].querySelector('.faq-question');
+        if (questionBtn) {
+            questionBtn.click();
+        }
+    }
+};
+
+console.log('✅ animations.js loaded and ready - ALL SPECK DESIGN ANIMATIONS INCLUDED');
