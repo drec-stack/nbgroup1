@@ -177,7 +177,7 @@
         </div>
     </section>
 
-    <!-- Остальная часть кода без изменений -->
+    <!-- Speck Vertical Section -->
     <section class="speck-vertical-section content-section" data-bg-section="1">
         <div class="container">
             <div class="speck-vertical-grid">
@@ -340,7 +340,7 @@
         </div>
     </section>
 
-    <!-- SPECK DESIGN MARQUEE SECTION -->
+    <!-- SPECK DESIGN MARQUEE SECTION с CTA внутри -->
     <section class="speck-marquee-section content-section" data-bg-section="2">
         <div class="container">
             <div class="speck-marquee-wrapper fade-in-up">
@@ -394,6 +394,22 @@
                 <div class="marquee-note fade-in delay-500">
                     <p>Scroll or hover to pause animation</p>
                 </div>
+            </div>
+        </div>
+        
+        <!-- ЭТОТ CTA-БЛОК ВНУТРИ SPEECK MARQUEE СЕКЦИИ - ОСТАВЛЯЕМ! -->
+        <div class="container">
+            <div style="text-align: center; margin-top: 60px;">
+                <div class="marquee-note fade-in delay-500">
+                    <p>МОЛНИЕК</p>
+                </div>
+                <h2 style="color: white; font-size: 3.5rem; margin: 20px 0;">Готовы начать ваш проект?</h2>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.4rem; margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto;">
+                    Обсудим, как мы можем воплотить вашу продуктовую идею в жизнь
+                </p>
+                <a href="contacts.html" style="display: inline-block; background: rgba(0,102,255,0.25); color: white; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.1rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(15px); transition: all 0.3s ease;">
+                    Связаться <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -452,23 +468,21 @@
         </div>
     </section>
 
-    <!-- CTA Section (ОСТАВЛЯЕМ ТОЛЬКО ЭТУ СЕКЦИЮ) -->
-    <a href="contacts.html" class="cta-improved content-section clickable-cta" data-bg-section="3">
+    <!-- ВИСЯЩАЯ СЕКЦИЯ - ЭТУ УДАЛЯЕМ -->
+    <section class="floating-section content-section" data-bg-section="4">
         <div class="container">
-            <div class="cta-content-improved">
-                <div class="cta-text">
-                    <h2 class="fade-in-down" data-i18n="home.cta.title">Готовы начать проект?</h2>
-                    <p class="fade-in-up delay-200" data-i18n="home.cta.description">Давайте обсудим, как мы можем воплотить ваше видение продукта в жизнь</p>
-                </div>
-                <div class="cta-action fade-in-up delay-300">
-                    <div class="btn btn-primary btn-large btn-glow">
-                        <span data-i18n="home.cta.button">Связаться с нами</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
+            <div class="floating-content">
+                <h2 class="floating-title">Готовы начать ваш проект?</h2>
+                <p class="floating-subtitle">
+                    Обсудим, как мы можем воплотить вашу продуктовую идею в жизнь
+                </p>
+                <a href="contacts.html" class="btn btn-primary floating-button">
+                    Связаться
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
-    </a>
+    </section>
 
     <!-- Footer Container -->
     <div id="footer-container"></div>
