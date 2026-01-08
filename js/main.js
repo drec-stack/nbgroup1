@@ -72,12 +72,12 @@ class DaehaaApp {
             '.menu-container'
         ];
         
-        // ДОБАВЛЯЕМ НОВЫЕ СЕЛЕКТОРЫ ДЛЯ МАЛЬЧИСЕ СЕКЦИИ
+        // ДОБАВЛЯЕМ НОВЫЕ СЕЛЕКТОРЫ ДЛЯ READY-СЕКЦИИ
         hiddenSelectors.push(
-            '.malchise-section a:not(.malchise-button)',
-            '.malchise-section button:not(.malchise-button)',
-            '.malchise-section [href]:not(.malchise-button)',
-            '.malchise-section [role="button"]:not(.malchise-button)'
+            '.ready-section a:not(.ready-button)',
+            '.ready-section button:not(.ready-button)',
+            '.ready-section [href]:not(.ready-button)',
+            '.ready-section [role="button"]:not(.ready-button)'
         );
         
         hiddenSelectors.forEach(selector => {
@@ -100,27 +100,27 @@ class DaehaaApp {
         document.removeEventListener('click', this.handleMobileMenuClick);
         document.removeEventListener('keydown', this.handleMobileMenuEscape);
         
-        // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА ДЛЯ МАЛЬЧИСЕ СЕКЦИИ
+        // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА ДЛЯ READY-СЕКЦИИ
         setTimeout(() => {
-            const malchiseSection = document.querySelector('.malchise-section');
-            if (malchiseSection) {
-                console.log('🔍 Checking Malchise section for hidden elements...');
+            const readySection = document.querySelector('.ready-section');
+            if (readySection) {
+                console.log('🔍 Checking Ready section for hidden elements...');
                 
                 // Находим все элементы внутри секции кроме кнопки
-                const allElements = malchiseSection.querySelectorAll('*');
+                const allElements = readySection.querySelectorAll('*');
                 allElements.forEach(el => {
                     // Пропускаем саму кнопку и её дочерние элементы
-                    if (el.classList.contains('malchise-button') || el.closest('.malchise-button')) {
+                    if (el.classList.contains('ready-button') || el.closest('.ready-button')) {
                         return;
                     }
                     
                     // Удаляем все интерактивные элементы кроме кнопки
                     if (
-                        (el.tagName === 'A' && !el.classList.contains('malchise-button')) ||
-                        (el.tagName === 'BUTTON' && !el.classList.contains('malchise-button')) ||
-                        el.getAttribute('href') && !el.classList.contains('malchise-button') ||
+                        (el.tagName === 'A' && !el.classList.contains('ready-button')) ||
+                        (el.tagName === 'BUTTON' && !el.classList.contains('ready-button')) ||
+                        el.getAttribute('href') && !el.classList.contains('ready-button') ||
                         el.getAttribute('onclick') ||
-                        el.getAttribute('role') === 'button' && !el.classList.contains('malchise-button')
+                        el.getAttribute('role') === 'button' && !el.classList.contains('ready-button')
                     ) {
                         el.style.display = 'none';
                         el.style.visibility = 'hidden';
@@ -130,7 +130,7 @@ class DaehaaApp {
                     }
                 });
                 
-                console.log('✅ Malchise section cleaned');
+                console.log('✅ Ready section cleaned');
             }
         }, 100);
         
