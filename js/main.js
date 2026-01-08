@@ -72,12 +72,23 @@ class DaehaaApp {
             '.menu-container'
         ];
         
+        // ДОБАВЛЯЕМ НОВЫЕ СЕЛЕКТОРЫ ДЛЯ МАЛЬЧИСЕ СЕКЦИИ
+        hiddenSelectors.push(
+            '.malchise-section a:not(.malchise-button)',
+            '.malchise-section button:not(.malchise-button)',
+            '.malchise-section [href]:not(.malchise-button)',
+            '.malchise-section [role="button"]:not(.malchise-button)'
+        );
+        
         hiddenSelectors.forEach(selector => {
             const elements = document.querySelectorAll(selector);
             elements.forEach(el => {
                 if (el.parentNode) {
                     console.log(`🗑️ Removing: ${selector}`);
-                    el.parentNode.removeChild(el);
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
                 }
             });
         });
@@ -88,6 +99,40 @@ class DaehaaApp {
         // Удаляем все обработчики событий для этих элементов
         document.removeEventListener('click', this.handleMobileMenuClick);
         document.removeEventListener('keydown', this.handleMobileMenuEscape);
+        
+        // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА ДЛЯ МАЛЬЧИСЕ СЕКЦИИ
+        setTimeout(() => {
+            const malchiseSection = document.querySelector('.malchise-section');
+            if (malchiseSection) {
+                console.log('🔍 Checking Malchise section for hidden elements...');
+                
+                // Находим все элементы внутри секции кроме кнопки
+                const allElements = malchiseSection.querySelectorAll('*');
+                allElements.forEach(el => {
+                    // Пропускаем саму кнопку и её дочерние элементы
+                    if (el.classList.contains('malchise-button') || el.closest('.malchise-button')) {
+                        return;
+                    }
+                    
+                    // Удаляем все интерактивные элементы кроме кнопки
+                    if (
+                        (el.tagName === 'A' && !el.classList.contains('malchise-button')) ||
+                        (el.tagName === 'BUTTON' && !el.classList.contains('malchise-button')) ||
+                        el.getAttribute('href') && !el.classList.contains('malchise-button') ||
+                        el.getAttribute('onclick') ||
+                        el.getAttribute('role') === 'button' && !el.classList.contains('malchise-button')
+                    ) {
+                        el.style.display = 'none';
+                        el.style.visibility = 'hidden';
+                        el.style.opacity = '0';
+                        el.style.pointerEvents = 'none';
+                        console.log(`🗑️ Removed hidden interactive element: ${el.tagName}${el.className ? '.' + el.className : ''}`);
+                    }
+                });
+                
+                console.log('✅ Malchise section cleaned');
+            }
+        }, 100);
         
         console.log('✅ All hidden elements removed');
     }
@@ -1062,4 +1107,3 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log('✅ main.js loaded with NO HIDDEN BUTTONS - ready!');
-
