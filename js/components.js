@@ -31,6 +31,14 @@ class ComponentLoader {
      * Возвращает Promise для синхронизации
      */
     async loadAll() {
+        // Проверяем что DOM доступен
+        if (!document || !document.documentElement) {
+            console.warn('⚠️ DOM not available yet, waiting...');
+            return new Promise(resolve => {
+                setTimeout(() => this.loadAll().then(resolve), 100);
+            });
+        }
+        
         // Если уже загружаем, возвращаем существующий промис
         if (this.isLoading && this.loadingPromise) {
             console.log('⚠️ Компоненты уже загружаются, возвращаем существующий промис');
@@ -84,12 +92,16 @@ class ComponentLoader {
                 console.log('✅ Все компоненты загружены (без повторной инициализации)');
                 
                 // Устанавливаем класс loaded для body
-                document.body.classList.add('components-loaded');
+                if (document.body) {
+                    document.body.classList.add('components-loaded');
+                }
                 
                 // Отправляем событие о завершении загрузки
-                window.dispatchEvent(new CustomEvent('componentsLoaded', {
-                    detail: { components: Array.from(this.loadedComponents) }
-                }));
+                if (window) {
+                    window.dispatchEvent(new CustomEvent('componentsLoaded', {
+                        detail: { components: Array.from(this.loadedComponents) }
+                    }));
+                }
                 
                 // Только для отладки - проверяем состояние
                 this.debugComponents();
@@ -163,6 +175,12 @@ class ComponentLoader {
                 container = document.createElement('div');
                 container.id = component.containerId;
                 container.className = 'component-container';
+                
+                // Проверяем что document.body существует
+                if (!document.body) {
+                    console.error('❌ document.body not available for container creation');
+                    continue;
+                }
                 
                 // Добавляем в правильное место в DOM
                 if (componentName === 'header') {
@@ -241,13 +259,15 @@ class ComponentLoader {
                 container.setAttribute('data-loaded-at', timestamp);
                 
                 // Отправляем событие о загрузке компонента
-                window.dispatchEvent(new CustomEvent('componentLoaded', {
-                    detail: { 
-                        name: componentName,
-                        containerId: component.containerId,
-                        timestamp: timestamp
-                    }
-                }));
+                if (window) {
+                    window.dispatchEvent(new CustomEvent('componentLoaded', {
+                        detail: { 
+                            name: componentName,
+                            containerId: component.containerId,
+                            timestamp: timestamp
+                        }
+                    }));
+                }
                 
             } else {
                 throw new Error(`Контейнер ${component.containerId} не найден после проверки`);
@@ -286,8 +306,8 @@ class ComponentLoader {
                 
                 // Проверяем наличие ключевых элементов
                 if (componentName === 'header') {
-                    const header = container.querySelector('.main-header');
-                    console.log(`    - Найден .main-header: ${!!header}`);
+                    const header = container.querySelector('.main-header') || container.querySelector('header');
+                    console.log(`    - Найден header: ${!!header}`);
                     if (header) {
                         console.log(`    - Позиция: ${header.style.position || 'not set'}`);
                         console.log(`    - Top: ${header.style.top || 'not set'}`);
@@ -382,37 +402,45 @@ class ComponentLoader {
     }
 }
 
-// Глобальный экземпляр загрузчика
-window.componentLoader = new ComponentLoader();
-
-// Глобальная функция для ручной инициализации
-window.initComponents = function() {
-    console.log('🔄 Ручная инициализация компонентов...');
-    return window.componentLoader.loadAll();
-};
-
-// Глобальная функция для перезагрузки компонентов
-window.reloadComponents = function() {
-    return window.componentLoader.reload();
-};
-
-// Глобальная функция для перезагрузки конкретного компонента
-window.reloadComponent = function(componentName) {
-    return window.componentLoader.reloadComponent(componentName);
-};
-
-// Глобальная функция для проверки загрузки компонента
-window.isComponentLoaded = function(componentName) {
-    return window.componentLoader.isComponentLoaded(componentName);
-};
-
-// Глобальная функция для получения статуса
-window.getComponentsStatus = function() {
-    return window.componentLoader.getStatus();
-};
+// Создаем глобальный экземпляр только если window доступен
+if (typeof window !== 'undefined') {
+    window.componentLoader = new ComponentLoader();
+    
+    // Глобальная функция для ручной инициализации
+    window.initComponents = function() {
+        console.log('🔄 Ручная инициализация компонентов...');
+        return window.componentLoader.loadAll();
+    };
+    
+    // Глобальная функция для перезагрузки компонентов
+    window.reloadComponents = function() {
+        return window.componentLoader.reload();
+    };
+    
+    // Глобальная функция для перезагрузки конкретного компонента
+    window.reloadComponent = function(componentName) {
+        return window.componentLoader.reloadComponent(componentName);
+    };
+    
+    // Глобальная функция для проверки загрузки компонента
+    window.isComponentLoaded = function(componentName) {
+        return window.componentLoader.isComponentLoaded(componentName);
+    };
+    
+    // Глобальная функция для получения статуса
+    window.getComponentsStatus = function() {
+        return window.componentLoader.getStatus();
+    };
+}
 
 // Автоматическая загрузка компонентов при готовности DOM
 (function initComponentsOnDOMReady() {
+    // Проверяем что window и document доступны
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+        console.warn('⚠️ window or document not available, skipping component loader');
+        return;
+    }
+    
     // Проверяем, готов ли DOM
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
@@ -420,64 +448,77 @@ window.getComponentsStatus = function() {
             
             // Небольшая задержка для гарантии что DOM полностью готов
             setTimeout(() => {
-                window.componentLoader.loadAll().catch(error => {
-                    console.error('❌ Не удалось загрузить компоненты:', error);
-                });
+                if (window.componentLoader) {
+                    window.componentLoader.loadAll().catch(error => {
+                        console.error('❌ Не удалось загрузить компоненты:', error);
+                    });
+                }
             }, 100);
         });
     } else {
         // DOM уже готов
         console.log('📄 DOM already loaded - loading components...');
         setTimeout(() => {
-            window.componentLoader.loadAll().catch(error => {
-                console.error('❌ Не удалось загрузить компоненты:', error);
-            });
+            if (window.componentLoader) {
+                window.componentLoader.loadAll().catch(error => {
+                    console.error('❌ Не удалось загрузить компоненты:', error);
+                });
+            }
         }, 100);
     }
 })();
 
 // Также пробуем загрузить когда страница полностью загружена
-window.addEventListener('load', function() {
-    console.log('🌐 Page fully loaded - checking components...');
-    
-    // Проверяем, все ли компоненты загружены
-    const status = window.componentLoader.getStatus();
-    if (!status.initialized || !status.loadedComponents.includes('header') || !status.loadedComponents.includes('footer')) {
-        console.log('⚠️ Компоненты не были загружены при DOM ready, пытаемся сейчас...');
-        setTimeout(() => {
-            window.componentLoader.loadAll().catch(error => {
-                console.error('❌ Не удалось загрузить компоненты:', error);
-            });
-        }, 500);
-    } else {
-        console.log('✅ Все компоненты уже загружены');
-    }
-});
-
-// Обработка ошибок загрузки
-window.addEventListener('error', function(e) {
-    if (e.target && (e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT')) {
-        const src = e.target.src || e.target.href;
-        if (src && src.includes('components/')) {
-            console.error('❌ Ошибка загрузки компонента:', src);
-            // Пробуем перезагрузить
-            setTimeout(() => {
-                window.componentLoader.reload().catch(err => {
-                    console.error('❌ Не удалось перезагрузить компоненты:', err);
-                });
-            }, 2000);
+if (typeof window !== 'undefined') {
+    window.addEventListener('load', function() {
+        console.log('🌐 Page fully loaded - checking components...');
+        
+        if (!window.componentLoader) {
+            console.warn('⚠️ componentLoader not available');
+            return;
         }
-    }
-});
+        
+        // Проверяем, все ли компоненты загружены
+        const status = window.componentLoader.getStatus();
+        if (!status.initialized || !status.loadedComponents.includes('header') || !status.loadedComponents.includes('footer')) {
+            console.log('⚠️ Компоненты не были загружены при DOM ready, пытаемся сейчас...');
+            setTimeout(() => {
+                window.componentLoader.loadAll().catch(error => {
+                    console.error('❌ Не удалось загрузить компоненты:', error);
+                });
+            }, 500);
+        } else {
+            console.log('✅ Все компоненты уже загружены');
+        }
+    });
+    
+    // Обработка ошибок загрузки
+    window.addEventListener('error', function(e) {
+        if (e.target && (e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT')) {
+            const src = e.target.src || e.target.href;
+            if (src && src.includes('components/')) {
+                console.error('❌ Ошибка загрузки компонента:', src);
+                // Пробуем перезагрузить
+                setTimeout(() => {
+                    if (window.componentLoader) {
+                        window.componentLoader.reload().catch(err => {
+                            console.error('❌ Не удалось перезагрузить компоненты:', err);
+                        });
+                    }
+                }, 2000);
+            }
+        }
+    });
+}
 
 // Экспорт для модулей
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         ComponentLoader,
-        initComponents: window.initComponents,
-        reloadComponents: window.reloadComponents,
-        reloadComponent: window.reloadComponent,
-        isComponentLoaded: window.isComponentLoaded,
-        getComponentsStatus: window.getComponentsStatus
+        initComponents: typeof window !== 'undefined' ? window.initComponents : null,
+        reloadComponents: typeof window !== 'undefined' ? window.reloadComponents : null,
+        reloadComponent: typeof window !== 'undefined' ? window.reloadComponent : null,
+        isComponentLoaded: typeof window !== 'undefined' ? window.isComponentLoaded : null,
+        getComponentsStatus: typeof window !== 'undefined' ? window.getComponentsStatus : null
     };
 }
