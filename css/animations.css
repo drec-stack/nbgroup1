@@ -1,300 +1,66 @@
-/* animations.css - COMPREHENSIVE ANIMATIONS LIBRARY (С ДОБАВЛЕННЫМИ АНИМАЦИЯМИ ДЛЯ SPECK DESIGN) */
+/* animations.css - ПОЛНАЯ ВЕРСИЯ АНИМАЦИЙ ДЛЯ SPECK DESIGN БЛОКОВ */
 
+/* ===== CSS ПЕРЕМЕННЫЕ ===== */
 :root {
-    --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
-    --ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    /* Тайминги анимаций */
+    --duration-fast: 0.3s;
+    --duration-normal: 0.6s;
+    --duration-slow: 1s;
+    --duration-very-slow: 1.5s;
     
-    --animation-duration-fast: 0.3s;
-    --animation-duration-normal: 0.6s;
-    --animation-duration-slow: 1s;
+    /* Кривые Безье */
+    --ease-linear: cubic-bezier(0, 0, 1, 1);
+    --ease-in: cubic-bezier(0.42, 0, 1, 1);
+    --ease-out: cubic-bezier(0, 0, 0.58, 1);
+    --ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+    --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
+    --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
 }
 
-/* ===== SMOOTH HEADER HIDE ANIMATIONS ===== */
-.header-hide-smooth {
-    transform: translateY(-100%);
-    opacity: 0;
-    visibility: hidden;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.4s ease, 
-                visibility 0.5s linear;
-    pointer-events: none;
-    box-shadow: none !important;
-}
+/* ===== БАЗОВЫЕ АНИМАЦИИ ПОЯВЛЕНИЯ ===== */
 
-.header-show-smooth {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.4s ease 0.1s, 
-                visibility 0s linear;
-    pointer-events: auto;
-}
-
-.header-minimized {
-    padding: 12px 0 !important;
-    background: rgba(0, 102, 255, 0.25) !important;
-    backdrop-filter: blur(20px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-}
-
-@keyframes headerSlideDown {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.header-slide-down {
-    animation: headerSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.header-glow-appear {
-    animation: headerGlowAppear 0.6s ease forwards;
-}
-
-@keyframes headerGlowAppear {
-    0% {
-        transform: translateY(-30px);
-        opacity: 0;
-        box-shadow: 0 0 0 rgba(0, 102, 255, 0);
-    }
-    70% {
-        transform: translateY(5px);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(0);
-        box-shadow: 0 8px 32px rgba(0, 102, 255, 0.18);
-    }
-}
-
-/* ===== BASE ANIMATION SETTINGS ===== */
-* {
-    animation-duration: var(--animation-duration-normal);
-    animation-fill-mode: both;
-}
-
-/* ===== GLASS EFFECT ANIMATIONS ===== */
-.glass-effect {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
-    transition: all 0.4s ease;
-}
-
-.glass-effect:hover {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 
-        0 8px 32px rgba(0, 102, 255, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.glass-fade-in {
-    animation: glassFadeIn 0.6s ease forwards;
-}
-
-@keyframes glassFadeIn {
+/* 1. Fade In - простое появление */
+@keyframes fadeIn {
     0% {
         opacity: 0;
-        transform: translateY(-20px);
-        backdrop-filter: blur(0);
     }
     100% {
         opacity: 1;
-        transform: translateY(0);
-        backdrop-filter: blur(10px);
     }
 }
 
-.header-glass-enter {
-    animation: headerGlassEnter 0.6s ease forwards;
-}
-
-@keyframes headerGlassEnter {
-    0% {
-        opacity: 0;
-        transform: translateY(-30px);
-        backdrop-filter: blur(0);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-        backdrop-filter: blur(16px);
-    }
-}
-
-.header-glass-exit {
-    animation: headerGlassExit 0.4s ease forwards;
-}
-
-@keyframes headerGlassExit {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
-        backdrop-filter: blur(16px);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-30px);
-        backdrop-filter: blur(0);
-    }
-}
-
-.frost-effect {
-    position: relative;
-    overflow: hidden;
-}
-
-.frost-effect::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: inherit;
-    z-index: -1;
-    pointer-events: none;
-}
-
-.glass-morph {
-    animation: glassMorph 6s ease-in-out infinite;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-@keyframes glassMorph {
-    0%, 100% {
-        opacity: 0.8;
-    }
-    50% {
-        opacity: 1;
-    }
-}
-
-/* ===== SCROLL REVEAL ANIMATIONS ===== */
-.reveal-element {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s var(--ease-out-quad);
-}
-
-.reveal-element.revealed {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.reveal-left {
-    opacity: 0;
-    transform: translateX(-50px);
-    transition: all 0.8s var(--ease-out-quad);
-}
-
-.reveal-left.revealed {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.reveal-right {
-    opacity: 0;
-    transform: translateX(50px);
-    transition: all 0.8s var(--ease-out-quad);
-}
-
-.reveal-right.revealed {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.reveal-scale {
-    opacity: 0;
-    transform: scale(0.9);
-    transition: all 0.8s var(--ease-out-back);
-}
-
-.reveal-scale.revealed {
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* ===== TEXT ANIMATIONS ===== */
-.text-reveal {
-    overflow: hidden;
-}
-
-.text-reveal .char {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(100%);
-    animation: textRevealUp 0.8s var(--ease-out-expo) forwards;
-}
-
-@keyframes textRevealUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.title-word {
-    display: inline-block;
-    overflow: hidden;
-}
-
-.title-word .word-char {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(100%);
-    animation: charReveal 0.6s var(--ease-out-expo) forwards;
-}
-
-@keyframes charReveal {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ===== FADE ANIMATIONS ===== */
 .fade-in {
     opacity: 0;
-    animation: fadeIn 0.8s var(--ease-out-quad) forwards;
+    animation: fadeIn var(--duration-normal) var(--ease-out) forwards;
 }
 
-.fade-in-delay {
-    opacity: 0;
-    animation: fadeIn 0.8s var(--ease-out-quad) 0.3s forwards;
-}
-
-@keyframes fadeIn {
-    to {
+/* 2. Fade In Up - появление снизу */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
         opacity: 1;
+        transform: translateY(0);
     }
 }
 
 .fade-in-up {
     opacity: 0;
     transform: translateY(30px);
-    animation: fadeInUp 0.8s var(--ease-out-quad) forwards;
+    animation: fadeInUp var(--duration-normal) var(--ease-out) forwards;
 }
 
-@keyframes fadeInUp {
-    to {
+/* 3. Fade In Down - появление сверху */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
         opacity: 1;
         transform: translateY(0);
     }
@@ -303,24 +69,34 @@
 .fade-in-down {
     opacity: 0;
     transform: translateY(-30px);
-    animation: fadeInDown 0.8s var(--ease-out-quad) forwards;
+    animation: fadeInDown var(--duration-normal) var(--ease-out) forwards;
 }
 
-@keyframes fadeInDown {
-    to {
+/* 4. Fade In Left - появление слева */
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    100% {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
 
 .fade-in-left {
     opacity: 0;
     transform: translateX(-50px);
-    animation: fadeInLeft 0.8s var(--ease-out-quad) forwards;
+    animation: fadeInLeft var(--duration-normal) var(--ease-out) forwards;
 }
 
-@keyframes fadeInLeft {
-    to {
+/* 5. Fade In Right - появление справа */
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    100% {
         opacity: 1;
         transform: translateX(0);
     }
@@ -329,106 +105,31 @@
 .fade-in-right {
     opacity: 0;
     transform: translateX(50px);
-    animation: fadeInRight 0.8s var(--ease-out-quad) forwards;
+    animation: fadeInRight var(--duration-normal) var(--ease-out) forwards;
 }
 
-@keyframes fadeInRight {
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
+/* ===== ЗАДЕРЖКИ ДЛЯ АНИМАЦИЙ ===== */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-800 { animation-delay: 0.8s; }
+.delay-900 { animation-delay: 0.9s; }
+.delay-1000 { animation-delay: 1s; }
 
-/* ===== SLIDE ANIMATIONS ===== */
-.slide-up {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s var(--ease-out-quad);
-}
+/* ===== МАСШТАБИРОВАНИЕ ===== */
 
-.slide-up.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.slide-down {
-    opacity: 0;
-    transform: translateY(-50px);
-    transition: all 0.8s var(--ease-out-quad);
-}
-
-.slide-down.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.slide-left {
-    opacity: 0;
-    transform: translateX(50px);
-    transition: all 0.8s var(--ease-out-quad);
-}
-
-.slide-left.animate-in {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.slide-right {
-    opacity: 0;
-    transform: translateX(-50px);
-    transition: all 0.8s var(--ease-out-quad);
-}
-
-.slide-right.animate-in {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* ===== ZOOM & SCALE ANIMATIONS ===== */
-.zoom-in {
-    opacity: 0;
-    transform: scale(0.8);
-    animation: zoomIn 0.8s var(--ease-out-back) forwards;
-}
-
-@keyframes zoomIn {
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.zoom-out {
-    opacity: 0;
-    transform: scale(1.2);
-    animation: zoomOut 0.8s var(--ease-out-quad) forwards;
-}
-
-@keyframes zoomOut {
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* ===== BOUNCE ANIMATIONS ===== */
-.bounce-in {
-    opacity: 0;
-    transform: scale(0.3);
-    animation: bounceIn 0.8s var(--ease-out-back) forwards;
-}
-
-@keyframes bounceIn {
+/* 6. Scale In - увеличение */
+@keyframes scaleIn {
     0% {
         opacity: 0;
-        transform: scale(0.3);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.05);
+        transform: scale(0.8);
     }
     70% {
-        transform: scale(0.9);
+        transform: scale(1.05);
     }
     100% {
         opacity: 1;
@@ -436,88 +137,121 @@
     }
 }
 
-/* ===== FLIP ANIMATIONS ===== */
-.flip-in-x {
+.scale-in {
     opacity: 0;
-    transform: perspective(1000px) rotateX(90deg);
-    animation: flipInX 0.8s var(--ease-out-back) forwards;
+    transform: scale(0.8);
+    animation: scaleIn var(--duration-normal) var(--ease-out-back) forwards;
 }
 
-@keyframes flipInX {
-    to {
+/* 7. Scale Out - уменьшение */
+@keyframes scaleOut {
+    0% {
+        opacity: 0;
+        transform: scale(1.2);
+    }
+    100% {
         opacity: 1;
-        transform: perspective(1000px) rotateX(0);
+        transform: scale(1);
     }
 }
 
-.flip-in-y {
+.scale-out {
     opacity: 0;
-    transform: perspective(1000px) rotateY(90deg);
-    animation: flipInY 0.8s var(--ease-out-back) forwards;
+    transform: scale(1.2);
+    animation: scaleOut var(--duration-normal) var(--ease-out) forwards;
 }
 
-@keyframes flipInY {
-    to {
+/* 8. Scale In Rotate - увеличение с вращением */
+@keyframes scaleInRotate {
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(-180deg);
+    }
+    100% {
         opacity: 1;
-        transform: perspective(1000px) rotateY(0);
+        transform: scale(1) rotate(0);
     }
 }
 
-/* ===== ROTATE ANIMATIONS ===== */
-.rotate-in {
+.scale-in-rotate {
     opacity: 0;
-    transform: rotate(-180deg) scale(0.5);
-    animation: rotateIn 0.8s var(--ease-out-back) forwards;
+    animation: scaleInRotate var(--duration-slow) var(--ease-out-back) forwards;
 }
 
+/* ===== ВРАЩЕНИЕ ===== */
+
+/* 9. Rotate In - вращение при появлении */
 @keyframes rotateIn {
-    to {
+    0% {
+        opacity: 0;
+        transform: rotate(-180deg) scale(0.5);
+    }
+    100% {
         opacity: 1;
         transform: rotate(0) scale(1);
     }
 }
 
-.spin-slow {
-    animation: spin 20s linear infinite;
+.rotate-in {
+    opacity: 0;
+    animation: rotateIn var(--duration-normal) var(--ease-out-back) forwards;
 }
 
-.spin-medium {
-    animation: spin 8s linear infinite;
-}
-
-.spin-fast {
-    animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-    from {
+/* 10. Continuous Rotate - непрерывное вращение */
+@keyframes continuousRotate {
+    0% {
         transform: rotate(0deg);
     }
-    to {
+    100% {
         transform: rotate(360deg);
     }
 }
 
-/* ===== PULSE & GLOW ANIMATIONS ===== */
-.pulse {
-    animation: pulse 2s var(--ease-in-out-quad) infinite;
+.rotate-slow {
+    animation: continuousRotate 20s linear infinite;
 }
 
+.rotate-medium {
+    animation: continuousRotate 8s linear infinite;
+}
+
+.rotate-fast {
+    animation: continuousRotate 2s linear infinite;
+}
+
+/* ===== ПУЛЬСАЦИЯ ===== */
+
+/* 11. Pulse - пульсация */
 @keyframes pulse {
     0%, 100% {
-        transform: scale(1);
         opacity: 1;
+        transform: scale(1);
     }
     50% {
-        transform: scale(1.05);
         opacity: 0.8;
+        transform: scale(1.05);
     }
 }
 
-.pulse-glow {
-    animation: pulseGlow 3s var(--ease-in-out-quad) infinite;
+.pulse {
+    animation: pulse 2s var(--ease-in-out) infinite;
 }
 
+/* 12. Pulse Strong - сильная пульсация */
+@keyframes pulseStrong {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.pulse-strong {
+    animation: pulseStrong 1.5s var(--ease-in-out) infinite;
+}
+
+/* 13. Pulse Glow - пульсирующее свечение */
 @keyframes pulseGlow {
     0%, 100% {
         box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
@@ -527,228 +261,1051 @@
     }
 }
 
-.glow {
-    animation: glow 2s var(--ease-in-out-quad) infinite alternate;
+.pulse-glow {
+    animation: pulseGlow 3s var(--ease-in-out) infinite;
 }
 
-@keyframes glow {
+/* ===== ПАРАЛЛАКС ===== */
+
+/* 14. Parallax Move - движение параллакса */
+@keyframes parallaxMove {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-30px);
+    }
+}
+
+.parallax-move {
+    animation: parallaxMove 20s var(--ease-in-out) infinite alternate;
+}
+
+/* 15. Float - плавание */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.float {
+    animation: float 6s var(--ease-in-out) infinite;
+}
+
+/* ===== ТЕКСТОВЫЕ АНИМАЦИИ ===== */
+
+/* 16. Typewriter - печатная машинка */
+@keyframes typewriter {
     from {
-        filter: drop-shadow(0 0 10px rgba(0, 102, 255, 0.5));
+        width: 0;
     }
     to {
-        filter: drop-shadow(0 0 20px rgba(0, 102, 255, 0.8));
+        width: 100%;
     }
 }
 
-/* ===== TYPEWRITER EFFECT ===== */
+@keyframes blinkCaret {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #0066ff;
+    }
+}
+
 .typewriter {
     overflow: hidden;
-    border-right: 2px solid #0066ff;
+    border-right: 3px solid #0066ff;
     white-space: nowrap;
-    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+    animation: 
+        typewriter 3.5s steps(40, end) forwards,
+        blinkCaret 0.75s step-end infinite;
 }
 
-@keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-}
-
-@keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: #0066ff }
-}
-
-/* ===== COUNTER ANIMATIONS ===== */
-.counter {
-    animation: countUp 2s var(--ease-out-quad) forwards;
-}
-
-.counter-animate {
-    animation: pulse 0.5s var(--ease-out-back);
-}
-
-@keyframes countUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+/* 17. Text Reveal - раскрытие текста */
+@keyframes textReveal {
+    0% {
+        clip-path: inset(0 100% 0 0);
     }
-    to {
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+.text-reveal {
+    animation: textReveal 1.5s var(--ease-out) forwards;
+}
+
+/* ===== ГРАДИЕНТНЫЕ АНИМАЦИИ ===== */
+
+/* 18. Gradient Flow - течение градиента */
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.gradient-flow {
+    background: linear-gradient(90deg, #0066ff, #66b5ff, #0066ff);
+    background-size: 200% 200%;
+    animation: gradientFlow 3s linear infinite;
+}
+
+/* 19. Gradient Shift - сдвиг градиента */
+@keyframes gradientShift {
+    0% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.8;
+    }
+}
+
+.gradient-shift {
+    animation: gradientShift 4s var(--ease-in-out) infinite;
+}
+
+/* ===== БЛОКИ SPECK DESIGN - СПЕЦИАЛЬНЫЕ АНИМАЦИИ ===== */
+
+/* 20. Project Card Reveal - появление карточки проекта */
+@keyframes projectCardReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95) rotateX(10deg);
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1.02) rotateX(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotateX(0);
+    }
+}
+
+.project-card.fade-in-up {
+    animation: projectCardReveal 1s var(--ease-out-back) forwards;
+}
+
+/* 21. Project Card Hover - наведение на карточку проекта */
+@keyframes projectCardHover {
+    0% {
+        transform: translateY(0) rotateX(0);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        transform: translateY(-10px) rotateX(5deg);
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.4),
+            0 15px 30px rgba(0, 102, 255, 0.2);
+    }
+}
+
+.project-card:hover {
+    animation: projectCardHover 0.4s var(--ease-out-back) forwards;
+}
+
+/* 22. Project Image Load - загрузка изображения проекта */
+@keyframes projectImageLoad {
+    0% {
+        opacity: 0;
+        filter: blur(10px);
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: scale(1);
+    }
+}
+
+.project-image img.loaded {
+    animation: projectImageLoad 0.8s var(--ease-out-expo) forwards;
+}
+
+/* 23. Project Category Pulse - пульсация категории проекта */
+@keyframes projectCategoryPulse {
+    0%, 100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05) translateY(-2px);
+        opacity: 0.9;
+    }
+}
+
+.project-card:hover .project-category {
+    animation: projectCategoryPulse 1.5s var(--ease-in-out) infinite;
+}
+
+/* 24. Service Card Reveal - появление карточки услуги */
+@keyframes serviceCardReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) rotateX(10deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+}
+
+.service-item.fade-in-up {
+    animation: serviceCardReveal 0.7s var(--ease-out-back) forwards;
+}
+
+/* 25. Service Icon Float - плавание иконки услуги */
+@keyframes serviceIconFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0);
+    }
+    25% {
+        transform: translateY(-5px) rotate(-3deg);
+    }
+    75% {
+        transform: translateY(3px) rotate(3deg);
+    }
+}
+
+.service-item:hover .service-icon {
+    animation: serviceIconFloat 2s var(--ease-in-out) infinite;
+}
+
+/* 26. Service Border Glow - свечение границы услуги */
+@keyframes serviceBorderGlow {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.service-item:hover::before {
+    animation: serviceBorderGlow 2s var(--ease-in-out) infinite;
+}
+
+/* 27. Journal Item Reveal - появление статьи журнала */
+@keyframes journalItemReveal {
+    0% {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.journal-item.fade-in-up {
+    animation: journalItemReveal 0.8s var(--ease-out-back) forwards;
+}
+
+/* 28. Journal Border Reveal - появление левой границы */
+@keyframes journalBorderReveal {
+    0% {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+.journal-item:hover::before {
+    animation: journalBorderReveal 0.6s var(--ease-out-expo) forwards;
+}
+
+/* 29. Journal Link Arrow - анимация стрелки ссылки */
+@keyframes journalLinkArrow {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.journal-link:hover i {
+    animation: journalLinkArrow 1s var(--ease-in-out) infinite;
+}
+
+/* 30. FAQ Item Reveal - появление вопроса FAQ */
+@keyframes faqItemReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    100% {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-/* ===== BUTTON ANIMATIONS ===== */
-.btn-hover-scale {
-    transition: all 0.3s var(--ease-out-back);
+.faq-item.fade-in-up {
+    animation: faqItemReveal 0.6s var(--ease-out-back) forwards;
 }
 
-.btn-hover-scale:hover {
-    transform: translateY(-2px) scale(1.05);
-}
-
-.btn-hover-glow {
-    transition: all 0.3s var(--ease-out-quad);
-}
-
-.btn-hover-glow:hover {
-    box-shadow: 0 8px 25px rgba(0, 102, 255, 0.3);
-    transform: translateY(-2px);
-}
-
-.btn-loading {
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-loading::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0.2);
-    animation: loadingShimmer 1.5s infinite;
-}
-
-@keyframes loadingShimmer {
+/* 31. FAQ Answer Expand - раскрытие ответа */
+@keyframes faqAnswerExpand {
+    0% {
+        max-height: 0;
+        opacity: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
     100% {
-        left: 100%;
+        max-height: 2000px;
+        opacity: 1;
+        padding-bottom: 30px;
     }
 }
 
-/* ===== CARD ANIMATIONS ===== */
-.card-reveal {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    transition: all 0.6s var(--ease-out-back);
+.faq-item.active .faq-answer {
+    animation: faqAnswerExpand 0.5s var(--ease-out-expo) forwards;
 }
 
-.card-reveal.revealed {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-
-.card-hover-lift {
-    transition: all 0.4s var(--ease-out-back);
-}
-
-.card-hover-lift:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-.card-hover-glow {
-    transition: all 0.4s var(--ease-out-quad);
-}
-
-.card-hover-glow:hover {
-    box-shadow: 0 10px 30px rgba(0, 102, 255, 0.2);
-    border-color: #0066ff;
-}
-
-/* ===== GRADIENT ANIMATIONS ===== */
-.gradient-shift {
-    background: rgba(0, 102, 255, 0.8);
-    animation: gradientShift 8s ease infinite;
-}
-
-@keyframes gradientShift {
-    0% { opacity: 0.8; }
-    50% { opacity: 1; }
-    100% { opacity: 0.8; }
-}
-
-.gradient-flow {
-    background: rgba(0, 102, 255, 0.8);
-    animation: gradientFlow 3s linear infinite;
-}
-
-@keyframes gradientFlow {
-    0% { opacity: 0.5; }
-    50% { opacity: 1; }
-    100% { opacity: 0.5; }
-}
-
-/* ===== LOADING ANIMATIONS ===== */
-.loading-dots {
-    display: inline-flex;
-    gap: 4px;
-}
-
-.loading-dots span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #0066ff;
-    animation: loadingDots 1.4s ease-in-out infinite both;
-}
-
-.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
-.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
-.loading-dots span:nth-child(3) { animation-delay: 0s; }
-
-@keyframes loadingDots {
-    0%, 80%, 100% {
-        transform: scale(0);
-        opacity: 0.5;
+/* 32. FAQ Icon Rotate - вращение иконки FAQ */
+@keyframes faqIconRotate {
+    0% {
+        transform: rotate(0deg);
     }
-    40% {
+    100% {
+        transform: rotate(45deg);
+    }
+}
+
+.faq-item.active .faq-question i {
+    animation: faqIconRotate 0.3s var(--ease-out-back) forwards;
+}
+
+/* 33. CTA Image Reveal - появление CTA изображения */
+@keyframes ctaImageReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.9) rotate(-1deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+.floating-image.fade-in-up {
+    animation: ctaImageReveal 1s var(--ease-out-back) forwards;
+}
+
+/* 34. CTA Title Gradient - анимация градиента заголовка */
+@keyframes ctaTitleGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.floating-title {
+    background-size: 200% auto;
+    animation: ctaTitleGradient 4s var(--ease-in-out) infinite;
+}
+
+/* 35. CTA Button Glow - свечение кнопки CTA */
+@keyframes ctaButtonGlow {
+    0%, 100% {
+        box-shadow: 
+            0 10px 30px rgba(0, 102, 255, 0.3),
+            0 0 20px rgba(0, 102, 255, 0.1);
+    }
+    50% {
+        box-shadow: 
+            0 15px 40px rgba(0, 102, 255, 0.4),
+            0 0 30px rgba(0, 102, 255, 0.2);
+    }
+}
+
+.floating-button {
+    animation: ctaButtonGlow 3s var(--ease-in-out) infinite;
+}
+
+/* 36. Checkmark Pulse - пульсация галочки */
+@keyframes checkmarkPulse {
+    0%, 100% {
         transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.feature i {
+    animation: checkmarkPulse 2s var(--ease-in-out) infinite;
+}
+
+/* 37. Section Divider Grow - рост разделителя */
+@keyframes sectionDividerGrow {
+    0% {
+        width: 0;
+        opacity: 0;
+    }
+    100% {
+        width: 80px;
         opacity: 1;
     }
 }
 
-.loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(0, 102, 255, 0.2);
-    border-top: 3px solid #0066ff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+.section-title::after {
+    animation: sectionDividerGrow 1s var(--ease-out-expo) 0.5s forwards;
 }
 
-/* ===== STAGGERED ANIMATIONS ===== */
-.stagger-item {
+/* 38. Glass Background Appear - появление стеклянного фона */
+@keyframes glassBackgroundAppear {
+    0% {
+        backdrop-filter: blur(0);
+        background: rgba(15, 15, 15, 0);
+    }
+    100% {
+        backdrop-filter: blur(20px);
+        background: rgba(15, 15, 15, 0.85);
+    }
+}
+
+.speck-design-section {
+    animation: glassBackgroundAppear 0.8s var(--ease-out-expo) forwards;
+}
+
+/* 39. Block Gradient Shift - сдвиг градиента блока */
+@keyframes blockGradientShift {
+    0% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+.speck-design-section::before {
+    background-size: 400% 400%;
+    animation: blockGradientShift 15s var(--ease-in-out) infinite;
+}
+
+/* ===== АНИМАЦИИ КОНТЕНТА ВНУТРИ БЛОКОВ ===== */
+
+/* 40. Content Fade In - появление контента */
+@keyframes contentFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Проектные карточки */
+.project-content > * {
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s var(--ease-out-quad);
+    animation: contentFadeIn var(--duration-normal) var(--ease-out) forwards;
 }
 
-.stagger-item.animate-in {
-    opacity: 1;
-    transform: translateY(0);
+.project-title { animation-delay: 0.1s; }
+.project-description { animation-delay: 0.2s; }
+.project-meta { animation-delay: 0.3s; }
+
+/* Карточки услуг */
+.service-item > *:not(.service-icon) {
+    opacity: 0;
+    animation: contentFadeIn var(--duration-normal) var(--ease-out) forwards;
 }
 
-/* ===== PARALLAX EFFECTS ===== */
-.parallax-element {
-    transition: transform 0.1s linear;
-    will-change: transform;
+.service-item h3 { animation-delay: 0.1s; }
+.service-description { animation-delay: 0.2s; }
+.service-features { animation-delay: 0.3s; }
+
+/* Статьи журналов */
+.journal-item > * {
+    opacity: 0;
+    animation: contentFadeIn var(--duration-normal) var(--ease-out) forwards;
 }
 
-/* ===== HOVER EFFECTS ===== */
-.hover-shake:hover {
-    animation: shake 0.5s var(--ease-out-quad);
+.journal-header { animation-delay: 0.1s; }
+.journal-title { animation-delay: 0.2s; }
+.journal-excerpt { animation-delay: 0.3s; }
+.journal-footer { animation-delay: 0.4s; }
+
+/* 41. List Item Appear - появление элементов списка */
+@keyframes listItemAppear {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
+.service-features li {
+    opacity: 0;
+    animation: listItemAppear 0.4s var(--ease-out) forwards;
+}
+
+.service-features li:nth-child(1) { animation-delay: 0.4s; }
+.service-features li:nth-child(2) { animation-delay: 0.5s; }
+.service-features li:nth-child(3) { animation-delay: 0.6s; }
+
+/* 42. Meta Fade In - появление мета-данных */
+@keyframes metaFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.project-year,
+.project-tag {
+    opacity: 0;
+    animation: metaFadeIn 0.5s var(--ease-out) forwards;
+}
+
+.project-year { animation-delay: 0.4s; }
+.project-tag { animation-delay: 0.5s; }
+
+/* 43. Category Fade In - появление категории */
+@keyframes categoryFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-5px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.journal-category {
+    opacity: 0;
+    animation: categoryFadeIn 0.5s var(--ease-out-back) forwards;
+    animation-delay: 0.5s;
+}
+
+/* 44. Read Time Fade In - появление времени чтения */
+@keyframes readTimeFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.journal-read-time {
+    opacity: 0;
+    animation: readTimeFadeIn 0.5s var(--ease-out) forwards;
+    animation-delay: 0.6s;
+}
+
+/* 45. FAQ Hint Fade In - появление подсказки */
+@keyframes faqHintFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.faq-question-hint {
+    opacity: 0;
+    animation: faqHintFadeIn 0.5s var(--ease-out) forwards;
+    animation-delay: 0.1s;
+}
+
+/* 46. Design Step Appear - появление шагов дизайн-мышления */
+@keyframes stepAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step {
+    opacity: 0;
+    animation: stepAppear 0.6s var(--ease-out) forwards;
+}
+
+.step:nth-child(1) { animation-delay: 0.1s; }
+.step:nth-child(2) { animation-delay: 0.2s; }
+.step:nth-child(3) { animation-delay: 0.3s; }
+.step:nth-child(4) { animation-delay: 0.4s; }
+.step:nth-child(5) { animation-delay: 0.5s; }
+
+/* 47. Service Point Appear - появление точек обслуживания */
+@keyframes servicePointAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.service-point {
+    opacity: 0;
+    animation: servicePointAppear 0.5s var(--ease-out) forwards;
+}
+
+.service-point:nth-child(1) { animation-delay: 0.1s; }
+.service-point:nth-child(2) { animation-delay: 0.2s; }
+.service-point:nth-child(3) { animation-delay: 0.3s; }
+.service-point:nth-child(4) { animation-delay: 0.4s; }
+
+/* 48. FAQ Details Appear - появление деталей FAQ */
+@keyframes faqDetailsAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.faq-details {
+    opacity: 0;
+    animation: faqDetailsAppear 0.6s var(--ease-out) forwards;
+}
+
+/* 49. Contact Link Float - плавание ссылки контакта */
+@keyframes contactLinkFloat {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(3px);
+    }
+}
+
+.faq-contact .text-link:hover i {
+    animation: contactLinkFloat 1s var(--ease-in-out) infinite;
+}
+
+/* 50. Feature Appear - появление фич CTA */
+@keyframes featureAppear {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.feature {
+    opacity: 0;
+    animation: featureAppear 0.5s var(--ease-out) forwards;
+}
+
+.feature:nth-child(1) { animation-delay: 0.1s; }
+.feature:nth-child(2) { animation-delay: 0.2s; }
+.feature:nth-child(3) { animation-delay: 0.3s; }
+
+/* 51. CTA Actions Appear - появление действий CTA */
+@keyframes ctaActionsAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.floating-actions {
+    opacity: 0;
+    animation: ctaActionsAppear 0.6s var(--ease-out-back) forwards;
+    animation-delay: 0.4s;
+}
+
+/* 52. CTA Border Appear - появление верхней границы CTA */
+@keyframes ctaBorderAppear {
+    0% {
+        width: 0;
+        left: 50%;
+    }
+    100% {
+        width: 100%;
+        left: 0;
+    }
+}
+
+.floating-content::before {
+    animation: ctaBorderAppear 0.8s var(--ease-out-expo) 0.3s forwards;
+}
+
+/* 53. CTA Shadow Appear - появление тени CTA */
+@keyframes ctaShadowAppear {
+    0% {
+        box-shadow: 
+            0 0 0 rgba(0, 0, 0, 0),
+            0 0 0 rgba(0, 102, 255, 0);
+    }
+    100% {
+        box-shadow: 
+            0 30px 60px rgba(0, 0, 0, 0.4),
+            0 15px 35px rgba(0, 102, 255, 0.2);
+    }
+}
+
+.floating-content {
+    animation: ctaShadowAppear 0.8s var(--ease-out-expo) forwards;
+}
+
+/* 54. Subtitle Appear - появление подзаголовка */
+@keyframes subtitleAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-subtitle {
+    opacity: 0;
+    animation: subtitleAppear 0.6s var(--ease-out) forwards;
+    animation-delay: 0.3s;
+}
+
+/* 55. Block Load - загрузка блока */
+@keyframes blockLoad {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.speck-design-section {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: blockLoad 1s var(--ease-out-expo) forwards;
+}
+
+/* Задержки для последовательной загрузки блоков */
+.projects-section { animation-delay: 0.1s; }
+.services-section { animation-delay: 0.2s; }
+.journals-section { animation-delay: 0.3s; }
+.faq-section { animation-delay: 0.4s; }
+.floating-section { animation-delay: 0.5s; }
+
+/* ===== АНИМАЦИИ ДЛЯ КНОПОК ===== */
+
+/* 56. Button Click - клик по кнопке */
+@keyframes buttonClick {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.btn:active {
+    animation: buttonClick 0.2s var(--ease-out) forwards;
+}
+
+/* 57. Button Hover Wave - волна при наведении */
+@keyframes buttonHoverWave {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.btn:hover::before {
+    animation: buttonHoverWave 0.6s var(--ease-out) forwards;
+}
+
+/* ===== АНИМАЦИИ ДЛЯ ИКОНОК ===== */
+
+/* 58. Icon Bounce - отскок иконки */
+@keyframes iconBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.icon-bounce {
+    animation: iconBounce 1s var(--ease-in-out) infinite;
+}
+
+/* 59. Icon Spin - вращение иконки */
+@keyframes iconSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.icon-spin {
+    animation: iconSpin 1s linear infinite;
+}
+
+/* ===== АНИМАЦИИ ДЛЯ ПРОГРЕСС-БАРА ===== */
+
+/* 60. Progress Fill - заполнение прогресса */
+@keyframes progressFill {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+.progress-fill {
+    animation: progressFill 2s var(--ease-out) forwards;
+}
+
+/* ===== СПЕЦИАЛЬНЫЕ ЭФФЕКТЫ ===== */
+
+/* 61. Shake - тряска */
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
 }
 
-.hover-wiggle:hover {
-    animation: wiggle 0.5s var(--ease-out-back);
+.shake {
+    animation: shake 0.5s var(--ease-out) forwards;
 }
 
+/* 62. Wiggle - покачивание */
 @keyframes wiggle {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-5deg); }
-    75% { transform: rotate(5deg); }
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-3deg);
+    }
+    75% {
+        transform: rotate(3deg);
+    }
 }
 
-/* ===== ACCESSIBILITY & PERFORMANCE ===== */
+.wiggle {
+    animation: wiggle 0.5s var(--ease-out) forwards;
+}
+
+/* 63. Bounce - отскок */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.bounce {
+    animation: bounce 0.5s var(--ease-out) forwards;
+}
+
+/* 64. Flip - переворот */
+@keyframes flip {
+    0% {
+        transform: perspective(400px) rotateY(0);
+    }
+    100% {
+        transform: perspective(400px) rotateY(180deg);
+    }
+}
+
+.flip {
+    animation: flip 0.6s var(--ease-out) forwards;
+}
+
+/* ===== АНИМАЦИИ ЗАГРУЗКИ ===== */
+
+/* 65. Loading Dots - точки загрузки */
+@keyframes loadingDots {
+    0%, 100% {
+        opacity: 0.2;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.loading-dot {
+    animation: loadingDots 1.4s infinite;
+}
+
+.loading-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loading-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* 66. Loading Spinner - спиннер загрузки */
+@keyframes loadingSpinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-spinner {
+    animation: loadingSpinner 1s linear infinite;
+}
+
+/* 67. Skeleton Pulse - пульсация скелетона */
+@keyframes skeletonPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.skeleton {
+    animation: skeletonPulse 1.5s var(--ease-in-out) infinite;
+}
+
+/* ===== УТИЛИТЫ ДЛЯ АНИМАЦИЙ ===== */
+
+/* Контроль видимости */
+.animated-element {
+    opacity: 0;
+}
+
+.animated-element.visible {
+    opacity: 1;
+}
+
+/* Управление fill-mode */
+.animate-fill-both {
+    animation-fill-mode: both;
+}
+
+.animate-fill-forwards {
+    animation-fill-mode: forwards;
+}
+
+.animate-fill-backwards {
+    animation-fill-mode: backwards;
+}
+
+.animate-fill-none {
+    animation-fill-mode: none;
+}
+
+/* Управление направлением */
+.animate-direction-normal {
+    animation-direction: normal;
+}
+
+.animate-direction-reverse {
+    animation-direction: reverse;
+}
+
+.animate-direction-alternate {
+    animation-direction: alternate;
+}
+
+.animate-direction-alternate-reverse {
+    animation-direction: alternate-reverse;
+}
+
+/* Управление воспроизведением */
+.animate-play-running {
+    animation-play-state: running;
+}
+
+.animate-play-paused {
+    animation-play-state: paused;
+}
+
+/* Ускорение аппаратного рендеринга */
+.hardware-accelerated {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* ===== ПОДДЕРЖКА REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -756,50 +1313,212 @@
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
     
     /* Отключаем все анимации */
-    .pulse, .pulse-glow, .glow, .spin-slow, .spin-medium, .spin-fast {
-        animation: none !important;
-    }
-    
-    .loading-spinner, .loading-dots span {
-        animation: none !important;
-    }
-    
-    .header-hide-smooth,
-    .header-show-smooth,
-    .header-minimized,
-    .header-slide-down,
-    .header-glow-appear {
-        transition: none !important;
-        animation: none !important;
-    }
-}
-
-@media (prefers-contrast: high) {
+    .fade-in,
+    .fade-in-up,
+    .fade-in-down,
+    .fade-in-left,
+    .fade-in-right,
+    .scale-in,
+    .scale-out,
+    .scale-in-rotate,
+    .rotate-in,
+    .rotate-slow,
+    .rotate-medium,
+    .rotate-fast,
+    .pulse,
+    .pulse-strong,
     .pulse-glow,
-    .glow {
-        animation: none;
+    .parallax-move,
+    .float,
+    .typewriter,
+    .text-reveal,
+    .gradient-flow,
+    .gradient-shift,
+    .project-card.fade-in-up,
+    .service-item.fade-in-up,
+    .journal-item.fade-in-up,
+    .faq-item.fade-in-up,
+    .floating-image.fade-in-up,
+    .floating-button,
+    .checkmark-pulse,
+    .section-title::after,
+    .glass-background-appear,
+    .block-gradient-shift,
+    .content-fade-in,
+    .list-item-appear,
+    .meta-fade-in,
+    .category-fade-in,
+    .read-time-fade-in,
+    .faq-hint-fade-in,
+    .step-appear,
+    .service-point-appear,
+    .faq-details-appear,
+    .contact-link-float,
+    .feature-appear,
+    .cta-actions-appear,
+    .cta-border-appear,
+    .cta-shadow-appear,
+    .subtitle-appear,
+    .block-load,
+    .button-click,
+    .button-hover-wave,
+    .icon-bounce,
+    .icon-spin,
+    .progress-fill,
+    .shake,
+    .wiggle,
+    .bounce,
+    .flip,
+    .loading-dots,
+    .loading-spinner,
+    .skeleton-pulse {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    /* Устанавливаем финальные состояния */
+    .fade-in,
+    .fade-in-up,
+    .fade-in-down,
+    .fade-in-left,
+    .fade-in-right,
+    .scale-in,
+    .scale-out,
+    .scale-in-rotate,
+    .rotate-in,
+    .project-card.fade-in-up,
+    .service-item.fade-in-up,
+    .journal-item.fade-in-up,
+    .faq-item.fade-in-up,
+    .floating-image.fade-in-up {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    /* Убираем hover эффекты */
+    .project-card:hover,
+    .service-item:hover,
+    .journal-item:hover,
+    .faq-item:hover {
+        animation: none !important;
+        transform: none !important;
+    }
+    
+    /* Убираем внутренние анимации */
+    .project-card:hover .project-category,
+    .service-item:hover .service-icon,
+    .journal-link:hover i,
+    .faq-item.active .faq-question i,
+    .feature i,
+    .floating-title,
+    .section-title::after,
+    .speck-design-section::before,
+    .floating-content::before {
+        animation: none !important;
+    }
+    
+    /* Устанавливаем финальные состояния контента */
+    .project-content > *,
+    .service-item > *,
+    .journal-item > *,
+    .faq-answer > *,
+    .service-features li,
+    .project-year,
+    .project-tag,
+    .journal-category,
+    .journal-read-time,
+    .faq-question-hint,
+    .step,
+    .service-point,
+    .faq-details,
+    .feature,
+    .floating-actions,
+    .section-subtitle,
+    .speck-design-section {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    /* Фиксируем состояния FAQ */
+    .faq-answer {
+        transition: none !important;
+    }
+    
+    .faq-item.active .faq-answer {
+        max-height: 2000px;
+        padding-bottom: 30px;
+    }
+    
+    .faq-item.active .faq-question i {
+        transform: rotate(45deg);
+    }
+    
+    /* Убираем все задержки */
+    .delay-100,
+    .delay-200,
+    .delay-300,
+    .delay-400,
+    .delay-500,
+    .delay-600,
+    .delay-700,
+    .delay-800,
+    .delay-900,
+    .delay-1000,
+    .project-title,
+    .project-description,
+    .project-meta,
+    .service-item h3,
+    .service-description,
+    .service-features,
+    .service-features li:nth-child(1),
+    .service-features li:nth-child(2),
+    .service-features li:nth-child(3),
+    .project-year,
+    .project-tag,
+    .journal-category,
+    .journal-read-time,
+    .step:nth-child(1),
+    .step:nth-child(2),
+    .step:nth-child(3),
+    .step:nth-child(4),
+    .step:nth-child(5),
+    .service-point:nth-child(1),
+    .service-point:nth-child(2),
+    .service-point:nth-child(3),
+    .service-point:nth-child(4),
+    .feature:nth-child(1),
+    .feature:nth-child(2),
+    .feature:nth-child(3),
+    .projects-section,
+    .services-section,
+    .journals-section,
+    .faq-section,
+    .floating-section {
+        animation-delay: 0s !important;
+    }
+    
+    /* Отключаем градиентные анимации */
+    .gradient-flow,
+    .floating-title {
+        animation: none !important;
+        background: #0066ff !important;
+    }
+    
+    /* Отключаем стеклянный эффект для производительности */
+    .speck-design-section {
+        backdrop-filter: none !important;
+        background: rgba(15, 15, 15, 0.95) !important;
     }
 }
 
-/* ===== ANIMATION UTILITY CLASSES ===== */
-.animation-delay-100 { animation-delay: 0.1s; }
-.animation-delay-200 { animation-delay: 0.2s; }
-.animation-delay-300 { animation-delay: 0.3s; }
-.animation-delay-400 { animation-delay: 0.4s; }
-.animation-delay-500 { animation-delay: 0.5s; }
+/* ===== ОПТИМИЗАЦИЯ ПРОИЗВОДИТЕЛЬНОСТИ ===== */
 
-.animation-duration-fast { animation-duration: var(--animation-duration-fast); }
-.animation-duration-normal { animation-duration: var(--animation-duration-normal); }
-.animation-duration-slow { animation-duration: var(--animation-duration-slow); }
-
-.animation-fill-both { animation-fill-mode: both; }
-.animation-fill-forwards { animation-fill-mode: forwards; }
-.animation-fill-backwards { animation-fill-mode: backwards; }
-
-/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+/* Для элементов с анимациями */
 .will-change-transform {
     will-change: transform;
 }
@@ -812,1643 +1531,62 @@
     will-change: transform, opacity;
 }
 
-.hardware-accelerate {
-    transform: translate3d(0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    perspective: 1000;
+/* Отключение анимаций при скролле */
+.no-animation-on-scroll {
+    animation-play-state: paused;
 }
 
-/* ===== SMOOTH LANGUAGE TRANSITION ANIMATIONS ===== */
-.language-changing {
-    opacity: 0.7;
-    transform: translateY(10px);
-    transition: all 0.3s ease-in-out;
-}
-
-.language-changed {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.4s ease-in-out;
-}
-
-.language-switcher {
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.lang-btn {
-    transition: all 0.2s ease;
-    position: relative;
-}
-
-.lang-btn.active {
-    font-weight: 600;
-    color: #0066ff;
-}
-
-.lang-btn:hover:not(.active) {
-    transform: translateY(-1px);
-    opacity: 0.8;
-}
-
-[data-i18n] {
-    transition: opacity 0.3s ease !important; /* Уменьшаем время перехода */
-}
-
-.language-changing [data-i18n] {
-    opacity: 0.95 !important; /* Почти не видно разницы */
-    color: inherit !important;
-}
-
-.language-changed [data-i18n] {
-    opacity: 1 !important;
-    color: inherit !important;
-}
-
-/* ОСОБЫЙ ФИКС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
-.home-page [data-i18n] {
-    opacity: 1 !important;
-    transition: none !important;
-}
-
-.home-page.language-changing [data-i18n],
-.home-page.language-changed [data-i18n] {
-    opacity: 1 !important;
-    transition: none !important;
-}
-
-.language-changed [data-i18n]:nth-child(1) { transition-delay: 0.05s; }
-.language-changed [data-i18n]:nth-child(2) { transition-delay: 0.1s; }
-.language-changed [data-i18n]:nth-child(3) { transition-delay: 0.15s; }
-.language-changed [data-i18n]:nth-child(4) { transition-delay: 0.2s; }
-.language-changed [data-i18n]:nth-child(5) { transition-delay: 0.25s; }
-
-.language-transition-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0066ff;
-    z-index: 9999;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-.language-changing .language-transition-overlay {
-    opacity: 0.8;
-    pointer-events: all;
-}
-
-.language-changing main,
-.language-changing body > *:not(.parallax-bg-container):not(.scroll-progress) {
-    opacity: 0.4;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-}
-
-.language-changed main,
-.language-changed body > *:not(.parallax-bg-container):not(.scroll-progress) {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.language-switcher {
-    position: relative;
-    display: inline-flex;
-    padding: 4px;
-    border-radius: 30px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
-}
-
-.language-switcher:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-.lang-btn {
-    position: relative;
-    padding: 8px 16px;
-    border: none;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-    font-weight: 500;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 1;
-    min-width: 60px;
-    text-align: center;
-}
-
-.lang-btn.active {
-    color: white;
-    font-weight: 600;
-}
-
-.lang-btn:not(.active):hover {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.language-switcher::before {
-    content: '';
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    width: calc(50% - 4px);
-    height: calc(100% - 8px);
-    background: rgba(0, 122, 255, 0.3);
-    border-radius: 20px;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    z-index: 0;
-}
-
-.language-switcher[data-current-lang="en"]::before {
-    transform: translateX(100%);
-}
-
-/* ===== АНИМАЦИИ ДЛЯ КЛИКАБЕЛЬНЫХ ЭЛЕМЕНТОВ ===== */
-.ripple {
-    position: relative;
-    overflow: hidden;
-}
-
-.ripple::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.6);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%);
-    transform-origin: 50% 50%;
-}
-
-.ripple:focus:not(:active)::after {
-    animation: ripple-animation 0.6s ease-out;
-}
-
-@keyframes ripple-animation {
-    0% {
-        transform: scale(0, 0);
-        opacity: 0.5;
-    }
-    100% {
-        transform: scale(20, 20);
-        opacity: 0;
-    }
-}
-
-.pulse-attention {
-    animation: pulse-attention 2s infinite;
-}
-
-@keyframes pulse-attention {
-    0%, 100% {
-        box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(0, 102, 255, 0);
-    }
-}
-
-.lift-on-hover {
-    transition: transform 0.3s var(--ease-out-back);
-}
-
-.lift-on-hover:hover {
-    transform: translateY(-5px);
-}
-
-.press-animation {
-    transition: transform 0.1s ease;
-}
-
-.press-animation:active {
-    transform: scale(0.95);
-}
-
-.link-reveal {
-    position: relative;
-    overflow: hidden;
-}
-
-.link-reveal::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: currentColor;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
-
-.link-reveal:hover::after {
-    transform: translateX(0);
-}
-
-.arrow-animate i {
-    transition: transform 0.3s ease;
-}
-
-.arrow-animate:hover i {
-    transform: translateX(5px);
-}
-
-.card-stagger {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: cardStagger 0.6s var(--ease-out-back) forwards;
-}
-
-@keyframes cardStagger {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.card-stagger:nth-child(1) { animation-delay: 0.1s; }
-.card-stagger:nth-child(2) { animation-delay: 0.2s; }
-.card-stagger:nth-child(3) { animation-delay: 0.3s; }
-.card-stagger:nth-child(4) { animation-delay: 0.4s; }
-.card-stagger:nth-child(5) { animation-delay: 0.5s; }
-.card-stagger:nth-child(6) { animation-delay: 0.6s; }
-
-.highlight-transition {
-    animation: highlightTransition 2s ease;
-}
-
-@keyframes highlightTransition {
-    0%, 100% {
-        background: transparent;
-    }
-    50% {
-        background: rgba(0, 102, 255, 0.1);
-    }
-}
-
-.progress-grow {
-    animation: progressGrow 0.3s ease;
-}
-
-@keyframes progressGrow {
-    from {
-        width: 0;
-    }
-    to {
-        width: var(--progress-width);
-    }
-}
-
-.lang-slider {
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.mobile-menu-toggle span {
-    transition: all 0.3s ease;
-}
-
-.mobile-menu-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(6px, 6px);
-}
-
-.mobile-menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.mobile-menu-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(6px, -6px);
-}
-
-.mobile-menu-overlay {
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.reveal-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s var(--ease-out-quad);
-}
-
-.reveal-on-scroll.revealed {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* ===== ENHANCED SPECK ANIMATIONS ===== */
-.speck-vertical-block.scroll-animated {
-    animation: speckBlockFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes speckBlockFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.speck-feature-column.stagger-animate {
-    animation: speckColumnStagger 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes speckColumnStagger {
-    from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.speck-feature-column:nth-child(1) { animation-delay: 0.1s; }
-.speck-feature-column:nth-child(2) { animation-delay: 0.2s; }
-
-@keyframes iconBounce {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(5px); }
-}
-
-.speck-feature-item:hover .speck-feature-icon {
-    animation: iconBounce 0.3s ease;
-}
-
-@keyframes titlePulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-.speck-feature-column:hover .speck-column-title {
-    animation: titlePulse 0.5s ease;
-}
-
-/* ===== ENHANCED SPECK BLOCK ANIMATIONS ===== */
-
-/* УЛУЧШЕННЫЕ АНИМАЦИИ ДЛЯ ЦИФР */
-@keyframes speckNumberAppear {
-    0% {
-        opacity: 0;
-        transform: translateX(-30px) scale(0.8);
-    }
-    60% {
-        opacity: 1;
-        transform: translateX(10px) scale(1.1);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
-}
-
-@keyframes speckNumberGlow {
-    0%, 100% {
-        text-shadow: 
-            0 0 15px rgba(0, 102, 255, 0.4),
-            0 0 30px rgba(0, 102, 255, 0.2);
-    }
-    50% {
-        text-shadow: 
-            0 0 25px rgba(0, 102, 255, 0.8),
-            0 0 50px rgba(0, 102, 255, 0.4);
-    }
-}
-
-.speck-block-number.animate-in {
-    animation: 
-        speckNumberAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
-        speckNumberGlow 3s ease-in-out infinite 0.8s;
-}
-
-@keyframes speckTitleAppear {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.speck-block-title.animate-in {
-    animation: speckTitleAppear 0.8s ease 0.2s forwards;
-}
-
-@keyframes speckSubtitleAppear {
-    0% {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.speck-block-subtitle.animate-in {
-    animation: speckSubtitleAppear 0.8s ease 0.4s forwards;
-}
-
-@keyframes speckFeatureItemAppear {
-    0% {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-    60% {
-        opacity: 1;
-        transform: translateX(5px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.speck-feature-item.animate-in {
-    animation: speckFeatureItemAppear 0.6s ease forwards;
-}
-
-.speck-feature-item:nth-child(1) { animation-delay: 0.1s; }
-.speck-feature-item:nth-child(2) { animation-delay: 0.2s; }
-.speck-feature-item:nth-child(3) { animation-delay: 0.3s; }
-.speck-feature-item:nth-child(4) { animation-delay: 0.4s; }
-
-@keyframes speckBorderAppear {
-    0% {
-        height: 0;
-        opacity: 0;
-    }
-    100% {
-        height: 100%;
-        opacity: 1;
-    }
-}
-
-.speck-block-right.animate-border::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -3px;
-    width: 3px;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    animation: speckBorderAppear 1s ease forwards;
-    border-radius: 2px;
-}
-
-@keyframes speckDividerAppear {
-    0% {
-        width: 0;
-        opacity: 0;
-    }
-    100% {
-        width: calc(100% - 320px);
-        opacity: 1;
-    }
-}
-
-.speck-vertical-block:not(:last-child)::before {
-    animation: speckDividerAppear 0.8s ease 0.6s forwards;
-}
-
-@keyframes speckColumnHover {
-    0% {
-        transform: translateY(0) scale(1);
-        box-shadow: 
-            0 5px 15px rgba(0, 0, 0, 0.1),
-            0 2px 8px rgba(0, 102, 255, 0.05);
-    }
-    100% {
-        transform: translateY(-15px) scale(1.02);
-        box-shadow: 
-            0 30px 60px rgba(0, 0, 0, 0.4),
-            0 15px 30px rgba(0, 102, 255, 0.2),
-            0 0 40px rgba(0, 102, 255, 0.1);
-    }
-}
-
-.speck-feature-column.hover-animate {
-    animation: speckColumnHover 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes speckUnderlineExpand {
-    0% {
-        width: 0;
-    }
-    100% {
-        width: 120px;
-    }
-}
-
-.speck-block-subtitle.animate-underline::after {
-    animation: speckUnderlineExpand 0.8s ease 0.8s forwards;
-}
-
-@keyframes speckArrowPulse {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(5px);
-    }
-}
-
-.speck-feature-icon.animate-pulse {
-    animation: speckArrowPulse 1s infinite;
-}
-
-@keyframes speckBlockReveal {
-    0% {
-        opacity: 0;
-        transform: translateY(80px);
-    }
-    70% {
-        opacity: 1;
-        transform: translateY(-10px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.speck-vertical-block.full-reveal {
-    animation: speckBlockReveal 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes speckBackgroundGlow {
-    0%, 100% {
-        opacity: 0.1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.2;
-        transform: scale(1.02);
-    }
-}
-
-.speck-vertical-block.glow-animate::after {
-    animation: speckBackgroundGlow 3s infinite;
-}
-
-@keyframes speckBlockClick {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(0.99);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.speck-vertical-block.block-clicked {
-    animation: speckBlockClick 0.5s ease;
-}
-
-/* Анимация для заголовков колонок */
-@keyframes speckColumnTitleHover {
-    0% {
-        transform: translateX(0);
-        color: inherit;
-    }
-    100% {
-        transform: translateX(10px);
-        color: #ffffff;
-    }
-}
-
-.speck-feature-column:hover .speck-column-title {
-    animation: speckColumnTitleHover 0.3s ease forwards;
-}
-
-/* Анимация для элементов списка при наведении */
-@keyframes speckListItemHover {
-    0% {
-        transform: translateX(0);
-        color: rgba(255, 255, 255, 0.9);
-    }
-    100% {
-        transform: translateX(15px);
-        color: #ffffff;
-    }
-}
-
-.speck-feature-item:hover {
-    animation: speckListItemHover 0.3s ease forwards;
-}
-
-/* Анимация для иконок при наведении */
-@keyframes speckIconHover {
-    0% {
-        transform: translateX(0) scale(1);
-        color: #0066ff;
-    }
-    100% {
-        transform: translateX(8px) scale(1.2);
-        color: #66b5ff;
-    }
-}
-
-.speck-feature-item:hover .speck-feature-icon {
-    animation: speckIconHover 0.3s ease forwards;
-}
-
-/* Плавная анимация появления цифры линии */
-.speck-block-number {
-    --line-width: 80px;
-    position: relative;
-}
-
-.speck-block-number::after {
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    width: var(--line-width);
-}
-
-.speck-vertical-block:hover .speck-block-number {
-    --line-width: 150px;
-}
-
-/* Анимация для видимого состояния */
-.speck-vertical-block.visible {
-    animation: speckBlockFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes speckBlockFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(60px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Анимация для колонок при появлении */
-.speck-feature-column.scroll-animated {
-    animation: speckColumnStagger 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes speckColumnStagger {
-    from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Анимация для статистики */
-@keyframes statCardReveal {
-    0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.9);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.stat-card.animate-in {
-    animation: statCardReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Анимация для CTA секции */
-@keyframes ctaPulseGlow {
-    0%, 100% {
-        box-shadow: 
-            0 15px 35px rgba(0, 102, 255, 0.4),
-            0 5px 15px rgba(0, 102, 255, 0.2);
-    }
-    50% {
-        box-shadow: 
-            0 20px 45px rgba(0, 102, 255, 0.6),
-            0 8px 25px rgba(0, 102, 255, 0.3),
-            0 0 80px rgba(0, 102, 255, 0.1);
-    }
-}
-
-.cta-improved.animate-glow {
-    animation: ctaPulseGlow 3s ease-in-out infinite;
-}
-
-/* Анимация для героя при загрузке */
-@keyframes heroContentReveal {
-    0% {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.hero .parallax-content > * {
-    animation: heroContentReveal 0.8s ease forwards;
-}
-
-.hero h1 { animation-delay: 0.2s; }
-.hero-subtitle { animation-delay: 0.4s; }
-.hero-description { animation-delay: 0.6s; }
-.hero-actions { animation-delay: 0.8s; }
-
-/* Плавная анимация для всего содержимого секции */
-.content-section.animate-section {
-    animation: sectionReveal 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes sectionReveal {
-    from {
-        opacity: 0;
-        transform: translateY(60px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Анимация для стек эффекта в цифрах */
-@keyframes stackEffect {
-    0% {
-        transform: translateY(0);
-        opacity: 0.8;
-    }
-    50% {
-        transform: translateY(-5px);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 0.8;
-    }
-}
-
-.speck-vertical-block:hover .speck-block-number {
-    animation: 
-        speckNumberGlow 2s infinite,
-        stackEffect 3s ease-in-out infinite;
-}
-
-/* Анимация плавающих элементов */
-@keyframes floatAnimation {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.float-element {
-    animation: floatAnimation 3s ease-in-out infinite;
-}
-
-/* Анимация градиентного фона */
-@keyframes gradientBackground {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.gradient-animate {
-    background: linear-gradient(135deg, #0066ff, #66b5ff, #99ccff, #0066ff);
-    background-size: 400% 400%;
-    animation: gradientBackground 8s ease infinite;
-}
-
-/* Анимация для иконок при загрузке */
-@keyframes iconReveal {
-    0% {
-        opacity: 0;
-        transform: scale(0) rotate(-180deg);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1) rotate(0);
-    }
-}
-
-.stat-icon.animate-in {
-    animation: iconReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-/* Плавное появление тени */
-@keyframes shadowReveal {
-    from {
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-    }
-    to {
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    }
-}
-
-.shadow-animate {
-    animation: shadowReveal 0.8s ease forwards;
-}
-
-/* Анимация волны для разделителей */
-@keyframes waveAnimation {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-}
-
-.wave-effect {
-    animation: waveAnimation 20s linear infinite;
-}
-
-/* Анимация для акцентных элементов */
-@keyframes accentPulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.1);
-        opacity: 0.8;
-    }
-}
-
-.accent-pulse {
-    animation: accentPulse 2s ease-in-out infinite;
-}
-
-/* Анимация для текстовых выделений */
-@keyframes textHighlight {
-    0% {
-        background-position: -100% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
-}
-
-.text-highlight {
-    background: linear-gradient(90deg, 
-        transparent 0%, 
-        rgba(0, 102, 255, 0.2) 25%, 
-        rgba(0, 102, 255, 0.4) 50%, 
-        rgba(0, 102, 255, 0.2) 75%, 
-        transparent 100%
-    );
-    background-size: 200% 100%;
-    animation: textHighlight 3s linear infinite;
-}
-
-/* ===== HERO IMAGE ANIMATIONS ===== */
-@keyframes heroImageReveal {
-    0% {
-        opacity: 0;
-        transform: perspective(1000px) rotateX(5deg) translateY(30px) scale(0.95);
-    }
-    70% {
-        opacity: 1;
-        transform: perspective(1000px) rotateX(1deg) translateY(0) scale(1);
-    }
-    100% {
-        opacity: 1;
-        transform: perspective(1000px) rotateX(1deg) translateY(0) scale(1);
-    }
-}
-
-.hero-image.fade-in-up {
-    animation: heroImageReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes imageGlow {
-    0%, 100% {
-        box-shadow: 
-            0 25px 50px rgba(0, 0, 0, 0.5),
-            0 10px 30px rgba(0, 102, 255, 0.3);
-    }
-    50% {
-        box-shadow: 
-            0 30px 60px rgba(0, 0, 0, 0.6),
-            0 15px 40px rgba(0, 102, 255, 0.4),
-            0 0 80px rgba(0, 102, 255, 0.2);
-    }
-}
-
-.hero-image.pulse-glow {
-    animation: imageGlow 3s ease-in-out infinite;
-}
-
-@keyframes projectCardReveal {
-    0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.project-card.fade-in-up {
-    animation: projectCardReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes serviceItemReveal {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.service-item.fade-in-up {
-    animation: serviceItemReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes journalItemReveal {
-    0% {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.journal-item.fade-in-up {
-    animation: journalItemReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes faqItemReveal {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.faq-item.fade-in-up {
-    animation: faqItemReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes floatingImageReveal {
-    0% {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.floating-image.fade-in-up {
-    animation: floatingImageReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* ===== PROJECTS ANIMATIONS ===== */
-@keyframes projectImageHover {
-    0% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(1.1);
-    }
-}
-
-.project-card:hover .project-image img {
-    animation: projectImageHover 0.8s ease forwards;
-}
-
-/* ===== SERVICES ANIMATIONS ===== */
-@keyframes serviceIconPulse {
-    0%, 100% {
-        transform: scale(1);
-        text-shadow: 
-            0 2px 20px rgba(0, 102, 255, 0.7),
-            0 1px 15px rgba(0, 102, 255, 0.5);
-    }
-    50% {
-        transform: scale(1.1);
-        text-shadow: 
-            0 3px 25px rgba(0, 102, 255, 0.9),
-            0 2px 20px rgba(0, 102, 255, 0.7);
-    }
-}
-
-.service-item:hover i {
-    animation: serviceIconPulse 1s ease-in-out infinite;
-}
-
-/* ===== JOURNALS ANIMATIONS ===== */
-@keyframes journalLinkHover {
-    0% {
-        gap: 8px;
-    }
-    100% {
-        gap: 12px;
-    }
-}
-
-.journal-link:hover {
-    animation: journalLinkHover 0.3s ease forwards;
-}
-
-/* ===== FAQ ANIMATIONS ===== */
-@keyframes faqAnswerExpand {
-    0% {
-        max-height: 0;
-        opacity: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-    100% {
-        max-height: 500px;
-        opacity: 1;
-        padding-top: 25px;
-        padding-bottom: 25px;
-    }
-}
-
-.faq-item.active .faq-answer {
-    animation: faqAnswerExpand 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes faqIconRotate {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(45deg);
-    }
-}
-
-.faq-item.active .faq-question i {
-    animation: faqIconRotate 0.3s ease forwards;
-}
+/* ===== АДАПТИВНЫЕ АНИМАЦИИ ===== */
 
-/* Для prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-    .hero-image.fade-in-up,
-    .hero-image.pulse-glow,
+/* Меньше анимаций на мобильных */
+@media (max-width: 768px) {
     .project-card.fade-in-up,
     .service-item.fade-in-up,
     .journal-item.fade-in-up,
-    .faq-item.fade-in-up,
-    .floating-image.fade-in-up,
-    .project-card:hover .project-image img,
-    .service-item:hover i,
-    .journal-link:hover,
-    .faq-item.active .faq-answer,
-    .faq-item.active .faq-question i,
-    .speck-block-number.animate-in,
-    .speck-block-title.animate-in,
-    .speck-block-subtitle.animate-in,
-    .speck-feature-item.animate-in,
-    .speck-block-right.animate-border::before,
-    .speck-vertical-block:not(:last-child)::before,
-    .speck-feature-column.hover-animate,
-    .speck-block-subtitle.animate-underline::after,
-    .speck-feature-icon.animate-pulse,
-    .speck-vertical-block.full-reveal,
-    .speck-vertical-block.glow-animate::after,
-    .speck-vertical-block.block-clicked,
-    .speck-feature-column:hover .speck-column-title,
-    .speck-feature-item:hover,
-    .speck-feature-item:hover .speck-feature-icon,
-    .speck-vertical-block.visible,
-    .speck-feature-column.scroll-animated,
-    .stat-card.animate-in,
-    .cta-improved.animate-glow,
-    .hero .parallax-content > *,
-    .content-section.animate-section,
-    .speck-vertical-block:hover .speck-block-number,
-    .float-element,
-    .gradient-animate,
-    .stat-icon.animate-in,
-    .shadow-animate,
-    .wave-effect,
-    .accent-pulse,
-    .text-highlight {
-        animation: none !important;
-        transition: none !important;
+    .faq-item.fade-in-up {
+        animation-duration: 0.5s !important;
     }
     
-    .speck-block-number,
-    .speck-block-title,
-    .speck-block-subtitle,
-    .speck-feature-item,
-    .speck-block-right,
-    .speck-vertical-block,
-    .speck-feature-column,
-    .stat-card,
-    .cta-improved,
-    .hero .parallax-content > *,
-    .content-section,
-    .hero-image,
-    .project-card,
-    .service-item,
-    .journal-item,
-    .faq-item,
-    .floating-image {
-        opacity: 1 !important;
+    /* Уменьшаем сложные анимации на мобильных */
+    .project-card:hover,
+    .service-item:hover,
+    .journal-item:hover {
+        animation: none !important;
         transform: none !important;
     }
-    
-    .speck-block-number::after {
-        width: 80px !important;
-        transition: none !important;
-    }
-    
-    .hero .parallax-content > *,
-    .content-section {
-        animation-delay: 0s !important;
-    }
-    
-    /* ИСПРАВЛЕНИЕ: Отключаем анимации переключения языка */
-    .language-changing [data-i18n],
-    .language-changed [data-i18n],
-    [data-i18n] {
-        opacity: 1 !important;
-        transition: none !important;
-        animation: none !important;
-    }
 }
 
-/* Класс для активации всех анимаций Speck */
-.speck-animations-ready .speck-vertical-block,
-.speck-animations-ready .speck-feature-column,
-.speck-animations-ready .speck-feature-item {
-    will-change: transform, opacity;
+/* ===== ДЕБАГ АНИМАЦИЙ ===== */
+
+/* Класс для отладки анимаций */
+.debug-animations * {
+    animation-duration: 5s !important;
+    animation-delay: 1s !important;
 }
 
-.speck-animations-loaded .speck-feature-column {
-    animation-play-state: running;
+/* Подсветка анимируемых элементов */
+.highlight-animated {
+    outline: 2px solid #ff0000;
+    outline-offset: 2px;
 }
 
-/* Анимации для кнопок с градиентом */
-@keyframes gradientButton {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+/* ===== ФИНАЛЬНЫЕ СТИЛИ ===== */
+
+/* Гарантируем, что элементы с анимациями не ломают верстку */
+.animated-element {
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.btn-gradient {
-    background: linear-gradient(90deg, #0066ff, #66b5ff, #0066ff);
-    background-size: 200% 100%;
-    animation: gradientButton 3s ease infinite;
-}
-
-/* Анимация для ховера кнопок */
-@keyframes buttonHoverWave {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-.btn-wave:hover::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.3), 
-        transparent
-    );
-    animation: buttonHoverWave 0.6s ease;
-}
-
-/* Анимация для успешного действия */
-@keyframes successCheckmark {
-    0% {
-        stroke-dashoffset: 100;
-        opacity: 0;
-        transform: scale(0.5);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.1);
-    }
-    100% {
-        stroke-dashoffset: 0;
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.success-checkmark {
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
-    animation: successCheckmark 0.8s ease forwards;
-}
-
-/* Анимация для загрузки контента */
-@keyframes contentLoader {
-    0% {
-        background-position: -200px 0;
-    }
-    100% {
-        background-position: calc(200px + 100%) 0;
-    }
-}
-
-.content-loader {
-    background: linear-gradient(90deg, 
-        rgba(255, 255, 255, 0.1) 25%, 
-        rgba(255, 255, 255, 0.2) 50%, 
-        rgba(255, 255, 255, 0.1) 75%
-    );
-    background-size: 200px 100%;
-    animation: contentLoader 1.5s ease-in-out infinite;
-}
-
-/* Анимация для фокуса элементов */
-@keyframes focusRing {
-    0%, 100% {
-        box-shadow: 0 0 0 0 rgba(0, 102, 255, 0);
-    }
-    50% {
-        box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.3);
-    }
-}
-
-.focus-ring:focus {
-    animation: focusRing 1.5s ease infinite;
-}
-
-/* Анимация для подсказок */
-@keyframes tooltipFade {
-    from {
-        opacity: 0;
-        transform: translateY(10px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.tooltip-animate {
-    animation: tooltipFade 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Анимация для модальных окон */
-@keyframes modalBackdrop {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes modalContent {
-    from {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.modal-backdrop {
-    animation: modalBackdrop 0.3s ease forwards;
-}
-
-.modal-content {
-    animation: modalContent 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Анимация для перехода между страницами */
-@keyframes pageTransitionIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pageTransitionOut {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-}
-
-.page-transition-in {
-    animation: pageTransitionIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.page-transition-out {
-    animation: pageTransitionOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Анимация для баннеров уведомлений */
-@keyframes notificationSlide {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-.notification-slide {
-    animation: notificationSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Анимация для счетчика */
-@keyframes counterTick {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.counter-tick {
-    animation: counterTick 0.3s ease;
-}
-
-/* Анимация для переключения вкладок */
-@keyframes tabSwitch {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.tab-switch {
-    animation: tabSwitch 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Анимация для аккордеона */
-@keyframes accordionOpen {
-    from {
-        max-height: 0;
-        opacity: 0;
-    }
-    to {
-        max-height: 1000px;
-        opacity: 1;
-    }
-}
-
-.accordion-open {
-    animation: accordionOpen 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    overflow: hidden;
-}
-
-/* Анимация для слайдера */
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideInLeft {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-.slide-in-right {
-    animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.slide-in-left {
-    animation: slideInLeft 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Анимация для звездного рейтинга */
-@keyframes starRating {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    70% {
-        transform: scale(1.2);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.star-rating {
-    animation: starRating 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-/* Анимация для хлебных крошек */
-@keyframes breadcrumbReveal {
-    from {
-        opacity: 0;
-        transform: translateX(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.breadcrumb-item {
-    animation: breadcrumbReveal 0.4s ease forwards;
-}
-
-/* Анимация для прогресс-бара */
-@keyframes progressFill {
-    from {
-        width: 0;
-    }
-    to {
-        width: var(--progress-width, 100%);
-    }
-}
-
-.progress-fill {
-    animation: progressFill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Финальная анимация для завершения загрузки */
-@keyframes finishLoading {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1.5);
-        visibility: hidden;
-    }
-}
-
-.finish-loading {
-    animation: finishLoading 0.5s ease forwards;
-}
-
-/* ===== КРИТИЧЕСКИЕ ИСПРАВЛЕНИЯ АНИМАЦИЙ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА ===== */
-
-/* 1. УБИРАЕМ ПРОЗРАЧНОСТЬ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
-.home-page .language-changing [data-i18n],
-.home-page .language-changed [data-i18n] {
-    opacity: 1 !important;
+/* Плавные переходы для элементов без анимаций */
+.no-animation {
     transition: none !important;
     animation: none !important;
 }
 
-/* 2. УСКОРЯЕМ ПЕРЕХОДЫ ДЛЯ ВСЕХ СТРАНИЦ */
-[data-i18n] {
-    transition: opacity 0.1s ease !important;
-}
-
-.language-changing [data-i18n] {
-    opacity: 0.95 !important; /* Почти не заметно */
-}
-
-.language-changed [data-i18n] {
-    opacity: 1 !important;
-}
-
-/* 3. ДЛЯ ТЕМНОГО ТЕКСТА НА ТЕМНОМ ФОНЕ */
-.hero [data-i18n],
-.dark-section [data-i18n],
-.dark-background [data-i18n] {
-    text-shadow: 
-        0 1px 3px rgba(0, 0, 0, 0.7),
-        0 2px 8px rgba(0, 0, 0, 0.5) !important;
-}
-
-/* 4. ОТКЛЮЧАЕМ ПРЕОБРАЗОВАНИЯ ПРИ ПЕРЕКЛЮЧЕНИИ ЯЗЫКА */
-.language-changing main,
-.language-changed main,
-.language-changing body > *:not(.parallax-bg-container):not(.scroll-progress),
-.language-changed body > *:not(.parallax-bg-container):not(.scroll-progress) {
-    transform: none !important;
-}
-
-/* 5. УБИРАЕМ ОВЕРЛЕЙ ПЕРЕХОДА ДЛЯ ГЛАВНОЙ */
-.home-page .language-transition-overlay {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-}
-
-/* 6. ФИКС ДЛЯ prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-    .language-changing [data-i18n],
-    .language-changed [data-i18n],
-    [data-i18n] {
-        opacity: 1 !important;
-        transition: none !important;
-        animation: none !important;
-    }
-}
-
-/* 7. ГАРАНТИЯ: ЦВЕТ ТЕКСТА НЕ МЕНЯЕТСЯ */
-[data-i18n] {
-    color: inherit !important;
-}
-
-/* 8. ОКОНЧАТЕЛЬНЫЙ ФИКС ДЛЯ ПРОЗРАЧНОСТИ */
-body.language-changing .home-page [data-i18n],
-body.language-changed .home-page [data-i18n] {
-    opacity: 1 !important;
-    color: inherit !important;
-}
-
-/* 9. CSS ПЕРЕМЕННАЯ ДЛЯ КОНТРОЛЯ ПРОЗРАЧНОСТИ */
-:root {
-    --i18n-opacity: 1 !important;
-}
-
-.home-page [data-i18n] {
-    opacity: var(--i18n-opacity) !important;
-}
-
-/* 10. ФИКС ДЛЯ НАВИГАЦИИ И КНОПОК */
-.nav-link[data-i18n],
-.btn [data-i18n],
-a [data-i18n],
-button [data-i18n] {
-    opacity: 1 !important;
-    transition: opacity 0.05s ease !important;
+/* Класс для принудительного отключения анимаций */
+.animation-disabled * {
+    animation: none !important;
+    transition: none !important;
 }
