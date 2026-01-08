@@ -158,8 +158,7 @@ function initializeHomePage() {
         /* ФИКС ДЛЯ СТЕКЛЯННЫХ КАРТОЧЕК (остальные элементы) */
         .speck-feature-column,
         .stat-card,
-        .speck-marquee-wrapper,
-        .cta-content-improved {
+        .floating-content {
             background: rgba(255, 255, 255, 0.1) !important;
             backdrop-filter: blur(20px) !important;
             -webkit-backdrop-filter: blur(20px) !important;
@@ -348,21 +347,7 @@ function initializeBasicFunctions() {
         progressBar.style.width = `${scrollPercent}%`;
     }
     
-    // 4. НАСТРОЙКА БЕГУЩЕЙ СТРОКИ
-    const marqueeTrack = document.querySelector('.speck-marquee-track');
-    if (marqueeTrack && marqueeTrack.style) {
-        // Гарантируем что анимация работает
-        marqueeTrack.style.animationPlayState = 'running';
-        
-        // Обработчик паузы при наведении
-        marqueeTrack.addEventListener('mouseenter', () => {
-            marqueeTrack.style.animationPlayState = 'paused';
-        });
-        
-        marqueeTrack.addEventListener('mouseleave', () => {
-            marqueeTrack.style.animationPlayState = 'running';
-        });
-    }
+    // 4. УДАЛЕН КОД ДЛЯ БЕГУЩЕЙ СТРОКИ
     
     // 5. ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ТЕКСТА И OVERLAY
     setTimeout(() => {
