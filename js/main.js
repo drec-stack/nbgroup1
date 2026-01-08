@@ -24,7 +24,7 @@ class DaehaaApp {
                            window.location.pathname === '/' || 
                            window.location.pathname === '');
         
-        //console.log(`📄 Page type detected: ${this.isServicesPage ? 'Services' : this.isAboutPage ? 'About' : this.isHomePage ? 'Home' : 'Internal'}`);
+        console.log(`📄 Page type detected: ${this.isServicesPage ? 'Services' : this.isAboutPage ? 'About' : this.isHomePage ? 'Home' : 'Internal'}`);
         
         this.init();
     }
@@ -140,9 +140,34 @@ class DaehaaApp {
     setupHeaderSupport() {
         console.log('🔧 Setting up SIMPLE header support (no hidden buttons)...');
         
-        const header = document.querySelector('.main-header');
+        // Пытаемся найти хедер с несколькими селекторами
+        const headerSelectors = ['.main-header', 'header[class*="header"]', 'header'];
+        let header = null;
+        
+        for (const selector of headerSelectors) {
+            header = document.querySelector(selector);
+            if (header) {
+                console.log(`✅ Found header with selector: ${selector}`);
+                break;
+            }
+        }
+        
         if (!header) {
-            console.warn('⚠️ No header found');
+            console.warn('⚠️ No header found with any selector');
+            // Попробуем найти через компонент
+            const headerContainer = document.getElementById('header-container');
+            if (headerContainer) {
+                header = headerContainer.querySelector('.main-header') || headerContainer.querySelector('header');
+                if (header) {
+                    console.log('✅ Found header in header-container');
+                }
+            }
+        }
+        
+        if (!header) {
+            console.warn('⚠️ Header not found, will retry in 500ms');
+            // Повторная попытка через 500мс
+            setTimeout(() => this.setupHeaderSupport(), 500);
             return;
         }
         
