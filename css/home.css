@@ -255,7 +255,7 @@ html {
     position: sticky;
     top: 150px;
     align-self: flex-start;
-    background: rgba(20, 20, 20, 0.8);
+    background: rgba(255, 255, 255, 0.1) !important; /* ИЗМЕНЕНО: Осветлено */
     backdrop-filter: blur(10px);
     border-radius: 15px;
     padding: 30px;
@@ -306,7 +306,7 @@ html {
     padding-top: 40px;
     min-height: 450px;
     position: relative;
-    background: rgba(20, 20, 20, 0.6);
+    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: Осветлено */
     backdrop-filter: blur(10px);
     border-radius: 15px;
     padding: 40px;
@@ -349,10 +349,10 @@ html {
     flex-direction: column;
     padding: 40px;
     border-radius: 20px;
-    background: rgba(25, 25, 25, 0.8) !important;
+    background: rgba(255, 255, 255, 0.1) !important; /* ИЗМЕНЕНО: Осветлено */
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* ИЗМЕНЕНО: Осветлено */
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
@@ -361,14 +361,14 @@ html {
 }
 
 .speck-feature-column:hover {
-    background: rgba(30, 30, 30, 0.9) !important;
+    background: rgba(255, 255, 255, 0.15) !important; /* ИЗМЕНЕНО: Осветлено */
     transform: translateY(-5px);
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.5),
         0 10px 20px rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(25px) !important;
     -webkit-backdrop-filter: blur(25px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important; /* ИЗМЕНЕНО: Осветлено */
 }
 
 .speck-column-title {
@@ -471,11 +471,11 @@ html {
 
 .speck-marquee-wrapper {
     text-align: center;
-    background: rgba(20, 20, 20, 0.8);
+    background: rgba(255, 255, 255, 0.1) !important; /* ИЗМЕНЕНО: Осветлено */
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important; /* ИЗМЕНЕНО: Осветлено */
 }
 
 .speck-marquee-label {
@@ -649,10 +649,10 @@ html {
 
 /* КАРТОЧКИ СТАТИСТИКИ - СТЕКЛЯННЫЕ */
 .stat-card {
-    background: rgba(25, 25, 25, 0.8) !important;
+    background: rgba(255, 255, 255, 0.1) !important; /* ИЗМЕНЕНО: Осветлено */
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* ИЗМЕНЕНО: Осветлено */
     border-radius: 24px;
     padding: 50px 35px;
     text-align: center;
@@ -683,11 +683,11 @@ html {
 }
 
 .stat-card:hover {
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important; /* ИЗМЕНЕНО: Осветлено */
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.5),
         0 10px 30px rgba(255, 255, 255, 0.1);
-    background: rgba(30, 30, 30, 0.9) !important;
+    background: rgba(255, 255, 255, 0.15) !important; /* ИЗМЕНЕНО: Осветлено */
     transform: translateY(-5px);
     backdrop-filter: blur(25px) !important;
     -webkit-backdrop-filter: blur(25px) !important;
@@ -760,11 +760,11 @@ html {
     position: relative;
     z-index: 2;
     padding: 0 20px;
-    background: rgba(20, 20, 20, 0.8);
+    background: rgba(255, 255, 255, 0.1) !important; /* ИЗМЕНЕНО: Осветлено */
     backdrop-filter: blur(20px);
     border-radius: 30px;
     padding: 60px 40px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* ИЗМЕНЕНО: Осветлено */
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 }
 
