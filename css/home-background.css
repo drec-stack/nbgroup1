@@ -1,158 +1,38 @@
-/* home-background.css - ИСПРАВЛЕННЫЙ ФОН ДЛЯ ГЛАВНОЙ */
+/* home-background.css - ПРОСТОЙ ЧЕРНЫЙ ФОН */
 
-/* ===== ФОН ТОЛЬКО ДЛЯ ГЛАВНОЙ ===== */
+/* ЧЕРНЫЙ ФОН ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
 body.home-page {
-    background: transparent !important;
-    background-color: transparent !important;
+    background: #0a0a0a !important;
+    background-color: #0a0a0a !important;
     background-image: none !important;
 }
 
-/* ФОНОВЫЕ СЛОИ */
-.bg-layers-container {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100vh !important;
-    z-index: 1 !important;
-    overflow: hidden;
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
-    pointer-events: none;
-}
-
+/* УБИРАЕМ ВСЕ ФОНОВЫЕ СЛОИ */
+.bg-layers-container,
 .bg-layer {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    opacity: 1 !important; /* ИЗМЕНИЛ: было 0, стало 1 */
-    display: block !important;
-    visibility: visible !important;
-}
-
-/* ВСЕ 4 СЛОЯ СЕЙЧАС ВИДНЫ СРАЗУ */
-.bg-layer:nth-child(1) {
-    background-image: url('assets/images/parallax/bg-1.jpg') !important;
-    z-index: 4;
-}
-
-.bg-layer:nth-child(2) {
-    background-image: url('assets/images/parallax/bg-2.jpg') !important;
-    z-index: 3;
-}
-
-.bg-layer:nth-child(3) {
-    background-image: url('assets/images/parallax/bg-3.jpg') !important;
-    z-index: 2;
-}
-
-.bg-layer:nth-child(4) {
-    background-image: url('assets/images/parallax/bg-4.jpg') !important;
-    z-index: 1;
-}
-
-/* УБРАТЬ АКТИВНЫЙ КЛАСС - ВСЕ ВИДНЫ */
-.bg-layer.active {
-    opacity: 1 !important;
-}
-
-/* ЧЕРНЫЙ ОВЕРЛЕЙ ДЛЯ ЧИТАЕМОСТИ */
-.bg-layer::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: rgba(0, 0, 0, 0.4) !important;
-    z-index: 5 !important;
-}
-
-/* ===== УБИРАЕМ ФОН ДЛЯ ДРУГИХ СТРАНИЦ ===== */
-body:not(.home-page) .bg-layers-container,
-body:not(.home-page) .bg-layer {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
 
-/* ДРУГИЕ СТРАНИЦЫ - ЧЕРНЫЙ ФОН */
-body:not(.home-page) {
+/* ЧЕРНЫЙ ФОН ДЛЯ ВСЕХ СТРАНИЦ */
+body {
     background: #0a0a0a !important;
+    background-color: #0a0a0a !important;
 }
 
-/* ===== СДЕЛАТЬ ВСЕ СЕКЦИИ ПРОЗРАЧНЫМИ ===== */
-body.home-page .hero,
-body.home-page .content-section,
-body.home-page .section,
-body.home-page .speck-vertical-section,
-body.home-page .speck-marquee-section,
-body.home-page .stats-improved,
-body.home-page .cta-improved {
-    background: transparent !important;
-    position: relative;
-    z-index: 10;
-}
-
-/* ===== УЛУЧШИТЬ ВИДИМОСТЬ ТЕКСТА ===== */
-body.home-page .hero h1,
-body.home-page .hero-subtitle,
-body.home-page .hero-description p,
-body.home-page .section-title,
-body.home-page .section-subtitle,
-body.home-page .cta-text h2,
-body.home-page .speck-block-title,
-body.home-page .speck-block-subtitle,
-body.home-page .speck-brand,
-body.home-page .stat-number-improved,
-body.home-page .stat-label-improved {
-    text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.85),
-        0 1px 20px rgba(0, 0, 0, 0.75) !important;
-    position: relative;
-    z-index: 20;
-}
-
-/* ===== СТЕКЛЯННЫЕ ЭЛЕМЕНТЫ ===== */
-body.home-page .text-backdrop-enhanced,
-body.home-page .speck-feature-column,
-body.home-page .stat-card,
-body.home-page .speck-marquee-wrapper,
-body.home-page .cta-content-improved {
-    background: rgba(0, 0, 0, 0.5) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-}
-
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
-@media (max-width: 768px) {
-    .bg-layers-container {
-        height: 100% !important;
-    }
-    
-    .bg-layer {
-        background-attachment: scroll !important;
-    }
-    
-    /* УСИЛИТЬ ТЕНИ НА МОБИЛЬНЫХ */
-    body.home-page .hero h1,
-    body.home-page .hero-subtitle {
-        text-shadow: 
-            0 4px 35px rgba(0, 0, 0, 0.95),
-            0 3px 30px rgba(0, 0, 0, 0.9),
-            0 2px 25px rgba(0, 0, 0, 0.85) !important;
-    }
-}
-
-/* ===== REDUCED MOTION ===== */
-@media (prefers-reduced-motion: reduce) {
-    .bg-layer {
-        transition: none !important;
-    }
+/* ЧЕРНЫЙ ФОН ДЛЯ ВСЕХ СЕКЦИЙ */
+.hero,
+.content-section,
+.section,
+.speck-vertical-section,
+.speck-marquee-section,
+.stats-improved,
+.cta-improved,
+.services-hero,
+.about-hero,
+.portfolio-hero,
+.brandbook-hero,
+.contact-hero {
+    background: #0a0a0a !important;
 }
