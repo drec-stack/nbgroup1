@@ -62,83 +62,12 @@
         /* УСИЛЕННЫЕ ТЕНИ ТЕКСТА */
         .hero h1 span,
         .hero-subtitle,
-        .hero-description p,
-        .section-title,
-        .section-subtitle,
-        .speck-block-title,
-        .speck-block-subtitle,
-        .speck-column-title,
-        .speck-feature-text,
-        .stat-number-improved,
-        .stat-label-improved,
-        .floating-title,
-        .floating-subtitle {
+        .hero-description p {
             text-shadow: 
-                0 5px 45px rgba(0, 0, 0, 0.99),
-                0 4px 40px rgba(0, 0, 0, 0.98),
-                0 3px 35px rgba(0, 0, 0, 0.97),
-                0 2px 30px rgba(0, 0, 0, 0.96) !important;
-            color: rgba(255, 255, 255, 1) !important;
-            font-weight: 900 !important;
-            letter-spacing: -0.5px !important;
-            position: relative;
-            z-index: 20;
-        }
-        
-        /* === ФИНАЛЬНЫЙ ФИКС: УБИРАЕМ ВСЕ ФОНЫ === */
-        .speck-vertical-block,
-        .speck-block-left,
-        .speck-block-right,
-        .speck-feature-column,
-        .stat-card,
-        .floating-content {
-            background: transparent !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            border: none !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-        
-        /* Убираем все декоративные элементы */
-        .speck-block-number::after,
-        .speck-block-subtitle::after,
-        .speck-column-title::after,
-        .speck-vertical-block:not(:last-child)::before,
-        .speck-feature-item::after {
-            display: none !important;
-        }
-        
-        /* Делаем иконки ярче */
-        .stat-icon,
-        .speck-feature-icon {
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7)) 
-                   drop-shadow(0 0 30px rgba(255, 255, 255, 0.5));
-        }
-        
-        /* Улучшаем видимость на мобильных */
-        @media (max-width: 768px) {
-            .speck-block-title {
-                font-size: 3rem !important;
-            }
-            
-            .speck-block-subtitle {
-                font-size: 1.8rem !important;
-            }
-            
-            .section-title {
-                font-size: 3rem !important;
-            }
-            
-            .stat-number-improved {
-                font-size: 4rem !important;
-            }
-            
-            .floating-title {
-                font-size: 3rem !important;
-            }
+                0 3px 30px rgba(0, 0, 0, 0.95),
+                0 2px 25px rgba(0, 0, 0, 0.85),
+                0 1px 20px rgba(0, 0, 0, 0.75) !important;
+            color: rgba(255, 255, 255, 0.98) !important;
         }
         
         /* ПРИНУДИТЕЛЬНО ПРЕДЗАГРУЖАЕМ ИЗОБРАЖЕНИЯ */
@@ -219,6 +148,7 @@
     <section class="hero content-section" data-bg-section="0">
         <div class="container">
             <div class="hero-content">
+                <!-- УБРАН КЛАСС text-backdrop-enhanced -->
                 <div class="scale-in">
                     <h1 class="fade-in-down">
                         <span data-i18n="home.hero.titleLine1">NB GROUP TECH</span><br>
