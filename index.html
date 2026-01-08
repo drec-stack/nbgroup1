@@ -17,6 +17,134 @@
     <!-- Новый файл для фона главной страницы -->
     <link rel="stylesheet" href="css/home-background.css">
     
+    <!-- ЭКСТРЕННЫЙ ФИКС ДЛЯ ФОНА ГЛАВНОЙ СТРАНИЦЫ -->
+    <style>
+        /* === ШАГ 1: УБИРАЕМ ВЕСЬ БЕЛЫЙ ФОН === */
+        body {
+            background: transparent !important;
+            background-color: transparent !important;
+            background-image: none !important;
+        }
+        
+        html, body {
+            background: transparent !important;
+        }
+        
+        /* === ШАГ 2: ПРИНУДИТЕЛЬНО ПОКАЗЫВАЕМ ФОНОВЫЕ СЛОИ === */
+        .bg-layers-container {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100vh !important;
+            z-index: 1 !important;
+            pointer-events: none !important;
+        }
+        
+        .bg-layer {
+            display: block !important;
+            opacity: 0 !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            transition: opacity 1s ease !important;
+        }
+        
+        .bg-layer.active {
+            opacity: 1 !important;
+            z-index: 2 !important;
+        }
+        
+        /* ЧЕРНЫЙ ОВЕРЛЕЙ ДЛЯ ЧИТАЕМОСТИ */
+        .bg-layer::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: rgba(0, 0, 0, 0.5) !important;
+            z-index: 1 !important;
+        }
+        
+        /* === ШАГ 3: ДЕЛАЕМ ВСЕ СЕКЦИИ ПРОЗРАЧНЫМИ === */
+        .hero,
+        .content-section,
+        .section,
+        .speck-vertical-section,
+        .speck-marquee-section,
+        .stats-improved,
+        .cta-improved {
+            background: transparent !important;
+        }
+        
+        /* === ШАГ 4: УЛУЧШАЕМ ВИДИМОСТЬ ТЕКСТА === */
+        .hero h1,
+        .hero-subtitle,
+        .hero-description p,
+        .section-title,
+        .section-subtitle,
+        .cta-text h2,
+        .speck-block-title,
+        .speck-block-subtitle,
+        .speck-brand,
+        .stat-number-improved,
+        .stat-label-improved {
+            text-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.95),
+                0 3px 25px rgba(0, 0, 0, 0.9),
+                0 2px 20px rgba(0, 0, 0, 0.85) !important;
+            position: relative;
+            z-index: 20;
+        }
+        
+        /* === ШАГ 5: СТЕКЛЯННЫЕ ЭЛЕМЕНТЫ ДОЛЖНЫ БЫТЬ ВИДНЫ === */
+        .text-backdrop-enhanced,
+        .speck-feature-column,
+        .stat-card,
+        .speck-marquee-wrapper,
+        .cta-content-improved,
+        .speck-block-left,
+        .speck-block-right {
+            background: rgba(0, 0, 0, 0.6) !important;
+            backdrop-filter: blur(15px) !important;
+            -webkit-backdrop-filter: blur(15px) !important;
+        }
+        
+        /* === ШАГ 6: УБИРАЕМ ВСЕ ДРУГИЕ ФОНЫ === */
+        * {
+            background-color: transparent !important;
+        }
+        
+        /* === ШАГ 7: ГАРАНТИРУЕМ ЧТО ПЕРВЫЙ ФОН АКТИВЕН === */
+        .bg-layer:nth-child(1) {
+            opacity: 1 !important;
+        }
+        
+        /* === ШАГ 8: МОБИЛЬНАЯ ОПТИМИЗАЦИЯ === */
+        @media (max-width: 768px) {
+            .bg-layers-container {
+                height: 100% !important;
+            }
+            
+            .text-backdrop-enhanced,
+            .speck-feature-column,
+            .stat-card,
+            .speck-marquee-wrapper,
+            .cta-content-improved {
+                background: rgba(0, 0, 0, 0.7) !important;
+            }
+        }
+    </style>
+    
     <!-- Кроссбраузерные полифилы JS -->
     <script src="https://cdn.jsdelivr.net/npm/core-js-bundle@3.33.2/minified.min.js"></script>
     
@@ -75,8 +203,8 @@
 </head>
 <body class="home-page"> <!-- УБЕДИТЕСЬ ЧТО ЕСТЬ КЛАСС home-page -->
     <!-- ФОНОВЫЕ СЛОИ ТОЛЬКО ДЛЯ ГЛАВНОЙ -->
-    <div class="bg-layers-container">
-        <div class="bg-layer active" style="background-image: url('assets/images/parallax/bg-1.jpg');"></div>
+    <div class="bg-layers-container" style="display: block; opacity: 1;">
+        <div class="bg-layer active" style="background-image: url('assets/images/parallax/bg-1.jpg'); opacity: 1;"></div>
         <div class="bg-layer" style="background-image: url('assets/images/parallax/bg-2.jpg');"></div>
         <div class="bg-layer" style="background-image: url('assets/images/parallax/bg-3.jpg');"></div>
         <div class="bg-layer" style="background-image: url('assets/images/parallax/bg-4.jpg');"></div>
@@ -559,6 +687,66 @@
             }
         }
     }, 1000);
+    
+    // ===== ЭКСТРЕННЫЙ JS ФИКС ДЛЯ ФОНА =====
+    (function() {
+        console.log('🚨 EMERGENCY BACKGROUND FIX APPLIED');
+        
+        // 1. Убедиться что класс home-page есть
+        if (!document.body.classList.contains('home-page')) {
+            document.body.classList.add('home-page');
+            console.log('✅ Added home-page class to body');
+        }
+        
+        // 2. Активировать фоновые слои
+        setTimeout(function() {
+            var bgLayers = document.querySelectorAll('.bg-layer');
+            console.log('🎨 Found ' + bgLayers.length + ' background layers');
+            
+            if (bgLayers.length > 0) {
+                // Деактивировать все слои
+                bgLayers.forEach(function(layer) {
+                    layer.classList.remove('active');
+                    layer.style.opacity = '0';
+                });
+                
+                // Активировать первый слой
+                bgLayers[0].classList.add('active');
+                bgLayers[0].style.opacity = '1';
+                console.log('✅ First background layer activated');
+                
+                // Показать контейнер
+                var container = document.querySelector('.bg-layers-container');
+                if (container) {
+                    container.style.display = 'block';
+                    container.style.opacity = '1';
+                    console.log('✅ Background container activated');
+                }
+            } else {
+                console.error('❌ No background layers found!');
+            }
+            
+            // 3. Убрать белый фон со всего
+            document.body.style.backgroundColor = 'transparent';
+            document.body.style.backgroundImage = 'none';
+            document.documentElement.style.backgroundColor = 'transparent';
+            
+            console.log('✅ White background removed');
+        }, 100);
+        
+        // 4. Перехватываем все попытки изменить фон
+        var originalSetProperty = CSSStyleDeclaration.prototype.setProperty;
+        CSSStyleDeclaration.prototype.setProperty = function(name, value, priority) {
+            if (name.includes('background') && value && 
+                (value.includes('white') || value.includes('#fff') || value.includes('#ffffff'))) {
+                console.warn('🚫 Blocked white background:', name, value);
+                return; // Блокируем установку белого фона
+            }
+            return originalSetProperty.apply(this, arguments);
+        };
+        
+        console.log('🛡️ White background protection activated');
+    })();
     </script>
 </body>
 </html>
