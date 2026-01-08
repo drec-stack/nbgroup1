@@ -17,9 +17,9 @@
     <!-- Фон главной страницы -->
     <link rel="stylesheet" href="css/home-background.css">
     
-    <!-- ЭКСТРЕННЫЙ ФИКС ДЛЯ ФОНА -->
+    <!-- СТИЛЬ ДЛЯ ВИСЯЩЕГО ТЕКСТА -->
     <style>
-        /* === ГАРАНТИЯ: ФОН ВИДЕН ВСЕГДА === */
+        /* === ФОН ГАРАНТИЯ === */
         body.home-page {
             background: transparent !important;
         }
@@ -34,6 +34,40 @@
             opacity: 1 !important;
             display: block !important;
             visibility: visible !important;
+        }
+        
+        /* === ВИСЯЩИЙ ТЕКСТ БЕЗ ФОНА === */
+        .text-backdrop-enhanced {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .hero-description {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+            margin: 2rem auto 3rem !important;
+        }
+        
+        /* УСИЛЕННЫЕ ТЕНИ ТЕКСТА */
+        .hero h1 span,
+        .hero-subtitle,
+        .hero-description p {
+            text-shadow: 
+                0 3px 30px rgba(0, 0, 0, 0.95),
+                0 2px 25px rgba(0, 0, 0, 0.85),
+                0 1px 20px rgba(0, 0, 0, 0.75) !important;
+            color: rgba(255, 255, 255, 0.98) !important;
         }
         
         /* ПРИНУДИТЕЛЬНО ПРЕДЗАГРУЖАЕМ ИЗОБРАЖЕНИЯ */
@@ -114,7 +148,8 @@
     <section class="hero content-section" data-bg-section="0">
         <div class="container">
             <div class="hero-content">
-                <div class="text-backdrop-enhanced scale-in">
+                <!-- УБРАН КЛАСС text-backdrop-enhanced -->
+                <div class="scale-in">
                     <h1 class="fade-in-down">
                         <span data-i18n="home.hero.titleLine1">NB GROUP TECH</span><br>
                         <span class="fade-in-up delay-200" data-i18n="home.hero.subtitle">Industrial Design & Manufacturing</span>
@@ -142,7 +177,7 @@
         </div>
     </section>
 
-    <!-- Speck Design Vertical Blocks -->
+    <!-- Остальная часть кода без изменений -->
     <section class="speck-vertical-section content-section" data-bg-section="1">
         <div class="container">
             <div class="speck-vertical-grid">
