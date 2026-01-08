@@ -460,218 +460,7 @@ html {
     );
 }
 
-/* ===== SPECK MARQUEE SECTION ===== */
-.speck-marquee-section {
-    padding: 120px 0;
-    background: transparent !important;
-    position: relative;
-    overflow: hidden;
-    z-index: 15;
-}
-
-.speck-marquee-wrapper {
-    text-align: center;
-    background: rgba(20, 20, 20, 0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.speck-marquee-label {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8) !important;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    margin-bottom: 30px;
-    position: relative;
-    display: inline-block;
-    padding-bottom: 15px;
-}
-
-.speck-marquee-label::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 2px;
-    background: #0066ff;
-}
-
-.speck-marquee-mask {
-    position: relative;
-    overflow: hidden;
-    margin: 40px 0;
-}
-
-.speck-marquee-mask::before,
-.speck-marquee-mask::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 150px;
-    height: 100%;
-    z-index: 5;
-    pointer-events: none;
-}
-
-.speck-marquee-mask::before {
-    left: 0;
-    background: linear-gradient(90deg, 
-        rgba(20, 20, 20, 0.9) 0%, 
-        rgba(20, 20, 20, 0.5) 50%,
-        transparent 100%);
-}
-
-.speck-marquee-mask::after {
-    right: 0;
-    background: linear-gradient(270deg, 
-        rgba(20, 20, 20, 0.9) 0%, 
-        rgba(20, 20, 20, 0.5) 50%,
-        transparent 100%);
-}
-
-.speck-marquee-container {
-    width: 100%;
-    overflow: visible;
-    position: relative;
-}
-
-.speck-marquee-track {
-    display: flex;
-    width: max-content;
-    animation: speckMarquee 40s linear infinite;
-    will-change: transform;
-    padding: 25px 0;
-    white-space: nowrap;
-}
-
-.speck-marquee-track:hover {
-    animation-play-state: paused;
-}
-
-.speck-marquee-content {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    gap: 0;
-}
-
-.speck-brand {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: rgba(255, 255, 255, 0.9) !important;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    padding: 0 50px;
-    white-space: nowrap;
-    flex-shrink: 0;
-    text-decoration: none;
-    position: relative;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-family: 'Inter', sans-serif;
-    opacity: 1 !important;
-}
-
-.speck-brand:hover {
-    color: #ffffff !important;
-    opacity: 1;
-    transform: translateY(-3px);
-}
-
-.speck-brand::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #0066ff, #66b5ff);
-    transition: width 0.4s ease;
-    border-radius: 1.5px;
-    box-shadow: 0 0 10px rgba(0, 102, 255, 0.5);
-}
-
-.speck-brand:hover::after {
-    width: 60%;
-}
-
-.marquee-note {
-    margin-top: 30px;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7) !important;
-    font-style: italic;
-}
-
-/* СТИЛИ ДЛЯ CTA ВНУТРИ SPECK MARQUEE SECTION */
-.speck-marquee-section > .container:last-child {
-    margin-top: 60px;
-    text-align: center;
-}
-
-.speck-marquee-section > .container:last-child h2 {
-    color: white;
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin: 20px 0;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-}
-
-.speck-marquee-section > .container:last-child p {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.4rem;
-    margin-bottom: 40px;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.6;
-}
-
-.speck-marquee-section > .container:last-child a {
-    display: inline-block;
-    background: rgba(0, 102, 255, 0.25);
-    color: white;
-    padding: 18px 40px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    transition: all 0.3s ease;
-}
-
-.speck-marquee-section > .container:last-child a:hover {
-    background: rgba(0, 102, 255, 0.35);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-.speck-marquee-section > .container:last-child a i {
-    margin-left: 10px;
-    transition: transform 0.3s ease;
-}
-
-.speck-marquee-section > .container:last-child a:hover i {
-    transform: translateX(5px);
-}
-
-@keyframes speckMarquee {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-/* ===== STATS SECTION (ТЕПЕРЬ ПОСЛЕ SPECK VERTICAL) ===== */
+/* ===== STATS SECTION ===== */
 .stats-improved {
     padding: 140px 0;
     background: transparent !important;
@@ -815,34 +604,78 @@ html {
 .section-title,
 .section-subtitle,
 .speck-block-title,
-.speck-block-subtitle,
-.speck-marquee-section > .container:last-child h2,
-.speck-marquee-section > .container:last-child p {
+.speck-block-subtitle {
     text-shadow: 
         0 3px 35px rgba(0, 0, 0, 0.95),
         0 2px 30px rgba(0, 0, 0, 0.9),
         0 1px 25px rgba(0, 0, 0, 0.85) !important;
 }
 
-/* ===== ВИСЯЩАЯ СЕКЦИЯ - УДАЛЕНА, ОСТАВЛЯЕМ ТОЛЬКО ДЛЯ СОВМЕСТИМОСТИ ===== */
+/* ===== ВИСЯЩАЯ СЕКЦИЯ ===== */
 .floating-section {
-    display: none !important;
+    padding: 140px 0;
+    background: transparent !important;
+    position: relative;
+    z-index: 15;
 }
 
 .floating-content {
-    display: none !important;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px;
+    background: rgba(25, 25, 25, 0.8) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .floating-title {
-    display: none !important;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: white !important;
+    margin-bottom: 20px;
+    line-height: 1.1;
 }
 
 .floating-subtitle {
-    display: none !important;
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin-bottom: 40px;
+    line-height: 1.6;
 }
 
 .floating-button {
-    display: none !important;
+    display: inline-block;
+    background: rgba(0, 102, 255, 0.25);
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transition: all 0.3s ease;
+}
+
+.floating-button:hover {
+    background: rgba(0, 102, 255, 0.35);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.floating-button i {
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.floating-button:hover i {
+    transform: translateX(5px);
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
@@ -898,14 +731,6 @@ html {
     
     .speck-vertical-block:not(:last-child)::before {
         left: 280px;
-    }
-    
-    .speck-marquee-section > .container:last-child h2 {
-        font-size: 3rem;
-    }
-    
-    .speck-marquee-section > .container:last-child p {
-        font-size: 1.3rem;
     }
 }
 
@@ -972,17 +797,16 @@ html {
         left: 240px;
     }
     
-    .speck-brand {
-        font-size: 1.6rem;
-        padding: 0 40px;
+    .stats-improved {
+        padding: 100px 0;
     }
     
-    .speck-marquee-section > .container:last-child h2 {
-        font-size: 2.8rem;
+    .floating-title {
+        font-size: 3rem;
     }
     
-    .speck-marquee-section > .container:last-child p {
-        font-size: 1.2rem;
+    .floating-subtitle {
+        font-size: 1.3rem;
     }
 }
 
@@ -1077,11 +901,6 @@ html {
         bottom: -40px;
     }
     
-    .speck-brand {
-        font-size: 1.5rem;
-        padding: 0 35px;
-    }
-    
     .stats-improved {
         padding: 100px 0;
     }
@@ -1090,27 +909,22 @@ html {
         font-size: 4rem;
     }
     
-    .speck-marquee-section {
+    .floating-section {
         padding: 100px 0;
     }
     
-    .speck-marquee-section > .container:last-child h2 {
+    .floating-title {
         font-size: 2.5rem;
     }
     
-    .speck-marquee-section > .container:last-child p {
+    .floating-subtitle {
         font-size: 1.1rem;
         max-width: 600px;
     }
     
-    .speck-marquee-section > .container:last-child a {
+    .floating-button {
         padding: 16px 35px;
         font-size: 1rem;
-    }
-    
-    .speck-marquee-mask::before,
-    .speck-marquee-mask::after {
-        width: 100px;
     }
 }
 
@@ -1189,11 +1003,6 @@ html {
         font-size: 1.6rem;
     }
     
-    .speck-brand {
-        font-size: 1.4rem;
-        padding: 0 30px;
-    }
-    
     .stats-improved {
         padding: 80px 0;
     }
@@ -1215,23 +1024,18 @@ html {
         font-size: 1rem;
     }
     
-    .speck-marquee-section > .container:last-child h2 {
+    .floating-title {
         font-size: 2.2rem;
     }
     
-    .speck-marquee-section > .container:last-child p {
+    .floating-subtitle {
         font-size: 1rem;
         max-width: 500px;
     }
     
-    .speck-marquee-section > .container:last-child a {
+    .floating-button {
         padding: 14px 30px;
         font-size: 0.9rem;
-    }
-    
-    .speck-marquee-mask::before,
-    .speck-marquee-mask::after {
-        width: 70px;
     }
 }
 
@@ -1301,11 +1105,6 @@ html {
         font-size: 1.4rem;
     }
     
-    .speck-brand {
-        font-size: 1.2rem;
-        padding: 0 25px;
-    }
-    
     .stats-grid-improved {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -1319,29 +1118,28 @@ html {
         font-size: 3rem;
     }
     
-    .speck-marquee-section > .container:last-child {
-        margin-top: 40px;
+    .floating-section {
+        padding: 80px 0;
     }
     
-    .speck-marquee-section > .container:last-child h2 {
+    .floating-content {
+        padding: 40px 20px;
+    }
+    
+    .floating-title {
         font-size: 2rem;
         margin: 15px 0;
     }
     
-    .speck-marquee-section > .container:last-child p {
+    .floating-subtitle {
         font-size: 0.95rem;
         max-width: 400px;
         margin-bottom: 30px;
     }
     
-    .speck-marquee-section > .container:last-child a {
+    .floating-button {
         padding: 12px 25px;
         font-size: 0.85rem;
-    }
-    
-    .speck-marquee-mask::before,
-    .speck-marquee-mask::after {
-        width: 50px;
     }
 }
 
@@ -1389,11 +1187,6 @@ html {
         font-size: 1rem;
     }
     
-    .speck-brand {
-        font-size: 1rem;
-        padding: 0 20px;
-    }
-    
     .stat-card {
         padding: 20px 15px;
     }
@@ -1406,16 +1199,16 @@ html {
         font-size: 0.9rem;
     }
     
-    .speck-marquee-section > .container:last-child h2 {
+    .floating-title {
         font-size: 1.8rem;
     }
     
-    .speck-marquee-section > .container:last-child p {
+    .floating-subtitle {
         font-size: 0.9rem;
         max-width: 350px;
     }
     
-    .speck-marquee-section > .container:last-child a {
+    .floating-button {
         padding: 10px 20px;
         font-size: 0.8rem;
     }
@@ -1423,10 +1216,6 @@ html {
 
 /* Поддержка prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-    .speck-marquee-track {
-        animation: none !important;
-    }
-    
     .speck-vertical-block {
         transition: none !important;
         opacity: 1;
@@ -1445,7 +1234,7 @@ html {
         display: none;
     }
     
-    .speck-marquee-section > .container:last-child a:hover {
+    .floating-button:hover {
         transform: none !important;
     }
 }
