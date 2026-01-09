@@ -201,21 +201,21 @@ html {
 }
 
 .hero h1 span:first-child {
-    color: #0066ff !important;
+    color: #3366cc !important;
     font-size: 6.5rem;
     margin-bottom: 0.5rem;
     text-shadow: 
-        0 3px 30px rgba(0, 102, 255, 0.5),
-        0 2px 25px rgba(0, 102, 255, 0.4) !important;
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .hero h1 span:nth-child(2) {
-    color: #0066ff !important;
+    color: #3366cc !important;
     font-size: 4rem;
     font-weight: 800;
     text-shadow: 
-        0 3px 30px rgba(0, 102, 255, 0.5),
-        0 2px 25px rgba(0, 102, 255, 0.4) !important;
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .hero-subtitle {
@@ -313,7 +313,7 @@ html {
 .expertise-main-title {
     font-size: 3.5rem;
     font-weight: 900;
-    color: white !important;
+    color: #3366cc !important;
     text-align: left;
     line-height: 1.1;
     text-shadow: 
@@ -385,11 +385,11 @@ html {
 .expertise-number {
     font-size: 3.5rem;
     font-weight: 900;
-    color: #0066ff !important;
+    color: #3366cc !important;
     line-height: 1;
     text-shadow: 
-        0 2px 20px rgba(0, 102, 255, 0.5),
-        0 1px 15px rgba(0, 102, 255, 0.3) !important;
+        0 2px 20px rgba(0, 0, 0, 0.95),
+        0 1px 15px rgba(0, 0, 0, 0.9) !important;
     transition: all 0.4s ease;
 }
 
@@ -398,8 +398,8 @@ html {
     height: 40px;
     background: linear-gradient(
         to bottom,
-        rgba(0, 102, 255, 0.8),
-        rgba(0, 102, 255, 0.3)
+        rgba(51, 102, 204, 0.8),
+        rgba(51, 102, 204, 0.3)
     );
     margin-top: 15px;
     border-radius: 2px;
@@ -409,16 +409,16 @@ html {
 .expertise-vertical-block:hover .expertise-number {
     transform: scale(1.1);
     text-shadow: 
-        0 3px 30px rgba(0, 102, 255, 0.8),
-        0 2px 25px rgba(0, 102, 255, 0.5) !important;
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .expertise-vertical-block:hover .expertise-number-line {
     height: 60px;
     background: linear-gradient(
         to bottom,
-        rgba(0, 102, 255, 1),
-        rgba(0, 102, 255, 0.5)
+        rgba(51, 102, 204, 0.8),
+        rgba(51, 102, 204, 0.5)
     );
 }
 
@@ -472,7 +472,7 @@ html {
     content: "—";
     position: absolute;
     left: 0;
-    color: #0066ff;
+    color: #3366cc;
     font-weight: bold;
 }
 
@@ -495,7 +495,7 @@ html {
     content: "•";
     position: absolute;
     left: 0;
-    color: #0066ff;
+    color: #3366cc;
     font-size: 1.8rem;
     line-height: 1;
     top: -2px;
@@ -557,7 +557,7 @@ html {
 }
 
 .expertise-vertical-block:hover .expertise-sub-feature::before {
-    color: #66b5ff;
+    color: #6699cc;
     transform: scale(1.2);
 }
 
@@ -570,7 +570,7 @@ html {
 }
 
 .expertise-vertical-block:hover .expertise-nested-item::before {
-    color: #66b5ff;
+    color: #6699cc;
     transform: translateX(3px);
 }
 
@@ -600,7 +600,7 @@ html {
     content: "→";
     position: absolute;
     left: 0;
-    color: #0066ff;
+    color: #3366cc;
     font-weight: bold;
     font-size: 1.2rem;
     transition: all 0.3s ease;
@@ -612,7 +612,7 @@ html {
 }
 
 .expertise-vertical-block:hover .expertise-features li::before {
-    color: #66b5ff;
+    color: #6699cc;
     transform: translateX(5px);
 }
 
@@ -625,10 +625,10 @@ html {
 }
 
 .projects-section .section-title {
-    color: #0066ff !important;
+    color: #3366cc !important;
     text-shadow: 
-        0 3px 30px rgba(0, 102, 255, 0.5),
-        0 2px 25px rgba(0, 102, 255, 0.4) !important;
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .projects-grid {
@@ -708,10 +708,10 @@ html {
 }
 
 .stats-section .section-title {
-    color: #0066ff !important;
+    color: #3366cc !important;
     text-shadow: 
-        0 3px 30px rgba(0, 102, 255, 0.5),
-        0 2px 25px rgba(0, 102, 255, 0.4) !important;
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .section-title {
@@ -719,7 +719,7 @@ html {
     font-weight: 900;
     text-align: center;
     margin-bottom: 20px;
-    color: white !important;
+    color: #3366cc !important;
     text-shadow: 
         0 3px 30px rgba(0, 0, 0, 0.95),
         0 2px 25px rgba(0, 0, 0, 0.9) !important;
@@ -789,13 +789,13 @@ html {
 .speck-section-title {
     font-size: 3.5rem;
     font-weight: 900;
-    color: #0066ff !important;
+    color: #3366cc !important;
     margin-bottom: 40px;
     text-align: left;
     line-height: 1.1;
     text-shadow: 
-        0 3px 30px rgba(0, 102, 255, 0.5),
-        0 2px 25px rgba(0, 102, 255, 0.4) !important;
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .speck-services-intro {
@@ -898,13 +898,12 @@ html {
     top: 0;
     right: 0;
     font-size: 2rem;
-    color: #0066ff;
+    color: #3366cc;
     font-weight: 900;
     opacity: 0.7;
     transition: all 0.3s ease;
     text-shadow: 
-        0 1px 15px rgba(0, 102, 255, 0.4),
-        0 1px 10px rgba(0, 102, 255, 0.3) !important;
+        0 1px 15px rgba(0, 0, 0, 0.85) !important;
 }
 
 .speck-service-item:hover .service-arrow {
@@ -921,10 +920,10 @@ html {
 }
 
 .journals-section .section-title {
-    color: #0066ff !important;
+    color: #3366cc !important;
     text-shadow: 
-        0 3px 30px rgba(0, 102, 255, 0.5),
-        0 2px 25px rgba(0, 102, 255, 0.4) !important;
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .journals-grid {
@@ -952,10 +951,10 @@ html {
 
 .journal-date {
     font-size: 1rem;
-    color: #0066ff !important;
+    color: #3366cc !important;
     font-weight: 600;
     text-shadow: 
-        0 1px 15px rgba(0, 102, 255, 0.4) !important;
+        0 1px 15px rgba(0, 0, 0, 0.85) !important;
 }
 
 .journal-title {
@@ -995,10 +994,10 @@ html {
 }
 
 .faq-section .section-title {
-    color: #0066ff !important;
+    color: #3366cc !important;
     text-shadow: 
-        0 3px 30px rgba(0, 102, 255, 0.5),
-        0 2px 25px rgba(0, 102, 255, 0.4) !important;
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .faq-grid {
@@ -1093,12 +1092,12 @@ html {
 .cta-title {
     font-size: 3rem;
     font-weight: 900;
-    color: #0066ff !important;
+    color: #3366cc !important;
     margin-bottom: 20px;
     line-height: 1.1;
     text-shadow: 
-        0 3px 30px rgba(0, 102, 255, 0.5),
-        0 2px 25px rgba(0, 102, 255, 0.4) !important;
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
 .cta-subtitle {
@@ -1747,22 +1746,6 @@ h1, h2, h3, h4, h5, h6, p,
         0 2px 25px rgba(0, 0, 0, 0.85) !important;
     position: relative;
     z-index: 20;
-}
-
-/* ===== ЯРКИЕ СИНИЕ ТЕНИ ДЛЯ ЗАГОЛОВКОВ ===== */
-.hero h1 span:first-child,
-.hero h1 span:nth-child(2),
-.projects-section .section-title,
-.stats-section .section-title,
-.speck-section-title,
-.journals-section .section-title,
-.faq-section .section-title,
-.cta-title {
-    text-shadow: 
-        0 4px 40px rgba(0, 102, 255, 0.6),
-        0 3px 30px rgba(0, 102, 255, 0.5),
-        0 2px 25px rgba(0, 102, 255, 0.4),
-        0 1px 15px rgba(0, 102, 255, 0.3) !important;
 }
 
 /* ===== ГАРАНТИЯ ПРОЗРАЧНОСТИ ===== */
