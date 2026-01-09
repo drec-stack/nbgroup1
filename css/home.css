@@ -1,4 +1,4 @@
-/* home.css - ПОЛНЫЙ ФАЙЛ СТИЛЕЙ В СТИЛЕ SPECK DESIGN */
+/* home.css - ПОЛНЫЙ ФАЙЛ СТИЛЕЙ В СТИЛЕ SPECK DESIGN С ФИКСОМ ФОНА */
 
 /* ===== БАЗОВЫЕ СТИЛИ ===== */
 * {
@@ -31,6 +31,56 @@ html {
     width: 100%;
     position: relative;
     z-index: 10;
+}
+
+/* ===== ФОНОВЫЕ СЛОИ ===== */
+.bg-layers-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: -100 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.bg-layer {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    will-change: transform;
+}
+
+.bg-layer:nth-child(1) {
+    z-index: -100;
+    opacity: 1;
+}
+
+.bg-layer:nth-child(2) {
+    z-index: -101;
+    opacity: 0.9;
+}
+
+.bg-layer:nth-child(3) {
+    z-index: -102;
+    opacity: 0.8;
+}
+
+.bg-layer:nth-child(4) {
+    z-index: -103;
+    opacity: 0.7;
 }
 
 /* ===== HERO SECTION ===== */
@@ -1194,6 +1244,22 @@ html {
     box-shadow: none !important;
 }
 
+/* УСИЛЕННЫЕ ТЕНИ ДЛЯ ТЕКСТА */
+h1, h2, h3, h4, h5, h6, p, 
+.hero h1, .hero-subtitle, .hero-description p,
+.speck-block-title, .speck-block-subtitle, .speck-column-title,
+.speck-feature-item, .project-title, .project-description,
+.service-title, .service-description, .journal-title,
+.faq-question, .faq-answer p, .cta-title, .cta-subtitle,
+.stat-number, .stat-label, .section-title, .section-subtitle {
+    text-shadow: 
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
+    position: relative;
+    z-index: 20;
+}
+
 /* КРИТИЧЕСКИЙ ФИКС ДЛЯ prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
     .fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right,
@@ -1220,29 +1286,5 @@ html {
     
     .btn::before {
         display: none;
-    }
-    
-    /* Отключаем тени текста для уменьшения нагрузки */
-    .hero h1,
-    .hero-subtitle,
-    .hero-description p,
-    .speck-block-title,
-    .speck-block-subtitle,
-    .speck-column-title,
-    .speck-feature-item,
-    .project-title,
-    .project-description,
-    .service-title,
-    .service-description,
-    .journal-title,
-    .faq-question,
-    .faq-answer p,
-    .cta-title,
-    .cta-subtitle,
-    .stat-number,
-    .stat-label,
-    .section-title,
-    .section-subtitle {
-        text-shadow: none !important;
     }
 }
