@@ -1,4 +1,4 @@
-console.log('🏠 home.js loaded - SIMPLIFIED VERSION');
+console.log('🏠 home.js loaded - FIXED PARALLAX VERSION');
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
@@ -19,21 +19,10 @@ function initializeHomePage() {
         }
     });
     
-    // 3. Увеличиваем прозрачность фоновых изображений
-    document.querySelectorAll('.bg-layer').forEach((layer, index) => {
-        if (layer && layer.style) {
-            // Сделаем слои более прозрачными
-            const opacities = [0.7, 0.6, 0.5, 0.4];
-            if (index < opacities.length) {
-                layer.style.opacity = opacities[index].toString();
-            }
-        }
-    });
+    // 3. Запускаем единую систему параллакса
+    initializeSingleParallaxSystem();
     
-    // 4. Запускаем параллакс систему
-    initializeParallaxBackground();
-    
-    // 5. Запускаем все остальные функции
+    // 4. Запускаем все остальные функции
     setTimeout(() => {
         initializeSpeckBlocks();
         initializeStatsCounter();
@@ -46,9 +35,9 @@ function initializeHomePage() {
     }, 300);
 }
 
-// ===== ПАРАЛЛАКС СИСТЕМА =====
-function initializeParallaxBackground() {
-    console.log('🎨 Initializing parallax background...');
+// ===== ЕДИНАЯ СИСТЕМА ПАРАЛЛАКСА =====
+function initializeSingleParallaxSystem() {
+    console.log('🎨 Initializing SINGLE parallax system...');
     
     const bgLayers = document.querySelectorAll('.bg-layer');
     if (bgLayers.length === 0) {
@@ -57,6 +46,10 @@ function initializeParallaxBackground() {
     }
     
     console.log(`✅ Found ${bgLayers.length} background layers`);
+    
+    // Удаляем все предыдущие обработчики скролла
+    window.removeEventListener('scroll', handleParallaxScroll);
+    window.removeEventListener('scroll', updateParallax);
     
     // Проверяем загрузку изображений
     const imagePaths = [
@@ -76,10 +69,16 @@ function initializeParallaxBackground() {
             
             if (bgLayers[index]) {
                 bgLayers[index].classList.add('loaded');
+                // Убираем любые inline-стили, которые могут мешать
+                if (bgLayers[index].style) {
+                    bgLayers[index].style.opacity = '';
+                }
             }
             
             if (loadedImages === imagePaths.length) {
                 console.log('✅ All background images loaded successfully');
+                // После загрузки всех изображений, убираем слишком темные слои
+                removeDarkOverlays();
             }
         };
         img.onerror = () => {
@@ -88,30 +87,114 @@ function initializeParallaxBackground() {
         img.src = path;
     });
     
-    // Параллакс эффект при скролле
-    let lastScrollTime = 0;
-    function updateParallax() {
-        const currentTime = Date.now();
-        if (currentTime - lastScrollTime < 16) return;
+    // Оптимизированный параллакс эффект
+    let rafId = null;
+    let lastScrollY = window.scrollY;
+    
+    function handleParallaxScroll() {
+        if (rafId) return;
         
-        lastScrollTime = currentTime;
-        const scrollY = window.scrollY || window.pageYOffset;
-        
-        bgLayers.forEach((layer, index) => {
-            if (layer && layer.style) {
-                const speed = 0.03 + (index * 0.02);
-                const yPos = scrollY * speed;
-                layer.style.transform = `translateY(${yPos}px)`;
+        rafId = requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            
+            // Только если позиция изменилась
+            if (Math.abs(scrollY - lastScrollY) > 0.5) {
+                lastScrollY = scrollY;
+                
+                bgLayers.forEach((layer, index) => {
+                    if (layer && layer.style) {
+                        const speed = 0.03 + (index * 0.02);
+                        const yPos = scrollY * speed;
+                        layer.style.transform = `translate3d(0, ${yPos}px, 0)`;
+                    }
+                });
             }
+            
+            rafId = null;
         });
     }
     
-    window.addEventListener('scroll', updateParallax);
-    window.addEventListener('resize', updateParallax);
+    // Добавляем единственный обработчик скролла
+    window.addEventListener('scroll', handleParallaxScroll, { passive: true });
     
-    setTimeout(updateParallax, 100);
+    // Инициализируем начальное положение
+    setTimeout(handleParallaxScroll, 100);
+    
+    // Убираем черные overlay
+    setTimeout(removeDarkOverlays, 500);
     
     return true;
+}
+
+// ===== УДАЛЕНИЕ ТЕМНЫХ OVERLAY =====
+function removeDarkOverlays() {
+    console.log('🧹 Removing dark overlays...');
+    
+    // Убираем все возможные overlay элементы
+    const overlaySelectors = [
+        '.overlay',
+        '.dark-layer',
+        '.dark-overlay',
+        '.parallax-overlay',
+        '[class*="overlay"]',
+        '[class*="dark"]',
+        '.bg-overlay'
+    ];
+    
+    overlaySelectors.forEach(selector => {
+        const overlays = document.querySelectorAll(selector);
+        overlays.forEach(overlay => {
+            // Не трогаем bg-layers-container::after
+            if (selector === '[class*="overlay"]' || selector === '[class*="dark"]') {
+                const computedStyle = getComputedStyle(overlay);
+                const bgColor = computedStyle.backgroundColor;
+                
+                // Если элемент слишком темный, делаем его прозрачным
+                if (bgColor && (bgColor.includes('rgba(0,') || bgColor.includes('rgb(0,') || 
+                    bgColor.includes('rgba(10,') || bgColor.includes('rgb(10,'))) {
+                    overlay.style.opacity = '0.15';
+                    overlay.style.mixBlendMode = 'multiply';
+                    console.log(`✅ Fixed dark overlay: ${selector}`);
+                }
+            }
+        });
+    });
+    
+    // Специально обрабатываем защитный слой
+    const bgContainer = document.querySelector('.bg-layers-container');
+    if (bgContainer) {
+        const afterStyle = getComputedStyle(bgContainer, '::after');
+        const bgColor = afterStyle.backgroundColor;
+        
+        if (bgColor && (bgColor.includes('rgba(0,') || bgColor.includes('rgba(10,'))) {
+            // Создаем стиль для уменьшения непрозрачности
+            const style = document.createElement('style');
+            style.textContent = `
+                .bg-layers-container::after {
+                    background: rgba(10, 25, 47, 0.15) !important;
+                    mix-blend-mode: multiply !important;
+                }
+            `;
+            document.head.appendChild(style);
+            console.log('✅ Fixed protective layer opacity');
+        }
+    }
+    
+    // Удаляем все элементы с черным фоном
+    document.querySelectorAll('*').forEach(el => {
+        const style = getComputedStyle(el);
+        const bgColor = style.backgroundColor;
+        
+        if (bgColor && (bgColor === 'rgba(0, 0, 0, 0.5)' || 
+                        bgColor === 'rgba(0, 0, 0, 0.3)' ||
+                        bgColor === 'rgb(0, 0, 0)')) {
+            if (el !== document.body && el !== document.documentElement) {
+                el.style.opacity = '0.1';
+                el.style.pointerEvents = 'none';
+                console.log('✅ Fixed black background element');
+            }
+        }
+    });
 }
 
 // ===== SPECK BLOCKS АНИМАЦИИ =====
@@ -383,14 +466,14 @@ window.reinitializeHomePage = function() {
     initializeHomePage();
 };
 
-window.fixBlueBackground = function() {
-    console.log('🔵 Manually fixing blue background...');
-    document.querySelectorAll('.btn, .btn-primary, .btn-secondary').forEach(btn => {
-        if (btn && btn.style) {
-            btn.style.background = 'rgba(255, 255, 255, 0.08)';
-            btn.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.25)';
-        }
-    });
+window.fixDarkOverlays = function() {
+    console.log('🌙 Manually fixing dark overlays...');
+    removeDarkOverlays();
 };
 
-console.log('✅ home.js fully loaded!');
+window.reinitializeParallax = function() {
+    console.log('🔄 Reinitializing parallax...');
+    initializeSingleParallaxSystem();
+};
+
+console.log('✅ home.js fully loaded with SINGLE parallax system!');
