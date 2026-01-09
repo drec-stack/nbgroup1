@@ -1,12 +1,12 @@
-/* home.css - ПОЛНЫЙ ФАЙЛ СТИЛЕЙ С ФИКСОМ СИНЕГО ФОНА */
-
-/* ===== КРИТИЧНЫЙ ФИКС: УБИРАЕМ СИНИЙ ФОН ===== */
-* {
-    background-color: transparent !important;
-    background-image: none !important;
-}
+/* home.css - С ФИКСОМ СИНЕГО ФОНА И ПРОЗРАЧНЫМ ЗАЩИТНЫМ СЛОЕМ */
 
 /* ===== БАЗОВЫЕ СТИЛИ ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body.home-page {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: white;
@@ -33,7 +33,7 @@ html {
     z-index: 100;
 }
 
-/* ===== ФОНОВЫЕ СЛОИ - ФИКС СИНЕГО ФОНА ===== */
+/* ===== ФОНОВЫЕ СЛОИ ===== */
 .bg-layers-container {
     position: fixed !important;
     top: 0 !important;
@@ -48,7 +48,7 @@ html {
     visibility: visible !important;
 }
 
-/* ЗАЩИТНЫЙ СЛОЙ ОТ ПРОСВЕЧИВАНИЯ */
+/* ОЧЕНЬ ПРОЗРАЧНЫЙ ЗАЩИТНЫЙ СЛОЙ (15% непрозрачности) */
 .bg-layers-container::after {
     content: '';
     position: absolute;
@@ -56,9 +56,10 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(10, 25, 47, 0.92);
+    background: rgba(10, 25, 47, 0.15); /* Очень прозрачный */
     z-index: -999;
     pointer-events: none;
+    mix-blend-mode: multiply;
 }
 
 .bg-layer {
@@ -75,14 +76,13 @@ html {
     visibility: visible !important;
     will-change: transform;
     transition: transform 0.1s linear;
-    mix-blend-mode: normal !important;
 }
 
-/* Низкая прозрачность для предотвращения синего оттенка */
-.bg-layer:nth-child(1) { z-index: -1000; opacity: 0.4; }
-.bg-layer:nth-child(2) { z-index: -1001; opacity: 0.35; }
-.bg-layer:nth-child(3) { z-index: -1002; opacity: 0.3; }
-.bg-layer:nth-child(4) { z-index: -1003; opacity: 0.25; }
+/* Увеличиваем прозрачность фоновых изображений */
+.bg-layer:nth-child(1) { z-index: -1000; opacity: 0.7; }
+.bg-layer:nth-child(2) { z-index: -1001; opacity: 0.6; }
+.bg-layer:nth-child(3) { z-index: -1002; opacity: 0.5; }
+.bg-layer:nth-child(4) { z-index: -1003; opacity: 0.4; }
 
 /* ===== КНОПКИ БЕЗ СИНЕГО ФОНА ===== */
 .btn {
@@ -503,7 +503,7 @@ html {
     background: transparent !important;
 }
 
-/* ===== PROJECTS SECTION (SPECK DESIGN STYLE) ===== */
+/* ===== PROJECTS SECTION ===== */
 .projects-section {
     padding: 150px 0;
     background: transparent !important;
@@ -646,7 +646,7 @@ html {
         0 1px 15px rgba(0, 0, 0, 0.85) !important;
 }
 
-/* ===== SERVICES SECTION (SPECK DESIGN STYLE) ===== */
+/* ===== SERVICES SECTION ===== */
 .services-section {
     padding: 150px 0;
     background: transparent !important;
@@ -704,7 +704,7 @@ html {
         0 1px 15px rgba(0, 0, 0, 0.8) !important;
 }
 
-/* ===== JOURNALS SECTION (SPECK DESIGN STYLE) ===== */
+/* ===== JOURNALS SECTION ===== */
 .journals-section {
     padding: 150px 0;
     background: transparent !important;
@@ -772,7 +772,7 @@ html {
     margin-top: 60px;
 }
 
-/* ===== FAQ SECTION (SPECK DESIGN STYLE) ===== */
+/* ===== FAQ SECTION ===== */
 .faq-section {
     padding: 150px 0;
     background: transparent !important;
