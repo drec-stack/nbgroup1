@@ -1,4 +1,4 @@
-/* animations.css - ПОЛНЫЙ ФАЙЛ АНИМАЦИЙ ДЛЯ SPECK DESIGN */
+/* animations.css - ПОЛНЫЙ ФАЙЛ АНИМАЦИЙ С EXPERTISE */
 
 :root {
     --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -19,6 +19,66 @@
 * {
     animation-duration: var(--animation-duration-normal);
     animation-fill-mode: both;
+}
+
+/* ===== EXPERTISE BLOCK ANIMATIONS ===== */
+@keyframes expertiseBlockReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.expertise-block.fade-in-up {
+    animation: expertiseBlockReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-play-state: paused;
+}
+
+@keyframes expertiseNumberGlow {
+    0%, 100% {
+        text-shadow: 
+            0 2px 20px rgba(0, 102, 255, 0.5),
+            0 1px 15px rgba(0, 102, 255, 0.3);
+    }
+    50% {
+        text-shadow: 
+            0 3px 30px rgba(0, 102, 255, 0.8),
+            0 2px 25px rgba(0, 102, 255, 0.5);
+    }
+}
+
+.expertise-block:hover .expertise-number {
+    animation: expertiseNumberGlow 2s ease-in-out infinite;
+}
+
+@keyframes expertiseBlockHover {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+.expertise-block:hover {
+    animation: expertiseBlockHover 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes featureArrowMove {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(5px);
+    }
+}
+
+.expertise-block:hover .expertise-features li::before {
+    animation: featureArrowMove 0.3s ease forwards;
 }
 
 /* ===== HERO АНИМАЦИИ ===== */
@@ -727,6 +787,7 @@
     
     /* Отключаем все анимации */
     .fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right,
+    .expertise-block, .expertise-number,
     .speck-vertical-block, .speck-block-number, .speck-block-title,
     .speck-block-subtitle, .speck-feature-item, .project-card,
     .service-item, .journal-item, .faq-item, .stat-card,
@@ -738,18 +799,20 @@
     
     /* Устанавливаем конечные состояния */
     .fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right,
-    .speck-vertical-block, .project-card, .service-item,
+    .expertise-block, .speck-vertical-block, .project-card, .service-item,
     .journal-item, .faq-item, .stat-card {
         opacity: 1 !important;
         transform: none !important;
     }
     
+    .expertise-block.visible,
     .speck-vertical-block.visible {
         opacity: 1 !important;
         transform: none !important;
     }
     
     /* Отключаем hover эффекты */
+    .expertise-block:hover,
     .hero-image:hover,
     .project-card:hover,
     .service-item:hover,
@@ -767,6 +830,9 @@
     .hero h1,
     .hero-subtitle,
     .hero-description p,
+    .expertise-title,
+    .expertise-subtitle,
+    .expertise-features li,
     .speck-block-title,
     .speck-block-subtitle,
     .speck-column-title,
@@ -820,6 +886,7 @@
 }
 
 /* ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА */
+.expertise-block,
 .speck-vertical-block,
 .project-card,
 .service-item,
@@ -835,6 +902,9 @@
 }
 
 /* УСИЛЕНИЕ ТЕНИ ДЛЯ ВИСЯЩЕГО ТЕКСТА */
+.expertise-title,
+.expertise-subtitle,
+.expertise-features li,
 .speck-block-title,
 .speck-block-subtitle,
 .speck-column-title,
@@ -892,6 +962,7 @@
 
 /* SPECK ANIMATIONS READY STATE */
 .speck-animations-ready .speck-vertical-block,
+.speck-animations-ready .expertise-block,
 .speck-animations-ready .project-card,
 .speck-animations-ready .service-item,
 .speck-animations-ready .journal-item,
