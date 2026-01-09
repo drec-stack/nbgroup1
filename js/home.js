@@ -1,5 +1,3 @@
-// home.js - ПОЛНЫЙ ФАЙЛ ДЛЯ SPECK DESIGN
-
 console.log('🏠 home.js loaded - COMPLETE SPECK DESIGN VERSION');
 
 // ===== ЭКСТРЕННЫЙ ФИКС ФОНА =====
@@ -405,12 +403,16 @@ function initializeCardHoverEffects() {
 function safeInitialize() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            initializeHomePage();
-            initializeCardHoverEffects();
+            setTimeout(() => {
+                initializeHomePage();
+                initializeCardHoverEffects();
+            }, 500);
         });
     } else if (document.body) {
-        initializeHomePage();
-        setTimeout(initializeCardHoverEffects, 500);
+        setTimeout(() => {
+            initializeHomePage();
+            initializeCardHoverEffects();
+        }, 500);
     } else {
         console.log('⚠️ Waiting for document.body to be ready...');
         setTimeout(safeInitialize, 50);
