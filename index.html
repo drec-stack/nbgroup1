@@ -35,6 +35,11 @@
             -moz-osx-font-smoothing: grayscale;
         }
         
+        /* КРИТИЧНЫЙ ФИКС: УБИРАЕМ СИНИЕ ТЕНИ И ФОНЫ */
+        *:not(.btn):not(.btn-primary):not(.btn-secondary) {
+            box-shadow: none !important;
+        }
+        
         /* ФОНОВЫЕ СЛОИ - ФИКСИРОВАННЫЕ */
         .bg-layers-container {
             position: fixed !important;
@@ -42,12 +47,25 @@
             left: 0 !important;
             width: 100% !important;
             height: 100% !important;
-            z-index: -100 !important;
+            z-index: -1000 !important;
             overflow: hidden;
             pointer-events: none;
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
+        }
+        
+        /* ЗАЩИТНЫЙ СЛОЙ ОТ ПРОСВЕЧИВАНИЯ */
+        .bg-layers-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 25, 47, 0.92);
+            z-index: -999;
+            pointer-events: none;
         }
         
         .bg-layer {
@@ -63,38 +81,68 @@
             opacity: 1 !important;
             visibility: visible !important;
             will-change: transform;
+            mix-blend-mode: normal !important;
         }
         
         /* Параллакс слои с правильными путями */
         .bg-layer:nth-child(1) {
-            z-index: -100;
+            z-index: -1000;
             background-image: url('assets/images/parallax/bg-1.jpg') !important;
-            opacity: 1;
+            opacity: 0.4;
         }
         
         .bg-layer:nth-child(2) {
-            z-index: -101;
+            z-index: -1001;
             background-image: url('assets/images/parallax/bg-2.jpg') !important;
-            opacity: 0.9;
+            opacity: 0.35;
         }
         
         .bg-layer:nth-child(3) {
-            z-index: -102;
+            z-index: -1002;
             background-image: url('assets/images/parallax/bg-3.jpg') !important;
-            opacity: 0.8;
+            opacity: 0.3;
         }
         
         .bg-layer:nth-child(4) {
-            z-index: -103;
+            z-index: -1003;
             background-image: url('assets/images/parallax/bg-4.jpg') !important;
-            opacity: 0.7;
+            opacity: 0.25;
         }
         
         /* Убедимся, что все контентные блоки выше фона */
         .container, section, .hero, .content-section, 
-        #header-container, #footer-container {
+        #header-container, #footer-container,
+        .scroll-progress {
             position: relative;
-            z-index: 10 !important;
+            z-index: 100 !important;
+        }
+        
+        /* КНОПКИ БЕЗ СИНЕГО ФОНА */
+        .btn, .btn-primary, .btn-secondary {
+            background: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(12px) saturate(0.9) !important;
+            -webkit-backdrop-filter: blur(12px) saturate(0.9) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.25),
+                0 2px 10px rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        .btn:hover, .btn-primary:hover, .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12) !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+            box-shadow: 
+                0 12px 35px rgba(0, 0, 0, 0.3),
+                0 4px 15px rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        .btn::before {
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.08),
+                transparent
+            ) !important;
         }
         
         /* ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ с правильными путями */
@@ -132,18 +180,6 @@
                 0 3px 30px rgba(0, 0, 0, 0.95),
                 0 2px 25px rgba(0, 0, 0, 0.9),
                 0 1px 20px rgba(0, 0, 0, 0.85) !important;
-        }
-        
-        /* Временный фон, если изображения не загрузятся */
-        .bg-layers-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 50%, #0a192f 100%);
-            z-index: -104;
         }
     </style>
     
@@ -645,76 +681,72 @@
     <!-- Background Fix Script -->
     <script>
     (function() {
-        // КРИТИЧНЫЙ ФИКС ФОНА - УБИРАЕМ ВСЕ БАРЬЕРЫ
+        // КРИТИЧНЫЙ ФИКС ФОНА - ЗАЩИТА ОТ СИНЕГО ФОНА
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔧 DOM loaded - applying critical background fix');
+            console.log('🔧 DOM loaded - applying anti-blue background fix');
             
-            // 1. Убираем все фоны
-            document.body.style.backgroundColor = 'transparent';
-            document.documentElement.style.backgroundColor = 'transparent';
+            // 1. Убираем все синие фоны
+            document.querySelectorAll('*').forEach(element => {
+                const style = getComputedStyle(element);
+                if (style.backgroundColor.includes('rgb(0, 102, 255)') || 
+                    style.backgroundColor.includes('rgba(0, 102, 255')) {
+                    element.style.backgroundColor = 'transparent';
+                }
+            });
             
-            // 2. Активируем фоновые слои
+            // 2. Активируем фоновые слои с защитой
             const bgLayers = document.querySelectorAll('.bg-layer');
             bgLayers.forEach((layer, index) => {
                 if (layer && layer.style) {
-                    layer.style.opacity = '1';
+                    layer.style.opacity = (0.4 - (index * 0.05)).toString();
                     layer.style.display = 'block';
                     layer.style.visibility = 'visible';
-                    layer.style.zIndex = `${-100 - index}`;
+                    layer.style.zIndex = `${-1000 - index}`;
                 }
             });
             
-            // 3. Активируем контейнер
+            // 3. Гарантируем темный защитный слой
             const bgContainer = document.querySelector('.bg-layers-container');
-            if (bgContainer && bgContainer.style) {
-                bgContainer.style.display = 'block';
-                bgContainer.style.opacity = '1';
-                bgContainer.style.visibility = 'visible';
+            if (bgContainer) {
+                const existingProtector = document.createElement('div');
+                existingProtector.className = 'background-protector';
+                existingProtector.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(10, 25, 47, 0.9);
+                    z-index: -999;
+                    pointer-events: none;
+                `;
+                bgContainer.appendChild(existingProtector);
             }
             
-            // 4. Убираем фоны со всех секций
-            document.querySelectorAll('section').forEach(section => {
-                if (section && section.style) {
-                    section.style.backgroundColor = 'transparent';
-                }
+            // 4. Убираем синие тени с кнопок
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.25)';
             });
             
-            console.log('✅ Critical background fix applied');
+            console.log('✅ Anti-blue background fix applied');
         });
         
-        // ПАРАЛЛАКС ЭФФЕКТ
+        // ПАРАЛЛАКС ЭФФЕКТ С ФИКСОМ
+        let lastScrollTime = 0;
         window.addEventListener('scroll', function() {
+            const currentTime = Date.now();
+            if (currentTime - lastScrollTime < 16) return; // 60fps limit
+            
+            lastScrollTime = currentTime;
             const scrolled = window.pageYOffset;
             const bgLayers = document.querySelectorAll('.bg-layer');
             
             bgLayers.forEach((layer, index) => {
                 if (layer && layer.style) {
-                    const speed = 0.1 + (index * 0.1);
+                    const speed = 0.03 + (index * 0.02); // Очень медленные скорости
                     const yPos = scrolled * speed;
                     layer.style.transform = `translateY(${yPos}px)`;
                 }
-            });
-        });
-        
-        // ПРОВЕРКА ЗАГРУЗКИ ИЗОБРАЖЕНИЙ
-        window.addEventListener('load', function() {
-            console.log('🖼️ Page loaded - checking background images');
-            const images = [
-                'assets/images/parallax/bg-1.jpg',
-                'assets/images/parallax/bg-2.jpg',
-                'assets/images/parallax/bg-3.jpg',
-                'assets/images/parallax/bg-4.jpg'
-            ];
-            
-            images.forEach(img => {
-                const testImg = new Image();
-                testImg.onload = function() {
-                    console.log(`✅ Background image loaded: ${img}`);
-                };
-                testImg.onerror = function() {
-                    console.warn(`⚠️ Could not load: ${img}. Using fallback gradient.`);
-                };
-                testImg.src = img;
             });
         });
     })();
