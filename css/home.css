@@ -360,6 +360,11 @@ html {
     transform: translateX(-50px);
 }
 
+.expertise-vertical-block.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
 .expertise-vertical-block:hover {
     transform: translateX(-10px);
 }
@@ -468,6 +473,136 @@ html {
     font-weight: 500;
 }
 
+/* СТИЛИ ДЛЯ НОВОГО ТЕКСТА EXPERTISE */
+
+/* Стиль для подзаголовков-описаний блоков */
+.expertise-block-subtitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95) !important;
+    margin-bottom: 30px;
+    line-height: 1.4;
+    position: relative;
+    padding-left: 20px;
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.95),
+        0 1px 15px rgba(0, 0, 0, 0.9) !important;
+}
+
+.expertise-block-subtitle::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: #0066ff;
+    font-weight: bold;
+}
+
+/* Стиль для списка подразделов */
+.expertise-sub-features {
+    list-style: none;
+    padding: 0;
+    margin: 25px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.expertise-sub-feature {
+    position: relative;
+    padding-left: 35px;
+    transition: all 0.3s ease;
+}
+
+.expertise-sub-feature::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #0066ff;
+    font-size: 1.8rem;
+    line-height: 1;
+    top: -2px;
+    transition: all 0.3s ease;
+}
+
+.expertise-sub-feature-text {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9) !important;
+    line-height: 1.4;
+    text-shadow: 
+        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+    transition: all 0.3s ease;
+}
+
+/* Стиль для вложенных пунктов */
+.expertise-nested-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.expertise-nested-item {
+    position: relative;
+    padding-left: 25px;
+    transition: all 0.3s ease;
+}
+
+.expertise-nested-item::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.expertise-nested-item-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8) !important;
+    line-height: 1.5;
+    text-shadow: 
+        0 1px 10px rgba(0, 0, 0, 0.8) !important;
+    transition: all 0.3s ease;
+}
+
+/* Эффекты при наведении */
+.expertise-vertical-block:hover .expertise-block-subtitle {
+    color: rgba(255, 255, 255, 1) !important;
+    transform: translateX(10px);
+}
+
+.expertise-vertical-block:hover .expertise-sub-feature {
+    transform: translateX(5px);
+}
+
+.expertise-vertical-block:hover .expertise-sub-feature::before {
+    color: #66b5ff;
+    transform: scale(1.2);
+}
+
+.expertise-vertical-block:hover .expertise-sub-feature-text {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.expertise-vertical-block:hover .expertise-nested-item {
+    transform: translateX(5px);
+}
+
+.expertise-vertical-block:hover .expertise-nested-item::before {
+    color: #66b5ff;
+    transform: translateX(3px);
+}
+
+.expertise-vertical-block:hover .expertise-nested-item-text {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Старые стили для списка (оставлены для совместимости) */
 .expertise-features {
     list-style: none;
     padding: 0;
@@ -1077,6 +1212,18 @@ html {
     .expertise-description {
         font-size: 1.2rem;
     }
+    
+    .expertise-block-subtitle {
+        font-size: 1.6rem;
+    }
+    
+    .expertise-sub-feature-text {
+        font-size: 1.3rem;
+    }
+    
+    .expertise-nested-item-text {
+        font-size: 1.1rem;
+    }
 }
 
 @media (max-width: 992px) {
@@ -1118,6 +1265,19 @@ html {
     }
     
     .expertise-features li {
+        font-size: 1rem;
+    }
+    
+    .expertise-block-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 25px;
+    }
+    
+    .expertise-sub-feature-text {
+        font-size: 1.2rem;
+    }
+    
+    .expertise-nested-item-text {
         font-size: 1rem;
     }
 }
@@ -1178,6 +1338,36 @@ html {
         padding-left: 25px;
         margin-bottom: 10px;
     }
+    
+    .expertise-block-subtitle {
+        font-size: 1.4rem;
+        padding-left: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .expertise-sub-feature {
+        padding-left: 25px;
+    }
+    
+    .expertise-sub-feature::before {
+        font-size: 1.5rem;
+    }
+    
+    .expertise-sub-feature-text {
+        font-size: 1.1rem;
+    }
+    
+    .expertise-nested-list {
+        margin-left: 25px;
+    }
+    
+    .expertise-nested-item {
+        padding-left: 20px;
+    }
+    
+    .expertise-nested-item-text {
+        font-size: 0.95rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -1234,6 +1424,26 @@ html {
     }
     
     .expertise-features li {
+        font-size: 0.9rem;
+    }
+    
+    .expertise-block-subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .expertise-sub-feature-text {
+        font-size: 1rem;
+    }
+    
+    .expertise-sub-feature {
+        padding-left: 22px;
+    }
+    
+    .expertise-sub-feature::before {
+        font-size: 1.3rem;
+    }
+    
+    .expertise-nested-item-text {
         font-size: 0.9rem;
     }
 }
@@ -1519,6 +1729,7 @@ h1, h2, h3, h4, h5, h6, p,
 .hero h1, .hero-subtitle, .hero-description p,
 .expertise-main-title, .expertise-subtitle, .expertise-title,
 .expertise-description, .expertise-features li,
+.expertise-block-subtitle, .expertise-sub-feature-text, .expertise-nested-item-text,
 .project-title, .project-description,
 .service-title, .service-content, .service-content p,
 .journal-title, .faq-question, .faq-answer p, 
