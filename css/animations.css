@@ -1,4 +1,4 @@
-/* animations.css - ПОЛНЫЙ ФАЙЛ АНИМАЦИЙ С EXPERTISE */
+/* animations.css - ПОЛНЫЙ ФАЙЛ АНИМАЦИЙ С ВЕРТИКАЛЬНЫМИ EXPERTISE БЛОКАМИ */
 
 :root {
     --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -21,64 +21,130 @@
     animation-fill-mode: both;
 }
 
-/* ===== EXPERTISE BLOCK ANIMATIONS ===== */
-@keyframes expertiseBlockReveal {
+/* ===== VERTICAL EXPERTISE BLOCK ANIMATIONS ===== */
+@keyframes expertiseVerticalBlockReveal {
     0% {
         opacity: 0;
-        transform: translateY(50px) scale(0.95);
+        transform: translateX(-50px);
     }
     100% {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateX(0);
     }
 }
 
-.expertise-block.fade-in-up {
-    animation: expertiseBlockReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.expertise-vertical-block.fade-in-left {
+    animation: expertiseVerticalBlockReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     animation-play-state: paused;
 }
 
-@keyframes expertiseNumberGlow {
-    0%, 100% {
+@keyframes expertiseNumberReveal {
+    0% {
+        opacity: 0.5;
+        transform: scale(0.8);
+        text-shadow: 
+            0 0 10px rgba(0, 102, 255, 0.3),
+            0 0 5px rgba(0, 102, 255, 0.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
         text-shadow: 
             0 2px 20px rgba(0, 102, 255, 0.5),
             0 1px 15px rgba(0, 102, 255, 0.3);
     }
-    50% {
-        text-shadow: 
-            0 3px 30px rgba(0, 102, 255, 0.8),
-            0 2px 25px rgba(0, 102, 255, 0.5);
-    }
 }
 
-.expertise-block:hover .expertise-number {
-    animation: expertiseNumberGlow 2s ease-in-out infinite;
+.expertise-vertical-block:hover .expertise-number {
+    animation: expertiseNumberReveal 0.4s ease forwards;
 }
 
-@keyframes expertiseBlockHover {
+@keyframes expertiseNumberLineGrow {
     0% {
-        transform: translateY(0);
+        height: 40px;
+        background: linear-gradient(
+            to bottom,
+            rgba(0, 102, 255, 0.8),
+            rgba(0, 102, 255, 0.3)
+        );
     }
     100% {
-        transform: translateY(-10px);
+        height: 60px;
+        background: linear-gradient(
+            to bottom,
+            rgba(0, 102, 255, 1),
+            rgba(0, 102, 255, 0.5)
+        );
     }
 }
 
-.expertise-block:hover {
-    animation: expertiseBlockHover 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.expertise-vertical-block:hover .expertise-number-line {
+    animation: expertiseNumberLineGrow 0.4s ease forwards;
 }
 
-@keyframes featureArrowMove {
+@keyframes expertiseBlockHoverMove {
     0% {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(5px);
+        transform: translateX(-10px);
     }
 }
 
-.expertise-block:hover .expertise-features li::before {
-    animation: featureArrowMove 0.3s ease forwards;
+.expertise-vertical-block:hover {
+    animation: expertiseBlockHoverMove 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes expertiseTitleHover {
+    0% {
+        transform: translateX(0);
+        color: rgba(255, 255, 255, 0.98);
+    }
+    100% {
+        transform: translateX(10px);
+        color: #ffffff;
+    }
+}
+
+.expertise-vertical-block:hover .expertise-title {
+    animation: expertiseTitleHover 0.3s ease forwards;
+}
+
+@keyframes expertiseFeatureHover {
+    0% {
+        transform: translateX(0);
+        color: rgba(255, 255, 255, 0.85);
+    }
+    100% {
+        transform: translateX(5px);
+        color: rgba(255, 255, 255, 0.95);
+    }
+}
+
+.expertise-vertical-block:hover .expertise-features li {
+    animation: expertiseFeatureHover 0.3s ease forwards;
+    animation-delay: calc(var(--item-index, 0) * 0.05s);
+}
+
+/* Анимация для каждого элемента списка с задержкой */
+.expertise-features li:nth-child(1) { --item-index: 1; }
+.expertise-features li:nth-child(2) { --item-index: 2; }
+.expertise-features li:nth-child(3) { --item-index: 3; }
+.expertise-features li:nth-child(4) { --item-index: 4; }
+
+@keyframes expertiseFeatureArrowHover {
+    0% {
+        transform: translateX(0);
+        color: #0066ff;
+    }
+    100% {
+        transform: translateX(5px);
+        color: #66b5ff;
+    }
+}
+
+.expertise-vertical-block:hover .expertise-features li::before {
+    animation: expertiseFeatureArrowHover 0.3s ease forwards;
 }
 
 /* ===== HERO АНИМАЦИИ ===== */
@@ -787,7 +853,7 @@
     
     /* Отключаем все анимации */
     .fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right,
-    .expertise-block, .expertise-number,
+    .expertise-vertical-block, .expertise-number, .expertise-number-line,
     .speck-vertical-block, .speck-block-number, .speck-block-title,
     .speck-block-subtitle, .speck-feature-item, .project-card,
     .service-item, .journal-item, .faq-item, .stat-card,
@@ -799,20 +865,25 @@
     
     /* Устанавливаем конечные состояния */
     .fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right,
-    .expertise-block, .speck-vertical-block, .project-card, .service-item,
+    .expertise-vertical-block, .speck-vertical-block, .project-card, .service-item,
     .journal-item, .faq-item, .stat-card {
         opacity: 1 !important;
         transform: none !important;
     }
     
-    .expertise-block.visible,
+    .expertise-vertical-block.visible,
     .speck-vertical-block.visible {
         opacity: 1 !important;
         transform: none !important;
     }
     
     /* Отключаем hover эффекты */
-    .expertise-block:hover,
+    .expertise-vertical-block:hover,
+    .expertise-vertical-block:hover .expertise-number,
+    .expertise-vertical-block:hover .expertise-number-line,
+    .expertise-vertical-block:hover .expertise-title,
+    .expertise-vertical-block:hover .expertise-features li,
+    .expertise-vertical-block:hover .expertise-features li::before,
     .hero-image:hover,
     .project-card:hover,
     .service-item:hover,
@@ -830,8 +901,10 @@
     .hero h1,
     .hero-subtitle,
     .hero-description p,
-    .expertise-title,
+    .expertise-main-title,
     .expertise-subtitle,
+    .expertise-title,
+    .expertise-description,
     .expertise-features li,
     .speck-block-title,
     .speck-block-subtitle,
@@ -886,7 +959,10 @@
 }
 
 /* ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА */
-.expertise-block,
+.expertise-vertical-block,
+.expertise-vertical-content,
+.expertise-number-block,
+.expertise-text-content,
 .speck-vertical-block,
 .project-card,
 .service-item,
@@ -902,8 +978,10 @@
 }
 
 /* УСИЛЕНИЕ ТЕНИ ДЛЯ ВИСЯЩЕГО ТЕКСТА */
-.expertise-title,
+.expertise-main-title,
 .expertise-subtitle,
+.expertise-title,
+.expertise-description,
 .expertise-features li,
 .speck-block-title,
 .speck-block-subtitle,
@@ -962,7 +1040,7 @@
 
 /* SPECK ANIMATIONS READY STATE */
 .speck-animations-ready .speck-vertical-block,
-.speck-animations-ready .expertise-block,
+.speck-animations-ready .expertise-vertical-block,
 .speck-animations-ready .project-card,
 .speck-animations-ready .service-item,
 .speck-animations-ready .journal-item,
