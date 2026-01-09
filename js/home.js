@@ -1,566 +1,417 @@
-// home.js - ПОЛНАЯ ВЕРСИЯ ДЛЯ SPECK DESIGN БЛОКОВ
+// home.js - ПОЛНЫЙ ФАЙЛ ДЛЯ SPECK DESIGN
 
-console.log('🏠 home.js loaded - SPECK DESIGN BLOCKS INTEGRATION');
+console.log('🏠 home.js loaded - COMPLETE SPECK DESIGN VERSION');
 
-// ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
-function initializeHomePage() {
-    console.log('🚀 Initializing home page with Speck Design blocks...');
+// ===== ЭКСТРЕННЫЙ ФИКС ФОНА =====
+(function immediateFix() {
+    'use strict';
     
-    // 1. Гарантируем класс для главной страницы
+    function safeImmediateFix() {
+        if (!document.body) {
+            console.log('⚠️ document.body not ready, retrying...');
+            setTimeout(safeImmediateFix, 50);
+            return;
+        }
+        
+        console.log('🚨 IMMEDIATE FIX: Removing black background');
+        
+        document.body.style.backgroundColor = 'transparent';
+        document.documentElement.style.backgroundColor = 'transparent';
+        
+        const bgLayers = document.querySelectorAll('.bg-layer');
+        bgLayers.forEach(layer => {
+            if (layer && layer.style) {
+                layer.style.opacity = '1';
+                layer.style.display = 'block';
+                layer.style.visibility = 'visible';
+            }
+        });
+        
+        console.log('✅ Immediate background fix applied');
+    }
+    
+    safeImmediateFix();
+})();
+
+// ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
+function initializeHomePage() {
+    console.log('📄 INITIALIZING HOME PAGE WITH SPECK DESIGN');
+    
+    // 1. ГАРАНТИРУЕМ КЛАСС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
     document.body.classList.add('home-page');
     document.documentElement.classList.add('home-page');
     
-    // 2. Инициализация всех блоков Speck Design
-    initializeSpeckDesignBlocks();
-    
-    // 3. Базовая инициализация
-    initializeBasicFunctions();
-    
-    console.log('✅ Home page initialized successfully');
-}
-
-// ===== ИНИЦИАЛИЗАЦИЯ SPECK DESIGN БЛОКОВ =====
-function initializeSpeckDesignBlocks() {
-    console.log('🎨 Initializing Speck Design blocks...');
-    
-    // 1. Добавляем класс для активации анимаций
-    const speckBlocks = document.querySelectorAll('.speck-design-section');
-    speckBlocks.forEach((block, index) => {
-        setTimeout(() => {
-            block.classList.add('speck-block-loaded');
-            console.log(`✅ Speck block ${index + 1} loaded: ${block.className.split(' ')[0]}`);
-        }, index * 300);
-    });
-    
-    // 2. Инициализация компонентов
-    initializeProjects();
-    initializeServices();
-    initializeJournals();
-    initializeFAQ();
-    initializeCTA();
-    
-    // 3. Инициализация интерактивных эффектов
-    initializeHoverEffects();
-    initializeScrollAnimations();
-    initializeLazyLoading();
-    
-    console.log('✅ All Speck Design blocks initialized');
-}
-
-// ===== ПРОЕКТЫ =====
-function initializeProjects() {
-    const projectCards = document.querySelectorAll('.project-card');
-    
-    if (projectCards.length === 0) return;
-    
-    console.log(`🎯 Found ${projectCards.length} project cards`);
-    
-    // Клик по карточке проекта
-    projectCards.forEach(card => {
-        // Делаем всю карточку кликабельной
-        card.style.cursor = 'pointer';
+    // 2. ЭКСТРЕННЫЙ CSS ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА
+    const emergencyCSS = `
+        /* ЭКСТРЕННЫЙ ФИКС: ВИСЯЩИЙ ТЕКСТ БЕЗ ФОНА */
+        body.home-page {
+            background: transparent !important;
+            background-color: transparent !important;
+        }
         
-        card.addEventListener('click', function(e) {
-            // Не переходим по ссылке, если кликнули на другие кликабельные элементы
-            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
-                return;
-            }
-            
-            // Ищем ссылку внутри карточки
-            const link = this.querySelector('a');
-            if (link) {
-                e.preventDefault();
-                window.location.href = link.href;
-            }
-        });
+        .bg-layers-container {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            z-index: 1 !important;
+        }
         
-        // Hover эффекты
-        card.addEventListener('mouseenter', function() {
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                this.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-            }
-        });
-    });
-}
-
-// ===== УСЛУГИ =====
-function initializeServices() {
-    const serviceItems = document.querySelectorAll('.service-item');
-    
-    if (serviceItems.length === 0) return;
-    
-    console.log(`⚙️ Found ${serviceItems.length} service items`);
-    
-    // Анимация при наведении на услуги
-    serviceItems.forEach(item => {
-        item.addEventListener('mouseenter', function() {
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                const icon = this.querySelector('.service-icon');
-                if (icon) {
-                    icon.style.transition = 'transform 0.3s ease';
-                }
-            }
-        });
+        .bg-layer {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
         
-        // Клик по услуге (для будущего расширения)
-        item.addEventListener('click', function(e) {
-            // Можно добавить модальное окно с детальной информацией
-            if (e.target.tagName !== 'A' && e.target.tagName !== 'BUTTON') {
-                console.log('Service clicked:', this.querySelector('h3')?.textContent);
-            }
-        });
-    });
-}
-
-// ===== ЖУРНАЛЫ =====
-function initializeJournals() {
-    const journalItems = document.querySelectorAll('.journal-item');
-    
-    if (journalItems.length === 0) return;
-    
-    console.log(`📰 Found ${journalItems.length} journal items`);
-    
-    // Клик по статье журнала
-    journalItems.forEach(item => {
-        // Делаем всю статью кликабельной
-        item.style.cursor = 'pointer';
+        /* ВСЕ БЛОКИ SPECK DESIGN БЕЗ ФОНА */
+        .speck-vertical-block, .speck-block-left, .speck-block-right,
+        .speck-feature-column, .project-card, .service-item,
+        .journal-item, .faq-item, .stat-card, .cta-content {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
         
-        item.addEventListener('click', function(e) {
-            // Не переходим по ссылке, если кликнули на другие кликабельные элементы
-            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a')) {
-                return;
-            }
-            
-            // Ищем ссылку на статью
-            const link = this.querySelector('.journal-link');
-            if (link) {
-                e.preventDefault();
-                window.location.href = link.href;
-            }
-        });
+        /* УСИЛЕНИЕ ТЕНИ ДЛЯ ТЕКСТА */
+        .speck-block-title, .speck-block-subtitle, .speck-column-title,
+        .speck-feature-item, .project-title, .project-description,
+        .service-title, .service-description, .journal-title,
+        .faq-question, .faq-answer p, .cta-title, .cta-subtitle,
+        .stat-number, .stat-label, .section-title, .section-subtitle {
+            text-shadow: 
+                0 3px 30px rgba(0, 0, 0, 0.95),
+                0 2px 25px rgba(0, 0, 0, 0.9) !important;
+            position: relative;
+            z-index: 20;
+        }
         
-        // Hover эффекты для ссылок
-        const journalLinks = item.querySelectorAll('.journal-link');
-        journalLinks.forEach(link => {
-            link.addEventListener('mouseenter', function() {
-                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    const icon = this.querySelector('i');
-                    if (icon) {
-                        icon.style.transition = 'transform 0.3s ease';
-                    }
+        /* УДАЛИТЬ ВСЕ OVERLAY */
+        [class*="overlay"], [class*="dark-bg"], [class*="black-bg"] {
+            display: none !important;
+            opacity: 0 !important;
+        }
+    `;
+    
+    const style = document.createElement('style');
+    style.textContent = emergencyCSS;
+    document.head.appendChild(style);
+    
+    console.log('✅ Emergency CSS injected');
+    
+    // 3. ПРИНУДИТЕЛЬНАЯ АКТИВАЦИЯ ФОНА
+    setTimeout(() => {
+        const bgLayers = document.querySelectorAll('.bg-layer');
+        const bgContainer = document.querySelector('.bg-layers-container');
+        
+        console.log(`🎨 Found ${bgLayers.length} background layers`);
+        
+        if (bgLayers.length > 0) {
+            bgLayers.forEach(layer => {
+                if (layer && layer.style) {
+                    layer.style.opacity = '1';
+                    layer.style.display = 'block';
+                    layer.style.visibility = 'visible';
                 }
             });
+            
+            if (bgContainer && bgContainer.style) {
+                bgContainer.style.display = 'block';
+                bgContainer.style.opacity = '1';
+                bgContainer.style.visibility = 'visible';
+            }
+        }
+        
+        // Убираем фоны со всех элементов
+        document.body.style.backgroundColor = 'transparent';
+        document.querySelectorAll('section').forEach(section => {
+            if (section && section.style) {
+                section.style.backgroundColor = 'transparent';
+            }
         });
-    });
+        
+        console.log('✅ Background activated and all overlays removed');
+    }, 100);
+    
+    // 4. ЗАПУСКАЕМ ВСЕ ФУНКЦИИ
+    initializeSpeckBlocks();
+    initializeStatsCounter();
+    initializeFAQ();
+    initializeScrollAnimations();
+    initializeScrollProgress();
+    
+    console.log('✅ Home page fully initialized');
 }
 
-// ===== FAQ (АККОРДЕОН) =====
+// ===== SPECK BLOCKS АНИМАЦИИ =====
+function initializeSpeckBlocks() {
+    const blocks = document.querySelectorAll('.speck-vertical-block');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+                
+                // Анимируем элементы внутри с задержкой
+                const number = entry.target.querySelector('.speck-block-number');
+                const title = entry.target.querySelector('.speck-block-title');
+                const subtitle = entry.target.querySelector('.speck-block-subtitle');
+                const items = entry.target.querySelectorAll('.speck-feature-item');
+                
+                if (number) setTimeout(() => number.style.opacity = '1', 200);
+                if (title) setTimeout(() => title.style.opacity = '1', 300);
+                if (subtitle) setTimeout(() => subtitle.style.opacity = '1', 400);
+                
+                items.forEach((item, index) => {
+                    setTimeout(() => {
+                        if (item && item.style) {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateX(0)';
+                        }
+                    }, 500 + (index * 100));
+                });
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    });
+    
+    blocks.forEach(block => {
+        if (block) {
+            // Инициализация начального состояния
+            const items = block.querySelectorAll('.speck-feature-item');
+            items.forEach(item => {
+                if (item && item.style) {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateX(-20px)';
+                    item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                }
+            });
+            
+            observer.observe(block);
+        }
+    });
+    
+    console.log(`✅ Speck blocks initialized (${blocks.length} blocks)`);
+}
+
+// ===== СТАТИСТИКА СЧЁТЧИК =====
+function initializeStatsCounter() {
+    const counters = document.querySelectorAll('.stat-number');
+    
+    if (counters.length === 0) {
+        console.log('⚠️ No stat counters found');
+        return;
+    }
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-count')) || 0;
+                    if (target > 0) {
+                        animateCounter(counter, target);
+                    }
+                });
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.5
+    });
+    
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+        observer.observe(statsSection);
+    }
+    
+    console.log(`✅ Stats counter initialized (${counters.length} counters)`);
+}
+
+function animateCounter(element, target) {
+    if (!element) return;
+    
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+    
+    const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current);
+    }, 16);
+}
+
+// ===== FAQ АККОРДЕОН =====
 function initializeFAQ() {
     const faqItems = document.querySelectorAll('.faq-item');
     
-    if (faqItems.length === 0) return;
-    
-    console.log(`❓ Found ${faqItems.length} FAQ items`);
+    if (faqItems.length === 0) {
+        console.log('⚠️ No FAQ items found');
+        return;
+    }
     
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
-        const answer = item.querySelector('.faq-answer');
         
-        if (!question || !answer) return;
-        
-        // Устанавливаем начальную высоту ответа
-        answer.style.maxHeight = '0';
-        answer.style.overflow = 'hidden';
-        answer.style.transition = 'max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease';
-        
-        // Обработчик клика по вопросу
-        question.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Закрываем все другие открытые вопросы
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item && otherItem.classList.contains('active')) {
-                    closeFAQItem(otherItem);
+        if (question) {
+            question.addEventListener('click', () => {
+                // Закрываем все другие открытые вопросы
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                        const otherAnswer = otherItem.querySelector('.faq-answer');
+                        if (otherAnswer) {
+                            otherAnswer.style.maxHeight = '0';
+                        }
+                    }
+                });
+                
+                // Переключаем текущий элемент
+                const isActive = item.classList.contains('active');
+                item.classList.toggle('active');
+                
+                const answer = item.querySelector('.faq-answer');
+                if (answer) {
+                    if (isActive) {
+                        answer.style.maxHeight = '0';
+                    } else {
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                    }
                 }
             });
-            
-            // Переключаем текущий вопрос
-            toggleFAQItem(item);
-        });
+        }
     });
     
     // Автоматически открываем первый вопрос
-    setTimeout(() => {
-        if (faqItems.length > 0) {
-            openFAQItem(faqItems[0]);
-        }
-    }, 1500);
-    
-    // Функции управления FAQ
-    function toggleFAQItem(item) {
-        if (item.classList.contains('active')) {
-            closeFAQItem(item);
-        } else {
-            openFAQItem(item);
-        }
-    }
-    
-    function openFAQItem(item) {
-        const question = item.querySelector('.faq-question');
-        const answer = item.querySelector('.faq-answer');
-        const icon = question?.querySelector('i');
-        
-        if (!answer) return;
-        
-        item.classList.add('active');
-        answer.style.maxHeight = answer.scrollHeight + 'px';
-        
-        if (icon) {
-            icon.classList.remove('fa-plus');
-            icon.classList.add('fa-minus');
-        }
-        
-        // Обновляем высоту через небольшой таймаут (на случай динамического контента)
+    if (faqItems.length > 0) {
         setTimeout(() => {
-            answer.style.maxHeight = answer.scrollHeight + 'px';
-        }, 50);
-    }
-    
-    function closeFAQItem(item) {
-        const question = item.querySelector('.faq-question');
-        const answer = item.querySelector('.faq-answer');
-        const icon = question?.querySelector('i');
-        
-        if (!answer) return;
-        
-        item.classList.remove('active');
-        answer.style.maxHeight = '0';
-        answer.style.paddingTop = '0';
-        answer.style.paddingBottom = '0';
-        
-        if (icon) {
-            icon.classList.remove('fa-minus');
-            icon.classList.add('fa-plus');
-        }
-    }
-    
-    // Экспортируем функции для глобального использования
-    window.toggleFAQ = function(index) {
-        if (faqItems[index]) {
-            toggleFAQItem(faqItems[index]);
-        }
-    };
-    
-    window.openFAQ = function(index) {
-        if (faqItems[index]) {
-            openFAQItem(faqItems[index]);
-        }
-    };
-    
-    window.closeFAQ = function(index) {
-        if (faqItems[index]) {
-            closeFAQItem(faqItems[index]);
-        }
-    };
-}
-
-// ===== CTA СЕКЦИЯ =====
-function initializeCTA() {
-    const ctaSection = document.querySelector('.floating-section');
-    const ctaButton = document.querySelector('.floating-button');
-    
-    if (!ctaSection || !ctaButton) return;
-    
-    console.log('🎯 CTA section initialized');
-    
-    // Анимация при наведении на CTA кнопку
-    ctaButton.addEventListener('mouseenter', function() {
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            const icon = this.querySelector('i');
-            if (icon) {
-                icon.style.transition = 'transform 0.3s ease';
+            const firstItem = faqItems[0];
+            const firstAnswer = firstItem.querySelector('.faq-answer');
+            firstItem.classList.add('active');
+            if (firstAnswer) {
+                firstAnswer.style.maxHeight = firstAnswer.scrollHeight + 'px';
             }
-        }
-    });
+        }, 1000);
+    }
     
-    // Плавный скролл к контактам при клике
-    ctaButton.addEventListener('click', function(e) {
-        if (this.getAttribute('href') === '#') {
-            e.preventDefault();
-            document.querySelector('#contact-section')?.scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
+    console.log(`✅ FAQ initialized with ${faqItems.length} items`);
 }
 
-// ===== HOVER ЭФФЕКТЫ =====
-function initializeHoverEffects() {
-    console.log('🎭 Initializing hover effects...');
+// ===== SCROLL АНИМАЦИИ =====
+function initializeScrollAnimations() {
+    const animatedElements = document.querySelectorAll('.fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right');
     
-    // Проектные карточки
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const computedStyle = getComputedStyle(entry.target);
+                const animationName = computedStyle.animationName;
+                
+                if (animationName && animationName !== 'none') {
+                    // Запускаем анимацию
+                    entry.target.style.animationPlayState = 'running';
+                } else {
+                    // Если анимация не определена в CSS, запускаем её через JS
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translate(0, 0)';
+                }
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    animatedElements.forEach(el => {
+        if (el) observer.observe(el);
+    });
+    
+    console.log(`✅ Scroll animations initialized for ${animatedElements.length} elements`);
+}
+
+// ===== SCROLL PROGRESS BAR =====
+function initializeScrollProgress() {
+    const progressBar = document.querySelector('.scroll-progress-bar');
+    
+    if (!progressBar) {
+        console.log('⚠️ Scroll progress bar not found');
+        return;
+    }
+    
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        
+        if (progressBar.style) {
+            progressBar.style.width = `${scrollPercent}%`;
+        }
+    });
+    
+    // Инициализация начального значения
+    const scrollTop = window.pageYOffset;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = `${scrollPercent}%`;
+    
+    console.log('✅ Scroll progress bar initialized');
+}
+
+// ===== HOVER ЭФФЕКТЫ ДЛЯ КАРТОЧЕК =====
+function initializeCardHoverEffects() {
+    // Projects hover
     const projectCards = document.querySelectorAll('.project-card');
     projectCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
             if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                this.style.zIndex = '50';
+                this.style.transform = 'translateY(-15px)';
             }
         });
         
         card.addEventListener('mouseleave', function() {
             if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                this.style.zIndex = '';
+                this.style.transform = 'translateY(0)';
             }
         });
     });
     
-    // Сервисные карточки
+    // Services hover
     const serviceItems = document.querySelectorAll('.service-item');
     serviceItems.forEach(item => {
         item.addEventListener('mouseenter', function() {
             if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                this.style.zIndex = '50';
+                this.style.transform = 'translateY(-10px)';
             }
         });
         
         item.addEventListener('mouseleave', function() {
             if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                this.style.zIndex = '';
+                this.style.transform = 'translateY(0)';
             }
         });
     });
     
-    console.log('✅ Hover effects initialized');
-}
-
-// ===== SCROLL АНИМАЦИИ =====
-function initializeScrollAnimations() {
-    console.log('📜 Initializing scroll animations...');
-    
-    // Наблюдатель за элементами при скролле
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Добавляем класс для активации анимаций
-                entry.target.classList.add('in-view');
-                
-                // Специальная обработка для проектных карточек
-                if (entry.target.classList.contains('project-card')) {
-                    setTimeout(() => {
-                        entry.target.classList.add('animated');
-                    }, 100);
-                }
-                
-                // Для сервисных карточек
-                if (entry.target.classList.contains('service-item')) {
-                    setTimeout(() => {
-                        entry.target.classList.add('animated');
-                    }, 200);
-                }
-                
-                // Для журнальных статей
-                if (entry.target.classList.contains('journal-item')) {
-                    setTimeout(() => {
-                        entry.target.classList.add('animated');
-                    }, 300);
-                }
-                
-                // Для FAQ
-                if (entry.target.classList.contains('faq-item')) {
-                    setTimeout(() => {
-                        entry.target.classList.add('animated');
-                    }, 400);
-                }
-            }
-        });
-    }, observerOptions);
-    
-    // Наблюдаем за всеми элементами Speck Design
-    const elementsToObserve = document.querySelectorAll(
-        '.project-card, .service-item, .journal-item, .faq-item, .floating-image'
-    );
-    
-    elementsToObserve.forEach(element => {
-        observer.observe(element);
-    });
-    
-    console.log(`👀 Observing ${elementsToObserve.length} elements for scroll animations`);
-}
-
-// ===== LAZY LOADING =====
-function initializeLazyLoading() {
-    console.log('🖼️ Initializing lazy loading...');
-    
-    const images = document.querySelectorAll(
-        '.project-image img, .floating-image img, .hero-image img'
-    );
-    
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                
-                // Добавляем класс для завершения загрузки
-                img.classList.add('loaded');
-                
-                // Предзагрузка следующего изображения (опционально)
-                preloadNextImage(img);
-                
-                observer.unobserve(img);
-            }
-        });
-    }, {
-        rootMargin: '100px',
-        threshold: 0.1
-    });
-    
-    images.forEach(img => {
-        // Добавляем эффект загрузки
-        if (!img.complete) {
-            img.style.opacity = '0';
-            img.style.transition = 'opacity 0.6s ease';
-            
-            img.onload = function() {
-                this.style.opacity = '1';
-                this.classList.add('loaded');
-            };
-        } else {
-            img.classList.add('loaded');
-        }
-        
-        imageObserver.observe(img);
-    });
-    
-    console.log(`🖼️ Lazy loading initialized for ${images.length} images`);
-    
-    // Функция предзагрузки следующего изображения
-    function preloadNextImage(currentImg) {
-        // Простая логика предзагрузки (можно расширить)
-        const parent = currentImg.closest('.project-card, .floating-image, .hero-image');
-        if (!parent) return;
-        
-        const nextSibling = parent.nextElementSibling;
-        if (nextSibling) {
-            const nextImg = nextSibling.querySelector('img');
-            if (nextImg && !nextImg.classList.contains('loaded')) {
-                // Создаем предзагрузчик
-                const preloader = new Image();
-                preloader.src = nextImg.src;
-            }
-        }
-    }
-}
-
-// ===== БАЗОВЫЕ ФУНКЦИИ =====
-function initializeBasicFunctions() {
-    console.log('⚡ Initializing basic functions...');
-    
-    // 1. Прогресс бар скролла
-    const progressBar = document.querySelector('.scroll-progress-bar');
-    if (progressBar) {
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-            progressBar.style.width = `${scrollPercent}%`;
-        });
-    }
-    
-    // 2. Анимация статистики
-    const statNumbers = document.querySelectorAll('.stat-number-improved');
-    if (statNumbers.length > 0) {
-        statNumbers.forEach(stat => {
-            const target = parseInt(stat.getAttribute('data-target')) || 0;
-            if (target > 0) {
-                // Простая анимация счетчика
-                let current = 0;
-                const increment = target / 60; // 60 кадров за 1 секунду
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    stat.textContent = Math.floor(current);
-                }, 16);
-            }
-        });
-    }
-    
-    // 3. Обработка кнопок
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Добавляем эффект клика
-            this.classList.add('clicked');
-            setTimeout(() => {
-                this.classList.remove('clicked');
-            }, 300);
-        });
-    });
-    
-    // 4. Обработка изображений в герое
-    const heroImage = document.querySelector('.hero-image');
-    if (heroImage) {
-        heroImage.style.opacity = '0';
-        setTimeout(() => {
-            heroImage.style.transition = 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
-            heroImage.style.opacity = '1';
-        }, 450);
-    }
-    
-    console.log('✅ Basic functions initialized');
-}
-
-// ===== УТИЛИТЫ =====
-
-// Дебаунс для производительности
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Троттлинг для производительности
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    };
+    console.log(`✅ Card hover effects initialized (${projectCards.length} projects, ${serviceItems.length} services)`);
 }
 
 // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
-console.log('🚀 Starting home page initialization...');
-
-// Безопасная инициализация
 function safeInitialize() {
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeHomePage);
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeHomePage();
+            initializeCardHoverEffects();
+        });
     } else if (document.body) {
-        // Если DOM уже загружен, запускаем сразу
-        setTimeout(initializeHomePage, 100);
+        initializeHomePage();
+        setTimeout(initializeCardHoverEffects, 500);
     } else {
-        // Ждем, пока body появится
         console.log('⚠️ Waiting for document.body to be ready...');
         setTimeout(safeInitialize, 50);
     }
@@ -568,80 +419,41 @@ function safeInitialize() {
 
 safeInitialize();
 
-// ===== ОБРАБОТЧИКИ СОБЫТИЙ =====
+// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ ОТЛАДКИ =====
+window.reinitializeHomePage = function() {
+    console.log('🔄 Reinitializing home page...');
+    initializeHomePage();
+    initializeCardHoverEffects();
+};
 
-// При полной загрузке страницы
-window.addEventListener('load', () => {
-    console.log('🌍 Page fully loaded, applying final touches...');
+window.toggleFAQItem = function(index) {
+    const faqItems = document.querySelectorAll('.faq-item');
+    if (faqItems[index]) {
+        const questionBtn = faqItems[index].querySelector('.faq-question');
+        if (questionBtn) {
+            questionBtn.click();
+        }
+    }
+};
+
+window.resetAnimations = function() {
+    const animatedElements = document.querySelectorAll('.speck-vertical-block, .fade-in-down, .fade-in-up');
+    animatedElements.forEach(el => {
+        el.classList.remove('visible');
+        el.style.opacity = '0';
+        el.style.transform = '';
+        el.style.animationPlayState = 'paused';
+    });
     
-    // Добавляем финальные стили
-    setTimeout(() => {
-        // Убеждаемся, что все изображения загружены
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-            if (img.complete && !img.classList.contains('loaded')) {
-                img.classList.add('loaded');
-            }
-        });
-        
-        // Активируем все блоки
-        const speckBlocks = document.querySelectorAll('.speck-design-section');
-        speckBlocks.forEach(block => {
-            if (!block.classList.contains('speck-block-loaded')) {
-                block.classList.add('speck-block-loaded');
-            }
-        });
-        
-        console.log('✅ Final touches applied');
-    }, 500);
+    setTimeout(initializeHomePage, 100);
+};
+
+// ===== ОБРАБОТКА ОШИБОК =====
+window.addEventListener('error', function(event) {
+    if (event.filename && event.filename.includes('home.js')) {
+        console.error('❌ Error in home.js:', event.message, event.error);
+        event.preventDefault();
+    }
 });
 
-// При изменении размера окна
-let resizeTimeout;
-window.addEventListener('resize', debounce(() => {
-    console.log('🔄 Window resized, updating FAQ heights...');
-    
-    // Обновляем высоту открытых FAQ ответов
-    const activeFaqItems = document.querySelectorAll('.faq-item.active');
-    activeFaqItems.forEach(item => {
-        const answer = item.querySelector('.faq-answer');
-        if (answer) {
-            answer.style.maxHeight = answer.scrollHeight + 'px';
-        }
-    });
-}, 250));
-
-// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ =====
-
-// Функция для перезагрузки всех блоков
-window.reloadSpeckBlocks = function() {
-    console.log('🔄 Reloading Speck Design blocks...');
-    
-    // Удаляем классы анимации
-    const speckBlocks = document.querySelectorAll('.speck-design-section');
-    speckBlocks.forEach(block => {
-        block.classList.remove('speck-block-loaded', 'in-view');
-    });
-    
-    // Переинициализация
-    setTimeout(() => {
-        initializeSpeckDesignBlocks();
-        console.log('✅ Speck Design blocks reloaded');
-    }, 300);
-};
-
-// Функция для проверки состояния
-window.getSpeckBlocksStatus = function() {
-    const blocks = {
-        projects: document.querySelectorAll('.project-card').length,
-        services: document.querySelectorAll('.service-item').length,
-        journals: document.querySelectorAll('.journal-item').length,
-        faq: document.querySelectorAll('.faq-item').length,
-        loaded: document.querySelectorAll('.speck-block-loaded').length
-    };
-    
-    console.log('📊 Speck Blocks Status:', blocks);
-    return blocks;
-};
-
-console.log('✅ home.js ready - Speck Design blocks integration complete!');
+console.log('✅ home.js fully loaded and ready!');
