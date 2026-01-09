@@ -1,143 +1,242 @@
-console.log('🏠 home.js loaded - COMPLETE SPECK DESIGN VERSION');
+console.log('🏠 home.js loaded - FIXED BACKGROUND VERSION');
 
-// ===== ЭКСТРЕННЫЙ ФИКС ФОНА =====
-(function immediateFix() {
+// ===== КРИТИЧНЫЙ ФИКС ФОНА =====
+(function criticalBackgroundFix() {
     'use strict';
     
-    function safeImmediateFix() {
+    function applyEmergencyFix() {
         if (!document.body) {
-            console.log('⚠️ document.body not ready, retrying...');
-            setTimeout(safeImmediateFix, 50);
+            console.log('⏳ Waiting for document.body...');
+            setTimeout(applyEmergencyFix, 50);
             return;
         }
         
-        console.log('🚨 IMMEDIATE FIX: Removing black background');
+        console.log('🚨 APPLYING EMERGENCY BACKGROUND FIX');
         
+        // 1. Гарантируем прозрачность body
         document.body.style.backgroundColor = 'transparent';
+        document.body.style.backgroundImage = 'none';
         document.documentElement.style.backgroundColor = 'transparent';
         
+        // 2. Активируем фоновые слои
         const bgLayers = document.querySelectorAll('.bg-layer');
-        bgLayers.forEach(layer => {
+        const bgContainer = document.querySelector('.bg-layers-container');
+        
+        if (bgContainer && bgContainer.style) {
+            bgContainer.style.display = 'block';
+            bgContainer.style.opacity = '1';
+            bgContainer.style.visibility = 'visible';
+            bgContainer.style.zIndex = '-100';
+            bgContainer.style.position = 'fixed';
+        }
+        
+        bgLayers.forEach((layer, index) => {
             if (layer && layer.style) {
-                layer.style.opacity = '1';
                 layer.style.display = 'block';
+                layer.style.opacity = '1';
                 layer.style.visibility = 'visible';
+                layer.style.zIndex = `-${100 + index}`;
+                layer.style.position = 'absolute';
+                layer.style.top = '0';
+                layer.style.left = '0';
+                layer.style.width = '100%';
+                layer.style.height = '100%';
+                
+                // Устанавливаем правильные фоновые изображения
+                switch(index) {
+                    case 0:
+                        layer.style.backgroundImage = "url('images/parallax/bg-1.jpg')";
+                        break;
+                    case 1:
+                        layer.style.backgroundImage = "url('images/parallax/bg-2.jpg')";
+                        break;
+                    case 2:
+                        layer.style.backgroundImage = "url('images/parallax/bg-3.jpg')";
+                        break;
+                    case 3:
+                        layer.style.backgroundImage = "url('images/parallax/bg-4.jpg')";
+                        break;
+                }
             }
         });
         
-        console.log('✅ Immediate background fix applied');
+        // 3. Убираем все фоны с секций
+        document.querySelectorAll('section').forEach(section => {
+            if (section && section.style) {
+                section.style.backgroundColor = 'transparent';
+                section.style.backgroundImage = 'none';
+            }
+        });
+        
+        // 4. Гарантируем, что все контентные блоки прозрачные
+        const contentBlocks = document.querySelectorAll(
+            '.speck-vertical-block, .project-card, .service-item, ' +
+            '.journal-item, .faq-item, .stat-card, .cta-content, .hero-description'
+        );
+        
+        contentBlocks.forEach(block => {
+            if (block && block.style) {
+                block.style.background = 'transparent';
+                block.style.backgroundColor = 'transparent';
+                block.style.backdropFilter = 'none';
+            }
+        });
+        
+        console.log(`✅ Emergency fix applied: ${bgLayers.length} background layers activated`);
     }
     
-    safeImmediateFix();
+    // Запускаем немедленно и при загрузке
+    applyEmergencyFix();
+    window.addEventListener('load', applyEmergencyFix);
+    document.addEventListener('DOMContentLoaded', applyEmergencyFix);
 })();
+
+// ===== ПАРАЛЛАКС СИСТЕМА =====
+function initializeParallaxBackground() {
+    console.log('🎨 Initializing parallax background system...');
+    
+    const bgLayers = document.querySelectorAll('.bg-layer');
+    if (bgLayers.length === 0) {
+        console.error('❌ No background layers found!');
+        return;
+    }
+    
+    console.log(`✅ Found ${bgLayers.length} background layers`);
+    
+    // Параллакс эффект при скролле
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY || window.pageYOffset;
+        
+        bgLayers.forEach((layer, index) => {
+            if (layer && layer.style) {
+                const speed = 0.05 + (index * 0.05); // Разные скорости для разных слоёв
+                const yPos = scrollY * speed;
+                layer.style.transform = `translateY(${yPos}px)`;
+            }
+        });
+    });
+    
+    // Инициализация начальной позиции
+    setTimeout(() => {
+        const scrollY = window.scrollY || window.pageYOffset;
+        bgLayers.forEach((layer, index) => {
+            if (layer && layer.style) {
+                const speed = 0.05 + (index * 0.05);
+                const yPos = scrollY * speed;
+                layer.style.transform = `translateY(${yPos}px)`;
+            }
+        });
+    }, 100);
+}
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
     console.log('📄 INITIALIZING HOME PAGE WITH SPECK DESIGN');
     
-    // 1. ГАРАНТИРУЕМ КЛАСС ДЛЯ ГЛАВНОЙ СТРАНИЦЫ
+    // 1. Гарантируем класс для главной страницы
     document.body.classList.add('home-page');
     document.documentElement.classList.add('home-page');
     
-    // 2. ЭКСТРЕННЫЙ CSS ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА
+    // 2. Запускаем параллакс систему
+    initializeParallaxBackground();
+    
+    // 3. Критичные инлайн-стили для гарантии
     const emergencyCSS = `
-        /* ЭКСТРЕННЫЙ ФИКС: ВИСЯЩИЙ ТЕКСТ БЕЗ ФОНА */
+        /* КРИТИЧНЫЙ ФИКС: ГАРАНТИЯ ПРОЗРАЧНОСТИ */
         body.home-page {
             background: transparent !important;
             background-color: transparent !important;
+            background-image: none !important;
         }
         
         .bg-layers-container {
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
-            z-index: 1 !important;
+            z-index: -100 !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
         }
         
         .bg-layer {
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
         }
         
-        /* ВСЕ БЛОКИ SPECK DESIGN БЕЗ ФОНА */
-        .speck-vertical-block, .speck-block-left, .speck-block-right,
-        .speck-feature-column, .project-card, .service-item,
-        .journal-item, .faq-item, .stat-card, .cta-content {
-            background: transparent !important;
-            backdrop-filter: none !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-        
-        /* УСИЛЕНИЕ ТЕНИ ДЛЯ ТЕКСТА */
+        /* УСИЛЕННЫЕ ТЕНИ ТЕКСТА */
         .speck-block-title, .speck-block-subtitle, .speck-column-title,
         .speck-feature-item, .project-title, .project-description,
         .service-title, .service-description, .journal-title,
         .faq-question, .faq-answer p, .cta-title, .cta-subtitle,
-        .stat-number, .stat-label, .section-title, .section-subtitle {
+        .stat-number, .stat-label, .section-title, .section-subtitle,
+        .hero h1, .hero-subtitle, .hero-description p {
             text-shadow: 
+                0 4px 35px rgba(0, 0, 0, 0.97),
                 0 3px 30px rgba(0, 0, 0, 0.95),
                 0 2px 25px rgba(0, 0, 0, 0.9) !important;
             position: relative;
-            z-index: 20;
+            z-index: 30;
         }
         
-        /* УДАЛИТЬ ВСЕ OVERLAY */
-        [class*="overlay"], [class*="dark-bg"], [class*="black-bg"] {
-            display: none !important;
-            opacity: 0 !important;
+        /* УДАЛЕНИЕ ВСЕХ НЕНУЖНЫХ ФОНОВ */
+        section, .hero, .content-section, 
+        .speck-vertical-block, .speck-block-left, .speck-block-right,
+        .speck-feature-column, .project-card, .project-content,
+        .service-item, .journal-item, .faq-item, .faq-answer,
+        .stat-card, .cta-content, .hero-description {
+            background: transparent !important;
+            background-color: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
         }
     `;
     
     const style = document.createElement('style');
+    style.id = 'emergency-background-fix';
     style.textContent = emergencyCSS;
     document.head.appendChild(style);
     
     console.log('✅ Emergency CSS injected');
     
-    // 3. ПРИНУДИТЕЛЬНАЯ АКТИВАЦИЯ ФОНА
-    setTimeout(() => {
-        const bgLayers = document.querySelectorAll('.bg-layer');
-        const bgContainer = document.querySelector('.bg-layers-container');
+    // 4. ПРОВЕРКА ЗАГРУЗКИ ИЗОБРАЖЕНИЙ ФОНА
+    function checkBackgroundImages() {
+        console.log('🖼️ Checking background images...');
+        const images = [
+            'images/parallax/bg-1.jpg',
+            'images/parallax/bg-2.jpg',
+            'images/parallax/bg-3.jpg',
+            'images/parallax/bg-4.jpg'
+        ];
         
-        console.log(`🎨 Found ${bgLayers.length} background layers`);
-        
-        if (bgLayers.length > 0) {
-            bgLayers.forEach(layer => {
-                if (layer && layer.style) {
-                    layer.style.opacity = '1';
-                    layer.style.display = 'block';
-                    layer.style.visibility = 'visible';
-                }
-            });
-            
-            if (bgContainer && bgContainer.style) {
-                bgContainer.style.display = 'block';
-                bgContainer.style.opacity = '1';
-                bgContainer.style.visibility = 'visible';
-            }
-        }
-        
-        // Убираем фоны со всех элементов
-        document.body.style.backgroundColor = 'transparent';
-        document.querySelectorAll('section').forEach(section => {
-            if (section && section.style) {
-                section.style.backgroundColor = 'transparent';
-            }
+        images.forEach(src => {
+            const img = new Image();
+            img.onload = () => console.log(`✅ Loaded: ${src}`);
+            img.onerror = () => console.error(`❌ Failed to load: ${src}`);
+            img.src = src;
         });
+    }
+    
+    // 5. Запускаем все остальные функции
+    setTimeout(() => {
+        initializeSpeckBlocks();
+        initializeStatsCounter();
+        initializeFAQ();
+        initializeScrollAnimations();
+        initializeScrollProgress();
+        initializeCardHoverEffects();
+        checkBackgroundImages();
         
-        console.log('✅ Background activated and all overlays removed');
-    }, 100);
-    
-    // 4. ЗАПУСКАЕМ ВСЕ ФУНКЦИИ
-    initializeSpeckBlocks();
-    initializeStatsCounter();
-    initializeFAQ();
-    initializeScrollAnimations();
-    initializeScrollProgress();
-    
-    console.log('✅ Home page fully initialized');
+        console.log('✅ Home page fully initialized with background fix');
+    }, 300);
 }
 
 // ===== SPECK BLOCKS АНИМАЦИИ =====
@@ -311,10 +410,8 @@ function initializeScrollAnimations() {
                 const animationName = computedStyle.animationName;
                 
                 if (animationName && animationName !== 'none') {
-                    // Запускаем анимацию
                     entry.target.style.animationPlayState = 'running';
                 } else {
-                    // Если анимация не определена в CSS, запускаем её через JS
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translate(0, 0)';
                 }
@@ -353,18 +450,12 @@ function initializeScrollProgress() {
         }
     });
     
-    // Инициализация начального значения
-    const scrollTop = window.pageYOffset;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    progressBar.style.width = `${scrollPercent}%`;
-    
+    progressBar.style.width = '0%';
     console.log('✅ Scroll progress bar initialized');
 }
 
 // ===== HOVER ЭФФЕКТЫ ДЛЯ КАРТОЧЕК =====
 function initializeCardHoverEffects() {
-    // Projects hover
     const projectCards = document.querySelectorAll('.project-card');
     projectCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
@@ -380,7 +471,6 @@ function initializeCardHoverEffects() {
         });
     });
     
-    // Services hover
     const serviceItems = document.querySelectorAll('.service-item');
     serviceItems.forEach(item => {
         item.addEventListener('mouseenter', function() {
@@ -396,7 +486,7 @@ function initializeCardHoverEffects() {
         });
     });
     
-    console.log(`✅ Card hover effects initialized (${projectCards.length} projects, ${serviceItems.length} services)`);
+    console.log(`✅ Card hover effects initialized`);
 }
 
 // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
@@ -405,27 +495,22 @@ function safeInitialize() {
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 initializeHomePage();
-                initializeCardHoverEffects();
-            }, 500);
+            }, 100);
         });
-    } else if (document.body) {
+    } else {
         setTimeout(() => {
             initializeHomePage();
-            initializeCardHoverEffects();
-        }, 500);
-    } else {
-        console.log('⚠️ Waiting for document.body to be ready...');
-        setTimeout(safeInitialize, 50);
+        }, 100);
     }
 }
 
+// Запускаем инициализацию
 safeInitialize();
 
 // ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ ОТЛАДКИ =====
 window.reinitializeHomePage = function() {
     console.log('🔄 Reinitializing home page...');
     initializeHomePage();
-    initializeCardHoverEffects();
 };
 
 window.toggleFAQItem = function(index) {
@@ -438,24 +523,17 @@ window.toggleFAQItem = function(index) {
     }
 };
 
-window.resetAnimations = function() {
-    const animatedElements = document.querySelectorAll('.speck-vertical-block, .fade-in-down, .fade-in-up');
-    animatedElements.forEach(el => {
-        el.classList.remove('visible');
-        el.style.opacity = '0';
-        el.style.transform = '';
-        el.style.animationPlayState = 'paused';
+window.checkBackground = function() {
+    const bgLayers = document.querySelectorAll('.bg-layer');
+    console.log(`Background layers: ${bgLayers.length}`);
+    bgLayers.forEach((layer, index) => {
+        console.log(`Layer ${index}:`, {
+            display: layer.style.display,
+            opacity: layer.style.opacity,
+            backgroundImage: layer.style.backgroundImage,
+            zIndex: layer.style.zIndex
+        });
     });
-    
-    setTimeout(initializeHomePage, 100);
 };
 
-// ===== ОБРАБОТКА ОШИБОК =====
-window.addEventListener('error', function(event) {
-    if (event.filename && event.filename.includes('home.js')) {
-        console.error('❌ Error in home.js:', event.message, event.error);
-        event.preventDefault();
-    }
-});
-
-console.log('✅ home.js fully loaded and ready!');
+console.log('✅ home.js fully loaded and ready with background fix!');
