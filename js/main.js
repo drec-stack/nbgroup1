@@ -1,4 +1,3 @@
-// main.js - ОБНОВЛЕННАЯ ВЕРСИЯ с полными фиксами для удаления скрытых кнопок
 console.log('🚀 main.js loaded with NO HIDDEN BUTTONS fix');
 
 class DaehaaApp {
@@ -140,41 +139,45 @@ class DaehaaApp {
     setupHeaderSupport() {
         console.log('🔧 Setting up SIMPLE header support (no hidden buttons)...');
         
-        // Пытаемся найти хедер с несколькими селекторами
-        const headerSelectors = ['.main-header', 'header[class*="header"]', 'header'];
-        let header = null;
-        
-        for (const selector of headerSelectors) {
-            header = document.querySelector(selector);
-            if (header) {
-                console.log(`✅ Found header with selector: ${selector}`);
-                break;
-            }
-        }
-        
-        if (!header) {
-            console.warn('⚠️ No header found with any selector');
-            // Попробуем найти через компонент
-            const headerContainer = document.getElementById('header-container');
-            if (headerContainer) {
-                header = headerContainer.querySelector('.main-header') || headerContainer.querySelector('header');
+        // Проверяем наличие хедера в компоненте
+        setTimeout(() => {
+            // Пытаемся найти хедер с несколькими селекторами
+            const headerSelectors = ['.main-header', 'header[class*="header"]', 'header', '#main-header'];
+            let header = null;
+            
+            for (const selector of headerSelectors) {
+                header = document.querySelector(selector);
                 if (header) {
-                    console.log('✅ Found header in header-container');
+                    console.log(`✅ Found header with selector: ${selector}`);
+                    break;
                 }
             }
-        }
-        
-        if (!header) {
-            console.warn('⚠️ Header not found, will retry in 500ms');
-            // Повторная попытка через 500мс
-            setTimeout(() => this.setupHeaderSupport(), 500);
-            return;
-        }
-        
-        // Простая настройка - без сложных анимаций
-        this.setupSimpleHeader(header);
-        
-        console.log('✅ Header setup complete (no hidden buttons)');
+            
+            // Если не нашли напрямую, ищем в контейнере компонента
+            if (!header) {
+                const headerContainer = document.getElementById('header-container');
+                if (headerContainer) {
+                    header = headerContainer.querySelector('.main-header') || 
+                            headerContainer.querySelector('header') ||
+                            headerContainer.querySelector('#main-header');
+                    if (header) {
+                        console.log('✅ Found header in header-container');
+                    }
+                }
+            }
+            
+            if (!header) {
+                console.warn('⚠️ Header not found with any selector');
+                // Повторная попытка через 500мс
+                setTimeout(() => this.setupHeaderSupport(), 500);
+                return;
+            }
+            
+            // Простая настройка - без сложных анимаций
+            this.setupSimpleHeader(header);
+            
+            console.log('✅ Header setup complete (no hidden buttons)');
+        }, 100);
     }
 
     setupSimpleHeader(header) {
