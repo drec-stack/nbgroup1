@@ -993,7 +993,7 @@ html {
     margin-top: 60px;
 }
 
-/* ===== FAQ SECTION ===== */
+/* ===== FAQ SECTION (РАБОЧАЯ ВЕРСИЯ) ===== */
 .faq-section {
     padding: 150px 0;
     background: transparent !important;
@@ -1020,6 +1020,7 @@ html {
     margin-bottom: 20px;
     border-radius: 0 !important;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .faq-question {
@@ -1039,33 +1040,41 @@ html {
     transition: all 0.3s ease;
     text-shadow: 
         0 2px 15px rgba(0, 0, 0, 0.9) !important;
+    position: relative;
 }
 
 .faq-question:hover {
-    color: rgba(255, 255, 255, 0.95) !important;
-    border-bottom-color: rgba(255, 255, 255, 0.2);
+    color: #66b5ff !important;
+    border-bottom-color: rgba(102, 181, 255, 0.3);
 }
 
 .faq-question i {
     font-size: 1.2rem;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 15px;
+    min-width: 20px;
 }
 
 .faq-item.active .faq-question i {
     transform: rotate(45deg);
+    color: #66b5ff !important;
 }
 
 .faq-answer {
     padding: 0 30px;
     max-height: 0;
     overflow: hidden;
-    transition: all 0.4s ease;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s ease,
+                padding 0.4s ease;
     background: transparent !important;
+    opacity: 0;
 }
 
 .faq-item.active .faq-answer {
     padding: 25px 30px;
     max-height: 500px;
+    opacity: 1;
 }
 
 .faq-answer p {
@@ -1564,6 +1573,20 @@ html {
         order: 3;
         text-align: left;
     }
+    
+    /* FAQ адаптивность для планшетов */
+    .faq-question {
+        font-size: 1.2rem;
+        padding: 20px 25px;
+    }
+    
+    .faq-answer {
+        padding: 0 25px;
+    }
+    
+    .faq-item.active .faq-answer {
+        padding: 20px 25px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1628,19 +1651,6 @@ html {
     
     .stat-number {
         font-size: 3.5rem;
-    }
-    
-    .faq-question {
-        font-size: 1.2rem;
-        padding: 20px 25px;
-    }
-    
-    .faq-answer {
-        padding: 0 25px;
-    }
-    
-    .faq-item.active .faq-answer {
-        padding: 20px 25px;
     }
     
     .cta-actions {
@@ -1718,6 +1728,7 @@ html {
         font-size: 3rem;
     }
     
+    /* FAQ адаптивность для мобильных */
     .faq-question {
         font-size: 1.1rem;
         padding: 18px 20px;
@@ -1733,6 +1744,7 @@ html {
     
     .faq-answer p {
         font-size: 1.1rem;
+        line-height: 1.6;
     }
 }
 
