@@ -1,4 +1,4 @@
-console.log('🏠 home.js loaded - FIXED PARALLAX VERSION (NO ERRORS)');
+console.log('🏠 home.js loaded - FIXED PARALLAX VERSION WITH SPECK SERVICES (NO ERRORS)');
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
@@ -30,6 +30,7 @@ function initializeHomePage() {
         initializeScrollAnimations();
         initializeScrollProgress();
         initializeCardHoverEffects();
+        initializeSpeckServices(); // Инициализация Speck услуг
         
         console.log('✅ Home page fully initialized');
     }, 300);
@@ -255,6 +256,366 @@ function initializeSpeckBlocks() {
     console.log(`✅ Speck blocks initialized (${blocks.length} blocks)`);
 }
 
+// ===== SPECK SERVICES АНИМАЦИИ И ВЗАИМОДЕЙСТВИЕ =====
+function initializeSpeckServices() {
+    const serviceCards = document.querySelectorAll('.speck-service-card');
+    
+    if (serviceCards.length === 0) {
+        console.log('⚠️ No Speck service cards found');
+        return;
+    }
+    
+    // Наблюдатель для анимации появления
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    // Применяем анимацию к каждой карточке
+    serviceCards.forEach((card, index) => {
+        if (card && card.style) {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease';
+            card.style.transitionDelay = `${0.3 + (index * 0.05)}s`;
+            
+            observer.observe(card);
+            
+            // Эффект при наведении
+            card.addEventListener('mouseenter', function() {
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    this.style.transform = 'translateY(-10px)';
+                    const icon = this.querySelector('.speck-card-icon');
+                    if (icon) {
+                        icon.style.transform = 'translateX(5px)';
+                    }
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    this.style.transform = 'translateY(0)';
+                    const icon = this.querySelector('.speck-card-icon');
+                    if (icon) {
+                        icon.style.transform = 'translateX(0)';
+                    }
+                }
+            });
+            
+            // Клик для подробной информации
+            card.addEventListener('click', function() {
+                const serviceId = this.getAttribute('data-service-id');
+                console.log(`Service clicked: ${serviceId}`);
+                // Здесь можно добавить логику для показа подробной информации
+                // Например, открыть модальное окно с деталями услуги
+                showServiceDetails(serviceId);
+            });
+        }
+    });
+    
+    console.log(`✅ Speck services initialized with ${serviceCards.length} cards`);
+}
+
+// ===== ПОКАЗАТЬ ДЕТАЛИ УСЛУГИ =====
+function showServiceDetails(serviceId) {
+    const serviceDetails = {
+        'consulting': {
+            title: 'Product design consulting',
+            description: 'Our teams balance electrical and mechanical engineering with human needs. The result is human-centric designs. We emphasize both design intuition and technical prowess throughout product development consulting.',
+            features: [
+                'Human-centric design approach',
+                'Balance of engineering and human needs',
+                'Design intuition and technical prowess',
+                'End-to-end product development consulting'
+            ]
+        },
+        'uiux': {
+            title: 'UI/UX design',
+            description: 'Speck stands out in this arena as a leading UX design firm. Our primary focus? User experience and UX UI design. Our goal is clear: Enhance the digital experience.',
+            features: [
+                'Leading UX design expertise',
+                'User experience optimization',
+                'Digital experience enhancement',
+                'UI/UX design implementation'
+            ]
+        },
+        'engineering': {
+            title: 'Product engineering',
+            description: 'Speck Design is a globally awarded and top-ranked product engineering and industrial design firm. They provide comprehensive and unique product engineering solutions.',
+            features: [
+                'Global award-winning engineering',
+                'Comprehensive product solutions',
+                'Industrial design expertise',
+                'End-to-end engineering support'
+            ]
+        },
+        'npi': {
+            title: 'NPI and product fulfillment support',
+            description: 'Speck Design offers robust product fulfillment services. Our manufacturing engineering department transitions designs into production, ensuring high-quality, low-cost, seamless delivery.',
+            features: [
+                'Robust product fulfillment',
+                'Manufacturing engineering',
+                'High-quality production',
+                'Seamless delivery process'
+            ]
+        },
+        'research': {
+            title: 'User research and insights',
+            description: 'We are a top user experience research company. Our team of experts ensures that products meet customer needs and connect with future customers.',
+            features: [
+                'User experience research',
+                'Customer insights analysis',
+                'Market needs assessment',
+                'Future customer connection'
+            ]
+        },
+        'brand': {
+            title: 'Brand design',
+            description: 'We are a renowned graphic design and brand design agency. We specialize in creating brand designs that captivate and resonate with your target audience.',
+            features: [
+                'Renowned brand design agency',
+                'Target audience resonance',
+                'Captivating brand identity',
+                'Graphic design expertise'
+            ]
+        },
+        'strategy': {
+            title: 'Research and strategy',
+            description: 'As one of the top product design engineering firms, Speck Design recognizes the importance of research-driven design. Our commitment to research ensures our designs look impressive, deliver optimal performance, and meet market requirements.',
+            features: [
+                'Research-driven design approach',
+                'Market requirements analysis',
+                'Optimal performance delivery',
+                'Strategic design planning'
+            ]
+        },
+        'innovation': {
+            title: 'Innovation strategy',
+            description: 'At Speck Design, we don\'t just make products. We create market revolutions as a new product development company. Our approach is simple but effective. We take your ground-breaking ideas and run them through a process of validation and refinement.',
+            features: [
+                'Market revolution creation',
+                'Ground-breaking idea validation',
+                'Innovation refinement process',
+                'New product development'
+            ]
+        }
+    };
+    
+    const service = serviceDetails[serviceId];
+    if (!service) return;
+    
+    console.log(`📋 Showing details for: ${service.title}`);
+    
+    // Создаем модальное окно для деталей услуги
+    const modalHtml = `
+        <div class="service-modal-overlay">
+            <div class="service-modal">
+                <div class="service-modal-header">
+                    <h3>${service.title}</h3>
+                    <button class="service-modal-close">&times;</button>
+                </div>
+                <div class="service-modal-content">
+                    <p>${service.description}</p>
+                    <div class="service-features">
+                        <h4>Key Features:</h4>
+                        <ul>
+                            ${service.features.map(feature => `<li>${feature}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                <div class="service-modal-footer">
+                    <a href="contacts.html" class="btn btn-primary">Contact Us About This Service</a>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Добавляем модальное окно на страницу
+    const modalContainer = document.createElement('div');
+    modalContainer.innerHTML = modalHtml;
+    document.body.appendChild(modalContainer);
+    
+    // Добавляем стили для модального окна
+    const modalStyles = document.createElement('style');
+    modalStyles.textContent = `
+        .service-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .service-modal {
+            background: rgba(20, 30, 48, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.4s ease;
+            position: relative;
+            z-index: 10000;
+        }
+        
+        .service-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .service-modal-header h3 {
+            font-size: 1.8rem;
+            color: white;
+            margin: 0;
+            flex: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .service-modal-close {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 20px;
+        }
+        
+        .service-modal-close:hover {
+            color: #0066ff;
+            transform: rotate(90deg);
+        }
+        
+        .service-modal-content {
+            margin-bottom: 30px;
+        }
+        
+        .service-modal-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+        }
+        
+        .service-features h4 {
+            font-size: 1.3rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .service-features ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .service-features li {
+            padding: 8px 0;
+            color: rgba(255, 255, 255, 0.85);
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .service-features li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #0066ff;
+            font-weight: bold;
+        }
+        
+        .service-modal-footer {
+            text-align: center;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .service-modal {
+                padding: 25px;
+                width: 95%;
+            }
+            
+            .service-modal-header h3 {
+                font-size: 1.5rem;
+            }
+        }
+    `;
+    
+    document.head.appendChild(modalStyles);
+    
+    // Обработчики событий для модального окна
+    const closeBtn = modalContainer.querySelector('.service-modal-close');
+    const overlay = modalContainer.querySelector('.service-modal-overlay');
+    
+    function closeModal() {
+        modalContainer.style.animation = 'fadeOut 0.3s ease';
+        modalContainer.style.opacity = '0';
+        setTimeout(() => {
+            if (modalContainer.parentNode) {
+                modalContainer.parentNode.removeChild(modalContainer);
+            }
+            if (modalStyles.parentNode) {
+                modalStyles.parentNode.removeChild(modalStyles);
+            }
+        }, 300);
+    }
+    
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closeModal();
+        }
+    });
+    
+    // Закрытие по Escape
+    document.addEventListener('keydown', function handleEscape(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+            document.removeEventListener('keydown', handleEscape);
+        }
+    });
+}
+
 // ===== СТАТИСТИКА СЧЁТЧИК =====
 function initializeStatsCounter() {
     const counters = document.querySelectorAll('.stat-number');
@@ -430,21 +791,6 @@ function initializeCardHoverEffects() {
         });
     });
     
-    const serviceItems = document.querySelectorAll('.service-item');
-    serviceItems.forEach(item => {
-        item.addEventListener('mouseenter', function() {
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                this.style.transform = 'translateY(-10px)';
-            }
-        });
-        
-        item.addEventListener('mouseleave', function() {
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                this.style.transform = 'translateY(0)';
-            }
-        });
-    });
-    
     console.log(`✅ Card hover effects initialized`);
 }
 
@@ -482,6 +828,8 @@ window.reinitializeParallax = function() {
     initializeSingleParallaxSystem();
 };
 
+window.showServiceDetails = showServiceDetails;
+
 // УТИЛИТА ДЛЯ ПРОВЕРКИ
 window.checkParallaxSystem = function() {
     const bgLayers = document.querySelectorAll('.bg-layer');
@@ -491,4 +839,4 @@ window.checkParallaxSystem = function() {
     console.log(`   - All layers loaded: ${Array.from(bgLayers).every(layer => layer.classList.contains('loaded'))}`);
 };
 
-console.log('✅ home.js fully loaded with SINGLE parallax system (NO ERRORS)!');
+console.log('✅ home.js fully loaded with Speck services system!');
