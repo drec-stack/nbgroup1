@@ -1,4 +1,4 @@
-console.log('🏠 home.js loaded - FIXED VERSION WITH EXPERTISE SECTION');
+console.log('🏠 home.js loaded - FIXED VERSION WITH VERTICAL EXPERTISE SECTION');
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
@@ -24,15 +24,15 @@ function initializeHomePage() {
     
     // 4. Запускаем все остальные функции
     setTimeout(() => {
-        initializeExpertiseBlocks(); // Добавляем инициализацию блоков Expertise
+        initializeVerticalExpertiseBlocks(); // Обновленная функция для вертикальных блоков
         initializeStatsCounter();
         initializeFAQ();
         initializeScrollAnimations();
         initializeScrollProgress();
         initializeCardHoverEffects();
-        initializeServicesInteraction(); // Инициализация интерактивности услуг
+        initializeServicesInteraction();
         
-        console.log('✅ Home page fully initialized with Expertise section');
+        console.log('✅ Home page fully initialized with Vertical Expertise section');
     }, 300);
 }
 
@@ -127,47 +127,126 @@ function initializeSingleParallaxSystem() {
     return true;
 }
 
-// ===== ИНИЦИАЛИЗАЦИЯ EXPERTISE БЛОКОВ =====
-function initializeExpertiseBlocks() {
-    const expertiseBlocks = document.querySelectorAll('.expertise-block');
+// ===== ИНИЦИАЛИЗАЦИЯ ВЕРТИКАЛЬНЫХ EXPERTISE БЛОКОВ =====
+function initializeVerticalExpertiseBlocks() {
+    const expertiseBlocks = document.querySelectorAll('.expertise-vertical-block');
     
     if (expertiseBlocks.length === 0) {
-        console.log('⚠️ No expertise blocks found');
+        console.log('⚠️ No vertical expertise blocks found');
         return;
     }
     
-    console.log(`✅ Found ${expertiseBlocks.length} expertise blocks`);
+    console.log(`✅ Found ${expertiseBlocks.length} vertical expertise blocks`);
     
+    // Наблюдатель для анимации появления
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting && entry.target.style) {
-                entry.target.style.animationPlayState = 'running';
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateX(0)';
                 observer.unobserve(entry.target);
+                
+                // Активируем анимацию внутри блока
+                const number = entry.target.querySelector('.expertise-number');
+                const title = entry.target.querySelector('.expertise-title');
+                const description = entry.target.querySelector('.expertise-description');
+                const features = entry.target.querySelectorAll('.expertise-features li');
+                
+                if (number && number.style) {
+                    setTimeout(() => {
+                        number.style.transform = 'scale(1)';
+                        number.style.opacity = '1';
+                    }, 200);
+                }
+                
+                if (title && title.style) {
+                    setTimeout(() => {
+                        title.style.opacity = '1';
+                        title.style.transform = 'translateX(0)';
+                    }, 300);
+                }
+                
+                if (description && description.style) {
+                    setTimeout(() => {
+                        description.style.opacity = '1';
+                        description.style.transform = 'translateX(0)';
+                    }, 400);
+                }
+                
+                features.forEach((feature, index) => {
+                    if (feature && feature.style) {
+                        setTimeout(() => {
+                            feature.style.opacity = '1';
+                            feature.style.transform = 'translateX(0)';
+                        }, 500 + (index * 100));
+                    }
+                });
             }
         });
     }, {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: '0px 0px -100px 0px'
     });
     
-    expertiseBlocks.forEach(block => {
-        if (block) {
+    // Устанавливаем начальные стили и добавляем наблюдателя
+    expertiseBlocks.forEach((block, index) => {
+        if (block && block.style) {
+            // Начальное состояние
             block.style.opacity = '0';
-            block.style.transform = 'translateY(50px) scale(0.95)';
-            observer.observe(block);
+            block.style.transform = 'translateX(-50px)';
+            block.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            block.style.transitionDelay = `${0.3 + (index * 0.1)}s`;
+            
+            // Настройка анимации для внутренних элементов
+            const number = block.querySelector('.expertise-number');
+            const title = block.querySelector('.expertise-title');
+            const description = block.querySelector('.expertise-description');
+            const features = block.querySelectorAll('.expertise-features li');
+            
+            if (number && number.style) {
+                number.style.transform = 'scale(0.8)';
+                number.style.opacity = '0.5';
+                number.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            }
+            
+            if (title && title.style) {
+                title.style.opacity = '0';
+                title.style.transform = 'translateX(-20px)';
+                title.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            }
+            
+            if (description && description.style) {
+                description.style.opacity = '0';
+                description.style.transform = 'translateX(-20px)';
+                description.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            }
+            
+            features.forEach(feature => {
+                if (feature && feature.style) {
+                    feature.style.opacity = '0';
+                    feature.style.transform = 'translateX(-15px)';
+                    feature.style.transition = 'opacity 0.4s ease, transform 0.4s ease, color 0.3s ease';
+                }
+            });
             
             // Hover эффекты
             block.addEventListener('mouseenter', function() {
                 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                     const number = this.querySelector('.expertise-number');
+                    const numberLine = this.querySelector('.expertise-number-line');
+                    const features = this.querySelectorAll('.expertise-features li');
+                    
                     if (number && number.style) {
-                        number.style.animation = 'expertiseNumberGlow 2s ease-in-out infinite';
+                        number.style.transform = 'scale(1.1)';
                     }
                     
-                    const features = this.querySelectorAll('.expertise-features li');
+                    if (numberLine && numberLine.style) {
+                        numberLine.style.transform = 'scaleY(1.3)';
+                    }
+                    
                     features.forEach(feature => {
                         if (feature.style) {
-                            feature.style.transition = 'color 0.3s ease';
+                            feature.style.transform = 'translateX(5px)';
                         }
                     });
                 }
@@ -175,16 +254,34 @@ function initializeExpertiseBlocks() {
             
             block.addEventListener('mouseleave', function() {
                 const number = this.querySelector('.expertise-number');
+                const numberLine = this.querySelector('.expertise-number-line');
+                const features = this.querySelectorAll('.expertise-features li');
+                
                 if (number && number.style) {
-                    number.style.animation = '';
+                    number.style.transform = 'scale(1)';
                 }
+                
+                if (numberLine && numberLine.style) {
+                    numberLine.style.transform = 'scaleY(1)';
+                }
+                
+                features.forEach(feature => {
+                    if (feature.style) {
+                        feature.style.transform = 'translateX(0)';
+                    }
+                });
             });
+            
+            // Добавляем наблюдателя
+            setTimeout(() => {
+                observer.observe(block);
+            }, index * 150);
         }
     });
     
-    // Также наблюдаем за заголовком и подзаголовком секции
-    const expertiseTitle = document.querySelector('.expertise-section .section-title');
-    const expertiseSubtitle = document.querySelector('.expertise-section .section-subtitle');
+    // Анимация заголовков секции
+    const expertiseTitle = document.querySelector('.expertise-main-title');
+    const expertiseSubtitle = document.querySelector('.expertise-subtitle');
     
     if (expertiseTitle) {
         expertiseTitle.style.opacity = '0';
@@ -212,7 +309,7 @@ function initializeExpertiseBlocks() {
         }, 500);
     }
     
-    console.log('✅ Expertise blocks animation initialized');
+    console.log('✅ Vertical expertise blocks animation initialized');
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ ВЗАИМОДЕЙСТВИЯ С УСЛУГАМИ =====
@@ -872,4 +969,4 @@ window.showServiceDetails = function(serviceId) {
     scrollToServiceDetails(serviceId);
 };
 
-console.log('✅ home.js fully loaded with Expertise section implementation!');
+console.log('✅ home.js fully loaded with Vertical Expertise section implementation!');
