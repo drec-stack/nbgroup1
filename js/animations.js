@@ -1,5 +1,4 @@
-// animations.js - ИСПРАВЛЕННАЯ ВЕРСИЯ БЕЗ ОШИБОК
-console.log('🚀 Animations.js loaded - FIXED VERSION');
+console.log('🚀 Animations.js loaded - FIXED VERSION WITHOUT ERRORS');
 
 // Safe DOM access utility
 const safeDOM = {
