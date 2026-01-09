@@ -43,8 +43,8 @@
             width: 100% !important;
             height: 100% !important;
             z-index: -1000 !important;
-            overflow: hidden;
-            pointer-events: none;
+            overflow: hidden !important;
+            pointer-events: none !important;
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
@@ -63,6 +63,7 @@
             opacity: 1 !important;
             visibility: visible !important;
             will-change: transform;
+            transition: transform 0.1s linear !important;
         }
         
         /* Параллакс слои с правильными путями */
@@ -175,6 +176,23 @@
                 0 3px 30px rgba(0, 0, 0, 0.95),
                 0 2px 25px rgba(0, 0, 0, 0.9),
                 0 1px 20px rgba(0, 0, 0, 0.85) !important;
+        }
+        
+        /* ФИКС: Убираем все ненужные overlay и черные пленки */
+        .bg-layers-container .overlay,
+        .bg-layers-container .dark-layer,
+        .bg-layers-container [class*="overlay"],
+        .bg-layers-container::before,
+        .bg-layers-container > *::before,
+        body::before,
+        html::before,
+        .parallax-overlay,
+        .dark-overlay {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            background: none !important;
         }
     </style>
     
@@ -673,45 +691,5 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
     
-    <!-- Background Fix Script -->
-    <script>
-    (function() {
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔧 DOM loaded - removing protective layer if too dark');
-            
-            // Проверяем, не слишком ли темный защитный слой
-            const bgContainer = document.querySelector('.bg-layers-container');
-            if (bgContainer) {
-                const computedStyle = getComputedStyle(bgContainer, '::after');
-                const opacity = parseFloat(computedStyle.opacity) || 0;
-                
-                // Если слой слишком непрозрачный, уменьшаем его
-                if (opacity > 0.3) {
-                    bgContainer.style.setProperty('--protective-opacity', '0.15');
-                    console.log('✅ Reduced protective layer opacity to 0.15');
-                }
-            }
-        });
-        
-        // ПАРАЛЛАКС ЭФФЕКТ
-        let lastScrollTime = 0;
-        window.addEventListener('scroll', function() {
-            const currentTime = Date.now();
-            if (currentTime - lastScrollTime < 16) return;
-            
-            lastScrollTime = currentTime;
-            const scrolled = window.pageYOffset;
-            const bgLayers = document.querySelectorAll('.bg-layer');
-            
-            bgLayers.forEach((layer, index) => {
-                if (layer && layer.style) {
-                    const speed = 0.03 + (index * 0.02);
-                    const yPos = scrolled * speed;
-                    layer.style.transform = `translateY(${yPos}px)`;
-                }
-            });
-        });
-    })();
-    </script>
 </body>
 </html>
