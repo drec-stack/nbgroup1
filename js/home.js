@@ -1,4 +1,89 @@
-console.log('🏠 home.js loaded - COMPLETE SPECK DESIGN VERSION WITH BACKGROUND FIX');
+console.log('🏠 home.js loaded - COMPLETE SPECK DESIGN VERSION WITH ANTI-BLUE BACKGROUND FIX');
+
+// ===== КРИТИЧНЫЙ ФИКС СИНЕГО ФОНА =====
+function applyAntiBlueBackgroundFix() {
+    'use strict';
+    
+    console.log('🔵 APPLYING ANTI-BLUE BACKGROUND FIX');
+    
+    // 1. Убираем все синие фоны
+    document.querySelectorAll('*').forEach(element => {
+        const style = getComputedStyle(element);
+        
+        // Убираем синие цвета
+        if (style.backgroundColor.includes('rgb(0, 102, 255)') || 
+            style.backgroundColor.includes('rgba(0, 102, 255')) {
+            element.style.backgroundColor = 'transparent';
+        }
+        
+        // Убираем синие градиенты
+        if (style.backgroundImage.includes('linear-gradient') && 
+            (style.backgroundImage.includes('0066ff') || 
+             style.backgroundImage.includes('blue'))) {
+            element.style.backgroundImage = 'none';
+        }
+    });
+    
+    // 2. Фикс для кнопок
+    document.querySelectorAll('.btn, .btn-primary, .btn-secondary').forEach(btn => {
+        if (btn && btn.style) {
+            btn.style.background = 'rgba(255, 255, 255, 0.08)';
+            btn.style.backdropFilter = 'blur(12px) saturate(0.9)';
+            btn.style.webkitBackdropFilter = 'blur(12px) saturate(0.9)';
+            btn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+            btn.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.25)';
+            btn.style.color = 'white';
+        }
+    });
+    
+    // 3. Добавляем защитный слой поверх фона
+    const bgContainer = document.querySelector('.bg-layers-container');
+    if (bgContainer) {
+        // Проверяем, есть ли уже защитный слой
+        let protector = bgContainer.querySelector('.background-protector');
+        if (!protector) {
+            protector = document.createElement('div');
+            protector.className = 'background-protector';
+            protector.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(10, 25, 47, 0.92);
+                z-index: -999;
+                pointer-events: none;
+            `;
+            bgContainer.appendChild(protector);
+        }
+    }
+    
+    // 4. Уменьшаем прозрачность параллакс-слоев
+    document.querySelectorAll('.bg-layer').forEach((layer, index) => {
+        if (layer && layer.style) {
+            const opacity = 0.4 - (index * 0.05);
+            layer.style.opacity = opacity.toString();
+            layer.style.zIndex = `${-1000 - index}`;
+        }
+    });
+    
+    // 5. Мониторинг скролла для постоянного фикса
+    let scrollFixTimeout;
+    window.addEventListener('scroll', () => {
+        clearTimeout(scrollFixTimeout);
+        scrollFixTimeout = setTimeout(() => {
+            // Проверяем кнопки на появление синего
+            document.querySelectorAll('.btn').forEach(btn => {
+                const style = getComputedStyle(btn);
+                if (style.backgroundColor.includes('rgb(0, 102, 255)')) {
+                    btn.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+                }
+            });
+        }, 100);
+    });
+    
+    console.log('✅ Anti-blue background fix applied');
+}
 
 // ===== ЭКСТРЕННЫЙ ФИКС ФОНА =====
 (function immediateFix() {
@@ -18,7 +103,10 @@ console.log('🏠 home.js loaded - COMPLETE SPECK DESIGN VERSION WITH BACKGROUND
         document.body.style.backgroundImage = 'none';
         document.documentElement.style.backgroundColor = 'transparent';
         
-        // 2. Активируем фоновые слои
+        // 2. Применяем анти-синий фикс
+        applyAntiBlueBackgroundFix();
+        
+        // 3. Активируем фоновые слои
         const bgLayers = document.querySelectorAll('.bg-layer');
         const bgContainer = document.querySelector('.bg-layers-container');
         
@@ -26,16 +114,16 @@ console.log('🏠 home.js loaded - COMPLETE SPECK DESIGN VERSION WITH BACKGROUND
             bgContainer.style.display = 'block';
             bgContainer.style.opacity = '1';
             bgContainer.style.visibility = 'visible';
-            bgContainer.style.zIndex = '-100';
+            bgContainer.style.zIndex = '-1000';
             bgContainer.style.position = 'fixed';
         }
         
         bgLayers.forEach((layer, index) => {
             if (layer && layer.style) {
                 layer.style.display = 'block';
-                layer.style.opacity = '1';
+                layer.style.opacity = (0.4 - (index * 0.05)).toString();
                 layer.style.visibility = 'visible';
-                layer.style.zIndex = `-${100 + index}`;
+                layer.style.zIndex = `-${1000 + index}`;
                 layer.style.position = 'absolute';
                 layer.style.top = '0';
                 layer.style.left = '0';
@@ -59,25 +147,11 @@ console.log('🏠 home.js loaded - COMPLETE SPECK DESIGN VERSION WITH BACKGROUND
             }
         });
         
-        // 3. Убираем все фоны с секций
+        // 4. Убираем все фоны с секций
         document.querySelectorAll('section').forEach(section => {
             if (section && section.style) {
                 section.style.backgroundColor = 'transparent';
                 section.style.backgroundImage = 'none';
-            }
-        });
-        
-        // 4. Гарантируем, что все контентные блоки прозрачные
-        const contentBlocks = document.querySelectorAll(
-            '.speck-vertical-block, .project-card, .service-item, ' +
-            '.journal-item, .faq-item, .stat-card, .cta-content, .hero-description'
-        );
-        
-        contentBlocks.forEach(block => {
-            if (block && block.style) {
-                block.style.background = 'transparent';
-                block.style.backgroundColor = 'transparent';
-                block.style.backdropFilter = 'none';
             }
         });
         
@@ -88,9 +162,9 @@ console.log('🏠 home.js loaded - COMPLETE SPECK DESIGN VERSION WITH BACKGROUND
     safeImmediateFix();
 })();
 
-// ===== ПАРАЛЛАКС СИСТЕМА =====
+// ===== ПАРАЛЛАКС СИСТЕМА С ФИКСОМ =====
 function initializeParallaxBackground() {
-    console.log('🎨 Initializing parallax background system...');
+    console.log('🎨 Initializing parallax background system with anti-blue fix...');
     
     const bgLayers = document.querySelectorAll('.bg-layer');
     if (bgLayers.length === 0) {
@@ -121,25 +195,36 @@ function initializeParallaxBackground() {
                 bgLayers[index].classList.add('loaded');
             }
             
-            // Если все изображения загружены, уменьшаем непрозрачность градиента
+            // Если все изображения загружены
             if (loadedImages === imagePaths.length) {
                 console.log('✅ All background images loaded successfully');
+                
+                // Уменьшаем непрозрачность для предотвращения синего
+                bgLayers.forEach((layer, i) => {
+                    if (layer && layer.style) {
+                        layer.style.opacity = (0.4 - (i * 0.05)).toString();
+                    }
+                });
             }
         };
         img.onerror = () => {
             console.warn(`⚠️ Failed to load background image: ${path}`);
-            // Даже если изображение не загрузилось, продолжаем
         };
         img.src = path;
     });
     
-    // Параллакс эффект при скролле
+    // Параллакс эффект при скролле с ограничением FPS
+    let lastScrollTime = 0;
     function updateParallax() {
+        const currentTime = Date.now();
+        if (currentTime - lastScrollTime < 16) return; // ~60fps
+        
+        lastScrollTime = currentTime;
         const scrollY = window.scrollY || window.pageYOffset;
         
         bgLayers.forEach((layer, index) => {
             if (layer && layer.style) {
-                const speed = 0.05 + (index * 0.05); // Разные скорости для разных слоёв
+                const speed = 0.03 + (index * 0.02); // Медленные скорости
                 const yPos = scrollY * speed;
                 layer.style.transform = `translateY(${yPos}px)`;
             }
@@ -157,18 +242,21 @@ function initializeParallaxBackground() {
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
-    console.log('📄 INITIALIZING HOME PAGE WITH SPECK DESIGN');
+    console.log('📄 INITIALIZING HOME PAGE WITH SPECK DESIGN & ANTI-BLUE FIX');
     
     // 1. Гарантируем класс для главной страницы
     document.body.classList.add('home-page');
     document.documentElement.classList.add('home-page');
     
-    // 2. Запускаем параллакс систему
+    // 2. Применяем анти-синий фикс
+    applyAntiBlueBackgroundFix();
+    
+    // 3. Запускаем параллакс систему
     initializeParallaxBackground();
     
-    // 3. Критичные инлайн-стили для гарантии
+    // 4. Критичные инлайн-стили для гарантии
     const emergencyCSS = `
-        /* КРИТИЧНЫЙ ФИКС: ГАРАНТИЯ ПРОЗРАЧНОСТИ */
+        /* КРИТИЧНЫЙ ФИКС: ГАРАНТИЯ ПРОЗРАЧНОСТИ И УБРАТЬ СИНИЙ */
         body.home-page {
             background: transparent !important;
             background-color: transparent !important;
@@ -179,12 +267,25 @@ function initializeHomePage() {
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
-            z-index: -100 !important;
+            z-index: -1000 !important;
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
             width: 100% !important;
             height: 100% !important;
+        }
+        
+        /* ЗАЩИТНЫЙ СЛОЙ */
+        .bg-layers-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 25, 47, 0.92);
+            z-index: -999;
+            pointer-events: none;
         }
         
         .bg-layer {
@@ -194,6 +295,27 @@ function initializeHomePage() {
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
+            mix-blend-mode: normal !important;
+        }
+        
+        /* КНОПКИ БЕЗ СИНЕГО */
+        .btn, .btn-primary, .btn-secondary {
+            background: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(12px) saturate(0.9) !important;
+            -webkit-backdrop-filter: blur(12px) saturate(0.9) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.25),
+                0 2px 10px rgba(0, 0, 0, 0.15) !important;
+            color: white !important;
+        }
+        
+        .btn:hover, .btn-primary:hover, .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12) !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+            box-shadow: 
+                0 12px 35px rgba(0, 0, 0, 0.3),
+                0 4px 15px rgba(0, 0, 0, 0.2) !important;
         }
         
         /* УСИЛЕННЫЕ ТЕНИ ТЕКСТА */
@@ -227,13 +349,13 @@ function initializeHomePage() {
     `;
     
     const style = document.createElement('style');
-    style.id = 'emergency-background-fix';
+    style.id = 'emergency-anti-blue-fix';
     style.textContent = emergencyCSS;
     document.head.appendChild(style);
     
-    console.log('✅ Emergency CSS injected');
+    console.log('✅ Emergency anti-blue CSS injected');
     
-    // 4. Запускаем все остальные функции
+    // 5. Запускаем все остальные функции
     setTimeout(() => {
         initializeSpeckBlocks();
         initializeStatsCounter();
@@ -242,7 +364,7 @@ function initializeHomePage() {
         initializeScrollProgress();
         initializeCardHoverEffects();
         
-        console.log('✅ Home page fully initialized with background fix');
+        console.log('✅ Home page fully initialized with anti-blue background fix');
     }, 300);
 }
 
@@ -517,7 +639,13 @@ safeInitialize();
 // ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ ОТЛАДКИ =====
 window.reinitializeHomePage = function() {
     console.log('🔄 Reinitializing home page...');
+    applyAntiBlueBackgroundFix();
     initializeHomePage();
+};
+
+window.fixBlueBackground = function() {
+    console.log('🔵 Manually fixing blue background...');
+    applyAntiBlueBackgroundFix();
 };
 
 window.toggleFAQItem = function(index) {
@@ -534,13 +662,37 @@ window.checkBackground = function() {
     const bgLayers = document.querySelectorAll('.bg-layer');
     console.log(`Background layers: ${bgLayers.length}`);
     bgLayers.forEach((layer, index) => {
+        const style = getComputedStyle(layer);
         console.log(`Layer ${index}:`, {
-            display: layer.style.display,
-            opacity: layer.style.opacity,
-            backgroundImage: layer.style.backgroundImage,
-            zIndex: layer.style.zIndex
+            display: style.display,
+            opacity: style.opacity,
+            backgroundImage: style.backgroundImage,
+            zIndex: style.zIndex,
+            backgroundColor: style.backgroundColor
+        });
+    });
+    
+    // Проверяем кнопки
+    const buttons = document.querySelectorAll('.btn');
+    console.log(`Buttons: ${buttons.length}`);
+    buttons.forEach((btn, index) => {
+        const style = getComputedStyle(btn);
+        console.log(`Button ${index}:`, {
+            backgroundColor: style.backgroundColor,
+            backgroundImage: style.backgroundImage,
+            boxShadow: style.boxShadow
         });
     });
 };
 
-console.log('✅ home.js fully loaded and ready with background fix!');
+console.log('✅ home.js fully loaded and ready with ANTI-BLUE background fix!');
+
+// Экстренный фикс через 2 секунды на всякий случай
+setTimeout(() => {
+    const bodyStyle = getComputedStyle(document.body);
+    if (bodyStyle.backgroundColor.includes('rgb(0, 102, 255)') || 
+        bodyStyle.backgroundImage.includes('linear-gradient')) {
+        console.log('⚠️ Detected blue background after 2s, applying emergency fix');
+        applyAntiBlueBackgroundFix();
+    }
+}, 2000);
