@@ -331,17 +331,6 @@ html {
         0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
-.expertise-subtitle {
-    font-size: 1.3rem;
-    color: rgba(255, 255, 255, 0.9) !important;
-    text-align: left;
-    line-height: 1.6;
-    max-width: 600px;
-    text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.9),
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
-}
-
 /* ВЕРТИКАЛЬНЫЙ КОНТЕЙНЕР */
 .expertise-vertical-container {
     max-width: 900px;
@@ -1302,10 +1291,6 @@ html {
         font-size: 2.5rem;
     }
     
-    .expertise-subtitle {
-        font-size: 1.2rem;
-    }
-    
     .expertise-vertical-container {
         max-width: 100%;
         gap: 40px;
@@ -1395,12 +1380,6 @@ html {
     .expertise-main-title {
         font-size: 2.2rem;
         text-align: center !important;
-    }
-    
-    .expertise-subtitle {
-        font-size: 1.1rem;
-        text-align: center !important;
-        margin: 0 auto;
     }
     
     .expertise-vertical-container {
@@ -1743,7 +1722,7 @@ html {
 /* ===== УСИЛЕННЫЕ ТЕНИ ДЛЯ ТЕКСТА ===== */
 h1, h2, h3, h4, h5, h6, p, 
 .hero h1, .hero-subtitle, .hero-description p,
-.expertise-main-title, .expertise-subtitle, .expertise-title,
+.expertise-main-title, .expertise-title,
 .expertise-description, .expertise-features li,
 .expertise-block-subtitle, .expertise-sub-feature-text, .expertise-nested-item-text,
 .project-title, .project-description,
