@@ -91,19 +91,19 @@
             opacity: 0.4;
         }
         
-        /* Тонкий защитный слой от синего (ОЧЕНЬ ПРОЗРАЧНЫЙ) */
-        .bg-layers-container::after {
+        /* УДАЛЕН ЗАТЕМНЯЮЩИЙ СЛОЙ */
+        /* .bg-layers-container::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 25, 47, 0.15); /* Очень прозрачный */
+            background: rgba(10, 25, 47, 0.15);
             z-index: -999;
             pointer-events: none;
             mix-blend-mode: multiply;
-        }
+        } */
         
         /* Убедимся, что все контентные блоки выше фона */
         .container, section, .hero, .content-section, 
@@ -173,9 +173,9 @@
         .faq-question, .faq-answer p, .cta-title, .cta-subtitle,
         .stat-number, .stat-label, .section-title, .section-subtitle {
             text-shadow: 
-                0 3px 30px rgba(0, 0, 0, 0.95),
-                0 2px 25px rgba(0, 0, 0, 0.9),
-                0 1px 20px rgba(0, 0, 0, 0.85) !important;
+                0 4px 40px rgba(0, 0, 0, 0.95),
+                0 3px 30px rgba(0, 0, 0, 0.9),
+                0 2px 25px rgba(0, 0, 0, 0.85) !important;
         }
         
         /* ФИКС: Убираем все ненужные overlay и черные пленки */
