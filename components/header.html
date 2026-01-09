@@ -24,28 +24,30 @@
     }
 
     /* ===== АНИМАЦИЯ СКРЫТИЯ ХЕДЕРА ПРИ СКРОЛЛЕ ===== */
-    .main-header.header-hide-enabled {
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                    opacity 0.3s ease,
+    .main-header.header-hide-animation {
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                    opacity 0.4s ease,
                     background 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                     box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
     }
 
-    .main-header.header-hiding {
-        transform: translateX(-50%) translateY(-20px) !important;
-        opacity: 0.7 !important;
-    }
-
+    /* Скрытое состояние - используем top вместо transform */
     .main-header.header-hidden {
-        transform: translateX(-50%) translateY(-100%) !important;
+        top: -100px !important;
         opacity: 0 !important;
         pointer-events: none !important;
     }
 
+    /* Видимое состояние */
     .main-header.header-visible {
-        transform: translateX(-50%) translateY(0) !important;
+        top: 20px !important;
         opacity: 1 !important;
         pointer-events: auto !important;
+    }
+
+    /* Промежуточное состояние для плавности */
+    .main-header.header-hiding {
+        opacity: 0.5 !important;
     }
 
     /* Отключение анимации для портфолио */
@@ -56,12 +58,12 @@
     /* Плавное появление при загрузке */
     @keyframes headerSlideIn {
         from {
-            transform: translateX(-50%) translateY(-30px);
             opacity: 0;
+            transform: translateX(-50%) translateY(-30px);
         }
         to {
-            transform: translateX(-50%) translateY(0);
             opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
     }
 
@@ -74,7 +76,7 @@
         .main-header {
             position: fixed !important;
             left: 0 !important;
-            transform: translateY(0) !important;
+            transform: none !important;
             width: 100% !important;
             max-width: 100% !important;
             border-radius: 0 !important;
@@ -90,30 +92,13 @@
             padding: 12px 0 !important;
         }
 
-        .main-header.header-hide-enabled {
-            left: 0 !important;
-            transform: translateY(0) !important;
-            width: 100% !important;
-            border-radius: 0 !important;
-        }
-        
-        .main-header.header-hiding {
-            transform: translateY(-20px) !important;
-        }
-        
+        /* Для мобильных используем top для скрытия */
         .main-header.header-hidden {
-            transform: translateY(-100%) !important;
+            top: -80px !important;
         }
         
         .main-header.header-visible {
-            transform: translateY(0) !important;
-        }
-
-        /* Улучшение для touch-устройств */
-        @media (hover: none) and (pointer: coarse) {
-            .main-header.header-hide-enabled {
-                transition-duration: 0.2s !important;
-            }
+            top: 0 !important;
         }
     }
 
@@ -139,7 +124,7 @@
     
     /* КНОПКА "НАЧАТЬ ПРОЕКТ" ВИДНА НА ПОРТФОЛИО */
     body.portfolio-page .header-right .btn-primary {
-        display: inline-flex !important;  /* ИСПРАВЛЕНО: было none */
+        display: inline-flex !important;
         visibility: visible !important;
         opacity: 1 !important;
         pointer-events: auto !important;
@@ -147,14 +132,14 @@
     
     /* На портфолио всегда показываем хедер */
     body.portfolio-page .main-header.header-hidden {
-        transform: translateX(-50%) translateY(0) !important;
+        top: 20px !important;
         opacity: 1 !important;
         pointer-events: auto !important;
     }
     
     @media (max-width: 768px) {
         body.portfolio-page .main-header.header-hidden {
-            transform: translateY(0) !important;
+            top: 0 !important;
         }
     }
 
@@ -589,94 +574,61 @@
         // ОСОБЫЙ РЕЖИМ ДЛЯ ПОРТФОЛИО
         if (isPortfolio) {
             console.log('🎯 Для портфолио - анимация скрытия отключена');
-            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
             header.classList.add('no-hide-animation');
-            return; // Выходим - для портфолио не скрываем хедер
+            return;
         }
+        
+        // Добавляем класс для анимации
+        header.classList.add('header-hide-animation');
         
         let lastScrollTop = 0;
-        let scrollTimeout;
-        const SCROLL_THRESHOLD = 10; // Минимальный скролл для реакции
-        const HIDE_THRESHOLD = 80; // Скролл для скрытия
-        const MOBILE_HIDE_THRESHOLD = 40; // Меньший порог для мобильных
+        let isHidden = false;
+        const SCROLL_THRESHOLD = 100; // Порог для начала скрытия
+        const HIDE_AMOUNT = 80; // Насколько скрываем (пикселей)
         
-        // Добавляем классы для анимации
-        header.classList.add('header-hide-enabled');
-        
-        // Флаг для предотвращения множественных обновлений
-        let isUpdating = false;
-        
-        function updateHeaderVisibility() {
-            if (isUpdating) return;
-            isUpdating = true;
-            
+        function handleScroll() {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const isMobile = window.innerWidth <= 768;
-            const currentThreshold = isMobile ? MOBILE_HIDE_THRESHOLD : HIDE_THRESHOLD;
-            
-            // Для мобильных - всегда показываем вверху
-            if (scrollTop < 5) {
-                header.classList.remove('header-hiding', 'header-hidden');
-                header.classList.add('header-visible');
-                lastScrollTop = scrollTop;
-                isUpdating = false;
-                return;
-            }
             
             // Определяем направление скролла
-            const isScrollingDown = scrollTop > lastScrollTop;
+            const scrollingDown = scrollTop > lastScrollTop;
             
-            // Плавное скрытие при скролле вниз
-            if (isScrollingDown && scrollTop > currentThreshold) {
-                if (!header.classList.contains('header-hiding')) {
-                    header.classList.remove('header-visible');
-                    header.classList.add('header-hiding');
-                    
-                    // Через 150мс скрываем полностью
-                    clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(() => {
-                        header.classList.remove('header-hiding');
-                        header.classList.add('header-hidden');
-                        isUpdating = false;
-                    }, 150);
-                }
+            // Если скроллим вниз и прошли порог
+            if (scrollingDown && scrollTop > SCROLL_THRESHOLD && !isHidden) {
+                header.classList.add('header-hidden');
+                header.classList.remove('header-visible', 'header-hiding');
+                isHidden = true;
             } 
-            // Показываем при скролле вверх
-            else if (!isScrollingDown && scrollTop > SCROLL_THRESHOLD) {
-                if (header.classList.contains('header-hidden') || 
-                    header.classList.contains('header-hiding')) {
-                    header.classList.remove('header-hidden', 'header-hiding');
-                    header.classList.add('header-visible');
-                }
+            // Если скроллим вверх
+            else if (!scrollingDown && isHidden) {
+                header.classList.remove('header-hidden', 'header-hiding');
+                header.classList.add('header-visible');
+                isHidden = false;
+            }
+            // Если вверху страницы
+            else if (scrollTop <= 50) {
+                header.classList.remove('header-hidden', 'header-hiding');
+                header.classList.add('header-visible');
+                isHidden = false;
             }
             
-            lastScrollTop = scrollTop;
-            
-            // Сброс флага через небольшой таймаут
-            requestAnimationFrame(() => {
-                isUpdating = false;
-            });
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         }
         
-        // Оптимизированный обработчик скролла
-        let scrollTicking = false;
+        // Используем throttle для оптимизации
+        let ticking = false;
         window.addEventListener('scroll', () => {
-            if (!scrollTicking) {
+            if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    updateHeaderVisibility();
-                    scrollTicking = false;
+                    handleScroll();
+                    ticking = false;
                 });
-                scrollTicking = true;
+                ticking = true;
             }
-        }, { passive: true });
-        
-        // Также обновляем при ресайзе
-        window.addEventListener('resize', () => {
-            lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
         }, { passive: true });
         
         // Инициализация
-        updateHeaderVisibility();
+        header.classList.add('header-visible');
+        handleScroll();
     }
     
     function removeHiddenElementsForPortfolio() {
@@ -810,4 +762,3 @@
     }
 })();
 </script>
-
