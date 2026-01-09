@@ -312,9 +312,11 @@ html {
     z-index: 15;
 }
 
+/* ===== ВЫРАВНИВАНИЕ ЗАГОЛОВКА EXPERTISE С БЛОКАМИ ===== */
 .expertise-header {
     max-width: 1000px;
     margin: 0 auto 80px;
+    padding-left: 120px; /* Выравнивание с блоками (70px номер + 50px отступ) */
 }
 
 .expertise-main-title {
@@ -1197,6 +1199,10 @@ html {
 
 /* ===== АДАПТИВНОСТЬ ДЛЯ EXPERTISE ===== */
 @media (max-width: 1200px) {
+    .expertise-header {
+        padding-left: 100px;
+    }
+    
     .expertise-vertical-container {
         max-width: 800px;
     }
@@ -1232,6 +1238,7 @@ html {
     }
     
     .expertise-header {
+        padding-left: 80px;
         margin-bottom: 60px;
     }
     
@@ -1285,6 +1292,10 @@ html {
 @media (max-width: 768px) {
     .expertise-section {
         padding: 100px 0;
+    }
+    
+    .expertise-header {
+        padding-left: 60px;
     }
     
     .expertise-main-title {
@@ -1376,15 +1387,20 @@ html {
     }
     
     .expertise-header {
+        padding-left: 0;
+        text-align: center;
         margin-bottom: 40px;
     }
     
     .expertise-main-title {
         font-size: 2.2rem;
+        text-align: center !important;
     }
     
     .expertise-subtitle {
         font-size: 1.1rem;
+        text-align: center !important;
+        margin: 0 auto;
     }
     
     .expertise-vertical-container {
