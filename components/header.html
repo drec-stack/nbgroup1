@@ -1,58 +1,42 @@
 <!-- components/header.html -->
-<!-- ===== УНИВЕРСАЛЬНЫЙ ХЕДЕР ДЛЯ ВСЕХ СТРАНИЦ ===== -->
+<!-- ===== ОПТИМИЗИРОВАННЫЙ ХЕДЕР ===== -->
 <style>
-    /* ===== ОСНОВНЫЕ СТИЛИ ХЕДЕРА ===== */
+    /* ===== ОСНОВНЫЕ СТИЛИ ===== */
     .main-header {
-        position: fixed !important;
-        top: 20px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        width: calc(100% - 40px) !important;
-        max-width: 1400px !important;
-        margin: 0 auto !important;
-        z-index: 1000 !important;
-        padding: 15px 0 !important;
-        border-radius: 20px !important;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        backdrop-filter: blur(25px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 40px);
+        max-width: 1400px;
+        z-index: 1000;
+        padding: 15px 0;
+        border-radius: 20px;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(25px) saturate(180%);
+        -webkit-backdrop-filter: blur(25px) saturate(180%);
         box-shadow: 
             0 8px 32px rgba(0, 0, 0, 0.3),
             inset 0 1px 0 rgba(255, 255, 255, 0.1),
-            inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            inset 0 0 20px rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    /* ===== АНИМАЦИЯ СКРЫТИЯ ХЕДЕРА ПРИ СКРОЛЛЕ ===== */
-    .main-header.header-animated {
-        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                    opacity 0.4s ease,
-                    top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-    }
-
-    /* Скрытое состояние - используем отрицательный margin-top чтобы не ломать transform */
+    /* Состояния анимации */
     .main-header.header-hidden {
-        transform: translateX(-50%) translateY(-150%) !important;
-        opacity: 0 !important;
-        visibility: hidden !important;
+        transform: translateX(-50%) translateY(-150%);
+        opacity: 0;
+        visibility: hidden;
     }
 
-    /* Видимое состояние */
     .main-header.header-visible {
-        transform: translateX(-50%) translateY(0) !important;
-        opacity: 1 !important;
-        visibility: visible !important;
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+        visibility: visible;
     }
 
-    /* Отключение анимации для портфолио */
-    .main-header.no-hide-animation {
-        transform: translateX(-50%) translateY(0) !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-
-    /* Плавное появление при загрузке */
+    /* Плавное появление */
     @keyframes headerSlideIn {
         from {
             transform: translateX(-50%) translateY(-50px);
@@ -64,114 +48,59 @@
         }
     }
 
-    .main-header:not(.no-hide-animation) {
+    .main-header {
         animation: headerSlideIn 0.6s ease-out 0.3s both;
-    }
-
-    /* Мобильная версия хедера */
-    @media (max-width: 768px) {
-        .main-header {
-            position: fixed !important;
-            left: 0 !important;
-            transform: translateY(0) !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            border-radius: 0 !important;
-            top: 0 !important;
-            margin: 0 !important;
-            background: rgba(10, 10, 20, 0.95) !important;
-            backdrop-filter: blur(30px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-            padding: 12px 0 !important;
-        }
-
-        /* Для мобильных используем transform для скрытия */
-        .main-header.header-animated {
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                        opacity 0.3s ease !important;
-        }
-        
-        .main-header.header-hidden {
-            transform: translateY(-100%) !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-        }
-        
-        .main-header.header-visible {
-            transform: translateY(0) !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-        
-        .main-header.no-hide-animation {
-            transform: translateY(0) !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
     }
 
     /* Эффект при скролле */
     .main-header.scrolled {
-        background: rgba(255, 255, 255, 0.08) !important;
-        backdrop-filter: blur(30px) saturate(200%) !important;
-        -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(30px) saturate(200%);
+        -webkit-backdrop-filter: blur(30px) saturate(200%);
         box-shadow: 
             0 12px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.12),
-            inset 0 0 25px rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        padding: 10px 0 !important;
+            inset 0 0 25px rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 10px 0;
     }
 
-    /* ===== ОСОБЫЕ СТИЛИ ДЛЯ ПОРТФОЛИО ===== */
-    body.portfolio-page .main-header {
-        /* Убираем все сложные анимации для портфолио */
-        animation: none !important;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
-    }
-    
-    /* КНОПКА "НАЧАТЬ ПРОЕКТ" ВИДНА НА ПОРТФОЛИО */
-    body.portfolio-page .header-right .btn-primary {
-        display: inline-flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-    }
-    
-    /* На портфолио всегда показываем хедер */
-    body.portfolio-page .main-header.header-hidden {
-        transform: translateX(-50%) translateY(0) !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-    
+    /* Мобильная версия */
     @media (max-width: 768px) {
-        body.portfolio-page .main-header.header-hidden {
-            transform: translateY(0) !important;
-            opacity: 1 !important;
-            visibility: visible !important;
+        .main-header {
+            left: 0;
+            transform: translateY(0);
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            top: 0;
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            padding: 12px 0;
+        }
+
+        .main-header.header-hidden {
+            transform: translateY(-100%);
+        }
+
+        .main-header.header-visible {
+            transform: translateY(0);
         }
     }
 
-    /* Контейнер хедера */
-    .main-header .container {
+    /* ===== СТРУКТУРА ===== */
+    .header-container {
         max-width: 1400px;
         margin: 0 auto;
         padding: 0 30px;
         width: 100%;
     }
 
-    @media (max-width: 768px) {
-        .main-header .container {
-            padding: 0 20px;
-        }
-    }
-
-    /* Внутренняя структура */
     .header-inner {
         display: flex;
         justify-content: space-between;
@@ -179,18 +108,20 @@
         width: 100%;
     }
 
+    @media (max-width: 768px) {
+        .header-container {
+            padding: 0 20px;
+        }
+    }
+
     /* ===== ЛОГОТИП ===== */
     .logo {
         display: flex;
         align-items: center;
         text-decoration: none;
-        color: white;
-        font-weight: 700;
-        font-size: 24px;
         gap: 14px;
         transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         z-index: 1001;
-        line-height: 1;
     }
 
     .logo:hover {
@@ -201,23 +132,20 @@
     .logo-mark {
         width: 46px;
         height: 46px;
-        background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%) !important;
+        background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
         border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 900;
         font-size: 20px;
-        color: #000000 !important;
+        color: #000000;
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        border: 2px solid rgba(255, 255, 255, 0.4) !important;
+        border: 2px solid rgba(255, 255, 255, 0.4);
         box-shadow: 
             0 4px 20px rgba(255, 255, 255, 0.2),
             inset 0 1px 0 rgba(255, 255, 255, 0.4);
-        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-        position: relative;
-        overflow: hidden;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .logo:hover .logo-mark {
@@ -228,18 +156,11 @@
     }
 
     .logo-text {
-        color: white !important;
+        color: white;
         font-weight: 700;
         font-size: 22px;
         letter-spacing: -0.5px;
-        background: none !important;
-        -webkit-background-clip: border-box !important;
-        -webkit-text-fill-color: white !important;
-        background-clip: border-box !important;
-        position: relative;
-        line-height: 1.1;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     @media (max-width: 768px) {
@@ -252,7 +173,6 @@
         
         .logo-text {
             font-size: 19px;
-            letter-spacing: -0.3px;
         }
         
         .logo {
@@ -269,8 +189,6 @@
             width: 36px;
             height: 36px;
             font-size: 16px;
-            border-radius: 9px;
-            border-width: 1.5px;
         }
         
         .logo {
@@ -292,10 +210,9 @@
         }
     }
 
-    /* На мобильных - скрываем полностью */
     @media (max-width: 900px) {
         .main-nav {
-            display: none !important;
+            display: none;
         }
     }
 
@@ -320,11 +237,11 @@
     .nav-link.active {
         color: white;
         font-weight: 600;
-        background: rgba(255, 255, 255, 0.15) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    /* ===== ПРАВАЯ ЧАСТЬ ХЕДЕРА ===== */
+    /* ===== ПРАВАЯ ЧАСТЬ ===== */
     .header-right {
         display: flex;
         align-items: center;
@@ -337,7 +254,7 @@
         }
     }
 
-    /* ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
+    /* Переключатель языка */
     .language-switcher {
         display: flex;
         align-items: center;
@@ -378,11 +295,7 @@
     .lang-btn.active {
         color: white;
         font-weight: 600;
-        background: rgba(255, 255, 255, 0.25) !important;
-    }
-
-    .lang-flag {
-        font-size: 14px;
+        background: rgba(255, 255, 255, 0.25);
     }
 
     @media (max-width: 768px) {
@@ -404,19 +317,15 @@
         .lang-btn {
             gap: 0;
         }
-        
-        .lang-flag {
-            font-size: 13px;
-        }
     }
 
-    /* ===== КНОПКА "НАЧАТЬ ПРОЕКТ" ===== */
-    .header-right .btn-primary {
+    /* Кнопка "Начать проект" */
+    .header-btn {
         display: inline-flex;
         align-items: center;
         padding: 10px 24px;
-        background: white !important;
-        color: #0a0a0a !important;
+        background: white;
+        color: #0a0a0a;
         border: none;
         border-radius: 10px;
         font-weight: 700;
@@ -429,56 +338,28 @@
         box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
     }
 
-    .header-right .btn-primary:hover {
-        background: white !important;
-        color: #0a0a0a !important;
+    .header-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25);
     }
 
     @media (max-width: 768px) {
-        .header-right .btn-primary {
+        .header-btn {
             padding: 8px 20px;
             font-size: 13px;
-            border-radius: 8px;
         }
     }
 
     @media (max-width: 480px) {
-        .header-right .btn-primary {
-            display: none !important;
+        .header-btn {
+            display: none;
         }
     }
 
-    /* ===== КРИТИЧЕСКИЙ ФИКС: УДАЛЯЕМ ВСЕ СКРЫТЫЕ ЭЛЕМЕНТЫ ДЛЯ ПОРТФОЛИО ===== */
-    body.portfolio-page .mobile-menu-toggle,
-    body.portfolio-page .mobile-menu-overlay,
-    body.portfolio-page .menu-toggle,
-    body.portfolio-page .burger-menu,
-    body.portfolio-page .hamburger,
-    body.portfolio-page .menu-btn,
-    body.portfolio-page .nav-toggle {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        width: 0 !important;
-        height: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-        z-index: -1000 !important;
-        pointer-events: none !important;
-    }
-
-    /* НЕТ МОБИЛЬНОГО МЕНЮ ВООБЩЕ ДЛЯ ПОРТФОЛИО */
-    body.portfolio-page .mobile-menu,
-    body.portfolio-page .menu-overlay {
-        display: none !important;
-    }
-
-    /* ===== ПОДДЕРЖКА БЕЗ BACKDROP-FILTER ===== */
+    /* Поддержка без backdrop-filter */
     @supports not (backdrop-filter: blur(20px)) {
         .main-header {
-            background: rgba(15, 20, 35, 0.98) !important;
+            background: rgba(15, 20, 35, 0.98);
         }
         
         .language-switcher {
@@ -488,15 +369,15 @@
 </style>
 
 <header class="main-header" id="main-header">
-    <div class="container">
+    <div class="header-container">
         <div class="header-inner">
             <!-- Логотип -->
-            <a href="index.html" class="logo" aria-label="На главную страницу">
+            <a href="index.html" class="logo" aria-label="На главную">
                 <div class="logo-mark" aria-hidden="true">NB</div>
                 <span class="logo-text" data-i18n="nav.brand">NB Group</span>
             </a>
             
-            <!-- Основная навигация (скрывается на мобильных) -->
+            <!-- Навигация -->
             <nav class="main-nav" aria-label="Основная навигация">
                 <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
                 <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
@@ -506,16 +387,22 @@
                 <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
             </nav>
             
-            <!-- Правая часть - переключатель языка и кнопка -->
+            <!-- Правая часть -->
             <div class="header-right">
-                <!-- Переключатель языка -->
+                <!-- Язык -->
                 <div class="language-switcher" data-current-lang="ru">
-                    <button class="lang-btn" data-lang="ru">🇷🇺</button>
-                    <button class="lang-btn active" data-lang="en">🇺🇸</button>
+                    <button class="lang-btn" data-lang="ru">
+                        <span class="lang-flag">🇷🇺</span>
+                        <span class="lang-text">RU</span>
+                    </button>
+                    <button class="lang-btn active" data-lang="en">
+                        <span class="lang-flag">🇺🇸</span>
+                        <span class="lang-text">EN</span>
+                    </button>
                 </div>
                 
-                <!-- Кнопка Начать проект (ВИДНА НА ВСЕХ СТРАНИЦАХ, включая портфолио) -->
-                <a href="contacts.html" class="btn btn-primary" data-i18n="nav.startProject">
+                <!-- Кнопка -->
+                <a href="contacts.html" class="header-btn" data-i18n="nav.startProject">
                     Начать проект
                 </a>
             </div>
@@ -524,119 +411,65 @@
 </header>
 
 <script>
-// ===== СКРИПТ ДЛЯ УНИВЕРСАЛЬНОГО ХЕДЕРА =====
+// ===== УНИВЕРСАЛЬНЫЙ СКРИПТ ХЕДЕРА =====
 (function() {
     'use strict';
     
-    // Определяем тип страницы
-    const isPortfolioPage = document.body.classList.contains('portfolio-page') || 
-                           window.location.pathname.includes('portfolio.html');
-    
-    // Ждем загрузки DOM
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            initHeader(isPortfolioPage);
-        });
-    } else {
-        initHeader(isPortfolioPage);
-    }
-    
-    function initHeader(isPortfolio) {
-        console.log(isPortfolio ? '🎯 Инициализация хедера для портфолио' : '🏠 Инициализация стандартного хедера');
+    function initHeader() {
+        const header = document.getElementById('main-header');
+        if (!header) return;
         
-        const header = document.querySelector('.main-header');
-        if (!header) {
-            console.warn('⚠️ Хедер не найден');
-            return;
-        }
-        
-        // ОСОБАЯ ОБРАБОТКА ДЛЯ ПОРТФОЛИО
-        if (isPortfolio) {
-            console.log('🧹 Очистка хедера для портфолио...');
-            
-            // 1. Убираем все скрытые элементы
-            removeHiddenElementsForPortfolio();
-            
-            // 3. Отключаем сложные анимации
-            header.style.animation = 'none';
-            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
-            
-            // 4. Гарантируем что хедер виден
-            header.classList.remove('header-hidden');
-            header.classList.add('no-hide-animation');
-            header.style.opacity = '1';
-            header.style.visibility = 'visible';
-            header.style.pointerEvents = 'auto';
-            
-            console.log('✅ Хедер очищен для портфолио');
-        }
-        
-        // ОБЩИЕ ФУНКЦИИ ДЛЯ ВСЕХ СТРАНИЦ
-        setActiveNavLink();
+        // Инициализация
+        setupScrollBehavior(header);
+        setupActiveNav();
         setupLanguageSwitcher();
-        setupScrollEffect();
-        
-        // Инициализация анимации скрытия при скролле
-        setupHeaderHideOnScroll(isPortfolio);
         
         console.log('✅ Хедер инициализирован');
     }
     
-    function setupHeaderHideOnScroll(isPortfolio) {
-        const header = document.querySelector('.main-header');
-        if (!header) return;
+    function setupScrollBehavior(header) {
+        header.classList.add('header-visible');
         
-        // ОСОБЫЙ РЕЖИМ ДЛЯ ПОРТФОЛИО
-        if (isPortfolio) {
-            console.log('🎯 Для портфолио - анимация скрытия отключена');
-            return;
-        }
-        
-        // Добавляем класс для анимации
-        header.classList.add('header-animated', 'header-visible');
-        
-        let lastScrollTop = 0;
+        let lastScroll = 0;
         let isHidden = false;
-        const SCROLL_THRESHOLD = 100; // Порог для начала скрытия
-        const MOBILE_SCROLL_THRESHOLD = 50; // Меньший порог для мобильных
+        const threshold = window.innerWidth <= 768 ? 50 : 100;
         
         function handleScroll() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const isMobile = window.innerWidth <= 768;
-            const threshold = isMobile ? MOBILE_SCROLL_THRESHOLD : SCROLL_THRESHOLD;
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollingDown = currentScroll > lastScroll;
             
-            // Определяем направление скролла
-            const scrollingDown = scrollTop > lastScrollTop;
+            // Эффект при скролле
+            if (currentScroll > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
             
-            // Если скроллим вниз и прошли порог
-            if (scrollingDown && scrollTop > threshold && !isHidden) {
+            // Скрытие/показ
+            if (scrollingDown && currentScroll > threshold && !isHidden) {
                 header.classList.remove('header-visible');
                 header.classList.add('header-hidden');
                 isHidden = true;
-                console.log('⬇️ Хедер скрыт');
             } 
-            // Если скроллим вверх
             else if (!scrollingDown && isHidden) {
                 header.classList.remove('header-hidden');
                 header.classList.add('header-visible');
                 isHidden = false;
-                console.log('⬆️ Хедер показан');
             }
-            // Если вверху страницы
-            else if (scrollTop <= 30) {
+            else if (currentScroll <= 30) {
                 header.classList.remove('header-hidden');
                 header.classList.add('header-visible');
                 isHidden = false;
             }
             
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            lastScroll = currentScroll <= 0 ? 0 : currentScroll;
         }
         
-        // Используем throttle для оптимизации
+        // Оптимизированный обработчик
         let ticking = false;
         window.addEventListener('scroll', () => {
             if (!ticking) {
-                window.requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
                     handleScroll();
                     ticking = false;
                 });
@@ -644,106 +477,58 @@
             }
         }, { passive: true });
         
-        // Также обрабатываем ресайз
-        window.addEventListener('resize', handleScroll, { passive: true });
-        
         // Инициализация
         handleScroll();
-        
-        // Дебаг информация
-        console.log('🎬 Анимация скрытия хедера активирована');
-        console.log('📏 Порог скрытия:', window.innerWidth <= 768 ? '50px (мобильный)' : '100px (десктоп)');
     }
     
-    function removeHiddenElementsForPortfolio() {
-        // Удаляем все элементы бургер-меню
-        const hiddenSelectors = [
-            '.mobile-menu-toggle',
-            '.menu-toggle',
-            '.burger-menu',
-            '.hamburger',
-            '.menu-btn',
-            '.nav-toggle',
-            '.mobile-menu-overlay',
-            '.menu-overlay'
-        ];
-        
-        hiddenSelectors.forEach(selector => {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(el => {
-                if (el && el.parentNode) {
-                    el.parentNode.removeChild(el);
-                    console.log(`🗑️ Удален элемент: ${selector}`);
-                }
-            });
-        });
-        
-        // Удаляем мобильные меню
-        const mobileMenus = document.querySelectorAll('.mobile-menu, .menu-container');
-        mobileMenus.forEach(el => {
-            if (el && el.parentNode) {
-                el.parentNode.removeChild(el);
-            }
-        });
-    }
-    
-    function setActiveNavLink() {
+    function setupActiveNav() {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         const navLinks = document.querySelectorAll('.nav-link');
         
         navLinks.forEach(link => {
             const href = link.getAttribute('href');
-            
             link.classList.remove('active');
             
-            if (href === currentPage) {
-                link.classList.add('active');
-            }
-            
-            // Для главной страницы
-            if ((currentPage === '' || currentPage === 'index.html' || currentPage === '/') && href === 'index.html') {
+            if (href === currentPage || 
+                (currentPage === '' && href === 'index.html') ||
+                (currentPage === '/' && href === 'index.html')) {
                 link.classList.add('active');
             }
         });
     }
     
     function setupLanguageSwitcher() {
-        const langButtons = document.querySelectorAll('.lang-btn');
+        const langBtns = document.querySelectorAll('.lang-btn');
         const switcher = document.querySelector('.language-switcher');
         
-        if (!langButtons.length || !switcher) return;
+        if (!langBtns.length || !switcher) return;
         
-        // Установка начального состояния
+        // Текущий язык
         const currentLang = localStorage.getItem('preferredLang') || 'ru';
-        updateLanguageSwitcherState(currentLang);
+        updateLanguageState(currentLang);
         
-        // Обработчики кликов
-        langButtons.forEach(btn => {
+        // Обработчики
+        langBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                e.stopPropagation();
-                
                 const lang = btn.getAttribute('data-lang');
-                const currentActive = document.querySelector('.lang-btn.active');
                 
-                if (currentActive && currentActive.getAttribute('data-lang') === lang) {
+                if (document.querySelector('.lang-btn.active').getAttribute('data-lang') === lang) {
                     return;
                 }
                 
-                updateLanguageSwitcherState(lang);
+                updateLanguageState(lang);
                 localStorage.setItem('preferredLang', lang);
                 
-                // Обновляем переводы
+                // Обновление контента
                 if (window.i18n && window.i18n.smoothSwitchLanguage) {
                     window.i18n.smoothSwitchLanguage(lang);
-                } else if (window.i18n && window.i18n.refresh) {
-                    window.i18n.refresh();
                 }
             });
         });
     }
     
-    function updateLanguageSwitcherState(lang) {
+    function updateLanguageState(lang) {
         const langBtns = document.querySelectorAll('.lang-btn');
         const switcher = document.querySelector('.language-switcher');
         
@@ -759,30 +544,11 @@
         }
     }
     
-    function setupScrollEffect() {
-        const header = document.querySelector('.main-header');
-        if (!header) return;
-        
-        let ticking = false;
-        
-        const updateHeader = () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            ticking = false;
-        };
-        
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(updateHeader);
-                ticking = true;
-            }
-        }, { passive: true });
-        
-        // Инициализация
-        updateHeader();
+    // Запуск
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHeader);
+    } else {
+        initHeader();
     }
 })();
 </script>
