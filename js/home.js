@@ -1,4 +1,4 @@
-console.log('🏠 home.js loaded - FIXED PARALLAX VERSION WITH SPECK SERVICES (NO ERRORS)');
+console.log('🏠 home.js loaded - FIXED VERSION WITH EXACT SPECK DESIGN SERVICES');
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
@@ -24,19 +24,18 @@ function initializeHomePage() {
     
     // 4. Запускаем все остальные функции
     setTimeout(() => {
-        initializeSpeckBlocks();
         initializeStatsCounter();
         initializeFAQ();
         initializeScrollAnimations();
         initializeScrollProgress();
         initializeCardHoverEffects();
-        initializeSpeckServices(); // Инициализация Speck услуг
+        initializeServicesInteraction(); // Инициализация интерактивности услуг
         
-        console.log('✅ Home page fully initialized');
+        console.log('✅ Home page fully initialized with Speck Design services');
     }, 300);
 }
 
-// ===== ЕДИНАЯ СИСТЕМА ПАРАЛЛАКСА (ИСПРАВЛЕННАЯ) =====
+// ===== ЕДИНАЯ СИСТЕМА ПАРАЛЛАКСА =====
 function initializeSingleParallaxSystem() {
     console.log('🎨 Initializing SINGLE parallax system...');
     
@@ -69,7 +68,6 @@ function initializeSingleParallaxSystem() {
             
             if (bgLayers[index]) {
                 bgLayers[index].classList.add('loaded');
-                // Убираем любые inline-стили, которые могут мешать
                 if (bgLayers[index].style) {
                     bgLayers[index].style.opacity = '';
                 }
@@ -77,8 +75,6 @@ function initializeSingleParallaxSystem() {
             
             if (loadedImages === imagePaths.length) {
                 console.log('✅ All background images loaded successfully');
-                // После загрузки всех изображений, убираем слишком темные слои
-                removeDarkOverlays();
             }
         };
         img.onerror = () => {
@@ -127,143 +123,19 @@ function initializeSingleParallaxSystem() {
         updateParallaxLayers();
     }, 100);
     
-    // Убираем черные overlay
-    setTimeout(removeDarkOverlays, 500);
-    
     return true;
 }
 
-// ===== УДАЛЕНИЕ ТЕМНЫХ OVERLAY =====
-function removeDarkOverlays() {
-    console.log('🧹 Removing dark overlays...');
+// ===== ИНИЦИАЛИЗАЦИЯ ВЗАИМОДЕЙСТВИЯ С УСЛУГАМИ =====
+function initializeServicesInteraction() {
+    const serviceItems = document.querySelectorAll('.speck-service-item');
     
-    // Убираем все возможные overlay элементы
-    const overlaySelectors = [
-        '.overlay',
-        '.dark-layer',
-        '.dark-overlay',
-        '.parallax-overlay',
-        '[class*="overlay"]',
-        '[class*="dark"]',
-        '.bg-overlay'
-    ];
-    
-    overlaySelectors.forEach(selector => {
-        const overlays = document.querySelectorAll(selector);
-        overlays.forEach(overlay => {
-            // Не трогаем bg-layers-container::after
-            if (selector === '[class*="overlay"]' || selector === '[class*="dark"]') {
-                const computedStyle = getComputedStyle(overlay);
-                const bgColor = computedStyle.backgroundColor;
-                
-                // Если элемент слишком темный, делаем его прозрачным
-                if (bgColor && (bgColor.includes('rgba(0,') || bgColor.includes('rgb(0,') || 
-                    bgColor.includes('rgba(10,') || bgColor.includes('rgb(10,'))) {
-                    overlay.style.opacity = '0.15';
-                    overlay.style.mixBlendMode = 'multiply';
-                    console.log(`✅ Fixed dark overlay: ${selector}`);
-                }
-            }
-        });
-    });
-    
-    // Специально обрабатываем защитный слой
-    const bgContainer = document.querySelector('.bg-layers-container');
-    if (bgContainer) {
-        const afterStyle = getComputedStyle(bgContainer, '::after');
-        const bgColor = afterStyle.backgroundColor;
-        
-        if (bgColor && (bgColor.includes('rgba(0,') || bgColor.includes('rgba(10,'))) {
-            // Создаем стиль для уменьшения непрозрачности
-            const style = document.createElement('style');
-            style.textContent = `
-                .bg-layers-container::after {
-                    background: rgba(10, 25, 47, 0.15) !important;
-                    mix-blend-mode: multiply !important;
-                }
-            `;
-            document.head.appendChild(style);
-            console.log('✅ Fixed protective layer opacity');
-        }
-    }
-    
-    // Удаляем все элементы с черным фоном
-    document.querySelectorAll('*').forEach(el => {
-        const style = getComputedStyle(el);
-        const bgColor = style.backgroundColor;
-        
-        if (bgColor && (bgColor === 'rgba(0, 0, 0, 0.5)' || 
-                        bgColor === 'rgba(0, 0, 0, 0.3)' ||
-                        bgColor === 'rgb(0, 0, 0)')) {
-            if (el !== document.body && el !== document.documentElement) {
-                el.style.opacity = '0.1';
-                el.style.pointerEvents = 'none';
-                console.log('✅ Fixed black background element');
-            }
-        }
-    });
-}
-
-// ===== SPECK BLOCKS АНИМАЦИИ =====
-function initializeSpeckBlocks() {
-    const blocks = document.querySelectorAll('.speck-vertical-block');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-                
-                const number = entry.target.querySelector('.speck-block-number');
-                const title = entry.target.querySelector('.speck-block-title');
-                const subtitle = entry.target.querySelector('.speck-block-subtitle');
-                const items = entry.target.querySelectorAll('.speck-feature-item');
-                
-                if (number) setTimeout(() => number.style.opacity = '1', 200);
-                if (title) setTimeout(() => title.style.opacity = '1', 300);
-                if (subtitle) setTimeout(() => subtitle.style.opacity = '1', 400);
-                
-                items.forEach((item, index) => {
-                    setTimeout(() => {
-                        if (item && item.style) {
-                            item.style.opacity = '1';
-                            item.style.transform = 'translateX(0)';
-                        }
-                    }, 500 + (index * 100));
-                });
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    });
-    
-    blocks.forEach(block => {
-        if (block) {
-            const items = block.querySelectorAll('.speck-feature-item');
-            items.forEach(item => {
-                if (item && item.style) {
-                    item.style.opacity = '0';
-                    item.style.transform = 'translateX(-20px)';
-                    item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                }
-            });
-            
-            observer.observe(block);
-        }
-    });
-    
-    console.log(`✅ Speck blocks initialized (${blocks.length} blocks)`);
-}
-
-// ===== SPECK SERVICES АНИМАЦИИ И ВЗАИМОДЕЙСТВИЕ =====
-function initializeSpeckServices() {
-    const serviceCards = document.querySelectorAll('.speck-service-card');
-    
-    if (serviceCards.length === 0) {
-        console.log('⚠️ No Speck service cards found');
+    if (serviceItems.length === 0) {
+        console.log('⚠️ No service items found');
         return;
     }
+    
+    console.log(`✅ Found ${serviceItems.length} service items`);
     
     // Наблюдатель для анимации появления
     const observer = new IntersectionObserver((entries) => {
@@ -279,132 +151,178 @@ function initializeSpeckServices() {
         rootMargin: '0px 0px -50px 0px'
     });
     
-    // Применяем анимацию к каждой карточке
-    serviceCards.forEach((card, index) => {
-        if (card && card.style) {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease';
-            card.style.transitionDelay = `${0.3 + (index * 0.05)}s`;
+    // Применяем анимацию к каждой услуге
+    serviceItems.forEach((item, index) => {
+        if (item && item.style) {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(30px)';
+            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            item.style.transitionDelay = `${0.3 + (index * 0.05)}s`;
             
-            observer.observe(card);
+            observer.observe(item);
             
             // Эффект при наведении
-            card.addEventListener('mouseenter', function() {
+            item.addEventListener('mouseenter', function() {
                 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    this.style.transform = 'translateY(-10px)';
-                    const icon = this.querySelector('.speck-card-icon');
-                    if (icon) {
-                        icon.style.transform = 'translateX(5px)';
+                    const arrow = this.querySelector('.service-arrow');
+                    if (arrow) {
+                        arrow.style.opacity = '1';
+                        arrow.style.transform = 'translateX(5px)';
                     }
                 }
             });
             
-            card.addEventListener('mouseleave', function() {
+            item.addEventListener('mouseleave', function() {
                 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    this.style.transform = 'translateY(0)';
-                    const icon = this.querySelector('.speck-card-icon');
-                    if (icon) {
-                        icon.style.transform = 'translateX(0)';
+                    const arrow = this.querySelector('.service-arrow');
+                    if (arrow) {
+                        arrow.style.opacity = '0.7';
+                        arrow.style.transform = 'translateX(0)';
                     }
                 }
             });
             
-            // Клик для подробной информации
-            card.addEventListener('click', function() {
+            // Клик для прокрутки к деталям
+            item.addEventListener('click', function(e) {
+                // Предотвращаем клик, если кликнули на стрелку
+                if (e.target.classList.contains('service-arrow')) return;
+                
                 const serviceId = this.getAttribute('data-service-id');
                 console.log(`Service clicked: ${serviceId}`);
-                // Здесь можно добавить логику для показа подробной информации
-                // Например, открыть модальное окно с деталями услуги
-                showServiceDetails(serviceId);
+                scrollToServiceDetails(serviceId);
             });
         }
     });
     
-    console.log(`✅ Speck services initialized with ${serviceCards.length} cards`);
+    // Наблюдатель для заголовка и интро
+    const headerObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                headerObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.2
+    });
+    
+    // Анимируем заголовок и интро
+    const serviceTitle = document.querySelector('.speck-section-title');
+    const serviceIntro = document.querySelector('.speck-services-intro');
+    
+    if (serviceTitle) {
+        serviceTitle.style.opacity = '0';
+        serviceTitle.style.transform = 'translateY(-20px)';
+        serviceTitle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        headerObserver.observe(serviceTitle);
+    }
+    
+    if (serviceIntro) {
+        serviceIntro.style.opacity = '0';
+        serviceIntro.style.transform = 'translateY(20px)';
+        serviceIntro.style.transition = 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s';
+        headerObserver.observe(serviceIntro);
+    }
 }
 
-// ===== ПОКАЗАТЬ ДЕТАЛИ УСЛУГИ =====
-function showServiceDetails(serviceId) {
+// ===== ПРОКРУТКА К ДЕТАЛЯМ УСЛУГИ =====
+function scrollToServiceDetails(serviceId) {
     const serviceDetails = {
         'consulting': {
             title: 'Product design consulting',
-            description: 'Our teams balance electrical and mechanical engineering with human needs. The result is human-centric designs. We emphasize both design intuition and technical prowess throughout product development consulting.',
             features: [
                 'Human-centric design approach',
                 'Balance of engineering and human needs',
                 'Design intuition and technical prowess',
-                'End-to-end product development consulting'
+                'Years of hands-on experience across multiple sectors',
+                'Modern and cutting-edge techniques',
+                'Injection molding, surface finishes, and 3D printing expertise',
+                'Holistic approach with UX/UI and industrial design collaboration'
             ]
         },
         'uiux': {
             title: 'UI/UX design',
-            description: 'Speck stands out in this arena as a leading UX design firm. Our primary focus? User experience and UX UI design. Our goal is clear: Enhance the digital experience.',
             features: [
-                'Leading UX design expertise',
-                'User experience optimization',
+                'Leading UX design firm expertise',
+                'User experience and UX/UI design focus',
                 'Digital experience enhancement',
-                'UI/UX design implementation'
+                'Deep user research and target audience understanding',
+                'Mobile app development, web design, and digital strategies',
+                'Engaging tech interactions bridging physical and digital worlds',
+                'Structured method with UX research and usability tests'
             ]
         },
         'engineering': {
             title: 'Product engineering',
-            description: 'Speck Design is a globally awarded and top-ranked product engineering and industrial design firm. They provide comprehensive and unique product engineering solutions.',
             features: [
-                'Global award-winning engineering',
-                'Comprehensive product solutions',
-                'Industrial design expertise',
-                'End-to-end engineering support'
+                'Globally awarded and top-ranked firm',
+                'Comprehensive product engineering solutions',
+                'Process optimization, transformation, and simplification',
+                'Collaboration from concept to final product development',
+                'User-focused design maps addressing customer pain points',
+                'Expert engineering guidance throughout projects'
             ]
         },
         'npi': {
             title: 'NPI and product fulfillment support',
-            description: 'Speck Design offers robust product fulfillment services. Our manufacturing engineering department transitions designs into production, ensuring high-quality, low-cost, seamless delivery.',
             features: [
-                'Robust product fulfillment',
-                'Manufacturing engineering',
-                'High-quality production',
-                'Seamless delivery process'
+                'Robust product fulfillment services',
+                'Manufacturing engineering for production transition',
+                'High-quality, low-cost, seamless delivery',
+                'Injection molding, laser cutting, and CNC milling management',
+                'Supply chain management and manufacturer support',
+                'Contract manufacturing and product fulfillment',
+                'Lead time management for brand focus'
             ]
         },
         'research': {
             title: 'User research and insights',
-            description: 'We are a top user experience research company. Our team of experts ensures that products meet customer needs and connect with future customers.',
             features: [
-                'User experience research',
-                'Customer insights analysis',
-                'Market needs assessment',
-                'Future customer connection'
+                'Top user experience research company',
+                'Expert team ensuring product-customer connection',
+                'User interface research and testing',
+                'User experience and market research',
+                'Quantitative and qualitative research methods',
+                'Research, assessments, studies, and surveys',
+                'Human-centered solutions discovery',
+                'Emotional driver analysis for great user experiences'
             ]
         },
         'brand': {
             title: 'Brand design',
-            description: 'We are a renowned graphic design and brand design agency. We specialize in creating brand designs that captivate and resonate with your target audience.',
             features: [
-                'Renowned brand design agency',
-                'Target audience resonance',
-                'Captivating brand identity',
-                'Graphic design expertise'
+                'Renowned graphic and brand design agency',
+                'Brand identity creation for marketplace distinction',
+                'Target audience captivating and resonance',
+                'Tailored strategies for trust, reliability, and excellence',
+                'Business spirit embodiment and quality story',
+                'Award-winning memorable brand identity creation',
+                'Competitive world brand differentiation'
             ]
         },
         'strategy': {
             title: 'Research and strategy',
-            description: 'As one of the top product design engineering firms, Speck Design recognizes the importance of research-driven design. Our commitment to research ensures our designs look impressive, deliver optimal performance, and meet market requirements.',
             features: [
-                'Research-driven design approach',
-                'Market requirements analysis',
-                'Optimal performance delivery',
-                'Strategic design planning'
+                'Research-driven design importance',
+                'Experienced strategists and researchers',
+                'Comprehensive target market, trend, and competition studies',
+                'Design strategies aligned with business goals',
+                'Impressive designs with optimal performance',
+                'Market requirement fulfillment',
+                'Trend anticipation and user resonance'
             ]
         },
         'innovation': {
             title: 'Innovation strategy',
-            description: 'At Speck Design, we don\'t just make products. We create market revolutions as a new product development company. Our approach is simple but effective. We take your ground-breaking ideas and run them through a process of validation and refinement.',
             features: [
                 'Market revolution creation',
-                'Ground-breaking idea validation',
-                'Innovation refinement process',
-                'New product development'
+                'Strategic innovation and market landscape understanding',
+                'Ground-breaking idea validation and refinement',
+                'Robust design team for practical, market-ready products',
+                'User need service and market boundary redefinition',
+                'Industry revolution and market reshaping',
+                'User-centered design future definition'
             ]
         }
     };
@@ -412,27 +330,28 @@ function showServiceDetails(serviceId) {
     const service = serviceDetails[serviceId];
     if (!service) return;
     
-    console.log(`📋 Showing details for: ${service.title}`);
+    console.log(`📋 Showing modal for: ${service.title}`);
     
-    // Создаем модальное окно для деталей услуги
+    // Создаем модальное окно
     const modalHtml = `
-        <div class="service-modal-overlay">
-            <div class="service-modal">
-                <div class="service-modal-header">
+        <div class="service-details-modal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
                     <h3>${service.title}</h3>
-                    <button class="service-modal-close">&times;</button>
+                    <button class="modal-close">&times;</button>
                 </div>
-                <div class="service-modal-content">
-                    <p>${service.description}</p>
+                <div class="modal-body">
                     <div class="service-features">
-                        <h4>Key Features:</h4>
+                        <h4>Key Expertise & Capabilities:</h4>
                         <ul>
                             ${service.features.map(feature => `<li>${feature}</li>`).join('')}
                         </ul>
                     </div>
                 </div>
-                <div class="service-modal-footer">
-                    <a href="contacts.html" class="btn btn-primary">Contact Us About This Service</a>
+                <div class="modal-footer">
+                    <a href="contacts.html" class="btn btn-primary">Discuss This Service</a>
+                    <button class="btn btn-secondary modal-close-btn">Close</button>
                 </div>
             </div>
         </div>
@@ -446,21 +365,31 @@ function showServiceDetails(serviceId) {
     // Добавляем стили для модального окна
     const modalStyles = document.createElement('style');
     modalStyles.textContent = `
-        .service-modal-overlay {
+        .service-details-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
-            animation: fadeIn 0.3s ease;
+            animation: modalFadeIn 0.3s ease;
         }
         
-        .service-modal {
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: relative;
             background: rgba(20, 30, 48, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -470,19 +399,18 @@ function showServiceDetails(serviceId) {
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
-            animation: slideUp 0.4s ease;
-            position: relative;
+            animation: modalSlideUp 0.4s ease;
             z-index: 10000;
         }
         
-        .service-modal-header {
+        .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 25px;
         }
         
-        .service-modal-header h3 {
+        .modal-header h3 {
             font-size: 1.8rem;
             color: white;
             margin: 0;
@@ -490,7 +418,7 @@ function showServiceDetails(serviceId) {
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
         
-        .service-modal-close {
+        .modal-close {
             background: transparent;
             border: none;
             color: white;
@@ -506,26 +434,21 @@ function showServiceDetails(serviceId) {
             margin-left: 20px;
         }
         
-        .service-modal-close:hover {
+        .modal-close:hover {
             color: #0066ff;
             transform: rotate(90deg);
         }
         
-        .service-modal-content {
+        .modal-body {
             margin-bottom: 30px;
-        }
-        
-        .service-modal-content p {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 25px;
         }
         
         .service-features h4 {
             font-size: 1.3rem;
             color: white;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .service-features ul {
@@ -535,10 +458,12 @@ function showServiceDetails(serviceId) {
         }
         
         .service-features li {
-            padding: 8px 0;
-            color: rgba(255, 255, 255, 0.85);
+            padding: 12px 0;
+            color: rgba(255, 255, 255, 0.9);
             position: relative;
-            padding-left: 25px;
+            padding-left: 30px;
+            line-height: 1.6;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         
         .service-features li:before {
@@ -547,18 +472,29 @@ function showServiceDetails(serviceId) {
             left: 0;
             color: #0066ff;
             font-weight: bold;
+            font-size: 1.2rem;
         }
         
-        .service-modal-footer {
-            text-align: center;
+        .service-features li:last-child {
+            border-bottom: none;
         }
         
-        @keyframes fadeIn {
+        .modal-footer {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+        
+        .modal-close-btn {
+            background: rgba(255, 255, 255, 0.08) !important;
+        }
+        
+        @keyframes modalFadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
         
-        @keyframes slideUp {
+        @keyframes modalSlideUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
@@ -570,13 +506,21 @@ function showServiceDetails(serviceId) {
         }
         
         @media (max-width: 768px) {
-            .service-modal {
+            .modal-content {
                 padding: 25px;
                 width: 95%;
             }
             
-            .service-modal-header h3 {
+            .modal-header h3 {
                 font-size: 1.5rem;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+            }
+            
+            .modal-footer .btn {
+                width: 100%;
             }
         }
     `;
@@ -584,12 +528,19 @@ function showServiceDetails(serviceId) {
     document.head.appendChild(modalStyles);
     
     // Обработчики событий для модального окна
-    const closeBtn = modalContainer.querySelector('.service-modal-close');
-    const overlay = modalContainer.querySelector('.service-modal-overlay');
-    
     function closeModal() {
-        modalContainer.style.animation = 'fadeOut 0.3s ease';
+        modalContainer.style.animation = 'modalFadeOut 0.3s ease';
         modalContainer.style.opacity = '0';
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes modalFadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
         setTimeout(() => {
             if (modalContainer.parentNode) {
                 modalContainer.parentNode.removeChild(modalContainer);
@@ -597,15 +548,20 @@ function showServiceDetails(serviceId) {
             if (modalStyles.parentNode) {
                 modalStyles.parentNode.removeChild(modalStyles);
             }
+            if (style.parentNode) {
+                style.parentNode.removeChild(style);
+            }
         }, 300);
     }
     
+    // Закрытие по клику на overlay, кнопку закрытия или Escape
+    const closeBtn = modalContainer.querySelector('.modal-close');
+    const closeBtn2 = modalContainer.querySelector('.modal-close-btn');
+    const overlay = modalContainer.querySelector('.modal-overlay');
+    
     closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            closeModal();
-        }
-    });
+    closeBtn2.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
     
     // Закрытие по Escape
     document.addEventListener('keydown', function handleEscape(e) {
@@ -818,25 +774,13 @@ window.reinitializeHomePage = function() {
     initializeHomePage();
 };
 
-window.fixDarkOverlays = function() {
-    console.log('🌙 Manually fixing dark overlays...');
-    removeDarkOverlays();
-};
-
 window.reinitializeParallax = function() {
     console.log('🔄 Reinitializing parallax...');
     initializeSingleParallaxSystem();
 };
 
-window.showServiceDetails = showServiceDetails;
-
-// УТИЛИТА ДЛЯ ПРОВЕРКИ
-window.checkParallaxSystem = function() {
-    const bgLayers = document.querySelectorAll('.bg-layer');
-    console.log(`🔍 Parallax system check:`);
-    console.log(`   - Found ${bgLayers.length} layers`);
-    console.log(`   - Scroll position: ${window.scrollY}`);
-    console.log(`   - All layers loaded: ${Array.from(bgLayers).every(layer => layer.classList.contains('loaded'))}`);
+window.showServiceDetails = function(serviceId) {
+    scrollToServiceDetails(serviceId);
 };
 
-console.log('✅ home.js fully loaded with Speck services system!');
+console.log('✅ home.js fully loaded with EXACT Speck Design services implementation!');
