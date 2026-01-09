@@ -1,4 +1,4 @@
-console.log('🚀 Animations.js loaded - FIXED VERSION WITHOUT ERRORS');
+console.log('🚀 Animations.js loaded - PARALLAX DISABLED');
 
 // Safe DOM access utility
 const safeDOM = {
@@ -62,10 +62,9 @@ class NBAnimations {
 
     init() {
         try {
-            console.log('🎬 Initializing all animations...');
+            console.log('🎬 Initializing all animations (PARALLAX DISABLED)...');
             this.setupScrollAnimations();
             this.setupCounterAnimation();
-            this.setupParallax();
             this.setupSpeckBlockAnimations();
             this.setupSpeckColumnHover();
             this.setupSpeckGlowEffects();
@@ -74,7 +73,7 @@ class NBAnimations {
             this.setupServicesAnimations();
             this.setupJournalsAnimations();
             this.setupFAQAnimations();
-            console.log('✅ All animations initialized successfully');
+            console.log('✅ All animations initialized (parallax disabled)');
         } catch (error) {
             console.error('❌ Error in animations init:', error);
         }
@@ -152,28 +151,6 @@ class NBAnimations {
             }, 16);
         } catch (error) {
             console.error('❌ Error animating counter:', error);
-        }
-    }
-
-    setupParallax() {
-        try {
-            const parallaxElements = safeDOM.queryAll('[data-parallax]');
-            
-            if (parallaxElements.length > 0) {
-                window.addEventListener('scroll', () => {
-                    const scrolled = window.pageYOffset;
-                    
-                    parallaxElements.forEach(element => {
-                        if (element && element.style) {
-                            const parallaxSpeed = parseFloat(element.getAttribute('data-parallax')) || 0.5;
-                            const offset = scrolled * parallaxSpeed;
-                            element.style.transform = `translate3d(0, ${offset}px, 0)`;
-                        }
-                    });
-                });
-            }
-        } catch (error) {
-            console.error('❌ Error in parallax setup:', error);
         }
     }
 
@@ -711,7 +688,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, index * 100);
             });
             
-            console.log('📊 All animations loaded and initialized');
+            console.log('📊 All animations loaded and initialized (NO PARALLAX)');
         });
     } catch (error) {
         console.error('❌ Error in DOMContentLoaded for animations:', error);
@@ -907,7 +884,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 safeDOM.addClass(firstBlock, 'visible');
             }
             
-            console.log('✅ All speck animations initialized');
+            console.log('✅ All speck animations initialized (NO PARALLAX CONFLICTS)');
         }, 500);
     } catch (error) {
         console.error('❌ Error in animations initialization:', error);
@@ -976,4 +953,4 @@ window.toggleFAQItem = function(index) {
     }
 };
 
-console.log('✅ animations.js loaded and ready - NO ERRORS');
+console.log('✅ animations.js loaded - PARALLAX DISABLED to prevent conflicts');
