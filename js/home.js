@@ -1,4 +1,4 @@
-console.log('🏠 home.js loaded - FIXED VERSION WITH EXACT SPECK DESIGN SERVICES');
+console.log('🏠 home.js loaded - FIXED VERSION WITH EXPERTISE SECTION');
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
@@ -24,6 +24,7 @@ function initializeHomePage() {
     
     // 4. Запускаем все остальные функции
     setTimeout(() => {
+        initializeExpertiseBlocks(); // Добавляем инициализацию блоков Expertise
         initializeStatsCounter();
         initializeFAQ();
         initializeScrollAnimations();
@@ -31,7 +32,7 @@ function initializeHomePage() {
         initializeCardHoverEffects();
         initializeServicesInteraction(); // Инициализация интерактивности услуг
         
-        console.log('✅ Home page fully initialized with Speck Design services');
+        console.log('✅ Home page fully initialized with Expertise section');
     }, 300);
 }
 
@@ -124,6 +125,94 @@ function initializeSingleParallaxSystem() {
     }, 100);
     
     return true;
+}
+
+// ===== ИНИЦИАЛИЗАЦИЯ EXPERTISE БЛОКОВ =====
+function initializeExpertiseBlocks() {
+    const expertiseBlocks = document.querySelectorAll('.expertise-block');
+    
+    if (expertiseBlocks.length === 0) {
+        console.log('⚠️ No expertise blocks found');
+        return;
+    }
+    
+    console.log(`✅ Found ${expertiseBlocks.length} expertise blocks`);
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && entry.target.style) {
+                entry.target.style.animationPlayState = 'running';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    expertiseBlocks.forEach(block => {
+        if (block) {
+            block.style.opacity = '0';
+            block.style.transform = 'translateY(50px) scale(0.95)';
+            observer.observe(block);
+            
+            // Hover эффекты
+            block.addEventListener('mouseenter', function() {
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    const number = this.querySelector('.expertise-number');
+                    if (number && number.style) {
+                        number.style.animation = 'expertiseNumberGlow 2s ease-in-out infinite';
+                    }
+                    
+                    const features = this.querySelectorAll('.expertise-features li');
+                    features.forEach(feature => {
+                        if (feature.style) {
+                            feature.style.transition = 'color 0.3s ease';
+                        }
+                    });
+                }
+            });
+            
+            block.addEventListener('mouseleave', function() {
+                const number = this.querySelector('.expertise-number');
+                if (number && number.style) {
+                    number.style.animation = '';
+                }
+            });
+        }
+    });
+    
+    // Также наблюдаем за заголовком и подзаголовком секции
+    const expertiseTitle = document.querySelector('.expertise-section .section-title');
+    const expertiseSubtitle = document.querySelector('.expertise-section .section-subtitle');
+    
+    if (expertiseTitle) {
+        expertiseTitle.style.opacity = '0';
+        expertiseTitle.style.transform = 'translateY(-20px)';
+        expertiseTitle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        
+        setTimeout(() => {
+            if (expertiseTitle.style) {
+                expertiseTitle.style.opacity = '1';
+                expertiseTitle.style.transform = 'translateY(0)';
+            }
+        }, 300);
+    }
+    
+    if (expertiseSubtitle) {
+        expertiseSubtitle.style.opacity = '0';
+        expertiseSubtitle.style.transform = 'translateY(20px)';
+        expertiseSubtitle.style.transition = 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s';
+        
+        setTimeout(() => {
+            if (expertiseSubtitle.style) {
+                expertiseSubtitle.style.opacity = '1';
+                expertiseSubtitle.style.transform = 'translateY(0)';
+            }
+        }, 500);
+    }
+    
+    console.log('✅ Expertise blocks animation initialized');
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ ВЗАИМОДЕЙСТВИЯ С УСЛУГАМИ =====
@@ -783,4 +872,4 @@ window.showServiceDetails = function(serviceId) {
     scrollToServiceDetails(serviceId);
 };
 
-console.log('✅ home.js fully loaded with EXACT Speck Design services implementation!');
+console.log('✅ home.js fully loaded with Expertise section implementation!');
