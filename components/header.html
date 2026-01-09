@@ -24,12 +24,58 @@
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
     }
 
+    /* ===== АНИМАЦИЯ СКРЫТИЯ ХЕДЕРА ПРИ СКРОЛЛЕ ===== */
+    .main-header.header-hide-enabled {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                    opacity 0.3s ease,
+                    background 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    }
+
+    .main-header.header-hiding {
+        transform: translateX(-50%) translateY(-20px) !important;
+        opacity: 0.7 !important;
+    }
+
+    .main-header.header-hidden {
+        transform: translateX(-50%) translateY(-100%) !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    .main-header.header-visible {
+        transform: translateX(-50%) translateY(0) !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
+    /* Отключение анимации для портфолио */
+    .main-header.no-hide-animation {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+    }
+
+    /* Плавное появление при загрузке */
+    @keyframes headerSlideIn {
+        from {
+            transform: translateX(-50%) translateY(-30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .main-header:not(.no-hide-animation) {
+        animation: headerSlideIn 0.5s ease-out 0.2s both;
+    }
+
     /* Мобильная версия хедера */
     @media (max-width: 768px) {
         .main-header {
             position: fixed !important;
             left: 0 !important;
-            transform: none !important;
+            transform: translateY(0) !important;
             width: 100% !important;
             max-width: 100% !important;
             border-radius: 0 !important;
@@ -43,6 +89,32 @@
                 0 8px 32px rgba(0, 0, 0, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
             padding: 12px 0 !important;
+        }
+
+        .main-header.header-hide-enabled {
+            left: 0 !important;
+            transform: translateY(0) !important;
+            width: 100% !important;
+            border-radius: 0 !important;
+        }
+        
+        .main-header.header-hiding {
+            transform: translateY(-20px) !important;
+        }
+        
+        .main-header.header-hidden {
+            transform: translateY(-100%) !important;
+        }
+        
+        .main-header.header-visible {
+            transform: translateY(0) !important;
+        }
+
+        /* Улучшение для touch-устройств */
+        @media (hover: none) and (pointer: coarse) {
+            .main-header.header-hide-enabled {
+                transition-duration: 0.2s !important;
+            }
         }
     }
 
@@ -487,9 +559,6 @@
             // 1. Убираем все скрытые элементы
             removeHiddenElementsForPortfolio();
             
-            // 2. НЕ скрываем кнопку "Начать проект" - ОНА ДОЛЖНА БЫТЬ ВИДНА!
-            // hideStartProjectButton(); // ЗАКОММЕНТИРОВАНО
-            
             // 3. Отключаем сложные анимации
             header.style.animation = 'none';
             header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
@@ -508,7 +577,107 @@
         setupLanguageSwitcher();
         setupScrollEffect();
         
+        // Инициализация анимации скрытия при скролле
+        setupHeaderHideOnScroll(isPortfolio);
+        
         console.log('✅ Хедер инициализирован');
+    }
+    
+    function setupHeaderHideOnScroll(isPortfolio) {
+        const header = document.querySelector('.main-header');
+        if (!header) return;
+        
+        // ОСОБЫЙ РЕЖИМ ДЛЯ ПОРТФОЛИО
+        if (isPortfolio) {
+            console.log('🎯 Для портфолио - анимация скрытия отключена');
+            header.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease';
+            header.classList.add('no-hide-animation');
+            return; // Выходим - для портфолио не скрываем хедер
+        }
+        
+        let lastScrollTop = 0;
+        let scrollTimeout;
+        const SCROLL_THRESHOLD = 10; // Минимальный скролл для реакции
+        const HIDE_THRESHOLD = 80; // Скролл для скрытия
+        const MOBILE_HIDE_THRESHOLD = 40; // Меньший порог для мобильных
+        
+        // Добавляем классы для анимации
+        header.classList.add('header-hide-enabled');
+        
+        // Флаг для предотвращения множественных обновлений
+        let isUpdating = false;
+        
+        function updateHeaderVisibility() {
+            if (isUpdating) return;
+            isUpdating = true;
+            
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const isMobile = window.innerWidth <= 768;
+            const currentThreshold = isMobile ? MOBILE_HIDE_THRESHOLD : HIDE_THRESHOLD;
+            
+            // Для мобильных - всегда показываем вверху
+            if (scrollTop < 5) {
+                header.classList.remove('header-hiding', 'header-hidden');
+                header.classList.add('header-visible');
+                lastScrollTop = scrollTop;
+                isUpdating = false;
+                return;
+            }
+            
+            // Определяем направление скролла
+            const isScrollingDown = scrollTop > lastScrollTop;
+            
+            // Плавное скрытие при скролле вниз
+            if (isScrollingDown && scrollTop > currentThreshold) {
+                if (!header.classList.contains('header-hiding')) {
+                    header.classList.remove('header-visible');
+                    header.classList.add('header-hiding');
+                    
+                    // Через 150мс скрываем полностью
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        header.classList.remove('header-hiding');
+                        header.classList.add('header-hidden');
+                        isUpdating = false;
+                    }, 150);
+                }
+            } 
+            // Показываем при скролле вверх
+            else if (!isScrollingDown && scrollTop > SCROLL_THRESHOLD) {
+                if (header.classList.contains('header-hidden') || 
+                    header.classList.contains('header-hiding')) {
+                    header.classList.remove('header-hidden', 'header-hiding');
+                    header.classList.add('header-visible');
+                }
+            }
+            
+            lastScrollTop = scrollTop;
+            
+            // Сброс флага через небольшой таймаут
+            requestAnimationFrame(() => {
+                isUpdating = false;
+            });
+        }
+        
+        // Оптимизированный обработчик скролла
+        let scrollTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+                window.requestAnimationFrame(() => {
+                    updateHeaderVisibility();
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
+            }
+        }, { passive: true });
+        
+        // Также обновляем при ресайзе
+        window.addEventListener('resize', () => {
+            lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        }, { passive: true });
+        
+        // Инициализация
+        updateHeaderVisibility();
     }
     
     function removeHiddenElementsForPortfolio() {
@@ -542,15 +711,6 @@
             }
         });
     }
-    
-    // ЭТА ФУНКЦИЯ ЗАКОММЕНТИРОВАНА - КНОПКА ДОЛЖНА БЫТЬ ВИДНА!
-    // function hideStartProjectButton() {
-    //     const startProjectBtn = document.querySelector('.header-right .btn-primary');
-    //     if (startProjectBtn) {
-    //         startProjectBtn.style.display = 'none';
-    //         console.log('✅ Кнопка "Начать проект" скрыта');
-    //     }
-    // }
     
     function setActiveNavLink() {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
