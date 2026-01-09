@@ -1,13 +1,13 @@
-console.log('🏠 home.js loaded - FIXED BACKGROUND VERSION');
+console.log('🏠 home.js loaded - COMPLETE SPECK DESIGN VERSION WITH BACKGROUND FIX');
 
-// ===== КРИТИЧНЫЙ ФИКС ФОНА =====
-(function criticalBackgroundFix() {
+// ===== ЭКСТРЕННЫЙ ФИКС ФОНА =====
+(function immediateFix() {
     'use strict';
     
-    function applyEmergencyFix() {
+    function safeImmediateFix() {
         if (!document.body) {
-            console.log('⏳ Waiting for document.body...');
-            setTimeout(applyEmergencyFix, 50);
+            console.log('⚠️ document.body not ready, retrying...');
+            setTimeout(safeImmediateFix, 50);
             return;
         }
         
@@ -41,21 +41,20 @@ console.log('🏠 home.js loaded - FIXED BACKGROUND VERSION');
                 layer.style.left = '0';
                 layer.style.width = '100%';
                 layer.style.height = '100%';
+                layer.style.backgroundSize = 'cover';
+                layer.style.backgroundPosition = 'center';
+                layer.style.backgroundRepeat = 'no-repeat';
                 
                 // Устанавливаем правильные фоновые изображения
-                switch(index) {
-                    case 0:
-                        layer.style.backgroundImage = "url('images/parallax/bg-1.jpg')";
-                        break;
-                    case 1:
-                        layer.style.backgroundImage = "url('images/parallax/bg-2.jpg')";
-                        break;
-                    case 2:
-                        layer.style.backgroundImage = "url('images/parallax/bg-3.jpg')";
-                        break;
-                    case 3:
-                        layer.style.backgroundImage = "url('images/parallax/bg-4.jpg')";
-                        break;
+                const imagePaths = [
+                    'assets/images/parallax/bg-1.jpg',
+                    'assets/images/parallax/bg-2.jpg',
+                    'assets/images/parallax/bg-3.jpg',
+                    'assets/images/parallax/bg-4.jpg'
+                ];
+                
+                if (index < imagePaths.length) {
+                    layer.style.backgroundImage = `url('${imagePaths[index]}')`;
                 }
             }
         });
@@ -85,10 +84,8 @@ console.log('🏠 home.js loaded - FIXED BACKGROUND VERSION');
         console.log(`✅ Emergency fix applied: ${bgLayers.length} background layers activated`);
     }
     
-    // Запускаем немедленно и при загрузке
-    applyEmergencyFix();
-    window.addEventListener('load', applyEmergencyFix);
-    document.addEventListener('DOMContentLoaded', applyEmergencyFix);
+    // Запускаем немедленно
+    safeImmediateFix();
 })();
 
 // ===== ПАРАЛЛАКС СИСТЕМА =====
@@ -103,8 +100,41 @@ function initializeParallaxBackground() {
     
     console.log(`✅ Found ${bgLayers.length} background layers`);
     
+    // Проверяем загрузку изображений
+    const imagePaths = [
+        'assets/images/parallax/bg-1.jpg',
+        'assets/images/parallax/bg-2.jpg',
+        'assets/images/parallax/bg-3.jpg',
+        'assets/images/parallax/bg-4.jpg'
+    ];
+    
+    let loadedImages = 0;
+    
+    imagePaths.forEach((path, index) => {
+        const img = new Image();
+        img.onload = () => {
+            loadedImages++;
+            console.log(`✅ Background image loaded: ${path}`);
+            
+            // Добавляем класс для загруженного слоя
+            if (bgLayers[index]) {
+                bgLayers[index].classList.add('loaded');
+            }
+            
+            // Если все изображения загружены, уменьшаем непрозрачность градиента
+            if (loadedImages === imagePaths.length) {
+                console.log('✅ All background images loaded successfully');
+            }
+        };
+        img.onerror = () => {
+            console.warn(`⚠️ Failed to load background image: ${path}`);
+            // Даже если изображение не загрузилось, продолжаем
+        };
+        img.src = path;
+    });
+    
     // Параллакс эффект при скролле
-    window.addEventListener('scroll', () => {
+    function updateParallax() {
         const scrollY = window.scrollY || window.pageYOffset;
         
         bgLayers.forEach((layer, index) => {
@@ -114,19 +144,15 @@ function initializeParallaxBackground() {
                 layer.style.transform = `translateY(${yPos}px)`;
             }
         });
-    });
+    }
+    
+    window.addEventListener('scroll', updateParallax);
+    window.addEventListener('resize', updateParallax);
     
     // Инициализация начальной позиции
-    setTimeout(() => {
-        const scrollY = window.scrollY || window.pageYOffset;
-        bgLayers.forEach((layer, index) => {
-            if (layer && layer.style) {
-                const speed = 0.05 + (index * 0.05);
-                const yPos = scrollY * speed;
-                layer.style.transform = `translateY(${yPos}px)`;
-            }
-        });
-    }, 100);
+    setTimeout(updateParallax, 100);
+    
+    return true;
 }
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
@@ -207,25 +233,7 @@ function initializeHomePage() {
     
     console.log('✅ Emergency CSS injected');
     
-    // 4. ПРОВЕРКА ЗАГРУЗКИ ИЗОБРАЖЕНИЙ ФОНА
-    function checkBackgroundImages() {
-        console.log('🖼️ Checking background images...');
-        const images = [
-            'images/parallax/bg-1.jpg',
-            'images/parallax/bg-2.jpg',
-            'images/parallax/bg-3.jpg',
-            'images/parallax/bg-4.jpg'
-        ];
-        
-        images.forEach(src => {
-            const img = new Image();
-            img.onload = () => console.log(`✅ Loaded: ${src}`);
-            img.onerror = () => console.error(`❌ Failed to load: ${src}`);
-            img.src = src;
-        });
-    }
-    
-    // 5. Запускаем все остальные функции
+    // 4. Запускаем все остальные функции
     setTimeout(() => {
         initializeSpeckBlocks();
         initializeStatsCounter();
@@ -233,7 +241,6 @@ function initializeHomePage() {
         initializeScrollAnimations();
         initializeScrollProgress();
         initializeCardHoverEffects();
-        checkBackgroundImages();
         
         console.log('✅ Home page fully initialized with background fix');
     }, 300);
