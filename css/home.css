@@ -304,6 +304,154 @@ html {
     z-index: 40;
 }
 
+/* ===== EXPERTISE SECTION ===== */
+.expertise-section {
+    padding: 120px 0;
+    background: transparent !important;
+    position: relative;
+    z-index: 15;
+}
+
+.expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.expertise-block {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    padding: 40px 30px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+}
+
+.expertise-block:hover {
+    transform: translateY(-10px);
+}
+
+.expertise-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.02) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    z-index: -1;
+    transition: all 0.4s ease;
+}
+
+.expertise-block:hover::before {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.04) 50%,
+        rgba(255, 255, 255, 0.02) 100%
+    );
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 8px 25px rgba(0, 102, 255, 0.1);
+}
+
+.expertise-number {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #0066ff !important;
+    margin-bottom: 20px;
+    line-height: 1;
+    text-shadow: 
+        0 2px 20px rgba(0, 102, 255, 0.5),
+        0 1px 15px rgba(0, 102, 255, 0.3) !important;
+    position: relative;
+    display: inline-block;
+}
+
+.expertise-number::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: rgba(0, 102, 255, 0.7);
+    border-radius: 2px;
+}
+
+.expertise-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white !important;
+    margin-bottom: 15px;
+    line-height: 1.2;
+    text-shadow: 
+        0 2px 15px rgba(0, 0, 0, 0.9),
+        0 1px 10px rgba(0, 0, 0, 0.8) !important;
+}
+
+.expertise-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    text-shadow: 
+        0 1px 10px rgba(0, 0, 0, 0.85) !important;
+    min-height: 42px;
+}
+
+.expertise-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.expertise-features li {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+    text-shadow: 
+        0 1px 8px rgba(0, 0, 0, 0.8) !important;
+    transition: color 0.3s ease;
+}
+
+.expertise-features li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #0066ff;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.expertise-block:hover .expertise-features li {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.expertise-block:hover .expertise-features li::before {
+    transform: translateX(5px);
+    color: #66b5ff;
+}
+
 /* ===== PROJECTS SECTION ===== */
 .projects-section {
     padding: 150px 0;
@@ -872,6 +1020,23 @@ html {
         font-size: 3.5rem;
     }
     
+    .expertise-grid {
+        gap: 25px;
+    }
+    
+    .expertise-block {
+        padding: 35px 25px;
+        min-height: 360px;
+    }
+    
+    .expertise-number {
+        font-size: 3rem;
+    }
+    
+    .expertise-title {
+        font-size: 1.6rem;
+    }
+    
     .speck-services-grid {
         gap: 40px;
     }
@@ -900,6 +1065,19 @@ html {
     
     .hero-subtitle {
         font-size: 1.7rem;
+    }
+    
+    .expertise-section {
+        padding: 100px 0;
+    }
+    
+    .expertise-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+    
+    .expertise-block {
+        min-height: 340px;
     }
     
     .projects-section,
@@ -999,6 +1177,32 @@ html {
         font-size: 2.5rem;
     }
     
+    .expertise-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        gap: 25px;
+    }
+    
+    .expertise-block {
+        min-height: auto;
+        padding: 30px 25px;
+    }
+    
+    .expertise-number {
+        font-size: 2.8rem;
+    }
+    
+    .expertise-title {
+        font-size: 1.5rem;
+    }
+    
+    .expertise-subtitle {
+        font-size: 1rem;
+        min-height: auto;
+    }
+    
     .speck-section-title {
         font-size: 2.5rem;
     }
@@ -1081,6 +1285,26 @@ html {
         font-size: 2rem;
     }
     
+    .expertise-section {
+        padding: 80px 0;
+    }
+    
+    .expertise-block {
+        padding: 25px 20px;
+    }
+    
+    .expertise-number {
+        font-size: 2.5rem;
+    }
+    
+    .expertise-title {
+        font-size: 1.4rem;
+    }
+    
+    .expertise-features li {
+        font-size: 0.95rem;
+    }
+    
     .speck-section-title {
         font-size: 2rem;
         margin-bottom: 30px;
@@ -1137,6 +1361,7 @@ html {
 /* ===== УСИЛЕННЫЕ ТЕНИ ДЛЯ ТЕКСТА ===== */
 h1, h2, h3, h4, h5, h6, p, 
 .hero h1, .hero-subtitle, .hero-description p,
+.expertise-title, .expertise-subtitle, .expertise-features li,
 .project-title, .project-description,
 .service-title, .service-content, .service-content p,
 .journal-title, .faq-question, .faq-answer p, 
@@ -1155,6 +1380,7 @@ h1, h2, h3, h4, h5, h6, p,
 .content-section,
 .container,
 .hero,
+.expertise-section,
 .projects-section,
 .speck-services-section,
 .journals-section,
@@ -1164,6 +1390,7 @@ h1, h2, h3, h4, h5, h6, p,
 #header-container,
 #footer-container,
 .scroll-progress,
+.expertise-block,
 .project-card,
 .project-content,
 .speck-service-item,
