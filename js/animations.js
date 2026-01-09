@@ -1,5 +1,5 @@
-// Animations controller - COMPLETE VERSION with all SPECK DESIGN animations
-console.log('🚀 Animations.js loaded - COMPLETE VERSION WITH SPECK DESIGN ANIMATIONS');
+// animations.js - ИСПРАВЛЕННАЯ ВЕРСИЯ БЕЗ ОШИБОК
+console.log('🚀 Animations.js loaded - FIXED VERSION');
 
 // Safe DOM access utility
 const safeDOM = {
@@ -87,26 +87,10 @@ class NBAnimations {
                 entries.forEach(entry => {
                     if (entry.isIntersecting && entry.target) {
                         safeDOM.addClass(entry.target, 'revealed');
-                        
-                        // Special handling for counters
-                        if (entry.target.classList.contains('counter') || entry.target.classList.contains('stat-number')) {
-                            this.animateCounter(entry.target);
-                        }
-                        
-                        // Special handling for title words
-                        if (entry.target.classList.contains('title-animate')) {
-                            this.animateTitleWords(entry.target);
-                        }
-                        
-                        // Special handling for glass elements
-                        if (entry.target.classList.contains('glass-effect')) {
-                            safeDOM.addClass(entry.target, 'glass-fade-in');
-                        }
                     }
                 });
             }, this.observerOptions);
 
-            // Observe all reveal elements
             const revealElements = safeDOM.queryAll(
                 '.reveal-element, .text-reveal, .title-reveal, .card-reveal, .counter, .stat-number, .title-animate, .glass-effect'
             );
@@ -227,7 +211,6 @@ class NBAnimations {
                             if (subtitle) {
                                 setTimeout(() => {
                                     safeDOM.addClass(subtitle, 'animate-in');
-                                    safeDOM.addClass(subtitle, 'animate-underline');
                                 }, 400);
                             }
                             
@@ -321,14 +304,6 @@ class NBAnimations {
                         if (number && number.style) {
                             number.style.animation = 'speckNumberPulse 2s infinite';
                         }
-                        
-                        // Анимируем линию под цифрой
-                        const numberLine = block.querySelector('.speck-block-number');
-                        if (numberLine && numberLine.style) {
-                            setTimeout(() => {
-                                numberLine.style.setProperty('--line-width', '150px');
-                            }, 100);
-                        }
                     }
                 });
                 
@@ -338,11 +313,6 @@ class NBAnimations {
                     const number = block.querySelector('.speck-block-number');
                     if (number && number.style) {
                         number.style.animation = '';
-                    }
-                    
-                    const numberLine = block.querySelector('.speck-block-number');
-                    if (numberLine && numberLine.style) {
-                        numberLine.style.setProperty('--line-width', '80px');
                     }
                 });
             });
@@ -469,7 +439,7 @@ class NBAnimations {
                             safeDOM.addClass(entry.target, 'revealed');
                             
                             // Анимируем иконку
-                            const icon = entry.target.querySelector('i');
+                            const icon = entry.target.querySelector('.service-icon');
                             if (icon && icon.style) {
                                 setTimeout(() => {
                                     icon.style.opacity = '1';
@@ -478,7 +448,7 @@ class NBAnimations {
                             }
                             
                             // Анимируем заголовок
-                            const title = entry.target.querySelector('h3');
+                            const title = entry.target.querySelector('.service-title');
                             if (title && title.style) {
                                 setTimeout(() => {
                                     title.style.opacity = '1';
@@ -494,8 +464,8 @@ class NBAnimations {
             serviceItems.forEach((item, index) => {
                 if (item) {
                     // Инициализация начального состояния
-                    const icon = item.querySelector('i');
-                    const title = item.querySelector('h3');
+                    const icon = item.querySelector('.service-icon');
+                    const title = item.querySelector('.service-title');
                     
                     if (icon && icon.style) {
                         icon.style.opacity = '0';
@@ -670,97 +640,12 @@ class NBAnimations {
                     setTimeout(() => {
                         observer.observe(item);
                     }, index * 100);
-                    
-                    // Настройка клика на вопрос
-                    const questionBtn = item.querySelector('.faq-question');
-                    if (questionBtn) {
-                        questionBtn.addEventListener('click', () => {
-                            // Закрываем все другие открытые вопросы
-                            faqItems.forEach(otherItem => {
-                                if (otherItem !== item && otherItem.classList.contains('active')) {
-                                    safeDOM.removeClass(otherItem, 'active');
-                                    const otherAnswer = otherItem.querySelector('.faq-answer');
-                                    if (otherAnswer) {
-                                        otherAnswer.style.maxHeight = '0';
-                                        otherAnswer.style.paddingTop = '0';
-                                        otherAnswer.style.paddingBottom = '0';
-                                    }
-                                }
-                            });
-                            
-                            // Переключаем текущий вопрос
-                            const isActive = item.classList.contains('active');
-                            if (isActive) {
-                                safeDOM.removeClass(item, 'active');
-                                if (answer) {
-                                    answer.style.maxHeight = '0';
-                                    answer.style.paddingTop = '0';
-                                    answer.style.paddingBottom = '0';
-                                }
-                            } else {
-                                safeDOM.addClass(item, 'active');
-                                if (answer) {
-                                    answer.style.maxHeight = answer.scrollHeight + 'px';
-                                    answer.style.paddingTop = '25px';
-                                    answer.style.paddingBottom = '25px';
-                                }
-                            }
-                        });
-                    }
                 }
             });
-            
-            // Автоматически открываем первый вопрос
-            if (faqItems.length > 0) {
-                setTimeout(() => {
-                    const firstItem = faqItems[0];
-                    const firstAnswer = firstItem.querySelector('.faq-answer');
-                    safeDOM.addClass(firstItem, 'active');
-                    if (firstAnswer) {
-                        firstAnswer.style.maxHeight = firstAnswer.scrollHeight + 'px';
-                        firstAnswer.style.paddingTop = '25px';
-                        firstAnswer.style.paddingBottom = '25px';
-                    }
-                }, 1500);
-            }
             
             console.log(`❓ FAQ animations initialized for ${faqItems.length} items`);
         } catch (error) {
             console.error('❌ Error in FAQ animations:', error);
-        }
-    }
-
-    // ===== FLOATING IMAGE ANIMATIONS =====
-    
-    setupFloatingImageAnimation() {
-        try {
-            const floatingImage = safeDOM.query('.floating-image');
-            if (floatingImage) {
-                const observer = new IntersectionObserver(
-                    (entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting && entry.target) {
-                                safeDOM.addClass(entry.target, 'revealed');
-                                
-                                // Анимируем изображение
-                                const img = entry.target.querySelector('img');
-                                if (img && img.style) {
-                                    setTimeout(() => {
-                                        img.style.opacity = '1';
-                                        img.style.transform = 'scale(1)';
-                                    }, 200);
-                                }
-                            }
-                        });
-                    },
-                    { threshold: 0.3 }
-                );
-                
-                observer.observe(floatingImage);
-                console.log('✅ Floating image animation initialized');
-            }
-        } catch (error) {
-            console.error('❌ Error in floating image animation:', error);
         }
     }
 
@@ -776,20 +661,6 @@ class NBAnimations {
             console.error('❌ Error in stagger animation:', error);
         }
     }
-
-    // Initialize all Speck animations
-    initSpeckAnimations() {
-        try {
-            this.setupSpeckBlockAnimations();
-            this.setupSpeckColumnHover();
-            this.setupSpeckGlowEffects();
-            this.setupSpeckColumnClick();
-            this.setupSpeckScrollAnimations();
-            console.log('✅ Speck animations initialized');
-        } catch (error) {
-            console.error('❌ Error initializing speck animations:', error);
-        }
-    }
 }
 
 // Initialize animations
@@ -801,11 +672,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             safeDOM.addClass(document.body, 'speck-animations-loaded');
             safeDOM.addClass(document.body, 'speck-animations-ready');
-            
-            // Инициализировать все анимации
-            if (window.NBAnimations && window.NBAnimations.initSpeckAnimations) {
-                window.NBAnimations.initSpeckAnimations();
-            }
         }, 1000);
         
         // Анимация при загрузке страницы для всех блоков
@@ -862,14 +728,6 @@ function animateSpeckNumbers() {
                 entries.forEach(entry => {
                     if (entry.isIntersecting && entry.target) {
                         safeDOM.addClass(entry.target, 'speck-number-animate');
-                        
-                        // Add glow effect
-                        setTimeout(() => {
-                            if (entry.target && entry.target.style) {
-                                entry.target.style.textShadow = 
-                                    '0 0 20px rgba(0, 102, 255, 0.6), 0 0 40px rgba(0, 102, 255, 0.3)';
-                            }
-                        }, 100);
                     }
                 });
             },
@@ -929,8 +787,6 @@ function initSpeckColumnEffects() {
             column.addEventListener('mouseenter', function() {
                 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && this.style) {
                     this.style.transform = 'translateY(-15px) scale(1.02)';
-                    this.style.boxShadow = 
-                        '0 30px 60px rgba(0, 0, 0, 0.4), 0 15px 30px rgba(0, 102, 255, 0.2)';
                     
                     // Animate the title
                     const title = this.querySelector('.speck-column-title');
@@ -955,7 +811,6 @@ function initSpeckColumnEffects() {
             column.addEventListener('mouseleave', function() {
                 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && this.style) {
                     this.style.transform = '';
-                    this.style.boxShadow = '';
                     
                     const title = this.querySelector('.speck-column-title');
                     if (title && title.style) {
@@ -1006,11 +861,6 @@ function initSpeckBlockEffects() {
                     if (subtitle && subtitle.style) {
                         subtitle.style.color = '#ffffff';
                     }
-                    
-                    // Add glow effect to the whole block
-                    if (this.style) {
-                        this.style.boxShadow = '0 0 40px rgba(0, 102, 255, 0.1)';
-                    }
                 }
             });
             
@@ -1030,10 +880,6 @@ function initSpeckBlockEffects() {
                     const subtitle = this.querySelector('.speck-block-subtitle');
                     if (subtitle && subtitle.style) {
                         subtitle.style.color = '';
-                    }
-                    
-                    if (this.style) {
-                        this.style.boxShadow = '';
                     }
                 }
             });
@@ -1060,7 +906,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const firstBlock = safeDOM.query('.speck-vertical-block');
             if (firstBlock) {
                 safeDOM.addClass(firstBlock, 'visible');
-                safeDOM.addClass(firstBlock, 'full-reveal');
             }
             
             console.log('✅ All speck animations initialized');
@@ -1088,8 +933,7 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             .project-card,
             .service-item,
             .journal-item,
-            .faq-item,
-            .floating-image {
+            .faq-item {
                 animation: none !important;
                 transition: none !important;
                 opacity: 1 !important;
@@ -1133,4 +977,4 @@ window.toggleFAQItem = function(index) {
     }
 };
 
-console.log('✅ animations.js loaded and ready - ALL SPECK DESIGN ANIMATIONS INCLUDED');
+console.log('✅ animations.js loaded and ready - NO ERRORS');
