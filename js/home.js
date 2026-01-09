@@ -1,4 +1,4 @@
-console.log('🏠 home.js loaded - FIXED VERSION WITH VERTICAL EXPERTISE SECTION');
+console.log('🏠 home.js loaded - FIXED VERSION WITH WORKING FAQ');
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
@@ -24,15 +24,15 @@ function initializeHomePage() {
     
     // 4. Запускаем все остальные функции
     setTimeout(() => {
-        initializeVerticalExpertiseBlocks(); // Обновленная функция для вертикальных блоков
+        initializeVerticalExpertiseBlocks();
         initializeStatsCounter();
-        initializeFAQ();
+        initializeFAQ(); // ← ВАЖНО: Активируем FAQ
         initializeScrollAnimations();
         initializeScrollProgress();
         initializeCardHoverEffects();
         initializeServicesInteraction();
         
-        console.log('✅ Home page fully initialized with Vertical Expertise section');
+        console.log('✅ Home page fully initialized with FAQ');
     }, 300);
 }
 
@@ -808,7 +808,7 @@ function animateCounter(element, target) {
     }, 16);
 }
 
-// ===== FAQ АККОРДЕОН =====
+// ===== FAQ АККОРДЕОН (ИСПРАВЛЕННАЯ ВЕРСИЯ) =====
 function initializeFAQ() {
     const faqItems = document.querySelectorAll('.faq-item');
     
@@ -817,48 +817,95 @@ function initializeFAQ() {
         return;
     }
     
+    console.log(`✅ Found ${faqItems.length} FAQ items, initializing accordion...`);
+    
+    // Устанавливаем начальные стили
+    faqItems.forEach(item => {
+        const answer = item.querySelector('.faq-answer');
+        const icon = item.querySelector('.faq-question i');
+        
+        if (answer && answer.style) {
+            answer.style.maxHeight = '0';
+            answer.style.overflow = 'hidden';
+            answer.style.transition = 'max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        }
+        
+        if (icon && icon.style) {
+            icon.style.transition = 'transform 0.3s ease';
+        }
+    });
+    
+    // Добавляем обработчики кликов
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
         
         if (question) {
             question.addEventListener('click', () => {
+                console.log('FAQ question clicked');
+                
+                // Закрываем все другие элементы
                 faqItems.forEach(otherItem => {
                     if (otherItem !== item && otherItem.classList.contains('active')) {
                         otherItem.classList.remove('active');
                         const otherAnswer = otherItem.querySelector('.faq-answer');
-                        if (otherAnswer) {
+                        const otherIcon = otherItem.querySelector('.faq-question i');
+                        
+                        if (otherAnswer && otherAnswer.style) {
                             otherAnswer.style.maxHeight = '0';
+                        }
+                        if (otherIcon && otherIcon.style) {
+                            otherIcon.style.transform = 'rotate(0deg)';
                         }
                     }
                 });
                 
+                // Переключаем текущий элемент
                 const isActive = item.classList.contains('active');
                 item.classList.toggle('active');
                 
                 const answer = item.querySelector('.faq-answer');
-                if (answer) {
+                const icon = item.querySelector('.faq-question i');
+                
+                if (answer && answer.style) {
                     if (isActive) {
+                        // Закрываем
                         answer.style.maxHeight = '0';
                     } else {
+                        // Открываем
                         answer.style.maxHeight = answer.scrollHeight + 'px';
+                    }
+                }
+                
+                if (icon && icon.style) {
+                    if (isActive) {
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        icon.style.transform = 'rotate(45deg)';
                     }
                 }
             });
         }
     });
     
-    if (faqItems.length > 0) {
-        setTimeout(() => {
+    // Автоматически открываем первый элемент через 1 секунду
+    setTimeout(() => {
+        if (faqItems.length > 0) {
             const firstItem = faqItems[0];
             const firstAnswer = firstItem.querySelector('.faq-answer');
+            const firstIcon = firstItem.querySelector('.faq-question i');
+            
             firstItem.classList.add('active');
-            if (firstAnswer) {
+            if (firstAnswer && firstAnswer.style) {
                 firstAnswer.style.maxHeight = firstAnswer.scrollHeight + 'px';
             }
-        }, 1000);
-    }
+            if (firstIcon && firstIcon.style) {
+                firstIcon.style.transform = 'rotate(45deg)';
+            }
+            console.log('✅ First FAQ item opened automatically');
+        }
+    }, 1000);
     
-    console.log(`✅ FAQ initialized with ${faqItems.length} items`);
+    console.log(`✅ FAQ accordion initialized with ${faqItems.length} items`);
 }
 
 // ===== SCROLL АНИМАЦИИ =====
@@ -969,4 +1016,17 @@ window.showServiceDetails = function(serviceId) {
     scrollToServiceDetails(serviceId);
 };
 
-console.log('✅ home.js fully loaded with Vertical Expertise section implementation!');
+// Для отладки FAQ
+window.testFAQ = function() {
+    console.log('Testing FAQ...');
+    const faqItems = document.querySelectorAll('.faq-item');
+    console.log(`Found ${faqItems.length} FAQ items`);
+    faqItems.forEach((item, index) => {
+        console.log(`Item ${index}:`, {
+            hasActive: item.classList.contains('active'),
+            answerHeight: item.querySelector('.faq-answer')?.scrollHeight
+        });
+    });
+};
+
+console.log('✅ home.js fully loaded with WORKING FAQ accordion!');
