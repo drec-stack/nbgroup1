@@ -1,4 +1,4 @@
-console.log('🏠 home.js loaded - FIXED PARALLAX VERSION');
+console.log('🏠 home.js loaded - FIXED PARALLAX VERSION (NO ERRORS)');
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
@@ -35,7 +35,7 @@ function initializeHomePage() {
     }, 300);
 }
 
-// ===== ЕДИНАЯ СИСТЕМА ПАРАЛЛАКСА =====
+// ===== ЕДИНАЯ СИСТЕМА ПАРАЛЛАКСА (ИСПРАВЛЕННАЯ) =====
 function initializeSingleParallaxSystem() {
     console.log('🎨 Initializing SINGLE parallax system...');
     
@@ -47,9 +47,8 @@ function initializeSingleParallaxSystem() {
     
     console.log(`✅ Found ${bgLayers.length} background layers`);
     
-    // Удаляем все предыдущие обработчики скролла
+    // Удаляем все предыдущие обработчики скролла с другими именами
     window.removeEventListener('scroll', handleParallaxScroll);
-    window.removeEventListener('scroll', updateParallax);
     
     // Проверяем загрузку изображений
     const imagePaths = [
@@ -91,25 +90,30 @@ function initializeSingleParallaxSystem() {
     let rafId = null;
     let lastScrollY = window.scrollY;
     
+    // ФУНКЦИЯ ДЛЯ ОБНОВЛЕНИЯ ПАРАЛЛАКСА
+    function updateParallaxLayers() {
+        const scrollY = window.scrollY;
+        
+        // Только если позиция изменилась
+        if (Math.abs(scrollY - lastScrollY) > 0.5) {
+            lastScrollY = scrollY;
+            
+            bgLayers.forEach((layer, index) => {
+                if (layer && layer.style) {
+                    const speed = 0.03 + (index * 0.02);
+                    const yPos = scrollY * speed;
+                    layer.style.transform = `translate3d(0, ${yPos}px, 0)`;
+                }
+            });
+        }
+    }
+    
+    // ОБРАБОТЧИК СКРОЛЛА
     function handleParallaxScroll() {
         if (rafId) return;
         
         rafId = requestAnimationFrame(() => {
-            const scrollY = window.scrollY;
-            
-            // Только если позиция изменилась
-            if (Math.abs(scrollY - lastScrollY) > 0.5) {
-                lastScrollY = scrollY;
-                
-                bgLayers.forEach((layer, index) => {
-                    if (layer && layer.style) {
-                        const speed = 0.03 + (index * 0.02);
-                        const yPos = scrollY * speed;
-                        layer.style.transform = `translate3d(0, ${yPos}px, 0)`;
-                    }
-                });
-            }
-            
+            updateParallaxLayers();
             rafId = null;
         });
     }
@@ -118,7 +122,9 @@ function initializeSingleParallaxSystem() {
     window.addEventListener('scroll', handleParallaxScroll, { passive: true });
     
     // Инициализируем начальное положение
-    setTimeout(handleParallaxScroll, 100);
+    setTimeout(() => {
+        updateParallaxLayers();
+    }, 100);
     
     // Убираем черные overlay
     setTimeout(removeDarkOverlays, 500);
@@ -476,4 +482,13 @@ window.reinitializeParallax = function() {
     initializeSingleParallaxSystem();
 };
 
-console.log('✅ home.js fully loaded with SINGLE parallax system!');
+// УТИЛИТА ДЛЯ ПРОВЕРКИ
+window.checkParallaxSystem = function() {
+    const bgLayers = document.querySelectorAll('.bg-layer');
+    console.log(`🔍 Parallax system check:`);
+    console.log(`   - Found ${bgLayers.length} layers`);
+    console.log(`   - Scroll position: ${window.scrollY}`);
+    console.log(`   - All layers loaded: ${Array.from(bgLayers).every(layer => layer.classList.contains('loaded'))}`);
+};
+
+console.log('✅ home.js fully loaded with SINGLE parallax system (NO ERRORS)!');
