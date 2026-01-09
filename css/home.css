@@ -48,8 +48,8 @@ html {
     will-change: transform;
 }
 
-/* ОЧЕНЬ ПРОЗРАЧНЫЙ ЗАЩИТНЫЙ СЛОЙ (15% непрозрачности) - ФИКСИРОВАННЫЙ */
-.bg-layers-container::after {
+/* УДАЛЕН ЗАТЕМНЯЮЩИЙ СЛОЙ */
+/* .bg-layers-container::after {
     content: '';
     position: absolute;
     top: 0;
@@ -61,7 +61,7 @@ html {
     pointer-events: none;
     mix-blend-mode: multiply !important;
     opacity: 0.15 !important;
-}
+} */
 
 .bg-layer {
     position: absolute !important;
@@ -464,8 +464,6 @@ html {
 }
 
 /* СТИЛИ ДЛЯ НОВОГО ТЕКСТА EXPERTISE */
-
-/* Стиль для подзаголовков-описаний блоков */
 .expertise-block-subtitle {
     font-size: 1.8rem;
     font-weight: 700;
@@ -487,7 +485,6 @@ html {
     font-weight: bold;
 }
 
-/* Стиль для списка подразделов */
 .expertise-sub-features {
     list-style: none;
     padding: 0;
@@ -524,7 +521,6 @@ html {
     transition: all 0.3s ease;
 }
 
-/* Стиль для вложенных пунктов */
 .expertise-nested-list {
     list-style: none;
     padding: 0;
@@ -560,7 +556,6 @@ html {
     transition: all 0.3s ease;
 }
 
-/* Эффекты при наведении */
 .expertise-vertical-block:hover .expertise-block-subtitle {
     color: rgba(255, 255, 255, 1) !important;
     transform: translateX(10px);
@@ -592,7 +587,6 @@ html {
     color: rgba(255, 255, 255, 0.9) !important;
 }
 
-/* Старые стили для списка (оставлены для совместимости) */
 .expertise-features {
     list-style: none;
     padding: 0;
@@ -816,7 +810,6 @@ html {
     margin-bottom: 0;
 }
 
-/* Сетка услуг в 2 колонки */
 .speck-services-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -883,7 +876,6 @@ html {
     margin-bottom: 0;
 }
 
-/* Стили для нумерованного списка */
 .research-list {
     margin: 1.5rem 0;
     padding-left: 1.5rem;
@@ -1731,9 +1723,9 @@ h1, h2, h3, h4, h5, h6, p,
 .section-title, .section-subtitle, .speck-section-title,
 .speck-services-intro, .speck-services-intro p {
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9),
-        0 1px 20px rgba(0, 0, 0, 0.85) !important;
+        0 4px 40px rgba(0, 0, 0, 0.95),
+        0 3px 30px rgba(0, 0, 0, 0.9),
+        0 2px 25px rgba(0, 0, 0, 0.85) !important;
     position: relative;
     z-index: 20;
 }
