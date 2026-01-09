@@ -35,11 +35,6 @@
             -moz-osx-font-smoothing: grayscale;
         }
         
-        /* КРИТИЧНЫЙ ФИКС: УБИРАЕМ СИНИЕ ТЕНИ И ФОНЫ */
-        *:not(.btn):not(.btn-primary):not(.btn-secondary) {
-            box-shadow: none !important;
-        }
-        
         /* ФОНОВЫЕ СЛОИ - ФИКСИРОВАННЫЕ */
         .bg-layers-container {
             position: fixed !important;
@@ -55,19 +50,6 @@
             visibility: visible !important;
         }
         
-        /* ЗАЩИТНЫЙ СЛОЙ ОТ ПРОСВЕЧИВАНИЯ */
-        .bg-layers-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 25, 47, 0.92);
-            z-index: -999;
-            pointer-events: none;
-        }
-        
         .bg-layer {
             position: absolute !important;
             top: 0 !important;
@@ -81,32 +63,45 @@
             opacity: 1 !important;
             visibility: visible !important;
             will-change: transform;
-            mix-blend-mode: normal !important;
         }
         
         /* Параллакс слои с правильными путями */
         .bg-layer:nth-child(1) {
             z-index: -1000;
             background-image: url('assets/images/parallax/bg-1.jpg') !important;
-            opacity: 0.4;
+            opacity: 0.7;
         }
         
         .bg-layer:nth-child(2) {
             z-index: -1001;
             background-image: url('assets/images/parallax/bg-2.jpg') !important;
-            opacity: 0.35;
+            opacity: 0.6;
         }
         
         .bg-layer:nth-child(3) {
             z-index: -1002;
             background-image: url('assets/images/parallax/bg-3.jpg') !important;
-            opacity: 0.3;
+            opacity: 0.5;
         }
         
         .bg-layer:nth-child(4) {
             z-index: -1003;
             background-image: url('assets/images/parallax/bg-4.jpg') !important;
-            opacity: 0.25;
+            opacity: 0.4;
+        }
+        
+        /* Тонкий защитный слой от синего (ОЧЕНЬ ПРОЗРАЧНЫЙ) */
+        .bg-layers-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 25, 47, 0.15); /* Очень прозрачный */
+            z-index: -999;
+            pointer-events: none;
+            mix-blend-mode: multiply;
         }
         
         /* Убедимся, что все контентные блоки выше фона */
@@ -145,7 +140,7 @@
             ) !important;
         }
         
-        /* ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ с правильными путями */
+        /* ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ */
         body::after {
             content: '';
             position: fixed;
@@ -681,61 +676,28 @@
     <!-- Background Fix Script -->
     <script>
     (function() {
-        // КРИТИЧНЫЙ ФИКС ФОНА - ЗАЩИТА ОТ СИНЕГО ФОНА
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔧 DOM loaded - applying anti-blue background fix');
+            console.log('🔧 DOM loaded - removing protective layer if too dark');
             
-            // 1. Убираем все синие фоны
-            document.querySelectorAll('*').forEach(element => {
-                const style = getComputedStyle(element);
-                if (style.backgroundColor.includes('rgb(0, 102, 255)') || 
-                    style.backgroundColor.includes('rgba(0, 102, 255')) {
-                    element.style.backgroundColor = 'transparent';
-                }
-            });
-            
-            // 2. Активируем фоновые слои с защитой
-            const bgLayers = document.querySelectorAll('.bg-layer');
-            bgLayers.forEach((layer, index) => {
-                if (layer && layer.style) {
-                    layer.style.opacity = (0.4 - (index * 0.05)).toString();
-                    layer.style.display = 'block';
-                    layer.style.visibility = 'visible';
-                    layer.style.zIndex = `${-1000 - index}`;
-                }
-            });
-            
-            // 3. Гарантируем темный защитный слой
+            // Проверяем, не слишком ли темный защитный слой
             const bgContainer = document.querySelector('.bg-layers-container');
             if (bgContainer) {
-                const existingProtector = document.createElement('div');
-                existingProtector.className = 'background-protector';
-                existingProtector.style.cssText = `
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(10, 25, 47, 0.9);
-                    z-index: -999;
-                    pointer-events: none;
-                `;
-                bgContainer.appendChild(existingProtector);
+                const computedStyle = getComputedStyle(bgContainer, '::after');
+                const opacity = parseFloat(computedStyle.opacity) || 0;
+                
+                // Если слой слишком непрозрачный, уменьшаем его
+                if (opacity > 0.3) {
+                    bgContainer.style.setProperty('--protective-opacity', '0.15');
+                    console.log('✅ Reduced protective layer opacity to 0.15');
+                }
             }
-            
-            // 4. Убираем синие тени с кнопок
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.25)';
-            });
-            
-            console.log('✅ Anti-blue background fix applied');
         });
         
-        // ПАРАЛЛАКС ЭФФЕКТ С ФИКСОМ
+        // ПАРАЛЛАКС ЭФФЕКТ
         let lastScrollTime = 0;
         window.addEventListener('scroll', function() {
             const currentTime = Date.now();
-            if (currentTime - lastScrollTime < 16) return; // 60fps limit
+            if (currentTime - lastScrollTime < 16) return;
             
             lastScrollTime = currentTime;
             const scrolled = window.pageYOffset;
@@ -743,7 +705,7 @@
             
             bgLayers.forEach((layer, index) => {
                 if (layer && layer.style) {
-                    const speed = 0.03 + (index * 0.02); // Очень медленные скорости
+                    const speed = 0.03 + (index * 0.02);
                     const yPos = scrolled * speed;
                     layer.style.transform = `translateY(${yPos}px)`;
                 }
