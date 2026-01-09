@@ -321,6 +321,14 @@ html {
         0 2px 25px rgba(0, 0, 0, 0.9) !important;
 }
 
+/* УДАЛЕНИЕ ПОДЗАГОЛОВКА "Our core competencies and specialized skills" */
+.expertise-main-title + p,
+.expertise-header .section-subtitle,
+.expertise-header .expertise-subtitle,
+.expertise-header > p:not(.expertise-main-title) {
+    display: none !important;
+}
+
 /* ВЕРТИКАЛЬНЫЙ КОНТЕЙНЕР */
 .expertise-vertical-container {
     max-width: 900px;
