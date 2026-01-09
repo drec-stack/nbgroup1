@@ -65,28 +65,28 @@
             will-change: transform;
         }
         
-        /* Параллакс слои */
+        /* Параллакс слои с правильными путями */
         .bg-layer:nth-child(1) {
             z-index: -100;
-            background-image: url('images/parallax/bg-1.jpg') !important;
+            background-image: url('assets/images/parallax/bg-1.jpg') !important;
             opacity: 1;
         }
         
         .bg-layer:nth-child(2) {
             z-index: -101;
-            background-image: url('images/parallax/bg-2.jpg') !important;
+            background-image: url('assets/images/parallax/bg-2.jpg') !important;
             opacity: 0.9;
         }
         
         .bg-layer:nth-child(3) {
             z-index: -102;
-            background-image: url('images/parallax/bg-3.jpg') !important;
+            background-image: url('assets/images/parallax/bg-3.jpg') !important;
             opacity: 0.8;
         }
         
         .bg-layer:nth-child(4) {
             z-index: -103;
-            background-image: url('images/parallax/bg-4.jpg') !important;
+            background-image: url('assets/images/parallax/bg-4.jpg') !important;
             opacity: 0.7;
         }
         
@@ -97,7 +97,7 @@
             z-index: 10 !important;
         }
         
-        /* ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ */
+        /* ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ с правильными путями */
         body::after {
             content: '';
             position: fixed;
@@ -106,10 +106,10 @@
             overflow: hidden;
             z-index: -9999;
             background-image: 
-                url('images/parallax/bg-1.jpg'),
-                url('images/parallax/bg-2.jpg'),
-                url('images/parallax/bg-3.jpg'),
-                url('images/parallax/bg-4.jpg');
+                url('assets/images/parallax/bg-1.jpg'),
+                url('assets/images/parallax/bg-2.jpg'),
+                url('assets/images/parallax/bg-3.jpg'),
+                url('assets/images/parallax/bg-4.jpg');
         }
         
         /* Гарантия прозрачности для всех контейнеров */
@@ -132,6 +132,18 @@
                 0 3px 30px rgba(0, 0, 0, 0.95),
                 0 2px 25px rgba(0, 0, 0, 0.9),
                 0 1px 20px rgba(0, 0, 0, 0.85) !important;
+        }
+        
+        /* Временный фон, если изображения не загрузятся */
+        .bg-layers-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 50%, #0a192f 100%);
+            z-index: -104;
         }
     </style>
     
@@ -687,16 +699,22 @@
         // ПРОВЕРКА ЗАГРУЗКИ ИЗОБРАЖЕНИЙ
         window.addEventListener('load', function() {
             console.log('🖼️ Page loaded - checking background images');
-            const images = ['bg-1.jpg', 'bg-2.jpg', 'bg-3.jpg', 'bg-4.jpg'];
+            const images = [
+                'assets/images/parallax/bg-1.jpg',
+                'assets/images/parallax/bg-2.jpg',
+                'assets/images/parallax/bg-3.jpg',
+                'assets/images/parallax/bg-4.jpg'
+            ];
+            
             images.forEach(img => {
                 const testImg = new Image();
                 testImg.onload = function() {
-                    console.log(`✅ Background image loaded: images/parallax/${img}`);
+                    console.log(`✅ Background image loaded: ${img}`);
                 };
                 testImg.onerror = function() {
-                    console.error(`❌ Failed to load: images/parallax/${img}`);
+                    console.warn(`⚠️ Could not load: ${img}. Using fallback gradient.`);
                 };
-                testImg.src = `images/parallax/${img}`;
+                testImg.src = img;
             });
         });
     })();
