@@ -708,62 +708,125 @@ html::after {
         0 1px 15px rgba(0, 0, 0, 0.85) !important;
 }
 
-/* ===== SERVICES SECTION ===== */
-.services-section {
+/* ===== SERVICES SECTION (SPECK DESIGN STYLE) ===== */
+.speck-services-section {
     padding: 150px 0;
     background: transparent !important;
     position: relative;
     z-index: 15;
 }
 
-.services-grid {
+.speck-services-header {
+    max-width: 900px;
+    margin: 0 auto 80px;
+    text-align: center;
+}
+
+.speck-section-title {
+    font-size: 3rem;
+    font-weight: 900;
+    color: white !important;
+    text-shadow: 
+        0 3px 30px rgba(0, 0, 0, 0.95),
+        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+    margin-bottom: 30px;
+}
+
+.speck-services-intro {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.95) !important;
+    text-shadow: 
+        0 2px 20px rgba(0, 0, 0, 0.9),
+        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+}
+
+.speck-services-intro p {
+    margin: 0;
+    padding: 0;
+}
+
+.speck-services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
     margin-top: 60px;
 }
 
-.service-item {
+.speck-service-card {
     background: transparent !important;
     backdrop-filter: none !important;
     border: none !important;
-    padding: 40px 30px;
-    text-align: center;
     border-radius: 0 !important;
-    transition: transform 0.4s ease;
+    padding: 0 !important;
     position: relative;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.service-item:hover {
+.speck-service-card:hover {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
     transform: translateY(-10px);
 }
 
-.service-icon {
-    font-size: 3.5rem;
-    color: #0066ff;
+.speck-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 25px;
-    text-shadow: 
-        0 2px 20px rgba(0, 102, 255, 0.4),
-        0 1px 15px rgba(0, 102, 255, 0.3) !important;
+    padding-right: 20px;
 }
 
-.service-title {
-    font-size: 1.6rem;
-    font-weight: 600;
+.speck-service-title {
+    font-size: 1.4rem;
+    font-weight: 700;
     color: white !important;
-    margin: 0 0 15px 0;
+    line-height: 1.4;
+    margin: 0;
+    flex: 1;
     text-shadow: 
         0 2px 20px rgba(0, 0, 0, 0.9),
         0 1px 15px rgba(0, 0, 0, 0.8) !important;
 }
 
-.service-description {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.8) !important;
-    line-height: 1.6;
-    margin: 0;
+.speck-card-icon {
+    font-size: 1.5rem;
+    color: #0066ff;
+    font-weight: 900;
+    margin-left: 15px;
+    min-width: 24px;
     text-shadow: 
-        0 1px 15px rgba(0, 0, 0, 0.8) !important;
+        0 1px 15px rgba(0, 102, 255, 0.4),
+        0 1px 10px rgba(0, 102, 255, 0.3) !important;
+    transition: transform 0.3s ease;
+}
+
+.speck-service-card:hover .speck-card-icon {
+    transform: translateX(5px);
+}
+
+.speck-service-content {
+    flex: 1;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.speck-service-card:hover .speck-service-content {
+    opacity: 1;
+}
+
+.speck-service-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin: 0;
+    padding: 0;
+    text-shadow: 
+        0 1px 15px rgba(0, 0, 0, 0.85) !important;
 }
 
 /* ===== JOURNALS SECTION ===== */
@@ -1008,6 +1071,7 @@ html::after {
 .delay-500 { animation-delay: 0.5s; }
 .delay-550 { animation-delay: 0.55s; }
 .delay-600 { animation-delay: 0.6s; }
+.delay-650 { animation-delay: 0.65s; }
 
 @keyframes fadeInDown {
     to {
@@ -1066,6 +1130,11 @@ html::after {
     .projects-grid {
         gap: 30px;
     }
+    
+    .speck-services-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
 }
 
 @media (max-width: 992px) {
@@ -1092,7 +1161,7 @@ html::after {
     .speck-vertical-section,
     .projects-section,
     .stats-section,
-    .services-section,
+    .speck-services-section,
     .journals-section,
     .faq-section,
     .cta-section {
@@ -1137,9 +1206,24 @@ html::after {
         margin-right: auto;
     }
     
-    .services-grid {
+    .speck-services-header {
+        margin-bottom: 60px;
+    }
+    
+    .speck-services-intro {
+        font-size: 1.3rem;
+    }
+    
+    .speck-services-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 30px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .speck-service-card {
+        min-height: 250px;
     }
     
     .journal-item {
@@ -1198,11 +1282,30 @@ html::after {
         font-size: 2.5rem;
     }
     
-    .services-grid {
+    .speck-section-title {
+        font-size: 2.5rem;
+    }
+    
+    .speck-services-intro {
+        font-size: 1.2rem;
+    }
+    
+    .speck-services-grid {
         grid-template-columns: 1fr;
-        max-width: 400px;
-        margin-left: auto;
-        margin-right: auto;
+        max-width: 500px;
+        gap: 25px;
+    }
+    
+    .speck-service-card {
+        min-height: 220px;
+    }
+    
+    .speck-service-title {
+        font-size: 1.3rem;
+    }
+    
+    .speck-service-content p {
+        font-size: 1rem;
     }
     
     .stats-grid {
@@ -1275,16 +1378,38 @@ html::after {
         font-size: 2rem;
     }
     
+    .speck-section-title {
+        font-size: 2rem;
+    }
+    
+    .speck-services-header {
+        margin-bottom: 40px;
+    }
+    
+    .speck-services-intro {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .speck-service-card {
+        min-height: auto;
+        padding-bottom: 25px !important;
+    }
+    
+    .speck-card-header {
+        margin-bottom: 20px;
+    }
+    
+    .speck-service-title {
+        font-size: 1.2rem;
+    }
+    
     .stats-grid {
         grid-template-columns: 1fr;
     }
     
     .stat-number {
         font-size: 3rem;
-    }
-    
-    .service-item {
-        padding: 30px 20px;
     }
     
     .faq-question {
@@ -1313,7 +1438,7 @@ html::after {
 .hero,
 .speck-vertical-section,
 .projects-section,
-.services-section,
+.speck-services-section,
 .journals-section,
 .faq-section,
 .cta-section,
@@ -1362,14 +1487,14 @@ html::after {
     
     /* Отключаем все анимации */
     .fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right,
-    .speck-vertical-block, .project-card, .service-item, .journal-item,
+    .speck-vertical-block, .project-card, .speck-service-card, .journal-item,
     .faq-item, .hero-image, .btn, .btn::before {
         animation: none !important;
         transition: none !important;
     }
     
     .fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right,
-    .speck-vertical-block, .project-card, .service-item, .journal-item,
+    .speck-vertical-block, .project-card, .speck-service-card, .journal-item,
     .faq-item {
         opacity: 1 !important;
         transform: none !important;
@@ -1377,7 +1502,7 @@ html::after {
     
     .hero-image:hover,
     .project-card:hover,
-    .service-item:hover,
+    .speck-service-card:hover,
     .journal-item:hover,
     .btn:hover {
         transform: none !important;
@@ -1389,8 +1514,8 @@ html::after {
 }
 
 /* ГАРАНТИЯ: ВСЕ БЛОКИ С ВИСЯЩИМ ТЕКСТОМ */
-.projects-section, .services-section, .journals-section, .faq-section, .cta-section,
-.project-card, .project-content, .service-item, .journal-item, .faq-item,
+.projects-section, .speck-services-section, .journals-section, .faq-section, .cta-section,
+.project-card, .project-content, .speck-service-card, .journal-item, .faq-item,
 .cta-content, .stat-card, .speck-vertical-block, .speck-block-right,
 .speck-block-left, .speck-feature-column, .hero-description {
     background: transparent !important;
@@ -1404,9 +1529,9 @@ h1, h2, h3, h4, h5, h6, p,
 .hero h1, .hero-subtitle, .hero-description p,
 .speck-block-title, .speck-block-subtitle, .speck-column-title,
 .speck-feature-item, .project-title, .project-description,
-.service-title, .service-description, .journal-title,
+.speck-service-title, .speck-service-content p, .journal-title,
 .faq-question, .faq-answer p, .cta-title, .cta-subtitle,
-.stat-number, .stat-label, .section-title, .section-subtitle {
+.stat-number, .stat-label, .section-title, .speck-section-title, .speck-services-intro {
     text-shadow: 
         0 3px 30px rgba(0, 0, 0, 0.95),
         0 2px 25px rgba(0, 0, 0, 0.9),
@@ -1473,4 +1598,3 @@ html {
     opacity: 1 !important;
     transition: opacity 0.5s ease !important;
 }
-
