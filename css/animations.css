@@ -1760,3 +1760,137 @@
         transform: none !important;
     }
 }
+
+/* ===== IMMEDIATE CONTENT LOAD STYLES ===== */
+body.all-content-loaded {
+    animation: none !important;
+}
+
+body.all-content-loaded * {
+    animation-delay: 0s !important;
+    transition-delay: 0s !important;
+}
+
+body.all-content-loaded .hero-content,
+body.all-content-loaded .expertise-vertical-block,
+body.all-content-loaded .expertise-vertical-content,
+body.all-content-loaded .project-card,
+body.all-content-loaded .project-content,
+body.all-content-loaded .service-item,
+body.all-content-loaded .service-content,
+body.all-content-loaded .journal-item,
+body.all-content-loaded .faq-item,
+body.all-content-loaded .stat-card,
+body.all-content-loaded .cta-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translate(0, 0) scale(1) !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Немедленное отображение текста */
+body.all-content-loaded h1,
+body.all-content-loaded h2,
+body.all-content-loaded h3,
+body.all-content-loaded h4,
+body.all-content-loaded p,
+body.all-content-loaded span,
+body.all-content-loaded li,
+body.all-content-loaded .title,
+body.all-content-loaded .subtitle,
+body.all-content-loaded .description {
+    opacity: 1 !important;
+    transform: translate(0, 0) !important;
+    animation-play-state: running !important;
+}
+
+/* Критический фикс для висящего текста */
+body.all-content-loaded .expertise-vertical-block,
+body.all-content-loaded .speck-vertical-block,
+body.all-content-loaded .project-card,
+body.all-content-loaded .service-item {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Усиление теней для лучшей читаемости */
+body.all-content-loaded .expertise-main-title,
+body.all-content-loaded .expertise-subtitle,
+body.all-content-loaded .expertise-title,
+body.all-content-loaded .expertise-description,
+body.all-content-loaded .speck-block-title,
+body.all-content-loaded .speck-block-subtitle,
+body.all-content-loaded .project-title,
+body.all-content-loaded .project-description,
+body.all-content-loaded .service-title,
+body.all-content-loaded .service-description,
+body.all-content-loaded .journal-title,
+body.all-content-loaded .faq-question,
+body.all-content-loaded .faq-answer p,
+body.all-content-loaded .cta-title,
+body.all-content-loaded .cta-subtitle {
+    text-shadow: 
+        0 4px 40px rgba(0, 0, 0, 0.95),
+        0 3px 30px rgba(0, 0, 0, 0.9),
+        0 2px 25px rgba(0, 0, 0, 0.85) !important;
+}
+
+/* Отключение задержек при немедленной загрузке */
+body.all-content-loaded .delay-100,
+body.all-content-loaded .delay-200,
+body.all-content-loaded .delay-300,
+body.all-content-loaded .delay-400,
+body.all-content-loaded .delay-500,
+body.all-content-loaded .delay-600,
+body.all-content-loaded .delay-700,
+body.all-content-loaded .delay-800,
+body.all-content-loaded .delay-900,
+body.all-content-loaded .delay-1000 {
+    animation-delay: 0s !important;
+    transition-delay: 0s !important;
+}
+
+/* Принудительное отображение всех секций */
+body.all-content-loaded section {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Немедленное отображение параллакс-слоев */
+body.all-content-loaded .bg-layer {
+    opacity: 1 !important;
+    animation-play-state: running !important;
+}
+
+/* Анимация для плавного появления (необязательно) */
+@keyframes immediateAppear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.immediate-load {
+    animation: immediateAppear 0.3s ease forwards !important;
+}
+
+/* Фикс для мобильных устройств */
+@media (max-width: 768px) {
+    body.all-content-loaded * {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    body.all-content-loaded .hero-content,
+    body.all-content-loaded .expertise-vertical-block,
+    body.all-content-loaded .project-card,
+    body.all-content-loaded .service-item {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
