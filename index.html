@@ -15,9 +15,9 @@
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/animations.css">
     
-    <!-- Критичные стили для фона -->
+    <!-- Критичные стили для фона и немедленной загрузки -->
     <style>
-        /* КРИТИЧНЫЕ СТИЛИ ДЛЯ ФОНА */
+        /* КРИТИЧНЫЕ СТИЛИ ДЛЯ ФОНА И НЕМЕДЛЕННОЙ ЗАГРУЗКИ */
         * {
             margin: 0;
             padding: 0;
@@ -92,18 +92,6 @@
         }
         
         /* УДАЛЕН ЗАТЕМНЯЮЩИЙ СЛОЙ */
-        /* .bg-layers-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 25, 47, 0.15);
-            z-index: -999;
-            pointer-events: none;
-            mix-blend-mode: multiply;
-        } */
         
         /* Убедимся, что все контентные блоки выше фона */
         .container, section, .hero, .content-section, 
@@ -193,6 +181,136 @@
             visibility: hidden !important;
             pointer-events: none !important;
             background: none !important;
+        }
+        
+        /* НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА ПРИ ВХОДЕ НА САЙТ */
+        body.immediate-load * {
+            animation-delay: 0s !important;
+            transition-delay: 0s !important;
+        }
+        
+        body.immediate-load .hero-content,
+        body.immediate-load .expertise-vertical-block,
+        body.immediate-load .expertise-vertical-content,
+        body.immediate-load .project-card,
+        body.immediate-load .project-content,
+        body.immediate-load .service-item,
+        body.immediate-load .service-content,
+        body.immediate-load .journal-item,
+        body.immediate-load .faq-item,
+        body.immediate-load .stat-card,
+        body.immediate-load .cta-content {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate(0, 0) scale(1) !important;
+            animation: none !important;
+            transition: none !important;
+        }
+        
+        /* Немедленное отображение текста */
+        body.immediate-load h1,
+        body.immediate-load h2,
+        body.immediate-load h3,
+        body.immediate-load h4,
+        body.immediate-load p,
+        body.immediate-load span,
+        body.immediate-load li,
+        body.immediate-load .title,
+        body.immediate-load .subtitle,
+        body.immediate-load .description {
+            opacity: 1 !important;
+            transform: translate(0, 0) !important;
+            animation-play-state: running !important;
+        }
+        
+        /* Критический фикс для висящего текста */
+        body.immediate-load .expertise-vertical-block,
+        body.immediate-load .speck-vertical-block,
+        body.immediate-load .project-card,
+        body.immediate-load .service-item {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* Усиление теней для лучшей читаемости */
+        body.immediate-load .expertise-main-title,
+        body.immediate-load .expertise-subtitle,
+        body.immediate-load .expertise-title,
+        body.immediate-load .expertise-description,
+        body.immediate-load .speck-block-title,
+        body.immediate-load .speck-block-subtitle,
+        body.immediate-load .project-title,
+        body.immediate-load .project-description,
+        body.immediate-load .service-title,
+        body.immediate-load .service-description,
+        body.immediate-load .journal-title,
+        body.immediate-load .faq-question,
+        body.immediate-load .faq-answer p,
+        body.immediate-load .cta-title,
+        body.immediate-load .cta-subtitle {
+            text-shadow: 
+                0 4px 40px rgba(0, 0, 0, 0.95),
+                0 3px 30px rgba(0, 0, 0, 0.9),
+                0 2px 25px rgba(0, 0, 0, 0.85) !important;
+        }
+        
+        /* Отключение задержек при немедленной загрузке */
+        body.immediate-load .delay-100,
+        body.immediate-load .delay-200,
+        body.immediate-load .delay-300,
+        body.immediate-load .delay-400,
+        body.immediate-load .delay-500,
+        body.immediate-load .delay-600,
+        body.immediate-load .delay-700,
+        body.immediate-load .delay-800,
+        body.immediate-load .delay-900,
+        body.immediate-load .delay-1000 {
+            animation-delay: 0s !important;
+            transition-delay: 0s !important;
+        }
+        
+        /* Принудительное отображение всех секций */
+        body.immediate-load section {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        /* Немедленное отображение параллакс-слоев */
+        body.immediate-load .bg-layer {
+            opacity: 1 !important;
+            animation-play-state: running !important;
+        }
+        
+        /* Анимация для плавного появления */
+        @keyframes immediateAppear {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        .immediate-load-element {
+            animation: immediateAppear 0.3s ease forwards !important;
+        }
+        
+        /* Фикс для мобильных устройств */
+        @media (max-width: 768px) {
+            body.immediate-load * {
+                animation: none !important;
+                transition: none !important;
+            }
+            
+            body.immediate-load .hero-content,
+            body.immediate-load .expertise-vertical-block,
+            body.immediate-load .project-card,
+            body.immediate-load .service-item {
+                opacity: 1 !important;
+                transform: none !important;
+            }
         }
     </style>
     
@@ -702,5 +820,95 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
     
+    <!-- СКРИПТ НЕМЕДЛЕННОЙ ЗАГРУЗКИ ВСЕГО КОНТЕНТА -->
+    <script>
+        // КРИТИЧЕСКИЙ ФИКС: Немедленная загрузка всего контента при входе на сайт
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🌐 SITE ENTRY: Immediately loading all content...');
+            
+            // 1. Немедленно добавляем классы для немедленной загрузки
+            document.body.classList.add('immediate-load');
+            document.body.classList.add('all-content-loaded');
+            
+            // 2. Немедленно показываем весь текст на странице
+            setTimeout(function() {
+                const allTextElements = document.querySelectorAll(
+                    'h1, h2, h3, h4, h5, h6, p, span, li, .title, .subtitle, .description, .text, [data-i18n]'
+                );
+                
+                allTextElements.forEach(el => {
+                    if (el && el.style) {
+                        el.style.opacity = '1';
+                        el.style.visibility = 'visible';
+                        el.style.transform = 'translate(0, 0)';
+                        el.classList.add('immediate-load-element');
+                    }
+                });
+                
+                console.log(`✅ Immediately loaded ${allTextElements.length} text elements`);
+            }, 100);
+            
+            // 3. Немедленно показываем все секции
+            setTimeout(function() {
+                const allSections = document.querySelectorAll('section');
+                allSections.forEach(section => {
+                    if (section && section.style) {
+                        section.style.opacity = '1';
+                        section.style.visibility = 'visible';
+                    }
+                });
+                
+                // Немедленно показываем все карточки и блоки
+                const allCards = document.querySelectorAll('.expertise-vertical-block, .project-card, .service-item, .journal-item, .faq-item, .stat-card');
+                allCards.forEach(card => {
+                    if (card && card.style) {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translate(0, 0) scale(1)';
+                    }
+                });
+                
+                console.log(`✅ Immediately loaded ${allSections.length} sections and ${allCards.length} cards`);
+            }, 150);
+            
+            // 4. Принудительно запускаем анимации
+            setTimeout(function() {
+                if (window.NBAnimations && typeof window.NBAnimations.immediateLoadAllContent === 'function') {
+                    window.NBAnimations.immediateLoadAllContent();
+                }
+                
+                if (window.loadAllContentImmediately) {
+                    window.loadAllContentImmediately();
+                }
+                
+                // Запускаем счетчики сразу
+                const counters = document.querySelectorAll('.stat-number');
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-count')) || 0;
+                    if (target > 0) {
+                        counter.textContent = target;
+                        counter.classList.add('counter-animate');
+                    }
+                });
+                
+                console.log('⚡ All site content is NOW VISIBLE (immediate load)');
+            }, 200);
+        });
+        
+        // Альтернативный запуск если DOM уже загружен
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+            setTimeout(function() {
+                document.body.classList.add('immediate-load');
+                document.body.classList.add('all-content-loaded');
+                
+                const allContent = document.querySelectorAll('*');
+                allContent.forEach(el => {
+                    if (el && el.style) {
+                        el.style.opacity = '1';
+                        el.style.visibility = 'visible';
+                    }
+                });
+            }, 300);
+        }
+    </script>
 </body>
 </html>
