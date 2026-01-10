@@ -1,5 +1,5 @@
 <!-- components/header.html -->
-<!-- ===== ЦЕНТРИРОВАННЫЙ ХЕДЕР С ВЫРОВНЕННОЙ НАВИГАЦИЕЙ ===== -->
+<!-- ===== ЦЕНТРИРОВАННЫЙ ХЕДЕР С ПРЯМЫМ ВЫРАВНИВАНИЕМ ===== -->
 <style>
     /* ===== БАЗОВЫЕ СТИЛИ ===== */
     .main-header {
@@ -10,7 +10,7 @@
         width: 92%;
         max-width: 1400px;
         z-index: 1000;
-        padding: 16px 0; /* Убраны боковые отступы для чистого центрирования */
+        padding: 16px 0;
         border-radius: 16px;
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         background: rgba(255, 255, 255, 0.95);
@@ -48,7 +48,7 @@
         max-width: 1400px;
         margin: 0 auto;
         width: 100%;
-        padding: 0 40px; /* Отступы теперь в контейнере */
+        padding: 0 40px;
         box-sizing: border-box;
     }
 
@@ -60,29 +60,44 @@
         position: relative;
     }
 
-    /* ИСПРАВЛЕННАЯ ЦЕНТРИРОВАННАЯ НАВИГАЦИЯ */
-    .main-nav {
+    /* ===== ИСПРАВЛЕННАЯ СТРУКТУРА ДЛЯ ЦЕНТРИРОВАНИЯ ===== */
+    /* Левый блок (логотип) */
+    .header-left {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Центральный блок (навигация) */
+    .header-center {
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%); /* Центрирование по вертикали и горизонтали */
+        transform: translate(-50%, -50%);
         display: flex;
-        gap: 8px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Правый блок (язык + кнопка) */
+    .header-right {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-left: auto; /* Прижимаем к правому краю */
+    }
+
+    /* ===== ЦЕНТРИРОВАННАЯ НАВИГАЦИЯ ===== */
+    .main-nav {
+        display: flex;
+        gap: 4px;
         background: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(10px);
         border-radius: 12px;
         padding: 8px;
         border: 1px solid rgba(0, 0, 0, 0.05);
-        z-index: 1;
-    }
-
-    /* ОБЕСПЕЧИВАЕМ РАВНЫЕ РАССТОЯНИЯ МЕЖДУ КНОПКАМИ */
-    .nav-links-container {
-        display: flex;
-        gap: 8px;
         justify-content: center;
-        align-items: center;
-        width: 100%;
     }
 
     /* ===== ЛОГОТИП ===== */
@@ -92,8 +107,6 @@
         text-decoration: none;
         gap: 12px;
         transition: all 0.3s ease;
-        z-index: 1001;
-        position: relative;
     }
 
     .logo:hover {
@@ -129,7 +142,7 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    /* ===== ИСПРАВЛЕННАЯ НАВИГАЦИЯ ===== */
+    /* ===== НАВИГАЦИЯ С РОВНЫМ ВЫРАВНИВАНИЕМ ===== */
     .nav-link {
         color: #4a5568;
         text-decoration: none;
@@ -139,11 +152,12 @@
         padding: 8px 16px;
         border-radius: 8px;
         white-space: nowrap;
-        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
-        min-width: max-content; /* Обеспечивает одинаковую ширину для всех пунктов */
+        position: relative;
+        min-width: 80px; /* Фиксированная минимальная ширина для ровности */
+        text-align: center;
     }
 
     .nav-link:hover {
@@ -179,21 +193,11 @@
         }
     }
 
-    /* ===== ПРАВАЯ ЧАСТЬ ===== */
-    .header-right {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        z-index: 1001;
-        position: relative;
-    }
-
     /* ===== ОБНОВЛЕННЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
     .language-switcher {
         display: flex;
         align-items: center;
         gap: 4px;
-        position: relative;
         background: rgba(0, 0, 0, 0.03);
         border-radius: 10px;
         padding: 2px;
@@ -301,13 +305,10 @@
             padding: 0 30px;
         }
         
-        .main-nav {
-            gap: 6px;
-        }
-        
         .nav-link {
-            padding: 8px 14px;
+            padding: 8px 12px;
             font-size: 13px;
+            min-width: 70px;
         }
         
         .header-btn {
@@ -322,26 +323,35 @@
     }
 
     @media (max-width: 1100px) {
-        /* Для средних экранов выравниваем навигацию по центру */
-        .main-nav {
+        .header-center {
             position: static;
             transform: none;
-            background: none;
-            border: none;
-            padding: 0;
+            order: 3;
+            width: 100%;
             margin: 0;
-            left: auto;
-            top: auto;
+            padding: 10px 0 0;
         }
         
         .header-inner {
+            flex-wrap: wrap;
             justify-content: space-between;
-            gap: 20px;
         }
         
-        .nav-links-container {
+        .header-left {
+            order: 1;
+            flex: 1;
+        }
+        
+        .header-right {
+            order: 2;
+            flex: 1;
+            justify-content: flex-end;
+            margin-left: 0;
+        }
+        
+        .main-nav {
+            width: 100%;
             justify-content: center;
-            margin: 0 auto;
         }
     }
 
@@ -469,23 +479,25 @@
 <header class="main-header" id="main-header">
     <div class="header-container">
         <div class="header-inner">
-            <!-- Логотип -->
-            <a href="index.html" class="logo" aria-label="На главную">
-                <div class="logo-mark" aria-hidden="true">NB</div>
-                <span class="logo-text" data-i18n="nav.brand">NB Group</span>
-            </a>
+            <!-- Логотип слева -->
+            <div class="header-left">
+                <a href="index.html" class="logo" aria-label="На главную">
+                    <div class="logo-mark" aria-hidden="true">NB</div>
+                    <span class="logo-text" data-i18n="nav.brand">NB Group</span>
+                </a>
+            </div>
             
-            <!-- Центрированная навигация -->
-            <nav class="main-nav" aria-label="Основная навигация">
-                <div class="nav-links-container">
+            <!-- Навигация по центру -->
+            <div class="header-center">
+                <nav class="main-nav" aria-label="Основная навигация">
                     <a href="index.html" class="nav-link" data-i18n="nav.home">Главная</a>
                     <a href="about.html" class="nav-link" data-i18n="nav.about">О нас</a>
                     <a href="services.html" class="nav-link" data-i18n="nav.services">Услуги</a>
                     <a href="portfolio.html" class="nav-link" data-i18n="nav.portfolio">Портфолио</a>
                     <a href="brandbook.html" class="nav-link" data-i18n="nav.brandbook">Брендбук</a>
                     <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
-                </div>
-            </nav>
+                </nav>
+            </div>
             
             <!-- Правая часть -->
             <div class="header-right">
@@ -512,7 +524,7 @@
 </header>
 
 <script>
-// ===== ЦЕНТРИРОВАННЫЙ ХЕДЕР С УЛУЧШЕННЫМ ВЫРАВНИВАНИЕМ =====
+// ===== ЦЕНТРИРОВАННЫЙ ХЕДЕР С ПРОСТЫМ ВЫРАВНИВАНИЕМ =====
 (function() {
     'use strict';
     
