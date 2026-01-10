@@ -24,6 +24,34 @@ class ComponentLoader {
         this.initialLoadCompleted = false;
         
         console.log('✅ components.js ready - will load HTML only, no initialization');
+        
+        // Автоматически запускаем загрузку при создании
+        this.autoStart();
+    }
+    
+    /**
+     * Автоматический запуск загрузки
+     */
+    autoStart() {
+        // Если DOM уже готов, сразу начинаем загрузку
+        if (document.readyState !== 'loading') {
+            console.log('📄 DOM already ready, starting component load...');
+            setTimeout(() => {
+                this.loadAll().catch(error => {
+                    console.error('❌ Failed to auto-load components:', error);
+                });
+            }, 100);
+        } else {
+            // Ждем DOM
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('📄 DOM ready, starting component load...');
+                setTimeout(() => {
+                    this.loadAll().catch(error => {
+                        console.error('❌ Failed to load components:', error);
+                    });
+                }, 100);
+            });
+        }
     }
     
     /**
@@ -98,9 +126,20 @@ class ComponentLoader {
                 
                 // Отправляем событие о завершении загрузки
                 if (window) {
+                    // Основное событие
                     window.dispatchEvent(new CustomEvent('componentsLoaded', {
                         detail: { components: Array.from(this.loadedComponents) }
                     }));
+                    
+                    // СИЛЬНОЕ событие для синхронизации
+                    const strongEvent = new CustomEvent('componentsFullyLoaded', {
+                        detail: { 
+                            components: Array.from(this.loadedComponents),
+                            timestamp: Date.now()
+                        }
+                    });
+                    window.dispatchEvent(strongEvent);
+                    console.log('📢 componentsFullyLoaded event dispatched');
                 }
                 
                 // Только для отладки - проверяем состояние
@@ -184,8 +223,15 @@ class ComponentLoader {
                 
                 // Добавляем в правильное место в DOM
                 if (componentName === 'header') {
-                    document.body.insertBefore(container, document.body.firstChild);
+                    // Вставляем header сразу после body
+                    const firstChild = document.body.firstChild;
+                    if (firstChild) {
+                        document.body.insertBefore(container, firstChild);
+                    } else {
+                        document.body.appendChild(container);
+                    }
                 } else if (componentName === 'footer') {
+                    // Вставляем footer перед закрывающим тегом body
                     document.body.appendChild(container);
                 }
                 
@@ -306,12 +352,16 @@ class ComponentLoader {
                 
                 // Проверяем наличие ключевых элементов
                 if (componentName === 'header') {
-                    const header = container.querySelector('.main-header') || container.querySelector('header');
+                    const header = container.querySelector('.main-header') || 
+                                  container.querySelector('header') ||
+                                  container.querySelector('[data-header]') ||
+                                  container.querySelector('nav');
                     console.log(`    - Найден header: ${!!header}`);
                     if (header) {
                         console.log(`    - Позиция: ${header.style.position || 'not set'}`);
                         console.log(`    - Top: ${header.style.top || 'not set'}`);
                         console.log(`    - Left: ${header.style.left || 'not set'}`);
+                        console.log(`    - Классы header: ${header.className}`);
                     }
                 }
             } else {
@@ -431,6 +481,24 @@ if (typeof window !== 'undefined') {
     window.getComponentsStatus = function() {
         return window.componentLoader.getStatus();
     };
+    
+    // Функция для ожидания загрузки компонентов
+    window.waitForComponents = function() {
+        return new Promise((resolve) => {
+            if (window.componentLoader && window.componentLoader.initialized) {
+                resolve();
+            } else {
+                const check = () => {
+                    if (window.componentLoader && window.componentLoader.initialized) {
+                        resolve();
+                    } else {
+                        setTimeout(check, 100);
+                    }
+                };
+                check();
+            }
+        });
+    };
 }
 
 // Автоматическая загрузка компонентов при готовности DOM
@@ -441,31 +509,7 @@ if (typeof window !== 'undefined') {
         return;
     }
     
-    // Проверяем, готов ли DOM
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('📄 DOM loaded - loading components (HTML only)...');
-            
-            // Небольшая задержка для гарантии что DOM полностью готов
-            setTimeout(() => {
-                if (window.componentLoader) {
-                    window.componentLoader.loadAll().catch(error => {
-                        console.error('❌ Не удалось загрузить компоненты:', error);
-                    });
-                }
-            }, 100);
-        });
-    } else {
-        // DOM уже готов
-        console.log('📄 DOM already loaded - loading components...');
-        setTimeout(() => {
-            if (window.componentLoader) {
-                window.componentLoader.loadAll().catch(error => {
-                    console.error('❌ Не удалось загрузить компоненты:', error);
-                });
-            }
-        }, 100);
-    }
+    console.log('🔧 Component loader ready - auto-start enabled');
 })();
 
 // Также пробуем загрузить когда страница полностью загружена
@@ -481,7 +525,7 @@ if (typeof window !== 'undefined') {
         // Проверяем, все ли компоненты загружены
         const status = window.componentLoader.getStatus();
         if (!status.initialized || !status.loadedComponents.includes('header') || !status.loadedComponents.includes('footer')) {
-            console.log('⚠️ Компоненты не были загружены при DOM ready, пытаемся сейчас...');
+            console.log('⚠️ Компоненты не были загружены, пытаемся сейчас...');
             setTimeout(() => {
                 window.componentLoader.loadAll().catch(error => {
                     console.error('❌ Не удалось загрузить компоненты:', error);
@@ -522,3 +566,5 @@ if (typeof module !== 'undefined' && module.exports) {
         getComponentsStatus: typeof window !== 'undefined' ? window.getComponentsStatus : null
     };
 }
+
+console.log('✅ components.js fully loaded and ready');
