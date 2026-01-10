@@ -25,7 +25,41 @@ class DaehaaApp {
         
         console.log(`📄 Page type detected: ${this.isServicesPage ? 'Services' : this.isAboutPage ? 'About' : this.isHomePage ? 'Home' : 'Internal'}`);
         
-        this.init();
+        // Ждем загрузки компонентов перед инициализацией
+        this.waitForComponents().then(() => {
+            this.init();
+        }).catch(() => {
+            console.warn('⚠️ Component wait timeout, initializing anyway');
+            this.init();
+        });
+    }
+
+    async waitForComponents() {
+        return new Promise((resolve) => {
+            // Если компоненты уже загружены
+            if (document.querySelector('#header-container.component-loaded')) {
+                console.log('✅ Components already loaded');
+                resolve();
+                return;
+            }
+            
+            // Ждем событие загрузки компонентов
+            const onComponentsLoaded = () => {
+                console.log('✅ Components loaded, proceeding with app init');
+                resolve();
+                window.removeEventListener('componentsLoaded', onComponentsLoaded);
+                window.removeEventListener('componentsFullyLoaded', onComponentsLoaded);
+            };
+            
+            window.addEventListener('componentsLoaded', onComponentsLoaded);
+            window.addEventListener('componentsFullyLoaded', onComponentsLoaded);
+            
+            // Таймаут на случай если событие не придет
+            setTimeout(() => {
+                console.log('⏰ Components wait timeout');
+                resolve();
+            }, 2000);
+        });
     }
 
     init() {
@@ -44,8 +78,10 @@ class DaehaaApp {
         this.setupClickableElements();
         this.setupNavigationTracking();
         
-        // Настройка хедера (с учетом типа страницы)
-        this.setupHeaderSupport();
+        // Настройка хедера (с учетом типа страницы) - с задержкой
+        setTimeout(() => {
+            this.setupHeaderSupport();
+        }, 300);
         
         // Футер
         this.setupFooterSupport();
@@ -139,45 +175,121 @@ class DaehaaApp {
     setupHeaderSupport() {
         console.log('🔧 Setting up SIMPLE header support (no hidden buttons)...');
         
-        // Проверяем наличие хедера в компоненте
-        setTimeout(() => {
-            // Пытаемся найти хедер с несколькими селекторами
-            const headerSelectors = ['.main-header', 'header[class*="header"]', 'header', '#main-header'];
-            let header = null;
-            
-            for (const selector of headerSelectors) {
-                header = document.querySelector(selector);
+        // Попытка найти хедер с несколькими попытками
+        this.findAndSetupHeader(0);
+    }
+
+    findAndSetupHeader(attempt) {
+        const maxAttempts = 5;
+        
+        // Пытаемся найти хедер с несколькими селекторами
+        const headerSelectors = [
+            '.main-header', 
+            'header[class*="header"]', 
+            'header', 
+            '#main-header',
+            '[data-header]',
+            'nav.main-nav',
+            '.header',
+            'nav'
+        ];
+        
+        let header = null;
+        let foundWithSelector = '';
+        
+        for (const selector of headerSelectors) {
+            header = document.querySelector(selector);
+            if (header) {
+                foundWithSelector = selector;
+                break;
+            }
+        }
+        
+        // Если не нашли напрямую, ищем в контейнере компонента
+        if (!header) {
+            const headerContainer = document.getElementById('header-container');
+            if (headerContainer) {
+                // Проверяем наличие компонента внутри контейнера
+                header = headerContainer.querySelector('.main-header') || 
+                        headerContainer.querySelector('header') ||
+                        headerContainer.querySelector('#main-header') ||
+                        headerContainer.querySelector('[data-header]') ||
+                        headerContainer.querySelector('nav');
+                
                 if (header) {
-                    console.log(`✅ Found header with selector: ${selector}`);
-                    break;
+                    foundWithSelector = 'container search';
                 }
             }
-            
-            // Если не нашли напрямую, ищем в контейнере компонента
-            if (!header) {
-                const headerContainer = document.getElementById('header-container');
-                if (headerContainer) {
-                    header = headerContainer.querySelector('.main-header') || 
-                            headerContainer.querySelector('header') ||
-                            headerContainer.querySelector('#main-header');
-                    if (header) {
-                        console.log('✅ Found header in header-container');
-                    }
-                }
-            }
-            
-            if (!header) {
-                console.warn('⚠️ Header not found with any selector');
-                // Повторная попытка через 500мс
-                setTimeout(() => this.setupHeaderSupport(), 500);
-                return;
-            }
-            
-            // Простая настройка - без сложных анимаций
+        }
+        
+        if (header) {
+            console.log(`✅ Found header with: ${foundWithSelector}`);
             this.setupSimpleHeader(header);
+            console.log('✅ Header setup complete');
+        } else {
+            attempt++;
+            console.warn(`⚠️ Header not found (attempt ${attempt}/${maxAttempts})`);
             
-            console.log('✅ Header setup complete (no hidden buttons)');
-        }, 100);
+            if (attempt < maxAttempts) {
+                // Проверяем, загружен ли компонент хедера
+                const headerContainer = document.getElementById('header-container');
+                if (headerContainer && !headerContainer.classList.contains('component-loaded')) {
+                    console.log(`⏳ Header component not loaded yet, retrying in 500ms...`);
+                    setTimeout(() => this.findAndSetupHeader(attempt), 500);
+                } else {
+                    console.log('📦 Header container found but empty, creating fallback...');
+                    this.createFallbackHeader();
+                }
+            } else {
+                console.error('❌ Header not found after maximum attempts');
+                this.createFallbackHeader();
+            }
+        }
+    }
+
+    createFallbackHeader() {
+        console.log('🛠️ Creating fallback header...');
+        
+        const headerContainer = document.getElementById('header-container');
+        if (!headerContainer) {
+            console.error('❌ header-container not found for fallback');
+            return;
+        }
+        
+        const fallbackHTML = `
+            <header class="main-header" data-header="fallback">
+                <nav class="main-nav">
+                    <div class="nav-logo">
+                        <a href="index.html" class="logo-link">
+                            <img src="images/logo.jpg" alt="NBGroup" class="logo">
+                        </a>
+                    </div>
+                    <div class="nav-menu">
+                        <a href="index.html" class="nav-link active">Home</a>
+                        <a href="services.html" class="nav-link">Services</a>
+                        <a href="portfolio.html" class="nav-link">Portfolio</a>
+                        <a href="about.html" class="nav-link">About</a>
+                        <a href="contacts.html" class="nav-link">Contacts</a>
+                    </div>
+                    <div class="nav-actions">
+                        <div class="language-switcher">
+                            <button class="lang-btn" data-lang="ru">RU</button>
+                            <button class="lang-btn" data-lang="en">EN</button>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+        `;
+        
+        headerContainer.innerHTML = fallbackHTML;
+        headerContainer.classList.add('component-loaded');
+        console.log('✅ Fallback header created');
+        
+        // Настраиваем запасной header
+        const header = headerContainer.querySelector('.main-header');
+        if (header) {
+            this.setupSimpleHeader(header);
+        }
     }
 
     setupSimpleHeader(header) {
@@ -223,6 +335,12 @@ class DaehaaApp {
                 header.style.transform = 'translateY(0)';
             }
         });
+        
+        // Инициализация навигации
+        this.setupCurrentPage();
+        
+        // Инициализация переключателя языка
+        this.setupLanguageSwitcherUI();
     }
 
     setupSmoothScroll() {
@@ -1089,6 +1207,48 @@ function updateActiveNav() {
     });
 }
 
+// Глобальная функция для проверки готовности приложения
+window.waitForAppReady = function() {
+    return new Promise((resolve) => {
+        if (window.DaehaaApp) {
+            resolve();
+        } else {
+            const checkInterval = setInterval(() => {
+                if (window.DaehaaApp) {
+                    clearInterval(checkInterval);
+                    resolve();
+                }
+            }, 100);
+        }
+    });
+};
+
+// Глобальная синхронизация загрузки
+window.syncAppLoad = function() {
+    return new Promise(async (resolve) => {
+        // Ждем загрузки компонентов
+        if (window.componentLoader) {
+            await window.componentLoader.loadAll().catch(() => {
+                console.warn('⚠️ Components failed to load');
+            });
+        }
+        
+        // Ждем DOM
+        if (document.readyState === 'loading') {
+            await new Promise(resolve => {
+                document.addEventListener('DOMContentLoaded', resolve);
+            });
+        }
+        
+        // Создаем приложение
+        if (!window.DaehaaApp) {
+            window.DaehaaApp = new DaehaaApp();
+        }
+        
+        resolve();
+    });
+};
+
 // Global error handler
 window.addEventListener('error', function(e) {
     console.error('Global error caught:', e.error);
@@ -1114,14 +1274,30 @@ window.addEventListener('unhandledrejection', function(e) {
     }
 });
 
-// Initialize application
-document.addEventListener('DOMContentLoaded', () => {
-    // Небольшая задержка чтобы компоненты успели загрузиться
-    setTimeout(() => {
-        window.DaehaaApp = new DaehaaApp();
-        console.log('🚀 Daehaa application initialized with NO HIDDEN BUTTONS');
-    }, 300);
-});
+// Инициализация с правильной последовательностью
+(function initializeAppWithCorrectSequence() {
+    console.log('🔄 Initializing app with correct sequence...');
+    
+    // Ждем DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                if (!window.DaehaaApp) {
+                    window.DaehaaApp = new DaehaaApp();
+                    console.log('✅ DaehaaApp initialized after DOM and components');
+                }
+            }, 300);
+        });
+    } else {
+        // DOM уже готов
+        setTimeout(() => {
+            if (!window.DaehaaApp) {
+                window.DaehaaApp = new DaehaaApp();
+                console.log('✅ DaehaaApp initialized (DOM already ready)');
+            }
+        }, 300);
+    }
+})();
 
 // Export functions for global use
 window.updateActiveNav = updateActiveNav;
