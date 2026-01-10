@@ -317,7 +317,7 @@
     <!-- Кроссбраузерные полифилы JS -->
     <script src="https://cdn.jsdelivr.net/npm/core-js-bundle@3.33.2/minified.min.js"></script>
     
-    <!-- Компоненты -->
+    <!-- КОМПОНЕНТЫ ПЕРВЫМИ - КРИТИЧЕСКИЙ ФИКС -->
     <script src="js/components.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
@@ -830,8 +830,9 @@
             document.body.classList.add('immediate-load');
             document.body.classList.add('all-content-loaded');
             
-            // 2. Немедленно показываем весь текст на странице
+            // 2. Ждем немного для загрузки компонентов
             setTimeout(function() {
+                // 3. Немедленно показываем весь текст на странице
                 const allTextElements = document.querySelectorAll(
                     'h1, h2, h3, h4, h5, h6, p, span, li, .title, .subtitle, .description, .text, [data-i18n]'
                 );
@@ -846,10 +847,8 @@
                 });
                 
                 console.log(`✅ Immediately loaded ${allTextElements.length} text elements`);
-            }, 100);
-            
-            // 3. Немедленно показываем все секции
-            setTimeout(function() {
+                
+                // 4. Немедленно показываем все секции
                 const allSections = document.querySelectorAll('section');
                 allSections.forEach(section => {
                     if (section && section.style) {
@@ -868,10 +867,8 @@
                 });
                 
                 console.log(`✅ Immediately loaded ${allSections.length} sections and ${allCards.length} cards`);
-            }, 150);
-            
-            // 4. Принудительно запускаем анимации
-            setTimeout(function() {
+                
+                // 5. Принудительно запускаем анимации
                 if (window.NBAnimations && typeof window.NBAnimations.immediateLoadAllContent === 'function') {
                     window.NBAnimations.immediateLoadAllContent();
                 }
@@ -891,7 +888,7 @@
                 });
                 
                 console.log('⚡ All site content is NOW VISIBLE (immediate load)');
-            }, 200);
+            }, 300); // Задержка для загрузки компонентов
         });
         
         // Альтернативный запуск если DOM уже загружен
@@ -907,7 +904,7 @@
                         el.style.visibility = 'visible';
                     }
                 });
-            }, 300);
+            }, 500);
         }
     </script>
 </body>
