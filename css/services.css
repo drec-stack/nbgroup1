@@ -261,6 +261,7 @@
         position: static;
         background: var(--primary);
         border-bottom: 1px solid var(--border);
+        top: auto !important;
     }
     
     .services-navigation {
@@ -296,6 +297,7 @@
     /* Service Detail Mobile */
     .service-detail {
         padding: 80px 0 !important;
+        scroll-margin-top: 120px !important;
     }
     
     .service-header {
@@ -480,125 +482,5 @@
     
     .phase-number {
         font-size: 1.8rem;
-    }
-}
-
-/* ===== ФИКС ДЛЯ ХЕДЕРА НА SERVICES.HTML ===== */
-/* Убедитесь, что хедер выглядит так же, как на других страницах */
-
-/* Отключаем ВСЕ специфичные правила для хедера, которые могут ломать его */
-.main-header {
-    /* Даем хедеру возможность использовать стили из header.html */
-    all: unset;
-}
-
-/* Принудительно применяем базовые стили */
-#main-header {
-    /* Основная позиция */
-    position: fixed !important;
-    top: 20px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: calc(100% - 40px) !important;
-    max-width: 1400px !important;
-    z-index: 1000 !important;
-    padding: 15px 0 !important;
-    border-radius: 20px !important;
-    
-    /* Внешний вид */
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(25px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    
-    /* Анимации */
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-    animation: headerSlideIn 0.6s ease-out 0.3s both !important;
-}
-
-/* Стили для скролла */
-#main-header.scroll-down {
-    transform: translateX(-50%) translateY(-10px) scale(0.98) !important;
-    opacity: 0.9 !important;
-    backdrop-filter: blur(30px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 0 25px rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    padding: 10px 0 !important;
-}
-
-#main-header.scroll-up {
-    transform: translateX(-50%) translateY(0) scale(1.01) !important;
-    opacity: 1 !important;
-    backdrop-filter: blur(35px) saturate(220%) !important;
-    -webkit-backdrop-filter: blur(35px) saturate(220%) !important;
-    background: rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 
-        0 16px 48px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        inset 0 0 30px rgba(255, 255, 255, 0.1) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-/* Мобильная версия */
-@media (max-width: 768px) {
-    #main-header {
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        top: 0 !important;
-        background: rgba(10, 10, 20, 0.95) !important;
-        backdrop-filter: blur(30px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-        padding: 12px 0 !important;
-    }
-    
-    #main-header.scroll-down {
-        transform: translateY(-5px) scale(0.98) !important;
-    }
-    
-    #main-header.scroll-up {
-        transform: translateY(0) scale(1.01) !important;
-    }
-}
-
-/* Анимации для хедера */
-@keyframes headerSlideIn {
-    from {
-        transform: translateX(-50%) translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
-    }
-}
-
-/* Отступ для контента под фиксированным хедером */
-.services-hero {
-    padding-top: 180px !important;
-}
-
-@media (max-width: 768px) {
-    .services-hero {
-        padding-top: 140px !important;
-    }
-    
-    .service-detail {
-        scroll-margin-top: 120px !important;
     }
 }
