@@ -1,8 +1,8 @@
-console.log('🏠 home.js loaded - FIXED VERSION WITH WORKING FAQ');
+console.log('🏠 home.js loaded - FIXED VERSION WITH WORKING FAQ & IMMEDIATE LOAD');
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
-    console.log('📄 INITIALIZING HOME PAGE');
+    console.log('📄 INITIALIZING HOME PAGE - IMMEDIATE CONTENT LOAD');
     
     // 1. Гарантируем класс для главной страницы
     document.body.classList.add('home-page');
@@ -19,20 +19,49 @@ function initializeHomePage() {
         }
     });
     
-    // 3. Запускаем единую систему параллакса
+    // 3. НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА ПРИ ЗАХОДЕ НА САЙТ
+    setTimeout(() => {
+        // Немедленно показываем весь текст
+        const allContentElements = document.querySelectorAll(
+            '.hero-content, .expertise-vertical-content, .project-content, .service-content, .journal-content, .faq-item, .stat-card, .cta-content'
+        );
+        
+        allContentElements.forEach((el, index) => {
+            setTimeout(() => {
+                if (el && el.style) {
+                    el.style.opacity = '1';
+                    el.style.visibility = 'visible';
+                    el.style.transform = 'translate(0, 0)';
+                    
+                    // Немедленно показываем все дочерние текстовые элементы
+                    const textChildren = el.querySelectorAll('h1, h2, h3, h4, p, span, li');
+                    textChildren.forEach(textEl => {
+                        if (textEl && textEl.style) {
+                            textEl.style.opacity = '1';
+                            textEl.style.transform = 'translate(0, 0)';
+                        }
+                    });
+                }
+            }, index * 50);
+        });
+        
+        console.log(`⚡ Immediately loaded ${allContentElements.length} content sections`);
+    }, 100);
+    
+    // 4. Запускаем единую систему параллакса
     initializeSingleParallaxSystem();
     
-    // 4. Запускаем все остальные функции
+    // 5. Запускаем все остальные функции с немедленной загрузкой
     setTimeout(() => {
-        initializeVerticalExpertiseBlocks();
-        initializeStatsCounter();
-        initializeFAQ(); // ← ВАЖНО: Активируем FAQ
-        initializeScrollAnimations();
+        initializeVerticalExpertiseBlocksImmediate(); // Немедленная загрузка
+        initializeStatsCounterImmediate(); // Немедленная загрузка
+        initializeFAQImmediate(); // Немедленная загрузка
+        initializeScrollAnimationsImmediate(); // Немедленная загрузка
         initializeScrollProgress();
         initializeCardHoverEffects();
         initializeServicesInteraction();
         
-        console.log('✅ Home page fully initialized with FAQ');
+        console.log('✅ Home page fully initialized with IMMEDIATE content loading');
     }, 300);
 }
 
@@ -127,8 +156,8 @@ function initializeSingleParallaxSystem() {
     return true;
 }
 
-// ===== ИНИЦИАЛИЗАЦИЯ ВЕРТИКАЛЬНЫХ EXPERTISE БЛОКОВ =====
-function initializeVerticalExpertiseBlocks() {
+// ===== НЕМЕДЛЕННАЯ ЗАГРУЗКА EXPERTISE БЛОКОВ =====
+function initializeVerticalExpertiseBlocksImmediate() {
     const expertiseBlocks = document.querySelectorAll('.expertise-vertical-block');
     
     if (expertiseBlocks.length === 0) {
@@ -136,146 +165,49 @@ function initializeVerticalExpertiseBlocks() {
         return;
     }
     
-    console.log(`✅ Found ${expertiseBlocks.length} vertical expertise blocks`);
+    console.log(`⚡ Immediately loading ${expertiseBlocks.length} expertise blocks`);
     
-    // Наблюдатель для анимации появления
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && entry.target.style) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateX(0)';
-                observer.unobserve(entry.target);
-                
-                // Активируем анимацию внутри блока
-                const number = entry.target.querySelector('.expertise-number');
-                const title = entry.target.querySelector('.expertise-title');
-                const description = entry.target.querySelector('.expertise-description');
-                const features = entry.target.querySelectorAll('.expertise-features li');
-                
-                if (number && number.style) {
-                    setTimeout(() => {
-                        number.style.transform = 'scale(1)';
-                        number.style.opacity = '1';
-                    }, 200);
-                }
-                
-                if (title && title.style) {
-                    setTimeout(() => {
-                        title.style.opacity = '1';
-                        title.style.transform = 'translateX(0)';
-                    }, 300);
-                }
-                
-                if (description && description.style) {
-                    setTimeout(() => {
-                        description.style.opacity = '1';
-                        description.style.transform = 'translateX(0)';
-                    }, 400);
-                }
-                
-                features.forEach((feature, index) => {
-                    if (feature && feature.style) {
-                        setTimeout(() => {
-                            feature.style.opacity = '1';
-                            feature.style.transform = 'translateX(0)';
-                        }, 500 + (index * 100));
-                    }
-                });
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    });
-    
-    // Устанавливаем начальные стили и добавляем наблюдателя
     expertiseBlocks.forEach((block, index) => {
         if (block && block.style) {
-            // Начальное состояние
-            block.style.opacity = '0';
-            block.style.transform = 'translateX(-50px)';
-            block.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-            block.style.transitionDelay = `${0.3 + (index * 0.1)}s`;
+            // НЕМЕДЛЕННО показываем блок
+            block.style.opacity = '1';
+            block.style.transform = 'translateX(0)';
             
-            // Настройка анимации для внутренних элементов
+            // Немедленно показываем внутренние элементы
             const number = block.querySelector('.expertise-number');
             const title = block.querySelector('.expertise-title');
             const description = block.querySelector('.expertise-description');
             const features = block.querySelectorAll('.expertise-features li');
             
-            if (number && number.style) {
-                number.style.transform = 'scale(0.8)';
-                number.style.opacity = '0.5';
-                number.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            }
-            
-            if (title && title.style) {
-                title.style.opacity = '0';
-                title.style.transform = 'translateX(-20px)';
-                title.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            }
-            
-            if (description && description.style) {
-                description.style.opacity = '0';
-                description.style.transform = 'translateX(-20px)';
-                description.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            }
-            
-            features.forEach(feature => {
-                if (feature && feature.style) {
-                    feature.style.opacity = '0';
-                    feature.style.transform = 'translateX(-15px)';
-                    feature.style.transition = 'opacity 0.4s ease, transform 0.4s ease, color 0.3s ease';
-                }
-            });
-            
-            // Hover эффекты
-            block.addEventListener('mouseenter', function() {
-                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    const number = this.querySelector('.expertise-number');
-                    const numberLine = this.querySelector('.expertise-number-line');
-                    const features = this.querySelectorAll('.expertise-features li');
-                    
-                    if (number && number.style) {
-                        number.style.transform = 'scale(1.1)';
-                    }
-                    
-                    if (numberLine && numberLine.style) {
-                        numberLine.style.transform = 'scaleY(1.3)';
-                    }
-                    
-                    features.forEach(feature => {
-                        if (feature.style) {
-                            feature.style.transform = 'translateX(5px)';
-                        }
-                    });
-                }
-            });
-            
-            block.addEventListener('mouseleave', function() {
-                const number = this.querySelector('.expertise-number');
-                const numberLine = this.querySelector('.expertise-number-line');
-                const features = this.querySelectorAll('.expertise-features li');
-                
+            setTimeout(() => {
                 if (number && number.style) {
                     number.style.transform = 'scale(1)';
+                    number.style.opacity = '1';
                 }
-                
-                if (numberLine && numberLine.style) {
-                    numberLine.style.transform = 'scaleY(1)';
+            }, 200);
+            
+            setTimeout(() => {
+                if (title && title.style) {
+                    title.style.opacity = '1';
+                    title.style.transform = 'translateX(0)';
                 }
-                
-                features.forEach(feature => {
-                    if (feature.style) {
+            }, 300);
+            
+            setTimeout(() => {
+                if (description && description.style) {
+                    description.style.opacity = '1';
+                    description.style.transform = 'translateX(0)';
+                }
+            }, 400);
+            
+            features.forEach((feature, featIndex) => {
+                setTimeout(() => {
+                    if (feature && feature.style) {
+                        feature.style.opacity = '1';
                         feature.style.transform = 'translateX(0)';
                     }
-                });
+                }, 500 + (featIndex * 50));
             });
-            
-            // Добавляем наблюдателя
-            setTimeout(() => {
-                observer.observe(block);
-            }, index * 150);
         }
     });
     
@@ -284,32 +216,18 @@ function initializeVerticalExpertiseBlocks() {
     const expertiseSubtitle = document.querySelector('.expertise-subtitle');
     
     if (expertiseTitle) {
-        expertiseTitle.style.opacity = '0';
-        expertiseTitle.style.transform = 'translateY(-20px)';
+        expertiseTitle.style.opacity = '1';
+        expertiseTitle.style.transform = 'translateY(0)';
         expertiseTitle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        
-        setTimeout(() => {
-            if (expertiseTitle.style) {
-                expertiseTitle.style.opacity = '1';
-                expertiseTitle.style.transform = 'translateY(0)';
-            }
-        }, 300);
     }
     
     if (expertiseSubtitle) {
-        expertiseSubtitle.style.opacity = '0';
-        expertiseSubtitle.style.transform = 'translateY(20px)';
+        expertiseSubtitle.style.opacity = '1';
+        expertiseSubtitle.style.transform = 'translateY(0)';
         expertiseSubtitle.style.transition = 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s';
-        
-        setTimeout(() => {
-            if (expertiseSubtitle.style) {
-                expertiseSubtitle.style.opacity = '1';
-                expertiseSubtitle.style.transform = 'translateY(0)';
-            }
-        }, 500);
     }
     
-    console.log('✅ Vertical expertise blocks animation initialized');
+    console.log('✅ Vertical expertise blocks immediately visible');
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ ВЗАИМОДЕЙСТВИЯ С УСЛУГАМИ =====
@@ -323,29 +241,11 @@ function initializeServicesInteraction() {
     
     console.log(`✅ Found ${serviceItems.length} service items`);
     
-    // Наблюдатель для анимации появления
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    });
-    
-    // Применяем анимацию к каждой услуге
+    // Немедленно показываем все услуги
     serviceItems.forEach((item, index) => {
         if (item && item.style) {
-            item.style.opacity = '0';
-            item.style.transform = 'translateY(30px)';
-            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            item.style.transitionDelay = `${0.3 + (index * 0.05)}s`;
-            
-            observer.observe(item);
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
             
             // Эффект при наведении
             item.addEventListener('mouseenter', function() {
@@ -380,35 +280,18 @@ function initializeServicesInteraction() {
         }
     });
     
-    // Наблюдатель для заголовка и интро
-    const headerObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                headerObserver.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.2
-    });
-    
-    // Анимируем заголовок и интро
+    // Немедленно показываем заголовок и интро
     const serviceTitle = document.querySelector('.speck-section-title');
     const serviceIntro = document.querySelector('.speck-services-intro');
     
     if (serviceTitle) {
-        serviceTitle.style.opacity = '0';
-        serviceTitle.style.transform = 'translateY(-20px)';
-        serviceTitle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        headerObserver.observe(serviceTitle);
+        serviceTitle.style.opacity = '1';
+        serviceTitle.style.transform = 'translateY(0)';
     }
     
     if (serviceIntro) {
-        serviceIntro.style.opacity = '0';
-        serviceIntro.style.transform = 'translateY(20px)';
-        serviceIntro.style.transition = 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s';
-        headerObserver.observe(serviceIntro);
+        serviceIntro.style.opacity = '1';
+        serviceIntro.style.transform = 'translateY(0)';
     }
 }
 
@@ -758,8 +641,8 @@ function scrollToServiceDetails(serviceId) {
     });
 }
 
-// ===== СТАТИСТИКА СЧЁТЧИК =====
-function initializeStatsCounter() {
+// ===== НЕМЕДЛЕННАЯ СТАТИСТИКА СЧЁТЧИК =====
+function initializeStatsCounterImmediate() {
     const counters = document.querySelectorAll('.stat-number');
     
     if (counters.length === 0) {
@@ -767,49 +650,20 @@ function initializeStatsCounter() {
         return;
     }
     
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                counters.forEach(counter => {
-                    const target = parseInt(counter.getAttribute('data-count')) || 0;
-                    if (target > 0) {
-                        animateCounter(counter, target);
-                    }
-                });
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.5
-    });
+    console.log(`⚡ Immediately animating ${counters.length} counters`);
     
-    const statsSection = document.querySelector('.stats-section');
-    if (statsSection) {
-        observer.observe(statsSection);
-    }
-    
-    console.log(`✅ Stats counter initialized (${counters.length} counters)`);
-}
-
-function animateCounter(element, target) {
-    if (!element) return;
-    
-    const duration = 2000;
-    const step = target / (duration / 16);
-    let current = 0;
-    
-    const timer = setInterval(() => {
-        current += step;
-        if (current >= target) {
-            current = target;
-            clearInterval(timer);
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-count')) || 0;
+        if (target > 0) {
+            // Немедленно показываем финальное значение
+            counter.textContent = target;
+            counter.classList.add('counter-animate');
         }
-        element.textContent = Math.floor(current);
-    }, 16);
+    });
 }
 
-// ===== FAQ АККОРДЕОН (ИСПРАВЛЕННАЯ ВЕРСИЯ) =====
-function initializeFAQ() {
+// ===== НЕМЕДЛЕННАЯ ИНИЦИАЛИЗАЦИЯ FAQ =====
+function initializeFAQImmediate() {
     const faqItems = document.querySelectorAll('.faq-item');
     
     if (faqItems.length === 0) {
@@ -817,25 +671,18 @@ function initializeFAQ() {
         return;
     }
     
-    console.log(`✅ Found ${faqItems.length} FAQ items, initializing accordion...`);
+    console.log(`⚡ Immediately loading ${faqItems.length} FAQ items`);
     
-    // Устанавливаем начальные стили
+    // Немедленно показываем все вопросы
     faqItems.forEach(item => {
-        const answer = item.querySelector('.faq-answer');
-        const icon = item.querySelector('.faq-question i');
-        
-        if (answer && answer.style) {
-            answer.style.maxHeight = '0';
-            answer.style.overflow = 'hidden';
-            answer.style.transition = 'max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-        }
-        
-        if (icon && icon.style) {
-            icon.style.transition = 'transform 0.3s ease';
+        const question = item.querySelector('.faq-question');
+        if (question && question.style) {
+            question.style.opacity = '1';
+            question.style.transform = 'translateY(0)';
         }
     });
     
-    // Добавляем обработчики кликов
+    // FAQ аккордеон логика остается
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
         
@@ -868,10 +715,8 @@ function initializeFAQ() {
                 
                 if (answer && answer.style) {
                     if (isActive) {
-                        // Закрываем
                         answer.style.maxHeight = '0';
                     } else {
-                        // Открываем
                         answer.style.maxHeight = answer.scrollHeight + 'px';
                     }
                 }
@@ -887,7 +732,7 @@ function initializeFAQ() {
         }
     });
     
-    // Автоматически открываем первый элемент через 1 секунду
+    // Автоматически открываем первый элемент
     setTimeout(() => {
         if (faqItems.length > 0) {
             const firstItem = faqItems[0];
@@ -901,43 +746,24 @@ function initializeFAQ() {
             if (firstIcon && firstIcon.style) {
                 firstIcon.style.transform = 'rotate(45deg)';
             }
-            console.log('✅ First FAQ item opened automatically');
         }
-    }, 1000);
-    
-    console.log(`✅ FAQ accordion initialized with ${faqItems.length} items`);
+    }, 500);
 }
 
-// ===== SCROLL АНИМАЦИИ =====
-function initializeScrollAnimations() {
+// ===== НЕМЕДЛЕННЫЕ SCROLL АНИМАЦИИ =====
+function initializeScrollAnimationsImmediate() {
     const animatedElements = document.querySelectorAll('.fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right');
     
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const computedStyle = getComputedStyle(entry.target);
-                const animationName = computedStyle.animationName;
-                
-                if (animationName && animationName !== 'none') {
-                    entry.target.style.animationPlayState = 'running';
-                } else {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translate(0, 0)';
-                }
-                
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    });
+    console.log(`⚡ Immediately showing ${animatedElements.length} animated elements`);
     
     animatedElements.forEach(el => {
-        if (el) observer.observe(el);
+        if (el) {
+            // Немедленно показываем элемент
+            el.style.opacity = '1';
+            el.style.transform = 'translate(0, 0)';
+            el.style.animationPlayState = 'running';
+        }
     });
-    
-    console.log(`✅ Scroll animations initialized for ${animatedElements.length} elements`);
 }
 
 // ===== SCROLL PROGRESS BAR =====
@@ -1029,4 +855,25 @@ window.testFAQ = function() {
     });
 };
 
-console.log('✅ home.js fully loaded with WORKING FAQ accordion!');
+// Функция для принудительной немедленной загрузки всего контента
+window.loadAllContentImmediately = function() {
+    console.log('⚡ Forcing immediate content load...');
+    
+    const allTextElements = document.querySelectorAll(
+        'h1, h2, h3, h4, h5, h6, p, span, li, .title, .subtitle, .description, .text, [data-i18n]'
+    );
+    
+    allTextElements.forEach(el => {
+        if (el && el.style) {
+            el.style.opacity = '1';
+            el.style.visibility = 'visible';
+            el.style.transform = 'translate(0, 0)';
+        }
+    });
+    
+    document.body.classList.add('all-content-loaded');
+    
+    console.log(`✅ Immediately loaded ${allTextElements.length} text elements`);
+};
+
+console.log('✅ home.js fully loaded with IMMEDIATE CONTENT LOADING!');
