@@ -1,5 +1,5 @@
-// services.js - ULTIMATE HEADER FIX
-console.log('🛡️ Services.js loaded - ULTIMATE FIX!');
+// services.js - Services Page Functionality
+console.log('✅ Services.js loaded');
 
 // Проверяем, не инициализировался ли уже скрипт
 if (window.servicesInitialized) {
@@ -9,344 +9,31 @@ if (window.servicesInitialized) {
 }
 window.servicesInitialized = true;
 
-// ===== ГЛОБАЛЬНАЯ ФУНКЦИЯ ДЛЯ БЛОКИРОВКИ =====
-function injectUltimateHeaderFix() {
-    console.log('🚀 Injecting ULTIMATE header fix...');
-    
-    // 1. Добавляем класс к body
-    document.body.classList.add('services-page');
-    
-    // 2. Создаем стиль с максимальным приоритетом
-    const style = document.createElement('style');
-    style.id = 'services-ultimate-fix';
-    style.textContent = `
-        /* ===== АБСОЛЮТНЫЙ ФИКС - ПЕРВЫЙ ПРИОРИТЕТ ===== */
-        
-        /* 1. ФИКСИРУЕМ ХЕДЕР НА МЕСТЕ */
-        body.services-page .main-header {
-            /* ПОЗИЦИЯ - АБСОЛЮТНО ФИКСИРОВАННАЯ */
-            position: fixed !important;
-            top: 20px !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            right: auto !important;
-            width: calc(100% - 40px) !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            z-index: 1000 !important;
-            
-            /* ГАРАНТИИ ВИДИМОСТИ */
-            opacity: 1 !important;
-            visibility: visible !important;
-            pointer-events: auto !important;
-            
-            /* ПОЛНОЕ ОТКЛЮЧЕНИЕ АНИМАЦИЙ */
-            animation: none !important;
-            transition: none !important;
-            -webkit-transition: none !important;
-            transition-property: none !important;
-            transition-duration: 0s !important;
-            
-            /* БЛОКИРОВКА ИЗМЕНЕНИЙ */
-            will-change: auto !important;
-            backface-visibility: visible !important;
-        }
-        
-        /* 2. МОБИЛЬНАЯ ВЕРСИЯ */
-        @media (max-width: 768px) {
-            body.services-page .main-header {
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                transform: none !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-                border-radius: 0 !important;
-            }
-        }
-        
-        /* 3. БЛОКИРОВКА ВСЕХ СОСТОЯНИЙ */
-        body.services-page .main-header:hover,
-        body.services-page .main-header:active,
-        body.services-page .main-header:focus,
-        body.services-page .main-header.scrolled,
-        body.services-page .main-header.header-hidden {
-            /* ТОЧНО ТАКИЕ ЖЕ СТИЛИ */
-            position: fixed !important;
-            top: 20px !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            right: auto !important;
-            width: calc(100% - 40px) !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-        }
-        
-        @media (max-width: 768px) {
-            body.services-page .main-header:hover,
-            body.services-page .main-header:active,
-            body.services-page .main-header:focus,
-            body.services-page .main-header.scrolled,
-            body.services-page .main-header.header-hidden {
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                transform: none !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-            }
-        }
-        
-        /* 4. ПЕРЕОПРЕДЕЛЕНИЕ ИНЛАЙН-СТИЛЕЙ */
-        body.services-page .main-header[style] {
-            /* ИГНОРИРУЕМ ЛЮБЫЕ ИНЛАЙН СТИЛИ */
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            top: 20px !important;
-            position: fixed !important;
-            width: calc(100% - 40px) !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            animation: none !important;
-            transition: none !important;
-        }
-        
-        @media (max-width: 768px) {
-            body.services-page .main-header[style] {
-                left: 0 !important;
-                transform: none !important;
-                top: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-            }
-        }
-        
-        /* 5. БЛОКИРОВКА ДЛЯ ВСЕХ ВЛОЖЕННЫХ ЭЛЕМЕНТОВ */
-        body.services-page .main-header * {
-            animation: none !important;
-            transition: none !important;
-        }
-    `;
-    
-    // Вставляем стиль В НАЧАЛО head для максимального приоритета
-    document.head.insertBefore(style, document.head.firstChild);
-    
-    // 3. Применяем инлайн-стили немедленно
-    setTimeout(() => {
-        const header = document.querySelector('.main-header');
-        if (header) {
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                header.style.cssText = `
-                    position: fixed !important;
-                    top: 0 !important;
-                    left: 0 !important;
-                    right: 0 !important;
-                    transform: none !important;
-                    width: 100% !important;
-                    max-width: 100% !important;
-                    margin: 0 !important;
-                    border-radius: 0 !important;
-                    z-index: 1000 !important;
-                    opacity: 1 !important;
-                    visibility: visible !important;
-                    pointer-events: auto !important;
-                    animation: none !important;
-                    transition: none !important;
-                `;
-            } else {
-                header.style.cssText = `
-                    position: fixed !important;
-                    top: 20px !important;
-                    left: 50% !important;
-                    transform: translateX(-50%) !important;
-                    right: auto !important;
-                    width: calc(100% - 40px) !important;
-                    max-width: 1400px !important;
-                    margin: 0 auto !important;
-                    border-radius: 20px !important;
-                    z-index: 1000 !important;
-                    opacity: 1 !important;
-                    visibility: visible !important;
-                    pointer-events: auto !important;
-                    animation: none !important;
-                    transition: none !important;
-                `;
-            }
-            
-            // Убираем все классы, которые могут влиять на позицию
-            header.classList.remove('header-hidden', 'header-glass-enter', 'glass-morph');
-            
-            // Добавляем scrolled класс если нужно
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            console.log('✅ Ultimate CSS fix applied to header');
-        }
-    }, 100);
-    
-    console.log('✅ Ultimate CSS fix injected');
-}
-
-// ===== БЛОКИРОВКА ВСЕХ JS ИНТЕРФЕРЕНЦИЙ =====
-function blockJavaScriptInterference() {
-    console.log('🔒 Blocking all JavaScript interference...');
-    
-    const header = document.querySelector('.main-header');
-    if (!header) {
-        console.warn('⚠️ Header not found for blocking interference');
-        return;
-    }
-    
-    // 1. БЛОКИРОВКА СКРОЛЛА
-    const blockScrollHandler = function(e) {
-        // НИКАКОЙ РЕАКЦИИ НА СКРОЛЛ
-        const isMobile = window.innerWidth <= 768;
-        
-        if (isMobile) {
-            header.style.left = '0';
-            header.style.transform = 'none';
-            header.style.top = '0';
-        } else {
-            header.style.left = '50%';
-            header.style.transform = 'translateX(-50%)';
-            header.style.top = '20px';
-        }
-    };
-    
-    window.addEventListener('scroll', blockScrollHandler, { passive: false, capture: true });
-    
-    // 2. БЛОКИРОВКА RESIZE
-    window.addEventListener('resize', function() {
-        setTimeout(() => {
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                header.style.left = '0';
-                header.style.transform = 'none';
-                header.style.top = '0';
-                header.style.width = '100%';
-                header.style.maxWidth = '100%';
-                header.style.borderRadius = '0';
-            } else {
-                header.style.left = '50%';
-                header.style.transform = 'translateX(-50%)';
-                header.style.top = '20px';
-                header.style.width = 'calc(100% - 40px)';
-                header.style.maxWidth = '1400px';
-                header.style.borderRadius = '20px';
-            }
-        }, 10);
-    }, { passive: true });
-    
-    // 3. БЛОКИРОВКА MUTATION OBSERVER
-    if (typeof MutationObserver !== 'undefined') {
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.target === header) {
-                    // Если кто-то пытается изменить стили
-                    const isMobile = window.innerWidth <= 768;
-                    
-                    if (isMobile) {
-                        header.style.left = '0';
-                        header.style.transform = 'none';
-                        header.style.top = '0';
-                    } else {
-                        header.style.left = '50%';
-                        header.style.transform = 'translateX(-50%)';
-                        header.style.top = '20px';
-                    }
-                }
-            });
-        });
-        
-        observer.observe(header, { 
-            attributes: true, 
-            attributeFilter: ['style', 'class'] 
-        });
-    }
-    
-    // 4. БЛОКИРОВКА HOVER
-    ['mouseenter', 'mouseleave', 'mouseover', 'mouseout'].forEach(event => {
-        header.addEventListener(event, function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            
-            const isMobile = window.innerWidth <= 768;
-            if (isMobile) {
-                header.style.left = '0';
-                header.style.transform = 'none';
-            } else {
-                header.style.left = '50%';
-                header.style.transform = 'translateX(-50%)';
-            }
-        }, { passive: false });
-    });
-    
-    console.log('✅ JavaScript interference blocked');
-}
-
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initServicesPage() {
-    console.log('🚀 Initializing Services page with ULTIMATE fix...');
+    console.log('🚀 Initializing Services page...');
     
-    // 1. Внедряем CSS фикс
-    injectUltimateHeaderFix();
-    
-    // 2. Блокируем JS интерференцию
-    setTimeout(() => {
-        blockJavaScriptInterference();
-    }, 200);
-    
-    // 3. Настройка контента страницы
+    // 1. Настройка контента страницы
     setupServicesContent();
-    setupNavigation();
     
-    // 4. Устанавливаем проверку каждую секунду
-    const checkInterval = setInterval(() => {
-        const header = document.querySelector('.main-header');
-        if (header) {
-            const currentLeft = header.style.left;
-            const currentTransform = header.style.transform;
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                if (currentLeft !== '0px' && currentLeft !== '0') {
-                    console.log('🔄 Fixing mobile header position...');
-                    header.style.left = '0';
-                    header.style.transform = 'none';
-                }
-            } else {
-                if (currentLeft !== '50%' || currentTransform !== 'translateX(-50%)') {
-                    console.log('🔄 Fixing desktop header position...');
-                    header.style.left = '50%';
-                    header.style.transform = 'translateX(-50%)';
-                }
-            }
-        }
-    }, 1000);
+    // 2. Настройка навигации по услугам
+    setupServicesNavigation();
     
-    // Очищаем через 10 секунд
-    setTimeout(() => {
-        clearInterval(checkInterval);
-        console.log('✅ Header position stabilized');
-    }, 10000);
+    // 3. Настройка анимаций
+    setupServicesAnimations();
     
     console.log('✅ Services page initialized');
 }
 
-// ===== ДОПОЛНИТЕЛЬНЫЙ ФУНКЦИОНАЛ =====
+// ===== НАСТРОЙКА КОНТЕНТА =====
 function setupServicesContent() {
-    const animatedElements = document.querySelectorAll('.service-detail, .feature, .process-phase');
+    console.log('📊 Setting up services content...');
+    
+    // Добавляем класс к body для специфичных стилей
+    document.body.classList.add('services-page');
+    
+    // Настраиваем плавное появление элементов
+    const animatedElements = document.querySelectorAll('.service-detail, .feature, .process-phase, .stat');
     
     if (animatedElements.length > 0 && 'IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries) => {
@@ -370,12 +57,16 @@ function setupServicesContent() {
     }
 }
 
-function setupNavigation() {
+// ===== НАСТРОЙКА НАВИГАЦИИ ПО УСЛУГАМ =====
+function setupServicesNavigation() {
+    console.log('📍 Setting up services navigation...');
+    
     const navItems = document.querySelectorAll('.services-nav .nav-item');
     const sections = document.querySelectorAll('.service-detail');
     
     if (navItems.length === 0 || sections.length === 0) return;
     
+    // Наблюдатель за видимостью секций
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -390,8 +81,10 @@ function setupNavigation() {
         });
     }, { threshold: 0.5 });
     
+    // Наблюдаем за всеми секциями
     sections.forEach(section => observer.observe(section));
     
+    // Обработка кликов по навигации
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
@@ -399,11 +92,13 @@ function setupNavigation() {
             const target = document.getElementById(targetId);
             
             if (target) {
+                // Рассчитываем правильный отступ с учетом хедера
                 const header = document.querySelector('.main-header');
-                const headerHeight = header.offsetHeight;
+                const headerHeight = header ? header.offsetHeight : 100;
                 const navHeight = document.querySelector('.services-nav').offsetHeight;
                 const offset = headerHeight + navHeight + 20;
                 
+                // Плавный скролл
                 window.scrollTo({
                     top: target.offsetTop - offset,
                     behavior: 'smooth'
@@ -413,21 +108,104 @@ function setupNavigation() {
     });
 }
 
-// ===== АВТОМАТИЧЕСКИЙ ЗАПУСК =====
-// Запускаем немедленно
-try {
-    initServicesPage();
-} catch (error) {
-    console.error('Initialization error:', error);
-    // Пробуем еще раз через 200мс
-    setTimeout(initServicesPage, 200);
+// ===== НАСТРОЙКА АНИМАЦИЙ =====
+function setupServicesAnimations() {
+    console.log('🎬 Setting up animations...');
+    
+    // Анимация для статистики
+    const stats = document.querySelectorAll('.stat-value');
+    if (stats.length > 0) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const stat = entry.target;
+                    const finalValue = stat.textContent;
+                    const numericValue = parseFloat(finalValue);
+                    
+                    if (!isNaN(numericValue)) {
+                        let startValue = 0;
+                        const duration = 1500;
+                        const startTime = Date.now();
+                        
+                        function animate() {
+                            const elapsed = Date.now() - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            
+                            // Easing function
+                            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                            const currentValue = Math.floor(startValue + (numericValue - startValue) * easeOutQuart);
+                            
+                            stat.textContent = currentValue;
+                            
+                            if (progress < 1) {
+                                requestAnimationFrame(animate);
+                            } else {
+                                stat.textContent = finalValue;
+                            }
+                        }
+                        
+                        requestAnimationFrame(animate);
+                    }
+                    
+                    observer.unobserve(stat);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        stats.forEach(stat => observer.observe(stat));
+    }
+    
+    // Анимация для фаз процесса
+    const processPhases = document.querySelectorAll('.process-phase');
+    if (processPhases.length > 0) {
+        processPhases.forEach((phase, index) => {
+            phase.style.transitionDelay = `${index * 100}ms`;
+        });
+    }
 }
 
-// Дублируем при полной загрузке
+// ===== ОБРАБОТКА ПРОКРУТКИ =====
+function handleServicesScroll() {
+    // Эта функция оставлена для совместимости, но не вмешивается в работу хедера
+    const servicesNav = document.querySelector('.services-nav');
+    if (!servicesNav) return;
+    
+    const scrollY = window.scrollY || window.pageYOffset;
+    const servicesHero = document.querySelector('.services-hero');
+    
+    if (servicesHero) {
+        const heroBottom = servicesHero.offsetTop + servicesHero.offsetHeight;
+        
+        if (scrollY > heroBottom - 100) {
+            servicesNav.classList.add('sticky');
+        } else {
+            servicesNav.classList.remove('sticky');
+        }
+    }
+}
+
+// ===== АВТОМАТИЧЕСКИЙ ЗАПУСК =====
+// Запускаем при готовности DOM
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('📄 DOM loaded - applying additional fixes...');
-    // Убеждаемся, что фикс применяется
-    setTimeout(injectUltimateHeaderFix, 100);
+    console.log('📄 DOM loaded - initializing Services...');
+    
+    try {
+        initServicesPage();
+    } catch (error) {
+        console.error('Initialization error:', error);
+        // Пробуем еще раз через 500мс
+        setTimeout(initServicesPage, 500);
+    }
+    
+    // Добавляем обработчик скролла
+    window.addEventListener('scroll', handleServicesScroll, { passive: true });
 });
 
-console.log('✅ services.js - ULTIMATE FIX loaded!');
+// Экспортируем функции для использования в других местах
+window.servicesModule = {
+    init: initServicesPage,
+    setupNavigation: setupServicesNavigation,
+    setupAnimations: setupServicesAnimations
+};
+
+console.log('✅ services.js loaded successfully!');
