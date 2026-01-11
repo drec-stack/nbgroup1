@@ -54,17 +54,27 @@ html {
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     opacity: 0 !important;
-    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
     will-change: transform, opacity;
     transform: translate3d(0, 0, 0);
 }
 
-/* ПЕРВОЕ ИЗОБРАЖЕНИЕ - АКТИВНО ПРИ ЗАГРУЗКЕ */
+/* КРИТИЧНО: Первый слой должен быть виден при загрузке */
+.parallax-bg-layer:first-child {
+    opacity: 1 !important;
+}
+
+/* АКТИВНЫЙ СЛОЙ */
 .parallax-bg-layer.active {
     opacity: 1 !important;
 }
 
-/* Усиление эффекта изображений */
+/* Параллакс-эффект */
+.parallax-bg-layer.scroll-parallax {
+    transition: transform 0.2s linear, opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Затемнение фона для лучшей читаемости текста */
 .parallax-bg-layer::after {
     content: '';
     position: absolute;
@@ -81,6 +91,8 @@ html {
     /* Отключаем fixed background на мобильных */
     .parallax-bg-layer {
         background-attachment: scroll !important;
+        transform: none !important;
+        transition: opacity 1.2s ease !important;
     }
 }
 
@@ -103,13 +115,14 @@ html {
     position: relative;
     z-index: 100;
     overflow: hidden;
-    backdrop-filter: blur(12px) saturate(0.9) !important;
-    -webkit-backdrop-filter: blur(12px) saturate(0.9) !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(15px) saturate(1.2) !important;
+    -webkit-backdrop-filter: blur(15px) saturate(1.2) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.25),
-        0 2px 10px rgba(0, 0, 0, 0.15) !important;
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     color: white !important;
 }
 
@@ -134,12 +147,13 @@ html {
 }
 
 .btn-primary:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.18) !important;
     transform: translateY(-3px);
     box-shadow: 
-        0 12px 35px rgba(0, 0, 0, 0.3),
-        0 4px 15px rgba(0, 0, 0, 0.2) !important;
-    border-color: rgba(255, 255, 255, 0.25) !important;
+        0 15px 40px rgba(0, 0, 0, 0.4),
+        0 6px 20px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .btn-secondary {
@@ -148,9 +162,12 @@ html {
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
     border-color: rgba(255, 255, 255, 0.25) !important;
     transform: translateY(-3px);
+    box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.4),
+        0 6px 20px rgba(0, 0, 0, 0.25) !important;
 }
 
 .btn i {
@@ -190,8 +207,8 @@ html {
     margin-bottom: 1.5rem;
     text-transform: uppercase;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .hero h1 span {
@@ -203,8 +220,8 @@ html {
     font-size: 6.5rem;
     margin-bottom: 0.5rem;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .hero h1 span:nth-child(2) {
@@ -212,8 +229,8 @@ html {
     font-size: 4rem;
     font-weight: 800;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .hero-subtitle {
@@ -224,8 +241,8 @@ html {
     letter-spacing: 0.5px;
     line-height: 1.4;
     text-shadow: 
-        0 3px 25px rgba(0, 0, 0, 0.9),
-        0 2px 20px rgba(0, 0, 0, 0.85) !important;
+        0 3px 30px rgba(0, 0, 0, 0.9),
+        0 2px 25px rgba(0, 0, 0, 0.85) !important;
 }
 
 .hero-description {
@@ -244,8 +261,8 @@ html {
     color: rgba(255, 255, 255, 0.9) !important;
     margin-bottom: 1.5rem;
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.9),
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .hero-actions {
@@ -279,8 +296,8 @@ html {
     text-align: left;
     line-height: 1.1;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .expertise-vertical-container {
@@ -347,8 +364,8 @@ html {
     color: #3366cc !important;
     line-height: 1;
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.95),
-        0 1px 15px rgba(0, 0, 0, 0.9) !important;
+        0 2px 25px rgba(0, 0, 0, 0.95),
+        0 1px 20px rgba(0, 0, 0, 0.9) !important;
     transition: all 0.4s ease;
 }
 
@@ -392,8 +409,8 @@ html {
     margin-bottom: 15px;
     line-height: 1.2;
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.95),
-        0 1px 15px rgba(0, 0, 0, 0.9) !important;
+        0 2px 25px rgba(0, 0, 0, 0.95),
+        0 1px 20px rgba(0, 0, 0, 0.9) !important;
     transition: all 0.3s ease;
 }
 
@@ -408,7 +425,7 @@ html {
     margin-bottom: 25px;
     line-height: 1.5;
     text-shadow: 
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
     font-weight: 500;
 }
 
@@ -426,7 +443,7 @@ html {
     padding-left: 30px;
     position: relative;
     text-shadow: 
-        0 1px 10px rgba(0, 0, 0, 0.8) !important;
+        0 1px 15px rgba(0, 0, 0, 0.8) !important;
     transition: all 0.3s ease;
 }
 
@@ -461,8 +478,8 @@ html {
 .projects-section .section-title {
     color: #3366cc !important;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .projects-grid {
@@ -520,8 +537,8 @@ html {
     margin-bottom: 12px;
     line-height: 1.3;
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.9),
-        0 1px 15px rgba(0, 0, 0, 0.8) !important;
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.8) !important;
 }
 
 .project-description {
@@ -530,7 +547,7 @@ html {
     line-height: 1.6;
     margin: 0;
     text-shadow: 
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 /* ===== STATS SECTION ===== */
@@ -544,8 +561,8 @@ html {
 .stats-section .section-title {
     color: #3366cc !important;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .section-title {
@@ -555,8 +572,8 @@ html {
     margin-bottom: 20px;
     color: #3366cc !important;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .section-subtitle {
@@ -565,8 +582,8 @@ html {
     text-align: center;
     margin-bottom: 60px;
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.9),
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .stats-grid {
@@ -593,8 +610,8 @@ html {
     margin-bottom: 15px;
     line-height: 1;
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.9),
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .stat-label {
@@ -604,7 +621,7 @@ html {
     text-transform: uppercase;
     letter-spacing: 1px;
     text-shadow: 
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 /* ===== SERVICES SECTION ===== */
@@ -628,8 +645,8 @@ html {
     text-align: left;
     line-height: 1.1;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .speck-services-intro {
@@ -637,8 +654,8 @@ html {
     line-height: 1.8;
     color: rgba(255, 255, 255, 0.95) !important;
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.9),
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .speck-services-intro p {
@@ -683,8 +700,8 @@ html {
     margin-bottom: 25px;
     line-height: 1.3;
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.9),
-        0 1px 15px rgba(0, 0, 0, 0.8) !important;
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.8) !important;
     position: relative;
     padding-bottom: 15px;
 }
@@ -704,7 +721,7 @@ html {
     line-height: 1.7;
     color: rgba(255, 255, 255, 0.9) !important;
     text-shadow: 
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .service-content p {
@@ -737,7 +754,7 @@ html {
     opacity: 0.7;
     transition: all 0.3s ease;
     text-shadow: 
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .speck-service-item:hover .service-arrow {
@@ -756,8 +773,8 @@ html {
 .journals-section .section-title {
     color: #3366cc !important;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .journals-grid {
@@ -788,7 +805,7 @@ html {
     color: #3366cc !important;
     font-weight: 600;
     text-shadow: 
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .journal-title {
@@ -798,8 +815,8 @@ html {
     margin: 0;
     line-height: 1.4;
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.9),
-        0 1px 15px rgba(0, 0, 0, 0.8) !important;
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.8) !important;
 }
 
 .journal-link {
@@ -830,8 +847,8 @@ html {
 .faq-section .section-title {
     color: #3366cc !important;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .faq-grid {
@@ -870,7 +887,7 @@ html {
     align-items: center;
     transition: all 0.3s ease;
     text-shadow: 
-        0 2px 15px rgba(0, 0, 0, 0.9) !important;
+        0 2px 20px rgba(0, 0, 0, 0.9) !important;
     position: relative;
     gap: 20px;
 }
@@ -937,7 +954,7 @@ html {
     color: rgba(255, 255, 255, 0.9) !important;
     margin: 0;
     text-shadow: 
-        0 1px 10px rgba(0, 0, 0, 0.85) !important;
+        0 1px 15px rgba(0, 0, 0, 0.85) !important;
     padding-top: 15px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -975,8 +992,8 @@ html {
     margin-bottom: 20px;
     line-height: 1.1;
     text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9) !important;
+        0 3px 35px rgba(0, 0, 0, 0.95),
+        0 2px 30px rgba(0, 0, 0, 0.9) !important;
 }
 
 .cta-subtitle {
@@ -985,8 +1002,8 @@ html {
     margin-bottom: 40px;
     line-height: 1.6;
     text-shadow: 
-        0 2px 20px rgba(0, 0, 0, 0.9),
-        0 1px 15px rgba(0, 0, 0, 0.85) !important;
+        0 2px 25px rgba(0, 0, 0, 0.9),
+        0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
 .cta-image {
@@ -1088,8 +1105,8 @@ h1, h2, h3, h4, h5, h6, p,
 .speck-services-intro, .speck-services-intro p {
     text-shadow: 
         0 4px 40px rgba(0, 0, 0, 0.95),
-        0 3px 30px rgba(0, 0, 0, 0.9),
-        0 2px 25px rgba(0, 0, 0, 0.85) !important;
+        0 3px 35px rgba(0, 0, 0, 0.9),
+        0 2px 30px rgba(0, 0, 0, 0.85) !important;
     position: relative;
     z-index: 20;
 }
