@@ -1799,3 +1799,40 @@ h1, h2, h3, h4, h5, h6, p,
     border: none !important;
     box-shadow: none !important;
 }
+
+/* ===== HEADER FIX FOR HOME PAGE ===== */
+.home-page .main-header {
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    z-index: 1000 !important;
+}
+
+/* Убираем возможные влияния контейнера */
+.home-page .container {
+    max-width: 1400px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+    .home-page .main-header {
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        top: 0 !important;
+    }
+    
+    .home-page .container {
+        padding: 0 20px !important;
+    }
+}
