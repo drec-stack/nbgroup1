@@ -15,9 +15,9 @@
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/animations.css">
     
-    <!-- Критичные стили для фона и немедленной загрузки -->
+    <!-- Критичные стили для фона -->
     <style>
-        /* КРИТИЧНЫЕ СТИЛИ ДЛЯ ФОНА И НЕМЕДЛЕННОЙ ЗАГРУЗКИ */
+        /* КРИТИЧНЫЕ СТИЛИ ДЛЯ ФОНА */
         * {
             margin: 0;
             padding: 0;
@@ -35,7 +35,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
         
-        /* ФОНОВЫЕ СЛОИ - СПЕЦИАЛЬНЫЙ КОНТЕЙНЕР ДЛЯ СМЕНЫ ИЗОБРАЖЕНИЙ */
+        /* ФОНОВЫЕ СЛОИ */
         .parallax-bg-container {
             position: fixed !important;
             top: 0 !important;
@@ -62,18 +62,15 @@
             will-change: transform, opacity;
         }
         
-        /* ПЕРВОЕ ИЗОБРАЖЕНИЕ - АКТИВНО ПРИ ЗАГРУЗКЕ */
         .parallax-bg-layer.active {
             opacity: 1 !important;
         }
         
-        /* Параллакс эффект при скролле */
         .parallax-bg-layer.scroll-parallax {
             transform: translate3d(0, 0, 0);
             transition: transform 0.1s linear, opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         
-        /* Усиление эффекта изображений */
         .parallax-bg-layer::after {
             content: '';
             position: absolute;
@@ -93,7 +90,7 @@
             z-index: 100 !important;
         }
         
-        /* КНОПКИ БЕЗ СИНЕГО ФОНА */
+        /* КНОПКИ */
         .btn, .btn-primary, .btn-secondary {
             background: rgba(255, 255, 255, 0.08) !important;
             backdrop-filter: blur(12px) saturate(0.9) !important;
@@ -112,15 +109,6 @@
                 0 4px 15px rgba(0, 0, 0, 0.2) !important;
         }
         
-        .btn::before {
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.08),
-                transparent
-            ) !important;
-        }
-        
         /* ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ */
         .bg-preloader {
             position: fixed;
@@ -128,11 +116,6 @@
             height: 0;
             overflow: hidden;
             z-index: -9999;
-            background-image: 
-                url('assets/images/parallax/bg-1.jpg'),
-                url('assets/images/parallax/bg-2.jpg'),
-                url('assets/images/parallax/bg-3.jpg'),
-                url('assets/images/parallax/bg-4.jpg');
         }
         
         /* Гарантия прозрачности для всех контейнеров */
@@ -157,11 +140,12 @@
                 0 2px 25px rgba(0, 0, 0, 0.85) !important;
         }
         
-        /* ДОБАВЛЕНО: Отступ для хедера */
+        /* Отступ для хедера */
         body {
             padding-top: 80px;
         }
         
+        /* ОПТИМИЗАЦИЯ ДЛЯ МОБИЛЬНЫХ */
         @media (max-width: 768px) {
             body {
                 padding-top: 60px;
@@ -172,67 +156,10 @@
                 background-attachment: scroll !important;
             }
         }
-        
-        /* ИНДИКАТОР ПРОГРЕССА СМЕНЫ ФОНА */
-        .bg-scroll-indicator {
-            position: fixed;
-            top: 50%;
-            right: 30px;
-            transform: translateY(-50%);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-        
-        .bg-scroll-indicator:hover {
-            opacity: 1;
-        }
-        
-        .bg-scroll-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .bg-scroll-dot.active {
-            background: white;
-            transform: scale(1.3);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-        
-        .bg-scroll-dot:hover {
-            background: rgba(255, 255, 255, 0.7);
-            transform: scale(1.2);
-        }
-        
-        /* ОПТИМИЗАЦИЯ ДЛЯ МОБИЛЬНЫХ */
-        @media (max-width: 768px) {
-            .bg-scroll-indicator {
-                right: 15px;
-            }
-            
-            .bg-scroll-dot {
-                width: 6px;
-                height: 6px;
-            }
-        }
     </style>
     
     <!-- Кроссбраузерные полифилы JS -->
     <script src="https://cdn.jsdelivr.net/npm/core-js-bundle@3.33.2/minified.min.js"></script>
-    
-    <!-- КОМПОНЕНТЫ ПЕРВЫМИ - КРИТИЧЕСКИЙ ФИКС -->
-    <script src="js/components.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/home.js"></script>
-    <script src="js/animations.js"></script>
 </head>
 <body class="home-page">
     <!-- СКРЫТЫЙ ПРЕЛОАДЕР ИЗОБРАЖЕНИЙ -->
@@ -245,14 +172,6 @@
         <div class="parallax-bg-layer" data-bg-index="3" style="background-image: url('assets/images/parallax/bg-3.jpg')"></div>
         <div class="parallax-bg-layer" data-bg-index="4" style="background-image: url('assets/images/parallax/bg-4.jpg')"></div>
     </div>
-    
-    <!-- ИНДИКАТОР СМЕНЫ ФОНА -->
-    <div class="bg-scroll-indicator">
-        <div class="bg-scroll-dot active" data-target-bg="1"></div>
-        <div class="bg-scroll-dot" data-target-bg="2"></div>
-        <div class="bg-scroll-dot" data-target-bg="3"></div>
-        <div class="bg-scroll-dot" data-target-bg="4"></div>
-    </div>
 
     <!-- SCROLL PROGRESS BAR -->
     <div class="scroll-progress" aria-hidden="true">
@@ -262,8 +181,8 @@
     <!-- Header Container -->
     <div id="header-container"></div>
 
-    <!-- Hero Section -->
-    <section class="hero content-section" data-bg-section="1">
+    <!-- Hero Section (фон 1) -->
+    <section class="hero content-section" data-bg-section="hero" data-bg-index="1">
         <div class="container">
             <div class="hero-content">
                 <div class="scale-in">
@@ -294,8 +213,8 @@
         </div>
     </section>
 
-    <!-- Expertise Section -->
-    <section class="expertise-section content-section" data-bg-section="2">
+    <!-- Expertise Section (фон 1) -->
+    <section class="expertise-section content-section" data-bg-section="expertise" data-bg-index="1">
         <div class="container">
             <div class="expertise-header">
                 <h2 class="section-title expertise-main-title fade-in-down">Expertise</h2>
@@ -382,8 +301,8 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section class="projects-section content-section" data-bg-section="3">
+    <!-- Projects Section (фон 2) -->
+    <section class="projects-section content-section" data-bg-section="projects" data-bg-index="2">
         <div class="container">
             <h2 class="section-title fade-in-down">Projects</h2>
             <p class="section-subtitle fade-in-up delay-200">Our latest design projects and innovations</p>
@@ -432,8 +351,8 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats-section content-section" data-bg-section="4">
+    <!-- Stats Section (фон 2) -->
+    <section class="stats-section content-section" data-bg-section="stats" data-bg-index="2">
         <div class="container">
             <h2 class="section-title fade-in-down">Our Achievements</h2>
             <p class="section-subtitle fade-in-up delay-200">Numbers that speak for themselves</p>
@@ -462,8 +381,8 @@
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="services-section content-section speck-services-section" data-bg-section="5">
+    <!-- Services Section (фон 3) -->
+    <section class="services-section content-section speck-services-section" data-bg-section="services" data-bg-index="3">
         <div class="container">
             <div class="speck-services-header">
                 <h2 class="section-title speck-section-title fade-in-down">Services</h2>
@@ -606,8 +525,8 @@
         </div>
     </section>
 
-    <!-- Journals Section -->
-    <section class="journals-section content-section" data-bg-section="6">
+    <!-- Journals Section (фон 4) -->
+    <section class="journals-section content-section" data-bg-section="journals" data-bg-index="4">
         <div class="container">
             <h2 class="section-title fade-in-down">Journals</h2>
             <p class="section-subtitle fade-in-up delay-200">Latest insights and articles from our team</p>
@@ -647,8 +566,8 @@
         </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="faq-section content-section" data-bg-section="7">
+    <!-- FAQ Section (фон 4) -->
+    <section class="faq-section content-section" data-bg-section="faq" data-bg-index="4">
         <div class="container">
             <h2 class="section-title fade-in-down">FAQ</h2>
             <p class="section-subtitle fade-in-up delay-200">Frequently asked questions about our services</p>
@@ -707,8 +626,8 @@
         </div>
     </section>
 
-    <!-- Contact CTA Section -->
-    <section class="cta-section content-section" data-bg-section="8">
+    <!-- Contact CTA Section (фон 4) -->
+    <section class="cta-section content-section" data-bg-section="cta" data-bg-index="4">
         <div class="container">
             <div class="cta-content">
                 <h2 class="cta-title fade-in-down">Ready to Start Your Project?</h2>
@@ -732,156 +651,11 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
     
-    <!-- СКРИПТ ДЛЯ СМЕНЫ ФОНОВЫХ ИЗОБРАЖЕНИЙ ПРИ СКРОЛЛЕ -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🎨 Initializing background image switching on scroll...');
-            
-            // Элементы фона
-            const bgLayers = document.querySelectorAll('.parallax-bg-layer');
-            const bgDots = document.querySelectorAll('.bg-scroll-dot');
-            const sections = document.querySelectorAll('section[data-bg-section]');
-            
-            if (bgLayers.length === 0 || sections.length === 0) {
-                console.warn('⚠️ Background elements not found');
-                return;
-            }
-            
-            console.log(`✅ Found ${bgLayers.length} background layers and ${sections.length} sections`);
-            
-            // Функция для переключения фона
-            function switchBackground(activeIndex) {
-                // Убираем активный класс со всех слоев
-                bgLayers.forEach(layer => {
-                    layer.classList.remove('active');
-                });
-                
-                // Добавляем активный класс к нужному слою
-                if (bgLayers[activeIndex]) {
-                    bgLayers[activeIndex].classList.add('active');
-                }
-                
-                // Обновляем индикатор
-                bgDots.forEach((dot, index) => {
-                    dot.classList.remove('active');
-                    if (index === activeIndex) {
-                        dot.classList.add('active');
-                    }
-                });
-                
-                console.log(`🖼️ Switched to background ${activeIndex + 1}`);
-            }
-            
-            // Функция для обновления фона на основе скролла
-            function updateBackgroundOnScroll() {
-                const scrollPosition = window.scrollY + (window.innerHeight * 0.3);
-                let activeSection = 0;
-                
-                // Находим текущую секцию
-                sections.forEach((section, index) => {
-                    const sectionTop = section.offsetTop;
-                    const sectionBottom = sectionTop + section.offsetHeight;
-                    
-                    if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
-                        activeSection = index;
-                    }
-                });
-                
-                // Определяем, какой фон показывать
-                let bgIndex = 0;
-                const totalSections = sections.length;
-                const sectionHeight = document.documentElement.scrollHeight / totalSections;
-                const currentSection = Math.floor(scrollPosition / sectionHeight);
-                
-                bgIndex = Math.min(currentSection, bgLayers.length - 1);
-                
-                // Переключаем фон
-                switchBackground(bgIndex);
-            }
-            
-            // Обработчик скролла с троттлингом
-            let scrollTimeout;
-            function handleScroll() {
-                if (!scrollTimeout) {
-                    scrollTimeout = setTimeout(() => {
-                        updateBackgroundOnScroll();
-                        scrollTimeout = null;
-                    }, 50);
-                }
-            }
-            
-            // Назначаем обработчик скролла
-            window.addEventListener('scroll', handleScroll, { passive: true });
-            
-            // Обработчики для индикаторных точек
-            bgDots.forEach((dot, index) => {
-                dot.addEventListener('click', function() {
-                    // Прокручиваем к соответствующей секции
-                    if (sections[index]) {
-                        sections[index].scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                    switchBackground(index);
-                });
-            });
-            
-            // Инициализация начального состояния
-            updateBackgroundOnScroll();
-            
-            // Анимация параллакса для активного слоя
-            function updateParallax() {
-                const scrollY = window.scrollY;
-                const activeLayer = document.querySelector('.parallax-bg-layer.active');
-                
-                if (activeLayer) {
-                    const speed = 0.1;
-                    const yPos = scrollY * speed;
-                    activeLayer.style.transform = `translate3d(0, ${yPos}px, 0)`;
-                }
-            }
-            
-            // Добавляем параллакс эффект
-            let parallaxRaf;
-            function handleParallaxScroll() {
-                if (parallaxRaf) return;
-                parallaxRaf = requestAnimationFrame(() => {
-                    updateParallax();
-                    parallaxRaf = null;
-                });
-            }
-            
-            window.addEventListener('scroll', handleParallaxScroll, { passive: true });
-            
-            // Загрузка изображений
-            bgLayers.forEach((layer, index) => {
-                const bgImage = layer.style.backgroundImage;
-                const urlMatch = bgImage.match(/url\(['"]?([^'"]+)['"]?\)/);
-                
-                if (urlMatch) {
-                    const img = new Image();
-                    img.onload = function() {
-                        console.log(`✅ Background image ${index + 1} loaded: ${urlMatch[1]}`);
-                        layer.classList.add('loaded');
-                    };
-                    img.onerror = function() {
-                        console.warn(`⚠️ Failed to load background image ${index + 1}: ${urlMatch[1]}`);
-                    };
-                    img.src = urlMatch[1];
-                }
-            });
-            
-            console.log('🎬 Background switching system initialized');
-        });
-        
-        // Альтернативный запуск если DOM уже загружен
-        if (document.readyState === 'interactive' || document.readyState === 'complete') {
-            setTimeout(() => {
-                const event = new Event('DOMContentLoaded');
-                document.dispatchEvent(event);
-            }, 100);
-        }
-    </script>
+    <!-- Скрипты -->
+    <script src="js/components.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/animations.js"></script>
 </body>
 </html>
