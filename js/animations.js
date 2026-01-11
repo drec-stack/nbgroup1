@@ -1,4 +1,4 @@
-console.log('🚀 Animations.js loaded - MULTIPLE FAQ OPENING SUPPORT');
+console.log('🚀 Animations.js loaded - MOBILE OPTIMIZED');
 
 // Safe DOM access utility
 const safeDOM = {
@@ -51,14 +51,15 @@ const safeDOM = {
 
 class NBAnimations {
     constructor() {
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         this.init();
     }
 
     init() {
         try {
-            console.log('🎬 IMMEDIATE INITIALIZATION - All content loads immediately...');
+            console.log('🎬 INITIALIZING ANIMATIONS - Mobile:', this.isMobile);
             
-            // НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА (без ожидания скролла)
+            // НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА
             this.immediateLoadAllContent();
             
             // Настройка анимаций
@@ -70,12 +71,108 @@ class NBAnimations {
             this.setupProjectsAnimationsImmediate();
             this.setupServicesAnimationsImmediate();
             this.setupJournalsAnimationsImmediate();
-            this.setupFAQAccordionMultiple(); // ИСПРАВЛЕННЫЙ FAQ АККОРДЕОН с поддержкой множественного открытия
+            this.setupFAQAccordionMultiple();
             
-            console.log('✅ All content IMMEDIATELY loaded (no scroll delay)');
+            // Оптимизация для мобильных
+            if (this.isMobile) {
+                this.optimizeForMobile();
+            }
+            
+            console.log('✅ All content loaded and optimized');
         } catch (error) {
             console.error('❌ Error in animations init:', error);
         }
+    }
+
+    // ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ =====
+    optimizeForMobile() {
+        console.log('📱 Optimizing for mobile devices');
+        
+        try {
+            // Добавляем класс для мобильных стилей
+            safeDOM.addClass(document.body, 'mobile-view');
+            
+            // Упрощаем анимации на мобильных
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                const style = document.createElement('style');
+                style.textContent = `
+                    /* Упрощенные анимации для мобильных */
+                    .project-card,
+                    .service-item,
+                    .expertise-vertical-block,
+                    .faq-item,
+                    .journal-item {
+                        transition: transform 0.2s ease !important;
+                    }
+                    
+                    .project-card:hover,
+                    .service-item:hover,
+                    .expertise-vertical-block:hover,
+                    .faq-item:hover {
+                        transform: none !important;
+                    }
+                    
+                    .btn:hover {
+                        transform: translateY(-1px) !important;
+                    }
+                    
+                    /* Улучшенная обработка касаний */
+                    .faq-question {
+                        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+                        touch-action: manipulation;
+                    }
+                    
+                    /* Предотвращение масштабирования при двойном тапе */
+                    * {
+                        touch-action: manipulation;
+                    }
+                    
+                    /* Улучшенный скролл */
+                    html {
+                        -webkit-overflow-scrolling: touch;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Оптимизация FAQ для мобильных
+            this.optimizeFAQForMobile();
+            
+        } catch (error) {
+            console.error('❌ Error optimizing for mobile:', error);
+        }
+    }
+    
+    optimizeFAQForMobile() {
+        const faqItems = safeDOM.queryAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            if (question) {
+                // Улучшаем обработку касаний
+                question.style.cursor = 'pointer';
+                question.style.webkitTapHighlightColor = 'rgba(255, 255, 255, 0.1)';
+                
+                // Предотвращаем залипание :active состояния
+                question.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    safeDOM.addClass(item, 'touch-active');
+                }, { passive: false });
+                
+                question.addEventListener('touchend', () => {
+                    setTimeout(() => {
+                        safeDOM.removeClass(item, 'touch-active');
+                    }, 150);
+                });
+                
+                question.addEventListener('touchcancel', () => {
+                    safeDOM.removeClass(item, 'touch-active');
+                });
+            }
+        });
+        
+        console.log(`✅ Optimized ${faqItems.length} FAQ items for mobile`);
     }
 
     // ===== НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА =====
@@ -90,12 +187,10 @@ class NBAnimations {
             
             allElements.forEach(el => {
                 if (el) {
-                    // Немедленно добавляем классы для показа
                     safeDOM.addClass(el, 'revealed');
                     safeDOM.addClass(el, 'visible');
                     safeDOM.addClass(el, 'animated');
                     
-                    // Немедленно устанавливаем финальные стили
                     if (el.style) {
                         el.style.opacity = '1';
                         el.style.transform = 'translate(0, 0) scale(1)';
@@ -122,13 +217,11 @@ class NBAnimations {
             
             textBlocks.forEach(block => {
                 if (block) {
-                    // Немедленно убираем прозрачность
                     if (block.style) {
                         block.style.opacity = '1';
                         block.style.visibility = 'visible';
                     }
                     
-                    // Немедленно показываем все дочерние текстовые элементы
                     const textElements = block.querySelectorAll(
                         'h1, h2, h3, h4, p, span, li, .title, .subtitle, .description'
                     );
@@ -337,19 +430,6 @@ class NBAnimations {
         }
     }
     
-    // Метод для тестирования множественного открытия FAQ
-    testMultipleFAQ() {
-        console.log('🧪 Testing multiple FAQ opening...');
-        const faqItems = safeDOM.queryAll('.faq-item');
-        
-        // Открываем первые 3 FAQ одновременно
-        for (let i = 0; i < 3 && i < faqItems.length; i++) {
-            this.openFAQItem(faqItems[i]);
-        }
-        
-        console.log(`✅ First ${Math.min(3, faqItems.length)} FAQ items opened simultaneously`);
-    }
-
     // ===== ОСТАЛЬНЫЕ ФУНКЦИИ (без изменений) =====
     setupCounterAnimation() {
         const counters = safeDOM.queryAll('.counter, .stat-number');
@@ -388,18 +468,15 @@ class NBAnimations {
             speckBlocks.forEach((block, index) => {
                 if (!block) return;
                 
-                // Немедленно активируем блок
                 safeDOM.addClass(block, 'visible');
                 
-                // Немедленно показываем все элементы внутри блока
-                const number = block.querySelector('.speck-block-number');
-                const title = block.querySelector('.speck-block-title');
-                const subtitle = block.querySelector('.speck-block-subtitle');
-                const items = block.querySelectorAll('.speck-feature-item');
-                const rightBlock = block.querySelector('.speck-block-right');
-                
-                // Немедленно анимируем все с минимальной задержкой для красоты
                 setTimeout(() => {
+                    const number = block.querySelector('.speck-block-number');
+                    const title = block.querySelector('.speck-block-title');
+                    const subtitle = block.querySelector('.speck-block-subtitle');
+                    const items = block.querySelectorAll('.speck-feature-item');
+                    const rightBlock = block.querySelector('.speck-block-right');
+                    
                     if (number) {
                         safeDOM.addClass(number, 'animate-in');
                         if (number.style) {
@@ -682,17 +759,69 @@ class NBAnimations {
     }
 }
 
+// ===== МОБИЛЬНЫЙ МЕНЕДЖЕР FAQ =====
+class MobileFAQManager {
+    constructor() {
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        this.init();
+    }
+    
+    init() {
+        if (this.isMobile) {
+            console.log('📱 Mobile FAQ Manager initialized');
+            this.setupTouchOptimizations();
+        }
+    }
+    
+    setupTouchOptimizations() {
+        const faqItems = safeDOM.queryAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            if (question) {
+                // Улучшаем обработку касаний
+                question.style.cursor = 'pointer';
+                question.style.webkitTapHighlightColor = 'rgba(255, 255, 255, 0.1)';
+                
+                // Предотвращаем залипание :active состояния
+                question.addEventListener('touchstart', () => {
+                    safeDOM.addClass(item, 'touch-active');
+                }, { passive: true });
+                
+                question.addEventListener('touchend', () => {
+                    setTimeout(() => {
+                        safeDOM.removeClass(item, 'touch-active');
+                    }, 150);
+                });
+                
+                question.addEventListener('touchcancel', () => {
+                    safeDOM.removeClass(item, 'touch-active');
+                });
+            }
+        });
+        
+        console.log(`✅ Touch optimizations applied to ${faqItems.length} FAQ items`);
+    }
+}
+
 // Initialize animations IMMEDIATELY
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        console.log('⚡ DOMContentLoaded - Starting IMMEDIATE content loading...');
+        console.log('⚡ DOMContentLoaded - Starting animations...');
         
+        // Инициализируем анимации
         window.NBAnimations = new NBAnimations();
         
+        // Инициализируем мобильный менеджер
+        window.mobileFAQManager = new MobileFAQManager();
+        
+        // Добавляем классы для стилей
         safeDOM.addClass(document.body, 'speck-animations-loaded');
         safeDOM.addClass(document.body, 'speck-animations-ready');
         safeDOM.addClass(document.body, 'all-content-loaded');
         
+        // Запускаем финальную анимацию
         setTimeout(() => {
             const speckBlocks = safeDOM.queryAll('.speck-vertical-block');
             speckBlocks.forEach((block, index) => {
@@ -772,7 +901,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, index * 100);
             });
             
-            console.log('⚡ All content IMMEDIATELY loaded and visible');
+            console.log('⚡ All content loaded and animated');
         }, 100);
         
     } catch (error) {
@@ -921,4 +1050,4 @@ window.testFAQ = function() {
     });
 };
 
-console.log('✅ animations.js loaded - MULTIPLE FAQ OPENING SUPPORT ENABLED!');
+console.log('✅ animations.js loaded - MOBILE OPTIMIZED!');
