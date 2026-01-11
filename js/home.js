@@ -1,163 +1,297 @@
-console.log('🏠 home.js loaded - FIXED VERSION WITHOUT FAQ DUPLICATION');
+console.log('🏠 home.js loaded - BACKGROUND SWITCHING SYSTEM');
 
-// ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
-function initializeHomePage() {
-    console.log('📄 INITIALIZING HOME PAGE - IMMEDIATE CONTENT LOAD');
-    
-    // 1. Гарантируем класс для главной страницы
-    document.body.classList.add('home-page');
-    document.documentElement.classList.add('home-page');
-    
-    // 2. Убираем все синие фоны сразу
-    document.querySelectorAll('.btn, .btn-primary, .btn-secondary').forEach(btn => {
-        if (btn && btn.style) {
-            btn.style.background = 'rgba(255, 255, 255, 0.08)';
-            btn.style.backdropFilter = 'blur(12px) saturate(0.9)';
-            btn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-            btn.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.25)';
-            btn.style.color = 'white';
-        }
-    });
-    
-    // 3. НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА ПРИ ЗАХОДЕ НА САЙТ
-    setTimeout(() => {
-        // Немедленно показываем весь текст
-        const allContentElements = document.querySelectorAll(
-            '.hero-content, .expertise-vertical-content, .project-content, .service-content, .journal-content, .faq-item, .stat-card, .cta-content'
-        );
+// ===== СИСТЕМА СМЕНЫ ФОНОВЫХ ИЗОБРАЖЕНИЙ ПРИ СКРОЛЛЕ =====
+class BackgroundSwitcher {
+    constructor() {
+        this.bgLayers = document.querySelectorAll('.parallax-bg-layer');
+        this.bgDots = document.querySelectorAll('.bg-scroll-dot');
+        this.sections = document.querySelectorAll('section[data-bg-section]');
+        this.currentBgIndex = 0;
+        this.lastScrollY = window.scrollY;
+        this.scrollThreshold = 100;
+        this.isScrolling = false;
+        this.scrollTimeout = null;
         
-        allContentElements.forEach((el, index) => {
-            setTimeout(() => {
-                if (el && el.style) {
-                    el.style.opacity = '1';
-                    el.style.visibility = 'visible';
-                    el.style.transform = 'translate(0, 0)';
-                    
-                    // Немедленно показываем все дочерние текстовые элементы
-                    const textChildren = el.querySelectorAll('h1, h2, h3, h4, p, span, li');
-                    textChildren.forEach(textEl => {
-                        if (textEl && textEl.style) {
-                            textEl.style.opacity = '1';
-                            textEl.style.transform = 'translate(0, 0)';
-                        }
-                    });
-                }
-            }, index * 50);
-        });
-        
-        console.log(`⚡ Immediately loaded ${allContentElements.length} content sections`);
-    }, 100);
-    
-    // 4. Запускаем единую систему параллакса
-    initializeSingleParallaxSystem();
-    
-    // 5. Запускаем все остальные функции с немедленной загрузкой
-    setTimeout(() => {
-        initializeVerticalExpertiseBlocksImmediate(); // Немедленная загрузка
-        initializeStatsCounterImmediate(); // Немедленная загрузка
-        // FAQ АККОРДЕОН УДАЛЕН - полностью управляется через animations.js
-        initializeScrollAnimationsImmediate(); // Немедленная загрузка
-        initializeScrollProgress();
-        initializeCardHoverEffects();
-        initializeServicesInteraction();
-        
-        console.log('✅ Home page fully initialized with IMMEDIATE content loading');
-    }, 300);
-}
-
-// ===== ЕДИНАЯ СИСТЕМА ПАРАЛЛАКСА =====
-function initializeSingleParallaxSystem() {
-    console.log('🎨 Initializing SINGLE parallax system...');
-    
-    const bgLayers = document.querySelectorAll('.bg-layer');
-    if (bgLayers.length === 0) {
-        console.error('❌ No background layers found!');
-        return;
+        this.init();
     }
     
-    console.log(`✅ Found ${bgLayers.length} background layers`);
+    init() {
+        console.log(`🎨 BackgroundSwitcher: Found ${this.bgLayers.length} layers, ${this.sections.length} sections`);
+        
+        if (this.bgLayers.length === 0) {
+            console.error('❌ No background layers found');
+            return;
+        }
+        
+        // Preload всех изображений
+        this.preloadImages();
+        
+        // Инициализация индикаторов
+        this.initIndicators();
+        
+        // Настройка обработчиков событий
+        this.setupEventListeners();
+        
+        // Инициализация начального состояния
+        this.updateBackgroundOnScroll();
+        
+        console.log('✅ BackgroundSwitcher initialized');
+    }
     
-    // Удаляем все предыдущие обработчики скролла с другими именами
-    window.removeEventListener('scroll', handleParallaxScroll);
-    
-    // Проверяем загрузку изображений
-    const imagePaths = [
-        'assets/images/parallax/bg-1.jpg',
-        'assets/images/parallax/bg-2.jpg',
-        'assets/images/parallax/bg-3.jpg',
-        'assets/images/parallax/bg-4.jpg'
-    ];
-    
-    let loadedImages = 0;
-    
-    imagePaths.forEach((path, index) => {
-        const img = new Image();
-        img.onload = () => {
-            loadedImages++;
-            console.log(`✅ Background image loaded: ${path}`);
+    preloadImages() {
+        this.bgLayers.forEach((layer, index) => {
+            const bgImage = layer.style.backgroundImage;
+            const urlMatch = bgImage.match(/url\(['"]?([^'"]+)['"]?\)/);
             
-            if (bgLayers[index]) {
-                bgLayers[index].classList.add('loaded');
-                if (bgLayers[index].style) {
-                    bgLayers[index].style.opacity = '';
+            if (urlMatch) {
+                const img = new Image();
+                img.onload = () => {
+                    console.log(`✅ Preloaded background image ${index + 1}`);
+                    layer.classList.add('loaded');
+                };
+                img.onerror = () => {
+                    console.warn(`⚠️ Failed to preload background image ${index + 1}`);
+                };
+                img.src = urlMatch[1];
+            }
+        });
+    }
+    
+    initIndicators() {
+        this.bgDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                this.switchToBackground(index);
+                this.scrollToSection(index);
+            });
+        });
+    }
+    
+    setupEventListeners() {
+        // Обработчик скролла с троттлингом
+        window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
+        
+        // Обработчик ресайза
+        window.addEventListener('resize', () => this.handleResize(), { passive: true });
+        
+        // Обработчик для touch устройств
+        if ('ontouchstart' in window) {
+            document.addEventListener('touchmove', () => this.handleScroll(), { passive: true });
+        }
+    }
+    
+    handleScroll() {
+        if (this.scrollTimeout) return;
+        
+        this.scrollTimeout = setTimeout(() => {
+            this.updateBackgroundOnScroll();
+            this.updateParallaxEffect();
+            this.scrollTimeout = null;
+        }, 16); // ~60fps
+    }
+    
+    handleResize() {
+        // Обновляем позиции секций при ресайзе
+        this.sectionPositions = this.calculateSectionPositions();
+    }
+    
+    calculateSectionPositions() {
+        const positions = [];
+        this.sections.forEach(section => {
+            positions.push({
+                top: section.offsetTop,
+                bottom: section.offsetTop + section.offsetHeight,
+                height: section.offsetHeight
+            });
+        });
+        return positions;
+    }
+    
+    updateBackgroundOnScroll() {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        
+        // Определяем текущий индекс фона на основе позиции скролла
+        let newBgIndex = 0;
+        
+        if (this.sections.length > 0) {
+            // Рассчитываем на основе видимой области
+            const visibleCenter = scrollY + (windowHeight / 2);
+            
+            // Находим активную секцию
+            let activeSectionIndex = 0;
+            for (let i = 0; i < this.sections.length; i++) {
+                const section = this.sections[i];
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (visibleCenter >= sectionTop && visibleCenter <= sectionBottom) {
+                    activeSectionIndex = i;
+                    break;
                 }
             }
             
-            if (loadedImages === imagePaths.length) {
-                console.log('✅ All background images loaded successfully');
-            }
-        };
-        img.onerror = () => {
-            console.warn(`⚠️ Failed to load background image: ${path}`);
-        };
-        img.src = path;
-    });
+            // Маппинг секций на фоны (1 секция = 1 фон)
+            newBgIndex = Math.min(activeSectionIndex, this.bgLayers.length - 1);
+        } else {
+            // Альтернативная логика если нет секций с data-bg-section
+            const totalHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrollPercentage = totalHeight > 0 ? scrollY / totalHeight : 0;
+            newBgIndex = Math.floor(scrollPercentage * this.bgLayers.length);
+            newBgIndex = Math.min(newBgIndex, this.bgLayers.length - 1);
+        }
+        
+        // Переключаем фон если индекс изменился
+        if (newBgIndex !== this.currentBgIndex) {
+            this.switchToBackground(newBgIndex);
+        }
+    }
     
-    // Оптимизированный параллакс эффект
-    let rafId = null;
-    let lastScrollY = window.scrollY;
-    
-    // ФУНКЦИЯ ДЛЯ ОБНОВЛЕНИЯ ПАРАЛЛАКСА
-    function updateParallaxLayers() {
+    updateParallaxEffect() {
         const scrollY = window.scrollY;
         
-        // Только если позиция изменилась
-        if (Math.abs(scrollY - lastScrollY) > 0.5) {
-            lastScrollY = scrollY;
+        // Параллакс эффект только для активного слоя
+        const activeLayer = this.bgLayers[this.currentBgIndex];
+        if (activeLayer) {
+            const speed = 0.05;
+            const yPos = scrollY * speed;
+            activeLayer.style.transform = `translate3d(0, ${yPos}px, 0)`;
+        }
+    }
+    
+    switchToBackground(index) {
+        if (index < 0 || index >= this.bgLayers.length || index === this.currentBgIndex) {
+            return;
+        }
+        
+        console.log(`🖼️ Switching background to index: ${index + 1}`);
+        
+        // Скрываем все слои
+        this.bgLayers.forEach(layer => {
+            layer.classList.remove('active');
+        });
+        
+        // Показываем выбранный слой
+        this.bgLayers[index].classList.add('active');
+        
+        // Обновляем индикаторы
+        this.bgDots.forEach((dot, dotIndex) => {
+            if (dotIndex === index) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+        
+        this.currentBgIndex = index;
+    }
+    
+    scrollToSection(bgIndex) {
+        // Находим соответствующую секцию для этого фона
+        const targetIndex = Math.min(bgIndex, this.sections.length - 1);
+        const targetSection = this.sections[targetIndex];
+        
+        if (targetSection) {
+            const header = document.querySelector('.main-header');
+            const headerHeight = header ? header.offsetHeight : 0;
+            const offset = 20;
             
-            bgLayers.forEach((layer, index) => {
-                if (layer && layer.style) {
-                    const speed = 0.03 + (index * 0.02);
-                    const yPos = scrollY * speed;
-                    layer.style.transform = `translate3d(0, ${yPos}px, 0)`;
-                }
+            const targetPosition = targetSection.offsetTop - headerHeight - offset;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
             });
         }
     }
     
-    // ОБРАБОТЧИК СКРОЛЛА
-    function handleParallaxScroll() {
-        if (rafId) return;
-        
-        rafId = requestAnimationFrame(() => {
-            updateParallaxLayers();
-            rafId = null;
-        });
+    // Публичные методы для ручного управления
+    nextBackground() {
+        const nextIndex = (this.currentBgIndex + 1) % this.bgLayers.length;
+        this.switchToBackground(nextIndex);
+        return nextIndex;
     }
     
-    // Добавляем единственный обработчик скролла
-    window.addEventListener('scroll', handleParallaxScroll, { passive: true });
+    prevBackground() {
+        const prevIndex = (this.currentBgIndex - 1 + this.bgLayers.length) % this.bgLayers.length;
+        this.switchToBackground(prevIndex);
+        return prevIndex;
+    }
     
-    // Инициализируем начальное положение
-    setTimeout(() => {
-        updateParallaxLayers();
-    }, 100);
-    
-    return true;
+    getCurrentBackground() {
+        return this.currentBgIndex;
+    }
 }
 
-// ===== НЕМЕДЛЕННАЯ ЗАГРУЗКА EXPERTISE БЛОКОВ =====
-function initializeVerticalExpertiseBlocksImmediate() {
+// ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ =====
+function initializeHomePage() {
+    console.log('📄 INITIALIZING HOME PAGE');
+    
+    // 1. Инициализация системы смены фона
+    window.backgroundSwitcher = new BackgroundSwitcher();
+    
+    // 2. Гарантируем класс для главной страницы
+    document.body.classList.add('home-page');
+    document.documentElement.classList.add('home-page');
+    
+    // 3. НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА
+    setTimeout(() => {
+        loadAllContentImmediately();
+    }, 100);
+    
+    // 4. Инициализация всех компонентов
+    setTimeout(() => {
+        initializeVerticalExpertiseBlocks();
+        initializeStatsCounter();
+        initializeScrollAnimations();
+        initializeScrollProgress();
+        initializeCardHoverEffects();
+        initializeServicesInteraction();
+        
+        console.log('✅ Home page fully initialized');
+    }, 300);
+}
+
+// ===== НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА =====
+function loadAllContentImmediately() {
+    console.log('⚡ Loading all content immediately...');
+    
+    // Показываем все анимированные элементы
+    const animatedElements = document.querySelectorAll('.fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right, .animated-element');
+    animatedElements.forEach(el => {
+        if (el && el.style) {
+            el.style.opacity = '1';
+            el.style.transform = 'translate(0, 0)';
+            el.style.animationPlayState = 'running';
+        }
+    });
+    
+    // Показываем все секции
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        if (section && section.style) {
+            section.style.opacity = '1';
+            section.style.visibility = 'visible';
+        }
+    });
+    
+    // Показываем все текстовые элементы
+    const textElements = document.querySelectorAll(
+        'h1, h2, h3, h4, h5, h6, p, span, li, .title, .subtitle, .description, .text, [data-i18n]'
+    );
+    
+    textElements.forEach(el => {
+        if (el && el.style) {
+            el.style.opacity = '1';
+            el.style.visibility = 'visible';
+            el.style.transform = 'translate(0, 0)';
+        }
+    });
+    
+    console.log(`⚡ Immediately loaded ${animatedElements.length} animated elements, ${sections.length} sections, ${textElements.length} text elements`);
+}
+
+// ===== ИНИЦИАЛИЗАЦИЯ EXPERTISE БЛОКОВ =====
+function initializeVerticalExpertiseBlocks() {
     const expertiseBlocks = document.querySelectorAll('.expertise-vertical-block');
     
     if (expertiseBlocks.length === 0) {
@@ -165,69 +299,65 @@ function initializeVerticalExpertiseBlocksImmediate() {
         return;
     }
     
-    console.log(`⚡ Immediately loading ${expertiseBlocks.length} expertise blocks`);
+    console.log(`🎯 Initializing ${expertiseBlocks.length} expertise blocks`);
     
     expertiseBlocks.forEach((block, index) => {
         if (block && block.style) {
-            // НЕМЕДЛЕННО показываем блок
+            // Немедленно показываем блок
             block.style.opacity = '1';
             block.style.transform = 'translateX(0)';
             
-            // Немедленно показываем внутренние элементы
-            const number = block.querySelector('.expertise-number');
-            const title = block.querySelector('.expertise-title');
-            const description = block.querySelector('.expertise-description');
-            const features = block.querySelectorAll('.expertise-features li');
+            // Добавляем класс visible для анимаций
+            block.classList.add('visible');
             
+            // Анимация внутренних элементов
             setTimeout(() => {
+                const number = block.querySelector('.expertise-number');
+                const title = block.querySelector('.expertise-title');
+                const description = block.querySelector('.expertise-description');
+                const features = block.querySelectorAll('.expertise-features li');
+                
                 if (number && number.style) {
                     number.style.transform = 'scale(1)';
                     number.style.opacity = '1';
                 }
-            }, 200);
-            
-            setTimeout(() => {
+                
                 if (title && title.style) {
                     title.style.opacity = '1';
                     title.style.transform = 'translateX(0)';
                 }
-            }, 300);
-            
-            setTimeout(() => {
+                
                 if (description && description.style) {
                     description.style.opacity = '1';
                     description.style.transform = 'translateX(0)';
                 }
-            }, 400);
+                
+                features.forEach((feature, featIndex) => {
+                    setTimeout(() => {
+                        if (feature && feature.style) {
+                            feature.style.opacity = '1';
+                            feature.style.transform = 'translateX(0)';
+                        }
+                    }, featIndex * 50);
+                });
+            }, index * 100);
             
-            features.forEach((feature, featIndex) => {
-                setTimeout(() => {
-                    if (feature && feature.style) {
-                        feature.style.opacity = '1';
-                        feature.style.transform = 'translateX(0)';
-                    }
-                }, 500 + (featIndex * 50));
+            // Эффект при наведении
+            block.addEventListener('mouseenter', function() {
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    this.style.transform = 'translateX(-10px)';
+                }
+            });
+            
+            block.addEventListener('mouseleave', function() {
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    this.style.transform = 'translateX(0)';
+                }
             });
         }
     });
     
-    // Анимация заголовков секции
-    const expertiseTitle = document.querySelector('.expertise-main-title');
-    const expertiseSubtitle = document.querySelector('.expertise-subtitle');
-    
-    if (expertiseTitle) {
-        expertiseTitle.style.opacity = '1';
-        expertiseTitle.style.transform = 'translateY(0)';
-        expertiseTitle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    }
-    
-    if (expertiseSubtitle) {
-        expertiseSubtitle.style.opacity = '1';
-        expertiseSubtitle.style.transform = 'translateY(0)';
-        expertiseSubtitle.style.transition = 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s';
-    }
-    
-    console.log('✅ Vertical expertise blocks immediately visible');
+    console.log('✅ Vertical expertise blocks initialized');
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ ВЗАИМОДЕЙСТВИЯ С УСЛУГАМИ =====
@@ -239,11 +369,11 @@ function initializeServicesInteraction() {
         return;
     }
     
-    console.log(`✅ Found ${serviceItems.length} service items`);
+    console.log(`🎯 Initializing ${serviceItems.length} service items`);
     
-    // Немедленно показываем все услуги
     serviceItems.forEach((item, index) => {
         if (item && item.style) {
+            // Немедленно показываем элемент
             item.style.opacity = '1';
             item.style.transform = 'translateY(0)';
             
@@ -255,6 +385,8 @@ function initializeServicesInteraction() {
                         arrow.style.opacity = '1';
                         arrow.style.transform = 'translateX(5px)';
                     }
+                    
+                    this.style.transform = 'translateY(-5px)';
                 }
             });
             
@@ -265,38 +397,28 @@ function initializeServicesInteraction() {
                         arrow.style.opacity = '0.7';
                         arrow.style.transform = 'translateX(0)';
                     }
+                    
+                    this.style.transform = 'translateY(0)';
                 }
             });
             
-            // Клик для прокрутки к деталям
+            // Клик для показа деталей
             item.addEventListener('click', function(e) {
                 // Предотвращаем клик, если кликнули на стрелку
                 if (e.target.classList.contains('service-arrow')) return;
                 
                 const serviceId = this.getAttribute('data-service-id');
                 console.log(`Service clicked: ${serviceId}`);
-                scrollToServiceDetails(serviceId);
+                showServiceDetails(serviceId);
             });
         }
     });
     
-    // Немедленно показываем заголовок и интро
-    const serviceTitle = document.querySelector('.speck-section-title');
-    const serviceIntro = document.querySelector('.speck-services-intro');
-    
-    if (serviceTitle) {
-        serviceTitle.style.opacity = '1';
-        serviceTitle.style.transform = 'translateY(0)';
-    }
-    
-    if (serviceIntro) {
-        serviceIntro.style.opacity = '1';
-        serviceIntro.style.transform = 'translateY(0)';
-    }
+    console.log('✅ Service interactions initialized');
 }
 
-// ===== ПРОКРУТКА К ДЕТАЛЯМ УСЛУГИ =====
-function scrollToServiceDetails(serviceId) {
+// ===== ПОКАЗ ДЕТАЛЕЙ УСЛУГИ =====
+function showServiceDetails(serviceId) {
     const serviceDetails = {
         'consulting': {
             title: 'Product design consulting',
@@ -397,7 +519,10 @@ function scrollToServiceDetails(serviceId) {
     };
     
     const service = serviceDetails[serviceId];
-    if (!service) return;
+    if (!service) {
+        console.error(`Service ${serviceId} not found`);
+        return;
+    }
     
     console.log(`📋 Showing modal for: ${service.title}`);
     
@@ -641,8 +766,8 @@ function scrollToServiceDetails(serviceId) {
     });
 }
 
-// ===== НЕМЕДЛЕННАЯ СТАТИСТИКА СЧЁТЧИК =====
-function initializeStatsCounterImmediate() {
+// ===== ИНИЦИАЛИЗАЦИЯ СТАТИСТИКИ =====
+function initializeStatsCounter() {
     const counters = document.querySelectorAll('.stat-number');
     
     if (counters.length === 0) {
@@ -650,7 +775,7 @@ function initializeStatsCounterImmediate() {
         return;
     }
     
-    console.log(`⚡ Immediately animating ${counters.length} counters`);
+    console.log(`🎯 Initializing ${counters.length} stat counters`);
     
     counters.forEach(counter => {
         const target = parseInt(counter.getAttribute('data-count')) || 0;
@@ -660,22 +785,34 @@ function initializeStatsCounterImmediate() {
             counter.classList.add('counter-animate');
         }
     });
+    
+    console.log('✅ Stat counters initialized');
 }
 
-// ===== НЕМЕДЛЕННЫЕ SCROLL АНИМАЦИИ =====
-function initializeScrollAnimationsImmediate() {
+// ===== SCROLL АНИМАЦИИ =====
+function initializeScrollAnimations() {
     const animatedElements = document.querySelectorAll('.fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right');
     
-    console.log(`⚡ Immediately showing ${animatedElements.length} animated elements`);
+    console.log(`🎯 Found ${animatedElements.length} animated elements`);
     
-    animatedElements.forEach(el => {
-        if (el) {
-            // Немедленно показываем элемент
-            el.style.opacity = '1';
-            el.style.transform = 'translate(0, 0)';
-            el.style.animationPlayState = 'running';
-        }
-    });
+    // Уже показаны в loadAllContentImmediately()
+    
+    // Настраиваем IntersectionObserver для новых элементов
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translate(0, 0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        animatedElements.forEach(el => {
+            observer.observe(el);
+        });
+    }
 }
 
 // ===== SCROLL PROGRESS BAR =====
@@ -734,17 +871,63 @@ function initializeCardHoverEffects() {
     console.log(`✅ Card hover effects initialized for ${projectCards.length} cards`);
 }
 
+// ===== УПРАВЛЕНИЕ FAQ (для совместимости) =====
+function setupFAQAccordion() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    if (faqItems.length === 0) {
+        console.log('⚠️ No FAQ items found');
+        return;
+    }
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        
+        if (question && answer) {
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Закрываем все FAQ
+                faqItems.forEach(faq => {
+                    faq.classList.remove('active');
+                    const faqAnswer = faq.querySelector('.faq-answer');
+                    if (faqAnswer) {
+                        faqAnswer.style.display = 'none';
+                        faqAnswer.style.maxHeight = '0';
+                        faqAnswer.style.opacity = '0';
+                    }
+                });
+                
+                // Открываем текущий если был закрыт
+                if (!isActive) {
+                    item.classList.add('active');
+                    answer.style.display = 'block';
+                    setTimeout(() => {
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                        answer.style.opacity = '1';
+                    }, 10);
+                }
+            });
+        }
+    });
+    
+    console.log(`✅ FAQ accordion setup for ${faqItems.length} items`);
+}
+
 // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
 function safeInitialize() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 initializeHomePage();
+                setupFAQAccordion();
             }, 100);
         });
     } else {
         setTimeout(() => {
             initializeHomePage();
+            setupFAQAccordion();
         }, 100);
     }
 }
@@ -752,50 +935,60 @@ function safeInitialize() {
 // Запускаем инициализацию
 safeInitialize();
 
-// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ ОТЛАДКИ =====
-window.reinitializeHomePage = function() {
-    console.log('🔄 Reinitializing home page...');
-    initializeHomePage();
+// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ =====
+window.switchBackground = function(index) {
+    if (window.backgroundSwitcher) {
+        window.backgroundSwitcher.switchToBackground(index);
+        return true;
+    }
+    return false;
 };
 
-window.reinitializeParallax = function() {
-    console.log('🔄 Reinitializing parallax...');
-    initializeSingleParallaxSystem();
+window.nextBackground = function() {
+    if (window.backgroundSwitcher) {
+        return window.backgroundSwitcher.nextBackground();
+    }
+    return -1;
+};
+
+window.prevBackground = function() {
+    if (window.backgroundSwitcher) {
+        return window.backgroundSwitcher.prevBackground();
+    }
+    return -1;
+};
+
+window.getCurrentBackground = function() {
+    if (window.backgroundSwitcher) {
+        return window.backgroundSwitcher.getCurrentBackground();
+    }
+    return 0;
+};
+
+window.reinitializeBackground = function() {
+    console.log('🔄 Reinitializing background switching...');
+    if (window.backgroundSwitcher) {
+        window.backgroundSwitcher = new BackgroundSwitcher();
+    }
+    return true;
 };
 
 window.showServiceDetails = function(serviceId) {
-    scrollToServiceDetails(serviceId);
+    showServiceDetails(serviceId);
 };
 
-// Функция для принудительной немедленной загрузки всего контента
-window.loadAllContentImmediately = function() {
-    console.log('⚡ Forcing immediate content load...');
-    
-    const allTextElements = document.querySelectorAll(
-        'h1, h2, h3, h4, h5, h6, p, span, li, .title, .subtitle, .description, .text, [data-i18n]'
-    );
-    
-    allTextElements.forEach(el => {
-        if (el && el.style) {
-            el.style.opacity = '1';
-            el.style.visibility = 'visible';
-            el.style.transform = 'translate(0, 0)';
-        }
-    });
-    
-    document.body.classList.add('all-content-loaded');
-    
-    console.log(`✅ Immediately loaded ${allTextElements.length} text elements`);
-};
-
-// Экспорт функций для глобального использования
+// Экспорт функций
 window.homePage = {
     initialize: initializeHomePage,
     reinitialize: () => {
         initializeHomePage();
+        setupFAQAccordion();
     },
-    loadAllContentImmediately,
+    switchBackground,
+    nextBackground,
+    prevBackground,
+    getCurrentBackground,
     showServiceDetails
 };
 
-console.log('✅ home.js fully loaded - FAQ ACCORDION MANAGED BY animations.js WITH MULTIPLE OPENING SUPPORT');
+console.log('✅ home.js fully loaded - READY WITH BACKGROUND SWITCHING');
