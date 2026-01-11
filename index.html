@@ -2,7 +2,11 @@
 <html lang="ru" class="home-page">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title data-i18n="home.title">NBGROUP.TECH | Industrial Design & Manufacturing</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -33,6 +37,8 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            -webkit-overflow-scrolling: touch;
+            overflow-scrolling: touch;
         }
         
         /* ФОНОВЫЕ СЛОИ */
@@ -105,6 +111,8 @@
                 0 10px 30px rgba(0, 0, 0, 0.3),
                 0 4px 15px rgba(0, 0, 0, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+            min-height: 44px;
+            -webkit-appearance: none;
         }
         
         .btn:hover, .btn-primary:hover, .btn-secondary:hover {
@@ -163,6 +171,25 @@
                 background-attachment: scroll !important;
                 transform: none !important;
                 transition: opacity 1.2s ease !important;
+            }
+            
+            /* Улучшаем области касания */
+            .btn, .faq-question, .journal-link {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+        
+        /* Фикс для 100vh в iOS */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                min-height: -webkit-fill-available;
+                min-height: 100dvh;
+            }
+            
+            .hero {
+                min-height: -webkit-fill-available;
+                min-height: 100dvh;
             }
         }
     </style>
@@ -319,7 +346,7 @@
             <div class="projects-grid">
                 <div class="project-card fade-in-up delay-300">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Google Schaft Robot" loading="lazy">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Google Schaft Robot" loading="lazy" width="400" height="300">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Google Schaft Robot</h3>
@@ -329,7 +356,7 @@
                 
                 <div class="project-card fade-in-up delay-400">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Monolith - Motion Medical" loading="lazy">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Monolith - Motion Medical" loading="lazy" width="400" height="300">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Monolith - Motion Medical</h3>
@@ -339,7 +366,7 @@
                 
                 <div class="project-card fade-in-up delay-500">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Helic Hair Labs" loading="lazy">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Helic Hair Labs" loading="lazy" width="400" height="300">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Helic Hair Labs</h3>
@@ -349,7 +376,7 @@
                 
                 <div class="project-card fade-in-up delay-600">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Omron Robotics" loading="lazy">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Omron Robotics" loading="lazy" width="400" height="300">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Omron Robotics</h3>
