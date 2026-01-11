@@ -1,16 +1,16 @@
-console.log('🏠 home.js loaded - BACKGROUND SWITCHING SYSTEM');
+console.log('🏠 home.js loaded - BACKGROUND SWITCHING SYSTEM WITHOUT VISUAL INDICATORS');
 
 // ===== СИСТЕМА СМЕНЫ ФОНОВЫХ ИЗОБРАЖЕНИЙ ПРИ СКРОЛЛЕ =====
 class BackgroundSwitcher {
     constructor() {
         this.bgLayers = document.querySelectorAll('.parallax-bg-layer');
-        this.bgDots = document.querySelectorAll('.bg-scroll-dot');
         this.sections = document.querySelectorAll('section[data-bg-section]');
         this.currentBgIndex = 0;
         this.lastScrollY = window.scrollY;
-        this.scrollThreshold = 100;
-        this.isScrolling = false;
+        this.isScrollingDown = true;
         this.scrollTimeout = null;
+        this.sectionMap = new Map();
+        this.currentSectionIndex = 0;
         
         this.init();
     }
@@ -23,11 +23,11 @@ class BackgroundSwitcher {
             return;
         }
         
+        // Создаем карту соответствия секций и фонов
+        this.createSectionMap();
+        
         // Preload всех изображений
         this.preloadImages();
-        
-        // Инициализация индикаторов
-        this.initIndicators();
         
         // Настройка обработчиков событий
         this.setupEventListeners();
@@ -36,6 +36,26 @@ class BackgroundSwitcher {
         this.updateBackgroundOnScroll();
         
         console.log('✅ BackgroundSwitcher initialized');
+        console.log('📊 Section-BG Mapping:', Array.from(this.sectionMap.entries()));
+    }
+    
+    createSectionMap() {
+        // Создаем карту соответствия: номер секции -> индекс фона
+        // Согласно требованиям:
+        // 1. Первое изображение не меняется до секции Projects (индекс 0)
+        // 2. Второе изображение до секции Services (индекс 1)
+        // 3. Третье изображение до Journals (индекс 2)
+        // 4. Четвертое изображение оставшиеся секции (индекс 3)
+        
+        this.sections.forEach((section, index) => {
+            const bgIndex = parseInt(section.getAttribute('data-bg-index')) - 1;
+            this.sectionMap.set(index, Math.max(0, Math.min(bgIndex, this.bgLayers.length - 1)));
+        });
+        
+        console.log('🔍 Section mapping created:');
+        this.sections.forEach((section, i) => {
+            console.log(`  Section ${i + 1} (${section.getAttribute('data-bg-section')}) → BG${this.sectionMap.get(i) + 1}`);
+        });
     }
     
     preloadImages() {
@@ -57,21 +77,21 @@ class BackgroundSwitcher {
         });
     }
     
-    initIndicators() {
-        this.bgDots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                this.switchToBackground(index);
-                this.scrollToSection(index);
-            });
-        });
-    }
-    
     setupEventListeners() {
         // Обработчик скролла с троттлингом
-        window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) return;
+            scrollTimeout = setTimeout(() => {
+                this.handleScroll();
+                scrollTimeout = null;
+            }, 16); // ~60fps
+        }, { passive: true });
         
         // Обработчик ресайза
-        window.addEventListener('resize', () => this.handleResize(), { passive: true });
+        window.addEventListener('resize', () => {
+            this.handleResize();
+        }, { passive: true });
         
         // Обработчик для touch устройств
         if ('ontouchstart' in window) {
@@ -80,13 +100,12 @@ class BackgroundSwitcher {
     }
     
     handleScroll() {
-        if (this.scrollTimeout) return;
+        const currentScrollY = window.scrollY;
+        this.isScrollingDown = currentScrollY > this.lastScrollY;
+        this.lastScrollY = currentScrollY;
         
-        this.scrollTimeout = setTimeout(() => {
-            this.updateBackgroundOnScroll();
-            this.updateParallaxEffect();
-            this.scrollTimeout = null;
-        }, 16); // ~60fps
+        this.updateBackgroundOnScroll();
+        this.updateParallaxEffect();
     }
     
     handleResize() {
@@ -100,7 +119,8 @@ class BackgroundSwitcher {
             positions.push({
                 top: section.offsetTop,
                 bottom: section.offsetTop + section.offsetHeight,
-                height: section.offsetHeight
+                height: section.offsetHeight,
+                id: section.getAttribute('data-bg-section')
             });
         });
         return positions;
@@ -109,40 +129,44 @@ class BackgroundSwitcher {
     updateBackgroundOnScroll() {
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
+        const triggerPoint = scrollY + (windowHeight * 0.4); // 40% от верха окна
         
-        // Определяем текущий индекс фона на основе позиции скролла
-        let newBgIndex = 0;
+        // Находим текущую активную секцию
+        let foundSectionIndex = -1;
         
-        if (this.sections.length > 0) {
-            // Рассчитываем на основе видимой области
-            const visibleCenter = scrollY + (windowHeight / 2);
-            
-            // Находим активную секцию
-            let activeSectionIndex = 0;
+        // Для скролла ВНИЗ - используем верхнюю границу секции
+        if (this.isScrollingDown) {
             for (let i = 0; i < this.sections.length; i++) {
                 const section = this.sections[i];
                 const sectionTop = section.offsetTop;
-                const sectionBottom = sectionTop + section.offsetHeight;
                 
-                if (visibleCenter >= sectionTop && visibleCenter <= sectionBottom) {
-                    activeSectionIndex = i;
+                if (scrollY >= sectionTop - 150) {
+                    foundSectionIndex = i;
+                }
+            }
+        } 
+        // Для скролла ВВЕРХ - используем нижнюю границу секции
+        else {
+            for (let i = this.sections.length - 1; i >= 0; i--) {
+                const section = this.sections[i];
+                const sectionBottom = section.offsetTop + section.offsetHeight;
+                
+                if (scrollY <= sectionBottom - windowHeight + 150) {
+                    foundSectionIndex = i;
                     break;
                 }
             }
-            
-            // Маппинг секций на фоны (1 секция = 1 фон)
-            newBgIndex = Math.min(activeSectionIndex, this.bgLayers.length - 1);
-        } else {
-            // Альтернативная логика если нет секций с data-bg-section
-            const totalHeight = document.documentElement.scrollHeight - windowHeight;
-            const scrollPercentage = totalHeight > 0 ? scrollY / totalHeight : 0;
-            newBgIndex = Math.floor(scrollPercentage * this.bgLayers.length);
-            newBgIndex = Math.min(newBgIndex, this.bgLayers.length - 1);
         }
         
-        // Переключаем фон если индекс изменился
-        if (newBgIndex !== this.currentBgIndex) {
-            this.switchToBackground(newBgIndex);
+        // Если нашли секцию, получаем соответствующий фон
+        if (foundSectionIndex >= 0 && foundSectionIndex !== this.currentSectionIndex) {
+            this.currentSectionIndex = foundSectionIndex;
+            const targetBgIndex = this.sectionMap.get(foundSectionIndex) || 0;
+            
+            // Переключаем фон если индекс изменился
+            if (targetBgIndex !== this.currentBgIndex) {
+                this.switchToBackground(targetBgIndex);
+            }
         }
     }
     
@@ -163,7 +187,7 @@ class BackgroundSwitcher {
             return;
         }
         
-        console.log(`🖼️ Switching background to index: ${index + 1}`);
+        console.log(`🖼️ Switching background: ${this.currentBgIndex + 1} → ${index + 1}`);
         
         // Скрываем все слои
         this.bgLayers.forEach(layer => {
@@ -173,38 +197,10 @@ class BackgroundSwitcher {
         // Показываем выбранный слой
         this.bgLayers[index].classList.add('active');
         
-        // Обновляем индикаторы
-        this.bgDots.forEach((dot, dotIndex) => {
-            if (dotIndex === index) {
-                dot.classList.add('active');
-            } else {
-                dot.classList.remove('active');
-            }
-        });
-        
         this.currentBgIndex = index;
     }
     
-    scrollToSection(bgIndex) {
-        // Находим соответствующую секцию для этого фона
-        const targetIndex = Math.min(bgIndex, this.sections.length - 1);
-        const targetSection = this.sections[targetIndex];
-        
-        if (targetSection) {
-            const header = document.querySelector('.main-header');
-            const headerHeight = header ? header.offsetHeight : 0;
-            const offset = 20;
-            
-            const targetPosition = targetSection.offsetTop - headerHeight - offset;
-            
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        }
-    }
-    
-    // Публичные методы для ручного управления
+    // Публичные методы для ручного управления (если нужно)
     nextBackground() {
         const nextIndex = (this.currentBgIndex + 1) % this.bgLayers.length;
         this.switchToBackground(nextIndex);
@@ -220,6 +216,10 @@ class BackgroundSwitcher {
     getCurrentBackground() {
         return this.currentBgIndex;
     }
+    
+    getCurrentSection() {
+        return this.currentSectionIndex;
+    }
 }
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ =====
@@ -233,7 +233,7 @@ function initializeHomePage() {
     document.body.classList.add('home-page');
     document.documentElement.classList.add('home-page');
     
-    // 3. НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА
+    // 3. Немедленная загрузка всего контента
     setTimeout(() => {
         loadAllContentImmediately();
     }, 100);
@@ -248,6 +248,12 @@ function initializeHomePage() {
         initializeServicesInteraction();
         
         console.log('✅ Home page fully initialized');
+        console.log('🎯 Background switching logic:');
+        console.log('   • Hero & Expertise → BG1');
+        console.log('   • Projects & Stats → BG2');
+        console.log('   • Services → BG3');
+        console.log('   • Journals, FAQ, CTA → BG4');
+        console.log('   • Works both directions: scroll down/up');
     }, 300);
 }
 
@@ -274,20 +280,7 @@ function loadAllContentImmediately() {
         }
     });
     
-    // Показываем все текстовые элементы
-    const textElements = document.querySelectorAll(
-        'h1, h2, h3, h4, h5, h6, p, span, li, .title, .subtitle, .description, .text, [data-i18n]'
-    );
-    
-    textElements.forEach(el => {
-        if (el && el.style) {
-            el.style.opacity = '1';
-            el.style.visibility = 'visible';
-            el.style.transform = 'translate(0, 0)';
-        }
-    });
-    
-    console.log(`⚡ Immediately loaded ${animatedElements.length} animated elements, ${sections.length} sections, ${textElements.length} text elements`);
+    console.log(`⚡ Immediately loaded ${animatedElements.length} animated elements, ${sections.length} sections`);
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ EXPERTISE БЛОКОВ =====
@@ -341,19 +334,6 @@ function initializeVerticalExpertiseBlocks() {
                     }, featIndex * 50);
                 });
             }, index * 100);
-            
-            // Эффект при наведении
-            block.addEventListener('mouseenter', function() {
-                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    this.style.transform = 'translateX(-10px)';
-                }
-            });
-            
-            block.addEventListener('mouseleave', function() {
-                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    this.style.transform = 'translateX(0)';
-                }
-            });
         }
     });
     
@@ -385,8 +365,6 @@ function initializeServicesInteraction() {
                         arrow.style.opacity = '1';
                         arrow.style.transform = 'translateX(5px)';
                     }
-                    
-                    this.style.transform = 'translateY(-5px)';
                 }
             });
             
@@ -397,373 +375,12 @@ function initializeServicesInteraction() {
                         arrow.style.opacity = '0.7';
                         arrow.style.transform = 'translateX(0)';
                     }
-                    
-                    this.style.transform = 'translateY(0)';
                 }
-            });
-            
-            // Клик для показа деталей
-            item.addEventListener('click', function(e) {
-                // Предотвращаем клик, если кликнули на стрелку
-                if (e.target.classList.contains('service-arrow')) return;
-                
-                const serviceId = this.getAttribute('data-service-id');
-                console.log(`Service clicked: ${serviceId}`);
-                showServiceDetails(serviceId);
             });
         }
     });
     
     console.log('✅ Service interactions initialized');
-}
-
-// ===== ПОКАЗ ДЕТАЛЕЙ УСЛУГИ =====
-function showServiceDetails(serviceId) {
-    const serviceDetails = {
-        'consulting': {
-            title: 'Product design consulting',
-            features: [
-                'Human-centric design approach',
-                'Balance of engineering and human needs',
-                'Design intuition and technical prowess',
-                'Years of hands-on experience across multiple sectors',
-                'Modern and cutting-edge techniques',
-                'Injection molding, surface finishes, and 3D printing expertise',
-                'Holistic approach with UX/UI and industrial design collaboration'
-            ]
-        },
-        'uiux': {
-            title: 'UI/UX design',
-            features: [
-                'Leading UX design firm expertise',
-                'User experience and UX/UI design focus',
-                'Digital experience enhancement',
-                'Deep user research and target audience understanding',
-                'Mobile app development, web design, and digital strategies',
-                'Engaging tech interactions bridging physical and digital worlds',
-                'Structured method with UX research and usability tests'
-            ]
-        },
-        'engineering': {
-            title: 'Product engineering',
-            features: [
-                'Globally awarded and top-ranked firm',
-                'Comprehensive product engineering solutions',
-                'Process optimization, transformation, and simplification',
-                'Collaboration from concept to final product development',
-                'User-focused design maps addressing customer pain points',
-                'Expert engineering guidance throughout projects'
-            ]
-        },
-        'npi': {
-            title: 'NPI and product fulfillment support',
-            features: [
-                'Robust product fulfillment services',
-                'Manufacturing engineering for production transition',
-                'High-quality, low-cost, seamless delivery',
-                'Injection molding, laser cutting, and CNC milling management',
-                'Supply chain management and manufacturer support',
-                'Contract manufacturing and product fulfillment',
-                'Lead time management for brand focus'
-            ]
-        },
-        'research': {
-            title: 'User research and insights',
-            features: [
-                'Top user experience research company',
-                'Expert team ensuring product-customer connection',
-                'User interface research and testing',
-                'User experience and market research',
-                'Quantitative and qualitative research methods',
-                'Research, assessments, studies, and surveys',
-                'Human-centered solutions discovery',
-                'Emotional driver analysis for great user experiences'
-            ]
-        },
-        'brand': {
-            title: 'Brand design',
-            features: [
-                'Renowned graphic and brand design agency',
-                'Brand identity creation for marketplace distinction',
-                'Target audience captivating and resonance',
-                'Tailored strategies for trust, reliability, and excellence',
-                'Business spirit embodiment and quality story',
-                'Award-winning memorable brand identity creation',
-                'Competitive world brand differentiation'
-            ]
-        },
-        'strategy': {
-            title: 'Research and strategy',
-            features: [
-                'Research-driven design importance',
-                'Experienced strategists and researchers',
-                'Comprehensive target market, trend, and competition studies',
-                'Design strategies aligned with business goals',
-                'Impressive designs with optimal performance',
-                'Market requirement fulfillment',
-                'Trend anticipation and user resonance'
-            ]
-        },
-        'innovation': {
-            title: 'Innovation strategy',
-            features: [
-                'Market revolution creation',
-                'Strategic innovation and market landscape understanding',
-                'Ground-breaking idea validation and refinement',
-                'Robust design team for practical, market-ready products',
-                'User need service and market boundary redefinition',
-                'Industry revolution and market reshaping',
-                'User-centered design future definition'
-            ]
-        }
-    };
-    
-    const service = serviceDetails[serviceId];
-    if (!service) {
-        console.error(`Service ${serviceId} not found`);
-        return;
-    }
-    
-    console.log(`📋 Showing modal for: ${service.title}`);
-    
-    // Создаем модальное окно
-    const modalHtml = `
-        <div class="service-details-modal">
-            <div class="modal-overlay"></div>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>${service.title}</h3>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="service-features">
-                        <h4>Key Expertise & Capabilities:</h4>
-                        <ul>
-                            ${service.features.map(feature => `<li>${feature}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="contacts.html" class="btn btn-primary">Discuss This Service</a>
-                    <button class="btn btn-secondary modal-close-btn">Close</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Добавляем модальное окно на страницу
-    const modalContainer = document.createElement('div');
-    modalContainer.innerHTML = modalHtml;
-    document.body.appendChild(modalContainer);
-    
-    // Добавляем стили для модального окна
-    const modalStyles = document.createElement('style');
-    modalStyles.textContent = `
-        .service-details-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: modalFadeIn 0.3s ease;
-        }
-        
-        .modal-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-        }
-        
-        .modal-content {
-            position: relative;
-            background: rgba(20, 30, 48, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 40px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            animation: modalSlideUp 0.4s ease;
-            z-index: 10000;
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 25px;
-        }
-        
-        .modal-header h3 {
-            font-size: 1.8rem;
-            color: white;
-            margin: 0;
-            flex: 1;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
-        
-        .modal-close {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            padding: 0;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            margin-left: 20px;
-        }
-        
-        .modal-close:hover {
-            color: #0066ff;
-            transform: rotate(90deg);
-        }
-        
-        .modal-body {
-            margin-bottom: 30px;
-        }
-        
-        .service-features h4 {
-            font-size: 1.3rem;
-            color: white;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .service-features ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .service-features li {
-            padding: 12px 0;
-            color: rgba(255, 255, 255, 0.9);
-            position: relative;
-            padding-left: 30px;
-            line-height: 1.6;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .service-features li:before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: #0066ff;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .service-features li:last-child {
-            border-bottom: none;
-        }
-        
-        .modal-footer {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-        }
-        
-        .modal-close-btn {
-            background: rgba(255, 255, 255, 0.08) !important;
-        }
-        
-        @keyframes modalFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes modalSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .modal-content {
-                padding: 25px;
-                width: 95%;
-            }
-            
-            .modal-header h3 {
-                font-size: 1.5rem;
-            }
-            
-            .modal-footer {
-                flex-direction: column;
-            }
-            
-            .modal-footer .btn {
-                width: 100%;
-            }
-        }
-    `;
-    
-    document.head.appendChild(modalStyles);
-    
-    // Обработчики событий для модального окна
-    function closeModal() {
-        modalContainer.style.animation = 'modalFadeOut 0.3s ease';
-        modalContainer.style.opacity = '0';
-        
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes modalFadeOut {
-                from { opacity: 1; }
-                to { opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        setTimeout(() => {
-            if (modalContainer.parentNode) {
-                modalContainer.parentNode.removeChild(modalContainer);
-            }
-            if (modalStyles.parentNode) {
-                modalStyles.parentNode.removeChild(modalStyles);
-            }
-            if (style.parentNode) {
-                style.parentNode.removeChild(style);
-            }
-        }, 300);
-    }
-    
-    // Закрытие по клику на overlay, кнопку закрытия или Escape
-    const closeBtn = modalContainer.querySelector('.modal-close');
-    const closeBtn2 = modalContainer.querySelector('.modal-close-btn');
-    const overlay = modalContainer.querySelector('.modal-overlay');
-    
-    closeBtn.addEventListener('click', closeModal);
-    closeBtn2.addEventListener('click', closeModal);
-    overlay.addEventListener('click', closeModal);
-    
-    // Закрытие по Escape
-    document.addEventListener('keydown', function handleEscape(e) {
-        if (e.key === 'Escape') {
-            closeModal();
-            document.removeEventListener('keydown', handleEscape);
-        }
-    });
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ СТАТИСТИКИ =====
@@ -871,7 +488,7 @@ function initializeCardHoverEffects() {
     console.log(`✅ Card hover effects initialized for ${projectCards.length} cards`);
 }
 
-// ===== УПРАВЛЕНИЕ FAQ (для совместимости) =====
+// ===== УПРАВЛЕНИЕ FAQ =====
 function setupFAQAccordion() {
     const faqItems = document.querySelectorAll('.faq-item');
     
@@ -973,10 +590,6 @@ window.reinitializeBackground = function() {
     return true;
 };
 
-window.showServiceDetails = function(serviceId) {
-    showServiceDetails(serviceId);
-};
-
 // Экспорт функций
 window.homePage = {
     initialize: initializeHomePage,
@@ -987,8 +600,7 @@ window.homePage = {
     switchBackground,
     nextBackground,
     prevBackground,
-    getCurrentBackground,
-    showServiceDetails
+    getCurrentBackground
 };
 
-console.log('✅ home.js fully loaded - READY WITH BACKGROUND SWITCHING');
+console.log('✅ home.js fully loaded - BACKGROUND SWITCHING READY WITHOUT VISUAL INDICATORS');
