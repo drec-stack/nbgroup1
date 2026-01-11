@@ -744,59 +744,60 @@
         </div>
     </section>
 
-    <!-- FAQ Section -->
+    <!-- FAQ Section - ИСПРАВЛЕННАЯ ВЕРСИЯ (ответы скрыты изначально) -->
     <section class="faq-section content-section" data-bg-section="6">
         <div class="container">
             <h2 class="section-title fade-in-down">FAQ</h2>
             <p class="section-subtitle fade-in-up delay-200">Frequently asked questions about our services</p>
             
             <div class="faq-grid">
+                <!-- Все ответы ИЗНАЧАЛЬНО СКРЫТЫ -->
                 <div class="faq-item fade-in-up delay-300">
-                    <button class="faq-question">
+                    <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-1">
                         <span>What does a product design company do?</span>
                         <i class="fas fa-plus"></i>
                     </button>
-                    <div class="faq-answer">
+                    <div class="faq-answer" id="faq-answer-1" aria-labelledby="faq-question-1" style="display: none; max-height: 0; opacity: 0;">
                         <p>A product design company specializes in creating innovative, user-centered products that balance aesthetics, functionality, and manufacturability. We handle everything from initial concept to production-ready designs, including research, prototyping, testing, and refinement.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item fade-in-up delay-350">
-                    <button class="faq-question">
+                    <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-2">
                         <span>What is the difference between product design and industrial design?</span>
                         <i class="fas fa-plus"></i>
                     </button>
-                    <div class="faq-answer">
+                    <div class="faq-answer" id="faq-answer-2" aria-labelledby="faq-question-2" style="display: none; max-height: 0; opacity: 0;">
                         <p>Industrial design focuses on the physical appearance and user interaction of mass-produced products. Product design is broader, encompassing the entire product development process including research, strategy, engineering, user experience, and post-launch support.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item fade-in-up delay-400">
-                    <button class="faq-question">
+                    <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-3">
                         <span>What is design thinking?</span>
                         <i class="fas fa-plus"></i>
                     </button>
-                    <div class="faq-answer">
+                    <div class="faq-answer" id="faq-answer-3" aria-labelledby="faq-question-3" style="display: none; max-height: 0; opacity: 0;">
                         <p>Design thinking is a human-centered problem-solving approach that involves empathy, ideation, prototyping, and testing. It helps create innovative solutions that truly meet user needs and business goals through an iterative, collaborative process.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item fade-in-up delay-450">
-                    <button class="faq-question">
+                    <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-4">
                         <span>Who owns the rights to the designs once completed?</span>
                         <i class="fas fa-plus"></i>
                     </button>
-                    <div class="faq-answer">
+                    <div class="faq-answer" id="faq-answer-4" aria-labelledby="faq-question-4" style="display: none; max-height: 0; opacity: 0;">
                         <p>Typically, clients retain full ownership of the designs once all payments are completed. We provide clear IP agreements to ensure your rights are protected throughout the project and you have the freedom to use the designs as needed.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item fade-in-up delay-500">
-                    <button class="faq-question">
+                    <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-5">
                         <span>What does a product design consultancy do?</span>
                         <i class="fas fa-plus"></i>
                     </button>
-                    <div class="faq-answer">
+                    <div class="faq-answer" id="faq-answer-5" aria-labelledby="faq-question-5" style="display: none; max-height: 0; opacity: 0;">
                         <p>A product design consultancy plays a pivotal role in the product lifecycle, handling comprehensive market research, user experience design, prototyping, testing, and refinement. We combine design, engineering, and strategic planning to ensure successful market launch.</p>
                     </div>
                 </div>
@@ -879,16 +880,7 @@
                 
                 console.log(`✅ Immediately loaded ${allSections.length} sections and ${allCards.length} cards`);
                 
-                // 5. Принудительно запускаем анимации
-                if (window.NBAnimations && typeof window.NBAnimations.immediateLoadAllContent === 'function') {
-                    window.NBAnimations.immediateLoadAllContent();
-                }
-                
-                if (window.loadAllContentImmediately) {
-                    window.loadAllContentImmediately();
-                }
-                
-                // Запускаем счетчики сразу
+                // 5. Запускаем счетчики сразу
                 const counters = document.querySelectorAll('.stat-number');
                 counters.forEach(counter => {
                     const target = parseInt(counter.getAttribute('data-count')) || 0;
