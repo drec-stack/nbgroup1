@@ -55,7 +55,7 @@ function initializeHomePage() {
     setTimeout(() => {
         initializeVerticalExpertiseBlocksImmediate(); // Немедленная загрузка
         initializeStatsCounterImmediate(); // Немедленная загрузка
-        // FAQ АККОРДЕОН УДАЛЕН - управляется через animations.js
+        // FAQ АККОРДЕОН УДАЛЕН - полностью управляется через animations.js
         initializeScrollAnimationsImmediate(); // Немедленная загрузка
         initializeScrollProgress();
         initializeCardHoverEffects();
@@ -798,4 +798,4 @@ window.homePage = {
     showServiceDetails
 };
 
-console.log('✅ home.js fully loaded - FAQ ACCORDION MANAGED BY animations.js');
+console.log('✅ home.js fully loaded - FAQ ACCORDION MANAGED BY animations.js WITH MULTIPLE OPENING SUPPORT');
