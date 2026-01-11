@@ -58,8 +58,13 @@
             background-repeat: no-repeat !important;
             background-attachment: fixed !important;
             opacity: 0 !important;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
             will-change: transform, opacity;
+        }
+        
+        /* КРИТИЧНО: Первый слой должен быть виден при загрузке */
+        .parallax-bg-layer:first-child {
+            opacity: 1 !important;
         }
         
         .parallax-bg-layer.active {
@@ -68,7 +73,7 @@
         
         .parallax-bg-layer.scroll-parallax {
             transform: translate3d(0, 0, 0);
-            transition: transform 0.1s linear, opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            transition: transform 0.2s linear, opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         
         .parallax-bg-layer::after {
@@ -92,21 +97,23 @@
         
         /* КНОПКИ */
         .btn, .btn-primary, .btn-secondary {
-            background: rgba(255, 255, 255, 0.08) !important;
-            backdrop-filter: blur(12px) saturate(0.9) !important;
-            -webkit-backdrop-filter: blur(12px) saturate(0.9) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            background: rgba(255, 255, 255, 0.12) !important;
+            backdrop-filter: blur(15px) saturate(1.2) !important;
+            -webkit-backdrop-filter: blur(15px) saturate(1.2) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
             box-shadow: 
-                0 8px 25px rgba(0, 0, 0, 0.25),
-                0 2px 10px rgba(0, 0, 0, 0.15) !important;
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                0 4px 15px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         }
         
         .btn:hover, .btn-primary:hover, .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.12) !important;
-            border-color: rgba(255, 255, 255, 0.25) !important;
+            background: rgba(255, 255, 255, 0.18) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
             box-shadow: 
-                0 12px 35px rgba(0, 0, 0, 0.3),
-                0 4px 15px rgba(0, 0, 0, 0.2) !important;
+                0 15px 40px rgba(0, 0, 0, 0.4),
+                0 6px 20px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
         }
         
         /* ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ */
@@ -136,8 +143,8 @@
         .stat-number, .stat-label, .section-title, .section-subtitle {
             text-shadow: 
                 0 4px 40px rgba(0, 0, 0, 0.95),
-                0 3px 30px rgba(0, 0, 0, 0.9),
-                0 2px 25px rgba(0, 0, 0, 0.85) !important;
+                0 3px 35px rgba(0, 0, 0, 0.9),
+                0 2px 30px rgba(0, 0, 0, 0.85) !important;
         }
         
         /* Отступ для хедера */
@@ -154,6 +161,8 @@
             /* Отключаем fixed background на мобильных */
             .parallax-bg-layer {
                 background-attachment: scroll !important;
+                transform: none !important;
+                transition: opacity 1.2s ease !important;
             }
         }
     </style>
@@ -167,10 +176,10 @@
     
     <!-- ФОНОВЫЕ СЛОИ ДЛЯ СМЕНЫ ПРИ СКРОЛЛЕ -->
     <div class="parallax-bg-container">
-        <div class="parallax-bg-layer active" data-bg-index="1" style="background-image: url('assets/images/parallax/bg-1.jpg')"></div>
-        <div class="parallax-bg-layer" data-bg-index="2" style="background-image: url('assets/images/parallax/bg-2.jpg')"></div>
-        <div class="parallax-bg-layer" data-bg-index="3" style="background-image: url('assets/images/parallax/bg-3.jpg')"></div>
-        <div class="parallax-bg-layer" data-bg-index="4" style="background-image: url('assets/images/parallax/bg-4.jpg')"></div>
+        <div class="parallax-bg-layer active scroll-parallax" data-bg-index="1" style="background-image: url('assets/images/parallax/bg-1.jpg')"></div>
+        <div class="parallax-bg-layer scroll-parallax" data-bg-index="2" style="background-image: url('assets/images/parallax/bg-2.jpg')"></div>
+        <div class="parallax-bg-layer scroll-parallax" data-bg-index="3" style="background-image: url('assets/images/parallax/bg-3.jpg')"></div>
+        <div class="parallax-bg-layer scroll-parallax" data-bg-index="4" style="background-image: url('assets/images/parallax/bg-4.jpg')"></div>
     </div>
 
     <!-- SCROLL PROGRESS BAR -->
@@ -182,7 +191,7 @@
     <div id="header-container"></div>
 
     <!-- Hero Section (фон 1) -->
-    <section class="hero content-section" data-bg-section="hero" data-bg-index="1">
+    <section class="hero content-section" data-bg-section="hero">
         <div class="container">
             <div class="hero-content">
                 <div class="scale-in">
@@ -214,7 +223,7 @@
     </section>
 
     <!-- Expertise Section (фон 1) -->
-    <section class="expertise-section content-section" data-bg-section="expertise" data-bg-index="1">
+    <section class="expertise-section content-section" data-bg-section="expertise">
         <div class="container">
             <div class="expertise-header">
                 <h2 class="section-title expertise-main-title fade-in-down">Expertise</h2>
@@ -302,7 +311,7 @@
     </section>
 
     <!-- Projects Section (фон 2) -->
-    <section class="projects-section content-section" data-bg-section="projects" data-bg-index="2">
+    <section class="projects-section content-section" data-bg-section="projects">
         <div class="container">
             <h2 class="section-title fade-in-down">Projects</h2>
             <p class="section-subtitle fade-in-up delay-200">Our latest design projects and innovations</p>
@@ -352,7 +361,7 @@
     </section>
 
     <!-- Stats Section (фон 2) -->
-    <section class="stats-section content-section" data-bg-section="stats" data-bg-index="2">
+    <section class="stats-section content-section" data-bg-section="stats">
         <div class="container">
             <h2 class="section-title fade-in-down">Our Achievements</h2>
             <p class="section-subtitle fade-in-up delay-200">Numbers that speak for themselves</p>
@@ -382,7 +391,7 @@
     </section>
 
     <!-- Services Section (фон 3) -->
-    <section class="services-section content-section speck-services-section" data-bg-section="services" data-bg-index="3">
+    <section class="services-section content-section speck-services-section" data-bg-section="services">
         <div class="container">
             <div class="speck-services-header">
                 <h2 class="section-title speck-section-title fade-in-down">Services</h2>
@@ -526,7 +535,7 @@
     </section>
 
     <!-- Journals Section (фон 4) -->
-    <section class="journals-section content-section" data-bg-section="journals" data-bg-index="4">
+    <section class="journals-section content-section" data-bg-section="journals">
         <div class="container">
             <h2 class="section-title fade-in-down">Journals</h2>
             <p class="section-subtitle fade-in-up delay-200">Latest insights and articles from our team</p>
@@ -567,7 +576,7 @@
     </section>
 
     <!-- FAQ Section (фон 4) -->
-    <section class="faq-section content-section" data-bg-section="faq" data-bg-index="4">
+    <section class="faq-section content-section" data-bg-section="faq">
         <div class="container">
             <h2 class="section-title fade-in-down">FAQ</h2>
             <p class="section-subtitle fade-in-up delay-200">Frequently asked questions about our services</p>
@@ -627,7 +636,7 @@
     </section>
 
     <!-- Contact CTA Section (фон 4) -->
-    <section class="cta-section content-section" data-bg-section="cta" data-bg-index="4">
+    <section class="cta-section content-section" data-bg-section="cta">
         <div class="container">
             <div class="cta-content">
                 <h2 class="cta-title fade-in-down">Ready to Start Your Project?</h2>
