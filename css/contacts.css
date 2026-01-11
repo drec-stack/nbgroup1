@@ -18,12 +18,16 @@
 /* ===== CONTACT HERO SECTION ===== */
 .contact-hero {
     padding: 200px 0 100px;
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    background: transparent !important;
     position: relative;
     overflow: hidden;
     min-height: 70vh;
     display: flex;
     align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .contact-hero::before {
@@ -104,8 +108,12 @@
 /* ===== CONTACT CARDS SECTION ===== */
 .contact-cards {
     padding: 120px 0;
-    background: var(--primary);
+    background: transparent !important;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .cards-grid {
@@ -226,9 +234,13 @@
 /* ===== MAIN CONTACT SECTION ===== */
 .contact-main {
     padding: 140px 0;
-    background: var(--secondary);
+    background: transparent !important;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .contact-layout {
@@ -561,7 +573,11 @@
 /* ===== MAP SECTION ===== */
 .map-section {
     padding: 120px 0;
-    background: var(--primary);
+    background: transparent !important;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .section-header {
@@ -723,6 +739,8 @@
     .contact-hero {
         padding: 160px 0 80px !important;
         min-height: auto;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
     }
     
     .contact-hero .page-title {
@@ -742,6 +760,8 @@
     
     .contact-cards {
         padding: 80px 0 !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
     }
     
     .contact-card {
@@ -751,6 +771,8 @@
     /* Форма */
     .contact-main {
         padding: 80px 0 !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
     }
     
     .form-row {
@@ -788,6 +810,8 @@
     /* Карта */
     .map-section {
         padding: 80px 0 !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
     }
     
     .map-placeholder {
@@ -907,4 +931,27 @@
 .form-group textarea:focus {
     outline: 3px solid var(--accent);
     outline-offset: 3px;
+}
+
+/* ===== HEADER FIX FOR CONTACTS PAGE ===== */
+.contacts-page .main-header {
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    z-index: 1000 !important;
+}
+
+@media (max-width: 768px) {
+    .contacts-page .main-header {
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        top: 0 !important;
+    }
 }
