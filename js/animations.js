@@ -1,4 +1,4 @@
-console.log('🚀 Animations.js loaded - IMMEDIATE LOAD (NO SCROLL DELAY)');
+console.log('🚀 Animations.js loaded - IMMEDIATE LOAD WITH FIXED FAQ ACCORDION');
 
 // Safe DOM access utility
 const safeDOM = {
@@ -51,12 +51,6 @@ const safeDOM = {
 
 class NBAnimations {
     constructor() {
-        this.observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-        
         this.init();
     }
 
@@ -67,7 +61,7 @@ class NBAnimations {
             // НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА (без ожидания скролла)
             this.immediateLoadAllContent();
             
-            // Настройка анимаций (без привязки к скроллу)
+            // Настройка анимаций
             this.setupCounterAnimation();
             this.setupSpeckBlockAnimationsImmediate();
             this.setupSpeckColumnHover();
@@ -76,7 +70,7 @@ class NBAnimations {
             this.setupProjectsAnimationsImmediate();
             this.setupServicesAnimationsImmediate();
             this.setupJournalsAnimationsImmediate();
-            this.setupFAQAnimationsImmediate();
+            this.setupFAQAccordion(); // ИСПРАВЛЕННЫЙ FAQ АККОРДЕОН
             
             console.log('✅ All content IMMEDIATELY loaded (no scroll delay)');
         } catch (error) {
@@ -153,26 +147,206 @@ class NBAnimations {
         }
     }
 
-    // ===== БЕЗ СКРОЛЛА =====
-    setupScrollAnimations() {
-        // ЭТОТ МЕТОД БОЛЬШЕ НЕ ИСПОЛЬЗУЕТСЯ - весь контент загружается сразу
-        console.log('⚠️ Scroll animations DISABLED - content loads immediately');
-    }
-
-    animateTitleWords(element) {
-        if (!element) return;
+    // ===== FAQ АККОРДЕОН - ИСПРАВЛЕННЫЙ =====
+    setupFAQAccordion() {
+        console.log('🎯 Setting up FAQ accordion with hidden answers...');
         
-        const words = element.querySelectorAll('.title-word');
-        words.forEach((word, index) => {
-            // Немедленно анимируем без задержки
-            if (word && word.style) {
-                word.style.transform = 'translateY(0)';
+        try {
+            const faqItems = safeDOM.queryAll('.faq-item');
+            
+            if (faqItems.length === 0) {
+                console.warn('❌ No FAQ items found');
+                return;
             }
-        });
+            
+            console.log(`✅ Found ${faqItems.length} FAQ items`);
+            
+            // 1. Изначально ВСЕ ответы должны быть СКРЫТЫ
+            faqItems.forEach((item, index) => {
+                if (item) {
+                    const question = item.querySelector('.faq-question');
+                    const answer = item.querySelector('.faq-answer');
+                    const icon = question?.querySelector('i');
+                    
+                    // Устанавливаем атрибуты доступности
+                    if (question) {
+                        question.id = `faq-question-${index}`;
+                        question.setAttribute('aria-expanded', 'false');
+                        question.setAttribute('aria-controls', `faq-answer-${index}`);
+                        question.setAttribute('tabindex', '0');
+                    }
+                    
+                    if (answer) {
+                        answer.id = `faq-answer-${index}`;
+                        answer.setAttribute('aria-labelledby', `faq-question-${index}`);
+                        answer.setAttribute('role', 'region');
+                        answer.setAttribute('aria-hidden', 'true');
+                        
+                        // Гарантируем что ответ скрыт изначально
+                        if (answer.style) {
+                            answer.style.display = 'none';
+                            answer.style.maxHeight = '0';
+                            answer.style.opacity = '0';
+                            answer.style.overflow = 'hidden';
+                            answer.style.paddingTop = '0';
+                            answer.style.paddingBottom = '0';
+                            answer.style.marginTop = '0';
+                            answer.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                        }
+                    }
+                    
+                    // Иконка должна быть плюсом
+                    if (icon && icon.style) {
+                        icon.style.transform = 'rotate(0deg)';
+                        icon.style.color = 'rgba(255, 255, 255, 0.7)';
+                        icon.style.background = 'rgba(255, 255, 255, 0.1)';
+                        icon.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                    }
+                }
+            });
+            
+            // 2. Добавляем обработчики кликов
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                if (question) {
+                    // Удаляем старые обработчики
+                    question.removeEventListener('click', this.handleFAQClick);
+                    question.removeEventListener('keydown', this.handleFAQKeydown);
+                    
+                    // Добавляем новые
+                    question.addEventListener('click', (e) => this.toggleFAQItem(item, e));
+                    question.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.toggleFAQItem(item, e);
+                        }
+                    });
+                }
+            });
+            
+            console.log('✅ FAQ accordion setup complete - all answers are initially HIDDEN');
+            
+        } catch (error) {
+            console.error('❌ Error setting up FAQ accordion:', error);
+        }
+    }
+    
+    // Функция переключения FAQ элемента
+    toggleFAQItem(item, event) {
+        try {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+            const icon = question?.querySelector('i');
+            const isCurrentlyActive = item.classList.contains('active');
+            
+            console.log(`📋 FAQ toggle: ${isCurrentlyActive ? 'closing' : 'opening'} item`);
+            
+            // Закрываем все другие FAQ (опционально)
+            const allFAQItems = safeDOM.queryAll('.faq-item');
+            allFAQItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
+                    this.closeFAQItem(otherItem);
+                }
+            });
+            
+            // Переключаем текущий элемент
+            if (isCurrentlyActive) {
+                this.closeFAQItem(item);
+            } else {
+                this.openFAQItem(item);
+            }
+            
+        } catch (error) {
+            console.error('❌ Error toggling FAQ item:', error);
+        }
+    }
+    
+    // Открыть FAQ элемент
+    openFAQItem(item) {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = question?.querySelector('i');
+        
+        // Добавляем активный класс
+        safeDOM.addClass(item, 'active');
+        
+        // Обновляем атрибуты доступности
+        if (question) {
+            question.setAttribute('aria-expanded', 'true');
+        }
+        
+        if (answer) {
+            answer.setAttribute('aria-hidden', 'false');
+            
+            // Показываем ответ с анимацией
+            if (answer.style) {
+                answer.style.display = 'block';
+                setTimeout(() => {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    answer.style.opacity = '1';
+                    answer.style.paddingTop = '15px';
+                    answer.style.paddingBottom = '30px';
+                    answer.style.marginTop = '15px';
+                }, 10);
+            }
+        }
+        
+        // Анимируем иконку (плюс → крестик)
+        if (icon && icon.style) {
+            icon.style.transform = 'rotate(45deg)';
+            icon.style.color = '#66b5ff';
+            icon.style.background = 'rgba(102, 181, 255, 0.2)';
+        }
+    }
+    
+    // Закрыть FAQ элемент
+    closeFAQItem(item) {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = question?.querySelector('i');
+        
+        // Убираем активный класс
+        safeDOM.removeClass(item, 'active');
+        
+        // Обновляем атрибуты доступности
+        if (question) {
+            question.setAttribute('aria-expanded', 'false');
+        }
+        
+        if (answer) {
+            answer.setAttribute('aria-hidden', 'true');
+            
+            // Скрываем ответ с анимацией
+            if (answer.style) {
+                answer.style.maxHeight = '0';
+                answer.style.opacity = '0';
+                answer.style.paddingTop = '0';
+                answer.style.paddingBottom = '0';
+                answer.style.marginTop = '0';
+                
+                // После анимации скрываем полностью
+                setTimeout(() => {
+                    answer.style.display = 'none';
+                }, 500);
+            }
+        }
+        
+        // Анимируем иконку (крестик → плюс)
+        if (icon && icon.style) {
+            icon.style.transform = 'rotate(0deg)';
+            icon.style.color = 'rgba(255, 255, 255, 0.7)';
+            icon.style.background = 'rgba(255, 255, 255, 0.1)';
+        }
     }
 
+    // ===== ОСТАЛЬНЫЕ ФУНКЦИИ (без изменений) =====
     setupCounterAnimation() {
-        // Счетчики будут анимироваться сразу
         const counters = safeDOM.queryAll('.counter, .stat-number');
         
         counters.forEach(counter => {
@@ -202,7 +376,6 @@ class NBAnimations {
         }
     }
 
-    // ===== SPECK BLOCK ANIMATIONS (IMMEDIATE) =====
     setupSpeckBlockAnimationsImmediate() {
         try {
             const speckBlocks = safeDOM.queryAll('.speck-vertical-block');
@@ -253,14 +426,14 @@ class NBAnimations {
                                 item.style.opacity = '1';
                                 item.style.transform = 'translateX(0)';
                             }
-                        }, itemIndex * 50); // Минимальная задержка
+                        }, itemIndex * 50);
                     });
                     
                     if (rightBlock) {
                         safeDOM.addClass(rightBlock, 'animate-border');
                     }
                     
-                }, index * 100); // Минимальная задержка между блоками
+                }, index * 100);
             });
             
             console.log(`⚡ Immediately loaded ${speckBlocks.length} speck blocks`);
@@ -270,7 +443,6 @@ class NBAnimations {
     }
 
     setupSpeckColumnHover() {
-        // Оставляем hover эффекты как есть
         try {
             const columns = safeDOM.queryAll('.speck-feature-column');
             
@@ -309,7 +481,6 @@ class NBAnimations {
     }
 
     setupSpeckGlowEffects() {
-        // Оставляем как есть
         try {
             const blocks = safeDOM.queryAll('.speck-vertical-block');
             blocks.forEach(block => {
@@ -340,12 +511,10 @@ class NBAnimations {
         }
     }
 
-    // ===== HERO IMAGE ANIMATIONS (IMMEDIATE) =====
     setupHeroImageAnimationImmediate() {
         try {
             const heroImage = safeDOM.query('.hero-image');
             if (heroImage) {
-                // Немедленно показываем
                 safeDOM.addClass(heroImage, 'revealed');
                 
                 const img = heroImage.querySelector('img');
@@ -354,7 +523,6 @@ class NBAnimations {
                     img.style.transform = 'scale(1)';
                 }
                 
-                // Hover эффекты остаются
                 heroImage.addEventListener('mouseenter', () => {
                     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                         safeDOM.addClass(heroImage, 'pulse-glow');
@@ -372,17 +540,14 @@ class NBAnimations {
         }
     }
 
-    // ===== PROJECTS ANIMATIONS (IMMEDIATE) =====
     setupProjectsAnimationsImmediate() {
         try {
             const projectCards = safeDOM.queryAll('.project-card');
             
             projectCards.forEach((card, index) => {
                 if (card) {
-                    // Немедленно показываем
                     safeDOM.addClass(card, 'revealed');
                     
-                    // Минимальная задержка для красоты
                     setTimeout(() => {
                         const image = card.querySelector('.project-image img');
                         const content = card.querySelector('.project-content');
@@ -397,7 +562,6 @@ class NBAnimations {
                         }
                     }, index * 50);
                     
-                    // Hover эффекты остаются
                     card.addEventListener('mouseenter', () => {
                         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                             const image = card.querySelector('.project-image img');
@@ -424,17 +588,14 @@ class NBAnimations {
         }
     }
 
-    // ===== SERVICES ANIMATIONS (IMMEDIATE) =====
     setupServicesAnimationsImmediate() {
         try {
             const serviceItems = safeDOM.queryAll('.service-item');
             
             serviceItems.forEach((item, index) => {
                 if (item) {
-                    // Немедленно показываем
                     safeDOM.addClass(item, 'revealed');
                     
-                    // Минимальная задержка
                     setTimeout(() => {
                         const icon = item.querySelector('.service-icon');
                         const title = item.querySelector('.service-title');
@@ -450,7 +611,6 @@ class NBAnimations {
                         }
                     }, index * 30);
                     
-                    // Hover эффекты
                     item.addEventListener('mouseenter', () => {
                         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                             safeDOM.addClass(item, 'hover-animate');
@@ -469,17 +629,14 @@ class NBAnimations {
         }
     }
 
-    // ===== JOURNALS ANIMATIONS (IMMEDIATE) =====
     setupJournalsAnimationsImmediate() {
         try {
             const journalItems = safeDOM.queryAll('.journal-item');
             
             journalItems.forEach((item, index) => {
                 if (item) {
-                    // Немедленно показываем
                     safeDOM.addClass(item, 'revealed');
                     
-                    // Минимальная задержка
                     setTimeout(() => {
                         const date = item.querySelector('.journal-date');
                         const title = item.querySelector('.journal-title');
@@ -501,7 +658,6 @@ class NBAnimations {
                         }
                     }, index * 40);
                     
-                    // Hover эффекты
                     item.addEventListener('mouseenter', () => {
                         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                             safeDOM.addClass(item, 'hover-animate');
@@ -519,111 +675,6 @@ class NBAnimations {
             console.error('❌ Error in immediate journals animations:', error);
         }
     }
-
-    // ===== FAQ ANIMATIONS (IMMEDIATE) =====
-    setupFAQAnimationsImmediate() {
-        try {
-            const faqItems = safeDOM.queryAll('.faq-item');
-            
-            // Немедленно показываем все FAQ элементы
-            faqItems.forEach((item, index) => {
-                if (item) {
-                    safeDOM.addClass(item, 'revealed');
-                    
-                    // Немедленно показываем вопрос
-                    const question = item.querySelector('.faq-question');
-                    if (question && question.style) {
-                        question.style.opacity = '1';
-                        question.style.transform = 'translateY(0)';
-                    }
-                }
-            });
-            
-            // FAQ аккордеон логика остается
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question');
-                
-                if (question) {
-                    question.addEventListener('click', () => {
-                        console.log('FAQ question clicked');
-                        
-                        // Закрываем все другие элементы
-                        faqItems.forEach(otherItem => {
-                            if (otherItem !== item && otherItem.classList.contains('active')) {
-                                otherItem.classList.remove('active');
-                                const otherAnswer = otherItem.querySelector('.faq-answer');
-                                const otherIcon = otherItem.querySelector('.faq-question i');
-                                
-                                if (otherAnswer && otherAnswer.style) {
-                                    otherAnswer.style.maxHeight = '0';
-                                }
-                                if (otherIcon && otherIcon.style) {
-                                    otherIcon.style.transform = 'rotate(0deg)';
-                                }
-                            }
-                        });
-                        
-                        // Переключаем текущий элемент
-                        const isActive = item.classList.contains('active');
-                        item.classList.toggle('active');
-                        
-                        const answer = item.querySelector('.faq-answer');
-                        const icon = item.querySelector('.faq-question i');
-                        
-                        if (answer && answer.style) {
-                            if (isActive) {
-                                answer.style.maxHeight = '0';
-                            } else {
-                                answer.style.maxHeight = answer.scrollHeight + 'px';
-                            }
-                        }
-                        
-                        if (icon && icon.style) {
-                            if (isActive) {
-                                icon.style.transform = 'rotate(0deg)';
-                            } else {
-                                icon.style.transform = 'rotate(45deg)';
-                            }
-                        }
-                    });
-                }
-            });
-            
-            // Автоматически открываем первый элемент
-            if (faqItems.length > 0) {
-                const firstItem = faqItems[0];
-                const firstAnswer = firstItem.querySelector('.faq-answer');
-                const firstIcon = firstItem.querySelector('.faq-question i');
-                
-                setTimeout(() => {
-                    firstItem.classList.add('active');
-                    if (firstAnswer && firstAnswer.style) {
-                        firstAnswer.style.maxHeight = firstAnswer.scrollHeight + 'px';
-                    }
-                    if (firstIcon && firstIcon.style) {
-                        firstIcon.style.transform = 'rotate(45deg)';
-                    }
-                }, 500);
-            }
-            
-            console.log(`⚡ Immediately loaded ${faqItems.length} FAQ items`);
-        } catch (error) {
-            console.error('❌ Error in immediate FAQ animations:', error);
-        }
-    }
-
-    // Utility for staggered animations
-    staggerAnimation(elements, delay = 100) {
-        try {
-            elements.forEach((element, index) => {
-                setTimeout(() => {
-                    safeDOM.addClass(element, 'revealed');
-                }, index * delay);
-            });
-        } catch (error) {
-            console.error('❌ Error in stagger animation:', error);
-        }
-    }
 }
 
 // Initialize animations IMMEDIATELY
@@ -633,14 +684,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         window.NBAnimations = new NBAnimations();
         
-        // Немедленно добавляем классы для активации всех анимаций
         safeDOM.addClass(document.body, 'speck-animations-loaded');
         safeDOM.addClass(document.body, 'speck-animations-ready');
         safeDOM.addClass(document.body, 'all-content-loaded');
         
-        // Немедленная анимация при загрузке страницы для всех блоков
         setTimeout(() => {
-            // Speck блоки
             const speckBlocks = safeDOM.queryAll('.speck-vertical-block');
             speckBlocks.forEach((block, index) => {
                 setTimeout(() => {
@@ -652,7 +700,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, index * 50);
             });
             
-            // Project карточки
             const projectCards = safeDOM.queryAll('.project-card');
             projectCards.forEach((card, index) => {
                 setTimeout(() => {
@@ -664,7 +711,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, index * 30);
             });
             
-            // Service элементы
             const serviceItems = safeDOM.queryAll('.service-item');
             serviceItems.forEach((item, index) => {
                 setTimeout(() => {
@@ -676,7 +722,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, index * 20);
             });
             
-            // Expertice блоки
             const expertiseBlocks = safeDOM.queryAll('.expertise-vertical-block');
             expertiseBlocks.forEach((block, index) => {
                 setTimeout(() => {
@@ -685,7 +730,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         block.style.transform = 'translateX(0)';
                     }
                     
-                    // Немедленно показываем внутренние элементы
                     const number = block.querySelector('.expertise-number');
                     const title = block.querySelector('.expertise-title');
                     const description = block.querySelector('.expertise-description');
@@ -736,7 +780,6 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     try {
         safeDOM.addClass(document.body, 'reduced-motion');
         
-        // Отключаем все анимации
         const style = document.createElement('style');
         style.textContent = `
             .speck-vertical-block,
@@ -764,9 +807,18 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             .faq-item .faq-answer {
                 max-height: 500px !important;
                 opacity: 1 !important;
+                display: none !important;
+            }
+            
+            .faq-item.active .faq-answer {
+                display: block !important;
             }
             
             .faq-question i {
+                transform: rotate(0deg) !important;
+            }
+            
+            .faq-item.active .faq-question i {
                 transform: rotate(45deg) !important;
             }
             
@@ -782,14 +834,6 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     }
 }
 
-// Global error handler for animations
-window.addEventListener('error', function(event) {
-    if (event.filename && event.filename.includes('animations.js')) {
-        console.error('❌ Global error in animations.js:', event.message, event.error);
-        event.preventDefault();
-    }
-});
-
 // Export functions for global use
 window.toggleFAQItem = function(index) {
     const faqItems = safeDOM.queryAll('.faq-item');
@@ -801,25 +845,46 @@ window.toggleFAQItem = function(index) {
     }
 };
 
-// Функция для принудительной загрузки всего контента
-window.loadAllContentImmediately = function() {
-    console.log('⚡ Forcing immediate content load...');
-    
-    const allTextElements = document.querySelectorAll(
-        'h1, h2, h3, h4, h5, h6, p, span, li, .title, .subtitle, .description, .text, [data-i18n]'
-    );
-    
-    allTextElements.forEach(el => {
-        if (el && el.style) {
-            el.style.opacity = '1';
-            el.style.visibility = 'visible';
-            el.style.transform = 'translate(0, 0)';
+// Функция для открытия всех FAQ
+window.openAllFAQ = function() {
+    const faqItems = safeDOM.queryAll('.faq-item');
+    faqItems.forEach(item => {
+        if (window.NBAnimations) {
+            window.NBAnimations.openFAQItem(item);
         }
     });
-    
-    document.body.classList.add('all-content-loaded');
-    
-    console.log(`✅ Immediately loaded ${allTextElements.length} text elements`);
+    console.log('✅ All FAQ items opened');
 };
 
-console.log('✅ animations.js loaded - IMMEDIATE CONTENT LOAD (NO SCROLL DELAY)');
+// Функция для закрытия всех FAQ
+window.closeAllFAQ = function() {
+    const faqItems = safeDOM.queryAll('.faq-item');
+    faqItems.forEach(item => {
+        if (window.NBAnimations) {
+            window.NBAnimations.closeFAQItem(item);
+        }
+    });
+    console.log('✅ All FAQ items closed');
+};
+
+// Функция для тестирования FAQ
+window.testFAQ = function() {
+    const faqItems = safeDOM.queryAll('.faq-item');
+    console.log(`📋 FAQ Test: Found ${faqItems.length} items`);
+    faqItems.forEach((item, index) => {
+        const isActive = item.classList.contains('active');
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = question?.querySelector('i');
+        
+        console.log(`Item ${index}:`, {
+            active: isActive,
+            ariaExpanded: question?.getAttribute('aria-expanded'),
+            answerDisplay: answer?.style.display,
+            answerHeight: answer?.scrollHeight,
+            iconTransform: icon?.style.transform
+        });
+    });
+};
+
+console.log('✅ animations.js loaded - FIXED FAQ ACCORDION WITH HIDDEN ANSWERS!');
