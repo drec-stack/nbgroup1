@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -147,6 +147,7 @@
             position: relative !important;
         }
 
+        /* ===== ЛОГОТИП - ЛЕВЫЙ УГОЛ ===== */
         .logo {
             display: flex !important;
             align-items: center !important;
@@ -154,6 +155,7 @@
             gap: 14px !important;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
             z-index: 1001 !important;
+            flex-shrink: 0 !important;
         }
 
         .scroll-down .logo {
@@ -304,7 +306,7 @@
             }
         }
 
-        /* ===== БУРГЕР МЕНЮ - ИСПРАВЛЕННЫЙ (В ПРАВОМ УГЛУ) ===== */
+        /* ===== БУРГЕР МЕНЮ - ПРАВЫЙ УГОЛ ===== */
         .burger-btn {
             display: none !important;
             width: 30px !important;
@@ -316,7 +318,6 @@
             padding: 0 !important;
             z-index: 1002 !important;
             transition: all 0.3s ease !important;
-            margin-left: auto !important;
         }
 
         .burger-btn:hover {
@@ -394,11 +395,10 @@
             display: none !important;
             align-items: center !important;
             gap: 15px !important;
-            justify-content: flex-end !important;
-            width: 100% !important;
+            margin-left: auto !important; /* Выравнивание вправо */
         }
 
-        /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ИСПРАВЛЕННОЕ РАСПОЛОЖЕНИЕ (БУРГЕР СПРАВА) ===== */
+        /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ЛОГО СЛЕВА, ПЕРЕКЛЮЧАТЕЛЬ И БУРГЕР СПРАВА ===== */
         @media (max-width: 900px) {
             .header-right-desktop {
                 display: none !important;
@@ -408,30 +408,32 @@
                 display: flex !important;
                 align-items: center !important;
                 justify-content: flex-end !important;
-                width: auto !important;
                 gap: 15px !important;
             }
             
             .burger-btn {
                 display: block !important;
                 order: 3 !important; /* Самый правый элемент */
-                margin-left: 15px !important;
-                margin-right: 0 !important;
             }
             
             .logo {
-                position: absolute !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
+                position: static !important; /* Логотип в левом углу */
+                transform: none !important;
             }
             
             .language-switcher-mobile {
-                order: 2 !important; /* Слева от бургера */
-                margin-right: 0 !important;
+                order: 2 !important; /* Переключатель языка рядом с бургером */
             }
             
             .header-inner {
                 justify-content: space-between !important;
+            }
+            
+            /* Убираем абсолютное позиционирование логотипа */
+            .logo {
+                position: static !important;
+                left: auto !important;
+                transform: none !important;
             }
         }
 
@@ -490,10 +492,6 @@
                 font-size: 19px !important;
             }
             
-            .burger-btn {
-                margin-left: 15px !important;
-            }
-            
             .header-right-mobile {
                 gap: 12px !important;
             }
@@ -517,7 +515,17 @@
             .burger-btn {
                 width: 28px !important;
                 height: 22px !important;
-                margin-left: 10px !important;
+            }
+            
+            /* Скрываем текст логотипа на очень маленьких экранах */
+            @media (max-width: 360px) {
+                .logo-text {
+                    display: none !important;
+                }
+                
+                .logo {
+                    gap: 8px !important;
+                }
             }
         }
 
@@ -890,6 +898,7 @@
     <header class="main-header" id="main-header">
         <div class="header-container">
             <div class="header-inner">
+                <!-- Логотип слева -->
                 <a href="index.html" class="logo" aria-label="На главную">
                     <div class="logo-mark" aria-hidden="true">NB</div>
                     <span class="logo-text" data-i18n="nav.brand">NB Group</span>
