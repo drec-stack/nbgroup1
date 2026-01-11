@@ -1,4 +1,4 @@
-console.log('🏠 home.js loaded - FIXED VERSION WITH WORKING FAQ & IMMEDIATE LOAD');
+console.log('🏠 home.js loaded - FIXED VERSION WITH WORKING FAQ ACCORDION');
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ =====
 function initializeHomePage() {
@@ -55,7 +55,7 @@ function initializeHomePage() {
     setTimeout(() => {
         initializeVerticalExpertiseBlocksImmediate(); // Немедленная загрузка
         initializeStatsCounterImmediate(); // Немедленная загрузка
-        initializeFAQImmediate(); // Немедленная загрузка
+        setupUniversalFAQAccordion(); // Инициализация FAQ аккордеона
         initializeScrollAnimationsImmediate(); // Немедленная загрузка
         initializeScrollProgress();
         initializeCardHoverEffects();
@@ -662,92 +662,104 @@ function initializeStatsCounterImmediate() {
     });
 }
 
-// ===== НЕМЕДЛЕННАЯ ИНИЦИАЛИЗАЦИЯ FAQ =====
-function initializeFAQImmediate() {
+// ===== УНИВЕРСАЛЬНЫЙ FAQ АККОРДЕОН =====
+function setupUniversalFAQAccordion() {
+    console.log('🎯 Setting up universal FAQ accordion');
+    
     const faqItems = document.querySelectorAll('.faq-item');
     
     if (faqItems.length === 0) {
-        console.log('⚠️ No FAQ items found');
+        console.warn('No FAQ items found');
         return;
     }
     
-    console.log(`⚡ Immediately loading ${faqItems.length} FAQ items`);
-    
-    // Немедленно показываем все вопросы
-    faqItems.forEach(item => {
+    // Инициализируем каждый элемент
+    faqItems.forEach((item, index) => {
         const question = item.querySelector('.faq-question');
-        if (question && question.style) {
-            question.style.opacity = '1';
-            question.style.transform = 'translateY(0)';
-        }
-    });
-    
-    // FAQ аккордеон логика остается
-    faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = question?.querySelector('i');
         
-        if (question) {
-            question.addEventListener('click', () => {
-                console.log('FAQ question clicked');
+        if (!question || !answer) return;
+        
+        // 1. Устанавливаем начальное состояние (скрытые ответы)
+        answer.style.maxHeight = '0';
+        answer.style.opacity = '0';
+        answer.style.overflow = 'hidden';
+        answer.style.paddingTop = '0';
+        answer.style.paddingBottom = '0';
+        answer.style.marginTop = '0';
+        
+        // 2. Добавляем accessibility атрибуты
+        question.id = `faq-question-${index}`;
+        answer.id = `faq-answer-${index}`;
+        question.setAttribute('aria-expanded', 'false');
+        question.setAttribute('aria-controls', answer.id);
+        answer.setAttribute('aria-labelledby', question.id);
+        answer.setAttribute('role', 'region');
+        
+        // 3. Обработчик клика
+        const handleClick = () => {
+            const isExpanded = question.getAttribute('aria-expanded') === 'true';
+            
+            // Переключаем состояние
+            const newExpandedState = !isExpanded;
+            question.setAttribute('aria-expanded', newExpandedState);
+            item.classList.toggle('active');
+            
+            // Анимация ответа
+            if (newExpandedState) {
+                // Открываем
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+                answer.style.opacity = '1';
+                answer.style.paddingTop = '15px';
+                answer.style.paddingBottom = '30px';
+                answer.style.marginTop = '15px';
                 
-                // Закрываем все другие элементы
-                faqItems.forEach(otherItem => {
-                    if (otherItem !== item && otherItem.classList.contains('active')) {
-                        otherItem.classList.remove('active');
-                        const otherAnswer = otherItem.querySelector('.faq-answer');
-                        const otherIcon = otherItem.querySelector('.faq-question i');
-                        
-                        if (otherAnswer && otherAnswer.style) {
-                            otherAnswer.style.maxHeight = '0';
-                        }
-                        if (otherIcon && otherIcon.style) {
-                            otherIcon.style.transform = 'rotate(0deg)';
-                        }
-                    }
-                });
-                
-                // Переключаем текущий элемент
-                const isActive = item.classList.contains('active');
-                item.classList.toggle('active');
-                
-                const answer = item.querySelector('.faq-answer');
-                const icon = item.querySelector('.faq-question i');
-                
-                if (answer && answer.style) {
-                    if (isActive) {
-                        answer.style.maxHeight = '0';
-                    } else {
-                        answer.style.maxHeight = answer.scrollHeight + 'px';
-                    }
+                // Анимация иконки (плюс → крестик)
+                if (icon) {
+                    icon.style.transform = 'rotate(45deg)';
+                    icon.style.color = '#66b5ff';
+                    icon.style.background = 'rgba(102, 181, 255, 0.2)';
                 }
+            } else {
+                // Закрываем
+                answer.style.maxHeight = '0';
+                answer.style.opacity = '0';
+                answer.style.paddingTop = '0';
+                answer.style.paddingBottom = '0';
+                answer.style.marginTop = '0';
                 
-                if (icon && icon.style) {
-                    if (isActive) {
-                        icon.style.transform = 'rotate(0deg)';
-                    } else {
-                        icon.style.transform = 'rotate(45deg)';
-                    }
+                // Анимация иконки (крестик → плюс)
+                if (icon) {
+                    icon.style.transform = 'rotate(0deg)';
+                    icon.style.color = 'rgba(255, 255, 255, 0.7)';
+                    icon.style.background = 'rgba(255, 255, 255, 0.1)';
                 }
-            });
-        }
+            }
+        };
+        
+        // 4. Удаляем старые обработчики и добавляем новые
+        question.removeEventListener('click', handleClick);
+        question.addEventListener('click', handleClick);
+        
+        // 5. Поддержка клавиатуры
+        question.removeEventListener('keydown', handleKeydown);
+        question.addEventListener('keydown', function handleKeydown(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleClick();
+            }
+        });
+        
+        // 6. Устанавливаем курсор
+        question.style.cursor = 'pointer';
+        
+        // 7. Немедленно показываем вопрос
+        question.style.opacity = '1';
+        question.style.transform = 'translateY(0)';
     });
     
-    // Автоматически открываем первый элемент
-    setTimeout(() => {
-        if (faqItems.length > 0) {
-            const firstItem = faqItems[0];
-            const firstAnswer = firstItem.querySelector('.faq-answer');
-            const firstIcon = firstItem.querySelector('.faq-question i');
-            
-            firstItem.classList.add('active');
-            if (firstAnswer && firstAnswer.style) {
-                firstAnswer.style.maxHeight = firstAnswer.scrollHeight + 'px';
-            }
-            if (firstIcon && firstIcon.style) {
-                firstIcon.style.transform = 'rotate(45deg)';
-            }
-        }
-    }, 500);
+    console.log(`✅ FAQ accordion setup complete for ${faqItems.length} items (multiple can be open)`);
 }
 
 // ===== НЕМЕДЛЕННЫЕ SCROLL АНИМАЦИИ =====
@@ -876,4 +888,52 @@ window.loadAllContentImmediately = function() {
     console.log(`✅ Immediately loaded ${allTextElements.length} text elements`);
 };
 
-console.log('✅ home.js fully loaded with IMMEDIATE CONTENT LOADING!');
+// Функция для открытия всех FAQ вопросов (для тестирования)
+window.openAllFAQ = function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = question.querySelector('i');
+        
+        if (question && answer && icon) {
+            question.setAttribute('aria-expanded', 'true');
+            item.classList.add('active');
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+            answer.style.opacity = '1';
+            answer.style.paddingTop = '15px';
+            answer.style.paddingBottom = '30px';
+            answer.style.marginTop = '15px';
+            icon.style.transform = 'rotate(45deg)';
+            icon.style.color = '#66b5ff';
+            icon.style.background = 'rgba(102, 181, 255, 0.2)';
+        }
+    });
+    console.log('✅ All FAQ items opened');
+};
+
+// Функция для закрытия всех FAQ вопросов
+window.closeAllFAQ = function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = question.querySelector('i');
+        
+        if (question && answer && icon) {
+            question.setAttribute('aria-expanded', 'false');
+            item.classList.remove('active');
+            answer.style.maxHeight = '0';
+            answer.style.opacity = '0';
+            answer.style.paddingTop = '0';
+            answer.style.paddingBottom = '0';
+            answer.style.marginTop = '0';
+            icon.style.transform = 'rotate(0deg)';
+            icon.style.color = 'rgba(255, 255, 255, 0.7)';
+            icon.style.background = 'rgba(255, 255, 255, 0.1)';
+        }
+    });
+    console.log('✅ All FAQ items closed');
+};
+
+console.log('✅ home.js fully loaded with WORKING FAQ ACCORDION!');
