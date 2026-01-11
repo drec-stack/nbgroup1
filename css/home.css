@@ -76,55 +76,8 @@ html {
     z-index: 1;
 }
 
-/* ИНДИКАТОР ПРОГРЕССА СМЕНЫ ФОНА */
-.bg-scroll-indicator {
-    position: fixed;
-    top: 50%;
-    right: 30px;
-    transform: translateY(-50%);
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-}
-
-.bg-scroll-indicator:hover {
-    opacity: 1;
-}
-
-.bg-scroll-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.bg-scroll-dot.active {
-    background: white;
-    transform: scale(1.3);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-
-.bg-scroll-dot:hover {
-    background: rgba(255, 255, 255, 0.7);
-    transform: scale(1.2);
-}
-
 /* ОПТИМИЗАЦИЯ ДЛЯ МОБИЛЬНЫХ */
 @media (max-width: 768px) {
-    .bg-scroll-indicator {
-        right: 15px;
-    }
-    
-    .bg-scroll-dot {
-        width: 6px;
-        height: 6px;
-    }
-    
     /* Отключаем fixed background на мобильных */
     .parallax-bg-layer {
         background-attachment: scroll !important;
@@ -1122,6 +1075,57 @@ html {
     }
 }
 
+/* ===== УСИЛЕННЫЕ ТЕНИ ДЛЯ ТЕКСТА ===== */
+h1, h2, h3, h4, h5, h6, p, 
+.hero h1, .hero-subtitle, .hero-description p,
+.expertise-main-title, .expertise-title,
+.expertise-description, .expertise-features li,
+.project-title, .project-description,
+.service-title, .service-content, .service-content p,
+.journal-title, .faq-question, .faq-answer p, 
+.cta-title, .cta-subtitle, .stat-number, .stat-label, 
+.section-title, .section-subtitle, .speck-section-title,
+.speck-services-intro, .speck-services-intro p {
+    text-shadow: 
+        0 4px 40px rgba(0, 0, 0, 0.95),
+        0 3px 30px rgba(0, 0, 0, 0.9),
+        0 2px 25px rgba(0, 0, 0, 0.85) !important;
+    position: relative;
+    z-index: 20;
+}
+
+/* ===== ГАРАНТИЯ ПРОЗРАЧНОСТИ ===== */
+.content-section,
+.container,
+.hero,
+.expertise-section,
+.projects-section,
+.speck-services-section,
+.journals-section,
+.faq-section,
+.cta-section,
+.stats-section,
+#header-container,
+#footer-container,
+.scroll-progress,
+.expertise-vertical-block,
+.expertise-vertical-content,
+.expertise-number-block,
+.expertise-text-content,
+.project-card,
+.project-content,
+.speck-service-item,
+.service-content-wrapper,
+.journal-item,
+.faq-item,
+.cta-content,
+.stat-card {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
 /* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 1200px) {
     .hero h1 {
@@ -1563,57 +1567,6 @@ html {
         font-size: 0.95rem;
         line-height: 1.6;
     }
-}
-
-/* ===== УСИЛЕННЫЕ ТЕНИ ДЛЯ ТЕКСТА ===== */
-h1, h2, h3, h4, h5, h6, p, 
-.hero h1, .hero-subtitle, .hero-description p,
-.expertise-main-title, .expertise-title,
-.expertise-description, .expertise-features li,
-.project-title, .project-description,
-.service-title, .service-content, .service-content p,
-.journal-title, .faq-question, .faq-answer p, 
-.cta-title, .cta-subtitle, .stat-number, .stat-label, 
-.section-title, .section-subtitle, .speck-section-title,
-.speck-services-intro, .speck-services-intro p {
-    text-shadow: 
-        0 4px 40px rgba(0, 0, 0, 0.95),
-        0 3px 30px rgba(0, 0, 0, 0.9),
-        0 2px 25px rgba(0, 0, 0, 0.85) !important;
-    position: relative;
-    z-index: 20;
-}
-
-/* ===== ГАРАНТИЯ ПРОЗРАЧНОСТИ ===== */
-.content-section,
-.container,
-.hero,
-.expertise-section,
-.projects-section,
-.speck-services-section,
-.journals-section,
-.faq-section,
-.cta-section,
-.stats-section,
-#header-container,
-#footer-container,
-.scroll-progress,
-.expertise-vertical-block,
-.expertise-vertical-content,
-.expertise-number-block,
-.expertise-text-content,
-.project-card,
-.project-content,
-.speck-service-item,
-.service-content-wrapper,
-.journal-item,
-.faq-item,
-.cta-content,
-.stat-card {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
 /* ===== HEADER FIX FOR HOME PAGE ===== */
