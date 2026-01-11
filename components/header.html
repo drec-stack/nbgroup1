@@ -1,11 +1,11 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NB Group - Промышленный дизайн</title>
     <style>
-        /* ===== HEADER STYLES - С ИСПРАВЛЕННЫМ ЦЕНТРИРОВАНИЕМ ===== */
+        /* ===== HEADER STYLES ===== */
         .main-header {
             position: fixed !important;
             top: 20px !important;
@@ -132,6 +132,7 @@
             animation: headerSlideIn 0.6s ease-out 0.3s both !important;
         }
 
+        /* ===== ДЕСКТОПНАЯ ВЕРСИЯ - БЕЗ ИЗМЕНЕНИЙ ===== */
         .header-container {
             max-width: 1400px !important;
             margin: 0 auto !important;
@@ -147,7 +148,6 @@
             position: relative !important;
         }
 
-        /* ===== ЛОГОТИП - ЛЕВЫЙ УГОЛ ===== */
         .logo {
             display: flex !important;
             align-items: center !important;
@@ -306,7 +306,151 @@
             }
         }
 
-        /* ===== БУРГЕР МЕНЮ - ПРАВЫЙ УГОЛ ===== */
+        /* ===== ДЕСКТОПНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА - БЕЗ ИЗМЕНЕНИЙ ===== */
+        .language-switcher {
+            display: flex !important;
+            align-items: center !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-radius: 20px !important;
+            padding: 3px !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            backdrop-filter: blur(15px) !important;
+            -webkit-backdrop-filter: blur(15px) !important;
+            width: 100px !important;
+            height: 36px !important;
+            overflow: hidden !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .scroll-up .language-switcher {
+            background: rgba(255, 255, 255, 0.12) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .lang-btn {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            padding: 6px 12px !important;
+            background: none !important;
+            border: none !important;
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            border-radius: 16px !important;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            flex: 1 !important;
+            outline: none !important;
+            min-width: 46px !important;
+        }
+
+        .lang-btn:hover {
+            color: white !important;
+            transform: scale(1.05) !important;
+        }
+
+        .lang-btn.active {
+            color: white !important;
+            font-weight: 600 !important;
+            background: rgba(255, 255, 255, 0.25) !important;
+            animation: langPulse 1.5s ease-in-out infinite !important;
+        }
+
+        @keyframes langPulse {
+            0%, 100% { 
+                transform: scale(1) !important;
+                box-shadow: 0 0 0 rgba(255, 255, 255, 0.2) !important;
+            }
+            50% { 
+                transform: scale(1.03) !important;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.3) !important;
+            }
+        }
+
+        .lang-flag {
+            font-size: 14px !important;
+            display: inline-block !important;
+        }
+
+        .lang-text {
+            display: inline !important;
+        }
+
+        .header-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            padding: 10px 24px !important;
+            background: white !important;
+            color: #0a0a0a !important;
+            border: none !important;
+            border-radius: 10px !important;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            gap: 8px !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15) !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        .scroll-down .header-btn {
+            transform: translateY(-2px) scale(0.95) !important;
+            box-shadow: 0 3px 15px rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .scroll-up .header-btn {
+            transform: translateY(0) scale(1) !important;
+            box-shadow: 0 6px 25px rgba(255, 255, 255, 0.2) !important;
+            animation: btnGlow 2s ease-in-out !important;
+        }
+
+        .scroll-fast .header-btn {
+            transition: all 0.2s ease !important;
+        }
+
+        .at-middle .header-btn {
+            box-shadow: 0 6px 25px rgba(255, 255, 255, 0.25) !important;
+        }
+
+        @keyframes btnGlow {
+            0% { box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15) !important; }
+            50% { box-shadow: 0 4px 25px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 255, 255, 0.2) !important; }
+            100% { box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15) !important; }
+        }
+
+        .header-btn:hover {
+            transform: translateY(-3px) scale(1.05) !important;
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25) !important;
+        }
+
+        .header-btn::after {
+            content: '' !important;
+            position: absolute !important;
+            top: -50% !important;
+            left: -50% !important;
+            width: 200% !important;
+            height: 200% !important;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%) !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease !important;
+        }
+
+        .scroll-up .header-btn::after {
+            animation: btnPulse 2s ease-in-out !important;
+        }
+
+        @keyframes btnPulse {
+            0% { opacity: 0; transform: scale(0.5) !important; }
+            50% { opacity: 0.3 !important; }
+            100% { opacity: 0; transform: scale(1) !important; }
+        }
+
+        /* ===== БУРГЕР МЕНЮ ===== */
         .burger-btn {
             display: none !important;
             width: 30px !important;
@@ -367,24 +511,7 @@
             transform: translateY(50%) rotate(-45deg) !important;
         }
 
-        /* ===== РАСПОЛОЖЕНИЕ ЭЛЕМЕНТОВ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ ===== */
-        .header-right {
-            display: flex !important;
-            align-items: center !important;
-            gap: 20px !important;
-            transition: all 0.3s ease !important;
-        }
-
-        .scroll-down .header-right {
-            opacity: 0.9 !important;
-            transform: translateX(5px) !important;
-        }
-
-        .scroll-up .header-right {
-            opacity: 1 !important;
-            transform: translateX(0) !important;
-        }
-
+        /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ТОЛЬКО МОБИЛЬНЫЕ ИЗМЕНЕНИЯ ===== */
         .header-right-desktop {
             display: flex !important;
             align-items: center !important;
@@ -395,10 +522,95 @@
             display: none !important;
             align-items: center !important;
             gap: 15px !important;
-            margin-left: auto !important; /* Выравнивание вправо */
+            margin-left: auto !important;
         }
 
-        /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ЛОГО СЛЕВА, ПЕРЕКЛЮЧАТЕЛЬ И БУРГЕР СПРАВА ===== */
+        /* ===== МОБИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА - УВЕЛИЧЕН ===== */
+        .language-switcher-mobile {
+            display: flex !important;
+            align-items: center !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-radius: 22px !important;
+            padding: 4px !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            backdrop-filter: blur(15px) !important;
+            -webkit-backdrop-filter: blur(15px) !important;
+            width: 130px !important;
+            height: 40px !important;
+            overflow: hidden !important;
+            transition: all 0.3s ease !important;
+            flex-shrink: 0 !important;
+        }
+
+        /* Увеличенные кнопки для мобильных */
+        .language-switcher-mobile .lang-btn {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            padding: 8px 14px !important;
+            background: none !important;
+            border: none !important;
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            border-radius: 18px !important;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            flex: 1 !important;
+            outline: none !important;
+            min-width: 60px !important;
+        }
+
+        /* Флаги большего размера для мобильных */
+        .language-switcher-mobile .lang-btn .lang-flag {
+            font-size: 18px !important;
+            display: inline-block !important;
+            line-height: 1 !important;
+        }
+
+        .language-switcher-mobile .lang-btn .lang-text {
+            display: inline !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.5px !important;
+        }
+
+        /* Адаптация для очень маленьких экранов */
+        @media (max-width: 400px) {
+            .language-switcher-mobile {
+                width: 120px !important;
+                height: 38px !important;
+            }
+            
+            .language-switcher-mobile .lang-btn {
+                padding: 7px 12px !important;
+                font-size: 14px !important;
+                gap: 6px !important;
+                min-width: 55px !important;
+            }
+            
+            .language-switcher-mobile .lang-btn .lang-flag {
+                font-size: 16px !important;
+            }
+            
+            .language-switcher-mobile .lang-btn .lang-text {
+                font-size: 13px !important;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .language-switcher-mobile {
+                width: 110px !important;
+                height: 36px !important;
+            }
+            
+            .language-switcher-mobile .lang-btn {
+                padding: 6px 10px !important;
+                gap: 5px !important;
+            }
+        }
+
         @media (max-width: 900px) {
             .header-right-desktop {
                 display: none !important;
@@ -408,36 +620,35 @@
                 display: flex !important;
                 align-items: center !important;
                 justify-content: flex-end !important;
-                gap: 15px !important;
+                gap: 20px !important;
+                width: auto !important;
+                flex-shrink: 0 !important;
             }
             
             .burger-btn {
                 display: block !important;
-                order: 3 !important; /* Самый правый элемент */
+                order: 3 !important;
+                width: 34px !important;
+                height: 28px !important;
             }
             
             .logo {
-                position: static !important; /* Логотип в левом углу */
+                position: static !important;
                 transform: none !important;
+                flex-shrink: 0 !important;
             }
             
             .language-switcher-mobile {
-                order: 2 !important; /* Переключатель языка рядом с бургером */
+                order: 2 !important;
+                margin-right: 0 !important;
             }
             
             .header-inner {
                 justify-content: space-between !important;
-            }
-            
-            /* Убираем абсолютное позиционирование логотипа */
-            .logo {
-                position: static !important;
-                left: auto !important;
-                transform: none !important;
+                gap: 15px !important;
             }
         }
 
-        /* ===== МЕДИА ЗАПРОСЫ ДЛЯ МОБИЛЬНЫХ ===== */
         @media (max-width: 768px) {
             .main-header {
                 left: 0 !important;
@@ -453,72 +664,49 @@
                 box-shadow: 
                     0 8px 32px rgba(0, 0, 0, 0.4),
                     inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-                padding: 12px 20px !important;
+                padding: 15px 20px !important;
             }
 
             .header-container {
                 padding: 0 !important;
             }
 
-            .main-header.header-visible {
-                transform: translateY(0) !important;
-                animation: floatHeaderMobile 3s ease-in-out infinite !important;
-            }
-
-            .main-header.scroll-down {
-                transform: translateY(-5px) scale(0.98) !important;
-            }
-
-            .main-header.scroll-up {
-                transform: translateY(0) scale(1.01) !important;
-            }
-
-            .main-header.scroll-fast {
-                transform: translateY(-8px) scale(0.96) !important;
-            }
-
-            @keyframes floatHeaderMobile {
-                0%, 100% { transform: translateY(0) !important; }
-                50% { transform: translateY(-1px) !important; }
-            }
-
             .logo-mark {
-                width: 40px !important;
-                height: 40px !important;
-                font-size: 18px !important;
-            }
-            
-            .logo-text {
+                width: 42px !important;
+                height: 42px !important;
                 font-size: 19px !important;
             }
             
+            .logo-text {
+                font-size: 20px !important;
+            }
+            
             .header-right-mobile {
-                gap: 12px !important;
+                gap: 18px !important;
             }
         }
 
         @media (max-width: 480px) {
             .logo-text {
-                font-size: 17px !important;
+                font-size: 18px !important;
             }
             
             .logo-mark {
-                width: 36px !important;
-                height: 36px !important;
-                font-size: 16px !important;
+                width: 38px !important;
+                height: 38px !important;
+                font-size: 17px !important;
             }
             
             .header-right-mobile {
-                gap: 10px !important;
+                gap: 15px !important;
             }
             
             .burger-btn {
-                width: 28px !important;
-                height: 22px !important;
+                width: 32px !important;
+                height: 26px !important;
             }
             
-            /* Скрываем текст логотипа на очень маленьких экранах */
-            @media (max-width: 360px) {
+            @media (max-width: 380px) {
                 .logo-text {
                     display: none !important;
                 }
@@ -526,9 +714,20 @@
                 .logo {
                     gap: 8px !important;
                 }
+                
+                .logo-mark {
+                    width: 42px !important;
+                    height: 42px !important;
+                    font-size: 20px !important;
+                }
+                
+                .header-right-mobile {
+                    gap: 12px !important;
+                }
             }
         }
 
+        /* Мобильное меню (без изменений) */
         .mobile-menu {
             position: fixed !important;
             top: 0 !important;
@@ -671,202 +870,6 @@
             box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25) !important;
         }
 
-        /* ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА - С ФЛАГАМИ ===== */
-        .language-switcher {
-            display: flex !important;
-            align-items: center !important;
-            background: rgba(255, 255, 255, 0.08) !important;
-            border-radius: 20px !important;
-            padding: 3px !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            backdrop-filter: blur(15px) !important;
-            -webkit-backdrop-filter: blur(15px) !important;
-            width: 100px !important;
-            height: 36px !important;
-            overflow: hidden !important;
-            transition: all 0.3s ease !important;
-        }
-
-        .scroll-up .language-switcher {
-            background: rgba(255, 255, 255, 0.12) !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
-        }
-
-        .language-switcher-mobile {
-            display: flex !important;
-            align-items: center !important;
-            background: rgba(255, 255, 255, 0.08) !important;
-            border-radius: 20px !important;
-            padding: 3px !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            backdrop-filter: blur(15px) !important;
-            -webkit-backdrop-filter: blur(15px) !important;
-            width: 90px !important;
-            height: 34px !important;
-            overflow: hidden !important;
-            transition: all 0.3s ease !important;
-        }
-
-        @media (max-width: 768px) {
-            .language-switcher-mobile {
-                width: 85px !important;
-                height: 32px !important;
-            }
-        }
-
-        .lang-btn {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 6px !important;
-            padding: 6px 12px !important;
-            background: none !important;
-            border: none !important;
-            color: rgba(255, 255, 255, 0.85) !important;
-            font-size: 13px !important;
-            font-weight: 500 !important;
-            cursor: pointer !important;
-            border-radius: 16px !important;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-            flex: 1 !important;
-            outline: none !important;
-            min-width: 46px !important;
-        }
-
-        .lang-btn:hover {
-            color: white !important;
-            transform: scale(1.05) !important;
-        }
-
-        .lang-btn.active {
-            color: white !important;
-            font-weight: 600 !important;
-            background: rgba(255, 255, 255, 0.25) !important;
-            animation: langPulse 1.5s ease-in-out infinite !important;
-        }
-
-        @keyframes langPulse {
-            0%, 100% { 
-                transform: scale(1) !important;
-                box-shadow: 0 0 0 rgba(255, 255, 255, 0.2) !important;
-            }
-            50% { 
-                transform: scale(1.03) !important;
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.3) !important;
-            }
-        }
-
-        .lang-flag {
-            font-size: 14px !important;
-            display: inline-block !important;
-        }
-
-        .lang-text {
-            display: inline !important;
-        }
-
-        @media (max-width: 768px) {
-            .language-switcher {
-                width: 90px !important;
-                height: 34px !important;
-            }
-            
-            .lang-btn {
-                padding: 5px 10px !important;
-                font-size: 12.5px !important;
-                min-width: 42px !important;
-            }
-            
-            .lang-text {
-                font-size: 12px !important;
-            }
-        }
-
-        .header-btn {
-            display: inline-flex !important;
-            align-items: center !important;
-            padding: 10px 24px !important;
-            background: white !important;
-            color: #0a0a0a !important;
-            border: none !important;
-            border-radius: 10px !important;
-            font-weight: 700 !important;
-            font-size: 14px !important;
-            text-decoration: none !important;
-            cursor: pointer !important;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-            gap: 8px !important;
-            border: 1px solid rgba(255, 255, 255, 0.25) !important;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15) !important;
-            position: relative !important;
-            overflow: hidden !important;
-        }
-
-        .scroll-down .header-btn {
-            transform: translateY(-2px) scale(0.95) !important;
-            box-shadow: 0 3px 15px rgba(255, 255, 255, 0.1) !important;
-        }
-
-        .scroll-up .header-btn {
-            transform: translateY(0) scale(1) !important;
-            box-shadow: 0 6px 25px rgba(255, 255, 255, 0.2) !important;
-            animation: btnGlow 2s ease-in-out !important;
-        }
-
-        .scroll-fast .header-btn {
-            transition: all 0.2s ease !important;
-        }
-
-        .at-middle .header-btn {
-            box-shadow: 0 6px 25px rgba(255, 255, 255, 0.25) !important;
-        }
-
-        @keyframes btnGlow {
-            0% { box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15) !important; }
-            50% { box-shadow: 0 4px 25px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 255, 255, 0.2) !important; }
-            100% { box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15) !important; }
-        }
-
-        .header-btn:hover {
-            transform: translateY(-3px) scale(1.05) !important;
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25) !important;
-        }
-
-        .header-btn::after {
-            content: '' !important;
-            position: absolute !important;
-            top: -50% !important;
-            left: -50% !important;
-            width: 200% !important;
-            height: 200% !important;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%) !important;
-            opacity: 0 !important;
-            transition: opacity 0.3s ease !important;
-        }
-
-        .scroll-up .header-btn::after {
-            animation: btnPulse 2s ease-in-out !important;
-        }
-
-        @keyframes btnPulse {
-            0% { opacity: 0; transform: scale(0.5) !important; }
-            50% { opacity: 0.3 !important; }
-            100% { opacity: 0; transform: scale(1) !important; }
-        }
-
-        @media (max-width: 768px) {
-            .header-btn {
-                padding: 8px 20px !important;
-                font-size: 13px !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header-btn {
-                display: none !important;
-            }
-        }
-
         @supports not (backdrop-filter: blur(20px)) {
             .main-header {
                 background: rgba(15, 20, 35, 0.98) !important;
@@ -913,7 +916,7 @@
                     <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
                 </nav>
                 
-                <!-- Десктопная версия -->
+                <!-- Десктопная версия - БЕЗ ИЗМЕНЕНИЙ -->
                 <div class="header-right-desktop">
                     <div class="language-switcher" data-current-lang="ru">
                         <button class="lang-btn" data-lang="ru">
@@ -931,7 +934,7 @@
                     </a>
                 </div>
                 
-                <!-- Мобильная версия -->
+                <!-- Мобильная версия - ТОЛЬКО МОБИЛЬНЫЕ ИЗМЕНЕНИЯ -->
                 <div class="header-right-mobile">
                     <div class="language-switcher-mobile" data-current-lang="ru">
                         <button class="lang-btn" data-lang="ru">
