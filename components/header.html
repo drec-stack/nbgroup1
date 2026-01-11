@@ -511,7 +511,7 @@
             transform: translateY(50%) rotate(-45deg) !important;
         }
 
-        /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ТОЛЬКО МОБИЛЬНЫЕ ИЗМЕНЕНИЯ ===== */
+        /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ФИКСЫ ===== */
         .header-right-desktop {
             display: flex !important;
             align-items: center !important;
@@ -525,7 +525,7 @@
             margin-left: auto !important;
         }
 
-        /* ===== МОБИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА - УВЕЛИЧЕН ===== */
+        /* ===== МОБИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА - БРИТАНСКИЙ ФЛАГ ВСЕГДА 🇬🇧 ===== */
         .language-switcher-mobile {
             display: flex !important;
             align-items: center !important;
@@ -540,6 +540,11 @@
             overflow: hidden !important;
             transition: all 0.3s ease !important;
             flex-shrink: 0 !important;
+        }
+
+        /* ФИКС: Британский флаг всегда 🇬🇧, английский язык всегда EN */
+        .language-switcher-mobile .lang-btn[data-lang="en"] .lang-flag {
+            content: "🇬🇧" !important;
         }
 
         /* Увеличенные кнопки для мобильных */
@@ -611,6 +616,7 @@
             }
         }
 
+        /* ===== ОСНОВНЫЕ МЕДИА-ЗАПРОСЫ ===== */
         @media (max-width: 900px) {
             .header-right-desktop {
                 display: none !important;
@@ -649,26 +655,28 @@
             }
         }
 
+        /* ФИКС: На мобильной версии хедер должен иметь тот же дизайн, что и на десктопе */
         @media (max-width: 768px) {
             .main-header {
-                left: 0 !important;
-                transform: none !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                border-radius: 0 !important;
-                top: 0 !important;
-                background: rgba(10, 10, 20, 0.95) !important;
-                backdrop-filter: blur(30px) saturate(180%) !important;
-                -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+                left: 50% !important; /* ВОССТАНАВЛИВАЕМ ЦЕНТРИРОВАНИЕ */
+                transform: translateX(-50%) !important;
+                width: calc(100% - 40px) !important; /* ВОССТАНАВЛИВАЕМ ШИРИНУ */
+                max-width: 1400px !important;
+                border-radius: 20px !important; /* ВОССТАНАВЛИВАЕМ ЗАКРУГЛЕНИЯ */
+                top: 20px !important; /* ВОССТАНАВЛИВАЕМ ОТСТУП СВЕРХУ */
+                background: rgba(255, 255, 255, 0.05) !important; /* ВОССТАНАВЛИВАЕМ ФОН */
+                backdrop-filter: blur(25px) saturate(180%) !important;
+                -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+                border: 1px solid rgba(255, 255, 255, 0.12) !important;
                 box-shadow: 
-                    0 8px 32px rgba(0, 0, 0, 0.4),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-                padding: 15px 20px !important;
+                    0 8px 32px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                    inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+                padding: 15px 0 !important;
             }
 
             .header-container {
-                padding: 0 !important;
+                padding: 0 20px !important; /* ДОБАВЛЯЕМ ПАДДИНГ ДЛЯ МОБИЛЬНЫХ */
             }
 
             .logo-mark {
@@ -687,6 +695,15 @@
         }
 
         @media (max-width: 480px) {
+            .main-header {
+                width: calc(100% - 30px) !important; /* НЕМНОГО УМЕНЬШАЕМ ШИРИНУ */
+                top: 15px !important; /* УМЕНЬШАЕМ ОТСТУП СВЕРХУ */
+            }
+
+            .header-container {
+                padding: 0 15px !important;
+            }
+
             .logo-text {
                 font-size: 18px !important;
             }
@@ -706,28 +723,64 @@
                 height: 26px !important;
             }
             
-            @media (max-width: 380px) {
-                .logo-text {
-                    display: none !important;
-                }
-                
-                .logo {
-                    gap: 8px !important;
-                }
-                
-                .logo-mark {
-                    width: 42px !important;
-                    height: 42px !important;
-                    font-size: 20px !important;
-                }
-                
-                .header-right-mobile {
-                    gap: 12px !important;
-                }
+            .language-switcher-mobile {
+                width: 110px !important;
+                height: 38px !important;
+            }
+            
+            .language-switcher-mobile .lang-btn {
+                padding: 6px 10px !important;
+                font-size: 13px !important;
+                gap: 5px !important;
+                min-width: 50px !important;
+            }
+            
+            .language-switcher-mobile .lang-btn .lang-flag {
+                font-size: 16px !important;
+            }
+            
+            .language-switcher-mobile .lang-btn .lang-text {
+                font-size: 12px !important;
             }
         }
 
-        /* Мобильное меню (без изменений) */
+        @media (max-width: 380px) {
+            .main-header {
+                width: calc(100% - 20px) !important;
+                top: 10px !important;
+                padding: 12px 0 !important;
+            }
+
+            .logo-text {
+                display: none !important;
+            }
+            
+            .logo {
+                gap: 8px !important;
+            }
+            
+            .logo-mark {
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 16px !important;
+            }
+            
+            .header-right-mobile {
+                gap: 10px !important;
+            }
+            
+            .language-switcher-mobile {
+                width: 100px !important;
+                height: 34px !important;
+            }
+            
+            .burger-btn {
+                width: 28px !important;
+                height: 22px !important;
+            }
+        }
+
+        /* Мобильное меню (без изменений, но добавим z-index) */
         .mobile-menu {
             position: fixed !important;
             top: 0 !important;
@@ -823,6 +876,11 @@
             -webkit-backdrop-filter: blur(15px) !important;
         }
 
+        /* ФИКС: В мобильном меню тоже британский флаг всегда 🇬🇧 */
+        .mobile-language-switcher .mobile-lang-btn[data-lang="en"] .lang-flag {
+            content: "🇬🇧" !important;
+        }
+
         .mobile-lang-btn {
             display: flex !important;
             align-items: center !important;
@@ -916,7 +974,7 @@
                     <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
                 </nav>
                 
-                <!-- Десктопная версия - БЕЗ ИЗМЕНЕНИЙ -->
+                <!-- Десктопная версия -->
                 <div class="header-right-desktop">
                     <div class="language-switcher" data-current-lang="ru">
                         <button class="lang-btn" data-lang="ru">
@@ -934,7 +992,7 @@
                     </a>
                 </div>
                 
-                <!-- Мобильная версия - ТОЛЬКО МОБИЛЬНЫЕ ИЗМЕНЕНИЯ -->
+                <!-- Мобильная версия -->
                 <div class="header-right-mobile">
                     <div class="language-switcher-mobile" data-current-lang="ru">
                         <button class="lang-btn" data-lang="ru">
@@ -1196,6 +1254,7 @@
                 }
             }
             
+            // ФИКС: Добавляем обработчик для бургер-меню
             burgerBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 toggleMobileMenu();
