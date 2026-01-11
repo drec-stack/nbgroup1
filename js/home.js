@@ -662,7 +662,7 @@ function initializeStatsCounterImmediate() {
     });
 }
 
-// ===== УНИВЕРСАЛЬНЫЙ FAQ АККОРДЕОН =====
+// ===== УНИВЕРСАЛЬНЫЙ FAQ АККОРДЕОН (ИСПРАВЛЕННАЯ ВЕРСИЯ) =====
 function setupUniversalFAQAccordion() {
     console.log('🎯 Setting up universal FAQ accordion');
     
@@ -742,9 +742,16 @@ function setupUniversalFAQAccordion() {
         question.removeEventListener('click', handleClick);
         question.addEventListener('click', handleClick);
         
-        // 5. Поддержка клавиатуры
-        question.removeEventListener('keydown', handleKeydown);
-        question.addEventListener('keydown', function handleKeydown(e) {
+        // 5. Поддержка клавиатуры (ИСПРАВЛЕННАЯ ВЕРСИЯ)
+        question.removeEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleClick();
+            }
+        });
+        
+        // Добавляем новый обработчик клавиатуры
+        question.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 handleClick();
