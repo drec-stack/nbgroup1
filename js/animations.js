@@ -1,4 +1,4 @@
-console.log('🚀 Animations.js loaded - IMMEDIATE LOAD WITH FIXED FAQ ACCORDION');
+console.log('🚀 Animations.js loaded - MULTIPLE FAQ OPENING SUPPORT');
 
 // Safe DOM access utility
 const safeDOM = {
@@ -70,7 +70,7 @@ class NBAnimations {
             this.setupProjectsAnimationsImmediate();
             this.setupServicesAnimationsImmediate();
             this.setupJournalsAnimationsImmediate();
-            this.setupFAQAccordion(); // ИСПРАВЛЕННЫЙ FAQ АККОРДЕОН
+            this.setupFAQAccordionMultiple(); // ИСПРАВЛЕННЫЙ FAQ АККОРДЕОН с поддержкой множественного открытия
             
             console.log('✅ All content IMMEDIATELY loaded (no scroll delay)');
         } catch (error) {
@@ -147,9 +147,9 @@ class NBAnimations {
         }
     }
 
-    // ===== FAQ АККОРДЕОН - ИСПРАВЛЕННЫЙ =====
-    setupFAQAccordion() {
-        console.log('🎯 Setting up FAQ accordion with hidden answers...');
+    // ===== FAQ АККОРДЕОН - ИСПРАВЛЕННЫЙ ДЛЯ МНОЖЕСТВЕННОГО ОТКРЫТИЯ =====
+    setupFAQAccordionMultiple() {
+        console.log('🎯 Setting up FAQ accordion with MULTIPLE OPENING support...');
         
         try {
             const faqItems = safeDOM.queryAll('.faq-item');
@@ -159,7 +159,7 @@ class NBAnimations {
                 return;
             }
             
-            console.log(`✅ Found ${faqItems.length} FAQ items`);
+            console.log(`✅ Found ${faqItems.length} FAQ items (MULTIPLE CAN BE OPENED)`);
             
             // 1. Изначально ВСЕ ответы должны быть СКРЫТЫ
             faqItems.forEach((item, index) => {
@@ -205,35 +205,35 @@ class NBAnimations {
                 }
             });
             
-            // 2. Добавляем обработчики кликов
+            // 2. Добавляем обработчики кликов с поддержкой множественного открытия
             faqItems.forEach(item => {
                 const question = item.querySelector('.faq-question');
                 
                 if (question) {
-                    // Удаляем старые обработчики
+                    // Удаляем старые обработчики если есть
                     question.removeEventListener('click', this.handleFAQClick);
                     question.removeEventListener('keydown', this.handleFAQKeydown);
                     
-                    // Добавляем новые
-                    question.addEventListener('click', (e) => this.toggleFAQItem(item, e));
+                    // Добавляем новые с поддержкой множественного открытия
+                    question.addEventListener('click', (e) => this.toggleFAQItemMultiple(item, e));
                     question.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
-                            this.toggleFAQItem(item, e);
+                            this.toggleFAQItemMultiple(item, e);
                         }
                     });
                 }
             });
             
-            console.log('✅ FAQ accordion setup complete - all answers are initially HIDDEN');
+            console.log('✅ FAQ accordion setup complete - MULTIPLE FAQ can be opened simultaneously');
             
         } catch (error) {
             console.error('❌ Error setting up FAQ accordion:', error);
         }
     }
     
-    // Функция переключения FAQ элемента
-    toggleFAQItem(item, event) {
+    // Функция переключения FAQ элемента с поддержкой множественного открытия
+    toggleFAQItemMultiple(item, event) {
         try {
             if (event) {
                 event.preventDefault();
@@ -245,17 +245,9 @@ class NBAnimations {
             const icon = question?.querySelector('i');
             const isCurrentlyActive = item.classList.contains('active');
             
-            console.log(`📋 FAQ toggle: ${isCurrentlyActive ? 'closing' : 'opening'} item`);
+            console.log(`📋 FAQ toggle (MULTIPLE): ${isCurrentlyActive ? 'closing' : 'opening'} item`);
             
-            // Закрываем все другие FAQ (опционально)
-            const allFAQItems = safeDOM.queryAll('.faq-item');
-            allFAQItems.forEach(otherItem => {
-                if (otherItem !== item && otherItem.classList.contains('active')) {
-                    this.closeFAQItem(otherItem);
-                }
-            });
-            
-            // Переключаем текущий элемент
+            // ВАЖНО: НЕ ЗАКРЫВАЕМ другие FAQ - только переключаем текущий
             if (isCurrentlyActive) {
                 this.closeFAQItem(item);
             } else {
@@ -343,6 +335,19 @@ class NBAnimations {
             icon.style.color = 'rgba(255, 255, 255, 0.7)';
             icon.style.background = 'rgba(255, 255, 255, 0.1)';
         }
+    }
+    
+    // Метод для тестирования множественного открытия FAQ
+    testMultipleFAQ() {
+        console.log('🧪 Testing multiple FAQ opening...');
+        const faqItems = safeDOM.queryAll('.faq-item');
+        
+        // Открываем первые 3 FAQ одновременно
+        for (let i = 0; i < 3 && i < faqItems.length; i++) {
+            this.openFAQItem(faqItems[i]);
+        }
+        
+        console.log(`✅ First ${Math.min(3, faqItems.length)} FAQ items opened simultaneously`);
     }
 
     // ===== ОСТАЛЬНЫЕ ФУНКЦИИ (без изменений) =====
@@ -834,18 +839,9 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     }
 }
 
-// Export functions for global use
-window.toggleFAQItem = function(index) {
-    const faqItems = safeDOM.queryAll('.faq-item');
-    if (faqItems[index]) {
-        const questionBtn = faqItems[index].querySelector('.faq-question');
-        if (questionBtn) {
-            questionBtn.click();
-        }
-    }
-};
+// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ FAQ =====
 
-// Функция для открытия всех FAQ
+// Функция для открытия всех FAQ одновременно
 window.openAllFAQ = function() {
     const faqItems = safeDOM.queryAll('.faq-item');
     faqItems.forEach(item => {
@@ -853,7 +849,7 @@ window.openAllFAQ = function() {
             window.NBAnimations.openFAQItem(item);
         }
     });
-    console.log('✅ All FAQ items opened');
+    console.log(`✅ ${faqItems.length} FAQ items opened simultaneously`);
 };
 
 // Функция для закрытия всех FAQ
@@ -864,7 +860,45 @@ window.closeAllFAQ = function() {
             window.NBAnimations.closeFAQItem(item);
         }
     });
-    console.log('✅ All FAQ items closed');
+    console.log(`✅ ${faqItems.length} FAQ items closed`);
+};
+
+// Функция для открытия определенного FAQ
+window.openFAQItem = function(index) {
+    const faqItems = safeDOM.queryAll('.faq-item');
+    if (faqItems[index]) {
+        if (window.NBAnimations) {
+            window.NBAnimations.openFAQItem(faqItems[index]);
+        }
+    }
+};
+
+// Функция для закрытия определенного FAQ
+window.closeFAQItem = function(index) {
+    const faqItems = safeDOM.queryAll('.faq-item');
+    if (faqItems[index]) {
+        if (window.NBAnimations) {
+            window.NBAnimations.closeFAQItem(faqItems[index]);
+        }
+    }
+};
+
+// Функция для переключения определенного FAQ (клик по кнопке)
+window.toggleFAQItem = function(index) {
+    const faqItems = safeDOM.queryAll('.faq-item');
+    if (faqItems[index]) {
+        const questionBtn = faqItems[index].querySelector('.faq-question');
+        if (questionBtn) {
+            questionBtn.click();
+        }
+    }
+};
+
+// Функция для тестирования множественного открытия FAQ
+window.testMultipleFAQ = function() {
+    if (window.NBAnimations) {
+        window.NBAnimations.testMultipleFAQ();
+    }
 };
 
 // Функция для тестирования FAQ
@@ -887,4 +921,4 @@ window.testFAQ = function() {
     });
 };
 
-console.log('✅ animations.js loaded - FIXED FAQ ACCORDION WITH HIDDEN ANSWERS!');
+console.log('✅ animations.js loaded - MULTIPLE FAQ OPENING SUPPORT ENABLED!');
