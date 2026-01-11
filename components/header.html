@@ -304,7 +304,7 @@
             }
         }
 
-        /* ===== БУРГЕР МЕНЮ - ИСПРАВЛЕННЫЙ ===== */
+        /* ===== БУРГЕР МЕНЮ - ИСПРАВЛЕННЫЙ (В ПРАВОМ УГЛУ) ===== */
         .burger-btn {
             display: none !important;
             width: 30px !important;
@@ -316,6 +316,7 @@
             padding: 0 !important;
             z-index: 1002 !important;
             transition: all 0.3s ease !important;
+            margin-left: auto !important;
         }
 
         .burger-btn:hover {
@@ -393,9 +394,11 @@
             display: none !important;
             align-items: center !important;
             gap: 15px !important;
+            justify-content: flex-end !important;
+            width: 100% !important;
         }
 
-        /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ИСПРАВЛЕННОЕ РАСПОЛОЖЕНИЕ ===== */
+        /* ===== МОБИЛЬНАЯ ВЕРСИЯ - ИСПРАВЛЕННОЕ РАСПОЛОЖЕНИЕ (БУРГЕР СПРАВА) ===== */
         @media (max-width: 900px) {
             .header-right-desktop {
                 display: none !important;
@@ -405,13 +408,15 @@
                 display: flex !important;
                 align-items: center !important;
                 justify-content: flex-end !important;
-                flex: 1 !important;
+                width: auto !important;
+                gap: 15px !important;
             }
             
             .burger-btn {
                 display: block !important;
-                order: 1 !important;
-                margin-right: auto !important;
+                order: 3 !important; /* Самый правый элемент */
+                margin-left: 15px !important;
+                margin-right: 0 !important;
             }
             
             .logo {
@@ -421,8 +426,8 @@
             }
             
             .language-switcher-mobile {
-                order: 2 !important;
-                margin-left: auto !important;
+                order: 2 !important; /* Слева от бургера */
+                margin-right: 0 !important;
             }
             
             .header-inner {
@@ -486,7 +491,11 @@
             }
             
             .burger-btn {
-                margin-left: 0 !important;
+                margin-left: 15px !important;
+            }
+            
+            .header-right-mobile {
+                gap: 12px !important;
             }
         }
 
@@ -502,7 +511,13 @@
             }
             
             .header-right-mobile {
-                gap: 12px !important;
+                gap: 10px !important;
+            }
+            
+            .burger-btn {
+                width: 28px !important;
+                height: 22px !important;
+                margin-left: 10px !important;
             }
         }
 
@@ -678,7 +693,7 @@
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             backdrop-filter: blur(15px) !important;
             -webkit-backdrop-filter: blur(15px) !important;
-            width: 100px !important;
+            width: 90px !important;
             height: 34px !important;
             overflow: hidden !important;
             transition: all 0.3s ease !important;
@@ -686,7 +701,7 @@
 
         @media (max-width: 768px) {
             .language-switcher-mobile {
-                width: 90px !important;
+                width: 85px !important;
                 height: 32px !important;
             }
         }
@@ -752,6 +767,10 @@
                 padding: 5px 10px !important;
                 font-size: 12.5px !important;
                 min-width: 42px !important;
+            }
+            
+            .lang-text {
+                font-size: 12px !important;
             }
         }
 
@@ -905,12 +924,6 @@
                 
                 <!-- Мобильная версия -->
                 <div class="header-right-mobile">
-                    <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    
                     <div class="language-switcher-mobile" data-current-lang="ru">
                         <button class="lang-btn" data-lang="ru">
                             <span class="lang-flag">🇷🇺</span>
@@ -921,6 +934,12 @@
                             <span class="lang-text">EN</span>
                         </button>
                     </div>
+                    
+                    <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                 </div>
             </div>
         </div>
