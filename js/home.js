@@ -1,4 +1,4 @@
-console.log('🏠 home.js loaded - BACKGROUND SWITCHING SYSTEM WITHOUT VISUAL INDICATORS');
+console.log('🏠 home.js loaded - BACKGROUND SWITCHING SYSTEM FIXED');
 
 // ===== СИСТЕМА СМЕНЫ ФОНОВЫХ ИЗОБРАЖЕНИЙ ПРИ СКРОЛЛЕ =====
 class BackgroundSwitcher {
@@ -32,29 +32,74 @@ class BackgroundSwitcher {
         // Настройка обработчиков событий
         this.setupEventListeners();
         
-        // Инициализация начального состояния
-        this.updateBackgroundOnScroll();
+        // Инициализация начального состояния - ТОЛЬКО ПЕРВЫЙ ФОН АКТИВЕН
+        this.bgLayers.forEach((layer, index) => {
+            if (index === 0) {
+                layer.classList.add('active');
+                this.currentBgIndex = 0;
+            } else {
+                layer.classList.remove('active');
+            }
+        });
+        
+        // Убедимся, что первый фон отображается сразу
+        this.bgLayers[0].style.opacity = '1';
         
         console.log('✅ BackgroundSwitcher initialized');
         console.log('📊 Section-BG Mapping:', Array.from(this.sectionMap.entries()));
     }
     
     createSectionMap() {
-        // Создаем карту соответствия: номер секции -> индекс фона
-        // Согласно требованиям:
-        // 1. Первое изображение не меняется до секции Projects (индекс 0)
-        // 2. Второе изображение до секции Services (индекс 1)
-        // 3. Третье изображение до Journals (индекс 2)
-        // 4. Четвертое изображение оставшиеся секции (индекс 3)
+        console.log('🔍 Creating section map...');
+        
+        // Жестко задаем соответствие секций фонам
+        const sectionTypes = [
+            'hero',      // BG1 (0)
+            'expertise', // BG1 (0)
+            'projects',  // BG2 (1)
+            'stats',     // BG2 (1)
+            'services',  // BG3 (2)
+            'journals',  // BG4 (3)
+            'faq',       // BG4 (3)
+            'cta'        // BG4 (3)
+        ];
         
         this.sections.forEach((section, index) => {
-            const bgIndex = parseInt(section.getAttribute('data-bg-index')) - 1;
-            this.sectionMap.set(index, Math.max(0, Math.min(bgIndex, this.bgLayers.length - 1)));
-        });
-        
-        console.log('🔍 Section mapping created:');
-        this.sections.forEach((section, i) => {
-            console.log(`  Section ${i + 1} (${section.getAttribute('data-bg-section')}) → BG${this.sectionMap.get(i) + 1}`);
+            const sectionType = section.getAttribute('data-bg-section');
+            let bgIndex = 0; // По умолчанию
+            
+            if (sectionType) {
+                // Определяем индекс фона на основе типа секции
+                switch(sectionType) {
+                    case 'hero':
+                    case 'expertise':
+                        bgIndex = 0; // BG1
+                        break;
+                    case 'projects':
+                    case 'stats':
+                        bgIndex = 1; // BG2
+                        break;
+                    case 'services':
+                        bgIndex = 2; // BG3
+                        break;
+                    case 'journals':
+                    case 'faq':
+                    case 'cta':
+                        bgIndex = 3; // BG4
+                        break;
+                    default:
+                        bgIndex = 0; // По умолчанию BG1
+                }
+            } else {
+                // Если атрибут отсутствует, используем порядковый номер
+                if (index <= 1) bgIndex = 0;      // Первые 2 секции → BG1
+                else if (index <= 3) bgIndex = 1; // Следующие 2 секции → BG2
+                else if (index === 4) bgIndex = 2; // Services → BG3
+                else bgIndex = 3;                 // Остальные → BG4
+            }
+            
+            this.sectionMap.set(index, bgIndex);
+            console.log(`  Section ${index + 1} (${sectionType || 'no type'}) → BG${bgIndex + 1}`);
         });
     }
     
@@ -85,7 +130,7 @@ class BackgroundSwitcher {
             scrollTimeout = setTimeout(() => {
                 this.handleScroll();
                 scrollTimeout = null;
-            }, 16); // ~60fps
+            }, 50); // ~20fps для более плавного переключения
         }, { passive: true });
         
         // Обработчик ресайза
@@ -131,42 +176,46 @@ class BackgroundSwitcher {
         const windowHeight = window.innerHeight;
         const triggerPoint = scrollY + (windowHeight * 0.4); // 40% от верха окна
         
-        // Находим текущую активную секцию
-        let foundSectionIndex = -1;
+        // Находим текущую активную секцию (которая находится ближе всего к центру экрана)
+        let activeSectionIndex = -1;
+        let minDistance = Infinity;
         
-        // Для скролла ВНИЗ - используем верхнюю границу секции
-        if (this.isScrollingDown) {
-            for (let i = 0; i < this.sections.length; i++) {
-                const section = this.sections[i];
-                const sectionTop = section.offsetTop;
-                
-                if (scrollY >= sectionTop - 150) {
-                    foundSectionIndex = i;
-                }
-            }
-        } 
-        // Для скролла ВВЕРХ - используем нижнюю границу секции
-        else {
-            for (let i = this.sections.length - 1; i >= 0; i--) {
-                const section = this.sections[i];
-                const sectionBottom = section.offsetTop + section.offsetHeight;
-                
-                if (scrollY <= sectionBottom - windowHeight + 150) {
-                    foundSectionIndex = i;
-                    break;
-                }
+        for (let i = 0; i < this.sections.length; i++) {
+            const section = this.sections[i];
+            const sectionTop = section.offsetTop;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            const sectionCenter = sectionTop + (section.offsetHeight / 2);
+            
+            // Рассчитываем расстояние от центра экрана до центра секции
+            const distance = Math.abs(triggerPoint - sectionCenter);
+            
+            if (distance < minDistance && triggerPoint >= sectionTop - 100 && triggerPoint <= sectionBottom + 100) {
+                minDistance = distance;
+                activeSectionIndex = i;
             }
         }
         
-        // Если нашли секцию, получаем соответствующий фон
-        if (foundSectionIndex >= 0 && foundSectionIndex !== this.currentSectionIndex) {
-            this.currentSectionIndex = foundSectionIndex;
-            const targetBgIndex = this.sectionMap.get(foundSectionIndex) || 0;
+        // Если не нашли точное соответствие, берем секцию по скроллу
+        if (activeSectionIndex === -1) {
+            // Простое определение по скроллу (резервный метод)
+            const scrollPercent = scrollY / (document.documentElement.scrollHeight - windowHeight);
             
-            // Переключаем фон если индекс изменился
-            if (targetBgIndex !== this.currentBgIndex) {
-                this.switchToBackground(targetBgIndex);
-            }
+            if (scrollPercent < 0.25) activeSectionIndex = 0;      // Первые 25% скролла
+            else if (scrollPercent < 0.5) activeSectionIndex = 2;   // 25-50% скролла
+            else if (scrollPercent < 0.75) activeSectionIndex = 4;  // 50-75% скролла
+            else activeSectionIndex = 5;                           // Последние 25% скролла
+        }
+        
+        // Ограничиваем индекс секции
+        activeSectionIndex = Math.max(0, Math.min(activeSectionIndex, this.sections.length - 1));
+        
+        // Получаем соответствующий фон
+        const targetBgIndex = this.sectionMap.get(activeSectionIndex) || 0;
+        
+        // Переключаем фон если индекс изменился
+        if (targetBgIndex !== this.currentBgIndex) {
+            console.log(`🔄 Scroll: ${Math.round(scrollY)}px, Section: ${activeSectionIndex + 1}, Switching: BG${this.currentBgIndex + 1} → BG${targetBgIndex + 1}`);
+            this.switchToBackground(targetBgIndex);
         }
     }
     
@@ -176,8 +225,8 @@ class BackgroundSwitcher {
         // Параллакс эффект только для активного слоя
         const activeLayer = this.bgLayers[this.currentBgIndex];
         if (activeLayer) {
-            const speed = 0.05;
-            const yPos = scrollY * speed;
+            const speed = 0.3; // Увеличим скорость параллакса для лучшего эффекта
+            const yPos = -(scrollY * speed);
             activeLayer.style.transform = `translate3d(0, ${yPos}px, 0)`;
         }
     }
@@ -189,13 +238,21 @@ class BackgroundSwitcher {
         
         console.log(`🖼️ Switching background: ${this.currentBgIndex + 1} → ${index + 1}`);
         
-        // Скрываем все слои
-        this.bgLayers.forEach(layer => {
-            layer.classList.remove('active');
-        });
+        // Плавное переключение: сначала скрываем текущий, потом показываем новый
+        const currentLayer = this.bgLayers[this.currentBgIndex];
+        const nextLayer = this.bgLayers[index];
         
-        // Показываем выбранный слой
-        this.bgLayers[index].classList.add('active');
+        if (currentLayer) {
+            currentLayer.classList.remove('active');
+            currentLayer.style.opacity = '0';
+        }
+        
+        if (nextLayer) {
+            setTimeout(() => {
+                nextLayer.classList.add('active');
+                nextLayer.style.opacity = '1';
+            }, 300); // Небольшая задержка для плавности
+        }
         
         this.currentBgIndex = index;
     }
@@ -224,7 +281,7 @@ class BackgroundSwitcher {
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ =====
 function initializeHomePage() {
-    console.log('📄 INITIALIZING HOME PAGE');
+    console.log('📄 INITIALIZING HOME PAGE WITH FIXED BACKGROUND SWITCHING');
     
     // 1. Инициализация системы смены фона
     window.backgroundSwitcher = new BackgroundSwitcher();
@@ -233,12 +290,7 @@ function initializeHomePage() {
     document.body.classList.add('home-page');
     document.documentElement.classList.add('home-page');
     
-    // 3. Немедленная загрузка всего контента
-    setTimeout(() => {
-        loadAllContentImmediately();
-    }, 100);
-    
-    // 4. Инициализация всех компонентов
+    // 3. Инициализация всех компонентов
     setTimeout(() => {
         initializeVerticalExpertiseBlocks();
         initializeStatsCounter();
@@ -248,39 +300,12 @@ function initializeHomePage() {
         initializeServicesInteraction();
         
         console.log('✅ Home page fully initialized');
-        console.log('🎯 Background switching logic:');
+        console.log('🎯 Fixed background switching logic:');
         console.log('   • Hero & Expertise → BG1');
         console.log('   • Projects & Stats → BG2');
         console.log('   • Services → BG3');
         console.log('   • Journals, FAQ, CTA → BG4');
-        console.log('   • Works both directions: scroll down/up');
-    }, 300);
-}
-
-// ===== НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА =====
-function loadAllContentImmediately() {
-    console.log('⚡ Loading all content immediately...');
-    
-    // Показываем все анимированные элементы
-    const animatedElements = document.querySelectorAll('.fade-in-down, .fade-in-up, .fade-in-left, .fade-in-right, .animated-element');
-    animatedElements.forEach(el => {
-        if (el && el.style) {
-            el.style.opacity = '1';
-            el.style.transform = 'translate(0, 0)';
-            el.style.animationPlayState = 'running';
-        }
-    });
-    
-    // Показываем все секции
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        if (section && section.style) {
-            section.style.opacity = '1';
-            section.style.visibility = 'visible';
-        }
-    });
-    
-    console.log(`⚡ Immediately loaded ${animatedElements.length} animated elements, ${sections.length} sections`);
+    }, 500);
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ EXPERTISE БЛОКОВ =====
@@ -412,7 +437,13 @@ function initializeScrollAnimations() {
     
     console.log(`🎯 Found ${animatedElements.length} animated elements`);
     
-    // Уже показаны в loadAllContentImmediately()
+    // Показываем все анимированные элементы
+    animatedElements.forEach(el => {
+        if (el && el.style) {
+            el.style.opacity = '1';
+            el.style.transform = 'translate(0, 0)';
+        }
+    });
     
     // Настраиваем IntersectionObserver для новых элементов
     if ('IntersectionObserver' in window) {
@@ -603,4 +634,4 @@ window.homePage = {
     getCurrentBackground
 };
 
-console.log('✅ home.js fully loaded - BACKGROUND SWITCHING READY WITHOUT VISUAL INDICATORS');
+console.log('✅ home.js fully loaded - BACKGROUND SWITCHING FIXED AND READY');
