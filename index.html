@@ -35,8 +35,8 @@
             -moz-osx-font-smoothing: grayscale;
         }
         
-        /* ФОНОВЫЕ СЛОИ - ФИКСИРОВАННЫЕ */
-        .bg-layers-container {
+        /* ФОНОВЫЕ СЛОИ - СПЕЦИАЛЬНЫЙ КОНТЕЙНЕР ДЛЯ СМЕНЫ ИЗОБРАЖЕНИЙ */
+        .parallax-bg-container {
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
@@ -45,12 +45,9 @@
             z-index: -1000 !important;
             overflow: hidden !important;
             pointer-events: none !important;
-            display: block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
         }
         
-        .bg-layer {
+        .parallax-bg-layer {
             position: absolute !important;
             top: 0 !important;
             left: 0 !important;
@@ -59,39 +56,34 @@
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
-            display: block !important;
+            background-attachment: fixed !important;
+            opacity: 0 !important;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            will-change: transform, opacity;
+        }
+        
+        /* ПЕРВОЕ ИЗОБРАЖЕНИЕ - АКТИВНО ПРИ ЗАГРУЗКЕ */
+        .parallax-bg-layer.active {
             opacity: 1 !important;
-            visibility: visible !important;
-            will-change: transform;
-            transition: transform 0.1s linear !important;
         }
         
-        /* Параллакс слои с правильными путями */
-        .bg-layer:nth-child(1) {
-            z-index: -1000;
-            background-image: url('assets/images/parallax/bg-1.jpg') !important;
-            opacity: 0.7;
+        /* Параллакс эффект при скролле */
+        .parallax-bg-layer.scroll-parallax {
+            transform: translate3d(0, 0, 0);
+            transition: transform 0.1s linear, opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         
-        .bg-layer:nth-child(2) {
-            z-index: -1001;
-            background-image: url('assets/images/parallax/bg-2.jpg') !important;
-            opacity: 0.6;
+        /* Усиление эффекта изображений */
+        .parallax-bg-layer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.15) !important;
+            z-index: 1;
         }
-        
-        .bg-layer:nth-child(3) {
-            z-index: -1002;
-            background-image: url('assets/images/parallax/bg-3.jpg') !important;
-            opacity: 0.5;
-        }
-        
-        .bg-layer:nth-child(4) {
-            z-index: -1003;
-            background-image: url('assets/images/parallax/bg-4.jpg') !important;
-            opacity: 0.4;
-        }
-        
-        /* УДАЛЕН ЗАТЕМНЯЮЩИЙ СЛОЙ */
         
         /* Убедимся, что все контентные блоки выше фона */
         .container, section, .hero, .content-section, 
@@ -130,8 +122,7 @@
         }
         
         /* ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ */
-        body::after {
-            content: '';
+        .bg-preloader {
             position: fixed;
             width: 0;
             height: 0;
@@ -166,153 +157,6 @@
                 0 2px 25px rgba(0, 0, 0, 0.85) !important;
         }
         
-        /* ФИКС: Убираем все ненужные overlay и черные пленки */
-        .bg-layers-container .overlay,
-        .bg-layers-container .dark-layer,
-        .bg-layers-container [class*="overlay"],
-        .bg-layers-container::before,
-        .bg-layers-container > *::before,
-        body::before,
-        html::before,
-        .parallax-overlay,
-        .dark-overlay {
-            display: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-            pointer-events: none !important;
-            background: none !important;
-        }
-        
-        /* НЕМЕДЛЕННАЯ ЗАГРУЗКА ВСЕГО КОНТЕНТА ПРИ ВХОДЕ НА САЙТ */
-        body.immediate-load * {
-            animation-delay: 0s !important;
-            transition-delay: 0s !important;
-        }
-        
-        body.immediate-load .hero-content,
-        body.immediate-load .expertise-vertical-block,
-        body.immediate-load .expertise-vertical-content,
-        body.immediate-load .project-card,
-        body.immediate-load .project-content,
-        body.immediate-load .service-item,
-        body.immediate-load .service-content,
-        body.immediate-load .journal-item,
-        body.immediate-load .faq-item,
-        body.immediate-load .stat-card,
-        body.immediate-load .cta-content {
-            opacity: 1 !important;
-            visibility: visible !important;
-            transform: translate(0, 0) scale(1) !important;
-            animation: none !important;
-            transition: none !important;
-        }
-        
-        /* Немедленное отображение текста */
-        body.immediate-load h1,
-        body.immediate-load h2,
-        body.immediate-load h3,
-        body.immediate-load h4,
-        body.immediate-load p,
-        body.immediate-load span,
-        body.immediate-load li,
-        body.immediate-load .title,
-        body.immediate-load .subtitle,
-        body.immediate-load .description {
-            opacity: 1 !important;
-            transform: translate(0, 0) !important;
-            animation-play-state: running !important;
-        }
-        
-        /* Критический фикс для висящего текста */
-        body.immediate-load .expertise-vertical-block,
-        body.immediate-load .speck-vertical-block,
-        body.immediate-load .project-card,
-        body.immediate-load .service-item {
-            background: transparent !important;
-            backdrop-filter: none !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-        
-        /* Усиление теней для лучшей читаемости */
-        body.immediate-load .expertise-main-title,
-        body.immediate-load .expertise-subtitle,
-        body.immediate-load .expertise-title,
-        body.immediate-load .expertise-description,
-        body.immediate-load .speck-block-title,
-        body.immediate-load .speck-block-subtitle,
-        body.immediate-load .project-title,
-        body.immediate-load .project-description,
-        body.immediate-load .service-title,
-        body.immediate-load .service-description,
-        body.immediate-load .journal-title,
-        body.immediate-load .faq-question,
-        body.immediate-load .faq-answer p,
-        body.immediate-load .cta-title,
-        body.immediate-load .cta-subtitle {
-            text-shadow: 
-                0 4px 40px rgba(0, 0, 0, 0.95),
-                0 3px 30px rgba(0, 0, 0, 0.9),
-                0 2px 25px rgba(0, 0, 0, 0.85) !important;
-        }
-        
-        /* Отключение задержек при немедленной загрузке */
-        body.immediate-load .delay-100,
-        body.immediate-load .delay-200,
-        body.immediate-load .delay-300,
-        body.immediate-load .delay-400,
-        body.immediate-load .delay-500,
-        body.immediate-load .delay-600,
-        body.immediate-load .delay-700,
-        body.immediate-load .delay-800,
-        body.immediate-load .delay-900,
-        body.immediate-load .delay-1000 {
-            animation-delay: 0s !important;
-            transition-delay: 0s !important;
-        }
-        
-        /* Принудительное отображение всех секций */
-        body.immediate-load section {
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-        
-        /* Немедленное отображение параллакс-слоев */
-        body.immediate-load .bg-layer {
-            opacity: 1 !important;
-            animation-play-state: running !important;
-        }
-        
-        /* Анимация для плавного появления */
-        @keyframes immediateAppear {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-        
-        .immediate-load-element {
-            animation: immediateAppear 0.3s ease forwards !important;
-        }
-        
-        /* Фикс для мобильных устройств */
-        @media (max-width: 768px) {
-            body.immediate-load * {
-                animation: none !important;
-                transition: none !important;
-            }
-            
-            body.immediate-load .hero-content,
-            body.immediate-load .expertise-vertical-block,
-            body.immediate-load .project-card,
-            body.immediate-load .service-item {
-                opacity: 1 !important;
-                transform: none !important;
-            }
-        }
-        
         /* ДОБАВЛЕНО: Отступ для хедера */
         body {
             padding-top: 80px;
@@ -321,6 +165,61 @@
         @media (max-width: 768px) {
             body {
                 padding-top: 60px;
+            }
+            
+            /* Отключаем fixed background на мобильных */
+            .parallax-bg-layer {
+                background-attachment: scroll !important;
+            }
+        }
+        
+        /* ИНДИКАТОР ПРОГРЕССА СМЕНЫ ФОНА */
+        .bg-scroll-indicator {
+            position: fixed;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .bg-scroll-indicator:hover {
+            opacity: 1;
+        }
+        
+        .bg-scroll-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .bg-scroll-dot.active {
+            background: white;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .bg-scroll-dot:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(1.2);
+        }
+        
+        /* ОПТИМИЗАЦИЯ ДЛЯ МОБИЛЬНЫХ */
+        @media (max-width: 768px) {
+            .bg-scroll-indicator {
+                right: 15px;
+            }
+            
+            .bg-scroll-dot {
+                width: 6px;
+                height: 6px;
             }
         }
     </style>
@@ -336,12 +235,23 @@
     <script src="js/animations.js"></script>
 </head>
 <body class="home-page">
-    <!-- ФОНОВЫЕ СЛОИ -->
-    <div class="bg-layers-container">
-        <div class="bg-layer"></div>
-        <div class="bg-layer"></div>
-        <div class="bg-layer"></div>
-        <div class="bg-layer"></div>
+    <!-- СКРЫТЫЙ ПРЕЛОАДЕР ИЗОБРАЖЕНИЙ -->
+    <div class="bg-preloader"></div>
+    
+    <!-- ФОНОВЫЕ СЛОИ ДЛЯ СМЕНЫ ПРИ СКРОЛЛЕ -->
+    <div class="parallax-bg-container">
+        <div class="parallax-bg-layer active" data-bg-index="1" style="background-image: url('assets/images/parallax/bg-1.jpg')"></div>
+        <div class="parallax-bg-layer" data-bg-index="2" style="background-image: url('assets/images/parallax/bg-2.jpg')"></div>
+        <div class="parallax-bg-layer" data-bg-index="3" style="background-image: url('assets/images/parallax/bg-3.jpg')"></div>
+        <div class="parallax-bg-layer" data-bg-index="4" style="background-image: url('assets/images/parallax/bg-4.jpg')"></div>
+    </div>
+    
+    <!-- ИНДИКАТОР СМЕНЫ ФОНА -->
+    <div class="bg-scroll-indicator">
+        <div class="bg-scroll-dot active" data-target-bg="1"></div>
+        <div class="bg-scroll-dot" data-target-bg="2"></div>
+        <div class="bg-scroll-dot" data-target-bg="3"></div>
+        <div class="bg-scroll-dot" data-target-bg="4"></div>
     </div>
 
     <!-- SCROLL PROGRESS BAR -->
@@ -353,7 +263,7 @@
     <div id="header-container"></div>
 
     <!-- Hero Section -->
-    <section class="hero content-section" data-bg-section="0">
+    <section class="hero content-section" data-bg-section="1">
         <div class="container">
             <div class="hero-content">
                 <div class="scale-in">
@@ -370,8 +280,6 @@
                         </p>
                     </div>
                     
-                    <!-- УДАЛЕНА HERO IMAGE -->
-                    
                     <div class="hero-actions fade-in-up delay-500">
                         <a href="services.html" class="btn btn-primary">
                             <span data-i18n="home.hero.ourServices">Наши Услуги</span>
@@ -386,16 +294,13 @@
         </div>
     </section>
 
-    <!-- Expertise Section (ВЕРТИКАЛЬНОЕ РАСПОЛОЖЕНИЕ) -->
-    <section class="expertise-section content-section" data-bg-section="1">
+    <!-- Expertise Section -->
+    <section class="expertise-section content-section" data-bg-section="2">
         <div class="container">
-            <!-- Заголовки секции -->
             <div class="expertise-header">
                 <h2 class="section-title expertise-main-title fade-in-down">Expertise</h2>
-                <p class="expertise-subtitle fade-in-up delay-200">Our core competencies and specialized skills</p>
             </div>
 
-            <!-- ВЕРТИКАЛЬНЫЕ БЛОКИ -->
             <div class="expertise-vertical-container">
                 <!-- Strategy Block -->
                 <div class="expertise-vertical-block fade-in-left delay-300">
@@ -478,7 +383,7 @@
     </section>
 
     <!-- Projects Section -->
-    <section class="projects-section content-section" data-bg-section="2">
+    <section class="projects-section content-section" data-bg-section="3">
         <div class="container">
             <h2 class="section-title fade-in-down">Projects</h2>
             <p class="section-subtitle fade-in-up delay-200">Our latest design projects and innovations</p>
@@ -528,7 +433,7 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="stats-section content-section" data-bg-section="3">
+    <section class="stats-section content-section" data-bg-section="4">
         <div class="container">
             <h2 class="section-title fade-in-down">Our Achievements</h2>
             <p class="section-subtitle fade-in-up delay-200">Numbers that speak for themselves</p>
@@ -557,10 +462,9 @@
         </div>
     </section>
 
-    <!-- Services Section (EXACT SPECK DESIGN STYLE) -->
-    <section class="services-section content-section speck-services-section" data-bg-section="4">
+    <!-- Services Section -->
+    <section class="services-section content-section speck-services-section" data-bg-section="5">
         <div class="container">
-            <!-- Верхний заголовок и описание -->
             <div class="speck-services-header">
                 <h2 class="section-title speck-section-title fade-in-down">Services</h2>
                 <div class="speck-services-intro fade-in-up delay-200">
@@ -571,7 +475,6 @@
                 </div>
             </div>
 
-            <!-- Сетка услуг в 2 колонки -->
             <div class="speck-services-grid">
                 <!-- Левая колонка -->
                 <div class="speck-services-column">
@@ -704,7 +607,7 @@
     </section>
 
     <!-- Journals Section -->
-    <section class="journals-section content-section" data-bg-section="5">
+    <section class="journals-section content-section" data-bg-section="6">
         <div class="container">
             <h2 class="section-title fade-in-down">Journals</h2>
             <p class="section-subtitle fade-in-up delay-200">Latest insights and articles from our team</p>
@@ -744,14 +647,13 @@
         </div>
     </section>
 
-    <!-- FAQ Section - ИСПРАВЛЕННАЯ ВЕРСИЯ (ответы скрыты изначально) -->
-    <section class="faq-section content-section" data-bg-section="6">
+    <!-- FAQ Section -->
+    <section class="faq-section content-section" data-bg-section="7">
         <div class="container">
             <h2 class="section-title fade-in-down">FAQ</h2>
             <p class="section-subtitle fade-in-up delay-200">Frequently asked questions about our services</p>
             
             <div class="faq-grid">
-                <!-- Все ответы ИЗНАЧАЛЬНО СКРЫТЫ -->
                 <div class="faq-item fade-in-up delay-300">
                     <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-1">
                         <span>What does a product design company do?</span>
@@ -806,15 +708,13 @@
     </section>
 
     <!-- Contact CTA Section -->
-    <section class="cta-section content-section" data-bg-section="7">
+    <section class="cta-section content-section" data-bg-section="8">
         <div class="container">
             <div class="cta-content">
                 <h2 class="cta-title fade-in-down">Ready to Start Your Project?</h2>
                 <p class="cta-subtitle fade-in-up delay-200">
                     Let's discuss how we can bring your product idea to life with innovative design and engineering
                 </p>
-                
-                <!-- УДАЛЕНА CTA IMAGE -->
                 
                 <div class="cta-actions fade-in-up delay-400">
                     <a href="contacts.html" class="btn btn-primary">
@@ -832,82 +732,155 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
     
-    <!-- СКРИПТ НЕМЕДЛЕННОЙ ЗАГРУЗКИ ВСЕГО КОНТЕНТА -->
+    <!-- СКРИПТ ДЛЯ СМЕНЫ ФОНОВЫХ ИЗОБРАЖЕНИЙ ПРИ СКРОЛЛЕ -->
     <script>
-        // КРИТИЧЕСКИЙ ФИКС: Немедленная загрузка всего контента при входе на сайт
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🌐 SITE ENTRY: Immediately loading all content...');
+            console.log('🎨 Initializing background image switching on scroll...');
             
-            // 1. Немедленно добавляем классы для немедленной загрузки
-            document.body.classList.add('immediate-load');
-            document.body.classList.add('all-content-loaded');
+            // Элементы фона
+            const bgLayers = document.querySelectorAll('.parallax-bg-layer');
+            const bgDots = document.querySelectorAll('.bg-scroll-dot');
+            const sections = document.querySelectorAll('section[data-bg-section]');
             
-            // 2. Ждем немного для загрузки компонентов
-            setTimeout(function() {
-                // 3. Немедленно показываем весь текст на странице
-                const allTextElements = document.querySelectorAll(
-                    'h1, h2, h3, h4, h5, h6, p, span, li, .title, .subtitle, .description, .text, [data-i18n]'
-                );
+            if (bgLayers.length === 0 || sections.length === 0) {
+                console.warn('⚠️ Background elements not found');
+                return;
+            }
+            
+            console.log(`✅ Found ${bgLayers.length} background layers and ${sections.length} sections`);
+            
+            // Функция для переключения фона
+            function switchBackground(activeIndex) {
+                // Убираем активный класс со всех слоев
+                bgLayers.forEach(layer => {
+                    layer.classList.remove('active');
+                });
                 
-                allTextElements.forEach(el => {
-                    if (el && el.style) {
-                        el.style.opacity = '1';
-                        el.style.visibility = 'visible';
-                        el.style.transform = 'translate(0, 0)';
-                        el.classList.add('immediate-load-element');
+                // Добавляем активный класс к нужному слою
+                if (bgLayers[activeIndex]) {
+                    bgLayers[activeIndex].classList.add('active');
+                }
+                
+                // Обновляем индикатор
+                bgDots.forEach((dot, index) => {
+                    dot.classList.remove('active');
+                    if (index === activeIndex) {
+                        dot.classList.add('active');
                     }
                 });
                 
-                console.log(`✅ Immediately loaded ${allTextElements.length} text elements`);
+                console.log(`🖼️ Switched to background ${activeIndex + 1}`);
+            }
+            
+            // Функция для обновления фона на основе скролла
+            function updateBackgroundOnScroll() {
+                const scrollPosition = window.scrollY + (window.innerHeight * 0.3);
+                let activeSection = 0;
                 
-                // 4. Немедленно показываем все секции
-                const allSections = document.querySelectorAll('section');
-                allSections.forEach(section => {
-                    if (section && section.style) {
-                        section.style.opacity = '1';
-                        section.style.visibility = 'visible';
+                // Находим текущую секцию
+                sections.forEach((section, index) => {
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+                        activeSection = index;
                     }
                 });
                 
-                // Немедленно показываем все карточки и блоки
-                const allCards = document.querySelectorAll('.expertise-vertical-block, .project-card, .service-item, .journal-item, .faq-item, .stat-card');
-                allCards.forEach(card => {
-                    if (card && card.style) {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translate(0, 0) scale(1)';
+                // Определяем, какой фон показывать
+                let bgIndex = 0;
+                const totalSections = sections.length;
+                const sectionHeight = document.documentElement.scrollHeight / totalSections;
+                const currentSection = Math.floor(scrollPosition / sectionHeight);
+                
+                bgIndex = Math.min(currentSection, bgLayers.length - 1);
+                
+                // Переключаем фон
+                switchBackground(bgIndex);
+            }
+            
+            // Обработчик скролла с троттлингом
+            let scrollTimeout;
+            function handleScroll() {
+                if (!scrollTimeout) {
+                    scrollTimeout = setTimeout(() => {
+                        updateBackgroundOnScroll();
+                        scrollTimeout = null;
+                    }, 50);
+                }
+            }
+            
+            // Назначаем обработчик скролла
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // Обработчики для индикаторных точек
+            bgDots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    // Прокручиваем к соответствующей секции
+                    if (sections[index]) {
+                        sections[index].scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
                     }
+                    switchBackground(index);
                 });
+            });
+            
+            // Инициализация начального состояния
+            updateBackgroundOnScroll();
+            
+            // Анимация параллакса для активного слоя
+            function updateParallax() {
+                const scrollY = window.scrollY;
+                const activeLayer = document.querySelector('.parallax-bg-layer.active');
                 
-                console.log(`✅ Immediately loaded ${allSections.length} sections and ${allCards.length} cards`);
-                
-                // 5. Запускаем счетчики сразу
-                const counters = document.querySelectorAll('.stat-number');
-                counters.forEach(counter => {
-                    const target = parseInt(counter.getAttribute('data-count')) || 0;
-                    if (target > 0) {
-                        counter.textContent = target;
-                        counter.classList.add('counter-animate');
-                    }
+                if (activeLayer) {
+                    const speed = 0.1;
+                    const yPos = scrollY * speed;
+                    activeLayer.style.transform = `translate3d(0, ${yPos}px, 0)`;
+                }
+            }
+            
+            // Добавляем параллакс эффект
+            let parallaxRaf;
+            function handleParallaxScroll() {
+                if (parallaxRaf) return;
+                parallaxRaf = requestAnimationFrame(() => {
+                    updateParallax();
+                    parallaxRaf = null;
                 });
+            }
+            
+            window.addEventListener('scroll', handleParallaxScroll, { passive: true });
+            
+            // Загрузка изображений
+            bgLayers.forEach((layer, index) => {
+                const bgImage = layer.style.backgroundImage;
+                const urlMatch = bgImage.match(/url\(['"]?([^'"]+)['"]?\)/);
                 
-                console.log('⚡ All site content is NOW VISIBLE (immediate load)');
-            }, 300); // Задержка для загрузки компонентов
+                if (urlMatch) {
+                    const img = new Image();
+                    img.onload = function() {
+                        console.log(`✅ Background image ${index + 1} loaded: ${urlMatch[1]}`);
+                        layer.classList.add('loaded');
+                    };
+                    img.onerror = function() {
+                        console.warn(`⚠️ Failed to load background image ${index + 1}: ${urlMatch[1]}`);
+                    };
+                    img.src = urlMatch[1];
+                }
+            });
+            
+            console.log('🎬 Background switching system initialized');
         });
         
         // Альтернативный запуск если DOM уже загружен
         if (document.readyState === 'interactive' || document.readyState === 'complete') {
-            setTimeout(function() {
-                document.body.classList.add('immediate-load');
-                document.body.classList.add('all-content-loaded');
-                
-                const allContent = document.querySelectorAll('*');
-                allContent.forEach(el => {
-                    if (el && el.style) {
-                        el.style.opacity = '1';
-                        el.style.visibility = 'visible';
-                    }
-                });
-            }, 500);
+            setTimeout(() => {
+                const event = new Event('DOMContentLoaded');
+                document.dispatchEvent(event);
+            }, 100);
         }
     </script>
 </body>
