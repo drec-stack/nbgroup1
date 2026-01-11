@@ -1008,22 +1008,6 @@ html {
         0 1px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
-.cta-image {
-    max-width: 800px;
-    margin: 3rem auto 4rem;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: transparent !important;
-}
-
-.cta-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
 .cta-actions {
     display: flex;
     gap: 20px;
@@ -1242,6 +1226,9 @@ h1, h2, h3, h4, h5, h6, p,
     .hero-actions {
         flex-direction: column !important;
         gap: 15px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
     }
     
     .hero-actions .btn {
@@ -1513,41 +1500,82 @@ h1, h2, h3, h4, h5, h6, p,
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1) !important;
     }
     
-    /* CTA СЕКЦИЯ */
+    /* CTA СЕКЦИЯ - ВЫРАВНИВАНИЕ КНОПОК ПО ЦЕНТРУ */
     .cta-section {
         padding: 80px 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    
+    .cta-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 0 !important;
     }
     
     .cta-title {
         font-size: 2rem !important;
         margin-bottom: 15px !important;
+        text-align: center !important;
+        width: 100% !important;
     }
     
     .cta-subtitle {
         font-size: 1.1rem !important;
         margin-bottom: 30px !important;
+        text-align: center !important;
+        width: 100% !important;
+        max-width: 90% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        line-height: 1.5 !important;
     }
     
+    /* КРИТИЧЕСКИЙ ФИКС ДЛЯ КНОПОК - ВЫРАВНИВАНИЕ ПО ЦЕНТРУ */
     .cta-actions {
+        display: flex !important;
         flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
         gap: 15px !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
     }
     
     .cta-actions .btn {
         width: 100% !important;
-        max-width: 300px !important;
+        max-width: 280px !important;
+        min-width: auto !important;
         padding: 14px 24px !important;
+        font-size: 1rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
     }
     
     /* ОБЩИЕ ИСПРАВЛЕНИЯ */
     .section-title {
         font-size: 2rem !important;
         margin-bottom: 15px !important;
+        text-align: center !important;
+        width: 100% !important;
     }
     
     .section-subtitle {
         font-size: 1.1rem !important;
         margin-bottom: 40px !important;
+        text-align: center !important;
+        width: 100% !important;
     }
     
     /* Улучшаем отзывчивость кнопок */
@@ -1578,6 +1606,14 @@ h1, h2, h3, h4, h5, h6, p,
     /* Упрощаем анимации FAQ */
     .faq-item.active .faq-answer {
         transition: max-height 0.3s ease !important;
+    }
+    
+    /* Фикс для центрирования контента */
+    .container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 }
 
@@ -1657,6 +1693,23 @@ h1, h2, h3, h4, h5, h6, p,
     .speck-service-item {
         min-height: 44px !important;
     }
+    
+    /* CTA ДОПОЛНИТЕЛЬНЫЕ ИСПРАВЛЕНИЯ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ */
+    .cta-title {
+        font-size: 1.8rem !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .cta-subtitle {
+        font-size: 1rem !important;
+        margin-bottom: 25px !important;
+        max-width: 95% !important;
+    }
+    
+    .cta-actions .btn {
+        max-width: 100% !important;
+        padding: 12px 20px !important;
+    }
 }
 
 /* ===== ТАБЛЕТКИ (768px - 992px) ===== */
@@ -1693,6 +1746,20 @@ h1, h2, h3, h4, h5, h6, p,
         padding: 22px 25px !important;
         font-size: 1.2rem !important;
     }
+    
+    /* CTA для планшетов */
+    .cta-content {
+        max-width: 90% !important;
+    }
+    
+    .cta-actions {
+        gap: 15px !important;
+    }
+    
+    .cta-actions .btn {
+        min-width: 180px !important;
+        padding: 15px 28px !important;
+    }
 }
 
 /* ===== ГОРИЗОНТАЛЬНАЯ ОРИЕНТАЦИЯ ===== */
@@ -1719,6 +1786,21 @@ h1, h2, h3, h4, h5, h6, p,
     .hero-actions {
         margin-top: 20px !important;
     }
+    
+    /* CTA для горизонтальной ориентации */
+    .cta-section {
+        padding: 60px 0 !important;
+    }
+    
+    .cta-actions {
+        flex-direction: row !important;
+        gap: 10px !important;
+    }
+    
+    .cta-actions .btn {
+        padding: 12px 20px !important;
+        font-size: 0.9rem !important;
+    }
 }
 
 /* ===== ВЫСОКИЕ ЭКРАНЫ ===== */
@@ -1734,6 +1816,21 @@ h1, h2, h3, h4, h5, h6, p,
     
     .hero-subtitle {
         font-size: 1.8rem !important;
+    }
+    
+    /* CTA для высоких экранов */
+    .cta-section {
+        padding: 200px 0 !important;
+    }
+    
+    .cta-title {
+        font-size: 3.5rem !important;
+        margin-bottom: 30px !important;
+    }
+    
+    .cta-subtitle {
+        font-size: 1.8rem !important;
+        margin-bottom: 50px !important;
     }
 }
 
@@ -1755,6 +1852,16 @@ h1, h2, h3, h4, h5, h6, p,
     
     .parallax-bg-layer {
         background-attachment: scroll !important;
+    }
+    
+    /* Фикс для кнопок в iOS */
+    .btn {
+        cursor: pointer !important;
+    }
+    
+    /* Улучшаем touch-оптимизацию для CTA кнопок */
+    .cta-actions .btn {
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1) !important;
     }
 }
 
@@ -1808,6 +1915,20 @@ h1, h2, h3, h4, h5, h6, p,
     }
     
     .home-page .container {
+        padding: 0 20px !important;
+    }
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ ДЛЯ ЦЕНТРИРОВАНИЯ ===== */
+.cta-section .container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: column !important;
+}
+
+@media (max-width: 768px) {
+    .cta-section .container {
         padding: 0 20px !important;
     }
 }
