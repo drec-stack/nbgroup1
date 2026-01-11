@@ -429,9 +429,58 @@
         transform: translateY(50%) rotate(-45deg) !important;
     }
 
+    /* ===== РАСПОЛОЖЕНИЕ ЭЛЕМЕНТОВ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ ===== */
+    .header-right {
+        display: flex !important;
+        align-items: center !important;
+        gap: 20px !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .scroll-down .header-right {
+        opacity: 0.9 !important;
+        transform: translateX(5px) !important;
+    }
+
+    .scroll-up .header-right {
+        opacity: 1 !important;
+        transform: translateX(0) !important;
+    }
+
+    @media (max-width: 768px) {
+        .header-right {
+            gap: 15px !important;
+        }
+    }
+
+    .header-right-desktop {
+        display: flex !important;
+        align-items: center !important;
+        gap: 20px !important;
+    }
+
+    .header-right-mobile {
+        display: none !important;
+        align-items: center !important;
+        gap: 15px !important;
+    }
+
     @media (max-width: 900px) {
+        .header-right-desktop {
+            display: none !important;
+        }
+        
+        .header-right-mobile {
+            display: flex !important;
+        }
+        
         .burger-btn {
             display: block !important;
+            order: 1 !important;
+        }
+        
+        .language-switcher-mobile {
+            order: 2 !important;
         }
     }
 
@@ -577,29 +626,6 @@
         box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25) !important;
     }
 
-    .header-right {
-        display: flex !important;
-        align-items: center !important;
-        gap: 20px !important;
-        transition: all 0.3s ease !important;
-    }
-
-    .scroll-down .header-right {
-        opacity: 0.9 !important;
-        transform: translateX(5px) !important;
-    }
-
-    .scroll-up .header-right {
-        opacity: 1 !important;
-        transform: translateX(0) !important;
-    }
-
-    @media (max-width: 768px) {
-        .header-right {
-            gap: 15px !important;
-        }
-    }
-
     .language-switcher {
         display: flex !important;
         align-items: center !important;
@@ -618,6 +644,21 @@
     .scroll-up .language-switcher {
         background: rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .language-switcher-mobile {
+        display: flex !important;
+        align-items: center !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-radius: 20px !important;
+        padding: 3px !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        backdrop-filter: blur(15px) !important;
+        -webkit-backdrop-filter: blur(15px) !important;
+        width: 90px !important;
+        height: 34px !important;
+        overflow: hidden !important;
+        transition: all 0.3s ease !important;
     }
 
     .lang-btn {
@@ -772,6 +813,10 @@
         .language-switcher {
             background: rgba(255, 255, 255, 0.12) !important;
         }
+        
+        .language-switcher-mobile {
+            background: rgba(255, 255, 255, 0.12) !important;
+        }
     }
 
     /* ===== ЭКСТРЕННЫЙ ФИКС ЦЕНТРИРОВАНИЯ - ВЫСШИЙ ПРИОРИТЕТ ===== */
@@ -816,13 +861,8 @@
                 <a href="contacts.html" class="nav-link" data-i18n="nav.contact">Контакты</a>
             </nav>
             
-            <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            
-            <div class="header-right">
+            <!-- Десктопная версия -->
+            <div class="header-right-desktop">
                 <div class="language-switcher" data-current-lang="ru">
                     <button class="lang-btn" data-lang="ru">
                         <span class="lang-flag">🇷🇺</span>
@@ -837,6 +877,26 @@
                 <a href="contacts.html" class="header-btn" data-i18n="nav.startProject">
                     Начать проект
                 </a>
+            </div>
+            
+            <!-- Мобильная версия -->
+            <div class="header-right-mobile">
+                <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <div class="language-switcher-mobile" data-current-lang="ru">
+                    <button class="lang-btn" data-lang="ru">
+                        <span class="lang-flag">🇷🇺</span>
+                        <span class="lang-text">RU</span>
+                    </button>
+                    <button class="lang-btn active" data-lang="en">
+                        <span class="lang-flag">🇬🇧</span>
+                        <span class="lang-text">EN</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1006,11 +1066,10 @@
     function setupLanguageSwitcher() {
         const langBtns = document.querySelectorAll('.lang-btn');
         const mobileLangBtns = document.querySelectorAll('.mobile-lang-btn');
-        const switcher = document.querySelector('.language-switcher');
         
         function updateLanguageState(lang) {
             const allLangBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
-            const switcher = document.querySelector('.language-switcher');
+            const switchers = document.querySelectorAll('.language-switcher, .language-switcher-mobile');
             
             allLangBtns.forEach(btn => {
                 btn.classList.remove('active');
@@ -1019,9 +1078,9 @@
                 }
             });
             
-            if (switcher) {
+            switchers.forEach(switcher => {
                 switcher.setAttribute('data-current-lang', lang);
-            }
+            });
             
             localStorage.setItem('preferredLang', lang);
             
@@ -1030,7 +1089,7 @@
             }
         }
         
-        if (!langBtns.length || !switcher) return;
+        if (!langBtns.length) return;
         
         const currentLang = localStorage.getItem('preferredLang') || 'ru';
         updateLanguageState(currentLang);
@@ -1039,17 +1098,19 @@
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const lang = btn.getAttribute('data-lang');
-                const currentActive = document.querySelector('.lang-btn.active');
                 
-                if (currentActive && currentActive.getAttribute('data-lang') === lang) {
+                if (btn.classList.contains('active')) {
                     return;
                 }
                 
-                switcher.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    updateLanguageState(lang);
-                    switcher.style.transform = 'scale(1)';
-                }, 150);
+                const switcher = btn.closest('.language-switcher') || btn.closest('.language-switcher-mobile');
+                if (switcher) {
+                    switcher.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        updateLanguageState(lang);
+                        switcher.style.transform = 'scale(1)';
+                    }, 150);
+                }
                 
                 if (isMobileMenuOpen) {
                     closeMobileMenu();
