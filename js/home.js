@@ -519,63 +519,17 @@ function initializeCardHoverEffects() {
     console.log(`✅ Card hover effects initialized for ${projectCards.length} cards`);
 }
 
-// ===== УПРАВЛЕНИЕ FAQ =====
-function setupFAQAccordion() {
-    const faqItems = document.querySelectorAll('.faq-item');
-    
-    if (faqItems.length === 0) {
-        console.log('⚠️ No FAQ items found');
-        return;
-    }
-    
-    faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
-        const answer = item.querySelector('.faq-answer');
-        
-        if (question && answer) {
-            question.addEventListener('click', () => {
-                const isActive = item.classList.contains('active');
-                
-                // Закрываем все FAQ
-                faqItems.forEach(faq => {
-                    faq.classList.remove('active');
-                    const faqAnswer = faq.querySelector('.faq-answer');
-                    if (faqAnswer) {
-                        faqAnswer.style.display = 'none';
-                        faqAnswer.style.maxHeight = '0';
-                        faqAnswer.style.opacity = '0';
-                    }
-                });
-                
-                // Открываем текущий если был закрыт
-                if (!isActive) {
-                    item.classList.add('active');
-                    answer.style.display = 'block';
-                    setTimeout(() => {
-                        answer.style.maxHeight = answer.scrollHeight + 'px';
-                        answer.style.opacity = '1';
-                    }, 10);
-                }
-            });
-        }
-    });
-    
-    console.log(`✅ FAQ accordion setup for ${faqItems.length} items`);
-}
-
 // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
 function safeInitialize() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 initializeHomePage();
-                setupFAQAccordion();
             }, 100);
         });
     } else {
         setTimeout(() => {
             initializeHomePage();
-            setupFAQAccordion();
         }, 100);
     }
 }
@@ -626,7 +580,6 @@ window.homePage = {
     initialize: initializeHomePage,
     reinitialize: () => {
         initializeHomePage();
-        setupFAQAccordion();
     },
     switchBackground,
     nextBackground,
