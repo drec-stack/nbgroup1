@@ -375,7 +375,6 @@
             line-height: 1 !important;
         }
 
-        /* Убираем дублирование флагов - используем только JavaScript защиту */
         .lang-text {
             display: inline !important;
         }
@@ -1047,60 +1046,109 @@
         let ticking = false;
         let isMobileMenuOpen = false;
         
-        // ВАЖНАЯ ФУНКЦИЯ: Гарантирует, что британский флаг всегда 🇬🇧
-        function forceBritishFlag() {
-            // Находим все элементы с британским флагом
-            const enFlagElements = document.querySelectorAll('.lang-btn[data-lang="en"] .lang-flag, .mobile-lang-btn[data-lang="en"] .lang-flag');
+        // ВАЖНАЯ ФУНКЦИЯ: Полностью блокирует любой флаг США
+        function blockUSFlagCompletely() {
+            // 1. Находим все элементы с флагами
+            const allFlagElements = document.querySelectorAll('.lang-flag');
             
-            enFlagElements.forEach(flagElement => {
-                // Принудительно устанавливаем британский флаг
-                if (flagElement.textContent !== '🇬🇧') {
+            allFlagElements.forEach(flagElement => {
+                // 2. Если это флаг США (🇺🇸) - заменяем на британский
+                if (flagElement.textContent.includes('🇺🇸') || flagElement.textContent.includes('US')) {
                     flagElement.textContent = '🇬🇧';
                 }
-            });
-        }
-        
-        // Функция для принудительного применения британского флага при каждом изменении DOM
-        function setupFlagProtection() {
-            // Наблюдатель за изменениями в DOM
-            const observer = new MutationObserver(function(mutations) {
-                let needsUpdate = false;
-                mutations.forEach(function(mutation) {
-                    if (mutation.type === 'childList' || mutation.type === 'characterData') {
-                        needsUpdate = true;
+                
+                // 3. Если это кнопка английского языка - гарантируем британский флаг
+                const langBtn = flagElement.closest('.lang-btn, .mobile-lang-btn');
+                if (langBtn && langBtn.getAttribute('data-lang') === 'en') {
+                    if (flagElement.textContent !== '🇬🇧') {
+                        flagElement.textContent = '🇬🇧';
                     }
-                });
-                if (needsUpdate) {
-                    forceBritishFlag();
                 }
             });
             
-            // Начинаем наблюдение
+            // 4. Также проверяем стили и атрибуты
+            const enButtons = document.querySelectorAll('[data-lang="en"]');
+            enButtons.forEach(btn => {
+                const flagSpan = btn.querySelector('.lang-flag');
+                if (flagSpan) {
+                    // Полная замена любого содержания на 🇬🇧
+                    flagSpan.innerHTML = '🇬🇧';
+                    flagSpan.setAttribute('data-forced-flag', 'gb');
+                }
+            });
+            
+            // 5. Проверяем данные в localStorage
+            if (localStorage.getItem('languageFlag')) {
+                localStorage.setItem('languageFlag', '🇬🇧');
+            }
+        }
+        
+        // Функция для полной блокировки флага США
+        function setupCompleteUSFlagBlock() {
+            // Наблюдатель за изменениями в DOM - очень агрессивный
+            const observer = new MutationObserver(function(mutations) {
+                let shouldBlock = false;
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                        shouldBlock = true;
+                    }
+                    // Проверяем все добавленные узлы
+                    if (mutation.addedNodes) {
+                        mutation.addedNodes.forEach(node => {
+                            if (node.nodeType === 1) { // Element node
+                                shouldBlock = true;
+                            }
+                        });
+                    }
+                });
+                if (shouldBlock) {
+                    blockUSFlagCompletely();
+                }
+            });
+            
+            // Начинаем наблюдение за всем документом
             observer.observe(document.body, {
                 childList: true,
                 subtree: true,
-                characterData: true
+                characterData: true,
+                attributes: true,
+                attributeFilter: ['class', 'data-lang', 'style']
             });
             
-            // Принудительно применяем при инициализации
-            forceBritishFlag();
+            // Блокируем при инициализации
+            blockUSFlagCompletely();
             
-            // Также применяем при каждом клике на переключатель языка
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.lang-btn, .mobile-lang-btn')) {
-                    setTimeout(forceBritishFlag, 10);
+            // Блокируем при любом клике
+            document.addEventListener('click', function() {
+                setTimeout(blockUSFlagCompletely, 10);
+            });
+            
+            // Блокируем при любом событии клавиатуры
+            document.addEventListener('keydown', function() {
+                setTimeout(blockUSFlagCompletely, 10);
+            });
+            
+            // Блокируем при любом изменении языка
+            window.addEventListener('languageChanged', blockUSFlagCompletely);
+            
+            // Блокируем при загрузке i18n
+            if (window.i18n) {
+                const originalSwitch = window.i18n.smoothSwitchLanguage;
+                if (originalSwitch) {
+                    window.i18n.smoothSwitchLanguage = function(lang) {
+                        const result = originalSwitch.apply(this, arguments);
+                        setTimeout(blockUSFlagCompletely, 50);
+                        return result;
+                    };
                 }
-            });
-            
-            // Также применяем при каждом событии изменения языка
-            window.addEventListener('languageChanged', forceBritishFlag);
+            }
         }
         
         function initHeader() {
             const header = document.getElementById('main-header');
             if (!header) return;
             
-            setupFlagProtection(); // ЗАЩИТА ФЛАГА
+            setupCompleteUSFlagBlock(); // ПОЛНАЯ БЛОКИРОВКА ФЛАГА США
             setupScrollAnimations(header);
             setupActiveNav();
             setupLanguageSwitcher();
@@ -1108,9 +1156,10 @@
             
             header.classList.add('header-visible');
             
-            // Дополнительная защита после загрузки
-            setTimeout(forceBritishFlag, 100);
-            setTimeout(forceBritishFlag, 500);
+            // Множественные блокировки для гарантии
+            setTimeout(blockUSFlagCompletely, 100);
+            setTimeout(blockUSFlagCompletely, 300);
+            setTimeout(blockUSFlagCompletely, 1000);
         }
         
         function setupScrollAnimations(header) {
@@ -1235,13 +1284,15 @@
                 
                 localStorage.setItem('preferredLang', lang);
                 
-                // ВАЖНО: Принудительно обновляем флаги после смены языка
-                setTimeout(forceBritishFlag, 50);
+                // БЛОКИРУЕМ ФЛАГ США ПОСЛЕ СМЕНЫ ЯЗЫКА
+                setTimeout(blockUSFlagCompletely, 10);
+                setTimeout(blockUSFlagCompletely, 100);
                 
                 if (window.i18n && window.i18n.smoothSwitchLanguage) {
                     window.i18n.smoothSwitchLanguage(lang);
-                    // Дополнительная защита после смены языка
-                    setTimeout(forceBritishFlag, 200);
+                    // Дополнительная блокировка после смены языка
+                    setTimeout(blockUSFlagCompletely, 200);
+                    setTimeout(blockUSFlagCompletely, 500);
                 }
                 
                 // Генерируем событие изменения языка
@@ -1263,9 +1314,10 @@
                         setTimeout(() => {
                             updateLanguageState(lang);
                             switcher.style.transform = 'scale(1)';
-                            // Двойная защита флага
-                            forceBritishFlag();
-                            setTimeout(forceBritishFlag, 100);
+                            // Множественная блокировка флага США
+                            blockUSFlagCompletely();
+                            setTimeout(blockUSFlagCompletely, 50);
+                            setTimeout(blockUSFlagCompletely, 150);
                         }, 150);
                     }
                     
@@ -1371,8 +1423,8 @@
                     document.body.style.overflow = '';
                 }
             },
-            // Добавляем публичный метод для принудительной установки британского флага
-            forceBritishFlag: forceBritishFlag
+            // Добавляем публичный метод для блокировки флага США
+            blockUSFlagCompletely: blockUSFlagCompletely
         };
     })();
     </script>
