@@ -377,6 +377,8 @@
 
         .lang-text {
             display: inline !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
         }
 
         .header-btn {
@@ -451,11 +453,11 @@
             100% { opacity: 0; transform: scale(1) !important; }
         }
 
-        /* ===== БУРГЕР МЕНЮ ===== */
+        /* ===== БУРГЕР МЕНЮ - ИСПРАВЛЕНО ===== */
         .burger-btn {
             display: none !important;
-            width: 30px !important;
-            height: 24px !important;
+            width: 34px !important;
+            height: 28px !important;
             position: relative !important;
             background: transparent !important;
             border: none !important;
@@ -463,6 +465,7 @@
             padding: 0 !important;
             z-index: 1002 !important;
             transition: all 0.3s ease !important;
+            flex-shrink: 0 !important;
         }
 
         .burger-btn:hover {
@@ -482,6 +485,7 @@
             border-radius: 2px !important;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
             left: 0 !important;
+            pointer-events: none !important;
         }
 
         .burger-btn span:nth-child(1) {
@@ -575,6 +579,7 @@
             font-size: 14px !important;
             font-weight: 600 !important;
             letter-spacing: 0.5px !important;
+            text-transform: uppercase !important;
         }
 
         /* Адаптация для очень маленьких экранов */
@@ -630,8 +635,6 @@
             .burger-btn {
                 display: block !important;
                 order: 3 !important;
-                width: 34px !important;
-                height: 28px !important;
             }
             
             .logo {
@@ -776,7 +779,7 @@
             }
         }
 
-        /* Мобильное меню */
+        /* Мобильное меню - ИСПРАВЛЕНО */
         .mobile-menu {
             position: fixed !important;
             top: 0 !important;
@@ -796,12 +799,14 @@
             visibility: hidden !important;
             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
             padding: 80px 20px 40px !important;
+            pointer-events: none !important;
         }
 
         .mobile-menu.active {
             transform: translateY(0) !important;
             opacity: 1 !important;
             visibility: visible !important;
+            pointer-events: auto !important;
         }
 
         .mobile-nav {
@@ -825,6 +830,7 @@
             width: 100% !important;
             background: rgba(255, 255, 255, 0.05) !important;
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            pointer-events: auto !important;
         }
 
         .mobile-nav-link:hover {
@@ -870,6 +876,7 @@
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             backdrop-filter: blur(15px) !important;
             -webkit-backdrop-filter: blur(15px) !important;
+            pointer-events: auto !important;
         }
 
         .mobile-lang-btn {
@@ -887,6 +894,7 @@
             border-radius: 16px !important;
             transition: all 0.3s ease !important;
             min-width: 60px !important;
+            pointer-events: auto !important;
         }
 
         .mobile-lang-btn.active {
@@ -912,6 +920,7 @@
             border: 1px solid rgba(255, 255, 255, 0.25) !important;
             box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15) !important;
             width: 100% !important;
+            pointer-events: auto !important;
         }
 
         .mobile-header-btn:hover {
@@ -1046,109 +1055,10 @@
         let ticking = false;
         let isMobileMenuOpen = false;
         
-        // ВАЖНАЯ ФУНКЦИЯ: Полностью блокирует любой флаг США
-        function blockUSFlagCompletely() {
-            // 1. Находим все элементы с флагами
-            const allFlagElements = document.querySelectorAll('.lang-flag');
-            
-            allFlagElements.forEach(flagElement => {
-                // 2. Если это флаг США (🇺🇸) - заменяем на британский
-                if (flagElement.textContent.includes('🇺🇸') || flagElement.textContent.includes('US')) {
-                    flagElement.textContent = '🇬🇧';
-                }
-                
-                // 3. Если это кнопка английского языка - гарантируем британский флаг
-                const langBtn = flagElement.closest('.lang-btn, .mobile-lang-btn');
-                if (langBtn && langBtn.getAttribute('data-lang') === 'en') {
-                    if (flagElement.textContent !== '🇬🇧') {
-                        flagElement.textContent = '🇬🇧';
-                    }
-                }
-            });
-            
-            // 4. Также проверяем стили и атрибуты
-            const enButtons = document.querySelectorAll('[data-lang="en"]');
-            enButtons.forEach(btn => {
-                const flagSpan = btn.querySelector('.lang-flag');
-                if (flagSpan) {
-                    // Полная замена любого содержания на 🇬🇧
-                    flagSpan.innerHTML = '🇬🇧';
-                    flagSpan.setAttribute('data-forced-flag', 'gb');
-                }
-            });
-            
-            // 5. Проверяем данные в localStorage
-            if (localStorage.getItem('languageFlag')) {
-                localStorage.setItem('languageFlag', '🇬🇧');
-            }
-        }
-        
-        // Функция для полной блокировки флага США
-        function setupCompleteUSFlagBlock() {
-            // Наблюдатель за изменениями в DOM - очень агрессивный
-            const observer = new MutationObserver(function(mutations) {
-                let shouldBlock = false;
-                mutations.forEach(function(mutation) {
-                    if (mutation.type === 'childList' || mutation.type === 'characterData') {
-                        shouldBlock = true;
-                    }
-                    // Проверяем все добавленные узлы
-                    if (mutation.addedNodes) {
-                        mutation.addedNodes.forEach(node => {
-                            if (node.nodeType === 1) { // Element node
-                                shouldBlock = true;
-                            }
-                        });
-                    }
-                });
-                if (shouldBlock) {
-                    blockUSFlagCompletely();
-                }
-            });
-            
-            // Начинаем наблюдение за всем документом
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true,
-                characterData: true,
-                attributes: true,
-                attributeFilter: ['class', 'data-lang', 'style']
-            });
-            
-            // Блокируем при инициализации
-            blockUSFlagCompletely();
-            
-            // Блокируем при любом клике
-            document.addEventListener('click', function() {
-                setTimeout(blockUSFlagCompletely, 10);
-            });
-            
-            // Блокируем при любом событии клавиатуры
-            document.addEventListener('keydown', function() {
-                setTimeout(blockUSFlagCompletely, 10);
-            });
-            
-            // Блокируем при любом изменении языка
-            window.addEventListener('languageChanged', blockUSFlagCompletely);
-            
-            // Блокируем при загрузке i18n
-            if (window.i18n) {
-                const originalSwitch = window.i18n.smoothSwitchLanguage;
-                if (originalSwitch) {
-                    window.i18n.smoothSwitchLanguage = function(lang) {
-                        const result = originalSwitch.apply(this, arguments);
-                        setTimeout(blockUSFlagCompletely, 50);
-                        return result;
-                    };
-                }
-            }
-        }
-        
         function initHeader() {
             const header = document.getElementById('main-header');
             if (!header) return;
             
-            setupCompleteUSFlagBlock(); // ПОЛНАЯ БЛОКИРОВКА ФЛАГА США
             setupScrollAnimations(header);
             setupActiveNav();
             setupLanguageSwitcher();
@@ -1156,10 +1066,8 @@
             
             header.classList.add('header-visible');
             
-            // Множественные блокировки для гарантии
-            setTimeout(blockUSFlagCompletely, 100);
-            setTimeout(blockUSFlagCompletely, 300);
-            setTimeout(blockUSFlagCompletely, 1000);
+            // Проверяем языковые кнопки
+            checkLanguageButtons();
         }
         
         function setupScrollAnimations(header) {
@@ -1259,6 +1167,16 @@
             });
         }
         
+        function checkLanguageButtons() {
+            const langTexts = document.querySelectorAll('.lang-text');
+            langTexts.forEach(text => {
+                // Гарантируем, что текст всегда в верхнем регистре
+                if (text.textContent) {
+                    text.textContent = text.textContent.toUpperCase();
+                }
+            });
+        }
+        
         function setupLanguageSwitcher() {
             const langBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
             
@@ -1284,24 +1202,20 @@
                 
                 localStorage.setItem('preferredLang', lang);
                 
-                // БЛОКИРУЕМ ФЛАГ США ПОСЛЕ СМЕНЫ ЯЗЫКА
-                setTimeout(blockUSFlagCompletely, 10);
-                setTimeout(blockUSFlagCompletely, 100);
+                // Проверяем тексты кнопок
+                checkLanguageButtons();
                 
                 if (window.i18n && window.i18n.smoothSwitchLanguage) {
                     window.i18n.smoothSwitchLanguage(lang);
-                    // Дополнительная блокировка после смены языка
-                    setTimeout(blockUSFlagCompletely, 200);
-                    setTimeout(blockUSFlagCompletely, 500);
                 }
                 
-                // Генерируем событие изменения языка
                 window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
             }
             
             langBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     const lang = btn.getAttribute('data-lang');
                     
                     if (btn.classList.contains('active')) {
@@ -1314,10 +1228,7 @@
                         setTimeout(() => {
                             updateLanguageState(lang);
                             switcher.style.transform = 'scale(1)';
-                            // Множественная блокировка флага США
-                            blockUSFlagCompletely();
-                            setTimeout(blockUSFlagCompletely, 50);
-                            setTimeout(blockUSFlagCompletely, 150);
+                            checkLanguageButtons();
                         }, 150);
                     }
                     
@@ -1363,24 +1274,26 @@
                 }
             }
             
-            burgerBtn.addEventListener('click', (e) => {
+            // ФИКС: Исправленный обработчик для бургер-меню
+            burgerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 e.stopPropagation();
                 toggleMobileMenu();
             });
             
-            mobileMenu.addEventListener('click', (e) => {
+            mobileMenu.addEventListener('click', function(e) {
                 if (e.target === mobileMenu) {
                     closeMobileMenu();
                 }
             });
             
-            document.addEventListener('keydown', (e) => {
+            document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && isMobileMenuOpen) {
                     closeMobileMenu();
                 }
             });
             
-            window.addEventListener('resize', () => {
+            window.addEventListener('resize', function() {
                 if (window.innerWidth > 900 && isMobileMenuOpen) {
                     closeMobileMenu();
                 }
@@ -1389,6 +1302,13 @@
             const mobileLinks = mobileMenu.querySelectorAll('a');
             mobileLinks.forEach(link => {
                 link.addEventListener('click', closeMobileMenu);
+            });
+            
+            const mobileLangBtns = mobileMenu.querySelectorAll('.mobile-lang-btn');
+            mobileLangBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
             });
         }
         
@@ -1422,9 +1342,7 @@
                     burgerBtn.setAttribute('aria-label', 'Открыть меню');
                     document.body.style.overflow = '';
                 }
-            },
-            // Добавляем публичный метод для блокировки флага США
-            blockUSFlagCompletely: blockUSFlagCompletely
+            }
         };
     })();
     </script>
