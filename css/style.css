@@ -34,7 +34,7 @@ html, body {
     max-width: 100%;
     overflow-x: hidden;
     position: relative;
-    background: #0a0a0a !important; /* КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Добавлен фоновый цвет */
+    background: #0a0a0a !important;
 }
 
 html {
@@ -42,7 +42,7 @@ html {
 }
 
 body {
-    background: #0a0a0a !important; /* КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Явный фон для body */
+    background: #0a0a0a !important;
     color: var(--text);
     line-height: 1.6;
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
@@ -113,25 +113,30 @@ body.brandbook-page .main-header {
 /* ===== МОБИЛЬНАЯ ВЕРСИЯ ХЕДЕРА ===== */
 @media (max-width: 768px) {
     body {
-        padding-top: 70px;
+        padding-top: 60px !important;
     }
     
     .main-header {
-        width: 100%;
-        max-width: 100%;
-        border-radius: 0;
-        top: 0;
-        left: 0;
-        transform: none;
-        background: rgba(10, 10, 20, 0.95);
-        backdrop-filter: blur(30px);
-        -webkit-backdrop-filter: blur(30px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        background: rgba(10, 10, 20, 0.95) !important;
+        backdrop-filter: blur(30px) !important;
+        -webkit-backdrop-filter: blur(30px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+        padding: 10px 0 !important;
     }
     
     .main-header.scrolled {
-        background: rgba(10, 10, 20, 0.98);
-        padding: 10px 0;
+        background: rgba(10, 10, 20, 0.98) !important;
+        padding: 8px 0 !important;
     }
     
     /* Очищаем все возможные влияния */
@@ -141,18 +146,34 @@ body.brandbook-page .main-header {
     body.about-page .main-header,
     body.portfolio-page .main-header,
     body.brandbook-page .main-header {
-        left: 0;
-        transform: none;
+        left: 0 !important;
+        transform: none !important;
+    }
+    
+    /* Фикс для логотипа на мобильных */
+    .logo-text {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        max-width: 120px !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 
 @media (max-width: 480px) {
     body {
-        padding-top: 65px;
+        padding-top: 56px !important;
     }
     
     .main-header {
-        padding: 12px 0;
+        padding: 8px 0 !important;
+    }
+    
+    .logo-text {
+        font-size: 16px !important;
+        max-width: 100px !important;
     }
 }
 
@@ -188,6 +209,9 @@ body.brandbook-page .main-header {
     gap: 12px;
     transition: var(--transition);
     z-index: 1001;
+    flex: 1;
+    min-width: 120px;
+    max-width: 200px;
 }
 
 .logo:hover {
@@ -208,6 +232,7 @@ body.brandbook-page .main-header {
     transition: var(--transition);
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
 }
 
 .logo-mark:hover {
@@ -219,6 +244,7 @@ body.brandbook-page .main-header {
 .logo-text {
     color: white;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 /* ===== НАВИГАЦИЯ (ДЕСКТОП) ===== */
@@ -365,6 +391,37 @@ body.brandbook-page .main-header {
     background: rgba(255, 255, 255, 0.1);
 }
 
+/* МОБИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА */
+@media (max-width: 900px) {
+    .language-switcher-mobile {
+        min-width: 80px !important;
+        max-width: 80px !important;
+        height: 32px !important;
+    }
+    
+    .language-switcher-mobile .lang-btn {
+        font-size: 12px !important;
+        padding: 4px 8px !important;
+    }
+    
+    .language-switcher-mobile .lang-flag {
+        font-size: 12px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .language-switcher-mobile {
+        min-width: 70px !important;
+        max-width: 70px !important;
+        height: 28px !important;
+    }
+    
+    .language-switcher-mobile .lang-btn {
+        font-size: 11px !important;
+        padding: 3px 6px !important;
+    }
+}
+
 /* ===== КНОПКИ ===== */
 .btn {
     display: inline-flex;
@@ -481,43 +538,56 @@ body.brandbook-page .main-header {
     
     .burger-btn {
         display: block;
-        width: 30px;
-        height: 24px;
+        width: 32px;
+        height: 32px;
         position: relative;
-        background: transparent;
-        border: none;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
         cursor: pointer;
         padding: 0;
         z-index: 1002;
+        transition: var(--transition);
+    }
+    
+    .burger-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
     }
     
     .burger-btn span {
         display: block;
         position: absolute;
-        width: 100%;
+        width: 20px;
         height: 2px;
         background: white;
         border-radius: 2px;
         transition: var(--transition);
-        left: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
     
     .burger-btn span:nth-child(1) {
-        top: 0;
+        top: 10px;
     }
     
     .burger-btn span:nth-child(2) {
         top: 50%;
-        transform: translateY(-50%);
+        transform: translate(-50%, -50%);
     }
     
     .burger-btn span:nth-child(3) {
-        bottom: 0;
+        bottom: 10px;
+    }
+    
+    .burger-btn.active {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
     }
     
     .burger-btn.active span:nth-child(1) {
         top: 50%;
-        transform: translateY(-50%) rotate(45deg);
+        transform: translate(-50%, -50%) rotate(45deg);
     }
     
     .burger-btn.active span:nth-child(2) {
@@ -526,11 +596,7 @@ body.brandbook-page .main-header {
     
     .burger-btn.active span:nth-child(3) {
         bottom: 50%;
-        transform: translateY(50%) rotate(-45deg);
-    }
-    
-    .burger-btn:hover span {
-        background: var(--light-blue);
+        transform: translate(-50%, 50%) rotate(-45deg);
     }
     
     /* Мобильное меню */
@@ -548,15 +614,15 @@ body.brandbook-page .main-header {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        transform: translateY(-100%);
+        transform: translateX(100%);
         opacity: 0;
         visibility: hidden;
-        transition: all 0.5s ease;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         padding: 80px 20px 40px;
     }
     
     .mobile-menu.active {
-        transform: translateY(0);
+        transform: translateX(0);
         opacity: 1;
         visibility: visible;
     }
@@ -573,7 +639,7 @@ body.brandbook-page .main-header {
     .mobile-nav-link {
         color: rgba(255, 255, 255, 0.85);
         text-decoration: none;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 500;
         padding: 12px 24px;
         border-radius: 12px;
@@ -582,6 +648,7 @@ body.brandbook-page .main-header {
         width: 100%;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.1);
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
     }
     
     .mobile-nav-link:hover {
@@ -634,6 +701,7 @@ body.brandbook-page .main-header {
         border-radius: 16px;
         transition: var(--transition);
         min-width: 60px;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
     }
     
     .mobile-lang-btn.active {
@@ -664,6 +732,7 @@ body.brandbook-page .main-header {
         border: 1px solid rgba(255, 255, 255, 0.25);
         box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
         width: 100%;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
     }
     
     .mobile-header-btn:hover {
@@ -1552,5 +1621,55 @@ body::before {
     
     .card {
         background: rgba(255, 255, 255, 0.12);
+    }
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ МОБИЛЬНЫЕ ФИКСЫ ===== */
+@media (max-width: 768px) {
+    /* Фикс для touch устройств */
+    .burger-btn,
+    .lang-btn,
+    .mobile-nav-link,
+    .mobile-lang-btn,
+    .mobile-header-btn {
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+    
+    /* Гарантируем минимальные размеры для touch */
+    .burger-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .lang-btn {
+        min-height: 32px;
+        min-width: 32px;
+    }
+    
+    .mobile-nav-link {
+        min-height: 48px;
+    }
+    
+    /* Фикс для iOS */
+    @supports (-webkit-touch-callout: none) {
+        .main-header {
+            position: -webkit-sticky;
+            position: sticky;
+        }
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 360px) {
+    .logo-text {
+        font-size: 14px !important;
+        max-width: 80px !important;
+    }
+    
+    .language-switcher-mobile {
+        min-width: 65px !important;
+        max-width: 65px !important;
     }
 }
