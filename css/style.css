@@ -108,8 +108,54 @@ body.brandbook-page .main-header {
     margin: 0 auto;
 }
 
+/* ===== МОБИЛЬНАЯ ВЕРСИЯ ХЕДЕРА ===== */
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+    
+    .main-header {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        top: 0;
+        left: 0;
+        transform: none;
+        background: rgba(10, 10, 20, 0.95);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .main-header.scrolled {
+        background: rgba(10, 10, 20, 0.98);
+        padding: 10px 0;
+    }
+    
+    /* Очищаем все возможные влияния */
+    body.home-page .main-header,
+    body.services-page .main-header,
+    body.contacts-page .main-header,
+    body.about-page .main-header,
+    body.portfolio-page .main-header,
+    body.brandbook-page .main-header {
+        left: 0;
+        transform: none;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 65px;
+    }
+    
+    .main-header {
+        padding: 12px 0;
+    }
+}
+
 /* Внутренний контейнер хедера */
-.main-header .header-container {
+.main-header .container {
     padding: 0;
     max-width: 100%;
     width: 100%;
@@ -413,110 +459,26 @@ body.brandbook-page .main-header {
     .mobile-menu,
     .burger-btn,
     .mobile-nav,
-    .language-switcher-mobile,
-    .menu-overlay {
+    .language-switcher-mobile {
         display: none !important;
     }
 }
 
-/* ===== МОБИЛЬНЫЙ ХЕДЕР - КОМПЛЕКСНЫЙ ФИКС ===== */
-
-/* Десктопная навигация скрыта на мобильных */
+/* ===== МОБИЛЬНАЯ НАВИГАЦИЯ ===== */
 @media (max-width: 900px) {
-    .desktop-nav,
+    .main-nav,
     .header-right-desktop {
         display: none !important;
     }
     
     .header-right-mobile {
-        display: flex !important;
-        align-items: center;
-        gap: 12px;
-    }
-}
-
-/* Основные мобильные стили */
-@media (max-width: 768px) {
-    /* ФИКС 1: Хедер занимает всю ширину */
-    .main-header {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        margin: 0 !important;
-        padding: 8px 0 !important;
-        background: rgba(10, 10, 20, 0.95) !important;
-        backdrop-filter: blur(30px) !important;
-        -webkit-backdrop-filter: blur(30px) !important;
-        border: none !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-        z-index: 1000 !important;
-    }
-    
-    .main-header.scrolled {
-        background: rgba(10, 10, 20, 0.98) !important;
-        padding: 6px 0 !important;
-    }
-    
-    /* ФИКС 2: Корректируем отступ body */
-    body {
-        padding-top: 70px !important;
-    }
-    
-    /* ФИКС 3: Убираем все эффекты трансформации */
-    body.home-page .main-header,
-    body.services-page .main-header,
-    body.contacts-page .main-header,
-    body.about-page .main-header,
-    body.portfolio-page .main-header,
-    body.brandbook-page .main-header {
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        margin: 0 !important;
-    }
-    
-    /* ФИКС 4: Контейнер хедера */
-    .header-container {
-        padding: 0 15px !important;
-        max-width: 100% !important;
-    }
-    
-    .header-inner {
-        padding: 0 !important;
-        min-height: 50px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        gap: 15px;
     }
     
-    /* ФИКС 5: Компактный логотип */
-    .logo {
-        gap: 8px;
-        min-width: auto;
-    }
-    
-    .logo-mark {
-        width: 38px !important;
-        height: 38px !important;
-        font-size: 15px !important;
-        min-width: 38px;
-        min-height: 38px;
-        flex-shrink: 0;
-    }
-    
-    .logo-text {
-        font-size: 17px !important;
-        white-space: nowrap;
-    }
-    
-    /* ФИКС 6: Бургер-меню */
     .burger-btn {
-        display: block !important;
+        display: block;
         width: 30px;
         height: 24px;
         position: relative;
@@ -525,7 +487,6 @@ body.brandbook-page .main-header {
         cursor: pointer;
         padding: 0;
         z-index: 1002;
-        margin-left: 5px;
     }
     
     .burger-btn span {
@@ -535,7 +496,7 @@ body.brandbook-page .main-header {
         height: 2px;
         background: white;
         border-radius: 2px;
-        transition: all 0.3s ease;
+        transition: var(--transition);
         left: 0;
     }
     
@@ -570,7 +531,7 @@ body.brandbook-page .main-header {
         background: var(--light-blue);
     }
     
-    /* ФИКС 7: Мобильное меню */
+    /* Мобильное меню */
     .mobile-menu {
         position: fixed;
         top: 0;
@@ -588,7 +549,7 @@ body.brandbook-page .main-header {
         transform: translateY(-100%);
         opacity: 0;
         visibility: hidden;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.5s ease;
         padding: 80px 20px 40px;
     }
     
@@ -601,29 +562,27 @@ body.brandbook-page .main-header {
     .mobile-nav {
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 20px;
         align-items: center;
         width: 100%;
         max-width: 400px;
-        margin-bottom: 30px;
     }
     
     .mobile-nav-link {
         color: rgba(255, 255, 255, 0.85);
         text-decoration: none;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 500;
-        padding: 14px 28px;
+        padding: 12px 24px;
         border-radius: 12px;
-        transition: all 0.3s ease;
+        transition: var(--transition);
         text-align: center;
         width: 100%;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    .mobile-nav-link:hover,
-    .mobile-nav-link.active {
+    .mobile-nav-link:hover {
         color: white;
         background: rgba(255, 255, 255, 0.12);
         transform: translateY(-2px);
@@ -631,16 +590,17 @@ body.brandbook-page .main-header {
     }
     
     .mobile-nav-link.active {
+        color: white;
         font-weight: 600;
         background: rgba(255, 255, 255, 0.15);
         border-color: rgba(255, 255, 255, 0.25);
     }
     
     .mobile-menu-footer {
-        margin-top: 30px;
+        margin-top: 40px;
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 20px;
         align-items: center;
         width: 100%;
         max-width: 400px;
@@ -648,10 +608,10 @@ body.brandbook-page .main-header {
     
     .mobile-language-switcher {
         display: flex;
-        gap: 8px;
+        gap: 10px;
         background: rgba(255, 255, 255, 0.08);
         border-radius: 20px;
-        padding: 4px;
+        padding: 5px;
         border: 1px solid rgba(255, 255, 255, 0.12);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
@@ -666,11 +626,11 @@ body.brandbook-page .main-header {
         background: none;
         border: none;
         color: rgba(255, 255, 255, 0.85);
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 500;
         cursor: pointer;
         border-radius: 16px;
-        transition: all 0.3s ease;
+        transition: var(--transition);
         min-width: 60px;
     }
     
@@ -697,7 +657,7 @@ body.brandbook-page .main-header {
         font-size: 16px;
         text-decoration: none;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: var(--transition);
         gap: 8px;
         border: 1px solid rgba(255, 255, 255, 0.25);
         box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
@@ -707,136 +667,6 @@ body.brandbook-page .main-header {
     .mobile-header-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25);
-    }
-    
-    /* ФИКС 8: Overlay для меню */
-    .menu-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        z-index: 998;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-    }
-    
-    .menu-overlay.active {
-        opacity: 1;
-        visibility: visible;
-    }
-    
-    /* ФИКС 9: Мобильный переключатель языка в хедере */
-    .language-switcher-mobile {
-        display: flex;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        padding: 3px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        width: 100px;
-        height: 36px;
-        overflow: hidden;
-    }
-    
-    /* ФИКС 10: Кнопки в хедере */
-    .header-btn {
-        display: none !important;
-    }
-}
-
-/* Адаптация для очень маленьких экранов */
-@media (max-width: 480px) {
-    .main-header {
-        padding: 6px 0 !important;
-    }
-    
-    body {
-        padding-top: 65px !important;
-    }
-    
-    .logo-mark {
-        width: 36px !important;
-        height: 36px !important;
-        font-size: 14px !important;
-    }
-    
-    .logo-text {
-        font-size: 16px !important;
-    }
-    
-    .header-container {
-        padding: 0 12px !important;
-    }
-    
-    .header-right-mobile {
-        gap: 8px;
-    }
-    
-    .burger-btn {
-        width: 28px;
-        height: 22px;
-    }
-    
-    .language-switcher-mobile {
-        width: 90px;
-        height: 34px;
-    }
-    
-    .lang-btn {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-    
-    .mobile-nav-link {
-        font-size: 16px;
-        padding: 12px 24px;
-    }
-    
-    .mobile-header-btn {
-        padding: 12px 24px;
-        font-size: 15px;
-    }
-}
-
-/* Фикс для планшетов */
-@media (min-width: 769px) and (max-width: 900px) {
-    .main-header {
-        width: calc(100% - 40px) !important;
-        max-width: 1400px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        border-radius: 20px !important;
-        top: 20px !important;
-        background: rgba(255, 255, 255, 0.08) !important;
-        backdrop-filter: blur(30px) saturate(180%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    .main-header.scrolled {
-        background: rgba(255, 255, 255, 0.12) !important;
-    }
-    
-    body {
-        padding-top: 100px !important;
-    }
-    
-    .desktop-nav {
-        display: none !important;
-    }
-    
-    .header-right-desktop {
-        display: none !important;
-    }
-    
-    .header-right-mobile {
-        display: flex !important;
     }
 }
 
@@ -1618,8 +1448,7 @@ li {
     .main-footer,
     .btn,
     .burger-btn,
-    .mobile-menu,
-    .menu-overlay {
+    .mobile-menu {
         display: none !important;
     }
     
@@ -1662,53 +1491,5 @@ li {
     
     .card {
         background: rgba(255, 255, 255, 0.12);
-    }
-}
-
-/* Фолбэк для браузеров без backdrop-filter */
-@supports not (backdrop-filter: blur(20px)) {
-    @media (max-width: 768px) {
-        .main-header {
-            background: rgba(10, 10, 20, 0.95) !important;
-        }
-        
-        .mobile-menu {
-            background: rgba(10, 10, 20, 0.98) !important;
-        }
-        
-        .language-switcher-mobile {
-            background: rgba(255, 255, 255, 0.12) !important;
-        }
-        
-        .mobile-language-switcher {
-            background: rgba(255, 255, 255, 0.12) !important;
-        }
-    }
-}
-
-/* Отключение анимаций для пользователей с prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-    .main-header,
-    .mobile-menu,
-    .menu-overlay,
-    .burger-btn span,
-    .mobile-nav-link,
-    .mobile-header-btn {
-        transition: none !important;
-        animation: none !important;
-    }
-    
-    .mobile-menu.active {
-        transform: translateY(0) !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-    
-    .burger-btn.active span:nth-child(1) {
-        transform: translateY(-50%) rotate(45deg) !important;
-    }
-    
-    .burger-btn.active span:nth-child(3) {
-        transform: translateY(50%) rotate(-45deg) !important;
     }
 }
