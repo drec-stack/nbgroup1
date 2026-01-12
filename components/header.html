@@ -141,37 +141,56 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* ===== DESKTOP LANGUAGE SWITCHER ===== */
+        /* ===== ДЕСКТОПНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
         .language-switcher {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             width: 100px;
             height: 36px;
             overflow: hidden;
             flex-shrink: 0;
         }
 
-        /* ===== МОБИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
+        /* ===== МОБИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА - ШИРЕ ===== */
         .language-switcher-mobile {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            width: 85px;
-            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            width: 110px; /* ШИРЕ */
+            height: 36px;
             overflow: hidden;
             flex-shrink: 0;
             margin-right: 10px;
+            position: relative;
+        }
+
+        /* Слайдер для мобильного переключателя */
+        .mobile-lang-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .language-switcher-mobile[data-current-lang="en"] .mobile-lang-slider {
+            transform: translateX(100%);
         }
 
         .lang-btn {
@@ -186,17 +205,19 @@
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            border-radius: 16px;
+            border-radius: 20px;
             transition: all 0.3s ease;
             flex: 1;
             outline: none;
             min-width: 0;
+            position: relative;
+            z-index: 2;
         }
 
         .language-switcher-mobile .lang-btn {
-            padding: 4px 8px;
-            font-size: 12px;
-            gap: 4px;
+            padding: 6px 10px;
+            font-size: 13px;
+            gap: 6px;
         }
 
         .lang-btn:hover {
@@ -206,7 +227,6 @@
         .lang-btn.active {
             color: white;
             font-weight: 600;
-            background: rgba(255, 255, 255, 0.25);
         }
 
         .lang-flag {
@@ -216,7 +236,7 @@
         }
 
         .language-switcher-mobile .lang-flag {
-            font-size: 12px;
+            font-size: 14px;
         }
 
         .lang-text {
@@ -263,7 +283,7 @@
             gap: 10px;
             flex-shrink: 0;
             justify-content: flex-end;
-            min-width: 120px;
+            min-width: 140px; /* Увеличен для широкого переключателя */
         }
 
         /* ===== BURGER MENU ===== */
@@ -408,12 +428,30 @@
         .mobile-language-switcher {
             display: flex;
             gap: 10px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
             padding: 5px;
             border: 1px solid rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
+            width: 120px;
+            position: relative;
+        }
+
+        .mobile-lang-slider-menu {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(50% - 5px);
+            height: calc(100% - 10px);
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .mobile-language-switcher[data-current-lang="en"] .mobile-lang-slider-menu {
+            transform: translateX(100%);
         }
 
         .mobile-lang-btn {
@@ -428,13 +466,16 @@
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            border-radius: 16px;
+            border-radius: 20px;
             transition: all 0.3s ease;
+            flex: 1;
+            position: relative;
+            z-index: 2;
         }
 
         .mobile-lang-btn.active {
             color: white;
-            background: rgba(255, 255, 255, 0.25);
+            font-weight: 600;
         }
 
         .mobile-header-btn {
@@ -479,6 +520,23 @@
             .header-inner {
                 gap: 10px;
             }
+            
+            /* Мобильный переключатель языка - шире */
+            .language-switcher-mobile {
+                width: 115px;
+                height: 34px;
+                margin-right: 12px;
+            }
+            
+            .language-switcher-mobile .lang-btn {
+                padding: 5px 10px;
+                font-size: 13px;
+                gap: 5px;
+            }
+            
+            .language-switcher-mobile .lang-flag {
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -521,16 +579,21 @@
                 display: block !important;
             }
             
+            /* Мобильный переключатель языка - шире */
             .language-switcher-mobile {
-                width: 80px;
-                height: 30px;
-                margin-right: 8px;
+                width: 110px;
+                height: 32px;
+                margin-right: 10px;
             }
             
             .language-switcher-mobile .lang-btn {
-                padding: 3px 6px;
-                font-size: 11px;
-                gap: 3px;
+                padding: 4px 10px;
+                font-size: 12px;
+                gap: 4px;
+            }
+            
+            .language-switcher-mobile .lang-flag {
+                font-size: 13px;
             }
             
             .burger-btn {
@@ -583,23 +646,24 @@
             
             .header-right-mobile {
                 gap: 6px;
-                min-width: 100px;
+                min-width: 130px; /* Увеличен для широкого переключателя */
             }
             
+            /* Мобильный переключатель языка - шире */
             .language-switcher-mobile {
-                width: 75px;
-                height: 28px;
-                margin-right: 6px;
+                width: 105px;
+                height: 30px;
+                margin-right: 8px;
             }
             
             .language-switcher-mobile .lang-btn {
-                padding: 2px 4px;
-                font-size: 10px;
-                gap: 2px;
+                padding: 4px 8px;
+                font-size: 11px;
+                gap: 4px;
             }
             
             .language-switcher-mobile .lang-flag {
-                font-size: 11px;
+                font-size: 12px;
             }
             
             .burger-btn {
@@ -638,12 +702,21 @@
                 font-size: 15px;
             }
             
+            /* Мобильный переключатель языка - шире даже на очень маленьких экранах */
             .language-switcher-mobile {
-                width: 70px;
+                width: 100px;
+                height: 28px;
+                margin-right: 6px;
             }
             
             .language-switcher-mobile .lang-btn {
-                font-size: 9px;
+                padding: 3px 7px;
+                font-size: 10px;
+                gap: 3px;
+            }
+            
+            .language-switcher-mobile .lang-flag {
+                font-size: 11px;
             }
             
             .burger-btn {
@@ -718,6 +791,7 @@
                 <!-- Мобильная версия (справа) -->
                 <div class="header-right-mobile">
                     <div class="language-switcher-mobile" data-current-lang="ru">
+                        <div class="mobile-lang-slider"></div>
                         <button class="lang-btn" data-lang="ru">
                             <span class="lang-flag">🇷🇺</span>
                             <span class="lang-text">RU</span>
@@ -749,7 +823,8 @@
             </nav>
             
             <div class="mobile-menu-footer">
-                <div class="mobile-language-switcher">
+                <div class="mobile-language-switcher" data-current-lang="ru">
+                    <div class="mobile-lang-slider-menu"></div>
                     <button class="mobile-lang-btn" data-lang="ru">
                         <span class="lang-flag">🇷🇺</span>
                         <span class="lang-text">RU</span>
