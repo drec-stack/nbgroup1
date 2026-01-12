@@ -50,6 +50,7 @@
             align-items: center;
             width: 100%;
             position: relative;
+            gap: 15px;
         }
 
         /* ===== ЛОГОТИП ===== */
@@ -62,6 +63,8 @@
             z-index: 1001;
             flex-shrink: 0;
             min-width: 120px;
+            flex: 1;
+            max-width: 200px;
         }
 
         .logo:hover {
@@ -90,6 +93,7 @@
             font-size: 20px;
             letter-spacing: -0.5px;
             white-space: nowrap;
+            display: block !important;
         }
 
         /* ===== DESKTOP NAVIGATION ===== */
@@ -163,7 +167,7 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            width: 80px;
+            width: 85px;
             height: 32px;
             overflow: hidden;
             flex-shrink: 0;
@@ -258,6 +262,8 @@
             align-items: center;
             gap: 10px;
             flex-shrink: 0;
+            justify-content: flex-end;
+            min-width: 120px;
         }
 
         /* ===== BURGER MENU ===== */
@@ -357,7 +363,7 @@
         .mobile-nav {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
             width: 100%;
             max-width: 400px;
@@ -366,7 +372,7 @@
         .mobile-nav-link {
             color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 500;
             padding: 12px 24px;
             border-radius: 12px;
@@ -469,22 +475,35 @@
             .burger-btn {
                 display: block;
             }
+            
+            .header-inner {
+                gap: 10px;
+            }
         }
 
         @media (max-width: 768px) {
             .main-header {
-                width: calc(100% - 30px);
-                top: 15px;
-                padding: 12px 0;
+                width: 100%;
+                top: 0;
+                left: 0;
+                transform: none;
+                border-radius: 0;
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .main-header.scrolled {
+                padding: 8px 0;
             }
 
             .header-container {
-                padding: 0 20px;
+                padding: 0 15px;
             }
 
             .logo {
-                gap: 10px;
-                min-width: 100px;
+                gap: 8px;
+                min-width: 0;
+                flex: 1;
             }
             
             .logo-mark {
@@ -498,13 +517,20 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-width: 120px;
+                max-width: 140px;
+                display: block !important;
             }
             
             .language-switcher-mobile {
-                width: 75px;
+                width: 80px;
                 height: 30px;
                 margin-right: 8px;
+            }
+            
+            .language-switcher-mobile .lang-btn {
+                padding: 3px 6px;
+                font-size: 11px;
+                gap: 3px;
             }
             
             .burger-btn {
@@ -514,27 +540,34 @@
             
             .burger-btn span {
                 width: 18px;
+                height: 2px;
+            }
+            
+            .burger-btn span:nth-child(1) {
+                top: 9px;
+            }
+            
+            .burger-btn span:nth-child(3) {
+                bottom: 9px;
             }
         }
 
         @media (max-width: 480px) {
             .main-header {
-                width: calc(100% - 20px);
-                top: 10px;
-                padding: 10px 0;
+                padding: 8px 0;
             }
 
             .header-container {
-                padding: 0 15px;
+                padding: 0 12px;
             }
             
             .header-inner {
-                gap: 8px;
+                gap: 6px;
             }
             
             .logo {
-                gap: 8px;
-                min-width: 90px;
+                gap: 6px;
+                min-width: 0;
             }
             
             .logo-mark {
@@ -545,23 +578,24 @@
             
             .logo-text {
                 font-size: 16px;
-                max-width: 100px;
+                max-width: 110px;
             }
             
             .header-right-mobile {
                 gap: 6px;
+                min-width: 100px;
             }
             
             .language-switcher-mobile {
-                width: 70px;
+                width: 75px;
                 height: 28px;
                 margin-right: 6px;
             }
             
             .language-switcher-mobile .lang-btn {
-                padding: 3px 6px;
-                font-size: 11px;
-                gap: 3px;
+                padding: 2px 4px;
+                font-size: 10px;
+                gap: 2px;
             }
             
             .language-switcher-mobile .lang-flag {
@@ -579,37 +613,42 @@
             }
             
             .burger-btn span:nth-child(1) {
-                top: 9px;
+                top: 8px;
             }
             
             .burger-btn span:nth-child(3) {
-                bottom: 9px;
+                bottom: 8px;
             }
             
             /* Мобильное меню для маленьких экранов */
             .mobile-nav-link {
-                font-size: 18px;
-                padding: 10px 20px;
+                font-size: 16px;
+                padding: 10px 16px;
             }
             
             .mobile-header-btn {
-                padding: 12px 24px;
-                font-size: 15px;
+                padding: 12px 20px;
+                font-size: 14px;
             }
         }
 
         @media (max-width: 360px) {
             .logo-text {
-                max-width: 80px;
+                max-width: 90px;
                 font-size: 15px;
             }
             
             .language-switcher-mobile {
-                width: 65px;
+                width: 70px;
             }
             
             .language-switcher-mobile .lang-btn {
-                font-size: 10px;
+                font-size: 9px;
+            }
+            
+            .burger-btn {
+                width: 26px;
+                height: 26px;
             }
         }
 
@@ -626,6 +665,14 @@
             
             .mobile-menu {
                 background: rgba(10, 10, 20, 0.98);
+            }
+        }
+        
+        /* Фикс для iOS */
+        @supports (-webkit-touch-callout: none) {
+            .burger-btn,
+            .lang-btn {
+                cursor: pointer;
             }
         }
     </style>
