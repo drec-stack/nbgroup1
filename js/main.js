@@ -159,6 +159,28 @@ class DaehaaApp {
                 slider.style.transform = lang === 'en' ? 'translateX(100%)' : 'translateX(0)';
             }
         });
+        
+        // Обновляем размеры для компактной версии
+        this.updateCompactLanguageSwitcher(lang);
+    }
+
+    updateCompactLanguageSwitcher(lang) {
+        // Убедимся что размеры остаются компактными
+        const languageSwitchers = document.querySelectorAll('.language-switcher');
+        languageSwitchers.forEach(switcher => {
+            switcher.style.minWidth = '100px';
+            switcher.style.height = '40px';
+            
+            const flags = switcher.querySelectorAll('.lang-flag');
+            flags.forEach(flag => {
+                flag.style.fontSize = '18px';
+            });
+            
+            const texts = switcher.querySelectorAll('.lang-text');
+            texts.forEach(text => {
+                text.style.fontSize = '14px';
+            });
+        });
     }
 
     setupResponsiveLanguageSwitcher() {
@@ -176,6 +198,17 @@ class DaehaaApp {
                         textElement.style.display = 'inline-block';
                     }
                 });
+                
+                // Обновляем размеры для мобильной версии
+                if (isMobile) {
+                    switcher.style.minWidth = '85px';
+                    switcher.style.height = '36px';
+                    
+                    const flags = switcher.querySelectorAll('.lang-flag');
+                    flags.forEach(flag => {
+                        flag.style.fontSize = '18px';
+                    });
+                }
             });
         };
         
@@ -472,6 +505,41 @@ window.toggleLanguage = function() {
         window.updateLanguageSwitcher(newLang);
         location.reload();
     }
+};
+
+// Компактный переключатель языка - глобальная функция
+window.updateCompactLanguageSwitcher = function() {
+    const languageSwitchers = document.querySelectorAll('.language-switcher');
+    languageSwitchers.forEach(switcher => {
+        switcher.style.minWidth = '100px';
+        switcher.style.height = '40px';
+        switcher.style.padding = '3px';
+        
+        const slider = switcher.querySelector('.lang-slider');
+        if (slider) {
+            slider.style.top = '3px';
+            slider.style.left = '3px';
+            slider.style.width = 'calc(50% - 3px)';
+            slider.style.height = 'calc(100% - 6px)';
+        }
+        
+        const buttons = switcher.querySelectorAll('.lang-btn');
+        buttons.forEach(btn => {
+            btn.style.fontSize = '14px';
+            btn.style.height = '34px';
+            btn.style.padding = '0 16px';
+        });
+        
+        const texts = switcher.querySelectorAll('.lang-text');
+        texts.forEach(text => {
+            text.style.fontSize = '14px';
+        });
+        
+        const flags = switcher.querySelectorAll('.lang-flag');
+        flags.forEach(flag => {
+            flag.style.fontSize = '18px';
+        });
+    });
 };
 
 console.log('✅ main.js loaded - ready!');
