@@ -1,6 +1,3 @@
-/* ===== ABOUT PAGE STYLES - CLEAN VERSION WITHOUT HEADER FIXES ===== */
-/* Header styles are now ONLY in header.html component */
-
 /* CSS Variables from main theme */
 :root {
     --primary: #0a0c12;
@@ -1770,4 +1767,89 @@ html {
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--accent) var(--primary);
+}
+
+/* ===== КРИТИЧЕСКИЙ ФИКС ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА НА СТРАНИЦЕ ABOUT ===== */
+body.about-page .lang-text {
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-weight: 700;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+body.about-page .lang-btn.active .lang-text {
+    color: white;
+}
+
+body.about-page .language-switcher.mobile-only-flags .lang-text {
+    display: inline-block !important;
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+    body.about-page .language-switcher.mobile-only-flags .lang-text {
+        display: none !important;
+    }
+    
+    body.about-page .language-switcher.mobile-only-flags .lang-btn {
+        padding: 0 15px;
+        gap: 0;
+    }
+    
+    body.about-page .language-switcher.mobile-only-flags .lang-flag {
+        font-size: 22px;
+    }
+}
+
+/* Переопределяем любые анимации для переключателя языка */
+body.about-page [data-i18n],
+body.about-page .lang-btn,
+body.about-page .lang-text,
+body.about-page .lang-flag {
+    opacity: 1 !important;
+    animation: none !important;
+    transition: none !important;
+    visibility: visible !important;
+}
+
+/* Гарантируем отображение текста переключателя */
+body.about-page .language-switcher {
+    min-width: 120px;
+}
+
+body.about-page .language-switcher .lang-btn {
+    padding: 0 20px;
+    gap: 8px;
+}
+
+/* Фикс для мобильного меню */
+body.about-page .mobile-language-switcher .lang-text {
+    display: inline-block !important;
+    opacity: 1 !important;
+}
+
+/* Убираем возможные переопределения из animations.css */
+body.about-page .lang-text {
+    text-shadow: none !important;
+    background: none !important;
+    -webkit-text-fill-color: unset !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+}
+
+/* Дополнительный фикс для мобильного переключателя */
+@media (max-width: 768px) {
+    body.about-page .header-right-mobile .language-switcher {
+        min-width: 90px;
+    }
+    
+    body.about-page .header-right-mobile .language-switcher.mobile-only-flags .lang-text {
+        display: none !important;
+    }
+    
+    body.about-page .header-right-mobile .language-switcher .lang-flag {
+        font-size: 20px;
+    }
 }
