@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded - CLEAN VERSION - ULTRA FIXED');
+console.log('🚀 main.js loaded - CLEAN VERSION WITH MOBILE MENU SUPPORT');
 
 class DaehaaApp {
     constructor() {
@@ -18,9 +18,6 @@ class DaehaaApp {
         
         console.log(`📄 Page type: ${this.isServicesPage ? 'Services' : this.isAboutPage ? 'About' : this.isHomePage ? 'Home' : 'Other'}`);
         
-        // НЕ ИЩЕМ .mobile-menu здесь! Он еще не загружен!
-        // Переносим в init()
-        
         // Инициализируем после загрузки DOM
         if (document.readyState === 'loading') {
             console.log('⏳ DOM loading, waiting...');
@@ -37,14 +34,11 @@ class DaehaaApp {
     init() {
         console.log('🚀 Daehaa App initializing...');
         
-        // Только теперь ищем .mobile-menu после загрузки DOM
-        this.mobileMenuBtn = document.querySelector('.mobile-menu');
-        if (this.mobileMenuBtn) {
-            console.log('✅ Found .mobile-menu element');
-            this.mobileMenuBtn.classList.add('daehaa-enhanced');
-        } else {
-            console.warn('⚠️ .mobile-menu element not found - skipping enhancement');
-        }
+        // НЕ ИЩЕМ .mobile-menu здесь - он загружается отдельным компонентом
+        // Проверяем только после загрузки компонентов
+        setTimeout(() => {
+            this.checkMobileMenuLoaded();
+        }, 1000);
         
         // Базовые функции
         this.setupSmoothScroll();
@@ -62,6 +56,44 @@ class DaehaaApp {
         this.setupFooterSupport();
         
         console.log('✅ Daehaa application initialized');
+    }
+
+    // Проверка загрузки мобильного меню
+    checkMobileMenuLoaded() {
+        const mobileMenu = document.querySelector('#mobile-menu');
+        const burgerBtn = document.querySelector('#burger-btn');
+        
+        console.log('📱 Checking mobile menu components:');
+        console.log('  - #mobile-menu:', mobileMenu ? '✅ Found' : '❌ Not found');
+        console.log('  - #burger-btn:', burgerBtn ? '✅ Found' : '❌ Not found');
+        
+        if (mobileMenu && burgerBtn) {
+            console.log('✅ Mobile menu system is ready');
+            
+            // Добавляем обработчик для тестирования
+            burgerBtn.addEventListener('click', function() {
+                console.log('🍔 Burger button clicked!');
+                console.log('📱 Mobile menu state:', mobileMenu.classList.contains('active') ? 'OPEN' : 'CLOSED');
+            });
+        } else {
+            console.warn('⚠️ Mobile menu components not fully loaded');
+            
+            // Пробуем найти альтернативными способами
+            setTimeout(() => {
+                const mobileMenuAlt = document.querySelector('.mobile-menu');
+                const burgerBtnAlt = document.querySelector('.burger-btn');
+                
+                if (mobileMenuAlt && !mobileMenu) {
+                    console.log('✅ Found .mobile-menu (by class), adding ID');
+                    mobileMenuAlt.id = 'mobile-menu';
+                }
+                
+                if (burgerBtnAlt && !burgerBtn) {
+                    console.log('✅ Found .burger-btn (by class), adding ID');
+                    burgerBtnAlt.id = 'burger-btn';
+                }
+            }, 500);
+        }
     }
 
     // Безопасные методы для работы с DOM
@@ -596,6 +628,57 @@ window.updateCompactLanguageSwitcher = function() {
             if (flag) flag.style.fontSize = '18px';
         });
     });
+};
+
+// Функция для управления мобильным меню
+window.toggleMobileMenu = function() {
+    if (window.mobileMenuController) {
+        window.mobileMenuController.toggle();
+        return true;
+    }
+    
+    // Fallback: прямой доступ к элементам
+    const mobileMenu = document.querySelector('#mobile-menu');
+    const burgerBtn = document.querySelector('#burger-btn');
+    
+    if (mobileMenu && burgerBtn) {
+        const isOpen = mobileMenu.classList.contains('active');
+        
+        if (isOpen) {
+            mobileMenu.classList.remove('active');
+            burgerBtn.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            mobileMenu.classList.add('active');
+            burgerBtn.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        return true;
+    }
+    
+    console.error('❌ Mobile menu elements not found');
+    return false;
+};
+
+// Проверка мобильного меню
+window.checkMobileMenu = function() {
+    console.log('📱 Checking mobile menu...');
+    
+    const elements = {
+        '#mobile-menu': document.querySelector('#mobile-menu'),
+        '.mobile-menu': document.querySelector('.mobile-menu'),
+        '#burger-btn': document.querySelector('#burger-btn'),
+        '.burger-btn': document.querySelector('.burger-btn')
+    };
+    
+    console.log('📱 Elements:', elements);
+    
+    if (window.mobileMenuController) {
+        console.log('📱 mobileMenuController:', window.mobileMenuController);
+    }
+    
+    return elements;
 };
 
 console.log('✅ main.js loaded - ready!');
