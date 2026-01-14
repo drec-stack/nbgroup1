@@ -1,4 +1,4 @@
-console.log('🔧 components.js loaded - simplified version (HTML only)');
+console.log('🔧 components.js loaded - with mobile menu support');
 
 class ComponentLoader {
     constructor() {
@@ -12,6 +12,11 @@ class ComponentLoader {
                 url: 'components/footer.html',
                 containerId: 'footer-container',
                 name: 'Footer'
+            },
+            'mobile-menu': {
+                url: 'components/mobile-menu.html',
+                containerId: 'mobile-menu-container',
+                name: 'Mobile Menu'
             }
         };
         
@@ -23,7 +28,7 @@ class ComponentLoader {
         this.loadingPromise = null;
         this.initialLoadCompleted = false;
         
-        console.log('✅ components.js ready - will load HTML only, no initialization');
+        console.log('✅ components.js ready - will load header, footer and mobile menu');
         
         // Автоматически запускаем загрузку при создании
         this.autoStart();
@@ -55,7 +60,7 @@ class ComponentLoader {
     }
     
     /**
-     * Загружает все компоненты (ТОЛЬКО HTML)
+     * Загружает все компоненты
      * Возвращает Promise для синхронизации
      */
     async loadAll() {
@@ -87,6 +92,9 @@ class ComponentLoader {
         // Создаем новый промис
         this.loadingPromise = new Promise(async (resolve, reject) => {
             try {
+                // Создаем контейнер для мобильного меню если его нет
+                this.createMobileMenuContainer();
+                
                 // Проверяем наличие контейнеров
                 const hasContainers = this.checkContainers();
                 if (!hasContainers) {
@@ -114,10 +122,11 @@ class ComponentLoader {
                 // Загружаем компоненты последовательно
                 await this.loadComponent('header');
                 await this.loadComponent('footer');
+                await this.loadComponent('mobile-menu');
                 
                 this.initialized = true;
                 this.initialLoadCompleted = true;
-                console.log('✅ Все компоненты загружены (без повторной инициализации)');
+                console.log('✅ Все компоненты загружены');
                 
                 // Устанавливаем класс loaded для body
                 if (document.body) {
@@ -173,6 +182,27 @@ class ComponentLoader {
     }
     
     /**
+     * Создает контейнер для мобильного меню
+     */
+    createMobileMenuContainer() {
+        let container = document.getElementById('mobile-menu-container');
+        
+        if (!container) {
+            console.log('➕ Создаю контейнер для мобильного меню');
+            container = document.createElement('div');
+            container.id = 'mobile-menu-container';
+            container.className = 'mobile-menu-container';
+            
+            // Добавляем в конец body
+            if (document.body) {
+                document.body.appendChild(container);
+            }
+            
+            console.log('✅ Контейнер mobile-menu-container создан');
+        }
+    }
+    
+    /**
      * Проверяет наличие контейнеров
      */
     checkContainers() {
@@ -191,8 +221,13 @@ class ComponentLoader {
                     console.log(`📦 Контейнер ${component.containerId} найден`);
                 }
             } else {
-                console.warn(`⚠️ Контейнер ${component.containerId} не найден`);
-                allFound = false;
+                // Для мобильного меню создаем контейнер, не считаем ошибкой
+                if (componentName === 'mobile-menu') {
+                    this.createMobileMenuContainer();
+                } else {
+                    console.warn(`⚠️ Контейнер ${component.containerId} не найден`);
+                    allFound = false;
+                }
             }
         }
         
@@ -207,6 +242,13 @@ class ComponentLoader {
         
         for (const componentName in this.components) {
             const component = this.components[componentName];
+            
+            // Для мобильного меню создаем отдельно
+            if (componentName === 'mobile-menu') {
+                this.createMobileMenuContainer();
+                continue;
+            }
+            
             let container = document.getElementById(component.containerId);
             
             if (!container) {
@@ -255,7 +297,7 @@ class ComponentLoader {
             throw new Error(`Компонент ${componentName} не найден`);
         }
         
-        console.log(`📥 Загрузка ${component.name} (HTML only)...`);
+        console.log(`📥 Загрузка ${component.name}...`);
         
         try {
             // Добавляем timestamp для избежания кэширования проблем
@@ -297,7 +339,7 @@ class ComponentLoader {
                 container.insertAdjacentHTML('beforeend', html);
                 
                 this.loadedComponents.add(componentName);
-                console.log(`✅ ${component.name} загружен (HTML inserted)`);
+                console.log(`✅ ${component.name} загружен`);
                 
                 // Маркируем контейнер как загруженный
                 container.classList.add('component-loaded');
@@ -322,9 +364,9 @@ class ComponentLoader {
         } catch (error) {
             console.error(`❌ Ошибка загрузки ${componentName}:`, error);
             
-            // Если это хедер, критическая ошибка
-            if (componentName === 'header') {
-                throw new Error(`CRITICAL: Не удалось загрузить header: ${error.message}`);
+            // Если это хедер или мобильное меню, критическая ошибка
+            if (componentName === 'header' || componentName === 'mobile-menu') {
+                throw new Error(`CRITICAL: Не удалось загрузить ${componentName}: ${error.message}`);
             }
             
             throw error;
@@ -357,12 +399,15 @@ class ComponentLoader {
                                   container.querySelector('[data-header]') ||
                                   container.querySelector('nav');
                     console.log(`    - Найден header: ${!!header}`);
-                    if (header) {
-                        console.log(`    - Позиция: ${header.style.position || 'not set'}`);
-                        console.log(`    - Top: ${header.style.top || 'not set'}`);
-                        console.log(`    - Left: ${header.style.left || 'not set'}`);
-                        console.log(`    - Классы header: ${header.className}`);
-                    }
+                }
+                
+                if (componentName === 'mobile-menu') {
+                    const mobileMenu = container.querySelector('.mobile-menu') || 
+                                      container.querySelector('#mobile-menu');
+                    const burgerBtn = container.querySelector('.burger-btn') || 
+                                     container.querySelector('#burger-btn');
+                    console.log(`    - Найден mobile-menu: ${!!mobileMenu}`);
+                    console.log(`    - Найден burger-btn: ${!!burgerBtn}`);
                 }
             } else {
                 console.log(`  ${component.name}: Контейнер не найден!`);
@@ -524,7 +569,10 @@ if (typeof window !== 'undefined') {
         
         // Проверяем, все ли компоненты загружены
         const status = window.componentLoader.getStatus();
-        if (!status.initialized || !status.loadedComponents.includes('header') || !status.loadedComponents.includes('footer')) {
+        if (!status.initialized || 
+            !status.loadedComponents.includes('header') || 
+            !status.loadedComponents.includes('footer') ||
+            !status.loadedComponents.includes('mobile-menu')) {
             console.log('⚠️ Компоненты не были загружены, пытаемся сейчас...');
             setTimeout(() => {
                 window.componentLoader.loadAll().catch(error => {
