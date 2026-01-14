@@ -3,9 +3,9 @@
     "home": "Home",
     "services": "Services",
     "portfolio": "Portfolio",
-    "brandbook": "Brandbook",
     "about": "About",
     "contact": "Contact",
+    "brandbook": "Brandbook",
     "startProject": "Start Project",
     "brand": "NB Group"
   },
@@ -14,20 +14,20 @@
     "subtitle": "From concept to production - we create products that shape the future",
     "parallax": {
       "section1": {
-        "title": "We Design Innovation",
-        "description": "Creating products that redefine markets and user experiences through cutting-edge industrial design and engineering."
+        "title": "We Create Innovation",
+        "description": "Creating products that redefine markets and user experiences through advanced industrial design and engineering."
       },
       "section2": {
         "title": "Engineering Excellence",
-        "description": "From concept to manufacturing, we ensure every product meets the highest standards of quality and performance."
+        "description": "From concept to production, we ensure every product meets the highest standards of quality and performance."
       },
-      "scrollHint": "Scroll to explore"
+      "scrollHint": "Scroll to view"
     },
     "hero": {
       "titleLine1": "NB GROUP TECH",
       "titleLine2": "products that",
       "titleLine3": "define markets",
-      "description": "Full-cycle industrial design studio. We create products that combine aesthetics, engineering precision, and manufacturable implementation. We work systematically: design → engineering → prototype → production → packaging → brand system. Our approach is based on transparency, accuracy, and responsibility for the result.",
+      "description": "Full-cycle industrial design studio. We create products that combine aesthetics, engineering precision, and production implementation. We work systematically: design → engineering → prototype → production → packaging → brand system. Our approach is based on transparency, precision, and result responsibility.",
       "ourServices": "Our Services",
       "viewWork": "View Portfolio"
     },
@@ -43,204 +43,41 @@
       },
       "design": {
         "title": "Industrial Design",
-        "description": "Human-centered design with focus on usability and aesthetics"
+        "description": "User-centered design focused on convenience and aesthetics"
       },
       "engineering": {
         "title": "Engineering",
-        "description": "Technical development and manufacturing preparation"
+        "description": "Technical development and production preparation"
       },
-      "learnMore": "Learn more"
+      "learnMore": "Learn More"
     },
     "featuredWork": {
       "title": "Featured Projects",
-      "subtitle": "Recent work that demonstrates our capabilities",
+      "subtitle": "Recent works demonstrating our capabilities",
       "project1": {
         "title": "Premium Hookah",
         "description": "Elite handcrafted hookah with cooling system and engraving"
       },
       "project2": {
         "title": "Premium Accessories",
-        "description": "Accessory set in genuine leather case"
+        "description": "Accessory set in a natural leather case"
       },
       "viewCaseStudy": "View Case Study",
-      "viewAllProjects": "View All Projects"
+      "viewAllProjects": "All Projects"
     },
     "stats": {
-      "projects": "Projects Delivered",
-      "years": "Years Experience",
-      "satisfaction": "Client Satisfaction",
+      "projects": "Projects Completed",
+      "years": "Years of Experience",
+      "satisfaction": "Satisfied Clients",
       "awards": "Design Awards"
     },
     "cta": {
       "title": "Ready to start your project?",
-      "description": "Let's discuss how we can bring your product vision to life",
-      "button": "Get in Touch"
-    },
-    "speckServices": {
-      "title": "Our Expertise",
-      "subtitle": "End-to-end product development from strategy to market",
-      "footer": "From initial concept to market launch and beyond",
-      "strategy": {
-        "title": "Strategy",
-        "subtitle": "Drive Innovation And Align Goals",
-        "description": "We develop comprehensive innovation strategies that align business objectives with user needs, creating sustainable competitive advantages.",
-        "explore": "Explore Strategy",
-        "features": {
-          "innovation": {
-            "title": "Innovation Strategy",
-            "description": "Developing long-term innovation roadmaps"
-          },
-          "design": {
-            "title": "Design Strategy",
-            "description": "Creating design systems and frameworks"
-          },
-          "research": {
-            "title": "User Research",
-            "description": "In-depth user studies and market analysis"
-          }
-        }
-      },
-      "design": {
-        "title": "Design",
-        "subtitle": "Engage Audiences With Product Design",
-        "description": "Transform concepts into compelling product experiences through industrial design, brand identity, and user-centered interfaces.",
-        "explore": "Explore Design",
-        "features": {
-          "industrial": {
-            "title": "Industrial Design",
-            "description": "Physical product design and ergonomics"
-          },
-          "brand": {
-            "title": "Brand Design",
-            "description": "Complete visual identity systems"
-          },
-          "packaging": {
-            "title": "Packaging Design",
-            "description": "Sustainable packaging solutions"
-          },
-          "uiux": {
-            "title": "UI/UX Design",
-            "description": "Digital interfaces and user experiences"
-          }
-        }
-      },
-      "engineering": {
-        "title": "Engineering",
-        "subtitle": "Complex Technical Solutions And Architecture",
-        "description": "Build robust, scalable technical architectures and engineering solutions that power innovative products.",
-        "explore": "Explore Engineering",
-        "features": {
-          "architecture": {
-            "title": "Architecture",
-            "description": "System design and technical architecture"
-          },
-          "optimization": {
-            "title": "Optimization",
-            "description": "Performance tuning and efficiency"
-          },
-          "scaling": {
-            "title": "Scaling",
-            "description": "Scalability solutions for growth"
-          }
-        }
-      },
-      "marketing": {
-        "title": "Marketing",
-        "subtitle": "Digital Strategies And Product Promotion",
-        "description": "Drive product success through data-driven marketing strategies, digital campaigns, and comprehensive analytics.",
-        "explore": "Explore Marketing",
-        "features": {
-          "seo": {
-            "title": "SEO",
-            "description": "Search engine optimization"
-          },
-          "smm": {
-            "title": "SMM",
-            "description": "Social media marketing"
-          },
-          "analytics": {
-            "title": "Analytics",
-            "description": "Data analysis and KPI tracking"
-          },
-          "content": {
-            "title": "Content",
-            "description": "Content strategy and creation"
-          }
-        }
-      }
-    },
-    "speckImageBlocks": {
-      "title": "Our Expertise",
-      "subtitle": "End-to-end product development from strategy to market",
-      "strategy": {
-        "title": "Strategy",
-        "subtitle": "Drive Innovation And Align Goals",
-        "features": {
-          "innovation": {
-            "title": "Innovation Strategy"
-          },
-          "design": {
-            "title": "Design Strategy"
-          },
-          "research": {
-            "title": "User Research"
-          }
-        },
-        "explore": "Explore"
-      },
-      "design": {
-        "title": "Design",
-        "subtitle": "Engage Audiences With Product Design",
-        "features": {
-          "industrial": {
-            "title": "Industrial Design"
-          },
-          "brand": {
-            "title": "Brand Design"
-          },
-          "uiux": {
-            "title": "UI/UX Design"
-          }
-        },
-        "explore": "Explore"
-      },
-      "engineering": {
-        "title": "Engineering",
-        "subtitle": "Complex Technical Solutions",
-        "features": {
-          "architecture": {
-            "title": "Architecture"
-          },
-          "optimization": {
-            "title": "Optimization"
-          },
-          "scaling": {
-            "title": "Scaling"
-          }
-        },
-        "explore": "Explore"
-      },
-      "marketing": {
-        "title": "Marketing",
-        "subtitle": "Digital Strategies & Promotion",
-        "features": {
-          "seo": {
-            "title": "SEO"
-          },
-          "smm": {
-            "title": "SMM"
-          },
-          "analytics": {
-            "title": "Analytics"
-          }
-        },
-        "explore": "Explore"
-      },
-      "footer": "From initial concept to market launch and beyond"
+      "description": "Let's discuss how we can bring your product idea to life",
+      "button": "Contact Us"
     },
     "expertise": {
       "title": "Our Expertise",
-      "subtitle": "End-to-end product development from strategy to market",
       "strategy": {
         "title": "01 Strategy",
         "subtitle": "Drive Innovation And Align Goals",
@@ -265,7 +102,7 @@
         "subtitle": "Engineer Robust And Reliable Hardware",
         "features": {
           "hardware": "Hardware Engineering",
-          "iot": "IoT & Product",
+          "iot": "IoT & Products",
           "electrical": "Electrical Engineering"
         }
       },
@@ -300,15 +137,15 @@
           "description": "Autonomous material handling with ROEQ Omron systems"
         }
       },
-      "viewAll": "View All Projects"
+      "viewAll": "All Projects"
     },
     "achievements": {
       "title": "Our Achievements",
-      "subtitle": "Numbers that speak for themselves",
+      "subtitle": "Numbers speak for themselves",
       "stats": {
         "projects": {
           "value": "150",
-          "label": "PROJECTS COMPLETED"
+          "label": "COMPLETED PROJECTS"
         },
         "years": {
           "value": "12",
@@ -316,7 +153,7 @@
         },
         "clients": {
           "value": "98",
-          "label": "HAPPY CLIENTS"
+          "label": "SATISFIED CLIENTS"
         },
         "awards": {
           "value": "25",
@@ -326,7 +163,7 @@
     },
     "services": {
       "title": "Services",
-      "intro": "We are Speck Design, an award-winning product design firm. Our principle is that Great industrial designs form a bond between the user and the product.",
+      "intro": "We are Speck Design, an award-winning product design firm. Our principle: Great industrial designs form a bond between the user and the product.",
       "description": "It should be smooth at every touchpoint. Our focus on details ensures meaningful connections between users and products.",
       "identity": "Our identity is that of an industrial design consulting company and a product design agency. Our designs are practical and adapt to any setting. Our teams balance electrical and mechanical engineering with human needs.",
       "result": "The result is human-centric designs. We emphasize both design intuition and technical prowess throughout product development consulting.",
@@ -341,7 +178,7 @@
         "uiux": {
           "title": "UI/UX design",
           "intro": "The digital age has transformed our world. Today, every product needs both digital and physical forms. More companies now partner with UX design agencies to meet this demand.",
-          "speck": "Speck stands out in this arena as a leading UX design firm. Our primary focus: User experience and UX UI design.",
+          "speck": "Speck stands out in this arena as a leading UX design firm. Our primary focus? User experience and UX UI design.",
           "goal": "Our goal is clear: Enhance the digital experience. We want users to enjoy and find value in all products, services, and channels.",
           "approach": "Our approach starts with understanding. Our user researchers dive deep into knowing the target audience. They then transition into areas like mobile app development, web design, and digital strategies.",
           "value": "We're not just about design; we're about value. Our process creates engaging tech interactions. These bridge the gap between the physical and digital worlds.",
@@ -416,10 +253,10 @@
         },
         {
           "date": "23.2.24",
-          "title": "The Intelligent Product Revolution: A Designer's Journey"
+          "title": "The Intelligent Product Revolution: A Designers Journey"
         }
       ],
-      "viewAll": "View All Journals →"
+      "viewAll": "All Articles →"
     },
     "faq": {
       "title": "FAQ",
@@ -427,23 +264,23 @@
       "questions": [
         {
           "question": "What does a product design company do?",
-          "answer": "A product design company creates, develops, and improves products from concept to production, focusing on user experience, aesthetics, and functionality."
+          "answer": "A product design company specializes in creating innovative, user-centered products that balance aesthetics, functionality, and manufacturability. We handle everything from initial concept to production-ready designs, including research, prototyping, testing, and refinement."
         },
         {
           "question": "What is the difference between product design and industrial design?",
-          "answer": "Product design covers the entire product creation process including research, strategy, UX/UI. Industrial design focuses on the physical form, ergonomics, and manufacturing of the product."
+          "answer": "Industrial design focuses on the physical appearance and user interaction of mass-produced products. Product design is broader, encompassing the entire product development process including research, strategy, engineering, user experience, and post-launch support."
         },
         {
           "question": "What is design thinking?",
-          "answer": "Design thinking is a user-centered problem-solving methodology that includes stages of research, problem definition, ideation, prototyping, and testing."
+          "answer": "Design thinking is a human-centered problem-solving approach that involves empathy, ideation, prototyping, and testing. It helps create innovative solutions that truly meet user needs and business goals through an iterative, collaborative process."
         },
         {
           "question": "Who owns the rights to the designs once completed?",
-          "answer": "Design rights are typically specified in the contract. In most cases, rights transfer to the client after full payment, though some agencies may retain portfolio rights."
+          "answer": "Typically, clients retain full ownership of the designs once all payments are completed. We provide clear IP agreements to ensure your rights are protected throughout the project and you have the freedom to use the designs as needed."
         },
         {
           "question": "What does a product design consultancy do?",
-          "answer": "A product design consultancy provides expert guidance, strategy, research, and design solutions for developing successful products, helping clients from concept to market launch."
+          "answer": "A product design consultancy plays a pivotal role in the product lifecycle, handling comprehensive market research, user experience design, prototyping, testing, and refinement. We combine design, engineering, and strategic planning to ensure successful market launch."
         }
       ]
     },
@@ -458,7 +295,7 @@
   },
   "services": {
     "title": "Our Services | NBGROUP.TECH",
-    "subtitle": "End-to-end product development from initial concept to mass production. We combine design thinking with engineering excellence.",
+    "subtitle": "Full-cycle product development from initial concept to mass production. We combine design thinking with engineering excellence.",
     "nav": {
       "design": "Design",
       "engineering": "Engineering",
@@ -470,11 +307,11 @@
     },
     "design": {
       "title": "Industrial Design",
-      "description": "Human-centered design approach that balances aesthetics, ergonomics, and brand identity to create products people love to use.",
+      "description": "User-centered design approach that balances aesthetics, ergonomics, and brand identity to create products that people love.",
       "features": {
         "conceptDevelopment": {
           "title": "Concept Development",
-          "description": "Sketching, mood boards, and concept exploration"
+          "description": "Sketches, moodboards and concept research"
         },
         "modeling": {
           "title": "3D Modeling",
@@ -492,7 +329,7 @@
     },
     "engineering": {
       "title": "Engineering & Development",
-      "description": "Technical engineering solutions that transform designs into manufacturable products with focus on quality, cost, and scalability.",
+      "description": "Technical engineering solutions that turn designs into manufacturable products with focus on quality, cost, and scalability.",
       "features": {
         "mechanical": {
           "title": "Mechanical Engineering",
@@ -504,24 +341,24 @@
         },
         "materials": {
           "title": "Material Selection",
-          "description": "Optimal material choices for performance and cost"
+          "description": "Optimal material selection for performance and cost"
         }
       },
       "stats": {
-        "quality": "Quality Rate",
+        "quality": "Quality Level",
         "costReduction": "Cost Reduction"
       }
     },
     "production": {
-      "title": "Manufacturing & Production",
-      "description": "Scalable manufacturing solutions with rigorous quality control and supply chain management for reliable product delivery.",
+      "title": "Production & Manufacturing",
+      "description": "Scalable manufacturing solutions with strict quality control and supply chain management for reliable product delivery.",
       "features": {
         "factory": {
           "title": "Factory Sourcing",
-          "description": "Partner selection and manufacturing setup"
+          "description": "Partner selection and production setup"
         },
         "quality": {
-          "title": "Quality Assurance",
+          "title": "Quality Control",
           "description": "Comprehensive QC processes and testing"
         },
         "supply": {
@@ -531,20 +368,20 @@
       },
       "stats": {
         "units": "Units Produced",
-        "leadTime": "Avg. Lead Time"
+        "leadTime": "Average Lead Time"
       }
     },
     "strategy": {
       "title": "Product Strategy & Research",
-      "description": "We begin with deep market analysis and user research to define product vision, positioning, and business objectives that ensure market success.",
+      "description": "We start with deep market analysis and user research to define product vision, positioning, and business goals that ensure market success.",
       "features": {
         "marketAnalysis": {
           "title": "Market Analysis",
-          "description": "Competitive landscape and opportunity assessment"
+          "description": "Competitive landscape analysis and opportunity assessment"
         },
         "userResearch": {
           "title": "User Research",
-          "description": "In-depth understanding of user needs and behaviors"
+          "description": "Deep understanding of user needs and behavior"
         },
         "productPlanning": {
           "title": "Product Planning",
@@ -566,7 +403,7 @@
         },
         "brand": {
           "title": "Brand Promotion",
-          "description": "Building brand awareness and loyalty"
+          "description": "Brand awareness and loyalty building"
         },
         "analytics": {
           "title": "Analytics & Insights",
@@ -597,20 +434,20 @@
     "cta": {
       "title": "Start Your Project",
       "description": "Ready to bring your product idea to life? Let's discuss your project requirements.",
-      "button": "Get Quote"
+      "button": "Get a Quote"
     }
   },
   "brandbook": {
     "title": "Brandbook Development | NBGROUP.TECH",
-    "subtitle": "Comprehensive brand identity systems that create memorable and consistent brand experiences across all touchpoints.",
+    "subtitle": "Comprehensive brand identity systems creating memorable and consistent experiences across all touchpoints.",
     "intro": {
-      "title": "Brandbook is the Foundation of Your Brand",
-      "description": "A brandbook is not just a set of rules, but the foundation on which the entire company's image rests. I approach its creation as carefully as I do any product: I study the brand's character, its audience, its purpose. On this foundation of meanings, I build a system—from color and typography to the logic of presenting materials.",
-      "description1": "We develop brandbooks for companies of any scale. Want a cohesive visual system with well-thought-out elements? We'll make sure it becomes your powerful tool, not just a pretty folder 'for show'.",
-      "description2": "Each brandbook we create individually, taking into account business features, target audience and market specifics."
+      "title": "Brandbook is the foundation of a brand",
+      "description": "A brandbook is not just a set of rules, but the foundation on which the entire company image rests. I approach its creation as carefully as I do any product: I study the character of the brand, its audience, its purpose. On the foundation of these meanings, I form a system - from color and font to the logic of presenting materials.",
+      "description1": "We develop brandbooks for companies of any scale. Want a streamlined visual system with thoughtful elements? We'll make sure it becomes your strong tool, not a beautiful folder 'for show'.",
+      "description2": "We create each brandbook individually, taking into account the specifics of the business, target audience and market."
     },
     "process": {
-      "title": "Our Brandbook Process",
+      "title": "Our Brandbook Creation Process",
       "subtitle": "Structured approach to brand identity development",
       "research": {
         "title": "Brand Research",
@@ -618,7 +455,7 @@
       },
       "strategy": {
         "title": "Brand Strategy",
-        "description": "Positioning and messaging framework"
+        "description": "Positioning and messaging"
       },
       "identity": {
         "title": "Visual Identity",
@@ -631,23 +468,23 @@
     },
     "cases": {
       "title": "Brandbook Cases",
-      "subtitle": "Our recent brand identity projects",
+      "subtitle": "Our latest brand identity projects",
       "viewCases": "View Cases"
     },
     "benefits": {
-      "title": "Why Invest in Brandbook?",
+      "title": "Why Invest in a Brandbook?",
       "subtitle": "Key benefits of comprehensive brand guidelines",
       "consistency": {
         "title": "Brand Consistency",
-        "description": "Maintain consistent visual identity across all platforms and touchpoints"
+        "description": "Maintaining consistent visual identity across all platforms"
       },
       "efficiency": {
         "title": "Team Efficiency",
-        "description": "Clear guidelines speed up design processes and decision making"
+        "description": "Clear guidelines speed up design and decision-making processes"
       },
       "recognition": {
         "title": "Brand Recognition",
-        "description": "Strong visual identity increases brand recall and customer loyalty"
+        "description": "Strong visual identity increases memorability and loyalty"
       },
       "scalability": {
         "title": "Easy Scalability",
@@ -661,7 +498,7 @@
     },
     "stats": {
       "projects": "Projects",
-      "satisfaction": "Client Satisfaction",
+      "satisfaction": "Satisfied clients",
       "support": "Support"
     },
     "filters": {
@@ -680,23 +517,23 @@
     },
     "case1": {
       "title": "Case 1: EdTech Web Platform",
-      "description": "Development of a brandbook for an educational platform with a focus on friendly and modern design.",
+      "description": "Brandbook development for an educational platform with focus on friendly and modern design.",
       "typography": "Montserrat, Open Sans"
     },
     "case2": {
       "title": "Case 2: FinTech Mobile App",
-      "description": "Creating identity for a financial application with an emphasis on security and reliability.",
+      "description": "Identity creation for a financial app with emphasis on security and reliability.",
       "typography": "Inter, Roboto"
     },
     "case3": {
       "title": "Case 3: Corporate Portal",
-      "description": "Development of a brandbook for a large corporation with international presence.",
+      "description": "Brandbook development for a large corporation with international presence.",
       "typography": "Helvetica Neue, Arial"
     }
   },
   "portfolio": {
-    "title": "Our Portfolio | NBGROUP.TECH",
-    "subtitle": "We implement projects with a high degree of precision and aesthetics: hookahs, accessories, premium packaging. Each project is a result of design, engineering, and production experience.",
+    "title": "Our Works | NBGROUP.TECH",
+    "subtitle": "Implementing projects with high degree of precision and aesthetics: hookahs, accessories, premium packaging. Each project is a result of combining design, engineering and production experience.",
     "filter": {
       "all": "All Projects",
       "hookahs": "Hookahs",
@@ -706,47 +543,47 @@
     "projects": {
       "hookah1": {
         "title": "Premium Hookah Amira",
-        "description": "Elite handcrafted hookah made of stainless steel with engraving and unique smoke cooling system."
+        "description": "Elite handcrafted stainless steel hookah with engraving and unique smoke cooling system."
       },
       "accessory1": {
         "title": "Hookah Accessories",
-        "description": "Premium accessory set: tongs, brushes, cleaning tools in a genuine leather case."
+        "description": "Premium accessory set: tongs, brushes, cleaning products in a natural leather case."
       },
       "packaging1": {
         "title": "Luxury Collection Packaging",
-        "description": "Premium packaging for gift sets with magnetic lock, velvet finish, and metal elements."
+        "description": "Premium packaging for gift sets with magnetic lock, velvet finish and metal elements."
       },
       "hookah2": {
         "title": "Hookah Alpha Pro",
-        "description": "Innovative hookah with modular system, ceramic bowl, and enhanced filtration technology."
+        "description": "Innovative hookah with modular system, ceramic bowl and enhanced filtration technology."
       }
     },
     "status": {
       "massProduction": "Mass Production",
       "handmade": "Handmade",
       "premium": "Premium Class",
-      "limited": "Limited Edition"
+      "limited": "Limited Series"
     },
     "highlights": {
-      "title": "Project Highlights",
-      "subtitle": "Key achievements and measurable results"
+      "title": "Key Achievements",
+      "subtitle": "Main results and measurable indicators"
     },
     "testimonials": {
       "title": "Client Testimonials",
       "subtitle": "What our partners say about working with us",
-      "1": "\"NBGROUP.TECH created a hookah that has become the industry standard. Design and execution quality are top-notch.\"",
-      "2": "\"Premium packaging from NBGROUP.TECH increased our product's perceived value by 40%. Excellent work!\""
+      "1": "\"NBGROUP.TECH created a hookah that became an industry standard. Design and execution quality are top-notch.\"",
+      "2": "\"Premium packaging from NBGROUP.TECH increased the perceived value of our product by 40%. Excellent work!\""
     },
     "viewProject": "View Project",
     "viewCaseStudy": "View Case Study",
-    "viewAllProjects": "View All Projects"
+    "viewAllProjects": "All Projects"
   },
   "about": {
     "title": "About Us | NBGROUP.TECH",
-    "subtitle": "Full-cycle industrial design, engineering and manufacturing",
+    "subtitle": "Industrial design, engineering and full-cycle production",
     "mission": {
       "title": "Our Mission",
-      "text": "Create innovative products that define markets and improve people's lives through a combination of aesthetics, engineering precision, and production implementation.",
+      "text": "Create innovative products that define markets and improve people's lives through the combination of aesthetics, engineering precision and production implementation.",
       "features": {
         "aesthetics": "AESTHETICS",
         "engineering": "ENGINEERING",
@@ -754,16 +591,16 @@
       },
       "visual": {
         "title": "Innovation and Excellence",
-        "subtitle": "Quality in Every Detail"
+        "subtitle": "Quality in every detail"
       }
     },
     "story": {
       "title": "Our Story",
-      "p1": "Founded in 2012, NBGROUP.TECH began as a small industrial design studio with a big vision.",
-      "p2": "Over the years, we've grown into a full-service product development company.",
+      "p1": "Founded in 2012, NBGROUP.TECH started as a small industrial design studio with a big goal.",
+      "p2": "Over the years, we grew into a full-fledged product development company.",
       "stats": {
-        "years": "YEARS EXPERIENCE",
-        "projects": "PROJECTS COMPLETED",
+        "years": "YEARS OF EXPERIENCE",
+        "projects": "COMPLETED PROJECTS",
         "specialists": "SPECIALISTS"
       }
     },
@@ -771,67 +608,67 @@
       "title": "What We Do",
       "subtitle": "Systematic approach to product development",
       "systemApproach": {
-        "title": "Systematic Approach",
-        "description": "We build the process so that each stage — from idea to serial product — is logical, controllable, and predictable.",
-        "benefits": "This reduces production risks, shortens product time-to-market, and ensures stable results."
+        "title": "System Approach",
+        "description": "We structure the process so that each stage - from idea to serial product - is logical, controllable and predictable.",
+        "benefits": "This reduces production risks, shortens time-to-market and ensures stable results."
       },
       "deepAnalysis": {
         "title": "Deep Analysis Before Start",
-        "description": "Before development, we study the niche, audience, and production capabilities.",
-        "benefits": "This helps avoid mistakes, optimize costs, and create a product that will find its audience."
+        "description": "Before development, we study the niche, audience and production capabilities.",
+        "benefits": "This helps avoid mistakes, optimize cost and create a product that will find its audience."
       },
       "honestExpertise": {
         "title": "Honest Expertise",
-        "description": "We speak directly: what works, what doesn't, and where the solution will bring benefits.",
+        "description": "We speak directly: what works, what doesn't, and where the solution will bring benefit.",
         "benefits": "This approach saves months of work and budget, directing the project in the right direction from the first step."
       },
       "industrialDesign": {
         "title": "Industrial Design",
         "description": "We develop product designs of any complexity - from idea to production launch.",
-        "details": "Every element is developed considering aesthetics, ergonomics and real production processes."
+        "details": "Each element is worked out from the perspective of aesthetics, ergonomics and real production processes."
       },
       "engineering": {
         "title": "Engineering",
-        "description": "We transform design into fully functional construction.",
-        "details1": "We create precise 3D models, technical documentation, select materials and processing methods.",
+        "description": "We translate design into fully functional construction.",
+        "details1": "We create accurate 3D models, technical documentation, select materials and processing methods.",
         "details2": "NB GROUP TECH engineers are practitioners with real production experience."
       },
       "production": {
         "title": "Production",
-        "description": "Our own production base is the key advantage of the studio.",
+        "description": "Our own production base is a key advantage of the studio.",
         "materials": "We work with metal, plastic, composites and other industrial materials."
       },
       "brandbook": {
         "title": "Brandbook",
-        "description": "We develop brand systems for companies that need to look cohesive and competitive at the international level.",
-        "details": "The NB GROUP TECH brandbook enhances the product and forms a unified visual language for the company."
+        "description": "We develop brand systems for companies that need to look cohesive and competitive internationally.",
+        "details": "NB GROUP TECH brandbook enhances the product and forms a unified visual language of the company."
       },
       "identity": {
         "title": "Identity Development",
-        "description": "We create visual systems that increase brand recognition and strengthen its reputation.",
-        "details": "Identity works equally accurately on packaging, website, social media and the product itself."
+        "description": "We create a visual system that increases brand recognition and strengthens its reputation.",
+        "details": "The identity works equally accurately on packaging, website, social media and the product itself."
       },
-      "keyAreas": "Key areas:",
-      "hookahs": "Premium hookahs",
+      "keyAreas": "Key Areas:",
+      "hookahs": "Premium Hookahs",
       "accessories": "Accessories",
-      "packaging": "Packaging and cases",
-      "itAllows": "It allows us to:",
-      "prototypes": "Produce prototypes on time",
+      "packaging": "Packaging & Cases",
+      "itAllows": "It allows:",
+      "prototypes": "Release prototypes on time",
       "quality": "Control quality at every stage",
       "massProduction": "Launch mass production of any volume",
-      "turnkey": "Create 'turnkey' products",
+      "turnkey": "Create turnkey products",
       "includes": "The brandbook includes:",
       "visualIdentity": "Visual identity",
-      "colorTypography": "Color and typography system",
+      "colorTypography": "Color and font system",
       "brandedElements": "Branded elements and media",
-      "brandRules": "Brand application rules"
+      "brandRules": "Brand usage rules"
     },
     "team": {
       "title": "Team",
       "subtitle": "Professionals with real project experience",
       "philosophy": {
         "title": "Our Philosophy",
-        "text": "We believe that project success depends on the synergy of design, engineering, and production. Our team brings together experts from different fields to create products that are not only beautiful, but also functional, reliable, and ready for mass production."
+        "text": "We believe that project success depends on the synergy of design, engineering and production. Our team unites experts from different fields to create products that are not only beautiful but also functional, reliable and ready for mass production."
       },
       "spartak": {
         "name": "Spartak Nukhsan",
@@ -840,24 +677,24 @@
       },
       "urmat": {
         "name": "Urmat Ismailov",
-        "role": "Co-founder and Operations Director",
+        "role": "Co-founder and Operational Director",
         "bio": "Systematic approach, organization and stable growth. Specialist in production processes and project management."
       },
       "elena": {
         "name": "Elena Kiryanova",
-        "role": "Director of NB Group Company, Brand Development Strategist",
+        "role": "NB Group Company Director, Brand Development Strategist",
         "bio": "Expert in brand strategy and business development. Helps companies build effective marketing strategies."
       }
     },
     "cta": {
-      "title": "Ready to collaborate?",
-      "description": "Let's discuss your project and offer the optimal solution",
+      "title": "Ready to Collaborate?",
+      "description": "Let's discuss your project and propose the optimal solution",
       "button": "Discuss Project"
     }
   },
   "contact": {
-    "title": "Contact Us | NBGROUP.TECH",
-    "subtitle": "Ready to start your project? Let's discuss how we can help bring your product vision to life.",
+    "title": "Contact | NBGROUP.TECH",
+    "subtitle": "Ready to start your project? Let's discuss how we can help bring your product idea to life.",
     "hero": {
       "cta": "Start Your Project"
     },
@@ -873,7 +710,7 @@
     "response": "Response within 24 hours",
     "form": {
       "title": "Start Your Project",
-      "subtitle": "Fill out the form and we'll get back to you within 24 hours to discuss your project.",
+      "subtitle": "Fill out the form and we'll contact you within 24 hours to discuss your project.",
       "name": "Full Name *",
       "email": "Email Address *",
       "company": "Company",
@@ -888,30 +725,30 @@
         "other": "Other"
       },
       "budget": "Project Budget",
-      "selectBudget": "Select budget range",
+      "selectBudget": "Select budget",
       "message": "Project Details *",
       "submit": "Send Message"
     },
     "social": {
       "title": "Follow Our Work",
-      "subtitle": "See our latest projects and behind-the-scenes",
-      "telegram": "Latest updates",
-      "instagram": "Visual portfolio",
-      "linkedin": "Business network",
-      "behance": "Design projects"
+      "subtitle": "See our latest projects and behind the scenes",
+      "telegram": "Latest Updates",
+      "instagram": "Visual Portfolio",
+      "linkedin": "Business Network",
+      "behance": "Design Projects"
     },
     "faq": {
-      "title": "Common Questions",
+      "title": "Frequently Asked Questions",
       "timeline": {
-        "question": "What's your typical project timeline?",
+        "question": "What is your typical project timeline?",
         "answer": "Most projects take 3-6 months from concept to production-ready design, depending on complexity and requirements."
       },
       "startups": {
         "question": "Do you work with startups?",
-        "answer": "Yes, we offer flexible engagement models for startups and established companies, including equity-based partnerships."
+        "answer": "Yes, we offer flexible cooperation models for startups and established companies, including equity-based partnerships."
       },
       "process": {
-        "question": "What's your design process?",
+        "question": "What is your design process?",
         "answer": "We follow a user-centered design process: research, strategy, concept development, prototyping, testing, and final production."
       }
     },
@@ -923,22 +760,22 @@
     }
   },
   "footer": {
-    "description": "Full-cycle product development studio transforming ideas into market-ready products through design, engineering, and manufacturing excellence.",
+    "description": "Full-cycle product development studio turning ideas into market-ready products through excellence in design, engineering and production.",
     "services": "Services",
     "company": "Company",
     "careers": "Careers",
     "rights": "All rights reserved.",
     "links": {
       "services": "Services",
-      "work": "Our Work",
+      "work": "Our Works",
       "about": "About",
       "contact": "Contact",
       "company": "Company",
       "careers": "Careers",
       "legal": "Legal",
       "privacy": "Privacy Policy",
-      "terms": "Terms of Service",
-      "cookies": "Cookie Policy"
+      "terms": "Terms of Use",
+      "cookies": "Cookies Policy"
     },
     "contact": {
       "title": "Contact",
@@ -967,8 +804,8 @@
     "required": "This field is required",
     "email": "Please enter a valid email",
     "phone": "Please enter a valid phone number",
-    "minLength": "Minimum {length} characters required",
-    "maxLength": "Maximum {length} characters allowed"
+    "minLength": "Minimum {length} characters",
+    "maxLength": "Maximum {length} characters"
   },
   "servicesPreview": {
     "strategy": {
