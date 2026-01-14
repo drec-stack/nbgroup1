@@ -1,43 +1,41 @@
-console.log('🚀 about.js loaded - REAL TEAM PHOTOS VERSION - FIXED');
+console.log('🚀 about.js loaded - REAL TEAM PHOTOS VERSION - UPDATED');
 
-// Используем SafeDOM из animations.js или создаем только если не существует
-if (!window.SafeDOM) {
-    window.SafeDOM = {
-        querySelector(selector) {
-            try {
-                return document.querySelector(selector);
-            } catch (error) {
-                console.warn(`⚠️ Invalid selector: ${selector}`, error);
-                return null;
-            }
-        },
-        
-        querySelectorAll(selector) {
-            try {
-                return document.querySelectorAll(selector);
-            } catch (error) {
-                console.warn(`⚠️ Invalid selector: ${selector}`, error);
-                return [];
-            }
-        },
-        
-        addClass(element, className) {
-            if (element && element.classList) {
-                element.classList.add(className);
-            }
-        },
-        
-        removeClass(element, className) {
-            if (element && element.classList) {
-                element.classList.remove(className);
-            }
-        },
-        
-        hasClass(element, className) {
-            return element && element.classList && element.classList.contains(className);
+// Используем глобальный SafeDOM если он существует, иначе используем простые проверки
+const SafeDOM = window.SafeDOM || {
+    querySelector(selector) {
+        try {
+            return document.querySelector(selector);
+        } catch (error) {
+            console.warn(`⚠️ Invalid selector: ${selector}`, error);
+            return null;
         }
-    };
-}
+    },
+    
+    querySelectorAll(selector) {
+        try {
+            return document.querySelectorAll(selector);
+        } catch (error) {
+            console.warn(`⚠️ Invalid selector: ${selector}`, error);
+            return [];
+        }
+    },
+    
+    addClass(element, className) {
+        if (element && element.classList) {
+            element.classList.add(className);
+        }
+    },
+    
+    removeClass(element, className) {
+        if (element && element.classList) {
+            element.classList.remove(className);
+        }
+    },
+    
+    hasClass(element, className) {
+        return element && element.classList && element.classList.contains(className);
+    }
+};
 
 class AboutPage {
     constructor() {
@@ -185,11 +183,11 @@ class AboutPage {
     setupHeaderForAboutPage() {
         console.log('🔧 Setting up header for about page...');
         
-        const header = window.SafeDOM.querySelector('.main-header');
+        const header = SafeDOM.querySelector('.main-header');
         const headerContainer = document.getElementById('header-container');
         
         if (header) {
-            window.SafeDOM.addClass(header, 'about-page-header');
+            SafeDOM.addClass(header, 'about-page-header');
             console.log('✅ Header found and configured for about page');
             
             // Убеждаемся что хедер видим
@@ -199,7 +197,7 @@ class AboutPage {
             // Ищем хедер внутри контейнера
             const headerInContainer = headerContainer.querySelector('header, .main-header, nav');
             if (headerInContainer) {
-                window.SafeDOM.addClass(headerInContainer, 'about-page-header');
+                SafeDOM.addClass(headerInContainer, 'about-page-header');
                 console.log('✅ Header found in container and configured');
             } else {
                 console.warn('⚠️ Header not found in container');
@@ -213,8 +211,8 @@ class AboutPage {
     initializeTeamPhotos() {
         console.log('🖼️ Initializing team photos...');
         
-        const teamMembers = window.SafeDOM.querySelectorAll('.team-member, .team-card, [data-team-member]');
-        const teamPhotos = window.SafeDOM.querySelectorAll('.team-photo, .member-photo, .team-img');
+        const teamMembers = SafeDOM.querySelectorAll('.team-member, .team-card, [data-team-member]');
+        const teamPhotos = SafeDOM.querySelectorAll('.team-photo, .member-photo, .team-img');
         
         console.log(`👥 Found ${teamMembers.length} team members`);
         console.log(`📸 Found ${teamPhotos.length} team photos`);
@@ -227,7 +225,7 @@ class AboutPage {
             if (!photo.complete) {
                 photo.addEventListener('load', () => {
                     console.log(`✅ Photo ${index + 1} loaded successfully`);
-                    window.SafeDOM.addClass(photo, 'loaded');
+                    SafeDOM.addClass(photo, 'loaded');
                 });
                 
                 photo.addEventListener('error', () => {
@@ -238,7 +236,7 @@ class AboutPage {
                     }
                 });
             } else {
-                window.SafeDOM.addClass(photo, 'loaded');
+                SafeDOM.addClass(photo, 'loaded');
                 console.log(`✅ Photo ${index + 1} already loaded`);
             }
         });
@@ -257,22 +255,6 @@ class AboutPage {
                 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
                 member.style.transform = 'translateY(0)';
             });
-            
-            // Добавляем интерактивность
-            member.style.cursor = 'pointer';
-            member.setAttribute('tabindex', '0');
-            
-            member.addEventListener('click', () => {
-                console.log(`👤 Team member ${index + 1} clicked`);
-                // Здесь можно добавить логику открытия детальной информации
-            });
-            
-            member.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    member.click();
-                }
-            });
         });
     }
 
@@ -280,7 +262,7 @@ class AboutPage {
         console.log('⚙️ Setting up page functionalities...');
         
         // Статистика истории
-        const storyStats = window.SafeDOM.querySelectorAll('.stat-card, .story-stat, [data-stat]');
+        const storyStats = SafeDOM.querySelectorAll('.stat-card, .story-stat, [data-stat]');
         console.log(`📊 Found ${storyStats.length} story stats`);
         
         storyStats.forEach((stat, index) => {
@@ -291,18 +273,10 @@ class AboutPage {
                 stat.style.opacity = '1';
                 stat.style.transform = 'translateY(0)';
             }, index * 100);
-            
-            // Настройка счетчиков если есть
-            const numbers = stat.querySelectorAll('.stat-number, .counter');
-            numbers.forEach(number => {
-                if (number && number.dataset.count) {
-                    this.animateCounter(number, parseInt(number.dataset.count));
-                }
-            });
         });
         
         // Карточки услуг
-        const serviceCards = window.SafeDOM.querySelectorAll('.service-card, .service-item, [data-service]');
+        const serviceCards = SafeDOM.querySelectorAll('.service-card, .service-item, [data-service]');
         console.log(`💎 Found ${serviceCards.length} service cards`);
         
         serviceCards.forEach((card, index) => {
@@ -313,50 +287,16 @@ class AboutPage {
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
             }, index * 150);
-            
-            // Эффект при наведении
-            card.addEventListener('mouseenter', () => {
-                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                card.style.transform = 'translateY(-8px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                card.style.transform = 'translateY(0) scale(1)';
-            });
         });
         
         console.log('✅ All page functionalities initialized');
-    }
-
-    animateCounter(element, target) {
-        if (!element || !target) return;
-        
-        let current = 0;
-        const increment = target / 50;
-        const duration = 2000;
-        
-        const updateCounter = () => {
-            current += increment;
-            if (current >= target) {
-                element.textContent = target;
-                window.SafeDOM.addClass(element, 'animated');
-                return;
-            }
-            
-            element.textContent = Math.floor(current);
-            requestAnimationFrame(updateCounter);
-        };
-        
-        // Запускаем с задержкой для лучшего UX
-        setTimeout(updateCounter, 500);
     }
 
     setupContentAnimations() {
         console.log('🎭 Starting content animations...');
         
         // Все секции
-        const sections = window.SafeDOM.querySelectorAll('section, .content-section');
+        const sections = SafeDOM.querySelectorAll('section, .content-section');
         
         sections.forEach((section, index) => {
             if (!section) return;
@@ -365,32 +305,8 @@ class AboutPage {
             setTimeout(() => {
                 section.style.opacity = '1';
                 section.style.transform = 'translateY(0)';
-                window.SafeDOM.addClass(section, 'animated-in');
+                SafeDOM.addClass(section, 'animated-in');
             }, index * 200);
-        });
-        
-        // Заголовки
-        const headings = window.SafeDOM.querySelectorAll('h1, h2, h3, .section-title');
-        
-        headings.forEach((heading, index) => {
-            if (!heading) return;
-            
-            setTimeout(() => {
-                heading.style.opacity = '1';
-                heading.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
-        
-        // Параграфы
-        const paragraphs = window.SafeDOM.querySelectorAll('p, .section-description');
-        
-        paragraphs.forEach((paragraph, index) => {
-            if (!paragraph) return;
-            
-            setTimeout(() => {
-                paragraph.style.opacity = '1';
-                paragraph.style.transform = 'translateY(0)';
-            }, index * 50 + 300);
         });
         
         console.log('✅ Content animations started');
@@ -400,7 +316,7 @@ class AboutPage {
         console.log('📍 Setting up page navigation...');
         
         // Внутренние ссылки для плавного скролла
-        const internalLinks = window.SafeDOM.querySelectorAll('a[href^="#about"], a[href^="#team"], a[href^="#story"]');
+        const internalLinks = SafeDOM.querySelectorAll('a[href^="#"]');
         
         internalLinks.forEach(link => {
             if (!link) return;
@@ -414,7 +330,7 @@ class AboutPage {
                     const targetElement = document.getElementById(targetId);
                     
                     if (targetElement) {
-                        const header = window.SafeDOM.querySelector('.main-header');
+                        const header = SafeDOM.querySelector('.main-header');
                         const headerHeight = header ? header.offsetHeight : 0;
                         
                         window.scrollTo({
@@ -425,43 +341,12 @@ class AboutPage {
                 }
             });
         });
-        
-        // Кнопка CTA
-        const ctaButton = window.SafeDOM.querySelector('.cta-button, .btn-primary, [data-cta]');
-        
-        if (ctaButton) {
-            console.log('📣 Setting up CTA button effects');
-            
-            ctaButton.addEventListener('mouseenter', () => {
-                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                ctaButton.style.transform = 'translateY(-3px) scale(1.05)';
-            });
-            
-            ctaButton.addEventListener('mouseleave', () => {
-                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                ctaButton.style.transform = 'translateY(0) scale(1)';
-            });
-            
-            // Эффект при нажатии
-            ctaButton.addEventListener('mousedown', () => {
-                ctaButton.style.transform = 'translateY(1px) scale(0.98)';
-            });
-            
-            ctaButton.addEventListener('mouseup', () => {
-                ctaButton.style.transform = 'translateY(0) scale(1)';
-            });
-            
-            console.log('✅ CTA button effects set up');
-        }
-        
-        // Настройка анимаций при скролле
-        this.setupScrollAnimations();
     }
 
     setupScrollAnimations() {
         console.log('📜 Setting up scroll animations...');
         
-        const animatedSections = window.SafeDOM.querySelectorAll('.animate-on-scroll, [data-animate]');
+        const animatedSections = SafeDOM.querySelectorAll('.animate-on-scroll, [data-animate]');
         console.log(`🎬 Setting up scroll animations for ${animatedSections.length} sections`);
         
         if (!('IntersectionObserver' in window)) {
@@ -480,7 +365,7 @@ class AboutPage {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    window.SafeDOM.addClass(entry.target, 'in-view');
+                    SafeDOM.addClass(entry.target, 'in-view');
                     observer.unobserve(entry.target);
                 }
             });
@@ -495,19 +380,7 @@ class AboutPage {
         console.log('🎯 Finalizing about page initialization...');
         
         // Добавляем класс к body
-        window.SafeDOM.addClass(document.body, 'about-page-initialized');
-        
-        // Отправляем событие о завершении инициализации
-        window.dispatchEvent(new CustomEvent('aboutPageReady', {
-            detail: { 
-                timestamp: Date.now(),
-                elementsInitialized: {
-                    teamMembers: window.SafeDOM.querySelectorAll('.team-member, .team-card').length,
-                    serviceCards: window.SafeDOM.querySelectorAll('.service-card, .service-item').length,
-                    stats: window.SafeDOM.querySelectorAll('.stat-card, .story-stat').length
-                }
-            }
-        }));
+        SafeDOM.addClass(document.body, 'about-page-initialized');
         
         // Проверяем все ли элементы загружены
         setTimeout(() => {
@@ -525,7 +398,7 @@ class AboutPage {
         
         let allLoaded = true;
         checkElements.forEach(item => {
-            const elements = window.SafeDOM.querySelectorAll(item.selector);
+            const elements = SafeDOM.querySelectorAll(item.selector);
             if (elements.length > 0) {
                 console.log(`✅ ${item.name}: ${elements.length} found`);
             } else {
@@ -556,64 +429,10 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         console.log('📄 About page DOM loaded');
         window.aboutPageInstance = new AboutPage();
-        
-        // Дополнительный таймаут на случай проблем
-        setTimeout(() => {
-            if (window.aboutPageInstance && !window.aboutPageInstance.isInitialized) {
-                console.warn('⚠️ About page not initialized after timeout, forcing...');
-                window.aboutPageInstance.tryInitialize();
-            }
-        }, 10000);
     });
 } else {
     console.log('📄 DOM already loaded, starting about page...');
     window.aboutPageInstance = new AboutPage();
 }
 
-// Глобальные функции для управления страницей
-window.initAboutPage = function() {
-    if (!window.aboutPageInstance) {
-        window.aboutPageInstance = new AboutPage();
-    }
-    return window.aboutPageInstance;
-};
-
-window.debugAboutPage = function() {
-    console.group('🔍 About Page Debug');
-    if (window.aboutPageInstance) {
-        console.log('Initialized:', window.aboutPageInstance.isInitialized);
-        console.log('Attempts:', window.aboutPageInstance.initializationAttempts);
-        console.log('Max attempts:', window.aboutPageInstance.maxAttempts);
-        
-        // Проверяем элементы
-        const elements = {
-            'Header': window.SafeDOM.querySelector('.main-header'),
-            'Team members': window.SafeDOM.querySelectorAll('.team-member, .team-card').length,
-            'Service cards': window.SafeDOM.querySelectorAll('.service-card, .service-item').length,
-            'Stats': window.SafeDOM.querySelectorAll('.stat-card, .story-stat').length
-        };
-        
-        Object.entries(elements).forEach(([name, element]) => {
-            if (typeof element === 'number') {
-                console.log(`${name}: ${element}`);
-            } else {
-                console.log(`${name}: ${element ? '✅ Found' : '❌ Not found'}`);
-            }
-        });
-    } else {
-        console.log('❌ About page not initialized');
-    }
-    console.groupEnd();
-};
-
-window.reloadAboutPage = function() {
-    if (window.aboutPageInstance) {
-        window.aboutPageInstance.isInitialized = false;
-        window.aboutPageInstance.initializationAttempts = 0;
-        window.aboutPageInstance.tryInitialize();
-    } else {
-        window.aboutPageInstance = new AboutPage();
-    }
-};
-
-console.log('✅ about.js fully loaded - REAL TEAM PHOTOS VERSION - READY');
+console.log('✅ about.js fully loaded - READY');
