@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded - CLEAN VERSION');
+console.log('🚀 main.js loaded - CLEAN VERSION - FIXED');
 
 class DaehaaApp {
     constructor() {
@@ -27,6 +27,12 @@ class DaehaaApp {
     init() {
         console.log('🚀 Daehaa App initializing...');
         
+        // Проверяем наличие .mobile-menu ПОСЛЕ загрузки DOM
+        this.mobileMenuBtn = this.safeQuerySelector('.mobile-menu');
+        if (this.mobileMenuBtn) {
+            this.mobileMenuBtn.classList.add('daehaa-enhanced');
+        }
+        
         // Базовые функции
         this.setupSmoothScroll();
         this.setupCurrentPage();
@@ -45,6 +51,25 @@ class DaehaaApp {
         console.log('✅ Daehaa application initialized');
     }
 
+    // Безопасные методы для работы с DOM
+    safeQuerySelector(selector) {
+        try {
+            return document.querySelector(selector);
+        } catch (error) {
+            console.warn(`⚠️ Invalid selector: ${selector}`, error);
+            return null;
+        }
+    }
+
+    safeQuerySelectorAll(selector) {
+        try {
+            return document.querySelectorAll(selector);
+        } catch (error) {
+            console.warn(`⚠️ Invalid selector: ${selector}`, error);
+            return [];
+        }
+    }
+
     setupHeaderSupport() {
         console.log('🔧 Setting up header support...');
         
@@ -58,7 +83,7 @@ class DaehaaApp {
         }
         
         // Простой скролл-эффект для хедера
-        const header = document.querySelector('.main-header');
+        const header = this.safeQuerySelector('.main-header');
         if (header) {
             const handleScroll = () => {
                 if (window.scrollY > 50) {
@@ -83,7 +108,7 @@ class DaehaaApp {
     }
 
     setupSmoothScroll() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        this.safeQuerySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
                 
@@ -95,7 +120,8 @@ class DaehaaApp {
                 const targetElement = document.querySelector(targetId);
                 
                 if (targetElement) {
-                    const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
+                    const header = document.querySelector('.main-header');
+                    const headerHeight = header ? header.offsetHeight : 0;
                     const targetPosition = targetElement.offsetTop - headerHeight - 20;
                     
                     window.scrollTo({
@@ -111,7 +137,7 @@ class DaehaaApp {
 
     setupCurrentPage() {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+        const navLinks = this.safeQuerySelectorAll('.nav-link, .mobile-nav-link');
         
         navLinks.forEach(link => {
             const linkHref = link.getAttribute('href');
@@ -139,10 +165,11 @@ class DaehaaApp {
     }
 
     updateLanguageSwitcherUI(lang) {
-        const langBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
-        const switchers = document.querySelectorAll('.language-switcher, .mobile-language-switcher');
+        const langBtns = this.safeQuerySelectorAll('.lang-btn, .mobile-lang-btn');
+        const switchers = this.safeQuerySelectorAll('.language-switcher, .mobile-language-switcher');
         
         langBtns.forEach(btn => {
+            if (!btn) return;
             btn.classList.remove('active');
             if (btn.getAttribute('data-lang') === lang) {
                 btn.classList.add('active');
@@ -150,6 +177,7 @@ class DaehaaApp {
         });
         
         switchers.forEach(switcher => {
+            if (!switcher) return;
             switcher.setAttribute('data-current-lang', lang);
             
             // Анимируем ползунок
@@ -166,19 +194,20 @@ class DaehaaApp {
 
     updateCompactLanguageSwitcher(lang) {
         // Убедимся что размеры остаются компактными
-        const languageSwitchers = document.querySelectorAll('.language-switcher');
+        const languageSwitchers = this.safeQuerySelectorAll('.language-switcher');
         languageSwitchers.forEach(switcher => {
+            if (!switcher) return;
             switcher.style.minWidth = '100px';
             switcher.style.height = '40px';
             
             const flags = switcher.querySelectorAll('.lang-flag');
             flags.forEach(flag => {
-                flag.style.fontSize = '18px';
+                if (flag) flag.style.fontSize = '18px';
             });
             
             const texts = switcher.querySelectorAll('.lang-text');
             texts.forEach(text => {
-                text.style.fontSize = '14px';
+                if (text) text.style.fontSize = '14px';
             });
         });
     }
@@ -187,15 +216,18 @@ class DaehaaApp {
         // Функция для обновления отображения текста в переключателе языка
         const updateLanguageSwitcherText = () => {
             const isMobile = window.innerWidth <= 768;
-            const languageSwitchers = document.querySelectorAll('.language-switcher.mobile-only-flags');
+            const languageSwitchers = this.safeQuerySelectorAll('.language-switcher.mobile-only-flags');
             
             languageSwitchers.forEach(switcher => {
+                if (!switcher) return;
                 const textElements = switcher.querySelectorAll('.lang-text');
                 textElements.forEach(textElement => {
-                    if (isMobile) {
-                        textElement.style.display = 'none';
-                    } else {
-                        textElement.style.display = 'inline-block';
+                    if (textElement) {
+                        if (isMobile) {
+                            textElement.style.display = 'none';
+                        } else {
+                            textElement.style.display = 'inline-block';
+                        }
                     }
                 });
                 
@@ -206,7 +238,7 @@ class DaehaaApp {
                     
                     const flags = switcher.querySelectorAll('.lang-flag');
                     flags.forEach(flag => {
-                        flag.style.fontSize = '18px';
+                        if (flag) flag.style.fontSize = '18px';
                     });
                 }
             });
@@ -241,9 +273,9 @@ class DaehaaApp {
     }
 
     setupFormHandling() {
-        const forms = document.querySelectorAll('form');
+        const forms = this.safeQuerySelectorAll('form');
         forms.forEach(form => {
-            this.setupForm(form.id);
+            if (form) this.setupForm(form.id);
         });
     }
 
@@ -259,10 +291,12 @@ class DaehaaApp {
                 
                 const formData = new FormData(form);
                 const submitBtn = form.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
+                const originalText = submitBtn ? submitBtn.innerHTML : '';
                 
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-                submitBtn.disabled = true;
+                if (submitBtn) {
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+                    submitBtn.disabled = true;
+                }
                 
                 try {
                     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -278,8 +312,10 @@ class DaehaaApp {
                 } catch (error) {
                     this.showNotification('Ошибка отправки. Пожалуйста, попробуйте еще раз.', 'error');
                 } finally {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
+                    if (submitBtn) {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
                 }
             });
         }
@@ -302,21 +338,23 @@ class DaehaaApp {
         const value = field.value.trim();
         const formGroup = field.parentElement;
         
-        formGroup.classList.remove('valid', 'invalid');
-        
-        if (field.hasAttribute('required') && !value) {
-            formGroup.classList.add('invalid');
-            return false;
-        }
-        
-        if (field.type === 'email' && value) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (emailRegex.test(value)) {
-                formGroup.classList.add('valid');
-                return true;
-            } else {
+        if (formGroup) {
+            formGroup.classList.remove('valid', 'invalid');
+            
+            if (field.hasAttribute('required') && !value) {
                 formGroup.classList.add('invalid');
                 return false;
+            }
+            
+            if (field.type === 'email' && value) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (emailRegex.test(value)) {
+                    formGroup.classList.add('valid');
+                    return true;
+                } else {
+                    formGroup.classList.add('invalid');
+                    return false;
+                }
             }
         }
         
@@ -331,9 +369,9 @@ class DaehaaApp {
     }
 
     showNotification(message, type = 'info') {
-        const existingNotifications = document.querySelectorAll('.notification');
+        const existingNotifications = this.safeQuerySelectorAll('.notification');
         existingNotifications.forEach(notification => {
-            if (notification.parentNode) {
+            if (notification && notification.parentNode) {
                 notification.parentNode.removeChild(notification);
             }
         });
@@ -369,14 +407,16 @@ class DaehaaApp {
         }, 100);
         
         const closeBtn = notification.querySelector('.notification-close');
-        closeBtn.addEventListener('click', () => {
-            notification.style.transform = 'translateX(400px)';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
-        });
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            });
+        }
         
         setTimeout(() => {
             if (notification.parentNode) {
@@ -392,7 +432,7 @@ class DaehaaApp {
 
     setupLazyLoading() {
         if ('IntersectionObserver' in window) {
-            const lazyImages = document.querySelectorAll('img[data-src]');
+            const lazyImages = this.safeQuerySelectorAll('img[data-src]');
             const imageObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -409,8 +449,8 @@ class DaehaaApp {
     }
 
     setupClickableElements() {
-        document.querySelectorAll('a:not(.btn)').forEach(link => {
-            if (!link.classList.contains('clickable-element')) {
+        this.safeQuerySelectorAll('a:not(.btn)').forEach(link => {
+            if (link && !link.classList.contains('clickable-element')) {
                 link.classList.add('clickable-element');
             }
         });
@@ -511,6 +551,7 @@ window.toggleLanguage = function() {
 window.updateCompactLanguageSwitcher = function() {
     const languageSwitchers = document.querySelectorAll('.language-switcher');
     languageSwitchers.forEach(switcher => {
+        if (!switcher) return;
         switcher.style.minWidth = '100px';
         switcher.style.height = '40px';
         switcher.style.padding = '3px';
@@ -525,19 +566,21 @@ window.updateCompactLanguageSwitcher = function() {
         
         const buttons = switcher.querySelectorAll('.lang-btn');
         buttons.forEach(btn => {
-            btn.style.fontSize = '14px';
-            btn.style.height = '34px';
-            btn.style.padding = '0 16px';
+            if (btn) {
+                btn.style.fontSize = '14px';
+                btn.style.height = '34px';
+                btn.style.padding = '0 16px';
+            }
         });
         
         const texts = switcher.querySelectorAll('.lang-text');
         texts.forEach(text => {
-            text.style.fontSize = '14px';
+            if (text) text.style.fontSize = '14px';
         });
         
         const flags = switcher.querySelectorAll('.lang-flag');
         flags.forEach(flag => {
-            flag.style.fontSize = '18px';
+            if (flag) flag.style.fontSize = '18px';
         });
     });
 };
