@@ -151,7 +151,7 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            min-width: 120px;
+            min-width: 90px; /* УМЕНЬШЕНО */
             height: 46px;
             overflow: hidden;
             flex-shrink: 0;
@@ -179,12 +179,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 0 20px;
+            gap: 6px; /* УМЕНЬШЕНО */
+            padding: 0 12px; /* УМЕНЬШЕНО */
             background: none;
             border: none;
             color: rgba(255, 255, 255, 0.85);
-            font-size: 16px;
+            font-size: 15px; /* УМЕНЬШЕНО */
             font-weight: 600;
             cursor: pointer;
             border-radius: 20px;
@@ -209,7 +209,7 @@
         }
 
         .lang-flag {
-            font-size: 20px;
+            font-size: 18px; /* УМЕНЬШЕНО */
             display: inline-block;
             line-height: 1;
         }
@@ -217,7 +217,7 @@
         .lang-text {
             display: inline-block;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px; /* УМЕНЬШЕНО */
             letter-spacing: 0.5px;
         }
 
@@ -241,7 +241,6 @@
         }
 
         /* ===== ДЕСКТОПНАЯ ВЕРСИЯ - КОМПАКТНАЯ ===== */
-        /* Уменьшаем ТОЛЬКО десктопный переключатель */
         .header-right-desktop .language-switcher {
             min-width: 90px; /* Уменьшено с 120px */
             height: 38px;    /* Уменьшено с 46px */
