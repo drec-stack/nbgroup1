@@ -1,5 +1,3 @@
-/* animations.css - ПОЛНЫЙ ФАЙЛ АНИМАЦИЙ С РАБОЧИМ FAQ */
-
 :root {
     --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
@@ -1017,100 +1015,125 @@
     .faq-item.active .faq-question i {
         transform: rotate(45deg) !important;
     }
-    
-    /* Критичный фикс для переключения языка */
-    [data-i18n] {
-        opacity: 1 !important;
-        transition: none !important;
-        animation: none !important;
-    }
 }
 
-/* КРИТИЧНЫЙ ФИКС: УБИРАЕМ ПРОЗРАЧНОСТЬ ТЕКСТА ПРИ ПЕРЕКЛЮЧЕНИИ ЯЗЫКА */
-.home-page [data-i18n] {
+/* ===== FIX FOR LANGUAGE SWITCHER ON ALL PAGES ===== */
+/* КРИТИЧНЫЙ ФИКС: УБИРАЕМ ПРОЗРАЧНОСТЬ ТЕКСТА ПРИ ПЕРЕКЛЮЧЕНИИ ЯЗЫКА ДЛЯ ВСЕХ СТРАНИЦ */
+.home-page [data-i18n],
+.about-page [data-i18n],
+.services-page [data-i18n],
+.portfolio-page [data-i18n],
+.brandbook-page [data-i18n],
+.contacts-page [data-i18n] {
     opacity: 1 !important;
     transition: none !important;
 }
 
 .home-page.language-changing [data-i18n],
-.home-page.language-changed [data-i18n] {
+.home-page.language-changed [data-i18n],
+.about-page.language-changing [data-i18n],
+.about-page.language-changed [data-i18n],
+.services-page.language-changing [data-i18n],
+.services-page.language-changed [data-i18n],
+.portfolio-page.language-changing [data-i18n],
+.portfolio-page.language-changed [data-i18n],
+.brandbook-page.language-changing [data-i18n],
+.brandbook-page.language-changed [data-i18n],
+.contacts-page.language-changing [data-i18n],
+.contacts-page.language-changed [data-i18n] {
     opacity: 1 !important;
     transition: none !important;
     animation: none !important;
 }
 
-/* ФИКС ДЛЯ ВИСЯЩЕГО ТЕКСТА */
-.expertise-vertical-block,
-.expertise-vertical-content,
-.expertise-number-block,
-.expertise-text-content,
-.speck-vertical-block,
-.project-card,
-.service-item,
-.journal-item,
-.faq-item,
-.cta-content,
-.stat-card,
-.hero-description {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    border: none !important;
-    box-shadow: none !important;
+/* ОБЩИЙ ФИКС ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА НА ВСЕХ СТРАНИЦАХ */
+.lang-text {
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
-/* УСИЛЕНИЕ ТЕНИ ДЛЯ ВИСЯЩЕГО ТЕКСТА */
-.expertise-main-title,
-.expertise-subtitle,
-.expertise-title,
-.expertise-description,
-.expertise-features li,
-.speck-block-title,
-.speck-block-subtitle,
-.speck-column-title,
-.speck-feature-item,
-.project-title,
-.project-description,
-.service-title,
-.service-description,
-.journal-title,
-.journal-date,
-.faq-question,
-.faq-answer p,
-.cta-title,
-.cta-subtitle,
-.stat-number,
-.stat-label,
-.section-title,
-.section-subtitle,
-.hero h1,
-.hero-subtitle,
-.hero-description p {
-    text-shadow: 
-        0 3px 30px rgba(0, 0, 0, 0.95),
-        0 2px 25px rgba(0, 0, 0, 0.9),
-        0 1px 20px rgba(0, 0, 0, 0.85) !important;
-    position: relative;
-    z-index: 20;
+/* Гарантируем отображение текста переключателя языка на всех страницах */
+.internal-page .lang-text,
+.about-page .lang-text,
+.services-page .lang-text,
+.portfolio-page .lang-text,
+.brandbook-page .lang-text,
+.contacts-page .lang-text {
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-weight: 700;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
 }
 
-/* АНИМАЦИЯ ЗАГРУЗКИ */
-@keyframes loadingFade {
-    0% {
-        opacity: 0.3;
+.internal-page .lang-btn.active .lang-text,
+.about-page .lang-btn.active .lang-text,
+.services-page .lang-btn.active .lang-text,
+.portfolio-page .lang-btn.active .lang-text,
+.brandbook-page .lang-btn.active .lang-text,
+.contacts-page .lang-btn.active .lang-text {
+    color: white;
+}
+
+/* Переопределяем любые анимации для переключателя языка на всех страницах */
+.internal-page [data-i18n],
+.internal-page .lang-btn,
+.internal-page .lang-text,
+.internal-page .lang-flag,
+.about-page [data-i18n],
+.about-page .lang-btn,
+.about-page .lang-text,
+.about-page .lang-flag,
+.services-page [data-i18n],
+.services-page .lang-btn,
+.services-page .lang-text,
+.services-page .lang-flag,
+.portfolio-page [data-i18n],
+.portfolio-page .lang-btn,
+.portfolio-page .lang-text,
+.portfolio-page .lang-flag,
+.brandbook-page [data-i18n],
+.brandbook-page .lang-btn,
+.brandbook-page .lang-text,
+.brandbook-page .lang-flag,
+.contacts-page [data-i18n],
+.contacts-page .lang-btn,
+.contacts-page .lang-text,
+.contacts-page .lang-flag {
+    opacity: 1 !important;
+    animation: none !important;
+    transition: none !important;
+    visibility: visible !important;
+}
+
+/* ФИКС ДЛЯ МОБИЛЬНЫХ ВЕРСИЙ ПЕРЕКЛЮЧАТЕЛЯ */
+@media (max-width: 768px) {
+    .language-switcher.mobile-only-flags .lang-text {
+        display: none !important;
     }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0.3;
+    
+    .internal-page .language-switcher.mobile-only-flags .lang-text,
+    .about-page .language-switcher.mobile-only-flags .lang-text,
+    .services-page .language-switcher.mobile-only-flags .lang-text,
+    .portfolio-page .language-switcher.mobile-only-flags .lang-text,
+    .brandbook-page .language-switcher.mobile-only-flags .lang-text,
+    .contacts-page .language-switcher.mobile-only-flags .lang-text {
+        display: none !important;
     }
 }
 
-.loading {
-    animation: loadingFade 1.5s ease-in-out infinite;
+/* Убираем возможные переопределения из других стилей */
+.lang-text {
+    text-shadow: none !important;
+    background: none !important;
+    -webkit-text-fill-color: unset !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
 }
 
-/* FINAL STATE CLASSES */
+/* ===== FINAL ANIMATION STATES ===== */
 .animated-element.visible,
 .fade-in-down.animated,
 .fade-in-up.animated,
@@ -1837,58 +1860,5 @@ body.all-content-loaded .bg-layer {
     body.all-content-loaded .service-item {
         opacity: 1 !important;
         transform: none !important;
-    }
-}
-
-/* Критичный фикс для FAQ в режиме reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    /* FAQ анимации */
-    .faq-item.active .faq-answer,
-    .faq-item.active .faq-question i,
-    .faq-question:hover,
-    .faq-question:hover i,
-    .faq-item.active .faq-answer p,
-    .faq-item.active {
-        animation: none !important;
-    }
-    
-    .faq-answer {
-        transition: none !important;
-    }
-    
-    .faq-item .faq-answer {
-        max-height: 0 !important;
-        opacity: 0 !important;
-        padding: 0 30px !important;
-        transform: none !important;
-    }
-    
-    .faq-item.active .faq-answer {
-        max-height: 500px !important;
-        opacity: 1 !important;
-        padding: 0 30px 30px 30px !important;
-        transform: none !important;
-    }
-    
-    .faq-question i {
-        transform: rotate(0deg) !important;
-        color: rgba(255, 255, 255, 0.7) !important;
-        background: rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    .faq-item.active .faq-question i {
-        transform: rotate(45deg) !important;
-        color: #66b5ff !important;
-        background: rgba(102, 181, 255, 0.2) !important;
-    }
-    
-    .faq-item {
-        border-color: rgba(102, 181, 255, 0.3) !important;
-    }
-    
-    .faq-item.active {
-        border-color: rgba(102, 181, 255, 0.6) !important;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
-        animation: none !important;
     }
 }
