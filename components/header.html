@@ -141,32 +141,38 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА - ОБЩИЕ СТИЛИ ===== */
+        /* ===== СУПЕР-КОМПАКТНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
         .language-switcher {
             display: flex;
             align-items: center;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 4px;
+            border-radius: 18px; /* Уменьшено */
+            padding: 3px; /* Уменьшено */
             border: 1px solid rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            min-width: 90px; /* УМЕНЬШЕНО */
-            height: 46px;
+            min-width: 70px; /* СУПЕР-КОМПАКТНО */
+            height: 34px;    /* СУПЕР-КОМПАКТНО */
             overflow: hidden;
             flex-shrink: 0;
             position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .lang-slider {
             position: absolute;
-            top: 4px;
-            left: 4px;
-            width: calc(50% - 4px);
-            height: calc(100% - 8px);
+            top: 3px; /* Уменьшено */
+            left: 3px; /* Уменьшено */
+            width: calc(50% - 3px); /* Уменьшено */
+            height: calc(100% - 6px); /* Уменьшено */
             background: rgba(255, 255, 255, 0.25);
-            border-radius: 20px;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 15px; /* Уменьшено */
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 1;
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
@@ -179,28 +185,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px; /* УМЕНЬШЕНО */
-            padding: 0 12px; /* УМЕНЬШЕНО */
+            gap: 4px; /* Уменьшено */
+            padding: 0 8px; /* Уменьшено */
             background: none;
             border: none;
             color: rgba(255, 255, 255, 0.85);
-            font-size: 15px; /* УМЕНЬШЕНО */
+            font-size: 13px; /* Уменьшено */
             font-weight: 600;
             cursor: pointer;
-            border-radius: 20px;
-            transition: all 0.3s ease;
+            border-radius: 15px; /* Уменьшено */
+            transition: all 0.2s ease;
             flex: 1;
             outline: none;
             min-width: 0;
             position: relative;
             z-index: 2;
-            height: 38px;
+            height: 28px; /* Уменьшено */
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px; /* Уменьшено */
         }
 
         .lang-btn:hover {
             color: white;
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .lang-btn.active {
@@ -209,16 +216,21 @@
         }
 
         .lang-flag {
-            font-size: 18px; /* УМЕНЬШЕНО */
+            font-size: 14px; /* Уменьшено */
             display: inline-block;
             line-height: 1;
+            transition: transform 0.2s ease;
+        }
+
+        .lang-btn:hover .lang-flag {
+            transform: scale(1.1);
         }
 
         .lang-text {
             display: inline-block;
             font-weight: 700;
-            font-size: 14px; /* УМЕНЬШЕНО */
-            letter-spacing: 0.5px;
+            font-size: 12px; /* Уменьшено */
+            letter-spacing: 0.3px; /* Уменьшено */
         }
 
         /* Мобильная версия - только флаги */
@@ -227,49 +239,49 @@
         }
 
         .language-switcher.mobile-only-flags {
-            min-width: 100px;
-            height: 42px;
+            min-width: 90px; /* Уменьшено */
+            height: 36px; /* Уменьшено */
         }
 
         .language-switcher.mobile-only-flags .lang-btn {
-            padding: 0 15px;
+            padding: 0 12px; /* Уменьшено */
             gap: 0;
         }
 
         .language-switcher.mobile-only-flags .lang-flag {
-            font-size: 22px;
+            font-size: 18px; /* Уменьшено */
         }
 
-        /* ===== ДЕСКТОПНАЯ ВЕРСИЯ - КОМПАКТНАЯ ===== */
+        /* ===== ДЕСКТОПНАЯ ВЕРСИЯ - СУПЕР-КОМПАКТНАЯ ===== */
         .header-right-desktop .language-switcher {
-            min-width: 90px; /* Уменьшено с 120px */
-            height: 38px;    /* Уменьшено с 46px */
-            padding: 3px;    /* Уменьшено с 4px */
-            border-radius: 20px;
+            min-width: 70px; /* СУПЕР-КОМПАКТНО */
+            height: 34px;    /* СУПЕР-КОМПАКТНО */
+            padding: 3px;    /* Уменьшено */
+            border-radius: 18px;
         }
 
         .header-right-desktop .lang-slider {
-            top: 3px;        /* Уменьшено с 4px */
-            left: 3px;       /* Уменьшено с 4px */
+            top: 3px;        /* Уменьшено */
+            left: 3px;       /* Уменьшено */
             width: calc(50% - 3px); /* Уменьшено */
             height: calc(100% - 6px); /* Уменьшено */
-            border-radius: 17px;
+            border-radius: 15px;
         }
 
         .header-right-desktop .lang-btn {
-            font-size: 14px;  /* Уменьшено с 16px */
-            height: 32px;     /* Уменьшено с 38px */
-            padding: 0 12px;  /* Уменьшено с 0 20px */
-            gap: 5px;         /* Уменьшено с 8px */
-            border-radius: 17px;
+            font-size: 13px;  /* Уменьшено */
+            height: 28px;     /* Уменьшено */
+            padding: 0 8px;   /* Уменьшено */
+            gap: 4px;         /* Уменьшено */
+            border-radius: 15px;
         }
 
         .header-right-desktop .lang-text {
-            font-size: 14px;  /* Уменьшено с 16px */
+            font-size: 12px;  /* Уменьшено */
         }
 
         .header-right-desktop .lang-flag {
-            font-size: 18px;  /* Уменьшено с 20px */
+            font-size: 14px;  /* Уменьшено */
         }
 
         /* ===== DESKTOP BUTTON ===== */
@@ -460,8 +472,7 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            min-width: 130px;
-            position: relative;
+            min-width: 110px; /* Уменьшено */
         }
 
         .mobile-lang-slider-menu {
@@ -542,11 +553,11 @@
             }
             
             .language-switcher.mobile-only-flags {
-                min-width: 120px;
+                min-width: 100px; /* Уменьшено */
             }
             
             .language-switcher.mobile-only-flags .lang-btn {
-                gap: 8px;
+                gap: 6px; /* Уменьшено */
             }
         }
 
@@ -557,6 +568,8 @@
             
             .header-right-mobile {
                 display: flex;
+                align-items: center;
+                gap: 8px; /* Уменьшено */
             }
             
             .burger-btn {
@@ -573,48 +586,48 @@
             }
             
             .language-switcher.mobile-only-flags {
-                min-width: 100px;
-                height: 42px;
+                min-width: 85px; /* Уменьшено */
+                height: 36px;
             }
             
             .language-switcher.mobile-only-flags .lang-btn {
-                padding: 0 15px;
+                padding: 0 12px;
                 gap: 0;
             }
             
             .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 22px;
+                font-size: 18px;
             }
             
             /* Отключаем компактные стили на мобильном */
             .header-right-desktop .language-switcher {
-                min-width: 120px;
-                height: 46px;
-                padding: 4px;
+                min-width: 70px;
+                height: 34px;
+                padding: 3px;
             }
             
             .header-right-desktop .lang-slider {
-                top: 4px;
-                left: 4px;
-                width: calc(50% - 4px);
-                height: calc(100% - 8px);
-                border-radius: 20px;
+                top: 3px;
+                left: 3px;
+                width: calc(50% - 3px);
+                height: calc(100% - 6px);
+                border-radius: 15px;
             }
             
             .header-right-desktop .lang-btn {
-                font-size: 16px;
-                height: 38px;
-                padding: 0 20px;
-                gap: 8px;
-                border-radius: 20px;
+                font-size: 13px;
+                height: 28px;
+                padding: 0 8px;
+                gap: 4px;
+                border-radius: 15px;
             }
             
             .header-right-desktop .lang-text {
-                font-size: 16px;
+                font-size: 12px;
             }
             
             .header-right-desktop .lang-flag {
-                font-size: 20px;
+                font-size: 14px;
             }
         }
 
@@ -659,12 +672,12 @@
             }
             
             .language-switcher.mobile-only-flags {
-                min-width: 95px;
-                height: 38px;
+                min-width: 80px; /* Уменьшено */
+                height: 34px; /* Уменьшено */
             }
             
             .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 20px;
+                font-size: 16px; /* Уменьшено */
             }
             
             .burger-btn {
@@ -687,7 +700,7 @@
             
             /* Улучшаем мобильное меню */
             .mobile-language-switcher {
-                min-width: 120px;
+                min-width: 100px; /* Уменьшено */
             }
         }
 
@@ -725,12 +738,12 @@
             }
             
             .language-switcher.mobile-only-flags {
-                min-width: 90px;
-                height: 36px;
+                min-width: 75px; /* Уменьшено */
+                height: 32px; /* Уменьшено */
             }
             
             .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 18px;
+                font-size: 15px; /* Уменьшено */
             }
             
             .burger-btn {
@@ -764,7 +777,7 @@
             
             /* Мобильное меню переключатель языка */
             .mobile-language-switcher {
-                min-width: 110px;
+                min-width: 95px; /* Уменьшено */
             }
         }
 
@@ -775,12 +788,12 @@
             }
             
             .language-switcher.mobile-only-flags {
-                min-width: 85px;
-                height: 34px;
+                min-width: 70px; /* Уменьшено */
+                height: 30px; /* Уменьшено */
             }
             
             .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 17px;
+                font-size: 14px; /* Уменьшено */
             }
             
             .burger-btn {
@@ -789,17 +802,17 @@
             }
             
             .mobile-language-switcher {
-                min-width: 105px;
+                min-width: 90px; /* Уменьшено */
             }
         }
 
         @media (max-width: 320px) {
             .language-switcher.mobile-only-flags {
-                min-width: 80px;
+                min-width: 65px; /* Уменьшено */
             }
             
             .mobile-language-switcher {
-                min-width: 100px;
+                min-width: 85px; /* Уменьшено */
             }
         }
 
@@ -849,7 +862,7 @@
                 
                 <!-- Десктопная версия (справа) -->
                 <div class="header-right-desktop">
-                    <!-- Десктопный переключатель языка (с текстом RU/EN) - КОМПАКТНЫЙ -->
+                    <!-- СУПЕР-КОМПАКТНЫЙ переключатель языка -->
                     <div class="language-switcher" data-current-lang="ru">
                         <div class="lang-slider"></div>
                         <button class="lang-btn" data-lang="ru">
@@ -869,7 +882,7 @@
                 
                 <!-- Мобильная версия (справа) -->
                 <div class="header-right-mobile">
-                    <!-- Мобильный переключатель языка (только флаги) - оригинальный размер -->
+                    <!-- Компактный мобильный переключатель -->
                     <div class="language-switcher mobile-only-flags" data-current-lang="ru">
                         <div class="lang-slider"></div>
                         <button class="lang-btn" data-lang="ru">
@@ -903,7 +916,7 @@
             </nav>
             
             <div class="mobile-menu-footer">
-                <!-- Переключатель языка в мобильном меню (с текстом) - оригинальный размер -->
+                <!-- Переключатель языка в мобильном меню -->
                 <div class="mobile-language-switcher" data-current-lang="ru">
                     <div class="mobile-lang-slider-menu"></div>
                     <button class="mobile-lang-btn" data-lang="ru">
