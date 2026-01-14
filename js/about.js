@@ -1,41 +1,52 @@
-console.log('🚀 about.js loaded - REAL TEAM PHOTOS VERSION - UPDATED');
+console.log('🚀 about.js loaded - REAL TEAM PHOTOS VERSION - FINAL FIX');
 
-// Используем глобальный SafeDOM если он существует, иначе используем простые проверки
-const SafeDOM = window.SafeDOM || {
-    querySelector(selector) {
-        try {
-            return document.querySelector(selector);
-        } catch (error) {
-            console.warn(`⚠️ Invalid selector: ${selector}`, error);
-            return null;
-        }
-    },
-    
-    querySelectorAll(selector) {
-        try {
-            return document.querySelectorAll(selector);
-        } catch (error) {
-            console.warn(`⚠️ Invalid selector: ${selector}`, error);
-            return [];
-        }
-    },
-    
-    addClass(element, className) {
-        if (element && element.classList) {
-            element.classList.add(className);
-        }
-    },
-    
-    removeClass(element, className) {
-        if (element && element.classList) {
-            element.classList.remove(className);
-        }
-    },
-    
-    hasClass(element, className) {
-        return element && element.classList && element.classList.contains(className);
+// Создаем локальную переменную SafeDOM, но не объявляем как класс
+// Используем глобальный SafeDOM если он существует
+const AboutSafeDOM = (function() {
+    // Если глобальный SafeDOM существует, используем его
+    if (window.SafeDOM && typeof window.SafeDOM === 'object') {
+        console.log('✅ Using global SafeDOM');
+        return window.SafeDOM;
     }
-};
+    
+    // Иначе создаем свою версию
+    console.log('⚠️ Global SafeDOM not found, creating local version');
+    return {
+        querySelector(selector) {
+            try {
+                return document.querySelector(selector);
+            } catch (error) {
+                console.warn(`⚠️ Invalid selector: ${selector}`, error);
+                return null;
+            }
+        },
+        
+        querySelectorAll(selector) {
+            try {
+                return document.querySelectorAll(selector);
+            } catch (error) {
+                console.warn(`⚠️ Invalid selector: ${selector}`, error);
+                return [];
+            }
+        },
+        
+        addClass(element, className) {
+            if (element && element.classList) {
+                element.classList.add(className);
+            }
+        },
+        
+        removeClass(element, className) {
+            if (element && element.classList) {
+                element.classList.remove(className);
+            }
+        },
+        
+        hasClass(element, className) {
+            return element && element.classList && element.classList.contains(className);
+        }
+    };
+})();
 
 class AboutPage {
     constructor() {
@@ -49,7 +60,7 @@ class AboutPage {
     init() {
         console.log('🎯 About page script initializing...');
         
-        // Проверяем DOM готовность
+        // Ждем загрузки DOM
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('📄 About page DOM loaded');
@@ -183,11 +194,11 @@ class AboutPage {
     setupHeaderForAboutPage() {
         console.log('🔧 Setting up header for about page...');
         
-        const header = SafeDOM.querySelector('.main-header');
+        const header = AboutSafeDOM.querySelector('.main-header');
         const headerContainer = document.getElementById('header-container');
         
         if (header) {
-            SafeDOM.addClass(header, 'about-page-header');
+            AboutSafeDOM.addClass(header, 'about-page-header');
             console.log('✅ Header found and configured for about page');
             
             // Убеждаемся что хедер видим
@@ -197,7 +208,7 @@ class AboutPage {
             // Ищем хедер внутри контейнера
             const headerInContainer = headerContainer.querySelector('header, .main-header, nav');
             if (headerInContainer) {
-                SafeDOM.addClass(headerInContainer, 'about-page-header');
+                AboutSafeDOM.addClass(headerInContainer, 'about-page-header');
                 console.log('✅ Header found in container and configured');
             } else {
                 console.warn('⚠️ Header not found in container');
@@ -211,8 +222,8 @@ class AboutPage {
     initializeTeamPhotos() {
         console.log('🖼️ Initializing team photos...');
         
-        const teamMembers = SafeDOM.querySelectorAll('.team-member, .team-card, [data-team-member]');
-        const teamPhotos = SafeDOM.querySelectorAll('.team-photo, .member-photo, .team-img');
+        const teamMembers = AboutSafeDOM.querySelectorAll('.team-member, .team-card, [data-team-member]');
+        const teamPhotos = AboutSafeDOM.querySelectorAll('.team-photo, .member-photo, .team-img');
         
         console.log(`👥 Found ${teamMembers.length} team members`);
         console.log(`📸 Found ${teamPhotos.length} team photos`);
@@ -225,7 +236,7 @@ class AboutPage {
             if (!photo.complete) {
                 photo.addEventListener('load', () => {
                     console.log(`✅ Photo ${index + 1} loaded successfully`);
-                    SafeDOM.addClass(photo, 'loaded');
+                    AboutSafeDOM.addClass(photo, 'loaded');
                 });
                 
                 photo.addEventListener('error', () => {
@@ -236,7 +247,7 @@ class AboutPage {
                     }
                 });
             } else {
-                SafeDOM.addClass(photo, 'loaded');
+                AboutSafeDOM.addClass(photo, 'loaded');
                 console.log(`✅ Photo ${index + 1} already loaded`);
             }
         });
@@ -262,7 +273,7 @@ class AboutPage {
         console.log('⚙️ Setting up page functionalities...');
         
         // Статистика истории
-        const storyStats = SafeDOM.querySelectorAll('.stat-card, .story-stat, [data-stat]');
+        const storyStats = AboutSafeDOM.querySelectorAll('.stat-card, .story-stat, [data-stat]');
         console.log(`📊 Found ${storyStats.length} story stats`);
         
         storyStats.forEach((stat, index) => {
@@ -276,7 +287,7 @@ class AboutPage {
         });
         
         // Карточки услуг
-        const serviceCards = SafeDOM.querySelectorAll('.service-card, .service-item, [data-service]');
+        const serviceCards = AboutSafeDOM.querySelectorAll('.service-card, .service-item, [data-service]');
         console.log(`💎 Found ${serviceCards.length} service cards`);
         
         serviceCards.forEach((card, index) => {
@@ -296,7 +307,7 @@ class AboutPage {
         console.log('🎭 Starting content animations...');
         
         // Все секции
-        const sections = SafeDOM.querySelectorAll('section, .content-section');
+        const sections = AboutSafeDOM.querySelectorAll('section, .content-section');
         
         sections.forEach((section, index) => {
             if (!section) return;
@@ -305,7 +316,7 @@ class AboutPage {
             setTimeout(() => {
                 section.style.opacity = '1';
                 section.style.transform = 'translateY(0)';
-                SafeDOM.addClass(section, 'animated-in');
+                AboutSafeDOM.addClass(section, 'animated-in');
             }, index * 200);
         });
         
@@ -316,7 +327,7 @@ class AboutPage {
         console.log('📍 Setting up page navigation...');
         
         // Внутренние ссылки для плавного скролла
-        const internalLinks = SafeDOM.querySelectorAll('a[href^="#"]');
+        const internalLinks = AboutSafeDOM.querySelectorAll('a[href^="#"]');
         
         internalLinks.forEach(link => {
             if (!link) return;
@@ -330,7 +341,7 @@ class AboutPage {
                     const targetElement = document.getElementById(targetId);
                     
                     if (targetElement) {
-                        const header = SafeDOM.querySelector('.main-header');
+                        const header = AboutSafeDOM.querySelector('.main-header');
                         const headerHeight = header ? header.offsetHeight : 0;
                         
                         window.scrollTo({
@@ -346,7 +357,7 @@ class AboutPage {
     setupScrollAnimations() {
         console.log('📜 Setting up scroll animations...');
         
-        const animatedSections = SafeDOM.querySelectorAll('.animate-on-scroll, [data-animate]');
+        const animatedSections = AboutSafeDOM.querySelectorAll('.animate-on-scroll, [data-animate]');
         console.log(`🎬 Setting up scroll animations for ${animatedSections.length} sections`);
         
         if (!('IntersectionObserver' in window)) {
@@ -365,7 +376,7 @@ class AboutPage {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    SafeDOM.addClass(entry.target, 'in-view');
+                    AboutSafeDOM.addClass(entry.target, 'in-view');
                     observer.unobserve(entry.target);
                 }
             });
@@ -380,7 +391,7 @@ class AboutPage {
         console.log('🎯 Finalizing about page initialization...');
         
         // Добавляем класс к body
-        SafeDOM.addClass(document.body, 'about-page-initialized');
+        AboutSafeDOM.addClass(document.body, 'about-page-initialized');
         
         // Проверяем все ли элементы загружены
         setTimeout(() => {
@@ -398,7 +409,7 @@ class AboutPage {
         
         let allLoaded = true;
         checkElements.forEach(item => {
-            const elements = SafeDOM.querySelectorAll(item.selector);
+            const elements = AboutSafeDOM.querySelectorAll(item.selector);
             if (elements.length > 0) {
                 console.log(`✅ ${item.name}: ${elements.length} found`);
             } else {
