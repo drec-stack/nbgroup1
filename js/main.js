@@ -77,6 +77,9 @@ class DaehaaApp {
         
         // Инициализация переключателя языка
         this.setupLanguageSwitcherUI();
+        
+        // Настройка адаптивного переключателя языка
+        this.setupResponsiveLanguageSwitcher();
     }
 
     setupSmoothScroll() {
@@ -137,7 +140,7 @@ class DaehaaApp {
 
     updateLanguageSwitcherUI(lang) {
         const langBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
-        const switchers = document.querySelectorAll('.language-switcher, .language-switcher-mobile, .mobile-language-switcher');
+        const switchers = document.querySelectorAll('.language-switcher, .mobile-language-switcher');
         
         langBtns.forEach(btn => {
             btn.classList.remove('active');
@@ -148,7 +151,47 @@ class DaehaaApp {
         
         switchers.forEach(switcher => {
             switcher.setAttribute('data-current-lang', lang);
+            
+            // Анимируем ползунок
+            const slider = switcher.querySelector('.lang-slider, .mobile-lang-slider-menu');
+            if (slider) {
+                slider.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                slider.style.transform = lang === 'en' ? 'translateX(100%)' : 'translateX(0)';
+            }
         });
+    }
+
+    setupResponsiveLanguageSwitcher() {
+        // Функция для обновления отображения текста в переключателе языка
+        const updateLanguageSwitcherText = () => {
+            const isMobile = window.innerWidth <= 768;
+            const languageSwitchers = document.querySelectorAll('.language-switcher.mobile-only-flags');
+            
+            languageSwitchers.forEach(switcher => {
+                const textElements = switcher.querySelectorAll('.lang-text');
+                textElements.forEach(textElement => {
+                    if (isMobile) {
+                        textElement.style.display = 'none';
+                    } else {
+                        textElement.style.display = 'inline-block';
+                    }
+                });
+            });
+        };
+        
+        // Инициализация при загрузке
+        updateLanguageSwitcherText();
+        
+        // Обновление при изменении размера окна
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                updateLanguageSwitcherText();
+            }, 250);
+        });
+        
+        console.log('✅ Responsive language switcher initialized');
     }
 
     setupMobileOptimizations() {
@@ -404,6 +447,31 @@ window.throttle = function(func, limit) {
             setTimeout(() => inThrottle = false, limit);
         }
     };
+};
+
+// Глобальные функции для управления переключателем языка
+window.updateLanguageSwitcher = function(lang) {
+    if (window.DaehaaApp) {
+        window.DaehaaApp.updateLanguageSwitcherUI(lang);
+    }
+};
+
+window.getCurrentLanguage = function() {
+    return localStorage.getItem('preferredLang') || 'ru';
+};
+
+window.toggleLanguage = function() {
+    const currentLang = localStorage.getItem('preferredLang') || 'ru';
+    const newLang = currentLang === 'ru' ? 'en' : 'ru';
+    
+    if (window.i18n && window.i18n.switchLanguage) {
+        window.i18n.switchLanguage(newLang);
+    } else {
+        // Fallback if i18n is not available
+        localStorage.setItem('preferredLang', newLang);
+        window.updateLanguageSwitcher(newLang);
+        location.reload();
+    }
 };
 
 console.log('✅ main.js loaded - ready!');
