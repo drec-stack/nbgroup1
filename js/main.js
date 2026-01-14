@@ -1,13 +1,15 @@
-console.log('🚀 main.js loaded - CLEAN VERSION - FIXED');
+console.log('🚀 main.js loaded - CLEAN VERSION - ULTRA FIXED');
 
 class DaehaaApp {
     constructor() {
+        console.log('🏗️ DaehaaApp constructor called');
+        
         this.isReducedMotion = window.matchMedia ? 
             window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
         
-        this.isServicesPage = document.body.classList.contains('services-page') || 
+        this.isServicesPage = document.body && document.body.classList.contains('services-page') || 
                               window.location.pathname.includes('services.html');
-        this.isAboutPage = document.body.classList.contains('about-page') || 
+        this.isAboutPage = document.body && document.body.classList.contains('about-page') || 
                            window.location.pathname.includes('about.html');
         this.isHomePage = !this.isServicesPage && !this.isAboutPage && 
                           (window.location.pathname.endsWith('index.html') || 
@@ -16,10 +18,18 @@ class DaehaaApp {
         
         console.log(`📄 Page type: ${this.isServicesPage ? 'Services' : this.isAboutPage ? 'About' : this.isHomePage ? 'Home' : 'Other'}`);
         
+        // НЕ ИЩЕМ .mobile-menu здесь! Он еще не загружен!
+        // Переносим в init()
+        
         // Инициализируем после загрузки DOM
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.init());
+            console.log('⏳ DOM loading, waiting...');
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('✅ DOM loaded, calling init()');
+                this.init();
+            });
         } else {
+            console.log('✅ DOM already loaded, calling init()');
             this.init();
         }
     }
@@ -27,10 +37,13 @@ class DaehaaApp {
     init() {
         console.log('🚀 Daehaa App initializing...');
         
-        // Проверяем наличие .mobile-menu ПОСЛЕ загрузки DOM
-        this.mobileMenuBtn = this.safeQuerySelector('.mobile-menu');
+        // Только теперь ищем .mobile-menu после загрузки DOM
+        this.mobileMenuBtn = document.querySelector('.mobile-menu');
         if (this.mobileMenuBtn) {
+            console.log('✅ Found .mobile-menu element');
             this.mobileMenuBtn.classList.add('daehaa-enhanced');
+        } else {
+            console.warn('⚠️ .mobile-menu element not found - skipping enhancement');
         }
         
         // Базовые функции
