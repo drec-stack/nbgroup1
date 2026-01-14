@@ -146,13 +146,13 @@
             display: flex;
             align-items: center;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 18px; /* Уменьшено */
-            padding: 3px; /* Уменьшено */
+            border-radius: 18px;
+            padding: 3px;
             border: 1px solid rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            min-width: 70px; /* СУПЕР-КОМПАКТНО */
-            height: 34px;    /* СУПЕР-КОМПАКТНО */
+            min-width: 70px;
+            height: 34px;
             overflow: hidden;
             flex-shrink: 0;
             position: relative;
@@ -166,12 +166,12 @@
 
         .lang-slider {
             position: absolute;
-            top: 3px; /* Уменьшено */
-            left: 3px; /* Уменьшено */
-            width: calc(50% - 3px); /* Уменьшено */
-            height: calc(100% - 6px); /* Уменьшено */
+            top: 3px;
+            left: 3px;
+            width: calc(50% - 3px);
+            height: calc(100% - 6px);
             background: rgba(255, 255, 255, 0.25);
-            border-radius: 15px; /* Уменьшено */
+            border-radius: 15px;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 1;
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -185,24 +185,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px; /* Уменьшено */
-            padding: 0 8px; /* Уменьшено */
+            gap: 4px;
+            padding: 0 8px;
             background: none;
             border: none;
             color: rgba(255, 255, 255, 0.85);
-            font-size: 13px; /* Уменьшено */
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            border-radius: 15px; /* Уменьшено */
+            border-radius: 15px;
             transition: all 0.2s ease;
             flex: 1;
             outline: none;
             min-width: 0;
             position: relative;
             z-index: 2;
-            height: 28px; /* Уменьшено */
+            height: 28px;
             text-transform: uppercase;
-            letter-spacing: 0.3px; /* Уменьшено */
+            letter-spacing: 0.3px;
         }
 
         .lang-btn:hover {
@@ -216,7 +216,7 @@
         }
 
         .lang-flag {
-            font-size: 14px; /* Уменьшено */
+            font-size: 14px;
             display: inline-block;
             line-height: 1;
             transition: transform 0.2s ease;
@@ -229,8 +229,8 @@
         .lang-text {
             display: inline-block;
             font-weight: 700;
-            font-size: 12px; /* Уменьшено */
-            letter-spacing: 0.3px; /* Уменьшено */
+            font-size: 12px;
+            letter-spacing: 0.3px;
         }
 
         /* Мобильная версия - только флаги */
@@ -239,49 +239,49 @@
         }
 
         .language-switcher.mobile-only-flags {
-            min-width: 90px; /* Уменьшено */
-            height: 36px; /* Уменьшено */
+            min-width: 90px;
+            height: 36px;
         }
 
         .language-switcher.mobile-only-flags .lang-btn {
-            padding: 0 12px; /* Уменьшено */
+            padding: 0 12px;
             gap: 0;
         }
 
         .language-switcher.mobile-only-flags .lang-flag {
-            font-size: 18px; /* Уменьшено */
+            font-size: 18px;
         }
 
         /* ===== ДЕСКТОПНАЯ ВЕРСИЯ - СУПЕР-КОМПАКТНАЯ ===== */
         .header-right-desktop .language-switcher {
-            min-width: 70px; /* СУПЕР-КОМПАКТНО */
-            height: 34px;    /* СУПЕР-КОМПАКТНО */
-            padding: 3px;    /* Уменьшено */
+            min-width: 70px;
+            height: 34px;
+            padding: 3px;
             border-radius: 18px;
         }
 
         .header-right-desktop .lang-slider {
-            top: 3px;        /* Уменьшено */
-            left: 3px;       /* Уменьшено */
-            width: calc(50% - 3px); /* Уменьшено */
-            height: calc(100% - 6px); /* Уменьшено */
+            top: 3px;
+            left: 3px;
+            width: calc(50% - 3px);
+            height: calc(100% - 6px);
             border-radius: 15px;
         }
 
         .header-right-desktop .lang-btn {
-            font-size: 13px;  /* Уменьшено */
-            height: 28px;     /* Уменьшено */
-            padding: 0 8px;   /* Уменьшено */
-            gap: 4px;         /* Уменьшено */
+            font-size: 13px;
+            height: 28px;
+            padding: 0 8px;
+            gap: 4px;
             border-radius: 15px;
         }
 
         .header-right-desktop .lang-text {
-            font-size: 12px;  /* Уменьшено */
+            font-size: 12px;
         }
 
         .header-right-desktop .lang-flag {
-            font-size: 14px;  /* Уменьшено */
+            font-size: 14px;
         }
 
         /* ===== DESKTOP BUTTON ===== */
@@ -324,222 +324,6 @@
             justify-content: flex-end;
         }
 
-        /* ===== BURGER MENU ===== */
-        .burger-btn {
-            display: none;
-            width: 32px;
-            height: 32px;
-            position: relative;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            cursor: pointer;
-            padding: 0;
-            z-index: 1002;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-        }
-
-        .burger-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .burger-btn span {
-            display: block;
-            position: absolute;
-            width: 20px;
-            height: 2px;
-            background: white;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .burger-btn span:nth-child(1) {
-            top: 10px;
-        }
-
-        .burger-btn span:nth-child(2) {
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .burger-btn span:nth-child(3) {
-            bottom: 10px;
-        }
-
-        .burger-btn.active {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .burger-btn.active span:nth-child(1) {
-            top: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-        }
-
-        .burger-btn.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .burger-btn.active span:nth-child(3) {
-            bottom: 50%;
-            transform: translate(-50%, 50%) rotate(-45deg);
-        }
-
-        /* ===== МОБИЛЬНОЕ МЕНЮ ===== */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: rgba(10, 10, 20, 0.98);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transform: translateX(100%);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 80px 20px 40px;
-            overflow-y: auto;
-        }
-
-        .mobile-menu.active {
-            transform: translateX(0);
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .mobile-nav-link {
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 500;
-            padding: 12px 24px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            text-align: center;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .mobile-nav-link:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .mobile-nav-link.active {
-            color: white;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.25);
-        }
-
-        .mobile-menu-footer {
-            margin-top: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .mobile-language-switcher {
-            display: flex;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            min-width: 110px; /* Уменьшено */
-        }
-
-        .mobile-lang-slider-menu {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            width: calc(50% - 5px);
-            height: calc(100% - 10px);
-            background: rgba(255, 255, 255, 0.25);
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            z-index: 1;
-        }
-
-        .mobile-language-switcher[data-current-lang="en"] .mobile-lang-slider-menu {
-            transform: translateX(100%);
-        }
-
-        .mobile-lang-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            flex: 1;
-            position: relative;
-            z-index: 2;
-        }
-
-        .mobile-lang-btn.active {
-            color: white;
-            font-weight: 600;
-        }
-
-        .mobile-header-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 14px 32px;
-            background: white;
-            color: #0a0a0a;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 16px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            gap: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
-            width: 100%;
-        }
-
-        .mobile-header-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25);
-        }
-
         /* ===== МЕДИА ЗАПРОСЫ ДЛЯ АДАПТИВНОСТИ ===== */
         
         /* Планшет и десктоп - показываем текст RU/EN */
@@ -553,11 +337,11 @@
             }
             
             .language-switcher.mobile-only-flags {
-                min-width: 100px; /* Уменьшено */
+                min-width: 100px;
             }
             
             .language-switcher.mobile-only-flags .lang-btn {
-                gap: 6px; /* Уменьшено */
+                gap: 6px;
             }
         }
 
@@ -569,15 +353,7 @@
             .header-right-mobile {
                 display: flex;
                 align-items: center;
-                gap: 8px; /* Уменьшено */
-            }
-            
-            .burger-btn {
-                display: block;
-            }
-            
-            .header-inner {
-                gap: 10px;
+                gap: 8px;
             }
             
             /* Мобильный переключатель языка - только флаги */
@@ -586,7 +362,7 @@
             }
             
             .language-switcher.mobile-only-flags {
-                min-width: 85px; /* Уменьшено */
+                min-width: 85px;
                 height: 36px;
             }
             
@@ -597,37 +373,6 @@
             
             .language-switcher.mobile-only-flags .lang-flag {
                 font-size: 18px;
-            }
-            
-            /* Отключаем компактные стили на мобильном */
-            .header-right-desktop .language-switcher {
-                min-width: 70px;
-                height: 34px;
-                padding: 3px;
-            }
-            
-            .header-right-desktop .lang-slider {
-                top: 3px;
-                left: 3px;
-                width: calc(50% - 3px);
-                height: calc(100% - 6px);
-                border-radius: 15px;
-            }
-            
-            .header-right-desktop .lang-btn {
-                font-size: 13px;
-                height: 28px;
-                padding: 0 8px;
-                gap: 4px;
-                border-radius: 15px;
-            }
-            
-            .header-right-desktop .lang-text {
-                font-size: 12px;
-            }
-            
-            .header-right-desktop .lang-flag {
-                font-size: 14px;
             }
         }
 
@@ -672,35 +417,12 @@
             }
             
             .language-switcher.mobile-only-flags {
-                min-width: 80px; /* Уменьшено */
-                height: 34px; /* Уменьшено */
+                min-width: 80px;
+                height: 34px;
             }
             
             .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 16px; /* Уменьшено */
-            }
-            
-            .burger-btn {
-                width: 30px;
-                height: 30px;
-            }
-            
-            .burger-btn span {
-                width: 18px;
-                height: 2px;
-            }
-            
-            .burger-btn span:nth-child(1) {
-                top: 9px;
-            }
-            
-            .burger-btn span:nth-child(3) {
-                bottom: 9px;
-            }
-            
-            /* Улучшаем мобильное меню */
-            .mobile-language-switcher {
-                min-width: 100px; /* Уменьшено */
+                font-size: 16px;
             }
         }
 
@@ -738,46 +460,12 @@
             }
             
             .language-switcher.mobile-only-flags {
-                min-width: 75px; /* Уменьшено */
-                height: 32px; /* Уменьшено */
+                min-width: 75px;
+                height: 32px;
             }
             
             .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 15px; /* Уменьшено */
-            }
-            
-            .burger-btn {
-                width: 28px;
-                height: 28px;
-            }
-            
-            .burger-btn span {
-                width: 16px;
-                height: 1.5px;
-            }
-            
-            .burger-btn span:nth-child(1) {
-                top: 8px;
-            }
-            
-            .burger-btn span:nth-child(3) {
-                bottom: 8px;
-            }
-            
-            /* Мобильное меню для маленьких экранов */
-            .mobile-nav-link {
-                font-size: 16px;
-                padding: 10px 16px;
-            }
-            
-            .mobile-header-btn {
-                padding: 12px 20px;
-                font-size: 14px;
-            }
-            
-            /* Мобильное меню переключатель языка */
-            .mobile-language-switcher {
-                min-width: 95px; /* Уменьшено */
+                font-size: 15px;
             }
         }
 
@@ -788,31 +476,18 @@
             }
             
             .language-switcher.mobile-only-flags {
-                min-width: 70px; /* Уменьшено */
-                height: 30px; /* Уменьшено */
+                min-width: 70px;
+                height: 30px;
             }
             
             .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 14px; /* Уменьшено */
-            }
-            
-            .burger-btn {
-                width: 26px;
-                height: 26px;
-            }
-            
-            .mobile-language-switcher {
-                min-width: 90px; /* Уменьшено */
+                font-size: 14px;
             }
         }
 
         @media (max-width: 320px) {
             .language-switcher.mobile-only-flags {
-                min-width: 65px; /* Уменьшено */
-            }
-            
-            .mobile-language-switcher {
-                min-width: 85px; /* Уменьшено */
+                min-width: 65px;
             }
         }
 
@@ -825,15 +500,10 @@
             .language-switcher {
                 background: rgba(255, 255, 255, 0.12);
             }
-            
-            .mobile-menu {
-                background: rgba(10, 10, 20, 0.98);
-            }
         }
         
         /* Фикс для iOS */
         @supports (-webkit-touch-callout: none) {
-            .burger-btn,
             .lang-btn {
                 cursor: pointer;
             }
@@ -894,44 +564,7 @@
                             <span class="lang-text">EN</span>
                         </button>
                     </div>
-                    
-                    <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
                 </div>
-            </div>
-        </div>
-        
-        <!-- Мобильное меню -->
-        <div class="mobile-menu" id="mobile-menu">
-            <nav class="mobile-nav" aria-label="Мобильная навигация">
-                <a href="index.html" class="mobile-nav-link">Главная</a>
-                <a href="about.html" class="mobile-nav-link">О нас</a>
-                <a href="services.html" class="mobile-nav-link">Услуги</a>
-                <a href="portfolio.html" class="mobile-nav-link">Портфолио</a>
-                <a href="brandbook.html" class="mobile-nav-link">Брендбук</a>
-                <a href="contacts.html" class="mobile-nav-link">Контакты</a>
-            </nav>
-            
-            <div class="mobile-menu-footer">
-                <!-- Переключатель языка в мобильном меню -->
-                <div class="mobile-language-switcher" data-current-lang="ru">
-                    <div class="mobile-lang-slider-menu"></div>
-                    <button class="mobile-lang-btn" data-lang="ru">
-                        <span class="lang-flag">🇷🇺</span>
-                        <span class="lang-text">RU</span>
-                    </button>
-                    <button class="mobile-lang-btn" data-lang="en">
-                        <span class="lang-flag">🇬🇧</span>
-                        <span class="lang-text">EN</span>
-                    </button>
-                </div>
-                
-                <a href="contacts.html" class="mobile-header-btn">
-                    Начать проект
-                </a>
             </div>
         </div>
     </header>
@@ -940,8 +573,6 @@
     (function() {
         'use strict';
         
-        let isMobileMenuOpen = false;
-        
         function initHeader() {
             const header = document.getElementById('main-header');
             if (!header) return;
@@ -949,10 +580,9 @@
             setupScrollAnimations(header);
             setupActiveNav();
             setupLanguageSwitcher();
-            setupMobileMenu();
             setupTouchOptimizations();
             
-            console.log('✅ Header initialized');
+            console.log('✅ Header initialized (desktop only)');
         }
         
         function setupScrollAnimations(header) {
@@ -967,12 +597,12 @@
             }
             
             window.addEventListener('scroll', updateHeaderState, { passive: true });
-            updateHeaderState(); // initial state
+            updateHeaderState();
         }
         
         function setupActiveNav() {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+            const navLinks = document.querySelectorAll('.nav-link');
             
             navLinks.forEach(link => {
                 const href = link.getAttribute('href');
@@ -984,18 +614,10 @@
                     link.classList.add('active');
                 }
             });
-            
-            // Close mobile menu when clicking a link
-            const mobileLinks = document.querySelectorAll('.mobile-nav-link');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    closeMobileMenu();
-                });
-            });
         }
         
         function setupLanguageSwitcher() {
-            const langBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
+            const langBtns = document.querySelectorAll('.lang-btn');
             
             if (!langBtns.length) return;
             
@@ -1003,8 +625,8 @@
             updateLanguageState(currentLang);
             
             function updateLanguageState(lang) {
-                const allLangBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
-                const switchers = document.querySelectorAll('.language-switcher, .mobile-language-switcher');
+                const allLangBtns = document.querySelectorAll('.lang-btn');
+                const switchers = document.querySelectorAll('.language-switcher');
                 
                 allLangBtns.forEach(btn => {
                     btn.classList.remove('active');
@@ -1038,79 +660,7 @@
                     }
                     
                     updateLanguageState(lang);
-                    
-                    // Close mobile menu after language change
-                    if (isMobileMenuOpen) {
-                        closeMobileMenu();
-                    }
                 });
-            });
-        }
-        
-        function setupMobileMenu() {
-            const burgerBtn = document.getElementById('burger-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            if (!burgerBtn || !mobileMenu) return;
-            
-            function toggleMobileMenu() {
-                isMobileMenuOpen = !isMobileMenuOpen;
-                
-                if (isMobileMenuOpen) {
-                    burgerBtn.classList.add('active');
-                    mobileMenu.classList.add('active');
-                    burgerBtn.setAttribute('aria-expanded', 'true');
-                    burgerBtn.setAttribute('aria-label', 'Закрыть меню');
-                    document.body.style.overflow = 'hidden';
-                    document.documentElement.style.overflow = 'hidden';
-                } else {
-                    burgerBtn.classList.remove('active');
-                    mobileMenu.classList.remove('active');
-                    burgerBtn.setAttribute('aria-expanded', 'false');
-                    burgerBtn.setAttribute('aria-label', 'Открыть меню');
-                    document.body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
-            }
-            
-            function closeMobileMenu() {
-                if (isMobileMenuOpen) {
-                    isMobileMenuOpen = false;
-                    burgerBtn.classList.remove('active');
-                    mobileMenu.classList.remove('active');
-                    burgerBtn.setAttribute('aria-expanded', 'false');
-                    burgerBtn.setAttribute('aria-label', 'Открыть меню');
-                    document.body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
-            }
-            
-            // Burger button click
-            burgerBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleMobileMenu();
-            });
-            
-            // Close menu when clicking outside
-            mobileMenu.addEventListener('click', function(e) {
-                if (e.target === mobileMenu) {
-                    closeMobileMenu();
-                }
-            });
-            
-            // Close menu on Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && isMobileMenuOpen) {
-                    closeMobileMenu();
-                }
-            });
-            
-            // Close menu on resize
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 900 && isMobileMenuOpen) {
-                    closeMobileMenu();
-                }
             });
         }
         
@@ -1120,17 +670,10 @@
                 document.body.classList.add('touch-device');
                 
                 // Make buttons more touch-friendly
-                const buttons = document.querySelectorAll('.btn, .lang-btn, .burger-btn');
+                const buttons = document.querySelectorAll('.lang-btn');
                 buttons.forEach(btn => {
                     btn.style.minHeight = '44px';
                     btn.style.minWidth = '44px';
-                });
-                
-                // Improve tap targets for mobile
-                const mobileLinks = document.querySelectorAll('.mobile-nav-link');
-                mobileLinks.forEach(link => {
-                    link.style.padding = '15px 20px';
-                    link.style.minHeight = '50px';
                 });
             }
         }
@@ -1142,45 +685,6 @@
             initHeader();
         }
         
-        // Global functions
-        window.headerController = {
-            closeMobileMenu: function() {
-                const burgerBtn = document.getElementById('burger-btn');
-                const mobileMenu = document.getElementById('mobile-menu');
-                
-                if (burgerBtn && mobileMenu) {
-                    isMobileMenuOpen = false;
-                    burgerBtn.classList.remove('active');
-                    mobileMenu.classList.remove('active');
-                    burgerBtn.setAttribute('aria-expanded', 'false');
-                    burgerBtn.setAttribute('aria-label', 'Открыть меню');
-                    document.body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
-            },
-            
-            openMobileMenu: function() {
-                const burgerBtn = document.getElementById('burger-btn');
-                const mobileMenu = document.getElementById('mobile-menu');
-                
-                if (burgerBtn && mobileMenu) {
-                    isMobileMenuOpen = true;
-                    burgerBtn.classList.add('active');
-                    mobileMenu.classList.add('active');
-                    burgerBtn.setAttribute('aria-expanded', 'true');
-                    burgerBtn.setAttribute('aria-label', 'Закрыть меню');
-                    document.body.style.overflow = 'hidden';
-                    document.documentElement.style.overflow = 'hidden';
-                }
-            },
-            
-            toggleMobileMenu: function() {
-                const burgerBtn = document.getElementById('burger-btn');
-                if (burgerBtn) {
-                    burgerBtn.click();
-                }
-            }
-        };
     })();
     </script>
 </body>
