@@ -237,6 +237,62 @@
         "explore": "Explore"
       },
       "footer": "From initial concept to market launch and beyond"
+    },
+    "expertise": {
+      "title": "Our Expertise",
+      "subtitle": "End-to-end product development from strategy to market",
+      "strategy": {
+        "title": "Strategy",
+        "description": "Developing comprehensive innovation strategies"
+      },
+      "design": {
+        "title": "Design",
+        "description": "Industrial design and branding"
+      },
+      "engineering": {
+        "title": "Engineering",
+        "description": "Technical solutions and architecture"
+      },
+      "marketing": {
+        "title": "Marketing",
+        "description": "Digital strategies and promotion"
+      }
+    },
+    "projects": {
+      "title": "Featured Projects",
+      "subtitle": "Our recent work",
+      "viewAll": "View All Projects"
+    },
+    "achievements": {
+      "title": "Our Achievements",
+      "subtitle": "Numbers speak for themselves",
+      "clients": "Satisfied Clients",
+      "projects": "Projects Completed",
+      "experience": "Years of Experience"
+    },
+    "services": {
+      "title": "Our Services",
+      "subtitle": "Comprehensive solutions",
+      "learnMore": "Learn More"
+    },
+    "journals": {
+      "title": "Blog",
+      "subtitle": "News and articles",
+      "readMore": "Read More"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "question1": "What is the typical project timeline?",
+      "answer1": "Most projects take 3-6 months from concept to finished product",
+      "question2": "Do you work with startups?",
+      "answer2": "Yes, we offer flexible collaboration terms for startups",
+      "question3": "What is your development process?",
+      "answer3": "We use a systematic approach: research → design → engineering → production"
+    },
+    "readyStart": {
+      "title": "Ready to start your project?",
+      "description": "Let's discuss your idea and find the optimal solution",
+      "button": "Discuss Project"
     }
   },
   "services": {
