@@ -1,4 +1,37 @@
-console.log('🚀 Animations.js loaded - FULLY FIXED VERSION');
+console.log('🚀 Animations.js loaded - FULLY FIXED VERSION - UPDATED');
+
+// Безопасные методы для работы с DOM
+class SafeDOM {
+    static querySelector(selector) {
+        try {
+            return document.querySelector(selector);
+        } catch (error) {
+            console.warn(`⚠️ Invalid selector: ${selector}`, error);
+            return null;
+        }
+    }
+    
+    static querySelectorAll(selector) {
+        try {
+            return document.querySelectorAll(selector);
+        } catch (error) {
+            console.warn(`⚠️ Invalid selector: ${selector}`, error);
+            return [];
+        }
+    }
+    
+    static addClass(element, className) {
+        if (element && element.classList) {
+            element.classList.add(className);
+        }
+    }
+    
+    static removeClass(element, className) {
+        if (element && element.classList) {
+            element.classList.remove(className);
+        }
+    }
+}
 
 // ===== FAQ МЕНЕДЖЕР =====
 class FAQManager {
@@ -20,7 +53,7 @@ class FAQManager {
     }
     
     initializeFAQ() {
-        this.faqItems = document.querySelectorAll('.faq-item');
+        this.faqItems = SafeDOM.querySelectorAll('.faq-item');
         
         if (this.faqItems.length === 0) {
             console.warn('❌ No FAQ items found');
@@ -43,9 +76,11 @@ class FAQManager {
     
     initializeFAQState() {
         this.faqItems.forEach((item, index) => {
+            if (!item) return;
+            
             const question = item.querySelector('.faq-question');
             const answer = item.querySelector('.faq-answer');
-            const icon = question?.querySelector('i');
+            const icon = question ? question.querySelector('i') : null;
             
             // Устанавливаем уникальные ID для доступности
             if (question) {
@@ -79,18 +114,22 @@ class FAQManager {
             }
             
             // Убираем активный класс если он есть
-            item.classList.remove('active');
+            SafeDOM.removeClass(item, 'active');
         });
     }
     
     setupEventListeners() {
         this.faqItems.forEach((item) => {
+            if (!item) return;
+            
             const question = item.querySelector('.faq-question');
             
             if (question) {
                 // Удаляем старые обработчики
                 const newQuestion = question.cloneNode(true);
-                question.parentNode.replaceChild(newQuestion, question);
+                if (question.parentNode) {
+                    question.parentNode.replaceChild(newQuestion, question);
+                }
                 
                 // Добавляем новые обработчики
                 newQuestion.addEventListener('click', (e) => {
@@ -109,23 +148,25 @@ class FAQManager {
                 
                 // Оптимизация для мобильных
                 newQuestion.addEventListener('touchstart', () => {
-                    item.classList.add('touch-active');
+                    SafeDOM.addClass(item, 'touch-active');
                 }, { passive: true });
                 
                 newQuestion.addEventListener('touchend', () => {
                     setTimeout(() => {
-                        item.classList.remove('touch-active');
+                        SafeDOM.removeClass(item, 'touch-active');
                     }, 150);
                 });
                 
                 newQuestion.addEventListener('touchcancel', () => {
-                    item.classList.remove('touch-active');
+                    SafeDOM.removeClass(item, 'touch-active');
                 });
             }
         });
     }
     
     toggleFAQ(item) {
+        if (!item) return;
+        
         const isActive = item.classList.contains('active');
         const question = item.querySelector('.faq-question');
         console.log(`📖 FAQ toggle: ${isActive ? 'Closing' : 'Opening'}`, question?.textContent?.trim());
@@ -140,12 +181,14 @@ class FAQManager {
     }
     
     openFAQ(item) {
+        if (!item) return;
+        
         const question = item.querySelector('.faq-question');
         const answer = item.querySelector('.faq-answer');
-        const icon = question?.querySelector('i');
+        const icon = question ? question.querySelector('i') : null;
         
         // Активируем элемент
-        item.classList.add('active');
+        SafeDOM.addClass(item, 'active');
         
         // Обновляем атрибуты доступности
         if (question) {
@@ -177,12 +220,14 @@ class FAQManager {
     }
     
     closeFAQ(item) {
+        if (!item) return;
+        
         const question = item.querySelector('.faq-question');
         const answer = item.querySelector('.faq-answer');
-        const icon = question?.querySelector('i');
+        const icon = question ? question.querySelector('i') : null;
         
         // Деактивируем элемент
-        item.classList.remove('active');
+        SafeDOM.removeClass(item, 'active');
         
         // Обновляем атрибуты доступности
         if (question) {
@@ -214,7 +259,7 @@ class FAQManager {
     
     closeAllFAQ() {
         this.faqItems.forEach(item => {
-            if (item.classList.contains('active')) {
+            if (item && item.classList.contains('active')) {
                 this.closeFAQ(item);
             }
         });
@@ -222,7 +267,7 @@ class FAQManager {
     
     openAllFAQ() {
         this.faqItems.forEach(item => {
-            this.openFAQ(item);
+            if (item) this.openFAQ(item);
         });
     }
     
@@ -260,6 +305,7 @@ class FAQManager {
         window.testFAQ = () => {
             console.log(`📋 FAQ Test: ${this.faqItems.length} items found`);
             this.faqItems.forEach((item, index) => {
+                if (!item) return;
                 const isActive = item.classList.contains('active');
                 const question = item.querySelector('.faq-question');
                 const answer = item.querySelector('.faq-answer');
@@ -316,32 +362,35 @@ class AnimationsManager {
         
         try {
             // Все анимированные элементы
-            const animatedElements = document.querySelectorAll(
+            const animatedElements = SafeDOM.querySelectorAll(
                 '.fade-in, .fade-in-up, .fade-in-down, .fade-in-left, .fade-in-right, .scale-in'
             );
             
             animatedElements.forEach(el => {
+                if (!el) return;
                 el.style.opacity = '1';
                 el.style.transform = 'translate(0, 0) scale(1)';
                 el.style.animationPlayState = 'running';
             });
             
             // Все секции
-            const sections = document.querySelectorAll('section');
+            const sections = SafeDOM.querySelectorAll('section');
             sections.forEach(section => {
-                section.classList.add('loaded');
+                if (section) SafeDOM.addClass(section, 'loaded');
             });
             
             // Карточки
-            const cards = document.querySelectorAll('.project-card, .service-item, .journal-item, .stat-card');
+            const cards = SafeDOM.querySelectorAll('.project-card, .service-item, .journal-item, .stat-card');
             cards.forEach(card => {
+                if (!card) return;
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
             });
             
             // Блоки экспертизы
-            const expertiseBlocks = document.querySelectorAll('.expertise-vertical-block');
+            const expertiseBlocks = SafeDOM.querySelectorAll('.expertise-vertical-block');
             expertiseBlocks.forEach((block, index) => {
+                if (!block) return;
                 setTimeout(() => {
                     block.style.opacity = '1';
                     block.style.transform = 'translateX(0)';
@@ -356,11 +405,12 @@ class AnimationsManager {
     }
     
     initializeCounters() {
-        const counters = document.querySelectorAll('.stat-number');
+        const counters = SafeDOM.querySelectorAll('.stat-number');
         
         if (counters.length === 0) return;
         
         counters.forEach(counter => {
+            if (!counter) return;
             const target = parseInt(counter.getAttribute('data-count')) || 0;
             if (target > 0) {
                 // Плавный счетчик
@@ -375,6 +425,8 @@ class AnimationsManager {
     }
     
     animateCounter(element, target) {
+        if (!element) return;
+        
         let current = 0;
         const increment = target / 50; // 50 кадров анимации
         const duration = 1500; // 1.5 секунды
@@ -383,7 +435,7 @@ class AnimationsManager {
             current += increment;
             if (current >= target) {
                 element.textContent = target.toLocaleString();
-                element.classList.add('animated');
+                SafeDOM.addClass(element, 'animated');
                 return;
             }
             
@@ -401,7 +453,7 @@ class AnimationsManager {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
+                    SafeDOM.addClass(entry.target, 'in-view');
                     
                     // Специальная обработка для разных элементов
                     if (entry.target.classList.contains('expertise-vertical-block')) {
@@ -414,16 +466,20 @@ class AnimationsManager {
         }, { threshold: 0.1 });
         
         // Наблюдаем за всеми анимируемыми элементами
-        const elements = document.querySelectorAll(
+        const elements = SafeDOM.querySelectorAll(
             '.expertise-vertical-block, .project-card, .service-item, .journal-item, .faq-item, .stat-card'
         );
         
-        elements.forEach(el => observer.observe(el));
+        elements.forEach(el => {
+            if (el) observer.observe(el);
+        });
         
         console.log(`✅ Scroll animations initialized for ${elements.length} elements`);
     }
     
     animateExpertiseBlock(block) {
+        if (!block) return;
+        
         const number = block.querySelector('.expertise-number');
         const title = block.querySelector('.expertise-title');
         const description = block.querySelector('.expertise-description');
@@ -445,6 +501,7 @@ class AnimationsManager {
         }
         
         features.forEach((feature, index) => {
+            if (!feature) return;
             setTimeout(() => {
                 feature.style.opacity = '1';
                 feature.style.transform = 'translateX(0)';
@@ -454,8 +511,10 @@ class AnimationsManager {
     
     initializeHoverEffects() {
         // Карточки проектов
-        const projectCards = document.querySelectorAll('.project-card');
+        const projectCards = SafeDOM.querySelectorAll('.project-card');
         projectCards.forEach(card => {
+            if (!card) return;
+            
             card.addEventListener('mouseenter', () => {
                 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
                 card.style.transform = 'translateY(-10px)';
@@ -470,8 +529,10 @@ class AnimationsManager {
         });
         
         // Элементы услуг
-        const serviceItems = document.querySelectorAll('.service-item');
+        const serviceItems = SafeDOM.querySelectorAll('.service-item');
         serviceItems.forEach(item => {
+            if (!item) return;
+            
             item.addEventListener('mouseenter', () => {
                 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
                 item.style.transform = 'translateY(-5px)';
@@ -504,8 +565,9 @@ class AnimationsManager {
     
     handleResize() {
         // Обновляем высоту открытых FAQ
-        const openFAQs = document.querySelectorAll('.faq-item.active');
+        const openFAQs = SafeDOM.querySelectorAll('.faq-item.active');
         openFAQs.forEach(item => {
+            if (!item) return;
             const answer = item.querySelector('.faq-answer');
             if (answer && answer.style.display === 'block') {
                 answer.style.maxHeight = answer.scrollHeight + 'px';
@@ -517,7 +579,7 @@ class AnimationsManager {
         console.log('📱 Optimizing for mobile devices');
         
         // Добавляем класс для мобильных стилей
-        document.body.classList.add('mobile-view');
+        SafeDOM.addClass(document.body, 'mobile-view');
         
         // Упрощаем анимации
         if (window.matchMedia('(max-width: 768px)').matches) {
@@ -557,9 +619,10 @@ class AnimationsManager {
     }
     
     optimizeFAQForMobile() {
-        const faqItems = document.querySelectorAll('.faq-item');
+        const faqItems = SafeDOM.querySelectorAll('.faq-item');
         
         faqItems.forEach(item => {
+            if (!item) return;
             const question = item.querySelector('.faq-question');
             if (question) {
                 question.style.cursor = 'pointer';
@@ -583,8 +646,8 @@ function initializeAll() {
         window.faqManager = new FAQManager();
         
         // Добавляем глобальный класс
-        document.body.classList.add('animations-loaded');
-        document.body.classList.add('all-content-loaded');
+        SafeDOM.addClass(document.body, 'animations-loaded');
+        SafeDOM.addClass(document.body, 'all-content-loaded');
         
         // Финальная проверка
         setTimeout(() => {
@@ -603,7 +666,7 @@ function initializeAll() {
 
 // Обработка предпочтений reduced-motion
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.body.classList.add('reduced-motion');
+    SafeDOM.addClass(document.body, 'reduced-motion');
     
     const style = document.createElement('style');
     style.textContent = `
@@ -668,8 +731,8 @@ if (document.readyState === 'loading') {
 window.debugAnimations = function() {
     console.log('🔍 Debug Information:');
     console.log('-------------------');
-    console.log('FAQ Items:', document.querySelectorAll('.faq-item').length);
-    console.log('Active FAQ Items:', document.querySelectorAll('.faq-item.active').length);
+    console.log('FAQ Items:', SafeDOM.querySelectorAll('.faq-item').length);
+    console.log('Active FAQ Items:', SafeDOM.querySelectorAll('.faq-item.active').length);
     console.log('Animations Manager:', window.animationsManager ? '✅ Loaded' : '❌ Not loaded');
     console.log('FAQ Manager:', window.faqManager ? '✅ Loaded' : '❌ Not loaded');
     console.log('Body Classes:', document.body.className);
@@ -680,9 +743,10 @@ window.resetAnimations = function() {
     console.log('🔄 Resetting animations...');
     
     // Сбрасываем FAQ
-    const faqItems = document.querySelectorAll('.faq-item');
+    const faqItems = SafeDOM.querySelectorAll('.faq-item');
     faqItems.forEach(item => {
-        item.classList.remove('active');
+        if (!item) return;
+        SafeDOM.removeClass(item, 'active');
         const answer = item.querySelector('.faq-answer');
         if (answer) {
             answer.style.display = 'none';
