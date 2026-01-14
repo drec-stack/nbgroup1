@@ -91,6 +91,9 @@ class I18n {
             // Setup mutation observer
             this.setupMutationObserver();
             
+            // Setup responsive language switcher
+            this.setupResponsiveLanguageSwitcher();
+            
             this.isInitialized = true;
             console.log(`✅ i18n fully initialized (applied ${count} translations)`);
             
@@ -418,7 +421,7 @@ class I18n {
     }
 
     handleLanguageClick(e) {
-        const langBtn = e.target.closest('.lang-btn');
+        const langBtn = e.target.closest('.lang-btn, .mobile-lang-btn');
         if (langBtn) {
             e.preventDefault();
             e.stopPropagation();
@@ -434,32 +437,32 @@ class I18n {
     updateLanguageSwitcherUI() {
         console.log('🔄 Updating language switcher UI...');
         
-        document.querySelectorAll('.lang-btn').forEach(btn => {
+        document.querySelectorAll('.lang-btn, .mobile-lang-btn').forEach(btn => {
             const btnLang = btn.getAttribute('data-lang');
             const isActive = btnLang === this.currentLang;
             
             btn.classList.toggle('active', isActive);
             btn.setAttribute('aria-pressed', isActive);
             
-            // Обновляем текст и иконку
+            // Обновляем текст
             const langText = btn.querySelector('.lang-text');
-            const langFlag = btn.querySelector('.lang-flag');
-            
             if (langText) {
                 langText.textContent = btnLang.toUpperCase();
             }
             
+            // Обновляем флаги
+            const langFlag = btn.querySelector('.lang-flag');
             if (langFlag) {
-                langFlag.textContent = btnLang === 'ru' ? '🇷🇺' : '🇺🇸';
+                langFlag.textContent = btnLang === 'ru' ? '🇷🇺' : '🇬🇧';
             }
             
             // Обновляем родительский switcher
-            const switcher = btn.closest('.language-switcher');
+            const switcher = btn.closest('.language-switcher, .mobile-language-switcher');
             if (switcher) {
                 switcher.setAttribute('data-current-lang', this.currentLang);
                 
                 // Анимируем ползунок
-                const slider = switcher.querySelector('.lang-slider');
+                const slider = switcher.querySelector('.lang-slider, .mobile-lang-slider-menu');
                 if (slider) {
                     slider.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     slider.style.transform = this.currentLang === 'en' ? 'translateX(100%)' : 'translateX(0)';
@@ -473,6 +476,39 @@ class I18n {
         window.dispatchEvent(new CustomEvent('languageSwitcherUpdated', {
             detail: { lang: this.currentLang }
         }));
+    }
+
+    setupResponsiveLanguageSwitcher() {
+        // Функция для обновления отображения текста в переключателе языка
+        const updateLanguageSwitcherText = () => {
+            const isMobile = window.innerWidth <= 768;
+            const languageSwitchers = document.querySelectorAll('.language-switcher.mobile-only-flags');
+            
+            languageSwitchers.forEach(switcher => {
+                const textElements = switcher.querySelectorAll('.lang-text');
+                textElements.forEach(textElement => {
+                    if (isMobile) {
+                        textElement.style.display = 'none';
+                    } else {
+                        textElement.style.display = 'inline-block';
+                    }
+                });
+            });
+        };
+        
+        // Инициализация при загрузке
+        updateLanguageSwitcherText();
+        
+        // Обновление при изменении размера окна
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                updateLanguageSwitcherText();
+            }, 250);
+        });
+        
+        console.log('✅ Responsive language switcher initialized');
     }
 
     setupMutationObserver() {
@@ -519,6 +555,7 @@ class I18n {
             console.log(`🔄 Component loaded: ${event.detail.name}, updating translations...`);
             setTimeout(() => {
                 this.applyTranslations();
+                this.updateLanguageSwitcherUI();
             }, 100);
         });
         
@@ -526,6 +563,7 @@ class I18n {
             console.log('🔄 All components loaded, updating translations...');
             setTimeout(() => {
                 this.applyTranslations();
+                this.updateLanguageSwitcherUI();
             }, 200);
         });
     }
@@ -622,6 +660,7 @@ class I18n {
     reinitForDynamicContent() {
         console.log('🔄 Re-initializing i18n for dynamic content...');
         this.setupLanguageSwitcher();
+        this.setupResponsiveLanguageSwitcher();
         return this.refresh();
     }
     
