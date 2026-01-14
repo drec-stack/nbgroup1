@@ -312,41 +312,48 @@ body.brandbook-page .main-header {
     gap: 15px;
 }
 
-/* ===== ДЕСКТОПНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
+/* ===== СУПЕР-КОМПАКТНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
 .language-switcher {
     display: flex;
     align-items: center;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    padding: 4px;
+    border-radius: 18px; /* Уменьшено */
+    padding: 3px; /* Уменьшено */
     border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    min-width: 90px; /* УМЕНЬШЕНО: было 120px */
-    height: 38px;    /* УМЕНЬШЕНО: было 40px */
+    min-width: 70px; /* СУПЕР-КОМПАКТНО */
+    height: 34px;    /* СУПЕР-КОМПАКТНО */
     box-shadow: 
         inset 0 1px 0 rgba(255, 255, 255, 0.08),
         0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.language-switcher:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .lang-btn {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 12px; /* УМЕНЬШЕНО: было 8px 16px */
+    gap: 4px; /* Уменьшено */
+    padding: 6px 8px; /* Уменьшено */
     background: none;
     border: none;
     color: rgba(255, 255, 255, 0.9);
-    font-size: 14px;
+    font-size: 13px; /* Уменьшено */
     font-weight: 500;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 15px; /* Уменьшено */
     transition: var(--transition);
     position: relative;
     z-index: 2;
-    min-width: 42px; /* УМЕНЬШЕНО: было 56px */
+    min-width: 32px; /* Уменьшено */
     justify-content: center;
     flex: 1;
+    height: 28px; /* Уменьшено */
 }
 
 .lang-btn.active {
@@ -356,19 +363,19 @@ body.brandbook-page .main-header {
 
 .lang-slider {
     position: absolute;
-    top: 4px;
-    left: 4px;
-    width: calc(50% - 4px);
-    height: calc(100% - 8px);
+    top: 3px; /* Уменьшено */
+    left: 3px; /* Уменьшено */
+    width: calc(50% - 3px); /* Уменьшено */
+    height: calc(100% - 6px); /* Уменьшено */
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    border-radius: 20px;
+    border-radius: 15px; /* Уменьшено */
     transition: var(--transition);
     z-index: 1;
     border: 1px solid rgba(255, 255, 255, 0.25);
     box-shadow: 
-        0 4px 12px rgba(255, 255, 255, 0.15),
+        0 2px 8px rgba(255, 255, 255, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -377,12 +384,12 @@ body.brandbook-page .main-header {
 }
 
 .lang-flag {
-    font-size: 16px;
-    transition: transform 0.3s ease;
+    font-size: 14px; /* Уменьшено */
+    transition: transform 0.2s ease;
 }
 
 .lang-btn:hover .lang-flag {
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 .lang-btn:hover:not(.active) {
@@ -393,45 +400,15 @@ body.brandbook-page .main-header {
 /* МОБИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА */
 @media (max-width: 900px) {
     .language-switcher-mobile {
-        min-width: 100px !important;
-        max-width: 100px !important;
-        height: 42px !important;
-    }
-    
-    .language-switcher-mobile .lang-btn {
-        font-size: 14px !important;
-        padding: 8px 12px !important;
-        gap: 0 !important;
-    }
-    
-    .language-switcher-mobile .lang-flag {
-        font-size: 18px !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .language-switcher-mobile {
-        min-width: 95px !important;
-        max-width: 95px !important;
-        height: 38px !important;
+        min-width: 85px !important;
+        max-width: 85px !important;
+        height: 36px !important;
     }
     
     .language-switcher-mobile .lang-btn {
         font-size: 13px !important;
         padding: 7px 10px !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .language-switcher-mobile {
-        min-width: 90px !important;
-        max-width: 90px !important;
-        height: 36px !important;
-    }
-    
-    .language-switcher-mobile .lang-btn {
-        font-size: 12px !important;
-        padding: 6px 8px !important;
+        gap: 0 !important;
     }
     
     .language-switcher-mobile .lang-flag {
@@ -439,21 +416,55 @@ body.brandbook-page .main-header {
     }
 }
 
-/* ОЧЕНЬ маленькие экраны */
-@media (max-width: 360px) {
+@media (max-width: 768px) {
     .language-switcher-mobile {
-        min-width: 85px !important;
-        max-width: 85px !important;
+        min-width: 80px !important;
+        max-width: 80px !important;
         height: 34px !important;
     }
     
     .language-switcher-mobile .lang-btn {
-        font-size: 11px !important;
-        padding: 5px 7px !important;
+        font-size: 12px !important;
+        padding: 6px 9px !important;
     }
     
     .language-switcher-mobile .lang-flag {
         font-size: 15px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .language-switcher-mobile {
+        min-width: 75px !important;
+        max-width: 75px !important;
+        height: 32px !important;
+    }
+    
+    .language-switcher-mobile .lang-btn {
+        font-size: 11px !important;
+        padding: 5px 8px !important;
+    }
+    
+    .language-switcher-mobile .lang-flag {
+        font-size: 14px !important;
+    }
+}
+
+/* ОЧЕНЬ маленькие экраны */
+@media (max-width: 360px) {
+    .language-switcher-mobile {
+        min-width: 70px !important;
+        max-width: 70px !important;
+        height: 30px !important;
+    }
+    
+    .language-switcher-mobile .lang-btn {
+        font-size: 10px !important;
+        padding: 4px 7px !important;
+    }
+    
+    .language-switcher-mobile .lang-flag {
+        font-size: 13px !important;
     }
 }
 
@@ -569,7 +580,7 @@ body.brandbook-page .main-header {
         display: flex;
         align-items: center;
         gap: 15px;
-        min-width: 150px;
+        min-width: 140px; /* Уменьшено */
         justify-content: flex-end;
     }
     
@@ -721,7 +732,7 @@ body.brandbook-page .main-header {
         border: 1px solid rgba(255, 255, 255, 0.12);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
-        min-width: 120px;
+        min-width: 100px; /* Уменьшено */
     }
     
     .mobile-lang-btn {
@@ -738,7 +749,7 @@ body.brandbook-page .main-header {
         cursor: pointer;
         border-radius: 16px;
         transition: var(--transition);
-        min-width: 50px;
+        min-width: 45px; /* Уменьшено */
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
     }
     
@@ -1682,8 +1693,8 @@ body::before {
     }
     
     .lang-btn {
-        min-height: 32px;
-        min-width: 32px;
+        min-height: 28px;
+        min-width: 28px;
     }
     
     .mobile-nav-link {
@@ -1708,11 +1719,11 @@ body::before {
     
     /* Улучшенный переключатель языка для очень маленьких экранов */
     .language-switcher-mobile {
-        min-width: 85px !important;
-        max-width: 85px !important;
+        min-width: 70px !important;
+        max-width: 70px !important;
     }
     
     .header-right-mobile {
-        min-width: 130px !important;
+        min-width: 120px !important;
     }
 }
