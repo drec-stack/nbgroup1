@@ -1,690 +1,617 @@
-// about.js - FINAL VERSION WITH REAL TEAM PHOTOS
+console.log('🚀 about.js loaded - REAL TEAM PHOTOS VERSION - FIXED');
 
-console.log('🚀 about.js loaded - REAL TEAM PHOTOS VERSION');
-
-// Safe DOM operations wrapper
-const safe = {
-    get: (selector) => {
+// Безопасные методы для работы с DOM
+class SafeDOM {
+    static querySelector(selector) {
         try {
-            const element = document.querySelector(selector);
-            return element || null;
+            return document.querySelector(selector);
         } catch (error) {
-            console.error(`❌ Error getting element: ${selector}`, error);
+            console.warn(`⚠️ Invalid selector: ${selector}`, error);
             return null;
         }
-    },
+    }
     
-    getAll: (selector) => {
+    static querySelectorAll(selector) {
         try {
-            const elements = document.querySelectorAll(selector);
-            return elements.length > 0 ? Array.from(elements) : [];
+            return document.querySelectorAll(selector);
         } catch (error) {
-            console.error(`❌ Error getting elements: ${selector}`, error);
+            console.warn(`⚠️ Invalid selector: ${selector}`, error);
             return [];
         }
-    },
-    
-    addClass: (element, className) => {
-        if (element && element.classList) {
-            try {
-                element.classList.add(className);
-                return true;
-            } catch (error) {
-                console.error(`❌ Error adding class ${className} to element`, error);
-                return false;
-            }
-        }
-        return false;
-    },
-    
-    removeClass: (element, className) => {
-        if (element && element.classList) {
-            try {
-                element.classList.remove(className);
-                return true;
-            } catch (error) {
-                console.error(`❌ Error removing class ${className} from element`, error);
-                return false;
-            }
-        }
-        return false;
-    },
-    
-    on: (element, event, handler) => {
-        if (element && typeof handler === 'function') {
-            try {
-                element.addEventListener(event, handler);
-                return true;
-            } catch (error) {
-                console.error(`❌ Error adding ${event} listener to element`, error);
-                return false;
-            }
-        }
-        return false;
-    },
-    
-    setStyle: (element, styles) => {
-        if (element && element.style) {
-            try {
-                Object.assign(element.style, styles);
-                return true;
-            } catch (error) {
-                console.error('❌ Error setting styles on element', error);
-                return false;
-            }
-        }
-        return false;
-    }
-};
-
-
-// TEAM PHOTOS MANAGEMENT - REAL PHOTOS
-
-
-function initTeamPhotos() {
-    console.log('🖼️ Initializing team photos...');
-    
-    const teamMembers = safe.getAll('.team-member');
-    const memberPhotos = safe.getAll('.member-photo img');
-    
-    console.log(`👥 Found ${teamMembers.length} team members`);
-    console.log(`📸 Found ${memberPhotos.length} team photos`);
-    
-    if (memberPhotos.length === 0) {
-        console.warn('⚠️ No team photos found, using fallback');
-        setupFallbackPhotos();
-        return;
     }
     
-    // Preload images with fallback handling
-    preloadTeamPhotos(memberPhotos);
+    static addClass(element, className) {
+        if (element && element.classList) {
+            element.classList.add(className);
+        }
+    }
     
-    // Setup photo interactions
-    setupPhotoInteractions(teamMembers);
+    static removeClass(element, className) {
+        if (element && element.classList) {
+            element.classList.remove(className);
+        }
+    }
     
-    // Animate photos on load
-    animatePhotosOnLoad(memberPhotos);
+    static hasClass(element, className) {
+        return element && element.classList && element.classList.contains(className);
+    }
 }
 
-function preloadTeamPhotos(photos) {
-    photos.forEach((img, index) => {
-        if (!img || !img.src) return;
+class AboutPage {
+    constructor() {
+        this.isInitialized = false;
+        this.initializationAttempts = 0;
+        this.maxAttempts = 5;
+        this.checkInterval = null;
+        this.init();
+    }
+
+    init() {
+        console.log('🎯 About page script initializing...');
         
-        // Mark as loading
-        const container = img.parentElement;
-        if (container) {
-            safe.addClass(container, 'loading');
-        }
+        // Ждем загрузки компонентов
+        this.waitForComponentsAndInit();
+    }
+
+    waitForComponentsAndInit() {
+        console.log('⏳ About page waiting for components...');
         
-        // Preload image
-        const preloadImg = new Image();
-        preloadImg.src = img.src;
-        
-        preloadImg.onload = () => {
-            console.log(`✅ Photo ${index + 1} loaded successfully: ${img.src}`);
-            if (container) {
-                safe.removeClass(container, 'loading');
-                safe.setStyle(img, {
-                    opacity: '1',
-                    transform: 'scale(1)',
-                    transition: 'all 0.6s ease'
-                });
+        // Проверяем, загружены ли компоненты
+        const checkComponents = () => {
+            const headerContainer = document.getElementById('header-container');
+            const footerContainer = document.getElementById('footer-container');
+            
+            const isHeaderLoaded = headerContainer && 
+                                  headerContainer.children.length > 0 && 
+                                  (headerContainer.classList.contains('component-loaded') ||
+                                   headerContainer.querySelector('.main-header'));
+            
+            const isFooterLoaded = footerContainer && 
+                                  footerContainer.children.length > 0 && 
+                                  (footerContainer.classList.contains('component-loaded') ||
+                                   footerContainer.querySelector('footer'));
+            
+            if (isHeaderLoaded && isFooterLoaded) {
+                console.log('✅ Components loaded, initializing about page...');
+                clearInterval(this.checkInterval);
+                this.initializeWithDelay();
+                return true;
             }
+            return false;
         };
         
-        preloadImg.onerror = () => {
-            console.error(`❌ Failed to load photo: ${img.src}`);
-            if (container) {
-                safe.removeClass(container, 'loading');
-                // Fallback will be handled by onerror attribute in HTML
-            }
+        // Проверяем сразу
+        if (checkComponents()) {
+            return;
+        }
+        
+        // Слушаем событие загрузки компонентов
+        const handleComponentsLoaded = () => {
+            console.log('✅ componentsFullyLoaded event received');
+            clearInterval(this.checkInterval);
+            this.initializeWithDelay();
         };
-    });
-}
+        
+        window.addEventListener('componentsFullyLoaded', handleComponentsLoaded, { once: true });
+        
+        // Также проверяем периодически
+        this.checkInterval = setInterval(() => {
+            if (checkComponents()) {
+                window.removeEventListener('componentsFullyLoaded', handleComponentsLoaded);
+            }
+        }, 500);
+        
+        // Таймаут на случай если ничего не загрузится
+        setTimeout(() => {
+            if (!this.isInitialized) {
+                console.warn('⚠️ Components not loaded after timeout, attempting anyway...');
+                clearInterval(this.checkInterval);
+                window.removeEventListener('componentsFullyLoaded', handleComponentsLoaded);
+                this.initializeWithDelay();
+            }
+        }, 8000);
+    }
 
-function setupFallbackPhotos() {
-    const photoContainers = safe.getAll('.member-photo');
-    
-    photoContainers.forEach((container, index) => {
-        if (!container.querySelector('svg')) {
-            const initials = ['SN', 'UI', 'EK'][index] || 'TM';
-            container.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
-                    <defs>
-                        <linearGradient id="grad${initials}" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#00aaff;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <circle cx="120" cy="120" r="118" fill="url(#grad${initials})" stroke="#00aaff" stroke-width="4"/>
-                    <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="80" 
-                          fill="white" text-anchor="middle" dy="0.35em" font-weight="bold">
-                        ${initials}
-                    </text>
-                </svg>
-            `;
+    initializeWithDelay() {
+        setTimeout(() => {
+            this.tryInitialize();
+        }, 200);
+    }
+
+    tryInitialize() {
+        if (this.isInitialized) {
+            console.log('⚠️ About page already initialized');
+            return;
         }
-    });
-}
 
-function setupPhotoInteractions(teamMembers) {
-    const isMobile = window.innerWidth <= 768;
-    
-    teamMembers.forEach((member, index) => {
-        if (!member) return;
-        
-        const photoContainer = member.querySelector('.member-photo');
-        const img = member.querySelector('.member-photo img');
-        
-        if (!photoContainer) return;
-        
-        // Desktop hover effects
-        if (!isMobile) {
-            safe.on(member, 'mouseenter', function() {
-                safe.setStyle(this, {
-                    transform: 'translateY(-10px)',
-                    boxShadow: '0 20px 40px rgba(0, 102, 255, 0.3)',
-                    transition: 'all 0.3s ease'
-                });
-                
-                if (img) {
-                    safe.setStyle(img, {
-                        transform: 'scale(1.05)',
-                        transition: 'transform 0.4s ease'
-                    });
-                }
-                
-                // Animate social icons
-                const socialIcons = this.querySelectorAll('.member-social a');
-                socialIcons.forEach((icon, i) => {
-                    setTimeout(() => {
-                        safe.setStyle(icon, {
-                            transform: 'translateY(-5px)',
-                            transition: 'transform 0.3s ease'
-                        });
-                    }, i * 100);
-                });
-            });
+        if (this.initializationAttempts >= this.maxAttempts) {
+            console.error('❌ Max initialization attempts reached');
+            return;
+        }
+
+        this.initializationAttempts++;
+        console.log(`🔄 Initialization attempt ${this.initializationAttempts}/${this.maxAttempts}`);
+
+        try {
+            this.initializeAboutPage();
+            this.isInitialized = true;
+            console.log('✅ About page initialized successfully');
+        } catch (error) {
+            console.error('❌ About page initialization failed:', error);
             
-            safe.on(member, 'mouseleave', function() {
-                safe.setStyle(this, {
-                    transform: 'translateY(0)',
-                    boxShadow: 'none'
-                });
-                
-                if (img) {
-                    safe.setStyle(img, {
-                        transform: 'scale(1)'
-                    });
-                }
-                
-                // Reset social icons
-                const socialIcons = this.querySelectorAll('.member-social a');
-                socialIcons.forEach(icon => {
-                    safe.setStyle(icon, { transform: 'translateY(0)' });
-                });
-            });
-        }
-        
-        // Mobile touch effects
-        if (isMobile) {
-            safe.on(photoContainer, 'touchstart', function(e) {
-                e.preventDefault();
-                safe.setStyle(this, {
-                    transform: 'scale(0.95)'
-                });
-                if (img) {
-                    safe.setStyle(img, {
-                        transform: 'scale(0.98)'
-                    });
-                }
-            });
-            
-            safe.on(photoContainer, 'touchend', function() {
-                safe.setStyle(this, {
-                    transform: 'scale(1)'
-                });
-                if (img) {
-                    safe.setStyle(img, {
-                        transform: 'scale(1)'
-                    });
-                }
-            });
-        }
-    });
-}
-
-function animatePhotosOnLoad(photos) {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
+            if (this.initializationAttempts < this.maxAttempts) {
+                console.log(`🔄 Retrying in 1 second...`);
                 setTimeout(() => {
-                    if (entry.target) {
-                        safe.setStyle(entry.target, {
-                            opacity: '1',
-                            transform: 'scale(1)',
-                            transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
-                        });
-                    }
-                }, index * 200);
-                
-                observer.unobserve(entry.target);
+                    this.tryInitialize();
+                }, 1000);
             }
-        });
-    }, { threshold: 0.1 });
-    
-    photos.forEach(photo => {
-        if (photo) {
-            safe.setStyle(photo, {
-                opacity: '0',
-                transform: 'scale(0.9)'
-            });
-            observer.observe(photo);
         }
-    });
-}
-
-
-// HEADER SETUP FOR ABOUT PAGE
-
-
-function setupHeaderForAboutPage() {
-    console.log('🔧 Setting up header for about page...');
-    
-    const header = safe.get('.main-header');
-    if (!header) {
-        console.warn('⚠️ Header not found');
-        return;
     }
-    
-    try {
-        // Add about-page class to body
-        safe.addClass(document.body, 'about-page');
-        
-        // Ensure header is visible
-        safe.removeClass(header, 'header-hidden');
-        safe.setStyle(header, {
-            opacity: '1',
-            visibility: 'visible',
-            pointerEvents: 'auto'
-        });
-        
-        console.log('✅ Header setup complete for about page');
-    } catch (error) {
-        console.error('❌ Error setting up header:', error);
-    }
-}
 
-
-// MAIN INITIALIZATION FUNCTION
-
-
-function initAbout() {
-    console.log('🎯 Initializing about page with real photos...');
-    
-    try {
-        // 1. Setup header
-        setupHeaderForAboutPage();
+    initializeAboutPage() {
+        console.log('🎯 Initializing about page with real photos...');
         
-        // 2. Initialize team photos (REAL PHOTOS)
-        initTeamPhotos();
+        // Настройка хедера для страницы "О нас"
+        this.setupHeaderForAboutPage();
         
-        // 3. Setup page functionalities
-        setupPageFunctionalities();
+        // Инициализация фото команды
+        this.initializeTeamPhotos();
         
-        // 4. Start content animations
-        startContentAnimations();
+        // Настройка функционала страницы
+        this.setupPageFunctionalities();
+        
+        // Настройка анимаций контента
+        this.setupContentAnimations();
+        
+        // Настройка навигации
+        this.setupPageNavigation();
+        
+        // Финальная проверка
+        this.finalizeInitialization();
         
         console.log('✅ About page fully initialized with real photos');
-    } catch (error) {
-        console.error('❌ Error in initAbout:', error);
     }
-}
 
-
-// PAGE FUNCTIONALITIES SETUP
-
-
-function setupPageFunctionalities() {
-    console.log('⚙️ Setting up page functionalities...');
-    
-    try {
-        // 1. Story statistics animation
-        setupStoryStats();
+    setupHeaderForAboutPage() {
+        console.log('🔧 Setting up header for about page...');
         
-        // 2. Service cards animation
-        setupServiceCards();
+        const header = SafeDOM.querySelector('.main-header');
+        const headerContainer = document.getElementById('header-container');
         
-        // 3. CTA button effects
-        setupCTAEffects();
-        
-        // 4. Scroll animations
-        setupScrollAnimations();
-        
-        console.log('✅ All page functionalities initialized');
-    } catch (error) {
-        console.error('❌ Error setting up page functionalities:', error);
+        if (header) {
+            SafeDOM.addClass(header, 'about-page-header');
+            console.log('✅ Header found and configured for about page');
+            
+            // Убеждаемся что хедер видим
+            header.style.opacity = '1';
+            header.style.visibility = 'visible';
+        } else if (headerContainer && headerContainer.children.length > 0) {
+            // Ищем хедер внутри контейнера
+            const headerInContainer = headerContainer.querySelector('header, .main-header, nav');
+            if (headerInContainer) {
+                SafeDOM.addClass(headerInContainer, 'about-page-header');
+                console.log('✅ Header found in container and configured');
+            } else {
+                console.warn('⚠️ Header not found in container');
+            }
+        } else {
+            console.warn('⚠️ Header not found - will retry later');
+            this.scheduleRetry('setupHeaderForAboutPage', this.setupHeaderForAboutPage.bind(this));
+        }
     }
-}
 
-
-// STORY STATISTICS ANIMATION
-
-
-function setupStoryStats() {
-    const storyStats = safe.getAll('.story-stat');
-    
-    if (storyStats.length === 0) {
-        console.log('📊 No story stats found');
-        return;
-    }
-    
-    console.log(`📊 Found ${storyStats.length} story stats`);
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                console.log('🎯 Story stats visible, animating...');
-                
-                storyStats.forEach((stat, index) => {
-                    if (!stat) return;
-                    
-                    setTimeout(() => {
-                        safe.setStyle(stat, {
-                            opacity: '1',
-                            transform: 'translateY(0)',
-                            transition: 'all 0.6s ease'
-                        });
-                        
-                        // Animate counter
-                        const numberElement = stat.querySelector('.stat-number');
-                        if (numberElement && !numberElement.hasAttribute('data-animated')) {
-                            animateCounter(numberElement);
-                            numberElement.setAttribute('data-animated', 'true');
-                        }
-                    }, index * 200);
+    initializeTeamPhotos() {
+        console.log('🖼️ Initializing team photos...');
+        
+        const teamMembers = SafeDOM.querySelectorAll('.team-member, .team-card, [data-team-member]');
+        const teamPhotos = SafeDOM.querySelectorAll('.team-photo, .member-photo, .team-img');
+        
+        console.log(`👥 Found ${teamMembers.length} team members`);
+        console.log(`📸 Found ${teamPhotos.length} team photos`);
+        
+        // Обработка фото команды
+        teamPhotos.forEach((photo, index) => {
+            if (!photo) return;
+            
+            // Убедимся что фото загружено
+            if (!photo.complete) {
+                photo.addEventListener('load', () => {
+                    console.log(`✅ Photo ${index + 1} loaded successfully`);
+                    SafeDOM.addClass(photo, 'loaded');
                 });
                 
-                observer.unobserve(entry.target);
+                photo.addEventListener('error', () => {
+                    console.warn(`⚠️ Photo ${index + 1} failed to load`);
+                    // Устанавливаем fallback изображение
+                    if (photo.dataset.fallback) {
+                        photo.src = photo.dataset.fallback;
+                    }
+                });
+            } else {
+                SafeDOM.addClass(photo, 'loaded');
+                console.log(`✅ Photo ${index + 1} already loaded`);
             }
         });
-    }, { threshold: 0.3 });
-    
-    const storySection = safe.get('.our-story');
-    if (storySection) {
-        observer.observe(storySection);
+        
+        // Настройка карточек команды
+        teamMembers.forEach((member, index) => {
+            if (!member) return;
+            
+            // Добавляем анимацию при наведении
+            member.addEventListener('mouseenter', () => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                member.style.transform = 'translateY(-5px)';
+            });
+            
+            member.addEventListener('mouseleave', () => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                member.style.transform = 'translateY(0)';
+            });
+            
+            // Добавляем интерактивность
+            member.style.cursor = 'pointer';
+            member.setAttribute('tabindex', '0');
+            
+            member.addEventListener('click', () => {
+                console.log(`👤 Team member ${index + 1} clicked`);
+                // Здесь можно добавить логику открытия детальной информации
+            });
+            
+            member.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    member.click();
+                }
+            });
+        });
     }
-}
 
-function animateCounter(element) {
-    if (!element) return;
-    
-    try {
-        const text = element.textContent || '';
-        const finalValue = parseInt(text.replace('+', '')) || 0;
+    setupPageFunctionalities() {
+        console.log('⚙️ Setting up page functionalities...');
         
-        if (finalValue <= 0) return;
+        // Статистика истории
+        const storyStats = SafeDOM.querySelectorAll('.stat-card, .story-stat, [data-stat]');
+        console.log(`📊 Found ${storyStats.length} story stats`);
         
-        const duration = 1500;
-        const steps = 60;
-        const increment = finalValue / steps;
-        let currentValue = 0;
-        let step = 0;
+        storyStats.forEach((stat, index) => {
+            if (!stat) return;
+            
+            // Анимация появления
+            setTimeout(() => {
+                stat.style.opacity = '1';
+                stat.style.transform = 'translateY(0)';
+            }, index * 100);
+            
+            // Настройка счетчиков если есть
+            const numbers = stat.querySelectorAll('.stat-number, .counter');
+            numbers.forEach(number => {
+                if (number && number.dataset.count) {
+                    this.animateCounter(number, parseInt(number.dataset.count));
+                }
+            });
+        });
         
-        const animateStep = () => {
-            if (step >= steps) {
-                element.textContent = text;
-                // Celebration effect
-                safe.setStyle(element, { transform: 'scale(1.1)' });
-                setTimeout(() => {
-                    safe.setStyle(element, { transform: 'scale(1)' });
-                }, 200);
+        // Карточки услуг
+        const serviceCards = SafeDOM.querySelectorAll('.service-card, .service-item, [data-service]');
+        console.log(`💎 Found ${serviceCards.length} service cards`);
+        
+        serviceCards.forEach((card, index) => {
+            if (!card) return;
+            
+            // Анимация появления
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 150);
+            
+            // Эффект при наведении
+            card.addEventListener('mouseenter', () => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                card.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        console.log('✅ All page functionalities initialized');
+    }
+
+    animateCounter(element, target) {
+        if (!element || !target) return;
+        
+        let current = 0;
+        const increment = target / 50;
+        const duration = 2000;
+        
+        const updateCounter = () => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target;
+                SafeDOM.addClass(element, 'animated');
                 return;
             }
             
-            currentValue += increment;
-            element.textContent = Math.floor(currentValue) + (text.includes('+') ? '+' : '');
-            step++;
-            
-            requestAnimationFrame(animateStep);
+            element.textContent = Math.floor(current);
+            requestAnimationFrame(updateCounter);
         };
         
-        requestAnimationFrame(animateStep);
-    } catch (error) {
-        console.error('❌ Error animating counter:', error);
+        // Запускаем с задержкой для лучшего UX
+        setTimeout(updateCounter, 500);
     }
-}
 
-
-// SERVICE CARDS ANIMATIONS
-
-
-function setupServiceCards() {
-    const serviceCards = safe.getAll('.speck-service-card');
-    const isMobile = window.innerWidth <= 768;
-    
-    if (serviceCards.length === 0) {
-        console.log('💎 No service cards found');
-        return;
-    }
-    
-    console.log(`💎 Found ${serviceCards.length} service cards`);
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                const delay = isMobile ? index * 100 : index * 150;
-                
-                setTimeout(() => {
-                    safe.addClass(entry.target, 'revealed');
-                    
-                    // Animate icon
-                    const icon = entry.target.querySelector('.speck-card-icon');
-                    if (icon) {
-                        safe.setStyle(icon, {
-                            transform: 'scale(1) rotate(0deg)',
-                            transition: 'all 0.6s ease'
-                        });
-                    }
-                }, delay);
-                
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: isMobile ? 0.1 : 0.2 });
-    
-    serviceCards.forEach((card, index) => {
-        if (!card) return;
+    setupContentAnimations() {
+        console.log('🎭 Starting content animations...');
         
-        card.setAttribute('data-service-card', index + 1);
+        // Все секции
+        const sections = SafeDOM.querySelectorAll('section, .content-section');
         
-        if (card.classList.contains('reveal-left') || card.classList.contains('reveal-right')) {
-            safe.setStyle(card, { opacity: '0' });
-        }
-        
-        observer.observe(card);
-    });
-}
-
-
-// CTA EFFECTS
-
-
-function setupCTAEffects() {
-    const ctaButton = safe.get('.about-cta .btn');
-    
-    if (!ctaButton) {
-        console.log('📣 No CTA button found');
-        return;
-    }
-    
-    console.log('📣 Setting up CTA button effects');
-    
-    try {
-        const arrowIcon = ctaButton.querySelector('.fa-arrow-right');
-        
-        // Hover animations
-        safe.on(ctaButton, 'mouseenter', function() {
-            safe.setStyle(this, {
-                transform: 'translateY(-5px)',
-                boxShadow: '0 20px 40px rgba(0, 102, 255, 0.5)'
-            });
+        sections.forEach((section, index) => {
+            if (!section) return;
             
-            if (arrowIcon) {
-                safe.setStyle(arrowIcon, { transform: 'translateX(8px)' });
-            }
+            // Добавляем анимацию появления
+            setTimeout(() => {
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+                SafeDOM.addClass(section, 'animated-in');
+            }, index * 200);
         });
         
-        safe.on(ctaButton, 'mouseleave', function() {
-            safe.setStyle(this, {
-                transform: 'translateY(0)',
-                boxShadow: ''
-            });
+        // Заголовки
+        const headings = SafeDOM.querySelectorAll('h1, h2, h3, .section-title');
+        
+        headings.forEach((heading, index) => {
+            if (!heading) return;
             
-            if (arrowIcon) {
-                safe.setStyle(arrowIcon, { transform: 'translateX(0)' });
-            }
+            setTimeout(() => {
+                heading.style.opacity = '1';
+                heading.style.transform = 'translateY(0)';
+            }, index * 100);
         });
         
-        // Click effects
-        safe.on(ctaButton, 'mousedown', function() {
-            safe.setStyle(this, { transform: 'scale(0.95)' });
+        // Параграфы
+        const paragraphs = SafeDOM.querySelectorAll('p, .section-description');
+        
+        paragraphs.forEach((paragraph, index) => {
+            if (!paragraph) return;
+            
+            setTimeout(() => {
+                paragraph.style.opacity = '1';
+                paragraph.style.transform = 'translateY(0)';
+            }, index * 50 + 300);
         });
-        
-        safe.on(ctaButton, 'mouseup', function() {
-            safe.setStyle(this, { transform: 'translateY(-5px)' });
-        });
-        
-        // Pulsing animation
-        setInterval(() => {
-            if (document.visibilityState === 'visible') {
-                safe.addClass(ctaButton, 'pulse');
-                setTimeout(() => {
-                    safe.removeClass(ctaButton, 'pulse');
-                }, 1000);
-            }
-        }, 10000);
-        
-        console.log('✅ CTA button effects set up');
-    } catch (error) {
-        console.error('❌ Error setting up CTA effects:', error);
-    }
-}
-
-// SCROLL ANIMATIONS
-
-
-function setupScrollAnimations() {
-    const sections = safe.getAll('section');
-    const isMobile = window.innerWidth <= 768;
-    
-    if (sections.length === 0) return;
-    
-    console.log(`📜 Setting up scroll animations for ${sections.length} sections`);
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                safe.addClass(entry.target, 'animated');
-            }
-        });
-    }, { 
-        threshold: isMobile ? 0.1 : 0.2,
-        rootMargin: '0px 0px -50px 0px'
-    });
-    
-    sections.forEach(section => {
-        if (section) observer.observe(section);
-    });
-}
-
-// CONTENT ANIMATIONS
-
-function startContentAnimations() {
-    console.log('🎭 Starting content animations...');
-    
-    try {
-        // Animate mission features
-        setTimeout(() => {
-            const missionFeatures = safe.getAll('.mission-feature');
-            missionFeatures.forEach((feature, index) => {
-                setTimeout(() => {
-                    safe.setStyle(feature, {
-                        opacity: '1',
-                        transform: 'translateY(0)'
-                    });
-                }, index * 150);
-            });
-        }, 500);
-        
-        // Animate visual elements
-        setTimeout(() => {
-            const visualElements = safe.getAll('.mission-visual i, .image-placeholder i');
-            visualElements.forEach((el, index) => {
-                setTimeout(() => {
-                    safe.setStyle(el, {
-                        opacity: '1',
-                        transform: 'scale(1)'
-                    });
-                }, index * 300);
-            });
-        }, 800);
         
         console.log('✅ Content animations started');
-    } catch (error) {
-        console.error('❌ Error starting content animations:', error);
     }
-}
 
-// MOBILE OPTIMIZATIONS
-
-
-function setupMobileOptimizations() {
-    const isMobile = window.innerWidth <= 768;
-    
-    if (!isMobile) return;
-    
-    console.log('📱 Setting up mobile optimizations...');
-    
-    try {
-        // Add mobile class to body
-        safe.addClass(document.body, 'is-mobile');
+    setupPageNavigation() {
+        console.log('📍 Setting up page navigation...');
         
-        // Improve touch targets
-        const touchElements = safe.getAll('.btn, .team-member, .speck-service-card');
-        touchElements.forEach(el => {
-            if (!el) return;
+        // Внутренние ссылки для плавного скролла
+        const internalLinks = SafeDOM.querySelectorAll('a[href^="#about"], a[href^="#team"], a[href^="#story"]');
+        
+        internalLinks.forEach(link => {
+            if (!link) return;
             
-            safe.setStyle(el, {
-                minHeight: '44px',
-                minWidth: '44px'
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    
+                    const targetId = href.substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        const header = SafeDOM.querySelector('.main-header');
+                        const headerHeight = header ? header.offsetHeight : 0;
+                        
+                        window.scrollTo({
+                            top: targetElement.offsetTop - headerHeight - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
             });
         });
         
-        console.log('✅ Mobile optimizations applied');
-    } catch (error) {
-        console.error('❌ Error setting up mobile optimizations:', error);
+        // Кнопка CTA
+        const ctaButton = SafeDOM.querySelector('.cta-button, .btn-primary, [data-cta]');
+        
+        if (ctaButton) {
+            console.log('📣 Setting up CTA button effects');
+            
+            ctaButton.addEventListener('mouseenter', () => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                ctaButton.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            
+            ctaButton.addEventListener('mouseleave', () => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                ctaButton.style.transform = 'translateY(0) scale(1)';
+            });
+            
+            // Эффект при нажатии
+            ctaButton.addEventListener('mousedown', () => {
+                ctaButton.style.transform = 'translateY(1px) scale(0.98)';
+            });
+            
+            ctaButton.addEventListener('mouseup', () => {
+                ctaButton.style.transform = 'translateY(0) scale(1)';
+            });
+            
+            console.log('✅ CTA button effects set up');
+        }
+        
+        // Настройка анимаций при скролле
+        this.setupScrollAnimations();
+    }
+
+    setupScrollAnimations() {
+        console.log('📜 Setting up scroll animations...');
+        
+        const animatedSections = SafeDOM.querySelectorAll('.animate-on-scroll, [data-animate]');
+        console.log(`🎬 Setting up scroll animations for ${animatedSections.length} sections`);
+        
+        if (!('IntersectionObserver' in window)) {
+            // Fallback для старых браузеров
+            animatedSections.forEach(section => {
+                if (section) {
+                    setTimeout(() => {
+                        section.style.opacity = '1';
+                        section.style.transform = 'translateY(0)';
+                    }, 300);
+                }
+            });
+            return;
+        }
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    SafeDOM.addClass(entry.target, 'in-view');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        animatedSections.forEach(section => {
+            if (section) observer.observe(section);
+        });
+    }
+
+    finalizeInitialization() {
+        console.log('🎯 Finalizing about page initialization...');
+        
+        // Добавляем класс к body
+        SafeDOM.addClass(document.body, 'about-page-initialized');
+        
+        // Отправляем событие о завершении инициализации
+        window.dispatchEvent(new CustomEvent('aboutPageReady', {
+            detail: { 
+                timestamp: Date.now(),
+                elementsInitialized: {
+                    teamMembers: SafeDOM.querySelectorAll('.team-member, .team-card').length,
+                    serviceCards: SafeDOM.querySelectorAll('.service-card, .service-item').length,
+                    stats: SafeDOM.querySelectorAll('.stat-card, .story-stat').length
+                }
+            }
+        }));
+        
+        // Проверяем все ли элементы загружены
+        setTimeout(() => {
+            this.checkAllElementsLoaded();
+        }, 1000);
+    }
+
+    checkAllElementsLoaded() {
+        const checkElements = [
+            { selector: '.main-header', name: 'Header' },
+            { selector: '.team-member, .team-card', name: 'Team members' },
+            { selector: '.service-card, .service-item', name: 'Service cards' },
+            { selector: '.stat-card, .story-stat', name: 'Stats' }
+        ];
+        
+        let allLoaded = true;
+        checkElements.forEach(item => {
+            const elements = SafeDOM.querySelectorAll(item.selector);
+            if (elements.length > 0) {
+                console.log(`✅ ${item.name}: ${elements.length} found`);
+            } else {
+                console.warn(`⚠️ ${item.name}: none found`);
+                allLoaded = false;
+            }
+        });
+        
+        if (allLoaded) {
+            console.log('✅ All about page elements loaded successfully');
+        }
+    }
+
+    scheduleRetry(taskName, taskFunction) {
+        if (this.initializationAttempts < this.maxAttempts) {
+            console.log(`🔄 Scheduling retry for ${taskName} in 500ms...`);
+            setTimeout(() => {
+                if (!this.isInitialized) {
+                    taskFunction();
+                }
+            }, 500);
+        }
     }
 }
 
-// INITIALIZATION AND EVENT HANDLERS
+// Глобальные функции для управления страницей
+window.initAboutPage = function() {
+    if (!window.aboutPageInstance) {
+        window.aboutPageInstance = new AboutPage();
+    }
+    return window.aboutPageInstance;
+};
 
-// DOM Ready initialization
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 About page DOM loaded');
-    
-    try {
+window.debugAboutPage = function() {
+    console.group('🔍 About Page Debug');
+    if (window.aboutPageInstance) {
+        console.log('Initialized:', window.aboutPageInstance.isInitialized);
+        console.log('Attempts:', window.aboutPageInstance.initializationAttempts);
+        console.log('Max attempts:', window.aboutPageInstance.maxAttempts);
+        
+        // Проверяем элементы
+        const elements = {
+            'Header': SafeDOM.querySelector('.main-header'),
+            'Team members': SafeDOM.querySelectorAll('.team-member, .team-card').length,
+            'Service cards': SafeDOM.querySelectorAll('.service-card, .service-item').length,
+            'Stats': SafeDOM.querySelectorAll('.stat-card, .story-stat').length
+        };
+        
+        Object.entries(elements).forEach(([name, element]) => {
+            if (typeof element === 'number') {
+                console.log(`${name}: ${element}`);
+            } else {
+                console.log(`${name}: ${element ? '✅ Found' : '❌ Not found'}`);
+            }
+        });
+    } else {
+        console.log('❌ About page not initialized');
+    }
+    console.groupEnd();
+};
+
+window.reloadAboutPage = function() {
+    if (window.aboutPageInstance) {
+        window.aboutPageInstance.isInitialized = false;
+        window.aboutPageInstance.initializationAttempts = 0;
+        window.aboutPageInstance.tryInitialize();
+    } else {
+        window.aboutPageInstance = new AboutPage();
+    }
+};
+
+// Инициализация при загрузке страницы
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('📄 About page DOM loaded');
+        window.aboutPageInstance = new AboutPage();
+        
+        // Дополнительный таймаут на случай проблем
         setTimeout(() => {
-            initAbout();
-            setupMobileOptimizations();
-        }, 100);
-    } catch (error) {
-        console.error('❌ Error in DOMContentLoaded:', error);
+            if (window.aboutPageInstance && !window.aboutPageInstance.isInitialized) {
+                console.warn('⚠️ About page not initialized after timeout, forcing...');
+                window.aboutPageInstance.tryInitialize();
+            }
+        }, 10000);
+    });
+} else {
+    console.log('📄 DOM already loaded, starting about page...');
+    window.aboutPageInstance = new AboutPage();
+}
+
+// Обработка ошибок
+window.addEventListener('error', function(e) {
+    if (e.target && e.target.tagName === 'IMG' && e.target.src.includes('team')) {
+        console.error('❌ Team photo failed to load:', e.target.src);
+        // Можно добавить fallback логику здесь
     }
 });
 
-// Export for global access
-window.initAbout = initAbout;
-window.initTeamPhotos = initTeamPhotos;
-
-console.log('✅ about.js fully loaded - REAL TEAM PHOTOS VERSION');
+console.log('✅ about.js fully loaded - REAL TEAM PHOTOS VERSION - READY');
