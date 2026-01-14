@@ -94,6 +94,9 @@ class I18n {
             // Setup responsive language switcher
             this.setupResponsiveLanguageSwitcher();
             
+            // Apply compact switcher styles
+            this.applyCompactSwitcherStyles();
+            
             this.isInitialized = true;
             console.log(`✅ i18n fully initialized (applied ${count} translations)`);
             
@@ -448,12 +451,14 @@ class I18n {
             const langText = btn.querySelector('.lang-text');
             if (langText) {
                 langText.textContent = btnLang.toUpperCase();
+                langText.style.fontSize = '14px'; // Компактный размер
             }
             
             // Обновляем флаги
             const langFlag = btn.querySelector('.lang-flag');
             if (langFlag) {
                 langFlag.textContent = btnLang === 'ru' ? '🇷🇺' : '🇬🇧';
+                langFlag.style.fontSize = '18px'; // Компактный размер
             }
             
             // Обновляем родительский switcher
@@ -461,21 +466,86 @@ class I18n {
             if (switcher) {
                 switcher.setAttribute('data-current-lang', this.currentLang);
                 
+                // Применяем компактные размеры
+                switcher.style.minWidth = '100px';
+                switcher.style.height = '40px';
+                switcher.style.padding = '3px';
+                
                 // Анимируем ползунок
                 const slider = switcher.querySelector('.lang-slider, .mobile-lang-slider-menu');
                 if (slider) {
                     slider.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     slider.style.transform = this.currentLang === 'en' ? 'translateX(100%)' : 'translateX(0)';
+                    slider.style.top = '3px';
+                    slider.style.left = '3px';
+                    slider.style.width = 'calc(50% - 3px)';
+                    slider.style.height = 'calc(100% - 6px)';
                 }
+                
+                // Обновляем размеры кнопок внутри
+                const switcherButtons = switcher.querySelectorAll('.lang-btn, .mobile-lang-btn');
+                switcherButtons.forEach(button => {
+                    button.style.fontSize = '14px';
+                    button.style.height = '34px';
+                    button.style.padding = '0 16px';
+                });
             }
         });
         
-        console.log('✅ Language switcher UI updated');
+        console.log('✅ Language switcher UI updated (compact version)');
         
         // Отправляем событие для синхронизации всех компонентов
         window.dispatchEvent(new CustomEvent('languageSwitcherUpdated', {
             detail: { lang: this.currentLang }
         }));
+    }
+
+    applyCompactSwitcherStyles() {
+        // Применяем компактные стили ко всем переключателям языка
+        document.querySelectorAll('.language-switcher, .mobile-language-switcher').forEach(switcher => {
+            switcher.style.minWidth = '100px';
+            switcher.style.height = '40px';
+            switcher.style.padding = '3px';
+            switcher.style.borderRadius = '20px';
+            
+            const slider = switcher.querySelector('.lang-slider, .mobile-lang-slider-menu');
+            if (slider) {
+                slider.style.top = '3px';
+                slider.style.left = '3px';
+                slider.style.width = 'calc(50% - 3px)';
+                slider.style.height = 'calc(100% - 6px)';
+                slider.style.borderRadius = '17px';
+            }
+            
+            const buttons = switcher.querySelectorAll('.lang-btn, .mobile-lang-btn');
+            buttons.forEach(btn => {
+                btn.style.fontSize = '14px';
+                btn.style.height = '34px';
+                btn.style.padding = '0 16px';
+                btn.style.borderRadius = '17px';
+            });
+            
+            const flags = switcher.querySelectorAll('.lang-flag');
+            flags.forEach(flag => {
+                flag.style.fontSize = '18px';
+            });
+            
+            const texts = switcher.querySelectorAll('.lang-text');
+            texts.forEach(text => {
+                text.style.fontSize = '14px';
+            });
+        });
+        
+        // Специальные стили для мобильных версий
+        document.querySelectorAll('.language-switcher.mobile-only-flags').forEach(switcher => {
+            switcher.style.minWidth = '85px';
+            switcher.style.height = '36px';
+            
+            const flags = switcher.querySelectorAll('.lang-flag');
+            flags.forEach(flag => {
+                flag.style.fontSize = '18px';
+            });
+        });
     }
 
     setupResponsiveLanguageSwitcher() {
@@ -493,6 +563,25 @@ class I18n {
                         textElement.style.display = 'inline-block';
                     }
                 });
+                
+                // Обновляем размеры для мобильной версии
+                if (isMobile) {
+                    switcher.style.minWidth = '85px';
+                    switcher.style.height = '36px';
+                    
+                    const flags = switcher.querySelectorAll('.lang-flag');
+                    flags.forEach(flag => {
+                        flag.style.fontSize = '18px';
+                    });
+                    
+                    const buttons = switcher.querySelectorAll('.lang-btn');
+                    buttons.forEach(btn => {
+                        btn.style.padding = '0 12px';
+                    });
+                } else {
+                    switcher.style.minWidth = '100px';
+                    switcher.style.height = '40px';
+                }
             });
         };
         
@@ -508,7 +597,7 @@ class I18n {
             }, 250);
         });
         
-        console.log('✅ Responsive language switcher initialized');
+        console.log('✅ Responsive language switcher initialized (compact)');
     }
 
     setupMutationObserver() {
@@ -537,6 +626,7 @@ class I18n {
                 clearTimeout(this.updateTimeout);
                 this.updateTimeout = setTimeout(() => {
                     this.applyTranslations();
+                    this.applyCompactSwitcherStyles();
                 }, 50);
             }
         });
@@ -556,6 +646,7 @@ class I18n {
             setTimeout(() => {
                 this.applyTranslations();
                 this.updateLanguageSwitcherUI();
+                this.applyCompactSwitcherStyles();
             }, 100);
         });
         
@@ -564,6 +655,7 @@ class I18n {
             setTimeout(() => {
                 this.applyTranslations();
                 this.updateLanguageSwitcherUI();
+                this.applyCompactSwitcherStyles();
             }, 200);
         });
     }
@@ -592,13 +684,14 @@ class I18n {
                 console.warn('⚠️ Could not save language preference:', e.message);
             }
             
-            // Update UI immediately
+            // Update UI immediately with compact styles
             this.updateLanguageSwitcherUI();
+            this.applyCompactSwitcherStyles();
             
             // Apply translations with animation
             const count = this.applyTranslations();
             
-            console.log(`✅ Language switched to: ${lang} (${count} translations)`);
+            console.log(`✅ Language switched to: ${lang} (${count} translations, compact UI)`);
             
             // Remove loading state
             setTimeout(() => {
@@ -654,6 +747,7 @@ class I18n {
         console.log('🔄 Refreshing translations...');
         const count = this.applyTranslations();
         this.updateLanguageSwitcherUI();
+        this.applyCompactSwitcherStyles();
         return count;
     }
 
@@ -661,6 +755,7 @@ class I18n {
         console.log('🔄 Re-initializing i18n for dynamic content...');
         this.setupLanguageSwitcher();
         this.setupResponsiveLanguageSwitcher();
+        this.applyCompactSwitcherStyles();
         return this.refresh();
     }
     
@@ -695,8 +790,51 @@ class I18n {
             .translation-updated {
                 animation: fadeInLanguage 0.5s ease;
             }
+            
+            /* Компактный переключатель языка - финальные стили */
+            .language-switcher.compact,
+            .mobile-language-switcher.compact {
+                min-width: 100px !important;
+                height: 40px !important;
+                padding: 3px !important;
+                border-radius: 20px !important;
+            }
+            
+            .language-switcher.compact .lang-slider,
+            .mobile-language-switcher.compact .mobile-lang-slider-menu {
+                top: 3px !important;
+                left: 3px !important;
+                width: calc(50% - 3px) !important;
+                height: calc(100% - 6px) !important;
+                border-radius: 17px !important;
+            }
+            
+            .language-switcher.compact .lang-btn,
+            .mobile-language-switcher.compact .mobile-lang-btn {
+                font-size: 14px !important;
+                height: 34px !important;
+                padding: 0 16px !important;
+                border-radius: 17px !important;
+            }
+            
+            .language-switcher.compact .lang-text,
+            .mobile-language-switcher.compact .lang-text {
+                font-size: 14px !important;
+            }
+            
+            .language-switcher.compact .lang-flag,
+            .mobile-language-switcher.compact .lang-flag {
+                font-size: 18px !important;
+            }
         `;
         document.head.appendChild(style);
+        
+        // Добавляем классы ко всем существующим переключателям
+        setTimeout(() => {
+            document.querySelectorAll('.language-switcher, .mobile-language-switcher').forEach(switcher => {
+                switcher.classList.add('compact');
+            });
+        }, 100);
     }
 }
 
