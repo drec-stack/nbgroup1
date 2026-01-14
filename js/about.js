@@ -1,40 +1,42 @@
 console.log('🚀 about.js loaded - REAL TEAM PHOTOS VERSION - FIXED');
 
-// Безопасные методы для работы с DOM
-class SafeDOM {
-    static querySelector(selector) {
-        try {
-            return document.querySelector(selector);
-        } catch (error) {
-            console.warn(`⚠️ Invalid selector: ${selector}`, error);
-            return null;
+// Используем SafeDOM из animations.js или создаем только если не существует
+if (!window.SafeDOM) {
+    window.SafeDOM = {
+        querySelector(selector) {
+            try {
+                return document.querySelector(selector);
+            } catch (error) {
+                console.warn(`⚠️ Invalid selector: ${selector}`, error);
+                return null;
+            }
+        },
+        
+        querySelectorAll(selector) {
+            try {
+                return document.querySelectorAll(selector);
+            } catch (error) {
+                console.warn(`⚠️ Invalid selector: ${selector}`, error);
+                return [];
+            }
+        },
+        
+        addClass(element, className) {
+            if (element && element.classList) {
+                element.classList.add(className);
+            }
+        },
+        
+        removeClass(element, className) {
+            if (element && element.classList) {
+                element.classList.remove(className);
+            }
+        },
+        
+        hasClass(element, className) {
+            return element && element.classList && element.classList.contains(className);
         }
-    }
-    
-    static querySelectorAll(selector) {
-        try {
-            return document.querySelectorAll(selector);
-        } catch (error) {
-            console.warn(`⚠️ Invalid selector: ${selector}`, error);
-            return [];
-        }
-    }
-    
-    static addClass(element, className) {
-        if (element && element.classList) {
-            element.classList.add(className);
-        }
-    }
-    
-    static removeClass(element, className) {
-        if (element && element.classList) {
-            element.classList.remove(className);
-        }
-    }
-    
-    static hasClass(element, className) {
-        return element && element.classList && element.classList.contains(className);
-    }
+    };
 }
 
 class AboutPage {
@@ -49,8 +51,16 @@ class AboutPage {
     init() {
         console.log('🎯 About page script initializing...');
         
-        // Ждем загрузки компонентов
-        this.waitForComponentsAndInit();
+        // Проверяем DOM готовность
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('📄 About page DOM loaded');
+                this.waitForComponentsAndInit();
+            });
+        } else {
+            console.log('📄 DOM already loaded, starting about page...');
+            this.waitForComponentsAndInit();
+        }
     }
 
     waitForComponentsAndInit() {
@@ -175,11 +185,11 @@ class AboutPage {
     setupHeaderForAboutPage() {
         console.log('🔧 Setting up header for about page...');
         
-        const header = SafeDOM.querySelector('.main-header');
+        const header = window.SafeDOM.querySelector('.main-header');
         const headerContainer = document.getElementById('header-container');
         
         if (header) {
-            SafeDOM.addClass(header, 'about-page-header');
+            window.SafeDOM.addClass(header, 'about-page-header');
             console.log('✅ Header found and configured for about page');
             
             // Убеждаемся что хедер видим
@@ -189,7 +199,7 @@ class AboutPage {
             // Ищем хедер внутри контейнера
             const headerInContainer = headerContainer.querySelector('header, .main-header, nav');
             if (headerInContainer) {
-                SafeDOM.addClass(headerInContainer, 'about-page-header');
+                window.SafeDOM.addClass(headerInContainer, 'about-page-header');
                 console.log('✅ Header found in container and configured');
             } else {
                 console.warn('⚠️ Header not found in container');
@@ -203,8 +213,8 @@ class AboutPage {
     initializeTeamPhotos() {
         console.log('🖼️ Initializing team photos...');
         
-        const teamMembers = SafeDOM.querySelectorAll('.team-member, .team-card, [data-team-member]');
-        const teamPhotos = SafeDOM.querySelectorAll('.team-photo, .member-photo, .team-img');
+        const teamMembers = window.SafeDOM.querySelectorAll('.team-member, .team-card, [data-team-member]');
+        const teamPhotos = window.SafeDOM.querySelectorAll('.team-photo, .member-photo, .team-img');
         
         console.log(`👥 Found ${teamMembers.length} team members`);
         console.log(`📸 Found ${teamPhotos.length} team photos`);
@@ -217,7 +227,7 @@ class AboutPage {
             if (!photo.complete) {
                 photo.addEventListener('load', () => {
                     console.log(`✅ Photo ${index + 1} loaded successfully`);
-                    SafeDOM.addClass(photo, 'loaded');
+                    window.SafeDOM.addClass(photo, 'loaded');
                 });
                 
                 photo.addEventListener('error', () => {
@@ -228,7 +238,7 @@ class AboutPage {
                     }
                 });
             } else {
-                SafeDOM.addClass(photo, 'loaded');
+                window.SafeDOM.addClass(photo, 'loaded');
                 console.log(`✅ Photo ${index + 1} already loaded`);
             }
         });
@@ -270,7 +280,7 @@ class AboutPage {
         console.log('⚙️ Setting up page functionalities...');
         
         // Статистика истории
-        const storyStats = SafeDOM.querySelectorAll('.stat-card, .story-stat, [data-stat]');
+        const storyStats = window.SafeDOM.querySelectorAll('.stat-card, .story-stat, [data-stat]');
         console.log(`📊 Found ${storyStats.length} story stats`);
         
         storyStats.forEach((stat, index) => {
@@ -292,7 +302,7 @@ class AboutPage {
         });
         
         // Карточки услуг
-        const serviceCards = SafeDOM.querySelectorAll('.service-card, .service-item, [data-service]');
+        const serviceCards = window.SafeDOM.querySelectorAll('.service-card, .service-item, [data-service]');
         console.log(`💎 Found ${serviceCards.length} service cards`);
         
         serviceCards.forEach((card, index) => {
@@ -330,7 +340,7 @@ class AboutPage {
             current += increment;
             if (current >= target) {
                 element.textContent = target;
-                SafeDOM.addClass(element, 'animated');
+                window.SafeDOM.addClass(element, 'animated');
                 return;
             }
             
@@ -346,7 +356,7 @@ class AboutPage {
         console.log('🎭 Starting content animations...');
         
         // Все секции
-        const sections = SafeDOM.querySelectorAll('section, .content-section');
+        const sections = window.SafeDOM.querySelectorAll('section, .content-section');
         
         sections.forEach((section, index) => {
             if (!section) return;
@@ -355,12 +365,12 @@ class AboutPage {
             setTimeout(() => {
                 section.style.opacity = '1';
                 section.style.transform = 'translateY(0)';
-                SafeDOM.addClass(section, 'animated-in');
+                window.SafeDOM.addClass(section, 'animated-in');
             }, index * 200);
         });
         
         // Заголовки
-        const headings = SafeDOM.querySelectorAll('h1, h2, h3, .section-title');
+        const headings = window.SafeDOM.querySelectorAll('h1, h2, h3, .section-title');
         
         headings.forEach((heading, index) => {
             if (!heading) return;
@@ -372,7 +382,7 @@ class AboutPage {
         });
         
         // Параграфы
-        const paragraphs = SafeDOM.querySelectorAll('p, .section-description');
+        const paragraphs = window.SafeDOM.querySelectorAll('p, .section-description');
         
         paragraphs.forEach((paragraph, index) => {
             if (!paragraph) return;
@@ -390,7 +400,7 @@ class AboutPage {
         console.log('📍 Setting up page navigation...');
         
         // Внутренние ссылки для плавного скролла
-        const internalLinks = SafeDOM.querySelectorAll('a[href^="#about"], a[href^="#team"], a[href^="#story"]');
+        const internalLinks = window.SafeDOM.querySelectorAll('a[href^="#about"], a[href^="#team"], a[href^="#story"]');
         
         internalLinks.forEach(link => {
             if (!link) return;
@@ -404,7 +414,7 @@ class AboutPage {
                     const targetElement = document.getElementById(targetId);
                     
                     if (targetElement) {
-                        const header = SafeDOM.querySelector('.main-header');
+                        const header = window.SafeDOM.querySelector('.main-header');
                         const headerHeight = header ? header.offsetHeight : 0;
                         
                         window.scrollTo({
@@ -417,7 +427,7 @@ class AboutPage {
         });
         
         // Кнопка CTA
-        const ctaButton = SafeDOM.querySelector('.cta-button, .btn-primary, [data-cta]');
+        const ctaButton = window.SafeDOM.querySelector('.cta-button, .btn-primary, [data-cta]');
         
         if (ctaButton) {
             console.log('📣 Setting up CTA button effects');
@@ -451,7 +461,7 @@ class AboutPage {
     setupScrollAnimations() {
         console.log('📜 Setting up scroll animations...');
         
-        const animatedSections = SafeDOM.querySelectorAll('.animate-on-scroll, [data-animate]');
+        const animatedSections = window.SafeDOM.querySelectorAll('.animate-on-scroll, [data-animate]');
         console.log(`🎬 Setting up scroll animations for ${animatedSections.length} sections`);
         
         if (!('IntersectionObserver' in window)) {
@@ -470,7 +480,7 @@ class AboutPage {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    SafeDOM.addClass(entry.target, 'in-view');
+                    window.SafeDOM.addClass(entry.target, 'in-view');
                     observer.unobserve(entry.target);
                 }
             });
@@ -485,16 +495,16 @@ class AboutPage {
         console.log('🎯 Finalizing about page initialization...');
         
         // Добавляем класс к body
-        SafeDOM.addClass(document.body, 'about-page-initialized');
+        window.SafeDOM.addClass(document.body, 'about-page-initialized');
         
         // Отправляем событие о завершении инициализации
         window.dispatchEvent(new CustomEvent('aboutPageReady', {
             detail: { 
                 timestamp: Date.now(),
                 elementsInitialized: {
-                    teamMembers: SafeDOM.querySelectorAll('.team-member, .team-card').length,
-                    serviceCards: SafeDOM.querySelectorAll('.service-card, .service-item').length,
-                    stats: SafeDOM.querySelectorAll('.stat-card, .story-stat').length
+                    teamMembers: window.SafeDOM.querySelectorAll('.team-member, .team-card').length,
+                    serviceCards: window.SafeDOM.querySelectorAll('.service-card, .service-item').length,
+                    stats: window.SafeDOM.querySelectorAll('.stat-card, .story-stat').length
                 }
             }
         }));
@@ -515,7 +525,7 @@ class AboutPage {
         
         let allLoaded = true;
         checkElements.forEach(item => {
-            const elements = SafeDOM.querySelectorAll(item.selector);
+            const elements = window.SafeDOM.querySelectorAll(item.selector);
             if (elements.length > 0) {
                 console.log(`✅ ${item.name}: ${elements.length} found`);
             } else {
@@ -541,6 +551,25 @@ class AboutPage {
     }
 }
 
+// Инициализация
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('📄 About page DOM loaded');
+        window.aboutPageInstance = new AboutPage();
+        
+        // Дополнительный таймаут на случай проблем
+        setTimeout(() => {
+            if (window.aboutPageInstance && !window.aboutPageInstance.isInitialized) {
+                console.warn('⚠️ About page not initialized after timeout, forcing...');
+                window.aboutPageInstance.tryInitialize();
+            }
+        }, 10000);
+    });
+} else {
+    console.log('📄 DOM already loaded, starting about page...');
+    window.aboutPageInstance = new AboutPage();
+}
+
 // Глобальные функции для управления страницей
 window.initAboutPage = function() {
     if (!window.aboutPageInstance) {
@@ -558,10 +587,10 @@ window.debugAboutPage = function() {
         
         // Проверяем элементы
         const elements = {
-            'Header': SafeDOM.querySelector('.main-header'),
-            'Team members': SafeDOM.querySelectorAll('.team-member, .team-card').length,
-            'Service cards': SafeDOM.querySelectorAll('.service-card, .service-item').length,
-            'Stats': SafeDOM.querySelectorAll('.stat-card, .story-stat').length
+            'Header': window.SafeDOM.querySelector('.main-header'),
+            'Team members': window.SafeDOM.querySelectorAll('.team-member, .team-card').length,
+            'Service cards': window.SafeDOM.querySelectorAll('.service-card, .service-item').length,
+            'Stats': window.SafeDOM.querySelectorAll('.stat-card, .story-stat').length
         };
         
         Object.entries(elements).forEach(([name, element]) => {
@@ -586,32 +615,5 @@ window.reloadAboutPage = function() {
         window.aboutPageInstance = new AboutPage();
     }
 };
-
-// Инициализация при загрузке страницы
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('📄 About page DOM loaded');
-        window.aboutPageInstance = new AboutPage();
-        
-        // Дополнительный таймаут на случай проблем
-        setTimeout(() => {
-            if (window.aboutPageInstance && !window.aboutPageInstance.isInitialized) {
-                console.warn('⚠️ About page not initialized after timeout, forcing...');
-                window.aboutPageInstance.tryInitialize();
-            }
-        }, 10000);
-    });
-} else {
-    console.log('📄 DOM already loaded, starting about page...');
-    window.aboutPageInstance = new AboutPage();
-}
-
-// Обработка ошибок
-window.addEventListener('error', function(e) {
-    if (e.target && e.target.tagName === 'IMG' && e.target.src.includes('team')) {
-        console.error('❌ Team photo failed to load:', e.target.src);
-        // Можно добавить fallback логику здесь
-    }
-});
 
 console.log('✅ about.js fully loaded - REAL TEAM PHOTOS VERSION - READY');
