@@ -242,57 +242,218 @@
       "title": "Our Expertise",
       "subtitle": "End-to-end product development from strategy to market",
       "strategy": {
-        "title": "Strategy",
-        "description": "Developing comprehensive innovation strategies"
+        "title": "01 Strategy",
+        "subtitle": "Drive Innovation And Align Goals",
+        "features": {
+          "innovation": "Innovation Strategy",
+          "design": "Design Strategy",
+          "research": "User Research"
+        }
       },
       "design": {
-        "title": "Design",
-        "description": "Industrial design and branding"
+        "title": "02 Design",
+        "subtitle": "Engage Audiences With Product Design",
+        "features": {
+          "industrial": "Industrial Design",
+          "brand": "Brand Design",
+          "packaging": "Packaging Design",
+          "uiux": "UI/UX Design"
+        }
       },
-      "engineering": {
-        "title": "Engineering",
-        "description": "Technical solutions and architecture"
+      "hardware": {
+        "title": "03 Hardware",
+        "subtitle": "Engineer Robust And Reliable Hardware",
+        "features": {
+          "hardware": "Hardware Engineering",
+          "iot": "IoT & Product",
+          "electrical": "Electrical Engineering"
+        }
       },
-      "marketing": {
-        "title": "Marketing",
-        "description": "Digital strategies and promotion"
+      "software": {
+        "title": "04 Software",
+        "subtitle": "Create Seamless, Scalable Software Solutions",
+        "features": {
+          "architecture": "Software Architecture",
+          "web": "Web & Mobile Development",
+          "cloud": "Cloud Solutions"
+        }
       }
     },
     "projects": {
-      "title": "Featured Projects",
-      "subtitle": "Our recent work",
+      "title": "Projects",
+      "subtitle": "Our latest design projects and innovations",
+      "items": {
+        "googleRobot": {
+          "title": "Google Schaft Robot",
+          "description": "A protective and aesthetic skin fold for Google's advanced robot"
+        },
+        "monolith": {
+          "title": "Monolith - Motion Medical",
+          "description": "A new standard in medical devices for motion therapy"
+        },
+        "helicHair": {
+          "title": "Helic Hair Labs",
+          "description": "Curf Definer - Innovating the art of curly hair styling"
+        },
+        "omron": {
+          "title": "Omron Robotics",
+          "description": "Autonomous material handling with ROEQ Omron systems"
+        }
+      },
       "viewAll": "View All Projects"
     },
     "achievements": {
       "title": "Our Achievements",
-      "subtitle": "Numbers speak for themselves",
-      "clients": "Satisfied Clients",
-      "projects": "Projects Completed",
-      "experience": "Years of Experience"
+      "subtitle": "Numbers that speak for themselves",
+      "stats": {
+        "projects": {
+          "value": "150",
+          "label": "PROJECTS COMPLETED"
+        },
+        "years": {
+          "value": "12",
+          "label": "YEARS OF EXPERIENCE"
+        },
+        "clients": {
+          "value": "98",
+          "label": "HAPPY CLIENTS"
+        },
+        "awards": {
+          "value": "25",
+          "label": "AWARDS WON"
+        }
+      }
     },
     "services": {
-      "title": "Our Services",
-      "subtitle": "Comprehensive solutions",
-      "learnMore": "Learn More"
+      "title": "Services",
+      "intro": "We are Speck Design, an award-winning product design firm. Our principle is that Great industrial designs form a bond between the user and the product.",
+      "description": "It should be smooth at every touchpoint. Our focus on details ensures meaningful connections between users and products.",
+      "identity": "Our identity is that of an industrial design consulting company and a product design agency. Our designs are practical and adapt to any setting. Our teams balance electrical and mechanical engineering with human needs.",
+      "result": "The result is human-centric designs. We emphasize both design intuition and technical prowess throughout product development consulting.",
+      "sections": {
+        "consulting": {
+          "title": "Product design consulting",
+          "content": "Our teams balance electrical and mechanical engineering with human needs. The result is human-centric designs. We emphasize both design intuition and technical prowess throughout product development consulting.",
+          "differentiation": "What sets us apart as a product design consultancy is years of hands-on experience. This experience spans various sectors: consumer goods, retail, telecom, medical tech, auto engineering, and robotics. Our techniques are modern and cutting-edge.",
+          "skills": "Our teams are skilled in techniques like injection molding, surface finishes, and 3D printing. This allows for early testing, adding value to product development and sparking innovation.",
+          "approach": "Our approach is holistic. Our UX UI designers and industrial designers collaborate closely. Whether it's mobile apps or tangible products, the aim is a unified user experience."
+        },
+        "uiux": {
+          "title": "UI/UX design",
+          "intro": "The digital age has transformed our world. Today, every product needs both digital and physical forms. More companies now partner with UX design agencies to meet this demand.",
+          "speck": "Speck stands out in this arena as a leading UX design firm. Our primary focus: User experience and UX UI design.",
+          "goal": "Our goal is clear: Enhance the digital experience. We want users to enjoy and find value in all products, services, and channels.",
+          "approach": "Our approach starts with understanding. Our user researchers dive deep into knowing the target audience. They then transition into areas like mobile app development, web design, and digital strategies.",
+          "value": "We're not just about design; we're about value. Our process creates engaging tech interactions. These bridge the gap between the physical and digital worlds.",
+          "result": "The result? Websites, apps, software, and e-commerce platforms.",
+          "method": "Our method is thorough and structured. It hones in on user insights driven by UX research and usability tests. This system helps us craft touchpoints for mobile sites, screens, or user interfaces. Throughout, we balance function and software development with impactful user experiences."
+        },
+        "research": {
+          "title": "User research and insights",
+          "intro": "We are a top user experience research company. Our team of experts ensures that products meet customer needs and connect with future customers.",
+          "specialization": "Our researchers specialize in the following:",
+          "specialties": [
+            "User interface research",
+            "User testing",
+            "User experience research",
+            "Market research",
+            "Quantitative research methods",
+            "Qualitative research methods"
+          ],
+          "tools": "Our team uses tools like research, assessments, studies, surveys, and more during the design process.",
+          "collaboration": "Our research team can help our UX designers, industrial design, and engineering teams confidently find human-centered solutions. This is done by discovering and solving user pain points in the research phase of product development. This will help in finding real-world solutions to the problems users face.",
+          "emotional": "At the same time, we are tapping into the emotional drivers that create user experiences. These experiences are the hallmark of all great product designs."
+        },
+        "brand": {
+          "title": "Brand design",
+          "intro": "Your brand is the identity of your business. It's what sets you apart in the crowded marketplace and makes you instantly recognizable to your customers.",
+          "understanding": "At Speck Design, we understand the power of branding. We are a renowned graphic design and brand design agency. Branding has the potential to elevate your business.",
+          "specialization": "We specialize in creating brand designs that captivate and resonate with your target audience. Our tailored brand design strategies focus on invoking feelings of trust, reliability, and excellence. Our creations are not only attractive; they embody the spirit of your business. They also tell a powerful story about your dedication to quality and innovation.",
+          "awards": "Our design awards demonstrate our skill in creating a memorable brand identity. This is especially important in a competitive world."
+        },
+        "engineering": {
+          "title": "Product engineering",
+          "intro": "Speck Design is a globally awarded and top-ranked product engineering and industrial design firm. They provide comprehensive and unique product engineering solutions. Our solutions aim to optimize, transform, and simplify your product design and development process.",
+          "commitment": "We stand shoulder-to-shoulder with your team from the initial concept phase to the final product development. We reflect our commitment to unsurpassed engineering and creativity in the modern products we co-create.",
+          "process": "At Speck Design, the engineering process is like a map for creating designs that focus on the needs of users. These designs effectively address customers' pain points and ensure successful outcomes. Our expert engineers faithfully follow this guide throughout each product design project."
+        },
+        "fulfillment": {
+          "title": "NPI and product fulfillment support",
+          "intro": "A product's journey doesn't conclude with its design and engineering—it merely takes off. Speck Design offers robust product fulfillment services, which gives us an edge over other product design firms.",
+          "manufacturing": "Our manufacturing engineering department transitions designs into production, ensuring high-quality, low-cost, seamless delivery. We can manage products created with injection molding, laser cutting, and CNC milling. We have all these processes covered.",
+          "services": "Beyond design and production, we extend our clients a full spectrum of continuing services. Supply chain management, manufacturer support, contract manufacturing, and product fulfillment are all within our purview. We handle changing lead times well so our clients can focus on essential brand activities.",
+          "journey": "Your journey with Speck Design toward successful product development and fulfillment is always smooth, efficient, and rewarding."
+        },
+        "researchStrategy": {
+          "title": "Research and strategy",
+          "intro": "Every successful product design is a culmination of extensive research and a well-executed strategy. As one of the top product design engineering firms, Speck Design recognizes the importance of research-driven design.",
+          "team": "Our team comprises experienced strategists and researchers who immerse themselves in comprehensive studies of your target market, industry trends, and competition. The insights gleaned from this research are crucial in shaping design strategies that align with your business goals and market demands.",
+          "commitment": "Our commitment to research ensures our designs look impressive, deliver optimal performance, and meet market requirements. We can create successful products by combining strategy and research. This will help us stay ahead of market trends and ensure our products resonate with users."
+        },
+        "innovation": {
+          "title": "Innovation strategy",
+          "intro": "Creating a product is more than just merging components. It requires strategic innovation and an understanding of the market landscape. At Speck Design, we don't just make products. We create market revolutions as a new product development company.",
+          "approach": "Our approach is simple but effective. We take your ground-breaking ideas and run them through a process of validation and refinement. We leverage our robust design team to translate ideas into practical, market-ready products. These products serve user needs and redefine market boundaries.",
+          "partnership": "By partnering with us, you aren't merely creating a product. You're revolutionizing an industry, reshaping the market, and defining the future of user-centered designs."
+        }
+      }
     },
     "journals": {
-      "title": "Blog",
-      "subtitle": "News and articles",
-      "readMore": "Read More"
+      "title": "Journals",
+      "subtitle": "Latest insights and articles from our team",
+      "articles": [
+        {
+          "date": "2.4.25",
+          "title": "How to Choose an Industrial and Product Design Company"
+        },
+        {
+          "date": "10.4.24",
+          "title": "Cultural Influences On Product Design, Part 4: Uncertainty Avoidance"
+        },
+        {
+          "date": "6.3.24",
+          "title": "Deep Dive: What is Human Centered Design"
+        },
+        {
+          "date": "23.2.24",
+          "title": "The Intelligent Product Revolution: A Designer's Journey"
+        }
+      ],
+      "viewAll": "View All Journals →"
     },
     "faq": {
-      "title": "Frequently Asked Questions",
-      "question1": "What is the typical project timeline?",
-      "answer1": "Most projects take 3-6 months from concept to finished product",
-      "question2": "Do you work with startups?",
-      "answer2": "Yes, we offer flexible collaboration terms for startups",
-      "question3": "What is your development process?",
-      "answer3": "We use a systematic approach: research → design → engineering → production"
+      "title": "FAQ",
+      "subtitle": "Frequently asked questions about our services",
+      "questions": [
+        {
+          "question": "What does a product design company do?",
+          "answer": "A product design company creates, develops, and improves products from concept to production, focusing on user experience, aesthetics, and functionality."
+        },
+        {
+          "question": "What is the difference between product design and industrial design?",
+          "answer": "Product design covers the entire product creation process including research, strategy, UX/UI. Industrial design focuses on the physical form, ergonomics, and manufacturing of the product."
+        },
+        {
+          "question": "What is design thinking?",
+          "answer": "Design thinking is a user-centered problem-solving methodology that includes stages of research, problem definition, ideation, prototyping, and testing."
+        },
+        {
+          "question": "Who owns the rights to the designs once completed?",
+          "answer": "Design rights are typically specified in the contract. In most cases, rights transfer to the client after full payment, though some agencies may retain portfolio rights."
+        },
+        {
+          "question": "What does a product design consultancy do?",
+          "answer": "A product design consultancy provides expert guidance, strategy, research, and design solutions for developing successful products, helping clients from concept to market launch."
+        }
+      ]
     },
     "readyStart": {
-      "title": "Ready to start your project?",
-      "description": "Let's discuss your idea and find the optimal solution",
-      "button": "Discuss Project"
+      "title": "Ready to Start Your Project?",
+      "description": "Let's discuss how we can bring your product idea to life with innovative design and engineering",
+      "buttons": {
+        "getInTouch": "Get in Touch →",
+        "viewWork": "View Our Work"
+      }
     }
   },
   "services": {
