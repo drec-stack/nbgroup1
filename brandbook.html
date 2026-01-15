@@ -9,12 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/animations.css">
     
-    <!-- Компоненты -->
-    <script src="js/components.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/brandbook.js"></script>
-    <script src="js/animations.js"></script>
+    <!-- Компоненты загружаем первыми с defer -->
+    <script src="js/components.js" defer></script>
+    <script src="js/i18n.js" defer></script>
 </head>
 <body class="brandbook-page">
     <!-- Header Container -->
@@ -181,12 +178,17 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
     
+    <!-- Скрипты загружаем ПОСЛЕ контента -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/brandbook.js"></script>
+    
     <script>
-        // Инициализация страницы брендбука
+        // Инициализация страницы брендбука после загрузки компонентов
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 Страница брендбука загружена (прозрачный стеклянный хедер)');
+            console.log('📄 Страница брендбука загружена');
             
-            // Фильтрация кейсов
+            // Функция для инициализации фильтрации
             function setupBrandbookFilter() {
                 const filterBtns = document.querySelectorAll('.filter-btn');
                 const brandCases = document.querySelectorAll('.brand-case');
@@ -217,24 +219,83 @@
                         });
                     });
                 });
+                
+                console.log('✅ Brandbook filter initialized');
             }
             
-            // Инициализация переводов
-            setTimeout(() => {
-                if (window.i18n && window.i18n.refresh) {
-                    window.i18n.refresh();
-                }
-            }, 500);
+            // Ждем загрузки компонентов
+            if (window.waitForComponents) {
+                window.waitForComponents().then(() => {
+                    console.log('✅ Components loaded for brandbook page');
+                    
+                    // Инициализация переводов
+                    setTimeout(() => {
+                        if (window.i18n && window.i18n.refresh) {
+                            window.i18n.refresh();
+                        }
+                    }, 100);
+                    
+                    // Инициализация фильтрации
+                    setupBrandbookFilter();
+                    
+                    // Проверяем и фиксим мобильное меню
+                    setTimeout(() => {
+                        if (window.DaehaaApp && window.DaehaaApp.checkAndFixMobileMenu) {
+                            window.DaehaaApp.checkAndFixMobileMenu();
+                        }
+                    }, 200);
+                }).catch(error => {
+                    console.error('❌ Error waiting for components:', error);
+                    // Fallback
+                    setupBrandbookFilter();
+                });
+            } else {
+                // Fallback если waitForComponents не доступен
+                console.log('⚠️ waitForComponents not available, using fallback');
+                setTimeout(() => {
+                    setupBrandbookFilter();
+                    
+                    if (window.i18n && window.i18n.refresh) {
+                        window.i18n.refresh();
+                    }
+                }, 500);
+            }
+        });
+        
+        // Обработчик для событий компонентов
+        window.addEventListener('componentsFullyLoaded', function() {
+            console.log('🎯 Components fully loaded event received');
             
-            // Инициализация фильтрации
-            setupBrandbookFilter();
-            
-            // Инициализация анимаций
-            setTimeout(() => {
-                if (typeof window.initBrandbook === 'function') {
-                    window.initBrandbook();
+            // Гарантируем что бургер кнопка доступна
+            const burgerBtn = document.getElementById('burger-btn');
+            if (burgerBtn) {
+                console.log('✅ Burger button is available in DOM');
+                
+                // Добавляем простой обработчик если его нет
+                if (!burgerBtn._clickHandlerAdded) {
+                    burgerBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const mobileMenu = document.getElementById('mobile-menu');
+                        if (!mobileMenu) return;
+                        
+                        const isOpen = mobileMenu.classList.contains('active');
+                        
+                        if (isOpen) {
+                            mobileMenu.classList.remove('active');
+                            burgerBtn.classList.remove('active');
+                            document.body.style.overflow = '';
+                        } else {
+                            mobileMenu.classList.add('active');
+                            burgerBtn.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        }
+                    });
+                    burgerBtn._clickHandlerAdded = true;
+                    console.log('✅ Added click handler to burger button');
                 }
-            }, 1000);
+            }
         });
     </script>
 </body>
