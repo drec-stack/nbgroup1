@@ -421,7 +421,7 @@ body.brandbook-page .main-header {
     box-shadow: 0 12px 35px rgba(0, 102, 255, 0.4);
 }
 
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ ХЕДЕРА ===== */
+/* ===== МОБИЛЬНАЯ ВЕРСИЯ ХЕДЕРА - ОБНОВЛЕННЫЕ СТИЛИ ===== */
 @media (max-width: 900px) {
     body {
         padding-top: 70px !important;
@@ -502,15 +502,17 @@ body.brandbook-page .main-header {
         display: none !important;
     }
     
-    /* Мобильная навигация видна */
+    /* ===== ИЗМЕНЕНИЕ: Мобильная навигация с новым порядком ===== */
     .header-right-mobile {
         display: flex !important;
         align-items: center;
-        gap: 10px;
+        gap: 15px;
         flex-shrink: 0;
+        order: 3;
+        margin-left: auto;
     }
     
-    /* ===== БУРГЕР КНОПКА ===== */
+    /* ===== БУРГЕР КНОПКА - ТЕПЕРЬ СПРАВА ===== */
     .burger-btn {
         display: block !important;
         width: 44px;
@@ -527,6 +529,7 @@ body.brandbook-page .main-header {
         min-width: 44px;
         min-height: 44px;
         touch-action: manipulation;
+        order: 2;
     }
     
     .burger-btn:hover {
@@ -757,6 +760,7 @@ body.brandbook-page .main-header {
         max-width: 85px !important;
         height: 44px !important;
         padding: 4px !important;
+        order: 1; /* Переключатель языка слева от бургера */
     }
     
     .language-switcher.mobile-only-flags .lang-slider {
@@ -805,6 +809,10 @@ body.brandbook-page .main-header {
     .logo-text {
         font-size: 16px !important;
         max-width: 110px !important;
+    }
+    
+    .header-right-mobile {
+        gap: 10px;
     }
     
     .burger-btn {
