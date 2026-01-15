@@ -133,6 +133,11 @@ class ComponentLoader {
                     document.body.classList.add('components-loaded');
                 }
                 
+                // После загрузки компонентов проверяем мобильное меню
+                setTimeout(() => {
+                    this.checkMobileMenuFunctionality();
+                }, 500);
+                
                 // Отправляем событие о завершении загрузки
                 if (window) {
                     // Основное событие
@@ -179,6 +184,64 @@ class ComponentLoader {
         });
         
         return this.loadingPromise;
+    }
+    
+    /**
+     * Проверяет функциональность мобильного меню после загрузки
+     */
+    checkMobileMenuFunctionality() {
+        console.log('🔍 Проверка функциональности мобильного меню...');
+        
+        const burgerBtn = document.getElementById('burger-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (!burgerBtn) {
+            console.error('❌ Бургер-кнопка не найдена');
+            return;
+        }
+        
+        if (!mobileMenu) {
+            console.error('❌ Мобильное меню не найдено');
+            return;
+        }
+        
+        console.log('✅ Элементы найдены:', {
+            burgerBtn: burgerBtn ? '✓' : '✗',
+            mobileMenu: mobileMenu ? '✓' : '✗'
+        });
+        
+        // Проверяем обработчик клика
+        const hasClickHandler = burgerBtn.onclick || 
+                               burgerBtn._hasClickHandler ||
+                               burgerBtn.getAttribute('listener');
+        
+        console.log('📱 Состояние мобильного меню:', {
+            isMenuVisible: mobileMenu.style.display !== 'none',
+            isMenuActive: mobileMenu.classList.contains('active'),
+            hasClickHandler: hasClickHandler ? '✓' : '✗',
+            burgerBtnPosition: burgerBtn.style.order || 'default'
+        });
+        
+        // Добавляем тестовый обработчик если его нет
+        if (!hasClickHandler) {
+            console.log('⚠️ Обработчик клика не найден, добавляем тестовый...');
+            burgerBtn.addEventListener('click', function() {
+                console.log('🍔 Тестовый обработчик сработал!');
+                const menu = document.getElementById('mobile-menu');
+                if (menu) {
+                    const isOpen = menu.classList.contains('active');
+                    console.log('📱 Состояние меню:', isOpen ? 'OPEN' : 'CLOSED');
+                    if (isOpen) {
+                        menu.classList.remove('active');
+                        burgerBtn.classList.remove('active');
+                    } else {
+                        menu.classList.add('active');
+                        burgerBtn.classList.add('active');
+                    }
+                }
+            });
+            burgerBtn._hasClickHandler = true;
+        }
     }
     
     /**
@@ -346,6 +409,19 @@ class ComponentLoader {
                 container.setAttribute('data-component', componentName);
                 container.setAttribute('data-loaded-at', timestamp);
                 
+                // Для мобильного меню - дополнительная проверка
+                if (componentName === 'mobile-menu') {
+                    console.log('📱 Мобильное меню загружено, проверяем элементы...');
+                    setTimeout(() => {
+                        const menu = document.getElementById('mobile-menu');
+                        const burger = document.getElementById('burger-btn');
+                        if (menu && burger) {
+                            console.log('✅ Элементы мобильного меню найдены после загрузки');
+                            menu.style.display = 'flex';
+                        }
+                    }, 100);
+                }
+                
                 // Отправляем событие о загрузке компонента
                 if (window) {
                     window.dispatchEvent(new CustomEvent('componentLoaded', {
@@ -398,16 +474,20 @@ class ComponentLoader {
                                   container.querySelector('header') ||
                                   container.querySelector('[data-header]') ||
                                   container.querySelector('nav');
+                    const burger = container.querySelector('.burger-btn') || 
+                                  container.querySelector('#burger-btn');
                     console.log(`    - Найден header: ${!!header}`);
+                    console.log(`    - Найден burger-btn: ${!!burger}`);
                 }
                 
                 if (componentName === 'mobile-menu') {
                     const mobileMenu = container.querySelector('.mobile-menu') || 
                                       container.querySelector('#mobile-menu');
-                    const burgerBtn = container.querySelector('.burger-btn') || 
-                                     container.querySelector('#burger-btn');
                     console.log(`    - Найден mobile-menu: ${!!mobileMenu}`);
-                    console.log(`    - Найден burger-btn: ${!!burgerBtn}`);
+                    if (mobileMenu) {
+                        console.log(`    - Классы mobile-menu: ${mobileMenu.className}`);
+                        console.log(`    - Стиль display: ${mobileMenu.style.display}`);
+                    }
                 }
             } else {
                 console.log(`  ${component.name}: Контейнер не найден!`);
