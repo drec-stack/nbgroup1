@@ -313,122 +313,29 @@
     (function() {
         'use strict';
         
-        let isMobileMenuOpen = false;
-        
         function initMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
-            const burgerBtn = document.getElementById('burger-btn');
             
             if (!mobileMenu) {
                 console.error('❌ Mobile menu not found');
                 return;
             }
             
-            if (!burgerBtn) {
-                console.warn('⚠️ Burger button not found, menu will only close from inside');
-            }
-            
             console.log('✅ Mobile menu found:', mobileMenu);
             
-            setupMobileMenuInteractions(mobileMenu, burgerBtn);
+            // Устанавливаем начальное состояние
+            mobileMenu.style.display = 'flex';
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.visibility = 'hidden';
+            mobileMenu.style.transform = 'translateX(100%)';
+            
+            // Настраиваем активные ссылки
             setupActiveNav();
+            
+            // Настраиваем переключатель языка
             setupLanguageSwitcher();
-            setupTouchOptimizations();
             
             console.log('✅ Mobile menu initialized');
-        }
-        
-        function setupMobileMenuInteractions(mobileMenu, burgerBtn) {
-            function toggleMobileMenu() {
-                isMobileMenuOpen = !isMobileMenuOpen;
-                
-                if (isMobileMenuOpen) {
-                    if (burgerBtn) {
-                        burgerBtn.classList.add('active');
-                        burgerBtn.setAttribute('aria-expanded', 'true');
-                        burgerBtn.setAttribute('aria-label', 'Закрыть меню');
-                    }
-                    mobileMenu.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                    document.documentElement.style.overflow = 'hidden';
-                } else {
-                    if (burgerBtn) {
-                        burgerBtn.classList.remove('active');
-                        burgerBtn.setAttribute('aria-expanded', 'false');
-                        burgerBtn.setAttribute('aria-label', 'Открыть меню');
-                    }
-                    mobileMenu.classList.remove('active');
-                    document.body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
-                
-                console.log(`📱 Mobile menu ${isMobileMenuOpen ? 'opened' : 'closed'}`);
-            }
-            
-            function closeMobileMenu() {
-                if (isMobileMenuOpen) {
-                    isMobileMenuOpen = false;
-                    if (burgerBtn) {
-                        burgerBtn.classList.remove('active');
-                        burgerBtn.setAttribute('aria-expanded', 'false');
-                        burgerBtn.setAttribute('aria-label', 'Открыть меню');
-                    }
-                    mobileMenu.classList.remove('active');
-                    document.body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
-            }
-            
-            // Close menu when clicking outside
-            mobileMenu.addEventListener('click', function(e) {
-                if (e.target === mobileMenu) {
-                    closeMobileMenu();
-                }
-            });
-            
-            // Close menu on Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && isMobileMenuOpen) {
-                    closeMobileMenu();
-                }
-            });
-            
-            // Close menu on resize (when switching to desktop)
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 900 && isMobileMenuOpen) {
-                    closeMobileMenu();
-                }
-            });
-            
-            // Close menu when clicking navigation links
-            const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    setTimeout(() => {
-                        closeMobileMenu();
-                    }, 100);
-                });
-            });
-            
-            // Close menu when clicking language buttons
-            const langButtons = mobileMenu.querySelectorAll('.mobile-lang-btn');
-            langButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    setTimeout(() => {
-                        closeMobileMenu();
-                    }, 100);
-                });
-            });
-            
-            // Close menu when clicking CTA button
-            const ctaButton = mobileMenu.querySelector('.mobile-header-btn');
-            if (ctaButton) {
-                ctaButton.addEventListener('click', () => {
-                    setTimeout(() => {
-                        closeMobileMenu();
-                    }, 100);
-                });
-            }
         }
         
         function setupActiveNav() {
@@ -494,33 +401,19 @@
             });
         }
         
-        function setupTouchOptimizations() {
-            if ('ontouchstart' in window || navigator.maxTouchPoints) {
-                document.body.classList.add('touch-device');
-                
-                // Make buttons more touch-friendly
-                const buttons = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
-                buttons.forEach(btn => {
-                    btn.style.minHeight = '44px';
-                    btn.style.minWidth = '44px';
-                });
-            }
-        }
-        
-        // Global functions for external control
+        // Глобальные функции для управления меню
         window.mobileMenuController = {
             open: function() {
                 const mobileMenu = document.getElementById('mobile-menu');
                 const burgerBtn = document.getElementById('burger-btn');
                 
-                if (mobileMenu && !isMobileMenuOpen) {
-                    isMobileMenuOpen = true;
+                if (mobileMenu) {
+                    mobileMenu.classList.add('active');
                     if (burgerBtn) {
                         burgerBtn.classList.add('active');
                         burgerBtn.setAttribute('aria-expanded', 'true');
                         burgerBtn.setAttribute('aria-label', 'Закрыть меню');
                     }
-                    mobileMenu.classList.add('active');
                     document.body.style.overflow = 'hidden';
                     document.documentElement.style.overflow = 'hidden';
                 }
@@ -530,14 +423,13 @@
                 const mobileMenu = document.getElementById('mobile-menu');
                 const burgerBtn = document.getElementById('burger-btn');
                 
-                if (mobileMenu && isMobileMenuOpen) {
-                    isMobileMenuOpen = false;
+                if (mobileMenu) {
+                    mobileMenu.classList.remove('active');
                     if (burgerBtn) {
                         burgerBtn.classList.remove('active');
                         burgerBtn.setAttribute('aria-expanded', 'false');
                         burgerBtn.setAttribute('aria-label', 'Открыть меню');
                     }
-                    mobileMenu.classList.remove('active');
                     document.body.style.overflow = '';
                     document.documentElement.style.overflow = '';
                 }
@@ -545,21 +437,18 @@
             
             toggle: function() {
                 const mobileMenu = document.getElementById('mobile-menu');
-                const burgerBtn = document.getElementById('burger-btn');
-                
                 if (mobileMenu) {
-                    if (isMobileMenuOpen) {
+                    if (mobileMenu.classList.contains('active')) {
                         this.close();
                     } else {
                         this.open();
                     }
-                } else if (burgerBtn) {
-                    burgerBtn.click();
                 }
             },
             
             isOpen: function() {
-                return isMobileMenuOpen;
+                const mobileMenu = document.getElementById('mobile-menu');
+                return mobileMenu ? mobileMenu.classList.contains('active') : false;
             }
         };
         
