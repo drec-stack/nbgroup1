@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded - CLEAN VERSION WITH MOBILE MENU SUPPORT');
+console.log('🚀 main.js loaded - UPDATED WITH MOBILE MENU FIX');
 
 class DaehaaApp {
     constructor() {
@@ -34,9 +34,6 @@ class DaehaaApp {
     init() {
         console.log('🚀 Daehaa App initializing...');
         
-        // Проверяем мобильное меню
-        this.checkAndFixMobileMenu();
-        
         // Базовые функции
         this.setupSmoothScroll();
         this.setupCurrentPage();
@@ -52,7 +49,25 @@ class DaehaaApp {
         // Футер
         this.setupFooterSupport();
         
+        // Устанавливаем обработчик для компонентов
+        this.setupComponentsListener();
+        
         console.log('✅ Daehaa application initialized');
+    }
+
+    // Слушаем события загрузки компонентов
+    setupComponentsListener() {
+        console.log('🎯 Setting up components listener...');
+        
+        window.addEventListener('componentsFullyLoaded', () => {
+            console.log('✅ Components fully loaded event received');
+            this.checkAndFixMobileMenu();
+        });
+        
+        // Также проверяем через 2 секунды на всякий случай
+        setTimeout(() => {
+            this.checkAndFixMobileMenu();
+        }, 2000);
     }
 
     // Проверка и фикс мобильного меню
@@ -80,12 +95,19 @@ class DaehaaApp {
         mobileMenu.style.display = 'flex';
         
         // Проверяем обработчик клика
-        const hasClickHandler = burgerBtn.onclick || burgerBtn._hasClickHandler;
+        const hasClickHandler = burgerBtn.onclick || 
+                               burgerBtn._hasClickHandler ||
+                               burgerBtn._mobileMenuHandler ||
+                               burgerBtn._componentHandler;
         
         if (!hasClickHandler) {
             console.log('⚠️ No click handler found on burger button, adding one...');
             
-            burgerBtn.addEventListener('click', function(e) {
+            // Удаляем старые обработчики для чистоты
+            const newBurgerBtn = burgerBtn.cloneNode(true);
+            burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
+            
+            newBurgerBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 
@@ -102,31 +124,31 @@ class DaehaaApp {
                 
                 if (isOpen) {
                     // Закрыть меню
-                    burgerBtn.classList.remove('active');
+                    this.classList.remove('active');
                     menu.classList.remove('active');
-                    burgerBtn.setAttribute('aria-expanded', 'false');
-                    burgerBtn.setAttribute('aria-label', 'Открыть меню');
+                    this.setAttribute('aria-expanded', 'false');
+                    this.setAttribute('aria-label', 'Открыть меню');
                     document.body.style.overflow = '';
                     document.documentElement.style.overflow = '';
                 } else {
                     // Открыть меню
-                    burgerBtn.classList.add('active');
+                    this.classList.add('active');
                     menu.classList.add('active');
-                    burgerBtn.setAttribute('aria-expanded', 'true');
-                    burgerBtn.setAttribute('aria-label', 'Закрыть меню');
+                    this.setAttribute('aria-expanded', 'true');
+                    this.setAttribute('aria-label', 'Закрыть меню');
                     document.body.style.overflow = 'hidden';
                     document.documentElement.style.overflow = 'hidden';
                 }
             });
             
-            burgerBtn._hasClickHandler = true;
+            newBurgerBtn._mobileMenuHandler = true;
             console.log('✅ Added click handler to burger button');
         } else {
             console.log('✅ Burger button already has click handler');
         }
         
         // Добавляем закрытие при клике на ссылки в меню
-        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 setTimeout(() => {
@@ -141,6 +163,34 @@ class DaehaaApp {
                 }, 300);
             });
         });
+        
+        // Добавляем закрытие при клике вне меню
+        document.addEventListener('click', (e) => {
+            if (mobileMenu.classList.contains('active') && 
+                !mobileMenu.contains(e.target) && 
+                !burgerBtn.contains(e.target)) {
+                burgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                burgerBtn.setAttribute('aria-expanded', 'false');
+                burgerBtn.setAttribute('aria-label', 'Открыть меню');
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+            }
+        });
+        
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                burgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                burgerBtn.setAttribute('aria-expanded', 'false');
+                burgerBtn.setAttribute('aria-label', 'Открыть меню');
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+            }
+        });
+        
+        console.log('✅ Mobile menu functionality verified');
     }
 
     // Безопасные методы для работы с DOM
@@ -718,4 +768,82 @@ window.checkMobileMenu = function() {
     return elements;
 };
 
-console.log('✅ main.js loaded - ready!');
+// Улучшенная функция для инициализации мобильного меню
+window.initializeMobileMenu = function() {
+    console.log('📱 Initializing mobile menu (global function)...');
+    
+    const burgerBtn = document.getElementById('burger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (!burgerBtn) {
+        console.log('🖥️ No burger button found (desktop mode)');
+        return false;
+    }
+    
+    if (!mobileMenu) {
+        console.error('❌ Mobile menu element not found');
+        return false;
+    }
+    
+    console.log('✅ Mobile menu elements found');
+    
+    // Убедимся что меню правильно инициализировано
+    mobileMenu.style.display = 'flex';
+    
+    // Добавляем обработчик если его нет
+    if (!burgerBtn._globalHandler) {
+        burgerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('🍔 Global handler: Burger button clicked!');
+            
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (!mobileMenu) return;
+            
+            const isOpen = mobileMenu.classList.contains('active');
+            
+            if (isOpen) {
+                // Закрыть меню
+                this.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                this.setAttribute('aria-expanded', 'false');
+                this.setAttribute('aria-label', 'Открыть меню');
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+            } else {
+                // Открыть меню
+                this.classList.add('active');
+                mobileMenu.classList.add('active');
+                this.setAttribute('aria-expanded', 'true');
+                this.setAttribute('aria-label', 'Закрыть меню');
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+            }
+        });
+        
+        burgerBtn._globalHandler = true;
+        console.log('✅ Added global click handler to burger button');
+    }
+    
+    return true;
+};
+
+// Запускаем проверку мобильного меню при различных событиях
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM Content Loaded - checking mobile menu...');
+    setTimeout(window.initializeMobileMenu, 1000);
+});
+
+window.addEventListener('load', function() {
+    console.log('🌐 Window Loaded - checking mobile menu...');
+    setTimeout(window.initializeMobileMenu, 500);
+});
+
+// Слушаем события от компонентов
+window.addEventListener('componentsFullyLoaded', function() {
+    console.log('🎯 Components Fully Loaded event - checking mobile menu...');
+    setTimeout(window.initializeMobileMenu, 100);
+});
+
+console.log('✅ main.js loaded - ready with mobile menu fixes!');
