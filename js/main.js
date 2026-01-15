@@ -34,11 +34,8 @@ class DaehaaApp {
     init() {
         console.log('🚀 Daehaa App initializing...');
         
-        // НЕ ИЩЕМ .mobile-menu здесь - он загружается отдельным компонентом
-        // Проверяем только после загрузки компонентов
-        setTimeout(() => {
-            this.checkMobileMenuLoaded();
-        }, 1000);
+        // Проверяем мобильное меню
+        this.checkAndFixMobileMenu();
         
         // Базовые функции
         this.setupSmoothScroll();
@@ -58,42 +55,92 @@ class DaehaaApp {
         console.log('✅ Daehaa application initialized');
     }
 
-    // Проверка загрузки мобильного меню
-    checkMobileMenuLoaded() {
-        const mobileMenu = document.querySelector('#mobile-menu');
-        const burgerBtn = document.querySelector('#burger-btn');
+    // Проверка и фикс мобильного меню
+    checkAndFixMobileMenu() {
+        console.log('📱 Checking mobile menu functionality...');
         
-        console.log('📱 Checking mobile menu components:');
-        console.log('  - #mobile-menu:', mobileMenu ? '✅ Found' : '❌ Not found');
-        console.log('  - #burger-btn:', burgerBtn ? '✅ Found' : '❌ Not found');
+        const burgerBtn = document.getElementById('burger-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
         
-        if (mobileMenu && burgerBtn) {
-            console.log('✅ Mobile menu system is ready');
-            
-            // Добавляем обработчик для тестирования
-            burgerBtn.addEventListener('click', function() {
-                console.log('🍔 Burger button clicked!');
-                console.log('📱 Mobile menu state:', mobileMenu.classList.contains('active') ? 'OPEN' : 'CLOSED');
-            });
-        } else {
-            console.warn('⚠️ Mobile menu components not fully loaded');
-            
-            // Пробуем найти альтернативными способами
-            setTimeout(() => {
-                const mobileMenuAlt = document.querySelector('.mobile-menu');
-                const burgerBtnAlt = document.querySelector('.burger-btn');
-                
-                if (mobileMenuAlt && !mobileMenu) {
-                    console.log('✅ Found .mobile-menu (by class), adding ID');
-                    mobileMenuAlt.id = 'mobile-menu';
-                }
-                
-                if (burgerBtnAlt && !burgerBtn) {
-                    console.log('✅ Found .burger-btn (by class), adding ID');
-                    burgerBtnAlt.id = 'burger-btn';
-                }
-            }, 500);
+        if (!burgerBtn) {
+            console.log('🖥️ No burger button found (desktop mode)');
+            return;
         }
+        
+        console.log('✅ Burger button found:', burgerBtn);
+        
+        if (!mobileMenu) {
+            console.error('❌ Mobile menu not found!');
+            return;
+        }
+        
+        console.log('✅ Mobile menu found:', mobileMenu);
+        
+        // Убедимся что меню правильно инициализировано
+        mobileMenu.style.display = 'flex';
+        
+        // Проверяем обработчик клика
+        const hasClickHandler = burgerBtn.onclick || burgerBtn._hasClickHandler;
+        
+        if (!hasClickHandler) {
+            console.log('⚠️ No click handler found on burger button, adding one...');
+            
+            burgerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log('🍔 Burger button clicked!');
+                
+                const menu = document.getElementById('mobile-menu');
+                if (!menu) {
+                    console.error('❌ Mobile menu not found when clicking burger');
+                    return;
+                }
+                
+                const isOpen = menu.classList.contains('active');
+                console.log('📱 Mobile menu state:', isOpen ? 'OPEN' : 'CLOSED');
+                
+                if (isOpen) {
+                    // Закрыть меню
+                    burgerBtn.classList.remove('active');
+                    menu.classList.remove('active');
+                    burgerBtn.setAttribute('aria-expanded', 'false');
+                    burgerBtn.setAttribute('aria-label', 'Открыть меню');
+                    document.body.style.overflow = '';
+                    document.documentElement.style.overflow = '';
+                } else {
+                    // Открыть меню
+                    burgerBtn.classList.add('active');
+                    menu.classList.add('active');
+                    burgerBtn.setAttribute('aria-expanded', 'true');
+                    burgerBtn.setAttribute('aria-label', 'Закрыть меню');
+                    document.body.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = 'hidden';
+                }
+            });
+            
+            burgerBtn._hasClickHandler = true;
+            console.log('✅ Added click handler to burger button');
+        } else {
+            console.log('✅ Burger button already has click handler');
+        }
+        
+        // Добавляем закрытие при клике на ссылки в меню
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                setTimeout(() => {
+                    if (burgerBtn && mobileMenu.classList.contains('active')) {
+                        burgerBtn.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        burgerBtn.setAttribute('aria-expanded', 'false');
+                        burgerBtn.setAttribute('aria-label', 'Открыть меню');
+                        document.body.style.overflow = '';
+                        document.documentElement.style.overflow = '';
+                    }
+                }, 300);
+            });
+        });
     }
 
     // Безопасные методы для работы с DOM
@@ -632,16 +679,10 @@ window.updateCompactLanguageSwitcher = function() {
 
 // Функция для управления мобильным меню
 window.toggleMobileMenu = function() {
-    if (window.mobileMenuController) {
-        window.mobileMenuController.toggle();
-        return true;
-    }
+    const burgerBtn = document.getElementById('burger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
     
-    // Fallback: прямой доступ к элементам
-    const mobileMenu = document.querySelector('#mobile-menu');
-    const burgerBtn = document.querySelector('#burger-btn');
-    
-    if (mobileMenu && burgerBtn) {
+    if (burgerBtn && mobileMenu) {
         const isOpen = mobileMenu.classList.contains('active');
         
         if (isOpen) {
@@ -673,10 +714,6 @@ window.checkMobileMenu = function() {
     };
     
     console.log('📱 Elements:', elements);
-    
-    if (window.mobileMenuController) {
-        console.log('📱 mobileMenuController:', window.mobileMenuController);
-    }
     
     return elements;
 };
