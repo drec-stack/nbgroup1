@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded - SIMPLE MOBILE MENU FIX');
+console.log('🚀 main.js loaded - UPDATED WITH MOBILE MENU FIX');
 
 class DaehaaApp {
     constructor() {
@@ -18,8 +18,17 @@ class DaehaaApp {
         
         console.log(`📄 Page type: ${this.isServicesPage ? 'Services' : this.isAboutPage ? 'About' : this.isHomePage ? 'Home' : 'Other'}`);
         
-        // Автоматически запускаем инициализацию
-        this.init();
+        // Инициализируем после загрузки DOM
+        if (document.readyState === 'loading') {
+            console.log('⏳ DOM loading, waiting...');
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('✅ DOM loaded, calling init()');
+                this.init();
+            });
+        } else {
+            console.log('✅ DOM already loaded, calling init()');
+            this.init();
+        }
     }
 
     init() {
@@ -40,171 +49,148 @@ class DaehaaApp {
         // Футер
         this.setupFooterSupport();
         
-        // ПРИНУДИТЕЛЬНАЯ инициализация мобильного меню
-        this.forceMobileMenuInit();
+        // Устанавливаем обработчик для компонентов
+        this.setupComponentsListener();
         
         console.log('✅ Daehaa application initialized');
     }
 
-    // ПРИНУДИТЕЛЬНАЯ инициализация мобильного меню
-    forceMobileMenuInit() {
-        console.log('🔧 ПРИНУДИТЕЛЬНАЯ инициализация мобильного меню');
+    // Слушаем события загрузки компонентов
+    setupComponentsListener() {
+        console.log('🎯 Setting up components listener...');
         
-        // Проверяем сразу
-        this.checkAndFixMobileMenu();
-        
-        // Проверяем через 500ms
-        setTimeout(() => {
+        window.addEventListener('componentsFullyLoaded', () => {
+            console.log('✅ Components fully loaded event received');
             this.checkAndFixMobileMenu();
-        }, 500);
+        });
         
-        // Проверяем через 2000ms
+        // Также проверяем через 2 секунды на всякий случай
         setTimeout(() => {
             this.checkAndFixMobileMenu();
         }, 2000);
-        
-        // Проверяем при полной загрузке страницы
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                this.checkAndFixMobileMenu();
-            }, 100);
-        });
     }
 
     // Проверка и фикс мобильного меню
     checkAndFixMobileMenu() {
-        console.log('📱 Проверка мобильного меню...');
+        console.log('📱 Checking mobile menu functionality...');
         
         const burgerBtn = document.getElementById('burger-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         
         if (!burgerBtn) {
-            console.error('❌ Бургер-кнопка не найдена!');
-            this.createEmergencyBurgerButton();
+            console.log('🖥️ No burger button found (desktop mode)');
             return;
         }
+        
+        console.log('✅ Burger button found:', burgerBtn);
         
         if (!mobileMenu) {
-            console.error('❌ Мобильное меню не найдено!');
+            console.error('❌ Mobile menu not found!');
             return;
         }
         
-        console.log('✅ Элементы найдены');
+        console.log('✅ Mobile menu found:', mobileMenu);
         
-        // Убедимся что меню правильно отображается
+        // Убедимся что меню правильно инициализировано
         mobileMenu.style.display = 'flex';
-        mobileMenu.style.opacity = '0';
-        mobileMenu.style.visibility = 'hidden';
-        mobileMenu.style.transform = 'translateX(100%)';
         
-        // Если уже есть обработчик, не добавляем новый
-        if (burgerBtn._simpleClickHandler) {
-            console.log('✅ Обработчик уже есть');
-            return;
+        // Проверяем обработчик клика
+        const hasClickHandler = burgerBtn.onclick || 
+                               burgerBtn._hasClickHandler ||
+                               burgerBtn._mobileMenuHandler ||
+                               burgerBtn._componentHandler;
+        
+        if (!hasClickHandler) {
+            console.log('⚠️ No click handler found on burger button, adding one...');
+            
+            // Удаляем старые обработчики для чистоты
+            const newBurgerBtn = burgerBtn.cloneNode(true);
+            burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
+            
+            newBurgerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log('🍔 Burger button clicked!');
+                
+                const menu = document.getElementById('mobile-menu');
+                if (!menu) {
+                    console.error('❌ Mobile menu not found when clicking burger');
+                    return;
+                }
+                
+                const isOpen = menu.classList.contains('active');
+                console.log('📱 Mobile menu state:', isOpen ? 'OPEN' : 'CLOSED');
+                
+                if (isOpen) {
+                    // Закрыть меню
+                    this.classList.remove('active');
+                    menu.classList.remove('active');
+                    this.setAttribute('aria-expanded', 'false');
+                    this.setAttribute('aria-label', 'Открыть меню');
+                    document.body.style.overflow = '';
+                    document.documentElement.style.overflow = '';
+                } else {
+                    // Открыть меню
+                    this.classList.add('active');
+                    menu.classList.add('active');
+                    this.setAttribute('aria-expanded', 'true');
+                    this.setAttribute('aria-label', 'Закрыть меню');
+                    document.body.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = 'hidden';
+                }
+            });
+            
+            newBurgerBtn._mobileMenuHandler = true;
+            console.log('✅ Added click handler to burger button');
+        } else {
+            console.log('✅ Burger button already has click handler');
         }
         
-        // ПРОСТЕЙШИЙ обработчик
-        burgerBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            console.log('🍔 Бургер нажат!');
-            
-            const menu = document.getElementById('mobile-menu');
-            if (!menu) return;
-            
-            const isOpen = menu.classList.contains('active');
-            
-            if (isOpen) {
-                // Закрыть меню
-                menu.classList.remove('active');
-                this.classList.remove('active');
-                this.setAttribute('aria-expanded', 'false');
-                this.setAttribute('aria-label', 'Открыть меню');
+        // Добавляем закрытие при клике на ссылки в меню
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                setTimeout(() => {
+                    if (burgerBtn && mobileMenu.classList.contains('active')) {
+                        burgerBtn.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        burgerBtn.setAttribute('aria-expanded', 'false');
+                        burgerBtn.setAttribute('aria-label', 'Открыть меню');
+                        document.body.style.overflow = '';
+                        document.documentElement.style.overflow = '';
+                    }
+                }, 300);
+            });
+        });
+        
+        // Добавляем закрытие при клике вне меню
+        document.addEventListener('click', (e) => {
+            if (mobileMenu.classList.contains('active') && 
+                !mobileMenu.contains(e.target) && 
+                !burgerBtn.contains(e.target)) {
+                burgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                burgerBtn.setAttribute('aria-expanded', 'false');
+                burgerBtn.setAttribute('aria-label', 'Открыть меню');
                 document.body.style.overflow = '';
                 document.documentElement.style.overflow = '';
-            } else {
-                // Открыть меню
-                menu.classList.add('active');
-                this.classList.add('active');
-                this.setAttribute('aria-expanded', 'true');
-                this.setAttribute('aria-label', 'Закрыть меню');
-                document.body.style.overflow = 'hidden';
-                document.documentElement.style.overflow = 'hidden';
             }
         });
         
-        burgerBtn._simpleClickHandler = true;
-        console.log('✅ Простой обработчик добавлен');
-    }
-
-    // Создание экстренной бургер-кнопки
-    createEmergencyBurgerButton() {
-        console.log('⚠️ Создание экстренной бургер-кнопки...');
-        
-        // Ищем контейнер для бургера
-        let burgerContainer = document.querySelector('.header-right-mobile') || 
-                             document.querySelector('.burger-container');
-        
-        if (!burgerContainer) {
-            console.error('❌ Контейнер для бургера не найден');
-            return;
-        }
-        
-        // Создаем бургер-кнопку
-        const burgerBtn = document.createElement('button');
-        burgerBtn.id = 'burger-btn';
-        burgerBtn.className = 'burger-btn';
-        burgerBtn.setAttribute('aria-label', 'Открыть меню');
-        burgerBtn.setAttribute('aria-expanded', 'false');
-        
-        burgerBtn.innerHTML = `
-            <span></span>
-            <span></span>
-            <span></span>
-        `;
-        
-        // Добавляем стили
-        burgerBtn.style.cssText = `
-            display: block;
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            cursor: pointer;
-            position: relative;
-            z-index: 1002;
-        `;
-        
-        // Создаем линии бургера
-        const spans = burgerBtn.querySelectorAll('span');
-        spans.forEach(span => {
-            span.style.cssText = `
-                display: block;
-                position: absolute;
-                width: 20px;
-                height: 2px;
-                background: white;
-                border-radius: 2px;
-                transition: all 0.3s ease;
-                left: 50%;
-                transform: translateX(-50%);
-            `;
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                burgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                burgerBtn.setAttribute('aria-expanded', 'false');
+                burgerBtn.setAttribute('aria-label', 'Открыть меню');
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+            }
         });
         
-        spans[0].style.top = '15px';
-        spans[1].style.top = '50%';
-        spans[1].style.transform = 'translate(-50%, -50%)';
-        spans[2].style.bottom = '15px';
-        
-        burgerContainer.appendChild(burgerBtn);
-        console.log('✅ Экстренная бургер-кнопка создана');
-        
-        // Сразу добавляем обработчик
-        setTimeout(() => {
-            this.checkAndFixMobileMenu();
-        }, 100);
+        console.log('✅ Mobile menu functionality verified');
     }
 
     // Безопасные методы для работы с DOM
@@ -335,10 +321,41 @@ class DaehaaApp {
         switchers.forEach(switcher => {
             if (!switcher) return;
             switcher.setAttribute('data-current-lang', lang);
+            
+            // Анимируем ползунок
+            const slider = switcher.querySelector('.lang-slider, .mobile-lang-slider-menu');
+            if (slider) {
+                slider.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                slider.style.transform = lang === 'en' ? 'translateX(100%)' : 'translateX(0)';
+            }
+        });
+        
+        // Обновляем размеры для компактной версии
+        this.updateCompactLanguageSwitcher(lang);
+    }
+
+    updateCompactLanguageSwitcher(lang) {
+        // Убедимся что размеры остаются компактными
+        const languageSwitchers = this.safeQuerySelectorAll('.language-switcher');
+        languageSwitchers.forEach(switcher => {
+            if (!switcher) return;
+            switcher.style.minWidth = '100px';
+            switcher.style.height = '40px';
+            
+            const flags = switcher.querySelectorAll('.lang-flag');
+            flags.forEach(flag => {
+                if (flag) flag.style.fontSize = '18px';
+            });
+            
+            const texts = switcher.querySelectorAll('.lang-text');
+            texts.forEach(text => {
+                if (text) text.style.fontSize = '14px';
+            });
         });
     }
 
     setupResponsiveLanguageSwitcher() {
+        // Функция для обновления отображения текста в переключателе языка
         const updateLanguageSwitcherText = () => {
             const isMobile = window.innerWidth <= 768;
             const languageSwitchers = this.safeQuerySelectorAll('.language-switcher.mobile-only-flags');
@@ -355,11 +372,24 @@ class DaehaaApp {
                         }
                     }
                 });
+                
+                // Обновляем размеры для мобильной версии
+                if (isMobile) {
+                    switcher.style.minWidth = '85px';
+                    switcher.style.height = '36px';
+                    
+                    const flags = switcher.querySelectorAll('.lang-flag');
+                    flags.forEach(flag => {
+                        if (flag) flag.style.fontSize = '18px';
+                    });
+                }
             });
         };
         
+        // Инициализация при загрузке
         updateLanguageSwitcherText();
         
+        // Обновление при изменении размера окна
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
@@ -374,6 +404,7 @@ class DaehaaApp {
     setupMobileOptimizations() {
         document.addEventListener('touchstart', function() {}, {passive: true});
         
+        // Оптимизация для медленных соединений
         if ('connection' in navigator && navigator.connection.saveData === true) {
             document.documentElement.classList.add('save-data');
         }
@@ -597,57 +628,222 @@ class DaehaaApp {
     }
 }
 
-// Инициализация приложения сразу
+// Инициализация приложения
 (function initializeApp() {
-    console.log('🔄 Инициализация приложения...');
+    console.log('🔄 Initializing app...');
     
     if (!window.DaehaaApp) {
         window.DaehaaApp = new DaehaaApp();
-        console.log('✅ DaehaaApp инициализирован');
+        console.log('✅ DaehaaApp initialized');
     }
 })();
 
-// Глобальная функция для мобильного меню
-window.forceMobileMenu = function() {
-    console.log('🔧 Принудительный запуск мобильного меню');
+// Глобальные утилиты
+window.debounce = function(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+
+window.throttle = function(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+};
+
+// Глобальные функции для управления переключателем языка
+window.updateLanguageSwitcher = function(lang) {
+    if (window.DaehaaApp) {
+        window.DaehaaApp.updateLanguageSwitcherUI(lang);
+    }
+};
+
+window.getCurrentLanguage = function() {
+    return localStorage.getItem('preferredLang') || 'ru';
+};
+
+window.toggleLanguage = function() {
+    const currentLang = localStorage.getItem('preferredLang') || 'ru';
+    const newLang = currentLang === 'ru' ? 'en' : 'ru';
     
-    if (window.DaehaaApp && window.DaehaaApp.checkAndFixMobileMenu) {
-        window.DaehaaApp.checkAndFixMobileMenu();
+    if (window.i18n && window.i18n.switchLanguage) {
+        window.i18n.switchLanguage(newLang);
+    } else {
+        // Fallback if i18n is not available
+        localStorage.setItem('preferredLang', newLang);
+        window.updateLanguageSwitcher(newLang);
+        location.reload();
+    }
+};
+
+// Компактный переключатель языка - глобальная функция
+window.updateCompactLanguageSwitcher = function() {
+    const languageSwitchers = document.querySelectorAll('.language-switcher');
+    languageSwitchers.forEach(switcher => {
+        if (!switcher) return;
+        switcher.style.minWidth = '100px';
+        switcher.style.height = '40px';
+        switcher.style.padding = '3px';
+        
+        const slider = switcher.querySelector('.lang-slider');
+        if (slider) {
+            slider.style.top = '3px';
+            slider.style.left = '3px';
+            slider.style.width = 'calc(50% - 3px)';
+            slider.style.height = 'calc(100% - 6px)';
+        }
+        
+        const buttons = switcher.querySelectorAll('.lang-btn');
+        buttons.forEach(btn => {
+            if (btn) {
+                btn.style.fontSize = '14px';
+                btn.style.height = '34px';
+                btn.style.padding = '0 16px';
+            }
+        });
+        
+        const texts = switcher.querySelectorAll('.lang-text');
+        texts.forEach(text => {
+            if (text) text.style.fontSize = '14px';
+        });
+        
+        const flags = switcher.querySelectorAll('.lang-flag');
+        flags.forEach(flag => {
+            if (flag) flag.style.fontSize = '18px';
+        });
+    });
+};
+
+// Функция для управления мобильным меню
+window.toggleMobileMenu = function() {
+    const burgerBtn = document.getElementById('burger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (burgerBtn && mobileMenu) {
+        const isOpen = mobileMenu.classList.contains('active');
+        
+        if (isOpen) {
+            mobileMenu.classList.remove('active');
+            burgerBtn.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            mobileMenu.classList.add('active');
+            burgerBtn.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
         return true;
     }
     
-    console.error('❌ DaehaaApp не найден');
+    console.error('❌ Mobile menu elements not found');
     return false;
 };
 
-// Запускаем проверку мобильного меню при загрузке
+// Проверка мобильного меню
+window.checkMobileMenu = function() {
+    console.log('📱 Checking mobile menu...');
+    
+    const elements = {
+        '#mobile-menu': document.querySelector('#mobile-menu'),
+        '.mobile-menu': document.querySelector('.mobile-menu'),
+        '#burger-btn': document.querySelector('#burger-btn'),
+        '.burger-btn': document.querySelector('.burger-btn')
+    };
+    
+    console.log('📱 Elements:', elements);
+    
+    return elements;
+};
+
+// Улучшенная функция для инициализации мобильного меню
+window.initializeMobileMenu = function() {
+    console.log('📱 Initializing mobile menu (global function)...');
+    
+    const burgerBtn = document.getElementById('burger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (!burgerBtn) {
+        console.log('🖥️ No burger button found (desktop mode)');
+        return false;
+    }
+    
+    if (!mobileMenu) {
+        console.error('❌ Mobile menu element not found');
+        return false;
+    }
+    
+    console.log('✅ Mobile menu elements found');
+    
+    // Убедимся что меню правильно инициализировано
+    mobileMenu.style.display = 'flex';
+    
+    // Добавляем обработчик если его нет
+    if (!burgerBtn._globalHandler) {
+        burgerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('🍔 Global handler: Burger button clicked!');
+            
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (!mobileMenu) return;
+            
+            const isOpen = mobileMenu.classList.contains('active');
+            
+            if (isOpen) {
+                // Закрыть меню
+                this.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                this.setAttribute('aria-expanded', 'false');
+                this.setAttribute('aria-label', 'Открыть меню');
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+            } else {
+                // Открыть меню
+                this.classList.add('active');
+                mobileMenu.classList.add('active');
+                this.setAttribute('aria-expanded', 'true');
+                this.setAttribute('aria-label', 'Закрыть меню');
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+            }
+        });
+        
+        burgerBtn._globalHandler = true;
+        console.log('✅ Added global click handler to burger button');
+    }
+    
+    return true;
+};
+
+// Запускаем проверку мобильного меню при различных событиях
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 DOM загружен - проверяем мобильное меню');
-    
-    // Первая проверка
-    setTimeout(() => {
-        if (window.forceMobileMenu) {
-            window.forceMobileMenu();
-        }
-    }, 500);
-    
-    // Вторая проверка через 2 секунды
-    setTimeout(() => {
-        if (window.forceMobileMenu) {
-            window.forceMobileMenu();
-        }
-    }, 2000);
+    console.log('📄 DOM Content Loaded - checking mobile menu...');
+    setTimeout(window.initializeMobileMenu, 1000);
 });
 
-// При полной загрузке страницы
 window.addEventListener('load', function() {
-    console.log('🌐 Страница полностью загружена - финальная проверка');
-    
-    setTimeout(() => {
-        if (window.forceMobileMenu) {
-            window.forceMobileMenu();
-        }
-    }, 1000);
+    console.log('🌐 Window Loaded - checking mobile menu...');
+    setTimeout(window.initializeMobileMenu, 500);
 });
 
-console.log('✅ main.js загружен с фиксами для мобильного меню');
+// Слушаем события от компонентов
+window.addEventListener('componentsFullyLoaded', function() {
+    console.log('🎯 Components Fully Loaded event - checking mobile menu...');
+    setTimeout(window.initializeMobileMenu, 100);
+});
+
+console.log('✅ main.js loaded - ready with mobile menu fixes!');
