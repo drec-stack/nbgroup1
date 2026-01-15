@@ -325,15 +325,17 @@
                 display: none !important;
             }
             
-            /* Показываем мобильные элементы */
+            /* ===== ИЗМЕНЕНИЕ: Мобильные элементы в новом порядке ===== */
             .header-right-mobile {
                 display: flex !important;
                 align-items: center;
-                gap: 10px;
+                gap: 15px;
                 flex-shrink: 0;
+                order: 3;
+                margin-left: auto;
             }
             
-            /* БУРГЕР КНОПКА */
+            /* БУРГЕР КНОПКА - ТЕПЕРЬ СПРАВА */
             .burger-btn {
                 display: block !important;
                 width: 44px;
@@ -350,6 +352,7 @@
                 min-width: 44px;
                 min-height: 44px;
                 touch-action: manipulation;
+                order: 2; /* Бургер будет после переключателя языка */
             }
             
             .burger-btn:hover {
@@ -432,7 +435,7 @@
                 white-space: nowrap;
             }
             
-            /* Мобильный переключатель языка */
+            /* Мобильный переключатель языка - ТЕПЕРЬ СЛЕВА ОТ БУРГЕРА */
             .language-switcher.mobile-only-flags {
                 display: flex;
                 background: rgba(255, 255, 255, 0.1);
@@ -445,6 +448,7 @@
                 height: 44px;
                 overflow: hidden;
                 position: relative;
+                order: 1; /* Переключатель языка будет слева от бургера */
             }
             
             .language-switcher.mobile-only-flags .lang-slider {
@@ -521,6 +525,10 @@
             .logo-text {
                 font-size: 16px;
                 max-width: 110px;
+            }
+            
+            .header-right-mobile {
+                gap: 10px;
             }
             
             .burger-btn {
@@ -683,16 +691,9 @@
                     </button>
                 </div>
                 
-                <!-- Мобильная версия (скрыта на десктопе) -->
+                <!-- Мобильная версия (скрыта на десктопе) - ИЗМЕНЕННЫЙ ПОРЯДОК -->
                 <div class="header-right-mobile">
-                    <!-- БУРГЕР КНОПКА -->
-                    <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    
-                    <!-- Компактный мобильный переключатель -->
+                    <!-- Сначала переключатель языка -->
                     <div class="language-switcher mobile-only-flags" data-current-lang="ru">
                         <div class="lang-slider"></div>
                         <button class="lang-btn" data-lang="ru">
@@ -704,6 +705,13 @@
                             <span class="lang-text">EN</span>
                         </button>
                     </div>
+                    
+                    <!-- Затем бургер кнопка (теперь справа) -->
+                    <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -925,9 +933,6 @@
                 
                 // Перенаправляем на страницу контактов
                 window.location.href = 'contacts.html';
-                
-                // Или можно открыть модальное окно:
-                // openContactModal();
             });
         }
         
@@ -949,4 +954,3 @@
     </script>
 </body>
 </html>
-
