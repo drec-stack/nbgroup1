@@ -11,9 +11,12 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/portfolio.css">
     
-    <!-- Компоненты загружаем первыми с defer -->
+    <!-- Компоненты загружаем первыми -->
     <script src="js/components.js" defer></script>
     <script src="js/i18n.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/animations.js" defer></script>
+    <script src="js/portfolio.js" defer></script>
 </head>
 <body class="portfolio-page">
     <!-- Header Container -->
@@ -392,17 +395,12 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
 
-    <!-- Скрипты загружаем ПОСЛЕ контента -->
-    <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/portfolio.js"></script>
-    
     <script>
-        // Инициализация страницы портфолио после загрузки компонентов
+        // Инициализация страницы портфолио
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 Страница портфолио загружена');
             
-            // Функция для инициализации фильтрации
+            // Фильтрация проектов
             function setupPortfolioFilter() {
                 const filterBtns = document.querySelectorAll('.filter-btn');
                 const portfolioItems = document.querySelectorAll('.portfolio-item');
@@ -433,83 +431,24 @@
                         });
                     });
                 });
-                
-                console.log('✅ Portfolio filter initialized');
             }
             
-            // Ждем загрузки компонентов
-            if (window.waitForComponents) {
-                window.waitForComponents().then(() => {
-                    console.log('✅ Components loaded for portfolio page');
-                    
-                    // Инициализация переводов
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 100);
-                    
-                    // Инициализация фильтрации
-                    setupPortfolioFilter();
-                    
-                    // Проверяем и фиксим мобильное меню
-                    setTimeout(() => {
-                        if (window.DaehaaApp && window.DaehaaApp.checkAndFixMobileMenu) {
-                            window.DaehaaApp.checkAndFixMobileMenu();
-                        }
-                    }, 200);
-                }).catch(error => {
-                    console.error('❌ Error waiting for components:', error);
-                    // Fallback
-                    setupPortfolioFilter();
-                });
-            } else {
-                // Fallback если waitForComponents не доступен
-                console.log('⚠️ waitForComponents not available, using fallback');
-                setTimeout(() => {
-                    setupPortfolioFilter();
-                    
-                    if (window.i18n && window.i18n.refresh) {
-                        window.i18n.refresh();
-                    }
-                }, 500);
-            }
-        });
-        
-        // Обработчик для событий компонентов
-        window.addEventListener('componentsFullyLoaded', function() {
-            console.log('🎯 Components fully loaded event received');
-            
-            // Гарантируем что бургер кнопка доступна
-            const burgerBtn = document.getElementById('burger-btn');
-            if (burgerBtn) {
-                console.log('✅ Burger button is available in DOM');
-                
-                // Добавляем простой обработчик если его нет
-                if (!burgerBtn._clickHandlerAdded) {
-                    burgerBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        const mobileMenu = document.getElementById('mobile-menu');
-                        if (!mobileMenu) return;
-                        
-                        const isOpen = mobileMenu.classList.contains('active');
-                        
-                        if (isOpen) {
-                            mobileMenu.classList.remove('active');
-                            burgerBtn.classList.remove('active');
-                            document.body.style.overflow = '';
-                        } else {
-                            mobileMenu.classList.add('active');
-                            burgerBtn.classList.add('active');
-                            document.body.style.overflow = 'hidden';
-                        }
-                    });
-                    burgerBtn._clickHandlerAdded = true;
-                    console.log('✅ Added click handler to burger button');
+            // Инициализация переводов
+            setTimeout(() => {
+                if (window.i18n && window.i18n.refresh) {
+                    window.i18n.refresh();
                 }
-            }
+            }, 500);
+            
+            // Инициализация фильтрации
+            setupPortfolioFilter();
+            
+            // Инициализация анимаций портфолио
+            setTimeout(() => {
+                if (typeof initPortfolio === 'function') {
+                    initPortfolio();
+                }
+            }, 1000);
         });
     </script>
 </body>
