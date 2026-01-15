@@ -210,38 +210,101 @@ class ComponentLoader {
             mobileMenu: mobileMenu ? '✓' : '✗'
         });
         
-        // Проверяем обработчик клика
-        const hasClickHandler = burgerBtn.onclick || 
-                               burgerBtn._hasClickHandler ||
-                               burgerBtn.getAttribute('listener');
+        // Убедимся что меню видимо
+        mobileMenu.style.display = 'flex';
         
-        console.log('📱 Состояние мобильного меню:', {
-            isMenuVisible: mobileMenu.style.display !== 'none',
-            isMenuActive: mobileMenu.classList.contains('active'),
-            hasClickHandler: hasClickHandler ? '✓' : '✗',
-            burgerBtnPosition: burgerBtn.style.order || 'default'
-        });
-        
-        // Добавляем тестовый обработчик если его нет
-        if (!hasClickHandler) {
-            console.log('⚠️ Обработчик клика не найден, добавляем тестовый...');
-            burgerBtn.addEventListener('click', function() {
-                console.log('🍔 Тестовый обработчик сработал!');
-                const menu = document.getElementById('mobile-menu');
-                if (menu) {
-                    const isOpen = menu.classList.contains('active');
-                    console.log('📱 Состояние меню:', isOpen ? 'OPEN' : 'CLOSED');
-                    if (isOpen) {
-                        menu.classList.remove('active');
-                        burgerBtn.classList.remove('active');
-                    } else {
-                        menu.classList.add('active');
-                        burgerBtn.classList.add('active');
-                    }
+        // Добавляем обработчик если его нет
+        if (!burgerBtn._componentHandler) {
+            burgerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log('🍔 Компонентный обработчик бургер-кнопки сработал!');
+                
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (!mobileMenu) {
+                    console.error('❌ Mobile menu not found when clicking burger');
+                    return;
+                }
+                
+                const isOpen = mobileMenu.classList.contains('active');
+                console.log('📱 Состояние меню:', isOpen ? 'OPEN' : 'CLOSED');
+                
+                if (isOpen) {
+                    // Закрыть меню
+                    this.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    this.setAttribute('aria-expanded', 'false');
+                    this.setAttribute('aria-label', 'Открыть меню');
+                    document.body.style.overflow = '';
+                    document.documentElement.style.overflow = '';
+                } else {
+                    // Открыть меню
+                    this.classList.add('active');
+                    mobileMenu.classList.add('active');
+                    this.setAttribute('aria-expanded', 'true');
+                    this.setAttribute('aria-label', 'Закрыть меню');
+                    document.body.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = 'hidden';
                 }
             });
-            burgerBtn._hasClickHandler = true;
+            
+            burgerBtn._componentHandler = true;
+            console.log('✅ Добавлен компонентный обработчик клика на бургер-кнопку');
         }
+        
+        // Выводим подробную информацию
+        console.log('📱 Детальная информация о мобильном меню:', {
+            isMenuVisible: mobileMenu.style.display !== 'none',
+            isMenuActive: mobileMenu.classList.contains('active'),
+            burgerBtnHasHandler: burgerBtn._componentHandler || burgerBtn._mobileMenuHandler || burgerBtn._hasClickHandler,
+            burgerBtnPosition: burgerBtn.style.order || 'default',
+            burgerBtnAriaExpanded: burgerBtn.getAttribute('aria-expanded'),
+            documentBodyOverflow: document.body.style.overflow
+        });
+        
+        // Добавляем закрытие при клике на ссылки в меню
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                setTimeout(() => {
+                    if (burgerBtn && mobileMenu.classList.contains('active')) {
+                        burgerBtn.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        burgerBtn.setAttribute('aria-expanded', 'false');
+                        burgerBtn.setAttribute('aria-label', 'Открыть меню');
+                        document.body.style.overflow = '';
+                        document.documentElement.style.overflow = '';
+                    }
+                }, 300);
+            });
+        });
+        
+        // Добавляем закрытие при клике вне меню
+        document.addEventListener('click', (e) => {
+            if (mobileMenu.classList.contains('active') && 
+                !mobileMenu.contains(e.target) && 
+                !burgerBtn.contains(e.target)) {
+                burgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                burgerBtn.setAttribute('aria-expanded', 'false');
+                burgerBtn.setAttribute('aria-label', 'Открыть меню');
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+            }
+        });
+        
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                burgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                burgerBtn.setAttribute('aria-expanded', 'false');
+                burgerBtn.setAttribute('aria-label', 'Открыть меню');
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+            }
+        });
     }
     
     /**
