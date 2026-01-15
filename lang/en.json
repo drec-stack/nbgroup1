@@ -393,6 +393,50 @@
         "successRate": "Success Rate"
       }
     },
+    "brand": {
+      "title": "Brand Development",
+      "description": "Comprehensive brand identity development including logo design, visual language, and brand positioning to create memorable and impactful brands.",
+      "features": {
+        "brandStrategy": {
+          "title": "Brand Strategy",
+          "description": "Market positioning and competitive analysis"
+        },
+        "visualIdentity": {
+          "title": "Visual Identity",
+          "description": "Logo, color palette, and typography development"
+        },
+        "brandAssets": {
+          "title": "Brand Assets",
+          "description": "Complete set of brand elements and applications"
+        }
+      },
+      "stats": {
+        "brandsCreated": "Brands Created",
+        "fullCoverage": "Full Brand Coverage"
+      }
+    },
+    "brandbook": {
+      "title": "Brandbook Development",
+      "description": "Complete brand guideline systems that ensure consistent brand representation across all platforms and touchpoints with detailed usage rules.",
+      "features": {
+        "brandGuidelines": {
+          "title": "Brand Guidelines",
+          "description": "Comprehensive usage rules and specifications"
+        },
+        "visualStandards": {
+          "title": "Visual Standards",
+          "description": "Logo usage, color systems, and typography"
+        },
+        "applicationExamples": {
+          "title": "Application Examples",
+          "description": "Real-world usage across various media"
+        }
+      },
+      "stats": {
+        "brandbooks": "Brandbooks",
+        "consistency": "Consistency"
+      }
+    },
     "marketing": {
       "title": "Marketing & Promotion",
       "description": "Digital strategies and product promotion to ensure market success and customer engagement.",
