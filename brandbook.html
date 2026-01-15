@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="brandbook.title">Brandbook - NB Group</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/brandbook.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/animations.css">
     
-    <!-- Компоненты загружаем первыми с defer -->
+    <!-- Компоненты загружаем первыми -->
     <script src="js/components.js" defer></script>
     <script src="js/i18n.js" defer></script>
 </head>
@@ -178,17 +179,18 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
     
-    <!-- Скрипты загружаем ПОСЛЕ контента -->
+    <!-- Основные скрипты ПОСЛЕ загрузки контента -->
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/brandbook.js"></script>
+    <script src="js/init.js"></script>
     
     <script>
-        // Инициализация страницы брендбука после загрузки компонентов
+        // Инициализация страницы брендбука
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 Страница брендбука загружена');
             
-            // Функция для инициализации фильтрации
+            // Фильтрация кейсов
             function setupBrandbookFilter() {
                 const filterBtns = document.querySelectorAll('.filter-btn');
                 const brandCases = document.querySelectorAll('.brand-case');
@@ -223,27 +225,58 @@
                 console.log('✅ Brandbook filter initialized');
             }
             
+            // Инициализация переводов
+            setTimeout(() => {
+                if (window.i18n && window.i18n.refresh) {
+                    window.i18n.refresh();
+                }
+            }, 500);
+            
             // Ждем загрузки компонентов
             if (window.waitForComponents) {
                 window.waitForComponents().then(() => {
                     console.log('✅ Components loaded for brandbook page');
                     
-                    // Инициализация переводов
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 100);
-                    
                     // Инициализация фильтрации
                     setupBrandbookFilter();
                     
-                    // Проверяем и фиксим мобильное меню
+                    // Проверяем мобильное меню
                     setTimeout(() => {
-                        if (window.DaehaaApp && window.DaehaaApp.checkAndFixMobileMenu) {
-                            window.DaehaaApp.checkAndFixMobileMenu();
+                        const burgerBtn = document.getElementById('burger-btn');
+                        const mobileMenu = document.getElementById('mobile-menu');
+                        
+                        if (burgerBtn && mobileMenu) {
+                            console.log('✅ Mobile menu elements found on brandbook page');
+                            
+                            // Добавляем простой обработчик
+                            if (!burgerBtn._brandbookHandler) {
+                                burgerBtn.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    
+                                    const isOpen = mobileMenu.classList.contains('active');
+                                    
+                                    if (isOpen) {
+                                        mobileMenu.classList.remove('active');
+                                        burgerBtn.classList.remove('active');
+                                        document.body.style.overflow = '';
+                                        document.documentElement.style.overflow = '';
+                                    } else {
+                                        mobileMenu.classList.add('active');
+                                        burgerBtn.classList.add('active');
+                                        document.body.style.overflow = 'hidden';
+                                        document.documentElement.style.overflow = 'hidden';
+                                    }
+                                });
+                                
+                                burgerBtn._brandbookHandler = true;
+                                console.log('✅ Added brandbook click handler to burger button');
+                            }
+                        } else {
+                            console.error('❌ Mobile menu elements not found');
                         }
                     }, 200);
+                    
                 }).catch(error => {
                     console.error('❌ Error waiting for components:', error);
                     // Fallback
@@ -258,27 +291,34 @@
                     if (window.i18n && window.i18n.refresh) {
                         window.i18n.refresh();
                     }
+                    
+                    // Простая проверка мобильного меню
+                    setTimeout(() => {
+                        const burgerBtn = document.getElementById('burger-btn');
+                        if (burgerBtn) {
+                            console.log('✅ Burger button found on brandbook page');
+                        }
+                    }, 500);
                 }, 500);
             }
         });
         
         // Обработчик для событий компонентов
         window.addEventListener('componentsFullyLoaded', function() {
-            console.log('🎯 Components fully loaded event received');
+            console.log('🎯 Components fully loaded event received on brandbook page');
             
             // Гарантируем что бургер кнопка доступна
             const burgerBtn = document.getElementById('burger-btn');
-            if (burgerBtn) {
-                console.log('✅ Burger button is available in DOM');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (burgerBtn && mobileMenu) {
+                console.log('✅ Burger button and mobile menu found');
                 
                 // Добавляем простой обработчик если его нет
-                if (!burgerBtn._clickHandlerAdded) {
+                if (!burgerBtn._eventHandler) {
                     burgerBtn.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
-                        
-                        const mobileMenu = document.getElementById('mobile-menu');
-                        if (!mobileMenu) return;
                         
                         const isOpen = mobileMenu.classList.contains('active');
                         
@@ -286,17 +326,46 @@
                             mobileMenu.classList.remove('active');
                             burgerBtn.classList.remove('active');
                             document.body.style.overflow = '';
+                            document.documentElement.style.overflow = '';
                         } else {
                             mobileMenu.classList.add('active');
                             burgerBtn.classList.add('active');
                             document.body.style.overflow = 'hidden';
+                            document.documentElement.style.overflow = 'hidden';
                         }
                     });
-                    burgerBtn._clickHandlerAdded = true;
-                    console.log('✅ Added click handler to burger button');
+                    
+                    burgerBtn._eventHandler = true;
+                    console.log('✅ Added event handler to burger button');
                 }
             }
         });
+        
+        // Функция для ручного открытия/закрытия меню (для отладки)
+        window.toggleBrandbookMenu = function() {
+            const burgerBtn = document.getElementById('burger-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (burgerBtn && mobileMenu) {
+                const isOpen = mobileMenu.classList.contains('active');
+                
+                if (isOpen) {
+                    mobileMenu.classList.remove('active');
+                    burgerBtn.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.documentElement.style.overflow = '';
+                } else {
+                    mobileMenu.classList.add('active');
+                    burgerBtn.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = 'hidden';
+                }
+                
+                return true;
+            }
+            
+            return false;
+        };
     </script>
 </body>
 </html>
