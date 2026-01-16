@@ -183,7 +183,7 @@
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/brandbook.js"></script>
-    <script src="js/init.js"></script>
+    <!-- УДАЛИЛИ: <script src="js/init.js"></script> -->
     
     <script>
         // Инициализация страницы брендбука
@@ -273,7 +273,7 @@
                                 console.log('✅ Added brandbook click handler to burger button');
                             }
                         } else {
-                            console.error('❌ Mobile menu elements not found');
+                            console.warn('⚠️ Mobile menu elements not found (might be desktop)');
                         }
                     }, 200);
                     
