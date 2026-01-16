@@ -783,94 +783,45 @@
     animation: slideInFilter 0.5s ease-out;
 }
 
-/* ===== ОЧИСТКА ХЕДЕРА ДЛЯ ПОРТФОЛИО (КОНТРОЛЬ ЭЛЕМЕНТОВ) ===== */
+/* ===== СТИЛИ ДЛЯ ПОРТФОЛИО С РАБОЧИМ МОБИЛЬНЫМ МЕНЮ ===== */
 
-/* Удаляем все элементы бургер-меню на портфолио */
-body.portfolio-page .mobile-menu-toggle,
-body.portfolio-page .menu-toggle,
-body.portfolio-page .burger-menu,
-body.portfolio-page .hamburger,
-body.portfolio-page .menu-btn,
-body.portfolio-page .nav-toggle,
-body.portfolio-page .mobile-menu-overlay,
-body.portfolio-page .menu-overlay,
-body.portfolio-page .mobile-menu,
-body.portfolio-page .menu-container {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    z-index: -1000 !important;
-    pointer-events: none !important;
-}
-
-/* КНОПКА "НАЧАТЬ ПРОЕКТ" ВИДНА НА ПОРТФОЛИО - УБРАНО СКРЫТИЕ */
-
-/* 3. Фиксируем хедер всегда видимым на портфолио */
+/* 1. Прозрачный хедер для портфолио */
 body.portfolio-page .main-header {
-    position: fixed !important;
-    opacity: 1 !important;
+    background: rgba(10, 10, 20, 0.95) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+body.portfolio-page .main-header.scrolled {
+    background: rgba(10, 10, 20, 0.98) !important;
+    backdrop-filter: blur(35px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+}
+
+/* 2. Мобильное меню для портфолио */
+body.portfolio-page .mobile-menu {
+    background: rgba(10, 10, 20, 0.98) !important;
+}
+
+/* 3. Бургер кнопка всегда видна на портфолио */
+body.portfolio-page .burger-btn {
+    display: block !important;
     visibility: visible !important;
-    pointer-events: auto !important;
-    animation: none !important;
-    transform: translateX(-50%) translateY(0) !important;
-}
-
-body.portfolio-page .main-header.header-hidden {
-    transform: translateX(-50%) translateY(0) !important;
     opacity: 1 !important;
     pointer-events: auto !important;
 }
 
-/* 4. Корректировка отступов страницы для портфолио */
+/* 4. Обеспечиваем корректный отступ для контента */
 body.portfolio-page {
-    /* padding-top уже установлен в style.css, не дублируем */
-    overflow-x: hidden !important;
+    padding-top: 80px !important;
 }
 
-/* 5. Навигация на мобильных скрыта для портфолио */
-@media (max-width: 900px) {
-    body.portfolio-page .main-nav {
-        display: none !important;
-    }
-}
-
-/* 6. Мобильная версия хедера для портфолио */
-@media (max-width: 768px) {
-    body.portfolio-page .main-header {
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        top: 0 !important;
-        margin: 0 !important;
-    }
-    
-    body.portfolio-page .main-header.header-hidden {
-        transform: none !important;
-    }
-    
-    /* Адаптация language switcher для мобильных на портфолио */
-    body.portfolio-page .language-switcher {
-        min-width: 85px !important;
-        height: 32px !important;
-    }
-    
-    body.portfolio-page .lang-btn {
-        padding: 4px 8px !important;
-        font-size: 12px !important;
-    }
-}
-
-/* 7. Отключаем сложные анимации для производительности на портфолио */
-@media (prefers-reduced-motion: reduce) {
-    body.portfolio-page .main-header {
-        transition: none !important;
-    }
+/* 5. Кнопка "Начать проект" всегда видна */
+body.portfolio-page .start-project-btn {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 /* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===== */
@@ -885,7 +836,29 @@ body.portfolio-page {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+    body.portfolio-page {
+        padding-top: 60px !important;
+    }
+    
+    body.portfolio-page .main-header {
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+    }
+    
+    /* Десктопная навигация скрыта */
+    body.portfolio-page .main-nav {
+        display: none !important;
+    }
+    
+    /* Мобильная навигация работает */
+    body.portfolio-page .header-right-mobile {
+        display: flex !important;
+    }
+    
     /* Hero Section Mobile */
     .portfolio-hero {
         padding: 150px 0 70px !important;
