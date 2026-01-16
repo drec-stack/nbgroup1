@@ -1,58 +1,10 @@
-// portfolio.js - Full portfolio functionality with header cleaning
-console.log('🎯 portfolio.js loaded');
-
-// Очистка хедера для портфолио
-function cleanPortfolioHeader() {
-    console.log('🧹 Cleaning portfolio header...');
-    
-    const header = document.querySelector('.main-header');
-    if (!header) {
-        console.warn('⚠️ Header not found');
-        return;
-    }
-    
-    // Добавляем класс для идентификации
-    header.classList.add('portfolio-clean-header');
-    document.body.classList.add('portfolio-page');
-    
-    // 1. Удаляем все скрытые элементы
-    const selectorsToRemove = [
-        '.mobile-menu-toggle',
-        '.menu-toggle',
-        '.burger-menu',
-        '.hamburger',
-        '.menu-btn',
-        '.nav-toggle',
-        '.mobile-menu-overlay',
-        '.menu-overlay',
-        '.mobile-menu',
-        '.menu-container'
-    ];
-    
-    selectorsToRemove.forEach(selector => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(el => {
-            if (el && el.parentNode) {
-                el.parentNode.removeChild(el);
-                console.log(`🗑️ Removed: ${selector}`);
-            }
-        });
-    });
-    
-    // 2. НЕ скрываем кнопку "Начать проект" - ОНА ДОЛЖНА БЫТЬ ВИДНА!
-    // const startProjectBtn = document.querySelector('.header-right .btn-primary');
-    // if (startProjectBtn) {
-    //     startProjectBtn.style.display = 'none';
-    //     console.log('✅ Hidden "Start project" button');
-    // }
-    
-    console.log('✅ Portfolio header cleaned successfully, "Start project" button is VISIBLE');
-}
+// portfolio.js - Full portfolio functionality with mobile menu support
+console.log('🎯 portfolio.js loaded - WITH MOBILE MENU SUPPORT');
 
 function initPortfolio() {
     console.log('🎯 Initializing portfolio page...');
     
-    // Остановить home.js если он запустился
+    // Останавливаем home.js поведение
     if (typeof window.homeInitialized !== 'undefined') {
         console.log('🛑 Stopping home.js behavior on portfolio');
         const header = document.querySelector('.main-header');
@@ -61,8 +13,8 @@ function initPortfolio() {
         }
     }
     
-    // Очистка хедера
-    cleanPortfolioHeader();
+    // Устанавливаем прозрачный хедер для портфолио
+    setupPortfolioHeader();
     
     // Основная функциональность портфолио
     setupPortfolioFilter();
@@ -72,31 +24,33 @@ function initPortfolio() {
     setupHoverEffects();
     setupMobileOptimizations();
     
-    // Проверка хедера
-    checkAndAdjustHeader();
-    
     console.log('✅ Portfolio page fully initialized');
 }
 
-// Проверка и корректировка хедера
-function checkAndAdjustHeader() {
+// Настройка хедера для портфолио (не удаляем мобильное меню!)
+function setupPortfolioHeader() {
     const header = document.querySelector('.main-header');
     if (!header) {
         console.warn('⚠️ Header not found, checking again...');
-        setTimeout(checkAndAdjustHeader, 500);
+        setTimeout(setupPortfolioHeader, 500);
         return;
     }
     
-    console.log('✅ Header check:', {
-        height: header.offsetHeight,
-        isHidden: header.classList.contains('header-hidden'),
-        position: window.getComputedStyle(header).position
-    });
+    // Добавляем класс для идентификации страницы портфолио
+    document.body.classList.add('portfolio-page');
     
-    // Обновляем отступы
-    if (typeof window.updatePortfolioHeaderPadding === 'function') {
-        window.updatePortfolioHeaderPadding();
-    }
+    // Устанавливаем темный полупрозрачный фон для хедера
+    header.style.background = 'rgba(10, 10, 20, 0.95)';
+    header.classList.add('portfolio-transparent-header');
+    
+    // НЕ удаляем и НЕ скрываем мобильное меню!
+    // Мобильное меню должно остаться на месте
+    
+    console.log('✅ Portfolio header set up (mobile menu PRESERVED)', {
+        height: header.offsetHeight,
+        mobileMenuExists: !!document.querySelector('.mobile-menu'),
+        burgerButtonExists: !!document.querySelector('.burger-btn')
+    });
 }
 
 // Фильтрация проектов
@@ -166,8 +120,7 @@ function setupPortfolioFilter() {
                     if (firstVisible) {
                         const header = document.querySelector('.main-header');
                         const headerHeight = header ? header.offsetHeight : 0;
-                        const isHeaderHidden = header ? header.classList.contains('header-hidden') : false;
-                        const baseOffset = isHeaderHidden ? 50 : headerHeight + 50;
+                        const baseOffset = headerHeight + 50;
                         const targetPosition = firstVisible.offsetTop - baseOffset;
                         
                         window.scrollTo({
@@ -408,6 +361,9 @@ function setupMobileOptimizations() {
     if (isMobile) {
         console.log('📱 Setting up mobile optimizations');
         
+        // Проверяем и включаем мобильное меню
+        checkAndEnableMobileMenu();
+        
         // Optimize touch interactions
         const filterBtns = document.querySelectorAll('.filter-btn');
         filterBtns.forEach(btn => {
@@ -426,17 +382,70 @@ function setupMobileOptimizations() {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.documentElement.classList.add('reduced-animations');
         }
+    }
+}
+
+// Проверка и включение мобильного меню
+function checkAndEnableMobileMenu() {
+    const burgerBtn = document.querySelector('.burger-btn');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (!burgerBtn) {
+        console.warn('⚠️ Burger button not found on mobile');
+        return;
+    }
+    
+    if (!mobileMenu) {
+        console.warn('⚠️ Mobile menu not found');
+        return;
+    }
+    
+    console.log('✅ Mobile menu elements found:', {
+        burgerBtn: burgerBtn,
+        mobileMenu: mobileMenu
+    });
+    
+    // Убедимся что меню правильно инициализировано
+    mobileMenu.style.display = 'flex';
+    mobileMenu.style.opacity = '0';
+    mobileMenu.style.visibility = 'hidden';
+    mobileMenu.style.transform = 'translateX(100%)';
+    
+    // Добавляем обработчик клика если его нет
+    if (!burgerBtn._portfolioMenuHandler) {
+        burgerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('🍔 Portfolio page: Burger button clicked');
+            
+            const mobileMenu = document.querySelector('.mobile-menu');
+            if (!mobileMenu) return;
+            
+            const isOpen = mobileMenu.classList.contains('active');
+            console.log('📱 Mobile menu state:', isOpen ? 'OPEN' : 'CLOSED');
+            
+            if (isOpen) {
+                // Закрыть меню
+                this.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                this.setAttribute('aria-expanded', 'false');
+                this.setAttribute('aria-label', 'Открыть меню');
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+            } else {
+                // Открыть меню
+                this.classList.add('active');
+                mobileMenu.classList.add('active');
+                this.setAttribute('aria-expanded', 'true');
+                this.setAttribute('aria-label', 'Закрыть меню');
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+            }
+        });
         
-        // Adjust header behavior for mobile
-        const header = document.querySelector('.main-header');
-        if (header) {
-            header.addEventListener('touchstart', function() {
-                if (this.classList.contains('header-hidden')) {
-                    this.classList.remove('header-hidden');
-                    this.style.opacity = '1';
-                }
-            });
-        }
+        burgerBtn._portfolioMenuHandler = true;
+        console.log('✅ Added portfolio click handler to burger button');
     }
 }
 
@@ -457,16 +466,15 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             if (typeof initPortfolio === 'function') initPortfolio();
-        }, 300);
+        }, 500);
     });
 } else {
     setTimeout(() => {
         if (typeof initPortfolio === 'function') initPortfolio();
-    }, 300);
+    }, 500);
 }
 
 // Export functions
 window.initPortfolio = initPortfolio;
-window.cleanPortfolioHeader = cleanPortfolioHeader;
 
-console.log('✅ Portfolio script loaded successfully');
+console.log('✅ Portfolio script loaded successfully with mobile menu support');
