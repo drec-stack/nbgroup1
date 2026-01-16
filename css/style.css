@@ -21,7 +21,7 @@
     --white-transparent: rgba(255, 255, 255, 0.1);
 }
 
-/* ===== ГЛОБАЛЬНЫЙ СБРОС ===== */
+/* ===== ГЛОБАЛЬНЫЙ СБРОС И БАЗОВЫЕ СТИЛИ ===== */
 * {
     margin: 0;
     padding: 0;
@@ -89,6 +89,13 @@ body {
         0 12px 40px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.12);
     padding: 15px 0;
+    top: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    transform: none;
+    left: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 /* Эффект при наведении */
@@ -421,7 +428,7 @@ body.brandbook-page .main-header {
     box-shadow: 0 12px 35px rgba(0, 102, 255, 0.4);
 }
 
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ ХЕДЕРА - ОБНОВЛЕННЫЕ СТИЛИ ===== */
+/* ===== МОБИЛЬНАЯ ВЕРСИЯ ХЕДЕРА ===== */
 @media (max-width: 900px) {
     body {
         padding-top: 70px !important;
@@ -502,7 +509,7 @@ body.brandbook-page .main-header {
         display: none !important;
     }
     
-    /* ===== ИЗМЕНЕНИЕ: Мобильная навигация с новым порядком ===== */
+    /* ===== МОБИЛЬНЫЕ ЭЛЕМЕНТЫ ===== */
     .header-right-mobile {
         display: flex !important;
         align-items: center;
@@ -512,7 +519,7 @@ body.brandbook-page .main-header {
         margin-left: auto;
     }
     
-    /* ===== БУРГЕР КНОПКА - ТЕПЕРЬ СПРАВА ===== */
+    /* ===== БУРГЕР КНОПКА ===== */
     .burger-btn {
         display: block !important;
         width: 44px;
@@ -592,7 +599,7 @@ body.brandbook-page .main-header {
         backdrop-filter: blur(40px) saturate(200%);
         -webkit-backdrop-filter: blur(40px) saturate(200%);
         z-index: 9999;
-        display: flex;
+        display: flex !important;
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -1876,39 +1883,196 @@ body::before {
     }
 }
 
-/* ===== ДОПОЛНИТЕЛЬНЫЕ МОБИЛЬНЫЕ ФИКСЫ ===== */
-@media (max-width: 768px) {
-    /* Фикс для touch устройств */
-    .burger-btn,
-    .lang-btn,
-    .mobile-nav-link,
-    .mobile-lang-btn,
-    .mobile-header-btn {
-        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
-        cursor: pointer;
-        touch-action: manipulation;
+/* ===== ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ И ФИКСЫ ДЛЯ КОМПОНЕНТОВ ===== */
+
+/* Фикс для загрузки компонентов */
+#header-container,
+#footer-container,
+#mobile-menu-container {
+    display: block !important;
+    position: relative;
+    min-height: 1px;
+}
+
+/* Гарантируем что мобильное меню будет поверх всего */
+.mobile-menu {
+    z-index: 9999 !important;
+}
+
+/* Фикс для кнопки бургера в процессе загрузки */
+.burger-btn.loading {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+/* Фикс для переключателя языка на странице портфолио */
+.portfolio-page .language-switcher.mobile-only-flags {
+    display: flex !important;
+}
+
+/* Улучшаем видимость активных элементов */
+.nav-link.active,
+.mobile-nav-link.active {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Фикс для ошибок в консоли */
+.hidden-element {
+    display: none !important;
+}
+
+/* Адаптация для очень медленной загрузки */
+@media (max-width: 900px) {
+    .main-header .header-inner {
+        min-height: 60px;
     }
     
-    /* Гарантируем минимальные размеры для touch */
     .burger-btn {
-        min-width: 44px;
-        min-height: 44px;
+        position: relative !important;
     }
     
-    .lang-btn {
-        min-height: 28px;
-        min-width: 28px;
+    /* Гарантируем что бургер кнопка видна */
+    .header-right-mobile {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+/* Анимация для плавного появления элементов */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.portfolio-item {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Фикс для iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    .mobile-menu {
+        -webkit-overflow-scrolling: touch;
     }
     
-    .mobile-nav-link {
-        min-height: 48px;
+    .burger-btn:active {
+        opacity: 0.7;
+    }
+}
+
+/* Гарантируем что body не скрывает контент */
+body.portfolio-page {
+    overflow-x: hidden;
+    padding-top: 70px !important;
+}
+
+@media (max-width: 900px) {
+    body.portfolio-page {
+        padding-top: 60px !important;
+    }
+}
+
+/* ===== ИСПРАВЛЕНИЯ ДЛЯ СТРАНИЦЫ ПОРТФОЛИО ===== */
+.portfolio-page .main-header {
+    background: rgba(10, 10, 20, 0.95) !important;
+}
+
+.portfolio-page .main-header.scrolled {
+    background: rgba(10, 10, 20, 0.98) !important;
+}
+
+/* Фикс для контейнеров компонентов */
+#header-container:empty,
+#footer-container:empty,
+#mobile-menu-container:empty {
+    display: none;
+}
+
+/* Анимация загрузки для контейнеров */
+.component-loading {
+    position: relative;
+    min-height: 80px;
+}
+
+.component-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #0066ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Фикс для мобильного меню на внутренних страницах */
+.internal-page .mobile-menu {
+    background: rgba(10, 10, 20, 0.98) !important;
+}
+
+/* Улучшенные стили для контейнеров */
+#header-container,
+#footer-container,
+#mobile-menu-container {
+    transition: opacity 0.3s ease;
+}
+
+#header-container.loading,
+#footer-container.loading,
+#mobile-menu-container.loading {
+    opacity: 0.5;
+}
+
+/* Фикс для футера на странице портфолио */
+.portfolio-page .main-footer {
+    margin-top: 80px;
+}
+
+/* Гарантируем правильное отображение на всех страницах */
+.home-page,
+.services-page,
+.about-page,
+.contacts-page,
+.portfolio-page,
+.brandbook-page {
+    position: relative;
+    z-index: 1;
+}
+
+/* Финал: гарантируем что все элементы видны */
+*[style*="display: none"]:not(.mobile-menu):not(.desktop-only) {
+    display: block !important;
+}
+
+/* Фикс для z-index в мобильном меню */
+@media (max-width: 900px) {
+    .mobile-menu {
+        z-index: 9999 !important;
     }
     
-    /* Фикс для iOS */
-    @supports (-webkit-touch-callout: none) {
-        .main-header {
-            position: -webkit-sticky;
-            position: sticky;
-        }
+    .burger-btn {
+        z-index: 10000 !important;
     }
+}
+
+/* Гарантируем загрузку всех компонентов */
+body::after {
+    content: 'components-loaded';
+    display: none;
 }
