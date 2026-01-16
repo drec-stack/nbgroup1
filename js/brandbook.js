@@ -1,6 +1,3 @@
-// brandbook.js - Complete functionality for brandbook page with glass header
-// НАДЕЖНАЯ ВЕРСИЯ с защитой от дублирования и ошибок
-
 console.log('🎨 Brandbook page script loaded (glass header)');
 
 // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
@@ -22,11 +19,10 @@ function removeHiddenHeaderElements() {
     
     console.log('🧹 Removing hidden elements from header...');
     
-    // Список всех возможных селекторов скрытых элементов
+    // ИСКЛЮЧАЕМ бургер-кнопку из удаления!
     const hiddenSelectors = [
         '.mobile-menu-toggle',
         '.menu-toggle',
-        '.burger-menu',
         '.hamburger',
         '.menu-btn',
         '.nav-toggle',
@@ -35,12 +31,13 @@ function removeHiddenHeaderElements() {
         '.mobile-menu',
         '.menu-container',
         '.mobile-nav-toggle',
-        '[class*="burger"]',
         '[class*="mobile-toggle"]',
-        '.burger-btn',
         '.menu-icon',
         '.mobile-nav',
         '.nav-toggle-btn'
+        // УБРАЛИ: '[class*="burger"]' - не удаляем бургер!
+        // УБРАЛИ: '.burger-menu' - не удаляем бургер!
+        // УБРАЛИ: '.burger-btn' - не удаляем бургер!
     ];
     
     let removedCount = 0;
@@ -50,6 +47,15 @@ function removeHiddenHeaderElements() {
         try {
             const elements = document.querySelectorAll(selector);
             elements.forEach(el => {
+                // НЕ удаляем элементы в header-right-mobile на мобильных
+                const isInMobileHeader = el.closest('.header-right-mobile');
+                const isMobileWidth = window.innerWidth <= 900;
+                
+                if (isMobileWidth && isInMobileHeader) {
+                    // Не удаляем элементы в мобильном хедере
+                    return;
+                }
+                
                 if (el && el.parentNode && !appliedElements.has(el)) {
                     // Проверяем, находится ли элемент в хедере
                     if (el.closest('.main-header') || el.closest('#header-container') || el.closest('header')) {
@@ -69,12 +75,21 @@ function removeHiddenHeaderElements() {
         }
     });
     
-    // Удаляем элементы с inline-стилями display: none
+    // Удаляем элементы с inline-стилями display: none, но исключаем бургер на мобильных
     document.querySelectorAll('[style*="display: none"], [style*="visibility: hidden"]').forEach(el => {
+        const isMobileWidth = window.innerWidth <= 900;
+        const isInMobileHeader = el.closest('.header-right-mobile');
+        const isBurger = el.classList.contains('burger-btn') || 
+                         el.classList.contains('burger-menu') || 
+                         el.id.includes('burger');
+        
+        if (isMobileWidth && isInMobileHeader && isBurger) {
+            // НЕ удаляем бургер-кнопку в мобильном хедере
+            return;
+        }
+        
         if (el && el.parentNode && !appliedElements.has(el) &&
-            (el.classList.contains('burger') || 
-             el.classList.contains('menu') || 
-             el.classList.contains('mobile') ||
+            (el.classList.contains('menu') || 
              el.closest('.main-header') ||
              el.closest('#header-container') ||
              el.closest('header'))) {
@@ -84,7 +99,7 @@ function removeHiddenHeaderElements() {
         }
     });
     
-    console.log(`✅ Removed ${removedCount} hidden elements from header`);
+    console.log(`✅ Removed ${removedCount} hidden elements from header (excluding burger button)`);
     
     if (removedCount > 0) {
         document.body.classList.add('header-cleaned');
@@ -109,7 +124,6 @@ function addHeaderCleanupStyles() {
         /* ГАРАНТИЯ: НИКАКИХ СКРЫТЫХ ЭЛЕМЕНТОВ В ХЕДЕРЕ БРЕНДБУКА */
         body.brandbook-page .mobile-menu-toggle,
         body.brandbook-page .menu-toggle,
-        body.brandbook-page .burger-menu,
         body.brandbook-page .hamburger,
         body.brandbook-page .menu-btn,
         body.brandbook-page .nav-toggle,
@@ -118,7 +132,6 @@ function addHeaderCleanupStyles() {
         body.brandbook-page .mobile-menu,
         body.brandbook-page .menu-container,
         body.brandbook-page .mobile-nav-toggle,
-        body.brandbook-page [class*="burger"],
         body.brandbook-page [class*="mobile-toggle"],
         body.brandbook-page [class*="menu-btn"] {
             display: none !important;
@@ -130,6 +143,28 @@ function addHeaderCleanupStyles() {
             position: absolute !important;
             z-index: -1000 !important;
             pointer-events: none !important;
+        }
+        
+        /* НЕ УДАЛЯЕМ БУРГЕР-КНОПКУ НА МОБИЛЬНЫХ! */
+        @media (max-width: 900px) {
+            body.brandbook-page .burger-btn {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                position: relative !important;
+                z-index: 1002 !important;
+                pointer-events: auto !important;
+            }
+            
+            body.brandbook-page .header-right-mobile {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            body.brandbook-page .mobile-menu {
+                display: flex !important;
+            }
         }
         
         /* Обеспечиваем правильное позиционирование стеклянного хедера */
@@ -181,6 +216,14 @@ function addHeaderCleanupStyles() {
             body.brandbook-page .main-nav {
                 display: none !important;
             }
+            
+            body.brandbook-page .header-right-desktop {
+                display: none !important;
+            }
+            
+            body.brandbook-page .header-right-mobile {
+                display: flex !important;
+            }
         }
         
         /* Поддержка браузеров без backdrop-filter */
@@ -221,7 +264,7 @@ function addHeaderCleanupStyles() {
     `;
     
     document.head.appendChild(style);
-    console.log('✅ Added CSS guarantees for clean header');
+    console.log('✅ Added CSS guarantees for clean header (burger preserved)');
 }
 
 // Инициализация страницы брендбука
@@ -247,7 +290,7 @@ function initBrandbook() {
             return;
         }
         
-        // 1. Удаляем скрытые элементы из хедера
+        // 1. Удаляем скрытые элементы из хедера (КРОМЕ бургера на мобильных)
         removeHiddenHeaderElements();
         
         // 2. Настраиваем эффект скролла для хедера
@@ -945,6 +988,17 @@ function setupMobileInteractions() {
     if (window.innerWidth <= 768) {
         console.log('📱 Setting up mobile interactions');
         
+        // Проверяем бургер-кнопку
+        const burgerBtn = document.querySelector('.burger-btn');
+        if (burgerBtn) {
+            console.log('✅ Burger button found on mobile');
+            
+            // Гарантируем что она видна
+            burgerBtn.style.display = 'block';
+            burgerBtn.style.visibility = 'visible';
+            burgerBtn.style.opacity = '1';
+        }
+        
         // Обратная связь при касании
         const interactiveElements = document.querySelectorAll(
             '.brand-case, .color-item, .btn, .filter-btn, .stat-item'
@@ -1017,20 +1071,6 @@ function setupMobileInteractions() {
         
         // Сохраняем ссылку на обработчик
         document._preventZoomHandler = touchEndHandler;
-        
-        // Улучшаем производительность скролла
-        const touchMoveHandler = function(e) {
-            // Allow touch events for interactive elements
-            if (e.target.tagName.match(/BUTTON|A|INPUT|SELECT|TEXTAREA/i)) {
-                return;
-            }
-            
-            // Prevent default for better performance
-            e.preventDefault();
-        };
-        
-        document.addEventListener('touchmove', touchMoveHandler, { passive: false });
-        document._touchMoveHandler = touchMoveHandler;
     }
 }
 
