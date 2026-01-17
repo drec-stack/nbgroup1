@@ -14,7 +14,6 @@
     --glass-border: rgba(255, 255, 255, 0.1);
 }
 
-/* УБИРАЕМ ВСЕ СТИЛИ .main-header - они в HTML и header.html */
 /* Только стили для body */
 body.brandbook-page {
     padding-top: 80px;
@@ -565,9 +564,9 @@ body.brandbook-page {
 
 /* ===== СТИЛИ ДЛЯ ПРОЗРАЧНОГО СТЕКЛЯННОГО ХЕДЕРА НА СТРАНИЦЕ БРЕНДБУКА ===== */
 
-/* Основной стеклянный эффект - такой же как на других страницах */
+/* ОСНОВНЫЕ СТИЛИ ХЕДЕРА - ДЕСКТОПНАЯ ВЕРСИЯ */
 body.brandbook-page .main-header {
-    /* Стеклянный эффект с легким оттенком акцента */
+    /* Стеклянный эффект */
     background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(25px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
@@ -576,14 +575,73 @@ body.brandbook-page .main-header {
         0 8px 32px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.1),
         inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+    
+    /* Позиционирование для десктопа */
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    z-index: 1000 !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    border-radius: 20px !important;
+    padding: 16px 30px !important;
+    box-sizing: border-box !important;
 }
 
-/* При скролле - немного усиливаем стеклянный эффект */
+/* При скролле */
 body.brandbook-page .main-header.scrolled {
     background: rgba(255, 255, 255, 0.08) !important;
     backdrop-filter: blur(30px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+/* МОБИЛЬНАЯ ВЕРСИЯ ХЕДЕРА (исправлено съезжание) */
+@media (max-width: 900px) {
+    body.brandbook-page .main-header {
+        /* СБРАСЫВАЕМ десктопные стили */
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+        padding: 12px 20px !important;
+        
+        /* Мобильный стеклянный эффект */
+        background: rgba(10, 10, 20, 0.95) !important;
+        backdrop-filter: blur(30px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    /* На мобильных скрываем основную навигацию */
+    body.brandbook-page .main-nav {
+        display: none !important;
+    }
+    
+    /* Показываем мобильный правый блок */
+    body.brandbook-page .header-right-mobile {
+        display: flex !important;
+        align-items: center !important;
+        gap: 15px !important;
+    }
+    
+    /* Улучшаем стеклянный эффект переключателя языка */
+    body.brandbook-page .language-switcher {
+        background: rgba(255, 255, 255, 0.12) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
 }
 
 /* Активная ссылка в навигации */
@@ -628,51 +686,17 @@ body.brandbook-page .logo-mark {
         inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
 }
 
-/* Мобильная версия - более сильный стеклянный эффект */
-@media (max-width: 768px) {
-    body.brandbook-page .main-header {
-        background: rgba(10, 10, 20, 0.95) !important;
-        backdrop-filter: blur(30px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-    }
-    
-    /* На мобильных скрываем основную навигацию как в оригинале */
-    body.brandbook-page .main-nav {
-        display: none !important;
-    }
-    
-    /* Улучшаем стеклянный эффект переключателя языка */
-    body.brandbook-page .language-switcher {
-        background: rgba(255, 255, 255, 0.12) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
-    
-    /* Кнопка "Начать проект" на мобильных */
-    body.brandbook-page .header-right .btn-primary {
-        background: white !important;
-        color: #0a0a0a !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        box-shadow: 
-            0 4px 15px rgba(255, 255, 255, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
-    }
-}
-
-/* УДАЛЕН ПРОБЛЕМНЫЙ БЛОК, КОТОРЫЙ СКРЫВАЛ МОБИЛЬНОЕ МЕНЮ И БУРГЕР */
-
 /* ГАРАНТИРУЕМ ЧТО МОБИЛЬНОЕ МЕНЮ И БУРГЕР ВИДНЫ НА МОБИЛЬНЫХ */
 @media (max-width: 900px) {
     body.brandbook-page .burger-btn {
-        display: block !important;
+        display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
         position: relative !important;
         z-index: 1002 !important;
         pointer-events: auto !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     
     body.brandbook-page .mobile-menu {
@@ -684,21 +708,19 @@ body.brandbook-page .logo-mark {
         z-index: 1001 !important;
         width: 100% !important;
         height: 100vh !important;
+        left: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+        transform: none !important;
     }
     
     body.brandbook-page .header-right-mobile {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
+        align-items: center !important;
+        gap: 15px !important;
     }
-}
-
-/* Гарантируем что хедер всегда виден и правильно позиционирован */
-body.brandbook-page .main-header {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateX(-50%) translateY(0) !important;
-    pointer-events: auto !important;
 }
 
 /* Поддержка браузеров без backdrop-filter */
