@@ -547,14 +547,14 @@
         </div>
     </header>
 
-    <!-- Минимальный скрипт для header - только логика языка -->
+    <!-- СКРИПТ ТОЛЬКО ДЛЯ ЯЗЫКА И КНОПКИ -->
     <script>
     (function() {
         'use strict';
         
-        console.log('🚀 Header loaded - Language only');
+        console.log('🚀 Header loaded - Language and project button only');
         
-        // Настраиваем переключатель языка (только логика языка)
+        // Настраиваем переключатель языка
         function setupLanguageSwitcher() {
             const langBtns = document.querySelectorAll('.lang-btn');
             
@@ -609,11 +609,11 @@
             });
         }
         
-        // Инициализация при загрузке
+        // Инициализация
         function init() {
             setupLanguageSwitcher();
             setupStartProjectButton();
-            console.log('✅ Header language setup complete');
+            console.log('✅ Header initialization complete');
         }
         
         if (document.readyState === 'loading') {
