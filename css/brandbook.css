@@ -1,4 +1,3 @@
-
 /* ===== BRANDBOOK PAGE STYLES ===== */
 
 /* CSS Variables from main theme */
@@ -663,28 +662,35 @@ body.brandbook-page .logo-mark {
     }
 }
 
-/* ГАРАНТИРОВАННОЕ УДАЛЕНИЕ ВСЕХ СКРЫТЫХ ЭЛЕМЕНТОВ В ХЕДЕРЕ */
-body.brandbook-page .mobile-menu-toggle,
-body.brandbook-page .menu-toggle,
-body.brandbook-page .burger-menu,
-body.brandbook-page .hamburger,
-body.brandbook-page .menu-btn,
-body.brandbook-page .nav-toggle,
-body.brandbook-page .mobile-menu-overlay,
-body.brandbook-page .menu-overlay,
-body.brandbook-page .mobile-menu,
-body.brandbook-page .menu-container,
-body.brandbook-page [class*="mobile-toggle"],
-body.brandbook-page [class*="burger"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    z-index: -1000 !important;
-    pointer-events: none !important;
+/* УДАЛЕН ПРОБЛЕМНЫЙ БЛОК, КОТОРЫЙ СКРЫВАЛ МОБИЛЬНОЕ МЕНЮ И БУРГЕР */
+
+/* ГАРАНТИРУЕМ ЧТО МОБИЛЬНОЕ МЕНЮ И БУРГЕР ВИДНЫ НА МОБИЛЬНЫХ */
+@media (max-width: 900px) {
+    body.brandbook-page .burger-btn {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 1002 !important;
+        pointer-events: auto !important;
+    }
+    
+    body.brandbook-page .mobile-menu {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        position: fixed !important;
+        z-index: 1001 !important;
+        width: 100% !important;
+        height: 100vh !important;
+    }
+    
+    body.brandbook-page .header-right-mobile {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
 }
 
 /* Гарантируем что хедер всегда виден и правильно позиционирован */
