@@ -20,7 +20,7 @@
     
     <!-- Критические стили для немедленного применения -->
     <style>
-        /* Критический фикс для кликабельности портфолио */
+        /* Критический фикс для кликабельности и прозрачного хедера */
         .portfolio-page * {
             pointer-events: auto !important;
         }
@@ -44,9 +44,42 @@
             cursor: pointer !important;
         }
         
+        /* ПРОЗРАЧНЫЙ ХЕДЕР КАК НА ДРУГИХ СТРАНИЦАХ */
+        .portfolio-page .main-header {
+            background: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(30px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .portfolio-page .main-header.scrolled {
+            background: rgba(255, 255, 255, 0.12) !important;
+            backdrop-filter: blur(35px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+        }
+        
         @media (max-width: 900px) {
             .portfolio-page .main-nav {
                 display: none !important;
+            }
+            
+            .portfolio-page .main-header {
+                background: rgba(255, 255, 255, 0.08) !important;
+                backdrop-filter: blur(30px) !important;
+                -webkit-backdrop-filter: blur(30px) !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            .portfolio-page .main-header.scrolled {
+                background: rgba(255, 255, 255, 0.12) !important;
+                backdrop-filter: blur(35px) !important;
+                -webkit-backdrop-filter: blur(35px) !important;
             }
         }
     </style>
@@ -428,13 +461,13 @@
     <!-- Footer Container -->
     <div id="footer-container"></div>
 
-    <!-- Критический JavaScript фикс для кликабельности -->
+    <!-- Критический JavaScript фикс для кликабельности и прозрачного хедера -->
     <script>
-        // КРИТИЧЕСКИЙ ФИКС ДЛЯ КЛИКАБЕЛЬНОСТИ ПОРТФОЛИО
+        // КРИТИЧЕСКИЙ ФИКС ДЛЯ КЛИКАБЕЛЬНОСТИ И ПРОЗРАЧНОГО ХЕДЕРА
         (function() {
             'use strict';
             
-            console.log('🔧 Applying CRITICAL portfolio clickability fix...');
+            console.log('🔧 Applying CRITICAL portfolio fixes...');
             
             function applyCriticalFix() {
                 // 1. Убираем все возможные блокировки pointer-events
@@ -485,6 +518,26 @@
                         pointer-events: auto !important;
                     }
                     
+                    /* ПРОЗРАЧНЫЙ ХЕДЕР КАК НА ДРУГИХ СТРАНИЦАХ */
+                    body.portfolio-page .main-header {
+                        background: rgba(255, 255, 255, 0.08) !important;
+                        backdrop-filter: blur(30px) saturate(180%) !important;
+                        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+                        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+                        box-shadow: 
+                            0 8px 32px rgba(0, 0, 0, 0.3),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+                    }
+                    
+                    body.portfolio-page .main-header.scrolled {
+                        background: rgba(255, 255, 255, 0.12) !important;
+                        backdrop-filter: blur(35px) saturate(200%) !important;
+                        -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+                        box-shadow: 
+                            0 12px 40px rgba(0, 0, 0, 0.4),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+                    }
+                    
                     /* Десктопная навигация скрыта на мобильных */
                     @media (max-width: 900px) {
                         body.portfolio-page .main-nav,
@@ -494,6 +547,20 @@
                         
                         body.portfolio-page .header-right-mobile {
                             display: flex !important;
+                        }
+                        
+                        /* Прозрачный хедер на мобильных */
+                        body.portfolio-page .main-header {
+                            background: rgba(255, 255, 255, 0.08) !important;
+                            backdrop-filter: blur(30px) !important;
+                            -webkit-backdrop-filter: blur(30px) !important;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+                        }
+                        
+                        body.portfolio-page .main-header.scrolled {
+                            background: rgba(255, 255, 255, 0.12) !important;
+                            backdrop-filter: blur(35px) !important;
+                            -webkit-backdrop-filter: blur(35px) !important;
                         }
                     }
                     
@@ -543,16 +610,6 @@
                             // Добавляем обработчик если его нет
                             if (!el.hasAttribute('data-fixed-click')) {
                                 el.setAttribute('data-fixed-click', 'true');
-                                
-                                if (el.tagName === 'BUTTON' || el.tagName === 'A') {
-                                    el.addEventListener('click', function(e) {
-                                        if (this.classList.contains('burger-btn')) {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            console.log('🍔 Burger button clicked (critical fix)');
-                                        }
-                                    }, { passive: true });
-                                }
                             }
                         }
                     });
@@ -574,56 +631,22 @@
                         position: relative !important;
                     `;
                     
-                    // Добавляем обработчик
-                    burgerBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        console.log('🍔 CRITICAL FIX: Burger button clicked!');
-                        
-                        const mobileMenu = document.querySelector('.mobile-menu');
-                        if (!mobileMenu) {
-                            console.error('❌ Mobile menu not found');
-                            return;
-                        }
-                        
-                        const isOpen = mobileMenu.classList.contains('active');
-                        console.log('📱 Mobile menu state:', isOpen ? 'OPEN' : 'CLOSED');
-                        
-                        if (isOpen) {
-                            // Закрыть меню
-                            this.classList.remove('active');
-                            mobileMenu.classList.remove('active');
-                            this.setAttribute('aria-expanded', 'false');
-                            this.setAttribute('aria-label', 'Открыть меню');
-                            document.body.style.overflow = '';
-                            document.documentElement.style.overflow = '';
-                        } else {
-                            // Открыть меню
-                            this.classList.add('active');
-                            mobileMenu.classList.add('active');
-                            this.setAttribute('aria-expanded', 'true');
-                            this.setAttribute('aria-label', 'Закрыть меню');
-                            document.body.style.overflow = 'hidden';
-                            document.documentElement.style.overflow = 'hidden';
-                        }
-                    });
-                    
                     console.log('✅ Burger button critical fix applied');
                 }
                 
-                // 4. Проверяем и фиксим все элементы
+                // 4. Принудительно устанавливаем прозрачный хедер
                 setTimeout(() => {
-                    const allClickable = document.querySelectorAll('a, button, [role="button"], .btn, .filter-btn, .project-link');
-                    console.log(`🔍 Found ${allClickable.length} clickable elements`);
-                    
-                    allClickable.forEach(el => {
-                        if (el && !el.classList.contains('mobile-nav-link')) {
-                            el.style.pointerEvents = 'auto';
-                            el.style.cursor = 'pointer';
-                        }
-                    });
-                }, 1000);
+                    const header = document.querySelector('.main-header');
+                    if (header) {
+                        header.style.background = 'rgba(255, 255, 255, 0.08)';
+                        header.style.backdropFilter = 'blur(30px) saturate(180%)';
+                        header.style.webkitBackdropFilter = 'blur(30px) saturate(180%)';
+                        header.style.border = '1px solid rgba(255, 255, 255, 0.15)';
+                        header.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
+                        
+                        console.log('✅ Transparent header applied to portfolio');
+                    }
+                }, 500);
                 
                 console.log('✅ CRITICAL portfolio fix applied');
             }
