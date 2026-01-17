@@ -1,7 +1,8 @@
-console.log('🎨 Brandbook page script loaded (glass header) - SIMPLIFIED FIXED VERSION');
+console.log('🎨 Brandbook page script loaded - FIXED VERSION');
 
 // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
 let brandbookInitialized = false;
+let brandbookMobileMenuOpen = false;
 
 // ===== ОСНОВНЫЕ ФУНКЦИИ =====
 
@@ -21,11 +22,8 @@ function initBrandbook() {
             return;
         }
         
-        // Удаляем все скрытые элементы, но НЕ бургер и мобильное меню
-        cleanupHeaderElements();
-        
-        // Настраиваем эффект скролла для хедера
-        setupHeaderScrollEffect();
+        // ОЧЕНЬ ВАЖНО: Гарантируем, что мобильное меню закрыто на старте
+        ensureMobileMenuClosed();
         
         // Инициализируем все модули страницы
         setupCaseStudies();
@@ -36,9 +34,7 @@ function initBrandbook() {
         setupMobileInteractions();
         setupBrandbookLanguageIntegration();
         setupBrandbookInteractions();
-        
-        // Гарантируем, что бургер кнопка доступна на мобильных
-        ensureMobileMenuAvailability();
+        setupMobileMenuToggle();
         
         brandbookInitialized = true;
         
@@ -49,119 +45,113 @@ function initBrandbook() {
     }
 }
 
-// Очистка элементов хедера (но не бургера!)
-function cleanupHeaderElements() {
-    console.log('🧹 Cleaning up header elements...');
+// ГАРАНТИРУЕМ ЧТО МОБИЛЬНОЕ МЕНЮ ЗАКРЫТО ПРИ ЗАГРУЗКЕ
+function ensureMobileMenuClosed() {
+    console.log('🔒 Ensuring mobile menu is closed on load...');
     
-    // Удаляем только действительно ненужные элементы
-    const elementsToRemove = [
-        '.mobile-menu-toggle',
-        '.menu-toggle',
-        '.hamburger',
-        '.menu-btn',
-        '.nav-toggle',
-        '.mobile-menu-overlay',
-        '.menu-overlay',
-        '.menu-container',
-        '.mobile-nav-toggle',
-        '[class*="mobile-toggle"]',
-        '.menu-icon',
-        '.nav-toggle-btn'
-    ];
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const burgerBtn = document.querySelector('.burger-btn');
     
-    let removedCount = 0;
-    
-    elementsToRemove.forEach(selector => {
-        try {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(el => {
-                if (el && el.parentNode) {
-                    // НЕ удаляем элементы в header-right-mobile на мобильных
-                    const isInMobileHeader = el.closest('.header-right-mobile');
-                    const isMobileWidth = window.innerWidth <= 900;
-                    
-                    if (isMobileWidth && isInMobileHeader) {
-                        return; // Не удаляем
-                    }
-                    
-                    // Удаляем элемент
-                    el.parentNode.removeChild(el);
-                    removedCount++;
-                    console.log(`🗑️ Removed: ${selector}`);
-                }
-            });
-        } catch (e) {
-            console.warn(`⚠️ Could not process ${selector}:`, e.message);
-        }
-    });
-    
-    console.log(`✅ Removed ${removedCount} elements from header`);
-    
-    return removedCount;
-}
-
-// Гарантируем доступность мобильного меню
-function ensureMobileMenuAvailability() {
-    if (window.innerWidth <= 900) {
-        console.log('📱 Ensuring mobile menu availability...');
-        
-        const burgerBtn = document.querySelector('.burger-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        
-        if (burgerBtn) {
-            burgerBtn.style.display = 'block';
-            burgerBtn.style.visibility = 'visible';
-            burgerBtn.style.opacity = '1';
-            burgerBtn.style.position = 'relative';
-            burgerBtn.style.zIndex = '1002';
-            console.log('✅ Burger button ensured');
-        }
-        
-        if (mobileMenu) {
-            mobileMenu.style.display = 'flex';
-            mobileMenu.style.visibility = 'visible';
-            mobileMenu.style.opacity = '1';
-            mobileMenu.style.position = 'fixed';
-            mobileMenu.style.zIndex = '1001';
-            console.log('✅ Mobile menu ensured');
-        }
+    if (mobileMenu) {
+        mobileMenu.classList.remove('active');
+        mobileMenu.style.display = 'none';
+        mobileMenu.style.visibility = 'hidden';
+        mobileMenu.style.opacity = '0';
+        mobileMenu.style.transform = 'translateX(100%)';
+        brandbookMobileMenuOpen = false;
+        console.log('✅ Mobile menu forced to be closed');
     }
+    
+    if (burgerBtn) {
+        burgerBtn.classList.remove('active');
+        burgerBtn.setAttribute('aria-expanded', 'false');
+        console.log('✅ Burger button reset to closed state');
+    }
+    
+    // Разрешаем скролл страницы
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
 }
 
-// Настройка эффекта скролла для хедера
-function setupHeaderScrollEffect() {
-    const header = document.querySelector('.main-header');
-    if (!header) {
-        console.warn('⚠️ Header not found for scroll effect');
+// Настройка переключения мобильного меню
+function setupMobileMenuToggle() {
+    const burgerBtn = document.querySelector('.burger-btn');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (!burgerBtn || !mobileMenu) {
+        console.warn('⚠️ Burger button or mobile menu not found');
         return;
     }
     
-    let ticking = false;
-    const SCROLL_THRESHOLD = 50;
+    console.log('🔄 Setting up mobile menu toggle...');
     
-    const updateHeaderOnScroll = () => {
-        const currentScrollY = window.scrollY;
-        
-        if (currentScrollY > SCROLL_THRESHOLD) {
-            header.classList.add('header-scrolled');
-        } else {
-            header.classList.remove('header-scrolled');
+    const toggleMenu = function(e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
         }
         
-        ticking = false;
+        const isOpen = brandbookMobileMenuOpen;
+        
+        if (isOpen) {
+            // Закрываем меню
+            mobileMenu.classList.remove('active');
+            burgerBtn.classList.remove('active');
+            burgerBtn.setAttribute('aria-expanded', 'false');
+            brandbookMobileMenuOpen = false;
+            
+            // Анимация закрытия
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.transform = 'translateX(100%)';
+            
+            setTimeout(() => {
+                mobileMenu.style.display = 'none';
+                mobileMenu.style.visibility = 'hidden';
+            }, 300);
+            
+            // Возвращаем скролл страницы
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+            
+            console.log('📱 Mobile menu closed');
+        } else {
+            // Открываем меню
+            mobileMenu.style.display = 'flex';
+            mobileMenu.style.visibility = 'visible';
+            brandbookMobileMenuOpen = true;
+            
+            setTimeout(() => {
+                mobileMenu.classList.add('active');
+                burgerBtn.classList.add('active');
+                burgerBtn.setAttribute('aria-expanded', 'true');
+                
+                mobileMenu.style.opacity = '1';
+                mobileMenu.style.transform = 'translateX(0)';
+            }, 10);
+            
+            // Блокируем скролл страницы
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            
+            console.log('📱 Mobile menu opened');
+        }
     };
     
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                updateHeaderOnScroll();
-            });
-            ticking = true;
-        }
-    }, { passive: true });
+    // Удаляем старый обработчик если есть
+    burgerBtn.removeEventListener('click', toggleMenu);
     
-    // Инициализируем начальное состояние
-    updateHeaderOnScroll();
+    // Добавляем новый обработчик
+    burgerBtn.addEventListener('click', toggleMenu);
+    
+    // Закрываем меню при клике на ссылку в меню
+    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            setTimeout(toggleMenu, 300);
+        });
+    });
+    
+    console.log('✅ Mobile menu toggle handler added');
 }
 
 // ===== ИНТЕГРАЦИЯ С ЯЗЫКОВОЙ СИСТЕМОЙ =====
@@ -733,6 +723,36 @@ window.initBrandbook = initBrandbook;
 // Проверка инициализации
 window.isBrandbookInitialized = function() {
     return brandbookInitialized;
+};
+
+// Функция для проверки состояния мобильного меню
+window.getBrandbookMobileMenuState = function() {
+    return brandbookMobileMenuOpen;
+};
+
+// Функция для принудительного закрытия мобильного меню
+window.closeBrandbookMobileMenu = function() {
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const burgerBtn = document.querySelector('.burger-btn');
+    
+    if (mobileMenu) {
+        mobileMenu.classList.remove('active');
+        mobileMenu.style.display = 'none';
+        mobileMenu.style.visibility = 'hidden';
+        mobileMenu.style.opacity = '0';
+        mobileMenu.style.transform = 'translateX(100%)';
+        brandbookMobileMenuOpen = false;
+    }
+    
+    if (burgerBtn) {
+        burgerBtn.classList.remove('active');
+        burgerBtn.setAttribute('aria-expanded', 'false');
+    }
+    
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    
+    console.log('🔄 Mobile menu force closed');
 };
 
 console.log('✅ Brandbook.js fully loaded and ready');
