@@ -27,7 +27,6 @@
             transition: all 0.3s ease;
         }
 
-        /* ИСПРАВЛЕНИЕ: Убрано изменение позиции и размера при скролле */
         .main-header.scrolled {
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(35px) saturate(200%);
@@ -37,13 +36,11 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        /* Эффект при наведении */
         .main-header:hover {
             background: rgba(255, 255, 255, 0.07);
             border-color: rgba(255, 255, 255, 0.15);
         }
 
-        /* ===== HEADER CONTAINER ===== */
         .header-container {
             max-width: 100%;
             margin: 0 auto;
@@ -135,19 +132,6 @@
             font-weight: 600;
         }
 
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
         /* ===== ДЕСКТОПНЫЕ ДЕЙСТВИЯ ===== */
         .header-right-desktop {
             display: flex;
@@ -155,7 +139,6 @@
             gap: 15px;
         }
 
-        /* ===== КНОПКА "НАЧАТЬ ПРОЕКТ" ===== */
         .start-project-btn {
             display: inline-flex;
             align-items: center;
@@ -272,12 +255,11 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
-        /* ===== МОБИЛЬНАЯ ВЕРСИЯ (скрыта на десктопе) ===== */
+        /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
         .header-right-mobile {
             display: none;
         }
 
-        /* ===== БУРГЕР КНОПКА (только мобильная) ===== */
         .burger-btn {
             display: none;
         }
@@ -337,7 +319,7 @@
                 border-radius: 10px;
                 cursor: pointer;
                 padding: 0;
-                z-index: 1002;
+                z-index: 10002;
                 transition: all 0.3s ease;
                 -webkit-tap-highlight-color: transparent;
                 min-width: 44px;
@@ -395,7 +377,6 @@
                 transform: translate(-50%, 50%) rotate(-45deg);
             }
             
-            /* Внутренний контейнер хедера для мобильных */
             .main-header .header-inner {
                 padding: 0 15px;
             }
@@ -404,7 +385,6 @@
                 gap: 10px;
             }
             
-            /* Логотип для мобильных */
             .logo {
                 gap: 8px;
                 min-width: 0;
@@ -426,7 +406,6 @@
                 white-space: nowrap;
             }
             
-            /* Мобильный переключатель языка */
             .language-switcher.mobile-only-flags {
                 display: flex;
                 background: rgba(255, 255, 255, 0.1);
@@ -495,148 +474,6 @@
             
             .language-switcher.mobile-only-flags .lang-text {
                 display: none !important;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-header {
-                padding: 10px 0 !important;
-            }
-            
-            .header-container {
-                padding: 0 12px;
-            }
-            
-            .logo-mark {
-                width: 32px;
-                height: 32px;
-                font-size: 14px;
-            }
-            
-            .logo-text {
-                font-size: 16px;
-                max-width: 110px;
-            }
-            
-            .header-right-mobile {
-                gap: 10px;
-            }
-            
-            .burger-btn {
-                width: 40px;
-                height: 40px;
-            }
-            
-            .burger-btn span {
-                width: 18px;
-            }
-            
-            .burger-btn span:nth-child(1) {
-                top: 13px;
-            }
-            
-            .burger-btn span:nth-child(3) {
-                bottom: 13px;
-            }
-            
-            .language-switcher.mobile-only-flags {
-                min-width: 85px;
-                height: 40px;
-            }
-            
-            .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main-header {
-                padding: 8px 0 !important;
-            }
-            
-            .header-container {
-                padding: 0 10px;
-            }
-            
-            .logo {
-                gap: 6px;
-            }
-            
-            .logo-mark {
-                width: 30px;
-                height: 30px;
-                font-size: 13px;
-            }
-            
-            .logo-text {
-                font-size: 15px;
-                max-width: 90px;
-            }
-            
-            .header-right-mobile {
-                gap: 8px;
-            }
-            
-            .burger-btn {
-                width: 36px;
-                height: 36px;
-            }
-            
-            .burger-btn span {
-                width: 16px;
-            }
-            
-            .burger-btn span:nth-child(1) {
-                top: 11px;
-            }
-            
-            .burger-btn span:nth-child(3) {
-                bottom: 11px;
-            }
-            
-            .language-switcher.mobile-only-flags {
-                min-width: 80px;
-                height: 36px;
-            }
-            
-            .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 17px;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .logo-text {
-                font-size: 14px;
-                max-width: 80px;
-            }
-            
-            .language-switcher.mobile-only-flags {
-                min-width: 75px;
-                height: 34px;
-            }
-            
-            .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 16px;
-            }
-        }
-
-        /* Fallback for browsers without backdrop-filter */
-        @supports not (backdrop-filter: blur(20px)) {
-            .main-header {
-                background: rgba(15, 20, 35, 0.9);
-            }
-            
-            .language-switcher.desktop-only,
-            .language-switcher.mobile-only-flags {
-                background: rgba(255, 255, 255, 0.12);
-            }
-        }
-        
-        /* Фикс для iOS */
-        @supports (-webkit-touch-callout: none) {
-            .burger-btn,
-            .lang-btn {
-                cursor: pointer;
             }
         }
     </style>
@@ -708,23 +545,98 @@
         </div>
     </header>
 
+    <!-- СКРИПТ УПРАВЛЕНИЯ БУРГЕР-МЕНЮ -->
     <script>
     (function() {
         'use strict';
         
-        console.log('🚀 Header initialized');
+        console.log('🚀 Header loaded');
         
-        function initHeader() {
-            setupActiveNav();
-            setupLanguageSwitcher();
-            setupStartProjectButton();
+        // Простая функция для бургер-меню
+        function setupBurgerMenu() {
+            const burgerBtn = document.getElementById('burger-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
             
-            console.log('✅ Header setup complete');
+            if (!burgerBtn || !mobileMenu) {
+                console.log('⚠️ Burger menu elements not found yet');
+                setTimeout(setupBurgerMenu, 500);
+                return;
+            }
+            
+            console.log('✅ Burger menu elements found');
+            
+            // Удаляем старые обработчики
+            const newBurgerBtn = burgerBtn.cloneNode(true);
+            burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
+            
+            // Обработчик клика
+            newBurgerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isOpen = mobileMenu.classList.contains('active');
+                
+                if (isOpen) {
+                    // Закрыть меню
+                    this.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                } else {
+                    // Открыть меню
+                    this.classList.add('active');
+                    mobileMenu.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+                
+                console.log('🍔 Burger clicked, menu is now:', isOpen ? 'closed' : 'open');
+            });
+            
+            // Закрытие при клике на ссылки в меню
+            const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    setTimeout(() => {
+                        if (mobileMenu.classList.contains('active')) {
+                            newBurgerBtn.classList.remove('active');
+                            mobileMenu.classList.remove('active');
+                            document.body.style.overflow = '';
+                        }
+                    }, 300);
+                });
+            });
+            
+            // Закрытие при клике вне меню
+            document.addEventListener('click', function(e) {
+                if (mobileMenu.classList.contains('active') && 
+                    !mobileMenu.contains(e.target) && 
+                    !newBurgerBtn.contains(e.target)) {
+                    newBurgerBtn.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Закрытие по Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    newBurgerBtn.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            console.log('✅ Burger menu setup complete');
+            
+            // Глобальная функция для тестирования
+            window.testBurger = function() {
+                newBurgerBtn.click();
+            };
         }
         
+        // Настраиваем активные ссылки
         function setupActiveNav() {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const navLinks = document.querySelectorAll('.nav-link');
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
             
             navLinks.forEach(link => {
                 const href = link.getAttribute('href');
@@ -738,85 +650,76 @@
             });
         }
         
+        // Настраиваем переключатель языка
         function setupLanguageSwitcher() {
-            const langBtns = document.querySelectorAll('.lang-btn');
+            const langBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
             
             if (!langBtns.length) return;
             
             const currentLang = localStorage.getItem('preferredLang') || 'ru';
-            updateLanguageState(currentLang);
             
             function updateLanguageState(lang) {
-                const allLangBtns = document.querySelectorAll('.lang-btn');
-                const switchers = document.querySelectorAll('.language-switcher');
-                
-                allLangBtns.forEach(btn => {
+                langBtns.forEach(btn => {
                     btn.classList.remove('active');
                     if (btn.getAttribute('data-lang') === lang) {
                         btn.classList.add('active');
                     }
                 });
                 
+                const switchers = document.querySelectorAll('.language-switcher, .mobile-language-switcher');
                 switchers.forEach(switcher => {
                     switcher.setAttribute('data-current-lang', lang);
                 });
                 
                 localStorage.setItem('preferredLang', lang);
                 
-                // Update i18n if available
                 if (window.i18n && window.i18n.smoothSwitchLanguage) {
                     window.i18n.smoothSwitchLanguage(lang);
                 }
-                
-                // Dispatch event for other components
-                window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
             }
             
+            updateLanguageState(currentLang);
+            
             langBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
+                btn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    const lang = btn.getAttribute('data-lang');
+                    const lang = this.getAttribute('data-lang');
                     
-                    if (btn.classList.contains('active')) {
-                        return;
-                    }
+                    if (this.classList.contains('active')) return;
                     
                     updateLanguageState(lang);
                 });
             });
         }
         
+        // Настраиваем кнопку "Начать проект"
         function setupStartProjectButton() {
             const startProjectBtn = document.getElementById('start-project-btn');
             
-            if (!startProjectBtn) {
-                console.log('ℹ️ Кнопка "Начать проект" не найдена');
-                return;
-            }
+            if (!startProjectBtn) return;
             
             startProjectBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                
-                console.log('🚀 Кнопка "Начать проект" нажата');
-                
-                // Перенаправляем на страницу контактов
                 window.location.href = 'contacts.html';
             });
         }
         
         // Инициализация при загрузке
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initHeader);
-        } else {
-            initHeader();
+        function init() {
+            setupActiveNav();
+            setupLanguageSwitcher();
+            setupStartProjectButton();
+            setupBurgerMenu();
+            
+            console.log('✅ Header initialization complete');
         }
         
-        // Экспортируем функции для глобального использования
-        window.headerUtils = {
-            setupActiveNav,
-            setupLanguageSwitcher
-        };
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            setTimeout(init, 100);
+        }
         
     })();
     </script>
