@@ -4,6 +4,13 @@ class ComponentLoader {
     constructor() {
         console.log('📦 Creating ComponentLoader instance...');
         
+        // Ждем пока DOM будет готов
+        if (document.body === null) {
+            console.log('⏳ Waiting for DOM to be ready...');
+            setTimeout(() => new ComponentLoader(), 100);
+            return;
+        }
+        
         // Определяем базовый путь в зависимости от текущей страницы
         this.basePath = this.determineBasePath();
         
@@ -20,7 +27,6 @@ class ComponentLoader {
         this.retryCount = 0;
         
         console.log(`📦 Will load ${this.totalComponents} components from base path: ${this.basePath}`);
-        console.log('Components to load:', this.componentsToLoad);
         
         this.init();
     }
@@ -56,6 +62,7 @@ class ComponentLoader {
             return;
         }
         
+        // Если DOM еще не загружен, ждем
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('📄 DOM loaded, starting component loading');
@@ -68,6 +75,11 @@ class ComponentLoader {
     }
     
     ensureContainersExist() {
+        if (!document.body) {
+            console.error('❌ document.body is null, cannot create containers');
+            return;
+        }
+        
         const requiredContainers = ['header-container', 'footer-container', 'mobile-menu-container'];
         
         requiredContainers.forEach(containerId => {
@@ -80,6 +92,7 @@ class ComponentLoader {
                 
                 // Определяем где разместить контейнер
                 if (containerId === 'header-container' || containerId === 'mobile-menu-container') {
+                    // Вставляем после открывающего тега body
                     document.body.insertBefore(container, document.body.firstChild);
                 } else if (containerId === 'footer-container') {
                     document.body.appendChild(container);
@@ -217,13 +230,21 @@ class ComponentLoader {
     createFallbackContent(component, container) {
         console.log(`🛠️ Creating fallback content for ${component.id}`);
         
+        // Получаем правильные пути для ссылок
+        const indexPath = this.basePath ? this.basePath + 'index.html' : 'index.html';
+        const aboutPath = this.basePath ? this.basePath + 'about.html' : 'about.html';
+        const servicesPath = this.basePath ? this.basePath + 'services.html' : 'services.html';
+        const portfolioPath = this.basePath ? this.basePath + 'portfolio.html' : 'portfolio.html';
+        const brandbookPath = this.basePath ? this.basePath + 'brandbook.html' : 'brandbook.html';
+        const contactsPath = this.basePath ? this.basePath + 'contacts.html' : 'contacts.html';
+        
         switch(component.id) {
             case 'header-container':
                 container.innerHTML = `
                     <header class="main-header" id="main-header">
-                        <div class="container">
+                        <div class="header-container">
                             <div class="header-inner">
-                                <a href="${this.basePath || '.'}index.html" class="logo">
+                                <a href="${indexPath}" class="logo">
                                     <div class="logo-mark">NB</div>
                                     <span class="logo-text">NB Group</span>
                                 </a>
@@ -252,12 +273,12 @@ class ComponentLoader {
                 container.innerHTML = `
                     <div class="mobile-menu" id="mobile-menu">
                         <nav class="mobile-nav">
-                            <a href="${this.basePath || '.'}index.html" class="mobile-nav-link">Главная</a>
-                            <a href="${this.basePath || '.'}about.html" class="mobile-nav-link">О нас</a>
-                            <a href="${this.basePath || '.'}services.html" class="mobile-nav-link">Услуги</a>
-                            <a href="${this.basePath || '.'}portfolio.html" class="mobile-nav-link">Портфолио</a>
-                            <a href="${this.basePath || '.'}brandbook.html" class="mobile-nav-link">Брендбук</a>
-                            <a href="${this.basePath || '.'}contacts.html" class="mobile-nav-link">Контакты</a>
+                            <a href="${indexPath}" class="mobile-nav-link">Главная</a>
+                            <a href="${aboutPath}" class="mobile-nav-link">О нас</a>
+                            <a href="${servicesPath}" class="mobile-nav-link">Услуги</a>
+                            <a href="${portfolioPath}" class="mobile-nav-link">Портфолио</a>
+                            <a href="${brandbookPath}" class="mobile-nav-link">Брендбук</a>
+                            <a href="${contactsPath}" class="mobile-nav-link">Контакты</a>
                         </nav>
                     </div>
                 `;
@@ -325,7 +346,9 @@ class ComponentLoader {
         this.removeLoadingIndicator();
         
         // Добавляем класс для CSS
-        document.body.classList.add('components-loaded');
+        if (document.body) {
+            document.body.classList.add('components-loaded');
+        }
         
         // Отправляем несколько событий для совместимости
         this.dispatchComponentsLoaded();
@@ -357,6 +380,8 @@ class ComponentLoader {
     }
     
     createLoadingIndicator() {
+        if (!document.body) return;
+        
         // Удаляем старый индикатор если есть
         this.removeLoadingIndicator();
         
@@ -392,7 +417,7 @@ class ComponentLoader {
             clearInterval(this.progressInterval);
         }
         
-        if (this.loadingIndicator) {
+        if (this.loadingIndicator && this.loadingIndicator.parentNode) {
             this.loadingIndicator.style.transform = 'translateX(0%)';
             this.loadingIndicator.style.opacity = '0';
             setTimeout(() => {
@@ -408,8 +433,24 @@ class ComponentLoader {
 (function initComponents() {
     console.log('🚀 Starting component loader...');
     
+    // Ждем пока DOM будет полностью загружен
+    function waitForDOM() {
+        return new Promise((resolve) => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', resolve);
+            } else {
+                resolve();
+            }
+        });
+    }
+    
     // Глобальная функция для отладки
     window.checkComponentsStatus = function() {
+        if (!document.body) {
+            console.error('❌ document.body is null');
+            return;
+        }
+        
         const containers = ['header-container', 'footer-container', 'mobile-menu-container'];
         console.log('🔍 Checking component containers:');
         
@@ -422,7 +463,9 @@ class ComponentLoader {
     // Глобальная функция для принудительной перезагрузки
     window.reloadComponents = function() {
         console.log('🔄 Force reloading all components...');
-        document.body.classList.remove('components-loaded');
+        if (document.body) {
+            document.body.classList.remove('components-loaded');
+        }
         
         // Очищаем контейнеры
         ['header-container', 'footer-container', 'mobile-menu-container'].forEach(id => {
@@ -436,52 +479,61 @@ class ComponentLoader {
         window.ComponentLoaderInstance = new ComponentLoader();
     };
     
-    // Проверяем не находимся ли мы на странице где уже загружены компоненты
-    const headerContainer = document.getElementById('header-container');
-    if (headerContainer && headerContainer.innerHTML && headerContainer.innerHTML.trim() !== '') {
-        console.log('⚠️ Components already loaded in HTML, skipping loader');
-        document.body.classList.add('components-loaded');
+    // Основная инициализация
+    waitForDOM().then(() => {
+        console.log('✅ DOM is ready, initializing ComponentLoader');
         
-        // Но все равно отправляем событие для совместимости
-        setTimeout(() => {
-            window.dispatchEvent(new CustomEvent('componentsLoaded'));
-        }, 100);
-        return;
-    }
-    
-    // Запускаем загрузчик
-    window.ComponentLoaderInstance = new ComponentLoader();
-    
-    // Обработка ошибок загрузки
-    setTimeout(() => {
-        if (!document.body.classList.contains('components-loaded')) {
-            console.warn('⚠️ Component loading taking too long, forcing completion');
+        // Проверяем не находимся ли мы на странице где уже загружены компоненты
+        const headerContainer = document.getElementById('header-container');
+        if (headerContainer && headerContainer.innerHTML && headerContainer.innerHTML.trim() !== '') {
+            console.log('⚠️ Components already loaded in HTML, marking as loaded');
             document.body.classList.add('components-loaded');
             
-            // Отправляем события
-            window.dispatchEvent(new CustomEvent('componentsLoaded'));
-            
-            // Создаем простые заглушки для отсутствующих компонентов
-            const containers = ['header-container', 'footer-container', 'mobile-menu-container'];
-            containers.forEach(id => {
-                const container = document.getElementById(id);
-                if (container && (!container.innerHTML || container.innerHTML.trim() === '')) {
-                    console.log(`🛠️ Creating emergency content for ${id}`);
-                    
-                    // Простые заглушки
-                    if (id === 'header-container') {
-                        container.innerHTML = `<div style="padding: 20px; background: #0a0a0a; color: white; text-align: center;">NB Group</div>`;
-                    }
-                }
-            });
+            // Отправляем событие для совместимости
+            setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('componentsLoaded'));
+            }, 100);
+            return;
         }
-    }, 10000);
+        
+        // Запускаем загрузчик
+        window.ComponentLoaderInstance = new ComponentLoader();
+        
+        // Обработка ошибок загрузки
+        setTimeout(() => {
+            if (document.body && !document.body.classList.contains('components-loaded')) {
+                console.warn('⚠️ Component loading taking too long, forcing completion');
+                document.body.classList.add('components-loaded');
+                
+                // Отправляем события
+                window.dispatchEvent(new CustomEvent('componentsLoaded'));
+                
+                // Создаем простые заглушки для отсутствующих компонентов
+                const containers = ['header-container', 'footer-container', 'mobile-menu-container'];
+                containers.forEach(id => {
+                    const container = document.getElementById(id);
+                    if (container && (!container.innerHTML || container.innerHTML.trim() === '')) {
+                        console.log(`🛠️ Creating emergency content for ${id}`);
+                        
+                        // Простые заглушки
+                        if (id === 'header-container') {
+                            container.innerHTML = `<div style="padding: 20px; background: #0a0a0a; color: white; text-align: center;">NB Group</div>`;
+                        } else if (id === 'footer-container') {
+                            container.innerHTML = `<div style="padding: 20px; background: #0a0a0a; color: white; text-align: center;">&copy; ${new Date().getFullYear()} NB Group</div>`;
+                        }
+                    }
+                });
+            }
+        }, 10000);
+    }).catch(error => {
+        console.error('❌ Error waiting for DOM:', error);
+    });
 })();
 
 // Глобальные утилиты для работы с компонентами
 window.waitForComponents = function() {
     return new Promise((resolve) => {
-        if (document.body.classList.contains('components-loaded')) {
+        if (document.body && document.body.classList.contains('components-loaded')) {
             resolve();
             return;
         }
@@ -507,6 +559,11 @@ window.forceLoadComponents = function() {
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('📄 Page fully loaded, checking components...');
+    
+    if (!document.body) {
+        console.error('❌ document.body is still null on load');
+        return;
+    }
     
     // Проверяем наличие контейнеров
     const requiredContainers = ['header-container', 'footer-container', 'mobile-menu-container'];
