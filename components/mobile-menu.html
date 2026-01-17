@@ -14,7 +14,7 @@
             background: rgba(10, 10, 20, 0.98);
             backdrop-filter: blur(40px) saturate(200%);
             -webkit-backdrop-filter: blur(40px) saturate(200%);
-            z-index: 9999;
+            z-index: 99999; /* УВЕЛИЧЕНО С 9999 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -25,12 +25,14 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 80px 20px 40px;
             overflow-y: auto;
+            pointer-events: none; /* ВЫКЛЮЧЕНО ПО УМОЛЧАНИЮ */
         }
 
         .mobile-menu.active {
             transform: translateX(0);
             opacity: 1;
             visibility: visible;
+            pointer-events: auto; /* ВКЛЮЧЕНО КОГДА АКТИВНО */
         }
 
         /* Mobile navigation */
@@ -61,6 +63,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
         }
 
         .mobile-nav-link:hover,
@@ -227,6 +230,7 @@
             mobileMenu.style.opacity = '0';
             mobileMenu.style.visibility = 'hidden';
             mobileMenu.style.transform = 'translateX(100%)';
+            mobileMenu.style.pointerEvents = 'none'; // ГАРАНТИРУЕМ отключение
             
             console.log('✅ Mobile menu initialized');
         }
@@ -294,11 +298,16 @@
                     
                     // Закрываем меню после смены языка
                     setTimeout(() => {
-                        const burgerBtn = document.querySelector('.burger-btn');
-                        if (burgerBtn && mobileMenu.classList.contains('active')) {
-                            burgerBtn.classList.remove('active');
-                            mobileMenu.classList.remove('active');
-                            document.body.style.overflow = '';
+                        if (window.burgerMenuManager) {
+                            window.burgerMenuManager.closeMenu();
+                        } else {
+                            const burgerBtn = document.querySelector('.burger-btn');
+                            if (burgerBtn && mobileMenu.classList.contains('active')) {
+                                burgerBtn.classList.remove('active');
+                                mobileMenu.classList.remove('active');
+                                mobileMenu.style.pointerEvents = 'none';
+                                document.body.style.overflow = '';
+                            }
                         }
                     }, 300);
                 });
@@ -311,6 +320,23 @@
             setupMobileLanguageSwitcher();
             console.log('✅ Mobile menu setup complete');
         }
+        
+        // Глобальные функции для управления меню
+        window.openMobileMenu = function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.classList.add('active');
+                mobileMenu.style.pointerEvents = 'auto';
+            }
+        };
+        
+        window.closeMobileMenu = function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.classList.remove('active');
+                mobileMenu.style.pointerEvents = 'none';
+            }
+        };
         
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
