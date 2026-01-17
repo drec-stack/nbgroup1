@@ -1,8 +1,7 @@
-console.log('🔧 components.js loaded - SIMPLIFIED FIXED VERSION');
+console.log('🔧 components.js loaded');
 
 class ComponentLoader {
     constructor() {
-        console.log('📦 ComponentLoader initialized');
         this.componentsToLoad = [
             { id: 'header-container', file: 'header.html' },
             { id: 'footer-container', file: 'footer.html' },
@@ -11,37 +10,27 @@ class ComponentLoader {
         this.loadedComponents = 0;
         this.totalComponents = this.componentsToLoad.length;
         
-        console.log(`📊 Will load ${this.totalComponents} components`);
-        
         this.init();
     }
 
     init() {
-        console.log('🎯 Starting component loading...');
-        
         if (document.readyState === 'loading') {
-            console.log('⏳ DOM loading, waiting...');
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('✅ DOM ready, loading components...');
                 this.loadComponents();
             });
         } else {
-            console.log('✅ DOM already ready, starting component load...');
             this.loadComponents();
         }
     }
 
     loadComponents() {
-        console.log(`📥 Loading ${this.totalComponents} components...`);
-        
         this.componentsToLoad.forEach(component => {
             this.loadComponent(component);
         });
         
-        // Устанавливаем таймаут для завершения загрузки
+        // Таймаут для завершения загрузки
         setTimeout(() => {
             if (this.loadedComponents < this.totalComponents) {
-                console.warn(`⚠️ Some components failed to load (${this.loadedComponents}/${this.totalComponents})`);
                 this.finalizeLoading();
             }
         }, 5000);
@@ -51,45 +40,28 @@ class ComponentLoader {
         const container = document.getElementById(component.id);
         
         if (!container) {
-            console.warn(`⚠️ Container not found: #${component.id}`);
             this.loadedComponents++;
             this.checkAllLoaded();
             return;
         }
         
         const componentPath = `components/${component.file}`;
-        console.log(`📥 Loading ${component.file} into #${component.id} from: ${componentPath}`);
         
         fetch(componentPath)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText} for ${component.file}`);
+                    throw new Error(`HTTP ${response.status}`);
                 }
                 return response.text();
             })
             .then(html => {
-                // Вставляем HTML
                 container.innerHTML = html;
-                console.log(`✅ ${component.file} загружен в #${component.id}`);
-                
-                // Выполняем скрипты внутри компонента
                 this.executeScripts(container);
-                
                 this.loadedComponents++;
-                console.log(`📊 Progress: ${this.loadedComponents}/${this.totalComponents}`);
-                
-                // Проверяем, все ли компоненты загружены
                 this.checkAllLoaded();
             })
             .catch(error => {
-                console.error(`❌ Failed to load ${component.file}:`, error.message);
-                
-                // Показываем запасной контент
-                if (component.id === 'header-container') {
-                    container.innerHTML = this.getFallbackHeader();
-                    console.log('📱 Using fallback header');
-                }
-                
+                console.error(`Failed to load ${component.file}:`, error.message);
                 this.loadedComponents++;
                 this.checkAllLoaded();
             });
@@ -97,41 +69,30 @@ class ComponentLoader {
 
     executeScripts(container) {
         const scripts = container.querySelectorAll('script');
-        if (scripts.length > 0) {
-            console.log(`📜 Found ${scripts.length} script(s) in component`);
-        }
         
         scripts.forEach(oldScript => {
             const newScript = document.createElement('script');
             
-            // Копируем атрибуты
             Array.from(oldScript.attributes).forEach(attr => {
                 newScript.setAttribute(attr.name, attr.value);
             });
             
-            // Копируем содержимое
             if (oldScript.innerHTML) {
                 newScript.innerHTML = oldScript.innerHTML;
             }
             
-            // Заменяем старый скрипт новым
             oldScript.parentNode.replaceChild(newScript, oldScript);
         });
     }
 
     checkAllLoaded() {
         if (this.loadedComponents === this.totalComponents) {
-            console.log('🎉 All components loaded successfully!');
             this.finalizeLoading();
         }
     }
 
     finalizeLoading() {
-        console.log('🏁 Finalizing component loading...');
-        
-        // Даем время скриптам выполниться
         setTimeout(() => {
-            // Отправляем событие о завершении загрузки компонентов
             const event = new CustomEvent('componentsFullyLoaded', {
                 detail: {
                     loaded: this.loadedComponents,
@@ -141,25 +102,17 @@ class ComponentLoader {
             });
             window.dispatchEvent(event);
             
-            console.log('✅ components.js полностью загружен и инициализирован');
-            
-            // Инициализируем мобильное меню (простая версия)
-            this.setupSimpleMobileMenu();
+            this.setupMobileMenu();
         }, 500);
     }
 
-    setupSimpleMobileMenu() {
-        console.log('📱 Setting up mobile menu...');
-        
+    setupMobileMenu() {
         const burgerBtn = document.querySelector('.burger-btn');
         const mobileMenu = document.querySelector('.mobile-menu');
         
         if (!burgerBtn || !mobileMenu) {
-            console.log('🖥️ Desktop mode or elements not found');
             return;
         }
-        
-        console.log('✅ Mobile menu elements found');
         
         // Убедимся что меню скрыто по умолчанию
         mobileMenu.style.display = 'flex';
@@ -171,12 +124,10 @@ class ComponentLoader {
         const newBurgerBtn = burgerBtn.cloneNode(true);
         burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
         
-        // Простой обработчик клика
+        // Обработчик клика на бургер
         newBurgerBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            
-            console.log('🍔 Burger clicked');
             
             const mobileMenu = document.querySelector('.mobile-menu');
             if (!mobileMenu) return;
@@ -219,36 +170,36 @@ class ComponentLoader {
             });
         });
         
-        console.log('✅ Mobile menu setup complete');
-    }
-
-    getFallbackHeader() {
-        return `
-            <header class="main-header" id="main-header">
-                <div class="header-container">
-                    <div class="header-inner">
-                        <a href="index.html" class="logo" aria-label="На главную">
-                            <div class="logo-mark" aria-hidden="true">NB</div>
-                            <span class="logo-text">NB Group</span>
-                        </a>
-                        <div class="header-right-mobile">
-                            <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </header>
-        `;
+        // Закрытие меню при клике вне его
+        document.addEventListener('click', (e) => {
+            if (mobileMenu.classList.contains('active') && 
+                !mobileMenu.contains(e.target) && 
+                !newBurgerBtn.contains(e.target)) {
+                newBurgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                mobileMenu.style.transform = 'translateX(100%)';
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.visibility = 'hidden';
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Закрытие меню по клавише Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                newBurgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                mobileMenu.style.transform = 'translateX(100%)';
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.visibility = 'hidden';
+                document.body.style.overflow = '';
+            }
+        });
     }
 }
 
 // Инициализация загрузчика компонентов
 (function initComponentLoader() {
-    console.log('🔧 Initializing Component Loader...');
-    
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             window.ComponentLoader = new ComponentLoader();
@@ -257,5 +208,3 @@ class ComponentLoader {
         window.ComponentLoader = new ComponentLoader();
     }
 })();
-
-console.log('✅ components.js загружен и готов');
