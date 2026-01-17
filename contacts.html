@@ -10,12 +10,8 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/contacts.css">
     
-    <!-- Компоненты -->
-    <script src="js/components.js"></script>
+    <!-- ТОЛЬКО i18n.js может загружаться в head -->
     <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/contacts.js"></script>
 </head>
 <body class="contact-page">
     <!-- Header Container -->
@@ -301,6 +297,15 @@
 
     <!-- Footer Container -->
     <div id="footer-container"></div>
+
+    <!-- ВСЕ скрипты должны быть здесь, перед закрывающим </body> -->
+    <!-- 1. Сначала components.js -->
+    <script src="js/components.js"></script>
+    
+    <!-- 2. Потом другие скрипты -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/contacts.js"></script>
 
     <script>
         // Базовая инициализация страницы контактов
