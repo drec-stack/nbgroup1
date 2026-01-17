@@ -14,7 +14,7 @@
             background: rgba(10, 10, 20, 0.98);
             backdrop-filter: blur(40px) saturate(200%);
             -webkit-backdrop-filter: blur(40px) saturate(200%);
-            z-index: 99999; /* УВЕЛИЧЕНО С 9999 */
+            z-index: 99999;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -25,14 +25,14 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 80px 20px 40px;
             overflow-y: auto;
-            pointer-events: none; /* ВЫКЛЮЧЕНО ПО УМОЛЧАНИЮ */
+            pointer-events: none;
         }
 
         .mobile-menu.active {
             transform: translateX(0);
             opacity: 1;
             visibility: visible;
-            pointer-events: auto; /* ВКЛЮЧЕНО КОГДА АКТИВНО */
+            pointer-events: auto;
         }
 
         /* Mobile navigation */
@@ -216,41 +216,12 @@
         </div>
     </div>
 
-    <!-- СКРИПТ ДЛЯ МОБИЛЬНОГО МЕНЮ -->
+    <!-- ТОЛЬКО логика для переключателя языка в меню -->
     <script>
     (function() {
         'use strict';
         
-        console.log('📱 Mobile Menu loaded');
-        
-        // Устанавливаем начальное состояние меню
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (mobileMenu) {
-            mobileMenu.style.display = 'flex';
-            mobileMenu.style.opacity = '0';
-            mobileMenu.style.visibility = 'hidden';
-            mobileMenu.style.transform = 'translateX(100%)';
-            mobileMenu.style.pointerEvents = 'none'; // ГАРАНТИРУЕМ отключение
-            
-            console.log('✅ Mobile menu initialized');
-        }
-        
-        // Настраиваем активные ссылки
-        function setupActiveNav() {
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const navLinks = document.querySelectorAll('.mobile-nav-link');
-            
-            navLinks.forEach(link => {
-                const href = link.getAttribute('href');
-                link.classList.remove('active');
-                
-                if (href === currentPage || 
-                    (currentPage === '' && href === 'index.html') ||
-                    (currentPage === '/' && href === 'index.html')) {
-                    link.classList.add('active');
-                }
-            });
-        }
+        console.log('📱 Mobile Menu loaded - Language switcher only');
         
         // Настраиваем переключатель языка в мобильном меню
         function setupMobileLanguageSwitcher() {
@@ -298,50 +269,19 @@
                     
                     // Закрываем меню после смены языка
                     setTimeout(() => {
-                        if (window.burgerMenuManager) {
-                            window.burgerMenuManager.closeMenu();
-                        } else {
-                            const burgerBtn = document.querySelector('.burger-btn');
-                            if (burgerBtn && mobileMenu.classList.contains('active')) {
-                                burgerBtn.classList.remove('active');
-                                mobileMenu.classList.remove('active');
-                                mobileMenu.style.pointerEvents = 'none';
-                                document.body.style.overflow = '';
-                            }
+                        if (window.NBGroupApp && window.NBGroupApp.closeMobileMenu) {
+                            window.NBGroupApp.closeMobileMenu();
                         }
                     }, 300);
                 });
             });
         }
         
-        // Инициализация
-        function init() {
-            setupActiveNav();
-            setupMobileLanguageSwitcher();
-            console.log('✅ Mobile menu setup complete');
-        }
-        
-        // Глобальные функции для управления меню
-        window.openMobileMenu = function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu) {
-                mobileMenu.classList.add('active');
-                mobileMenu.style.pointerEvents = 'auto';
-            }
-        };
-        
-        window.closeMobileMenu = function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu) {
-                mobileMenu.classList.remove('active');
-                mobileMenu.style.pointerEvents = 'none';
-            }
-        };
-        
+        // Инициализация только переключателя языка
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
+            document.addEventListener('DOMContentLoaded', setupMobileLanguageSwitcher);
         } else {
-            setTimeout(init, 100);
+            setTimeout(setupMobileLanguageSwitcher, 100);
         }
         
     })();
