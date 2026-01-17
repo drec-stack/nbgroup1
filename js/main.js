@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded');
+console.log('🚀 main.js loaded - FULLY UPDATED');
 
 class DaehaaApp {
     constructor() {
@@ -28,6 +28,9 @@ class DaehaaApp {
         this.setupClickableElements();
         this.setupFooterSupport();
         this.setupScrollProgress();
+        this.setupScrollHeader();
+        
+        console.log('✅ DaehaaApp initialized');
     }
 
     setupSmoothScroll() {
@@ -344,16 +347,164 @@ class DaehaaApp {
             scrollProgress.style.width = scrolled + '%';
         });
     }
+
+    setupScrollHeader() {
+        const header = document.querySelector('.main-header');
+        
+        if (!header) return;
+        
+        let lastScroll = 0;
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                header.classList.remove('scrolled');
+                return;
+            }
+            
+            if (currentScroll > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+    }
 }
 
-// Инициализация приложения
+// ===== БУРГЕР МЕНЮ МЕНЕДЖЕР =====
+class BurgerMenuManager {
+    constructor() {
+        console.log('🍔 BurgerMenuManager created');
+        this.burgerBtn = null;
+        this.mobileMenu = null;
+        this.isInitialized = false;
+        this.init();
+    }
+
+    init() {
+        console.log('🍔 Initializing Burger Menu Manager...');
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.setupMenu();
+            });
+        } else {
+            this.setupMenu();
+        }
+        
+        window.addEventListener('componentsFullyLoaded', () => {
+            this.setupMenu();
+        });
+    }
+
+    setupMenu() {
+        if (this.isInitialized) return;
+        
+        this.burgerBtn = document.querySelector('.burger-btn');
+        this.mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (!this.burgerBtn || !this.mobileMenu) {
+            console.log('🍔 Burger menu elements not found, retrying...');
+            setTimeout(() => this.setupMenu(), 500);
+            return;
+        }
+        
+        console.log('✅ Burger menu elements found');
+        
+        this.setupEventListeners();
+        this.isInitialized = true;
+        console.log('✅ Burger Menu Manager initialized');
+    }
+
+    setupEventListeners() {
+        const newBurgerBtn = this.burgerBtn.cloneNode(true);
+        if (this.burgerBtn.parentNode) {
+            this.burgerBtn.parentNode.replaceChild(newBurgerBtn, this.burgerBtn);
+        }
+        this.burgerBtn = newBurgerBtn;
+        
+        this.burgerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.toggleMenu();
+        });
+        
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                setTimeout(() => {
+                    if (this.mobileMenu.classList.contains('active')) {
+                        this.closeMenu();
+                    }
+                }, 300);
+            });
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (this.mobileMenu.classList.contains('active') && 
+                !this.mobileMenu.contains(e.target) && 
+                !this.burgerBtn.contains(e.target)) {
+                this.closeMenu();
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.mobileMenu.classList.contains('active')) {
+                this.closeMenu();
+            }
+        });
+        
+        this.burgerBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+    }
+
+    toggleMenu() {
+        if (this.mobileMenu.classList.contains('active')) {
+            this.closeMenu();
+        } else {
+            this.openMenu();
+        }
+    }
+
+    openMenu() {
+        console.log('➕ Opening mobile menu');
+        this.burgerBtn.classList.add('active');
+        this.mobileMenu.classList.add('active');
+        this.burgerBtn.setAttribute('aria-expanded', 'true');
+        this.burgerBtn.setAttribute('aria-label', 'Закрыть меню');
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+    }
+
+    closeMenu() {
+        console.log('➖ Closing mobile menu');
+        this.burgerBtn.classList.remove('active');
+        this.mobileMenu.classList.remove('active');
+        this.burgerBtn.setAttribute('aria-expanded', 'false');
+        this.burgerBtn.setAttribute('aria-label', 'Открыть меню');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+    }
+}
+
+// ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
 (function initializeApp() {
     if (!window.DaehaaApp) {
         window.DaehaaApp = new DaehaaApp();
     }
+    
+    if (!window.burgerMenuManager) {
+        window.burgerMenuManager = new BurgerMenuManager();
+    }
+    
+    console.log('🚀 All systems initialized');
 })();
 
-// Глобальные утилиты
+// ===== ГЛОБАЛЬНЫЕ УТИЛИТЫ =====
 window.debounce = function(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -379,7 +530,7 @@ window.throttle = function(func, limit) {
     };
 };
 
-// Глобальные функции для управления переключателем языка
+// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ЯЗЫКА =====
 window.updateLanguageSwitcher = function(lang) {
     if (window.DaehaaApp) {
         window.DaehaaApp.updateLanguageSwitcherUI(lang);
@@ -403,13 +554,17 @@ window.toggleLanguage = function() {
     }
 };
 
-// Функция для тестирования мобильного меню (только для разработки)
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    window.testMobileMenu = function() {
+// ===== ГЛОБАЛЬНЫЕ ТЕСТОВЫЕ ФУНКЦИИ =====
+if (window.location.hostname === 'localhost' || 
+    window.location.hostname === '127.0.0.1' || 
+    window.location.hostname.includes('github.io')) {
+    
+    window.testBurgerMenu = function() {
+        console.log('🔍 Тест бургер-меню:');
+        
         const burgerBtn = document.querySelector('.burger-btn');
         const mobileMenu = document.querySelector('.mobile-menu');
         
-        console.log('🔍 Тест мобильного меню:');
         console.log('Бургер кнопка:', burgerBtn);
         console.log('Мобильное меню:', mobileMenu);
         
@@ -419,8 +574,12 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
             const isOpen = mobileMenu.classList.contains('active');
             console.log('Меню ' + (isOpen ? 'открыто' : 'закрыто'));
             
-            // Имитация клика
-            burgerBtn.click();
+            if (window.burgerMenuManager) {
+                window.burgerMenuManager.toggleMenu();
+                console.log('✅ Использован BurgerMenuManager');
+            } else {
+                burgerBtn.click();
+            }
             
             setTimeout(() => {
                 const newState = mobileMenu.classList.contains('active');
@@ -428,6 +587,39 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
             }, 500);
         } else {
             console.log('❌ Элементы не найдены');
+            
+            if (window.burgerMenuManager) {
+                console.log('Менеджер:', window.burgerMenuManager);
+                if (!window.burgerMenuManager.isInitialized) {
+                    window.burgerMenuManager.setupMenu();
+                }
+            }
         }
     };
+    
+    window.testHeader = function() {
+        console.log('🔍 Тест хедера:');
+        console.log('Header:', document.querySelector('.main-header'));
+        console.log('Logo:', document.querySelector('.logo'));
+        console.log('Nav links:', document.querySelectorAll('.nav-link').length);
+        console.log('Burger btn:', document.querySelector('.burger-btn'));
+        console.log('Mobile menu:', document.querySelector('.mobile-menu'));
+    };
 }
+
+// ===== ПОСЛЕДНИЙ ШАГ - ГАРАНТИРОВАННАЯ ИНИЦИАЛИЗАЦИЯ =====
+window.addEventListener('load', function() {
+    console.log('🎯 Страница полностью загружена');
+    
+    // Гарантируем инициализацию бургер-меню
+    if (window.burgerMenuManager && !window.burgerMenuManager.isInitialized) {
+        setTimeout(() => {
+            window.burgerMenuManager.setupMenu();
+        }, 1000);
+    }
+    
+    // Обновляем активные ссылки
+    if (window.DaehaaApp) {
+        window.DaehaaApp.setupCurrentPage();
+    }
+});
