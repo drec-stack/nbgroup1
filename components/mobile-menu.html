@@ -332,6 +332,9 @@
             // Настраиваем активные ссылки
             setupActiveNav();
             
+            // Настраиваем переключатель языка в мобильном меню
+            setupMobileLanguageSwitcher();
+            
             console.log('✅ Mobile menu initialized');
         }
         
@@ -348,6 +351,84 @@
                     (currentPage === '/' && href === 'index.html')) {
                     link.classList.add('active');
                 }
+            });
+        }
+        
+        function setupMobileLanguageSwitcher() {
+            const langBtns = document.querySelectorAll('.mobile-lang-btn');
+            
+            if (!langBtns.length) return;
+            
+            const currentLang = localStorage.getItem('preferredLang') || 'ru';
+            updateLanguageState(currentLang);
+            
+            function updateLanguageState(lang) {
+                langBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-lang') === lang) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                const switcher = document.querySelector('.mobile-language-switcher');
+                if (switcher) {
+                    switcher.setAttribute('data-current-lang', lang);
+                    
+                    const slider = switcher.querySelector('.mobile-lang-slider-menu');
+                    if (slider) {
+                        slider.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                        slider.style.transform = lang === 'en' ? 'translateX(100%)' : 'translateX(0)';
+                    }
+                }
+            }
+            
+            langBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const lang = btn.getAttribute('data-lang');
+                    
+                    if (btn.classList.contains('active')) {
+                        return;
+                    }
+                    
+                    // Обновляем состояние
+                    updateLanguageState(lang);
+                    localStorage.setItem('preferredLang', lang);
+                    
+                    // Update i18n if available
+                    if (window.i18n && window.i18n.smoothSwitchLanguage) {
+                        window.i18n.smoothSwitchLanguage(lang);
+                    }
+                    
+                    // Обновляем переключатель в хедере
+                    const headerSwitcher = document.querySelector('.language-switcher.mobile-only-flags');
+                    if (headerSwitcher) {
+                        headerSwitcher.setAttribute('data-current-lang', lang);
+                        const headerSlider = headerSwitcher.querySelector('.lang-slider');
+                        if (headerSlider) {
+                            headerSlider.style.transform = lang === 'en' ? 'translateX(100%)' : 'translateX(0)';
+                        }
+                    }
+                    
+                    // Обновляем десктопный переключатель
+                    const desktopSwitcher = document.querySelector('.language-switcher.desktop-only');
+                    if (desktopSwitcher) {
+                        desktopSwitcher.setAttribute('data-current-lang', lang);
+                        const desktopSlider = desktopSwitcher.querySelector('.lang-slider');
+                        if (desktopSlider) {
+                            desktopSlider.style.transform = lang === 'en' ? 'translateX(100%)' : 'translateX(0)';
+                        }
+                    }
+                    
+                    // Закрываем меню после смены языка
+                    setTimeout(() => {
+                        const burgerManager = window.burgerMenuManager;
+                        if (burgerManager && burgerManager.mobileMenu && burgerManager.mobileMenu.classList.contains('active')) {
+                            burgerManager.closeMenu();
+                        }
+                    }, 300);
+                });
             });
         }
         
