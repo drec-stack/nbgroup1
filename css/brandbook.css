@@ -562,131 +562,39 @@ body.brandbook-page {
     transform: translateY(0);
 }
 
-/* ===== СТИЛИ ДЛЯ ПРОЗРАЧНОГО СТЕКЛЯННОГО ХЕДЕРА НА СТРАНИЦЕ БРЕНДБУКА ===== */
+/* ===== ИСПРАВЛЕНИЕ ДЛЯ ХЕДЕРА НА СТРАНИЦЕ БРЕНДБУКА ===== */
 
-/* ОСНОВНЫЕ СТИЛИ ХЕДЕРА - ДЕСКТОПНАЯ ВЕРСИЯ */
-body.brandbook-page .main-header {
-    /* Стеклянный эффект */
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(25px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
-    
-    /* Позиционирование для десктопа */
-    position: fixed !important;
-    top: 20px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: calc(100% - 40px) !important;
-    max-width: 1400px !important;
-    margin: 0 auto !important;
-    z-index: 1000 !important;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-    border-radius: 20px !important;
-    padding: 16px 30px !important;
-    box-sizing: border-box !important;
-}
-
-/* При скролле */
-body.brandbook-page .main-header.scrolled {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(30px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-}
-
-/* МОБИЛЬНАЯ ВЕРСИЯ ХЕДЕРА (исправлено съезжание) */
-@media (max-width: 900px) {
+/* Убираем конфликтующие стили для десктопа */
+@media (min-width: 901px) {
     body.brandbook-page .main-header {
-        /* СБРАСЫВАЕМ десктопные стили */
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        top: 0 !important;
-        margin: 0 !important;
-        padding: 12px 20px !important;
-        
-        /* Мобильный стеклянный эффект */
-        background: rgba(10, 10, 20, 0.95) !important;
-        backdrop-filter: blur(30px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+        /* Все стили наследуются из style.css */
+    }
+}
+
+/* МОБИЛЬНАЯ ВЕРСИЯ ХЕДЕРА (только корректировки) */
+@media (max-width: 900px) {
+    body.brandbook-page {
+        /* Гарантируем что мобильное меню закрыто по умолчанию */
+        overflow-x: hidden;
     }
     
-    /* На мобильных скрываем основную навигацию */
-    body.brandbook-page .main-nav {
+    body.brandbook-page .mobile-menu:not(.active) {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        transform: translateX(100%) !important;
     }
     
-    /* Показываем мобильный правый блок */
-    body.brandbook-page .header-right-mobile {
+    body.brandbook-page .burger-btn {
+        /* Гарантируем что бургер виден и работает */
         display: flex !important;
-        align-items: center !important;
-        gap: 15px !important;
-    }
-    
-    /* Улучшаем стеклянный эффект переключателя языка */
-    body.brandbook-page .language-switcher {
-        background: rgba(255, 255, 255, 0.12) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 1002 !important;
     }
 }
 
-/* Активная ссылка в навигации */
-body.brandbook-page .nav-link.active {
-    color: white !important;
-    font-weight: 600 !important;
-    background: rgba(255, 255, 255, 0.15) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-/* Переключатель языка - стеклянный */
-body.brandbook-page .language-switcher {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-}
-
-/* Активный язык */
-body.brandbook-page .lang-btn.active {
-    color: white !important;
-    font-weight: 600 !important;
-    background: rgba(255, 255, 255, 0.25) !important;
-}
-
-/* Кнопка "Начать проект" - стеклянная с градиентом */
-body.brandbook-page .header-right .btn-primary {
-    background: white !important;
-    color: #0a0a0a !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    box-shadow: 
-        0 4px 20px rgba(255, 255, 255, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
-}
-
-/* Логотип - стеклянный эффект */
-body.brandbook-page .logo-mark {
-    background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%) !important;
-    border: 2px solid rgba(255, 255, 255, 0.4) !important;
-    box-shadow: 
-        0 4px 20px rgba(255, 255, 255, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
-}
-
-/* ГАРАНТИРУЕМ ЧТО МОБИЛЬНОЕ МЕНЮ И БУРГЕР ВИДНЫ НА МОБИЛЬНЫХ */
+/* ГАРАНТИРУЕМ ЧТО МОБИЛЬНОЕ МЕНЮ И БУРГЕР ПРАВИЛЬНО РАБОТАЮТ */
 @media (max-width: 900px) {
     body.brandbook-page .burger-btn {
         display: flex !important;
@@ -695,15 +603,10 @@ body.brandbook-page .logo-mark {
         position: relative !important;
         z-index: 1002 !important;
         pointer-events: auto !important;
-        align-items: center !important;
-        justify-content: center !important;
     }
     
     body.brandbook-page .mobile-menu {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
+        /* Эти стили будут применяться через JS при активации */
         position: fixed !important;
         z-index: 1001 !important;
         width: 100% !important;
@@ -711,15 +614,18 @@ body.brandbook-page .logo-mark {
         left: 0 !important;
         top: 0 !important;
         margin: 0 !important;
-        transform: none !important;
+        /* По умолчанию скрыто */
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        transform: translateX(100%) !important;
     }
     
-    body.brandbook-page .header-right-mobile {
+    body.brandbook-page .mobile-menu.active {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
-        align-items: center !important;
-        gap: 15px !important;
+        transform: translateX(0) !important;
     }
 }
 
@@ -727,10 +633,6 @@ body.brandbook-page .logo-mark {
 @supports not (backdrop-filter: blur(20px)) {
     body.brandbook-page .main-header {
         background: rgba(15, 20, 35, 0.98) !important;
-    }
-    
-    body.brandbook-page .language-switcher {
-        background: rgba(255, 255, 255, 0.12) !important;
     }
 }
 
