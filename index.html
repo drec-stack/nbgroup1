@@ -161,10 +161,82 @@
             padding-top: 80px;
         }
         
-        /* ОПТИМИЗАЦИЯ ДЛЯ МОБИЛЬНЫХ */
-        @media (max-width: 768px) {
+        /* КРИТИЧНЫЙ ФИКС ДЛЯ БУРГЕР-КНОПКИ */
+        @media (max-width: 900px) {
             body {
                 padding-top: 60px;
+            }
+            
+            /* Делаем бургер кнопку всегда видимой и кликабельной */
+            .burger-btn {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                cursor: pointer !important;
+                z-index: 10003 !important;
+                position: relative !important;
+                background: rgba(255, 255, 255, 0.1) !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                border-radius: 10px !important;
+                width: 44px !important;
+                height: 44px !important;
+            }
+            
+            .burger-btn:active {
+                transform: scale(0.95) !important;
+                background: rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            .burger-btn span {
+                display: block !important;
+                position: absolute !important;
+                width: 20px !important;
+                height: 2px !important;
+                background: white !important;
+                border-radius: 2px !important;
+                transition: all 0.3s ease !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+            }
+            
+            .burger-btn span:nth-child(1) {
+                top: 15px !important;
+            }
+            
+            .burger-btn span:nth-child(2) {
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+            }
+            
+            .burger-btn span:nth-child(3) {
+                bottom: 15px !important;
+            }
+            
+            .burger-btn.active {
+                background: rgba(255, 255, 255, 0.2) !important;
+            }
+            
+            .burger-btn.active span:nth-child(1) {
+                top: 50% !important;
+                transform: translate(-50%, -50%) rotate(45deg) !important;
+            }
+            
+            .burger-btn.active span:nth-child(2) {
+                opacity: 0 !important;
+            }
+            
+            .burger-btn.active span:nth-child(3) {
+                bottom: 50% !important;
+                transform: translate(-50%, 50%) rotate(-45deg) !important;
+            }
+            
+            /* Гарантируем что мобильные элементы видны */
+            .header-right-mobile {
+                display: flex !important;
+                align-items: center !important;
+                gap: 15px !important;
+                flex-shrink: 0 !important;
             }
             
             /* Отключаем fixed background на мобильных */
@@ -566,7 +638,7 @@
         </div>
     </section>
 
-    <!-- БЛОГ СЕКЦИЯ - ИСПРАВЛЕННАЯ -->
+    <!-- БЛОГ СЕКЦИЯ -->
     <section class="journals-section content-section" data-bg-section="journals">
         <div class="container">
             <h2 class="section-title fade-in-down" data-i18n="home.journals.title">Journals</h2>
@@ -607,7 +679,7 @@
         </div>
     </section>
 
-    <!-- FAQ СЕКЦИЯ - ИСПРАВЛЕННАЯ -->
+    <!-- FAQ СЕКЦИЯ -->
     <section class="faq-section content-section" data-bg-section="faq">
         <div class="container">
             <h2 class="section-title fade-in-down" data-i18n="home.faq.title">FAQ</h2>
@@ -699,9 +771,201 @@
     <script src="js/home.js"></script>
     <script src="js/animations.js"></script>
     
-    <!-- ФИКС ДЛЯ ПЕРЕВОДОВ -->
+    <!-- СИСТЕМНЫЙ ФИКС ДЛЯ МОБИЛЬНОГО МЕНЮ -->
     <script>
-        // Автоматический фикс для переводов
+        // СИСТЕМНЫЙ ФИКС ДЛЯ МОБИЛЬНОГО МЕНЮ
+        (function() {
+            'use strict';
+            
+            console.log('🔧 Загрузка системного фикса для мобильного меню...');
+            
+            // Функция для инициализации мобильного меню
+            function initMobileMenuFix() {
+                console.log('⚡ Инициализация фикса мобильного меню...');
+                
+                // Ждем немного чтобы все компоненты загрузились
+                setTimeout(function() {
+                    const burgerBtn = document.querySelector('.burger-btn');
+                    const mobileMenu = document.querySelector('.mobile-menu');
+                    
+                    console.log('🔍 Проверка элементов:');
+                    console.log('  - Бургер кнопка:', burgerBtn);
+                    console.log('  - Мобильное меню:', mobileMenu);
+                    
+                    if (!burgerBtn || !mobileMenu) {
+                        console.error('❌ Не найдены необходимые элементы');
+                        console.log('  - Burger exists:', !!burgerBtn);
+                        console.log('  - Menu exists:', !!mobileMenu);
+                        return;
+                    }
+                    
+                    console.log('✅ Элементы найдены, настраиваем...');
+                    
+                    // Принудительно устанавливаем правильные стили
+                    burgerBtn.style.cssText = `
+                        display: block !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        pointer-events: auto !important;
+                        cursor: pointer !important;
+                        z-index: 10003 !important;
+                        position: relative !important;
+                    `;
+                    
+                    // Удаляем все старые обработчики (клонируем элемент)
+                    const newBurgerBtn = burgerBtn.cloneNode(true);
+                    if (burgerBtn.parentNode) {
+                        burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
+                    }
+                    
+                    // Устанавливаем начальное состояние меню
+                    mobileMenu.style.cssText = `
+                        position: fixed !important;
+                        top: 0 !important;
+                        left: 0 !important;
+                        width: 100% !important;
+                        height: 100vh !important;
+                        z-index: 9999 !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        transform: translateX(100%) !important;
+                        opacity: 0 !important;
+                        visibility: hidden !important;
+                        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                        padding: 80px 20px 40px !important;
+                        overflow-y: auto !important;
+                        background: rgba(10, 10, 20, 0.98) !important;
+                        backdrop-filter: blur(40px) saturate(200%) !important;
+                        -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
+                    `;
+                    
+                    // Добавляем простой и надежный обработчик
+                    newBurgerBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        console.log('🎯 КЛИК ПО БУРГЕРУ!');
+                        
+                        const isOpen = mobileMenu.classList.contains('active');
+                        
+                        if (isOpen) {
+                            // Закрыть меню
+                            this.classList.remove('active');
+                            mobileMenu.classList.remove('active');
+                            this.setAttribute('aria-expanded', 'false');
+                            this.setAttribute('aria-label', 'Открыть меню');
+                            document.body.style.overflow = '';
+                            document.documentElement.style.overflow = '';
+                            console.log('➖ Меню закрыто');
+                        } else {
+                            // Открыть меню
+                            this.classList.add('active');
+                            mobileMenu.classList.add('active');
+                            this.setAttribute('aria-expanded', 'true');
+                            this.setAttribute('aria-label', 'Закрыть меню');
+                            document.body.style.overflow = 'hidden';
+                            document.documentElement.style.overflow = 'hidden';
+                            console.log('➕ Меню открыто');
+                        }
+                    });
+                    
+                    // Добавляем закрытие при клике на ссылки в меню
+                    const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
+                    mobileLinks.forEach(link => {
+                        link.addEventListener('click', function() {
+                            setTimeout(() => {
+                                if (mobileMenu.classList.contains('active')) {
+                                    newBurgerBtn.classList.remove('active');
+                                    mobileMenu.classList.remove('active');
+                                    newBurgerBtn.setAttribute('aria-expanded', 'false');
+                                    newBurgerBtn.setAttribute('aria-label', 'Открыть меню');
+                                    document.body.style.overflow = '';
+                                    document.documentElement.style.overflow = '';
+                                    console.log('🔗 Меню закрыто по клику на ссылку');
+                                }
+                            }, 300);
+                        });
+                    });
+                    
+                    // Закрытие при клике вне меню
+                    document.addEventListener('click', function(e) {
+                        if (mobileMenu.classList.contains('active') && 
+                            !mobileMenu.contains(e.target) && 
+                            !newBurgerBtn.contains(e.target)) {
+                            newBurgerBtn.classList.remove('active');
+                            mobileMenu.classList.remove('active');
+                            newBurgerBtn.setAttribute('aria-expanded', 'false');
+                            newBurgerBtn.setAttribute('aria-label', 'Открыть меню');
+                            document.body.style.overflow = '';
+                            document.documentElement.style.overflow = '';
+                            console.log('📱 Меню закрыто по клику вне');
+                        }
+                    });
+                    
+                    // Закрытие по Escape
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                            newBurgerBtn.classList.remove('active');
+                            mobileMenu.classList.remove('active');
+                            newBurgerBtn.setAttribute('aria-expanded', 'false');
+                            newBurgerBtn.setAttribute('aria-label', 'Открыть меню');
+                            document.body.style.overflow = '';
+                            document.documentElement.style.overflow = '';
+                            console.log('⎋ Меню закрыто по Escape');
+                        }
+                    });
+                    
+                    console.log('✅ Системный фикс мобильного меню применен успешно');
+                    
+                    // Тестируем кнопку
+                    setTimeout(function() {
+                        console.log('🧪 Тест: попробуйте нажать на бургер-кнопку');
+                        console.log('🧪 Тест: бургер должен быть виден на мобильных (ширина < 900px)');
+                    }, 1000);
+                    
+                }, 1000); // Даем время на загрузку компонентов
+            }
+            
+            // Запускаем при загрузке DOM
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMobileMenuFix);
+            } else {
+                initMobileMenuFix();
+            }
+            
+            // Также запускаем при полной загрузке
+            window.addEventListener('load', initMobileMenuFix);
+            
+            // И при загрузке компонентов
+            window.addEventListener('componentsFullyLoaded', initMobileMenuFix);
+            
+            // Функция для ручного тестирования
+            window.testMobileMenu = function() {
+                console.log('🧪 Тестирование мобильного меню...');
+                const menu = document.querySelector('.mobile-menu');
+                const burger = document.querySelector('.burger-btn');
+                
+                if (menu && burger) {
+                    if (menu.classList.contains('active')) {
+                        menu.classList.remove('active');
+                        burger.classList.remove('active');
+                        console.log('✅ Тест: меню закрыто');
+                    } else {
+                        menu.classList.add('active');
+                        burger.classList.add('active');
+                        console.log('✅ Тест: меню открыто');
+                    }
+                    return true;
+                }
+                console.error('❌ Тест: элементы не найдены');
+                return false;
+            };
+            
+        })();
+        
+        // ФИКС ДЛЯ ПЕРЕВОДОВ
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🔄 Запуск автоматического фикса переводов...');
             
@@ -710,7 +974,6 @@
                 if (window.i18n && window.i18n.isInitialized) {
                     console.log('✅ i18n инициализирован, проверяем переводы...');
                     
-                    // Проверяем ключевые переводы
                     const criticalKeys = [
                         'home.journals.title',
                         'home.journals.subtitle',
@@ -744,9 +1007,7 @@
                     
                     if (missingKeys.length > 0) {
                         console.warn(`⚠️ Обнаружены отсутствующие переводы: ${missingKeys.length} ключей`);
-                        console.log('🔄 Очищаем кэш и перезагружаем...');
                         
-                        // Очищаем кэш
                         try {
                             localStorage.removeItem('translations_ru');
                             localStorage.removeItem('translations_ru_time');
@@ -757,23 +1018,11 @@
                             console.warn('⚠️ Не удалось очистить кэш:', e.message);
                         }
                         
-                        // Перезагружаем переводы
                         setTimeout(function() {
                             window.i18n.loadTranslations(window.i18n.getCurrentLang())
                                 .then(function() {
                                     window.i18n.refresh();
                                     console.log('✅ Переводы перезагружены автоматически');
-                                    
-                                    // Проверяем еще раз
-                                    setTimeout(function() {
-                                        let fixedCount = 0;
-                                        criticalKeys.forEach(key => {
-                                            if (window.i18n.getTranslation(key)) {
-                                                fixedCount++;
-                                            }
-                                        });
-                                        console.log(`✅ Исправлено переводов: ${fixedCount}/${criticalKeys.length}`);
-                                    }, 500);
                                 })
                                 .catch(function(err) {
                                     console.error('❌ Ошибка перезагрузки переводов:', err);
@@ -783,9 +1032,8 @@
                         console.log('✅ Все критические переводы присутствуют');
                     }
                 }
-            }, 1500); // Даем время на загрузку всех компонентов
+            }, 1500);
             
-            // Дополнительный фикс для динамического контента
             window.addEventListener('componentsLoaded', function() {
                 console.log('🔄 Компоненты загружены, обновляем переводы...');
                 setTimeout(function() {
@@ -799,13 +1047,48 @@
         
         // Фикс для старых браузеров
         window.addEventListener('load', function() {
-            // Принудительно обновляем переводы при полной загрузке
             setTimeout(function() {
                 if (window.i18n && window.i18n.refresh) {
                     window.i18n.refresh();
                     console.log('🔄 Переводы обновлены при полной загрузке страницы');
                 }
             }, 1000);
+        });
+    </script>
+    
+    <!-- ДЕБАГ КНОПКА ДЛЯ ТЕСТИРОВАНИЯ -->
+    <script>
+        // Добавляем кнопку для тестирования (только для разработки)
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const debugBtn = document.createElement('button');
+                debugBtn.textContent = '🔍 Тест меню';
+                debugBtn.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: #ff4444;
+                    color: white;
+                    border: none;
+                    padding: 10px 15px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    z-index: 99999;
+                    font-size: 12px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                `;
+                debugBtn.onclick = function() {
+                    console.log('🧪 Тестовая кнопка нажата');
+                    if (window.testMobileMenu) {
+                        window.testMobileMenu();
+                    } else {
+                        alert('Функция testMobileMenu не доступна');
+                    }
+                };
+                document.body.appendChild(debugBtn);
+                
+                console.log('🔧 Тестовая кнопка добавлена в правый нижний угол');
+            }, 3000);
         });
     </script>
 </body>
