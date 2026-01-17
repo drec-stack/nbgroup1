@@ -314,7 +314,7 @@
         'use strict';
         
         function initMobileMenu() {
-            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenu = document.querySelector('.mobile-menu');
             
             if (!mobileMenu) {
                 console.error('❌ Mobile menu not found');
@@ -404,8 +404,8 @@
         // Глобальные функции для управления меню
         window.mobileMenuController = {
             open: function() {
-                const mobileMenu = document.getElementById('mobile-menu');
-                const burgerBtn = document.getElementById('burger-btn');
+                const mobileMenu = document.querySelector('.mobile-menu');
+                const burgerBtn = document.querySelector('#burger-btn');
                 
                 if (mobileMenu) {
                     mobileMenu.classList.add('active');
@@ -420,8 +420,8 @@
             },
             
             close: function() {
-                const mobileMenu = document.getElementById('mobile-menu');
-                const burgerBtn = document.getElementById('burger-btn');
+                const mobileMenu = document.querySelector('.mobile-menu');
+                const burgerBtn = document.querySelector('#burger-btn');
                 
                 if (mobileMenu) {
                     mobileMenu.classList.remove('active');
@@ -436,7 +436,7 @@
             },
             
             toggle: function() {
-                const mobileMenu = document.getElementById('mobile-menu');
+                const mobileMenu = document.querySelector('.mobile-menu');
                 if (mobileMenu) {
                     if (mobileMenu.classList.contains('active')) {
                         this.close();
@@ -447,16 +447,18 @@
             },
             
             isOpen: function() {
-                const mobileMenu = document.getElementById('mobile-menu');
+                const mobileMenu = document.querySelector('.mobile-menu');
                 return mobileMenu ? mobileMenu.classList.contains('active') : false;
             }
         };
         
         // Initialize when DOM is ready
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initMobileMenu);
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(initMobileMenu, 100);
+            });
         } else {
-            initMobileMenu();
+            setTimeout(initMobileMenu, 100);
         }
         
     })();
