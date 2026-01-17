@@ -783,48 +783,6 @@
     animation: slideInFilter 0.5s ease-out;
 }
 
-/* ===== СТИЛИ ДЛЯ ПОРТФОЛИО С РАБОЧИМ МОБИЛЬНЫМ МЕНЮ ===== */
-
-/* 1. Прозрачный хедер для портфолио */
-body.portfolio-page .main-header {
-    background: rgba(10, 10, 20, 0.95) !important;
-    backdrop-filter: blur(30px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-}
-
-body.portfolio-page .main-header.scrolled {
-    background: rgba(10, 10, 20, 0.98) !important;
-    backdrop-filter: blur(35px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
-}
-
-/* 2. Мобильное меню для портфолио */
-body.portfolio-page .mobile-menu {
-    background: rgba(10, 10, 20, 0.98) !important;
-}
-
-/* 3. Бургер кнопка всегда видна на портфолио */
-body.portfolio-page .burger-btn {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    cursor: pointer !important;
-}
-
-/* 4. Обеспечиваем корректный отступ для контента */
-body.portfolio-page {
-    padding-top: 80px !important;
-}
-
-/* 5. Кнопка "Начать проект" всегда видна */
-body.portfolio-page .start-project-btn {
-    display: inline-flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    cursor: pointer !important;
-}
-
 /* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===== */
 @media (max-width: 1024px) {
     .portfolio-grid {
@@ -838,28 +796,6 @@ body.portfolio-page .start-project-btn {
 }
 
 @media (max-width: 900px) {
-    body.portfolio-page {
-        padding-top: 60px !important;
-    }
-    
-    body.portfolio-page .main-header {
-        top: 0 !important;
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        border-radius: 0 !important;
-    }
-    
-    /* Десктопная навигация скрыта */
-    body.portfolio-page .main-nav {
-        display: none !important;
-    }
-    
-    /* Мобильная навигация работает */
-    body.portfolio-page .header-right-mobile {
-        display: flex !important;
-    }
-    
     /* Hero Section Mobile */
     .portfolio-hero {
         padding: 150px 0 70px !important;
@@ -1233,106 +1169,69 @@ body.portfolio-page .start-project-btn {
 
 /* ===== КРИТИЧЕСКИЙ ФИКС: ВОССТАНОВЛЕНИЕ КЛИКАБЕЛЬНОСТИ ===== */
 
-/* 1. Убираем все блокирующие стили */
-body.portfolio-page {
-    position: relative;
-    z-index: 1;
-    overflow-x: hidden;
-}
-
-/* 2. Хедер должен быть кликабельным по умолчанию */
-body.portfolio-page .main-header {
-    z-index: 1000 !important;
-    position: fixed !important;
-}
-
-/* 3. Восстанавливаем правильную иерархию z-index */
-body.portfolio-page .main-header {
-    z-index: 1000 !important;
-}
-
-body.portfolio-page main {
-    position: relative;
-    z-index: 10;
-}
-
-/* 4. Убираем все перекрывающие элементы */
-body.portfolio-page .portfolio-hero::before,
-body.portfolio-page .portfolio-filter::before {
+/* 1. Мобильное меню должно блокировать клики только когда активно */
+.mobile-menu:not(.active) {
     pointer-events: none !important;
-    z-index: 1 !important;
+    z-index: 9999 !important;
 }
 
-/* 5. Фикс для мобильных устройств */
+.mobile-menu.active {
+    pointer-events: auto !important;
+}
+
+/* 2. Основной контент должен быть всегда кликабельным */
+body.portfolio-page main,
+body.portfolio-page .portfolio-grid,
+body.portfolio-page .portfolio-item,
+body.portfolio-page .project-card {
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 100 !important;
+}
+
+/* 3. Когда мобильное меню открыто - блокируем контент под ним */
+body.portfolio-page .mobile-menu.active ~ main {
+    pointer-events: none !important;
+}
+
+/* 4. Элементы мобильного меню всегда кликабельны */
+.mobile-nav-link,
+.mobile-lang-btn,
+.mobile-header-btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* 5. Бургер кнопка всегда кликабельна */
+.burger-btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 10001 !important;
+}
+
+/* 6. Десктопная навигация скрыта на мобильных */
 @media (max-width: 900px) {
-    body.portfolio-page .main-header {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        border-radius: 0 !important;
-        z-index: 1000 !important;
-    }
-    
-    /* ГАРАНТИРУЕМ ЧТО БУРГЕР КНОПКА РАБОТАЕТ */
-    body.portfolio-page .burger-btn {
-        cursor: pointer !important;
-        z-index: 1002 !important;
-    }
-    
-    /* ДЕСКТОПНАЯ НАВИГАЦИЯ СКРЫТА */
     body.portfolio-page .main-nav {
         display: none !important;
     }
     
-    /* МОБИЛЬНАЯ НАВИГАЦИЯ РАБОТАЕТ */
-    body.portfolio-page .header-right-mobile {
+    /* Мобильные элементы показываем */
+    body.portfolio-page .header-right-mobile,
+    body.portfolio-page .burger-btn {
         display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
     }
 }
 
-/* 6. Фикс для скролла */
-body.portfolio-page .main-header.scrolled {
-    background: rgba(10, 10, 20, 0.98) !important;
-    backdrop-filter: blur(35px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
-}
-
-/* 7. Восстанавливаем стили для активных ссылок */
-body.portfolio-page .nav-link.active {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    color: white !important;
-}
-
-/* 8. Фикс для переключателя языка */
-body.portfolio-page .language-switcher {
-    pointer-events: auto !important;
-}
-
-body.portfolio-page .lang-btn {
-    cursor: pointer !important;
-}
-
-/* 9. Фикс для кнопки "НАЧАТЬ ПРОЕКТ" */
-body.portfolio-page .start-project-btn {
-    cursor: pointer !important;
-    display: inline-flex !important;
-}
-
-/* 10. Фикс для текста в хедере */
-body.portfolio-page .logo-text,
-body.portfolio-page .nav-link,
-body.portfolio-page .lang-text {
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-/* Финальный фикс для iOS Safari */
+/* 7. Фикс для iOS Safari */
 @supports (-webkit-touch-callout: none) {
-    body.portfolio-page .main-header a,
-    body.portfolio-page .main-header button {
-        cursor: pointer !important;
+    body.portfolio-page .burger-btn:active {
+        opacity: 0.7;
+    }
+    
+    .mobile-menu {
+        -webkit-overflow-scrolling: touch;
     }
 }
