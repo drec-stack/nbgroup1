@@ -1,271 +1,9 @@
-console.log('🎨 Brandbook page script loaded (glass header)');
+console.log('🎨 Brandbook page script loaded (glass header) - SIMPLIFIED FIXED VERSION');
 
 // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
-let brandbookObserver = null;
-let resizeTimeout = null;
-let lastScrollY = 0;
-const SCROLL_THRESHOLD = 50;
 let brandbookInitialized = false;
-let initializationInProgress = false;
-let appliedElements = new WeakSet();
 
 // ===== ОСНОВНЫЕ ФУНКЦИИ =====
-
-// Функция для удаления скрытых элементов из хедера
-function removeHiddenHeaderElements() {
-    if (document.body.classList.contains('header-cleaned')) {
-        return 0;
-    }
-    
-    console.log('🧹 Removing hidden elements from header...');
-    
-    // ИСКЛЮЧАЕМ бургер-кнопку из удаления!
-    const hiddenSelectors = [
-        '.mobile-menu-toggle',
-        '.menu-toggle',
-        '.hamburger',
-        '.menu-btn',
-        '.nav-toggle',
-        '.mobile-menu-overlay',
-        '.menu-overlay',
-        '.mobile-menu',
-        '.menu-container',
-        '.mobile-nav-toggle',
-        '[class*="mobile-toggle"]',
-        '.menu-icon',
-        '.mobile-nav',
-        '.nav-toggle-btn'
-        // УБРАЛИ: '[class*="burger"]' - не удаляем бургер!
-        // УБРАЛИ: '.burger-menu' - не удаляем бургер!
-        // УБРАЛИ: '.burger-btn' - не удаляем бургер!
-    ];
-    
-    let removedCount = 0;
-    
-    // Удаляем элементы по каждому селектору
-    hiddenSelectors.forEach(selector => {
-        try {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(el => {
-                // НЕ удаляем элементы в header-right-mobile на мобильных
-                const isInMobileHeader = el.closest('.header-right-mobile');
-                const isMobileWidth = window.innerWidth <= 900;
-                
-                if (isMobileWidth && isInMobileHeader) {
-                    // Не удаляем элементы в мобильном хедере
-                    return;
-                }
-                
-                if (el && el.parentNode && !appliedElements.has(el)) {
-                    // Проверяем, находится ли элемент в хедере
-                    if (el.closest('.main-header') || el.closest('#header-container') || el.closest('header')) {
-                        el.parentNode.removeChild(el);
-                        removedCount++;
-                        appliedElements.add(el);
-                        if (console && console.log) {
-                            console.log(`🗑️ Removed hidden element: ${selector}`);
-                        }
-                    }
-                }
-            });
-        } catch (e) {
-            if (console && console.warn) {
-                console.warn(`⚠️ Could not process ${selector}:`, e.message);
-            }
-        }
-    });
-    
-    // Удаляем элементы с inline-стилями display: none, но исключаем бургер на мобильных
-    document.querySelectorAll('[style*="display: none"], [style*="visibility: hidden"]').forEach(el => {
-        const isMobileWidth = window.innerWidth <= 900;
-        const isInMobileHeader = el.closest('.header-right-mobile');
-        const isBurger = el.classList.contains('burger-btn') || 
-                         el.classList.contains('burger-menu') || 
-                         el.id.includes('burger');
-        
-        if (isMobileWidth && isInMobileHeader && isBurger) {
-            // НЕ удаляем бургер-кнопку в мобильном хедере
-            return;
-        }
-        
-        if (el && el.parentNode && !appliedElements.has(el) &&
-            (el.classList.contains('menu') || 
-             el.closest('.main-header') ||
-             el.closest('#header-container') ||
-             el.closest('header'))) {
-            el.parentNode.removeChild(el);
-            removedCount++;
-            appliedElements.add(el);
-        }
-    });
-    
-    console.log(`✅ Removed ${removedCount} hidden elements from header (excluding burger button)`);
-    
-    if (removedCount > 0) {
-        document.body.classList.add('header-cleaned');
-    }
-    
-    // Добавляем CSS гарантии
-    addHeaderCleanupStyles();
-    
-    return removedCount;
-}
-
-// Добавление CSS стилей для гарантии чистого хедера
-function addHeaderCleanupStyles() {
-    // Удаляем старые стили если есть
-    const oldStyles = document.getElementById('brandbook-clean-header-styles');
-    if (oldStyles) oldStyles.remove();
-    
-    // Создаем новые стили
-    const style = document.createElement('style');
-    style.id = 'brandbook-clean-header-styles';
-    style.textContent = `
-        /* ГАРАНТИЯ: НИКАКИХ СКРЫТЫХ ЭЛЕМЕНТОВ В ХЕДЕРЕ БРЕНДБУКА */
-        body.brandbook-page .mobile-menu-toggle,
-        body.brandbook-page .menu-toggle,
-        body.brandbook-page .hamburger,
-        body.brandbook-page .menu-btn,
-        body.brandbook-page .nav-toggle,
-        body.brandbook-page .mobile-menu-overlay,
-        body.brandbook-page .menu-overlay,
-        body.brandbook-page .mobile-menu,
-        body.brandbook-page .menu-container,
-        body.brandbook-page .mobile-nav-toggle,
-        body.brandbook-page [class*="mobile-toggle"],
-        body.brandbook-page [class*="menu-btn"] {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            width: 0 !important;
-            height: 0 !important;
-            overflow: hidden !important;
-            position: absolute !important;
-            z-index: -1000 !important;
-            pointer-events: none !important;
-        }
-        
-        /* НЕ УДАЛЯЕМ БУРГЕР-КНОПКУ НА МОБИЛЬНЫХ! */
-        @media (max-width: 900px) {
-            body.brandbook-page .burger-btn {
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                position: relative !important;
-                z-index: 1002 !important;
-                pointer-events: auto !important;
-            }
-            
-            body.brandbook-page .header-right-mobile {
-                display: flex !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-            
-            body.brandbook-page .mobile-menu {
-                display: flex !important;
-            }
-        }
-        
-        /* Обеспечиваем правильное позиционирование стеклянного хедера */
-        body.brandbook-page .main-header {
-            position: fixed !important;
-            top: 20px !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            width: calc(100% - 40px) !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            z-index: 1000 !important;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-            border-radius: 20px !important;
-            background: rgba(255, 255, 255, 0.05) !important;
-            backdrop-filter: blur(25px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-        }
-        
-        /* Мобильная версия хедера */
-        @media (max-width: 768px) {
-            body.brandbook-page .main-header {
-                position: fixed !important;
-                left: 0 !important;
-                transform: none !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                border-radius: 0 !important;
-                top: 0 !important;
-                margin: 0 !important;
-                background: rgba(10, 10, 20, 0.95) !important;
-                backdrop-filter: blur(30px) saturate(180%) !important;
-                -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-                box-shadow: 
-                    0 8px 32px rgba(0, 0, 0, 0.4),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-                padding: 12px 0 !important;
-            }
-        }
-        
-        /* Скрываем основную навигацию на мобильных */
-        @media (max-width: 900px) {
-            body.brandbook-page .main-nav {
-                display: none !important;
-            }
-            
-            body.brandbook-page .header-right-desktop {
-                display: none !important;
-            }
-            
-            body.brandbook-page .header-right-mobile {
-                display: flex !important;
-            }
-        }
-        
-        /* Поддержка браузеров без backdrop-filter */
-        @supports not (backdrop-filter: blur(20px)) {
-            body.brandbook-page .main-header {
-                background: rgba(15, 20, 35, 0.98) !important;
-            }
-        }
-        
-        /* Анимация появления хедера */
-        .main-header {
-            animation: slideDownHeader 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-        
-        @keyframes slideDownHeader {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            @keyframes slideDownHeader {
-                from {
-                    opacity: 0;
-                    transform: translateY(-30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        }
-    `;
-    
-    document.head.appendChild(style);
-    console.log('✅ Added CSS guarantees for clean header (burger preserved)');
-}
 
 // Инициализация страницы брендбука
 function initBrandbook() {
@@ -274,64 +12,119 @@ function initBrandbook() {
         return;
     }
     
-    if (initializationInProgress) {
-        console.log('⚠️ Инициализация уже выполняется, пропускаем');
-        return;
-    }
-    
-    initializationInProgress = true;
     console.log('🚀 Initializing brandbook page...');
     
     try {
         // Проверяем, что мы на странице брендбука
         if (!document.body.classList.contains('brandbook-page')) {
             console.log('⚠️ Это не страница брендбука, выходим');
-            initializationInProgress = false;
             return;
         }
         
-        // 1. Удаляем скрытые элементы из хедера (КРОМЕ бургера на мобильных)
-        removeHiddenHeaderElements();
+        // Удаляем все скрытые элементы, но НЕ бургер и мобильное меню
+        cleanupHeaderElements();
         
-        // 2. Настраиваем эффект скролла для хедера
+        // Настраиваем эффект скролла для хедера
         setupHeaderScrollEffect();
         
-        // 3. Инициализируем все модули страницы с задержкой
-        setTimeout(() => {
-            setupCaseStudies();
-            setupFilterButtons();
-            setupColorPalettes();
-            setupBrandbookAnimations();
-            setupCopyFunctionality();
-            setupMobileInteractions();
-            setupBrandbookLanguageIntegration();
-            
-            // 4. Настраиваем взаимодействия
-            setupBrandbookInteractions();
-            
-            brandbookInitialized = true;
-            initializationInProgress = false;
-            
-            console.log('✅ Brandbook page fully initialized');
-            
-            // Отправляем событие об инициализации
-            window.dispatchEvent(new CustomEvent('brandbookInitialized', {
-                detail: { timestamp: Date.now() }
-            }));
-            
-        }, 200);
+        // Инициализируем все модули страницы
+        setupCaseStudies();
+        setupFilterButtons();
+        setupColorPalettes();
+        setupBrandbookAnimations();
+        setupCopyFunctionality();
+        setupMobileInteractions();
+        setupBrandbookLanguageIntegration();
+        setupBrandbookInteractions();
+        
+        // Гарантируем, что бургер кнопка доступна на мобильных
+        ensureMobileMenuAvailability();
+        
+        brandbookInitialized = true;
+        
+        console.log('✅ Brandbook page fully initialized');
         
     } catch (error) {
         console.error('❌ Error initializing brandbook:', error);
-        initializationInProgress = false;
+    }
+}
+
+// Очистка элементов хедера (но не бургера!)
+function cleanupHeaderElements() {
+    console.log('🧹 Cleaning up header elements...');
+    
+    // Удаляем только действительно ненужные элементы
+    const elementsToRemove = [
+        '.mobile-menu-toggle',
+        '.menu-toggle',
+        '.hamburger',
+        '.menu-btn',
+        '.nav-toggle',
+        '.mobile-menu-overlay',
+        '.menu-overlay',
+        '.menu-container',
+        '.mobile-nav-toggle',
+        '[class*="mobile-toggle"]',
+        '.menu-icon',
+        '.nav-toggle-btn'
+    ];
+    
+    let removedCount = 0;
+    
+    elementsToRemove.forEach(selector => {
+        try {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => {
+                if (el && el.parentNode) {
+                    // НЕ удаляем элементы в header-right-mobile на мобильных
+                    const isInMobileHeader = el.closest('.header-right-mobile');
+                    const isMobileWidth = window.innerWidth <= 900;
+                    
+                    if (isMobileWidth && isInMobileHeader) {
+                        return; // Не удаляем
+                    }
+                    
+                    // Удаляем элемент
+                    el.parentNode.removeChild(el);
+                    removedCount++;
+                    console.log(`🗑️ Removed: ${selector}`);
+                }
+            });
+        } catch (e) {
+            console.warn(`⚠️ Could not process ${selector}:`, e.message);
+        }
+    });
+    
+    console.log(`✅ Removed ${removedCount} elements from header`);
+    
+    return removedCount;
+}
+
+// Гарантируем доступность мобильного меню
+function ensureMobileMenuAvailability() {
+    if (window.innerWidth <= 900) {
+        console.log('📱 Ensuring mobile menu availability...');
         
-        // Пробуем повторно инициализировать через 2 секунды
-        setTimeout(() => {
-            if (!brandbookInitialized) {
-                console.log('🔄 Retrying brandbook initialization...');
-                initBrandbook();
-            }
-        }, 2000);
+        const burgerBtn = document.querySelector('.burger-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (burgerBtn) {
+            burgerBtn.style.display = 'block';
+            burgerBtn.style.visibility = 'visible';
+            burgerBtn.style.opacity = '1';
+            burgerBtn.style.position = 'relative';
+            burgerBtn.style.zIndex = '1002';
+            console.log('✅ Burger button ensured');
+        }
+        
+        if (mobileMenu) {
+            mobileMenu.style.display = 'flex';
+            mobileMenu.style.visibility = 'visible';
+            mobileMenu.style.opacity = '1';
+            mobileMenu.style.position = 'fixed';
+            mobileMenu.style.zIndex = '1001';
+            console.log('✅ Mobile menu ensured');
+        }
     }
 }
 
@@ -344,6 +137,7 @@ function setupHeaderScrollEffect() {
     }
     
     let ticking = false;
+    const SCROLL_THRESHOLD = 50;
     
     const updateHeaderOnScroll = () => {
         const currentScrollY = window.scrollY;
@@ -354,7 +148,6 @@ function setupHeaderScrollEffect() {
             header.classList.remove('header-scrolled');
         }
         
-        lastScrollY = currentScrollY;
         ticking = false;
     };
     
@@ -376,44 +169,12 @@ function setupHeaderScrollEffect() {
 function setupBrandbookLanguageIntegration() {
     console.log('🌐 Setting up language integration...');
     
-    // Очищаем старые обработчики
-    window.removeEventListener('languageChanged', handleLanguageChange);
-    window.removeEventListener('translationsApplied', handleTranslationsApplied);
-    
-    // Добавляем новые обработчики
-    window.addEventListener('languageChanged', handleLanguageChange);
-    window.addEventListener('translationsApplied', handleTranslationsApplied);
-    
     // Инициализируем UI переключателя языка
     updateLanguageSwitcherUI();
     updateActiveNavLink();
     
     // Настраиваем переводы для фильтров
     updateFilterButtonsText();
-}
-
-function handleLanguageChange(event) {
-    console.log('🔄 Language changed detected:', event.detail.lang);
-    
-    setTimeout(() => {
-        // Обновляем текст кнопок фильтра
-        updateFilterButtonsText();
-        
-        // Обновляем активную навигационную ссылку
-        updateActiveNavLink();
-        
-        // Обновляем переводы в кейсах
-        updateCaseStudiesTranslations();
-    }, 300);
-}
-
-function handleTranslationsApplied(event) {
-    console.log('🔄 Translations applied, updating brandbook UI...');
-    
-    setTimeout(() => {
-        updateFilterButtonsText();
-        updateActiveNavLink();
-    }, 100);
 }
 
 function updateLanguageSwitcherUI() {
@@ -472,40 +233,7 @@ function updateFilterButtonsText() {
             const translation = window.i18n.getTranslation(key);
             if (translation) {
                 btn.textContent = translation;
-            } else {
-                // Fallback значения
-                const fallbackText = {
-                    'all': 'Все',
-                    'web': 'Веб',
-                    'mobile': 'Мобильные',
-                    'corporate': 'Корпоративные'
-                };
-                btn.textContent = fallbackText[filter] || filter;
             }
-        }
-    });
-}
-
-function updateCaseStudiesTranslations() {
-    const cases = document.querySelectorAll('.brand-case');
-    cases.forEach((caseEl, index) => {
-        const caseNum = index + 1;
-        const titleKey = `brandbook.case${caseNum}.title`;
-        const descKey = `brandbook.case${caseNum}.description`;
-        const typographyKey = `brandbook.case${caseNum}.typography`;
-        
-        if (window.i18n && window.i18n.getTranslation) {
-            const title = window.i18n.getTranslation(titleKey);
-            const description = window.i18n.getTranslation(descKey);
-            const typography = window.i18n.getTranslation(typographyKey);
-            
-            const titleEl = caseEl.querySelector('.case-title');
-            const descEl = caseEl.querySelector('.case-description');
-            const typographyEl = caseEl.querySelector('.case-typography');
-            
-            if (title && titleEl) titleEl.textContent = title;
-            if (description && descEl) descEl.textContent = description;
-            if (typography && typographyEl) typographyEl.textContent = typography;
         }
     });
 }
@@ -541,10 +269,6 @@ function setupCaseStudies() {
             
             caseStudy.addEventListener('mouseenter', mouseEnterHandler);
             caseStudy.addEventListener('mouseleave', mouseLeaveHandler);
-            
-            // Сохраняем ссылки на обработчики для очистки
-            caseStudy._mouseEnterHandler = mouseEnterHandler;
-            caseStudy._mouseLeaveHandler = mouseLeaveHandler;
         }
         
         // Обработка для мобильных устройств
@@ -554,7 +278,6 @@ function setupCaseStudies() {
             
             if (header && content) {
                 const clickHandler = (e) => {
-                    // Проверяем, не кликнули ли на элементы, которые не должны раскрывать
                     if (!e.target.closest('.case-number') && !e.target.closest('.case-category')) {
                         const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
                         
@@ -573,23 +296,11 @@ function setupCaseStudies() {
                         } else {
                             content.style.maxHeight = content.scrollHeight + 'px';
                             header.classList.add('expanded');
-                            
-                            // Прокручиваем к кейсу
-                            setTimeout(() => {
-                                caseStudy.scrollIntoView({ 
-                                    behavior: 'smooth', 
-                                    block: 'nearest',
-                                    inline: 'nearest'
-                                });
-                            }, 300);
                         }
                     }
                 };
                 
                 header.addEventListener('click', clickHandler);
-                
-                // Сохраняем ссылку на обработчик
-                header._clickHandler = clickHandler;
                 
                 // Инициализируем свернутыми на мобильных
                 content.style.maxHeight = '0px';
@@ -614,12 +325,6 @@ function setupFilterButtons() {
     console.log(`🎯 Setting up ${filterBtns.length} filter buttons`);
     
     filterBtns.forEach(btn => {
-        // Удаляем старые обработчики
-        const oldHandler = btn._clickHandler;
-        if (oldHandler) {
-            btn.removeEventListener('click', oldHandler);
-        }
-        
         const clickHandler = function() {
             const filter = this.getAttribute('data-filter');
             
@@ -629,24 +334,9 @@ function setupFilterButtons() {
             
             // Анимация фильтрации
             filterCasesWithAnimation(filter, brandCases);
-            
-            // Прокрутка к результатам на мобильных
-            if (window.innerWidth <= 768) {
-                setTimeout(() => {
-                    const firstVisible = document.querySelector('.brand-case:not([style*="display: none"])');
-                    if (firstVisible) {
-                        firstVisible.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'start',
-                            inline: 'nearest'
-                        });
-                    }
-                }, 500);
-            }
         };
         
         btn.addEventListener('click', clickHandler);
-        btn._clickHandler = clickHandler;
         
         // Активируем кнопку "Все" по умолчанию
         if (btn.getAttribute('data-filter') === 'all' && !btn.classList.contains('active')) {
@@ -708,125 +398,15 @@ function setupColorPalettes() {
         if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)') {
             const hexColor = rgbToHex(bgColor);
             item.setAttribute('title', hexColor);
-            item.setAttribute('data-original-color', bgColor);
             item.setAttribute('data-hex-color', hexColor);
-            item.setAttribute('aria-label', `Color: ${hexColor}. Click to copy`);
-        }
-        
-        // Добавляем tooltip для десктопа
-        if (window.innerWidth > 768) {
-            const mouseEnterHandler = function() {
-                const color = this.getAttribute('data-hex-color') || 
-                             rgbToHex(this.style.backgroundColor || window.getComputedStyle(this).backgroundColor);
-                if (color) {
-                    this.setAttribute('title', color);
-                    
-                    // Показываем всплывающую подсказку
-                    showColorTooltip(this, color);
-                }
-            };
-            
-            const mouseLeaveHandler = function() {
-                hideColorTooltip();
-            };
-            
-            item.addEventListener('mouseenter', mouseEnterHandler);
-            item.addEventListener('mouseleave', mouseLeaveHandler);
-            
-            // Сохраняем ссылки на обработчики
-            item._mouseEnterHandler = mouseEnterHandler;
-            item._mouseLeaveHandler = mouseLeaveHandler;
         }
     });
-}
-
-function showColorTooltip(element, color) {
-    // Удаляем старый tooltip если есть
-    const oldTooltip = document.getElementById('color-tooltip');
-    if (oldTooltip) oldTooltip.remove();
-    
-    // Создаем новый tooltip
-    const tooltip = document.createElement('div');
-    tooltip.id = 'color-tooltip';
-    tooltip.textContent = color;
-    tooltip.style.cssText = `
-        position: fixed;
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 6px 10px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 600;
-        font-family: monospace;
-        z-index: 10001;
-        pointer-events: none;
-        transform: translate(-50%, -100%);
-        margin-top: -10px;
-        white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.2s ease;
-    `;
-    
-    document.body.appendChild(tooltip);
-    
-    // Позиционируем tooltip
-    const updateTooltipPosition = () => {
-        const rect = element.getBoundingClientRect();
-        tooltip.style.left = `${rect.left + rect.width / 2}px`;
-        tooltip.style.top = `${rect.top}px`;
-    };
-    
-    updateTooltipPosition();
-    
-    // Показываем tooltip с анимацией
-    setTimeout(() => {
-        tooltip.style.opacity = '1';
-    }, 10);
-    
-    // Добавляем обработчики для обновления позиции
-    const scrollHandler = updateTooltipPosition;
-    const resizeHandler = updateTooltipPosition;
-    
-    window.addEventListener('scroll', scrollHandler);
-    window.addEventListener('resize', resizeHandler);
-    
-    // Сохраняем ссылки для удаления
-    element._tooltip = tooltip;
-    element._scrollHandler = scrollHandler;
-    element._resizeHandler = resizeHandler;
-}
-
-function hideColorTooltip() {
-    const tooltip = document.getElementById('color-tooltip');
-    if (tooltip) {
-        // Анимация исчезновения
-        tooltip.style.opacity = '0';
-        setTimeout(() => {
-            if (tooltip.parentNode) {
-                tooltip.parentNode.removeChild(tooltip);
-            }
-        }, 200);
-    }
-    
-    // Удаляем обработчики
-    if (this._scrollHandler) {
-        window.removeEventListener('scroll', this._scrollHandler);
-    }
-    if (this._resizeHandler) {
-        window.removeEventListener('resize', this._resizeHandler);
-    }
 }
 
 // ===== НАСТРОЙКА АНИМАЦИЙ =====
 
 function setupBrandbookAnimations() {
     console.log('✨ Setting up brandbook animations');
-    
-    // Очищаем старый observer
-    if (brandbookObserver) {
-        brandbookObserver.disconnect();
-        brandbookObserver = null;
-    }
     
     // Создаем Intersection Observer
     if ('IntersectionObserver' in window) {
@@ -835,7 +415,7 @@ function setupBrandbookAnimations() {
             rootMargin: '0px 0px -50px 0px'
         };
         
-        brandbookObserver = new IntersectionObserver((entries) => {
+        const brandbookObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
@@ -843,12 +423,9 @@ function setupBrandbookAnimations() {
                     // Задержка анимации для кейсов
                     if (entry.target.classList.contains('brand-case')) {
                         const index = Array.from(entry.target.parentNode.children).indexOf(entry.target);
-                        const delay = Math.min(index * 0.15, 1); // Максимальная задержка 1 секунда
+                        const delay = Math.min(index * 0.15, 1);
                         entry.target.style.animationDelay = `${delay}s`;
                     }
-                    
-                    // Можно отключить наблюдение после появления
-                    // observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
@@ -890,40 +467,24 @@ function setupCopyFunctionality() {
     console.log('📋 Setting up color copy functionality');
     
     colorItems.forEach(item => {
-        // Удаляем старые обработчики
-        const oldClickHandler = item._copyClickHandler;
-        const oldKeyHandler = item._copyKeyHandler;
-        
-        if (oldClickHandler) {
-            item.removeEventListener('click', oldClickHandler);
-        }
-        if (oldKeyHandler) {
-            item.removeEventListener('keydown', oldKeyHandler);
-        }
-        
         const clickHandler = async function() {
             const color = this.getAttribute('data-hex-color') || 
-                         rgbToHex(this.style.backgroundColor || window.getComputedStyle(this).backgroundColor) || 
-                         this.getAttribute('data-original-color');
+                         rgbToHex(this.style.backgroundColor || window.getComputedStyle(this).backgroundColor);
             
             if (!color) {
                 console.warn('No color found to copy');
                 return;
             }
             
-            const hexColor = rgbToHex(color);
-            
             try {
                 // Копируем в буфер обмена
-                await navigator.clipboard.writeText(hexColor);
+                await navigator.clipboard.writeText(color);
                 
                 // Показываем уведомление
-                showNotification(`Color ${hexColor} copied to clipboard!`, 'success');
+                showNotification(`Color ${color} copied to clipboard!`, 'success');
                 
                 // Визуальная обратная связь
-                const originalColor = this.getAttribute('data-original-color') || 
-                                    this.style.backgroundColor || 
-                                    window.getComputedStyle(this).backgroundColor;
+                const originalColor = this.style.backgroundColor || window.getComputedStyle(this).backgroundColor;
                 this.style.backgroundColor = '#4CAF50';
                 this.innerHTML = '<i class="fas fa-check"></i>';
                 this.style.color = 'white';
@@ -939,46 +500,11 @@ function setupCopyFunctionality() {
                 
             } catch (err) {
                 console.error('Failed to copy color:', err);
-                
-                // Fallback для старых браузеров
-                try {
-                    const textArea = document.createElement('textarea');
-                    textArea.value = hexColor;
-                    textArea.style.position = 'fixed';
-                    textArea.style.left = '-999999px';
-                    textArea.style.top = '-999999px';
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    
-                    const successful = document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    
-                    if (successful) {
-                        showNotification(`Color ${hexColor} copied to clipboard!`, 'success');
-                    } else {
-                        showNotification('Failed to copy color. Please try again.', 'error');
-                    }
-                } catch (fallbackErr) {
-                    console.error('Fallback copy failed:', fallbackErr);
-                    showNotification('Failed to copy color. Please try again.', 'error');
-                }
-            }
-        };
-        
-        const keyHandler = (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                item.click();
+                showNotification('Failed to copy color. Please try again.', 'error');
             }
         };
         
         item.addEventListener('click', clickHandler);
-        item.addEventListener('keydown', keyHandler);
-        
-        // Сохраняем ссылки на обработчики
-        item._copyClickHandler = clickHandler;
-        item._copyKeyHandler = keyHandler;
     });
 }
 
@@ -992,11 +518,6 @@ function setupMobileInteractions() {
         const burgerBtn = document.querySelector('.burger-btn');
         if (burgerBtn) {
             console.log('✅ Burger button found on mobile');
-            
-            // Гарантируем что она видна
-            burgerBtn.style.display = 'block';
-            burgerBtn.style.visibility = 'visible';
-            burgerBtn.style.opacity = '1';
         }
         
         // Обратная связь при касании
@@ -1005,36 +526,17 @@ function setupMobileInteractions() {
         );
         
         interactiveElements.forEach(el => {
-            // Удаляем старые обработчики
-            if (el._touchStartHandler) {
-                el.removeEventListener('touchstart', el._touchStartHandler);
-            }
-            if (el._touchEndHandler) {
-                el.removeEventListener('touchend', el._touchEndHandler);
-            }
-            if (el._touchCancelHandler) {
-                el.removeEventListener('touchcancel', el._touchCancelHandler);
-            }
-            
             // Обработка touchstart
             const touchStartHandler = function(e) {
                 this.style.transition = 'transform 0.1s ease, opacity 0.1s ease';
                 this.style.opacity = '0.9';
                 this.style.transform = 'scale(0.98)';
-                
-                // Предотвращаем выделение текста
-                e.preventDefault();
             };
             
             // Обработка touchend
             const touchEndHandler = function() {
                 this.style.opacity = '1';
                 this.style.transform = 'scale(1)';
-                
-                // Сбрасываем transition
-                setTimeout(() => {
-                    this.style.transition = '';
-                }, 100);
             };
             
             // Обработка touchcancel
@@ -1044,33 +546,10 @@ function setupMobileInteractions() {
                 this.style.transition = '';
             };
             
-            el.addEventListener('touchstart', touchStartHandler, { passive: false });
+            el.addEventListener('touchstart', touchStartHandler);
             el.addEventListener('touchend', touchEndHandler);
             el.addEventListener('touchcancel', touchCancelHandler);
-            
-            // Сохраняем ссылки на обработчики
-            el._touchStartHandler = touchStartHandler;
-            el._touchEndHandler = touchEndHandler;
-            el._touchCancelHandler = touchCancelHandler;
         });
-        
-        // Плавная прокрутка для мобильных
-        document.documentElement.style.scrollBehavior = 'smooth';
-        
-        // Предотвращаем двойное нажатие для зумирования
-        let lastTouchEnd = 0;
-        const touchEndHandler = function(event) {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        };
-        
-        document.addEventListener('touchend', touchEndHandler, { passive: false });
-        
-        // Сохраняем ссылку на обработчик
-        document._preventZoomHandler = touchEndHandler;
     }
 }
 
@@ -1082,11 +561,6 @@ function setupBrandbookInteractions() {
     // Обработка нажатия на статистику
     const statItems = document.querySelectorAll('.stat-item');
     statItems.forEach(item => {
-        // Удаляем старый обработчик
-        if (item._clickHandler) {
-            item.removeEventListener('click', item._clickHandler);
-        }
-        
         const clickHandler = function() {
             this.style.transform = 'translateY(-6px) scale(1.03)';
             
@@ -1100,19 +574,12 @@ function setupBrandbookInteractions() {
         };
         
         item.addEventListener('click', clickHandler);
-        item._clickHandler = clickHandler;
     });
     
     // Обработка нажатия на кнопку CTA
     const ctaBtn = document.querySelector('.brandbook-cta .btn');
     if (ctaBtn) {
-        // Удаляем старый обработчик
-        if (ctaBtn._clickHandler) {
-            ctaBtn.removeEventListener('click', ctaBtn._clickHandler);
-        }
-        
-        const clickHandler = function(e) {
-            // Добавляем анимацию нажатия
+        const clickHandler = function() {
             this.style.transform = 'translateY(-4px) scale(1.04)';
             
             setTimeout(() => {
@@ -1121,59 +588,17 @@ function setupBrandbookInteractions() {
         };
         
         ctaBtn.addEventListener('click', clickHandler);
-        ctaBtn._clickHandler = clickHandler;
     }
     
     // Обработка ресайза окна
-    setupResponsiveBehavior();
-}
-
-function setupResponsiveBehavior() {
-    // Удаляем старый обработчик
-    if (window._resizeHandler) {
-        window.removeEventListener('resize', window._resizeHandler);
-    }
-    
-    const resizeHandler = () => {
-        clearTimeout(resizeTimeout);
-        
-        resizeTimeout = setTimeout(() => {
-            console.log('🔄 Window resized, reinitializing components');
-            
-            // Переинициализируем компоненты которые зависят от размера
-            if (window.innerWidth <= 768) {
-                // Переключаемся на мобильный режим
-                setupMobileInteractions();
-            } else {
-                // Переключаемся на десктоп режим
-                setupCaseStudies();
+    window.addEventListener('resize', function() {
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+            if (!brandbookInitialized && document.body.classList.contains('brandbook-page')) {
+                initBrandbook();
             }
-            
-            // Обновляем позиционирование хедера
-            const header = document.querySelector('.main-header');
-            if (header) {
-                if (window.innerWidth <= 768) {
-                    header.style.left = '0';
-                    header.style.transform = 'none';
-                    header.style.width = '100%';
-                    header.style.maxWidth = '100%';
-                    header.style.borderRadius = '0';
-                    header.style.top = '0';
-                } else {
-                    header.style.left = '50%';
-                    header.style.transform = 'translateX(-50%)';
-                    header.style.width = 'calc(100% - 40px)';
-                    header.style.maxWidth = '1400px';
-                    header.style.borderRadius = '20px';
-                    header.style.top = '20px';
-                }
-            }
-            
         }, 250);
-    };
-    
-    window.addEventListener('resize', resizeHandler);
-    window._resizeHandler = resizeHandler;
+    });
 }
 
 // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
@@ -1184,10 +609,7 @@ function rgbToHex(rgb) {
     
     // Если уже HEX
     if (rgb.startsWith('#')) {
-        // Проверяем корректность HEX
-        const hex = rgb.toUpperCase();
-        const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-        return hexRegex.test(hex) ? hex : '#000000';
+        return rgb.toUpperCase();
     }
     
     // Извлекаем RGB значения
@@ -1198,16 +620,8 @@ function rgbToHex(rgb) {
     const g = parseInt(result[1]);
     const b = parseInt(result[2]);
     
-    // Проверяем корректность значений
-    if (r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0) {
-        return '#000000';
-    }
-    
     // Конвертируем в HEX
-    const hex = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
-    
-    // Проверяем результат
-    return hex.length === 7 ? hex : '#000000';
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
 }
 
 // Показать уведомление
@@ -1232,18 +646,14 @@ function showNotification(message, type = 'info') {
         color: white;
         padding: 12px 20px;
         border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
         z-index: 10000;
         transform: translateX(400px);
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: transform 0.4s ease;
         max-width: 300px;
         font-weight: 500;
         display: flex;
         align-items: center;
         gap: 12px;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
     `;
     
     document.body.appendChild(notification);
@@ -1254,7 +664,7 @@ function showNotification(message, type = 'info') {
     }, 100);
     
     // Автоматическое скрытие через 3 секунды
-    const autoHideTimeout = setTimeout(() => {
+    setTimeout(() => {
         notification.style.transform = 'translateX(400px)';
         setTimeout(() => {
             if (notification.parentNode) {
@@ -1262,28 +672,13 @@ function showNotification(message, type = 'info') {
             }
         }, 400);
     }, 3000);
-    
-    // Возможность закрыть кликом
-    const clickHandler = () => {
-        clearTimeout(autoHideTimeout);
-        notification.style.transform = 'translateX(400px)';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    };
-    
-    notification.addEventListener('click', clickHandler);
-    notification._clickHandler = clickHandler;
 }
 
 function getNotificationIcon(type) {
     const icons = {
         'success': 'check-circle',
         'error': 'exclamation-circle',
-        'info': 'info-circle',
-        'warning': 'exclamation-triangle'
+        'info': 'info-circle'
     };
     return icons[type] || 'info-circle';
 }
@@ -1292,13 +687,12 @@ function getNotificationColor(type) {
     const colors = {
         'success': 'rgba(76, 175, 80, 0.9)',
         'error': 'rgba(244, 67, 54, 0.9)',
-        'info': 'rgba(33, 150, 243, 0.9)',
-        'warning': 'rgba(255, 152, 0, 0.9)'
+        'info': 'rgba(33, 150, 243, 0.9)'
     };
     return colors[type] || 'rgba(33, 150, 243, 0.9)';
 }
 
-// ===== ИНИЦИАЛИЗАЦИЯ И СОБЫТИЯ =====
+// ===== ИНИЦИАЛИЗАЦИЯ =====
 
 // Инициализация при загрузке DOM
 document.addEventListener('DOMContentLoaded', function() {
@@ -1333,59 +727,8 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
     }
 }
 
-// Обработка ресайза окна с защитой от дублирования
-if (!window._brandbookResizeHandler) {
-    window._brandbookResizeHandler = () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            if (document.body.classList.contains('brandbook-page') && typeof initBrandbook === 'function') {
-                // Только если не инициализирован
-                if (!brandbookInitialized && !initializationInProgress) {
-                    initBrandbook();
-                }
-            }
-        }, 250);
-    };
-    
-    window.addEventListener('resize', window._brandbookResizeHandler);
-}
-
-// Обработка ухода со страницы
-window.addEventListener('beforeunload', () => {
-    // Очищаем observer
-    if (brandbookObserver) {
-        brandbookObserver.disconnect();
-        brandbookObserver = null;
-    }
-    
-    // Очищаем таймеры
-    clearTimeout(resizeTimeout);
-    
-    // Удаляем обработчики событий
-    if (window._brandbookResizeHandler) {
-        window.removeEventListener('resize', window._brandbookResizeHandler);
-        window._brandbookResizeHandler = null;
-    }
-    
-    console.log('👋 Brandbook page cleanup');
-});
-
-// Очистка при скрытии страницы
-document.addEventListener('visibilitychange', function() {
-    if (document.hidden) {
-        console.log('👁️ Brandbook page hidden');
-    } else {
-        console.log('👁️ Brandbook page visible');
-    }
-});
-
 // Экспорт функций для глобального использования
 window.initBrandbook = initBrandbook;
-window.removeHiddenHeaderElements = removeHiddenHeaderElements;
-window.showNotification = showNotification;
-window.rgbToHex = rgbToHex;
-window.updateLanguageSwitcherUI = updateLanguageSwitcherUI;
-window.updateFilterButtonsText = updateFilterButtonsText;
 
 // Проверка инициализации
 window.isBrandbookInitialized = function() {
