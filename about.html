@@ -10,15 +10,11 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/about.css">
     
-    <!-- Компоненты -->
-    <script src="js/components.js"></script>
+    <!-- ТОЛЬКО i18n.js может загружаться в head -->
     <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/about.js"></script>
 </head>
 <body class="about-page">
-    <!-- Header Container (загружается через components.js) -->
+    <!-- Header Container -->
     <div id="header-container"></div>
     
     <!-- Mobile Menu Container -->
@@ -335,9 +331,18 @@
         </div>
     </section>
     
-    <!-- Footer Container (загружается через components.js) -->
+    <!-- Footer Container -->
     <div id="footer-container"></div>
     
+    <!-- ВСЕ скрипты должны быть здесь, перед закрывающим </body> -->
+    <!-- 1. Сначала components.js -->
+    <script src="js/components.js"></script>
+    
+    <!-- 2. Потом другие скрипты -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/about.js"></script>
+
     <script>
         // Функция для обработки ошибок загрузки фото
         function handleTeamPhotoError(img, initials) {
