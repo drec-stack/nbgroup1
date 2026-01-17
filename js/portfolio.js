@@ -1,17 +1,8 @@
-// portfolio.js - Full portfolio functionality with mobile menu support
-console.log('🎯 portfolio.js loaded - WITH FIXED HEADER CLICKABILITY');
+// portfolio.js - Fixed and simplified version
+console.log('🎯 portfolio.js loaded - CLICKABLE FIX');
 
 function initPortfolio() {
     console.log('🎯 Initializing portfolio page...');
-    
-    // Останавливаем home.js поведение
-    if (typeof window.homeInitialized !== 'undefined') {
-        console.log('🛑 Stopping home.js behavior on portfolio');
-        const header = document.querySelector('.main-header');
-        if (header) {
-            header.classList.remove('header-hide-smooth', 'header-show-smooth');
-        }
-    }
     
     // Основная функциональность портфолио
     setupPortfolioFilter();
@@ -21,70 +12,26 @@ function initPortfolio() {
     setupHoverEffects();
     setupMobileOptimizations();
     
-    // КРИТИЧЕСКИЙ ФИКС: Восстановление кликабельности хедера
-    setTimeout(() => {
-        fixPortfolioHeader();
-    }, 1000); // Даем время на загрузку компонентов
-    
     console.log('✅ Portfolio page fully initialized');
 }
 
-// КРИТИЧЕСКИЙ ФИКС: Восстановление кликабельности хедера
+// Фиксация портфолио хедера (упрощенная версия)
 function fixPortfolioHeader() {
-    console.log('🔧 Fixing portfolio header clickability...');
+    console.log('🔧 Fixing portfolio header...');
     
     const header = document.querySelector('.main-header');
-    if (!header) {
-        console.warn('⚠️ Header not found, checking again in 500ms...');
-        setTimeout(fixPortfolioHeader, 500);
-        return;
-    }
+    if (!header) return;
     
-    // 1. Убираем все pointer-events блокировки
-    header.style.pointerEvents = 'auto';
-    header.style.cursor = 'default';
+    // Простые исправления
+    header.style.cssText = 'pointer-events: auto; z-index: 1000; position: fixed;';
     
-    // 2. Гарантируем что все элементы внутри хедера кликабельны
-    const headerElements = header.querySelectorAll('*');
-    headerElements.forEach(el => {
-        el.style.pointerEvents = 'auto';
-        el.style.cursor = 'default';
-    });
-    
-    // 3. Особые стили для кликабельных элементов
+    // Гарантируем кликабельность элементов
     const clickableElements = header.querySelectorAll('a, button, .logo, .nav-link, .burger-btn, .lang-btn, .start-project-btn');
     clickableElements.forEach(el => {
-        el.style.pointerEvents = 'auto';
-        el.style.cursor = 'pointer';
-        el.style.position = 'relative';
-        el.style.zIndex = '1001';
+        el.style.cssText = 'pointer-events: auto; cursor: pointer;';
     });
     
-    // 4. Фиксируем z-index иерархию
-    header.style.zIndex = '1000';
-    
-    // 5. Убираем возможные оверлеи
-    const overlays = document.querySelectorAll('.portfolio-hero::before, .portfolio-filter::before');
-    
-    // 6. Принудительно устанавливаем корректный фон
-    header.style.background = 'rgba(10, 10, 20, 0.95)';
-    header.style.backdropFilter = 'blur(30px) saturate(180%)';
-    header.style.webkitBackdropFilter = 'blur(30px) saturate(180%)';
-    
-    console.log('✅ Portfolio header fixed for clickability:', {
-        header: header,
-        clickableElements: clickableElements.length
-    });
-    
-    // 7. Проверяем через секунду еще раз
-    setTimeout(() => {
-        const computedStyle = getComputedStyle(header);
-        if (computedStyle.pointerEvents === 'none') {
-            console.warn('⚠️ Header still has pointer-events: none, applying emergency fix...');
-            header.style.pointerEvents = 'auto !important';
-            header.style.cssText += 'pointer-events: auto !important;';
-        }
-    }, 1000);
+    console.log('✅ Portfolio header fixed');
 }
 
 // Фильтрация проектов
@@ -100,30 +47,18 @@ function setupPortfolioFilter() {
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             // Update active button
-            filterBtns.forEach(b => {
-                b.classList.remove('active');
-                b.style.transform = 'scale(1)';
-            });
+            filterBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            
-            // Add active animation
-            this.style.transform = 'scale(1.05)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 300);
             
             const filter = this.getAttribute('data-filter');
             console.log(`🔍 Filtering by: ${filter}`);
             
             // Animate filter items
-            let visibleCount = 0;
             portfolioItems.forEach((item, index) => {
                 const itemCategory = item.getAttribute('data-category');
                 const shouldShow = filter === 'all' || itemCategory === filter;
                 
                 if (shouldShow) {
-                    visibleCount++;
-                    // Show animation
                     item.classList.remove('hidden');
                     item.style.display = 'block';
                     
@@ -131,39 +66,16 @@ function setupPortfolioFilter() {
                     setTimeout(() => {
                         item.style.opacity = '1';
                         item.style.transform = 'translateY(0) scale(1)';
-                        item.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                     }, index * 100);
                 } else {
-                    // Hide animation
                     item.style.opacity = '0';
                     item.style.transform = 'translateY(20px) scale(0.95)';
-                    item.style.transition = 'all 0.4s ease';
                     setTimeout(() => {
                         item.classList.add('hidden');
                         item.style.display = 'none';
                     }, 400);
                 }
             });
-            
-            console.log(`👁️ Showing ${visibleCount} projects for filter: ${filter}`);
-            
-            // Scroll to first visible item on mobile
-            if (isMobile && filter !== 'all') {
-                setTimeout(() => {
-                    const firstVisible = document.querySelector('.portfolio-item:not(.hidden)');
-                    if (firstVisible) {
-                        const header = document.querySelector('.main-header');
-                        const headerHeight = header ? header.offsetHeight : 0;
-                        const baseOffset = headerHeight + 50;
-                        const targetPosition = firstVisible.offsetTop - baseOffset;
-                        
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                }, 600);
-            }
             
             // Update URL hash for bookmarking
             history.pushState(null, null, `#${filter}`);
@@ -193,33 +105,11 @@ function setupProjectInteractions() {
             card.addEventListener('mouseenter', () => {
                 card.style.transform = 'translateY(-15px) scale(1.01)';
                 card.style.boxShadow = '0 30px 60px rgba(0, 102, 255, 0.2)';
-                
-                // Animate project icon
-                const icon = card.querySelector('.project-icon');
-                if (icon) {
-                    icon.style.transform = 'scale(1.1) rotate(10deg)';
-                }
-                
-                // Animate badge
-                const badge = card.querySelector('.project-badge');
-                if (badge) {
-                    badge.style.transform = 'translateY(0) scale(1.05)';
-                }
             });
             
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'translateY(0) scale(1)';
                 card.style.boxShadow = '';
-                
-                const icon = card.querySelector('.project-icon');
-                if (icon) {
-                    icon.style.transform = 'scale(1) rotate(0)';
-                }
-                
-                const badge = card.querySelector('.project-badge');
-                if (badge) {
-                    badge.style.transform = 'translateY(0)';
-                }
             });
         }
         
@@ -229,28 +119,12 @@ function setupProjectInteractions() {
             caseStudyLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 
-                // Visual feedback
-                caseStudyLink.style.transform = 'translateX(10px) scale(1.05)';
-                setTimeout(() => {
-                    caseStudyLink.style.transform = 'translateX(0) scale(1)';
-                }, 300);
-                
                 // Get project title
                 const projectTitle = card.querySelector('.project-title')?.textContent || 'Project';
                 console.log(`📖 Opening case study: ${projectTitle}`);
-            });
-        }
-        
-        // Touch feedback for mobile
-        if (isMobile) {
-            card.addEventListener('touchstart', function() {
-                this.style.transform = 'scale(0.98)';
-                this.style.transition = 'transform 0.1s ease';
-            });
-            
-            card.addEventListener('touchend', function() {
-                this.style.transform = 'scale(1)';
-                this.style.transition = 'transform 0.3s ease';
+                
+                // Show notification
+                alert(`Будет открыт кейс: ${projectTitle}`);
             });
         }
     });
@@ -273,47 +147,24 @@ function setupTestimonialCarousel() {
                 if (i === index) {
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
-                    card.style.zIndex = '2';
                 } else {
                     card.style.opacity = '0.5';
                     card.style.transform = 'translateY(20px)';
-                    card.style.zIndex = '1';
                 }
-                card.style.transition = 'all 0.6s ease';
             });
             currentTestimonial = index;
         };
         
         // Auto rotation
         const startCarousel = () => {
-            const intervalTime = isMobile ? 8000 : 6000;
             carouselInterval = setInterval(() => {
                 const nextIndex = (currentTestimonial + 1) % testimonialCards.length;
                 showTestimonial(nextIndex);
-            }, intervalTime);
+            }, 5000);
         };
         
         // Start carousel
         startCarousel();
-        
-        // Pause on hover/touch
-        testimonialCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                clearInterval(carouselInterval);
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                startCarousel();
-            });
-            
-            card.addEventListener('touchstart', () => {
-                clearInterval(carouselInterval);
-            });
-            
-            card.addEventListener('touchend', () => {
-                setTimeout(startCarousel, 5000);
-            });
-        });
         
         // Initialize
         showTestimonial(0);
@@ -333,21 +184,17 @@ function setupScrollAnimations() {
                     setTimeout(() => {
                         entry.target.style.opacity = '1';
                         entry.target.style.transform = 'translateY(0) scale(1)';
-                        entry.target.classList.add('animated');
                     }, 100);
-                    
                     observer.unobserve(entry.target);
                 }
             });
         }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            threshold: 0.1
         });
 
         animatedElements.forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px) scale(0.95)';
-            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
             observer.observe(el);
         });
     }
@@ -362,28 +209,10 @@ function setupHoverEffects() {
     highlightCards.forEach(card => {
         card.addEventListener('mouseenter', () => {
             card.style.transform = 'translateY(-10px) scale(1.02)';
-            const icon = card.querySelector('.highlight-icon');
-            if (icon) {
-                icon.style.transform = 'scale(1.15) rotate(5deg)';
-            }
-            
-            const value = card.querySelector('.highlight-value');
-            if (value) {
-                value.style.transform = 'scale(1.1)';
-            }
         });
         
         card.addEventListener('mouseleave', () => {
             card.style.transform = 'translateY(0) scale(1)';
-            const icon = card.querySelector('.highlight-icon');
-            if (icon) {
-                icon.style.transform = 'scale(1) rotate(0)';
-            }
-            
-            const value = card.querySelector('.highlight-value');
-            if (value) {
-                value.style.transform = 'scale(1)';
-            }
         });
     });
 }
@@ -395,20 +224,15 @@ function setupMobileOptimizations() {
     if (isMobile) {
         console.log('📱 Setting up mobile optimizations');
         
-        // Проверяем и включаем мобильное меню
-        checkAndEnableMobileMenu();
-        
         // Optimize touch interactions
         const filterBtns = document.querySelectorAll('.filter-btn');
         filterBtns.forEach(btn => {
             btn.addEventListener('touchstart', function() {
                 this.style.transform = 'scale(0.95)';
-                this.style.transition = 'transform 0.1s ease';
             });
             
             btn.addEventListener('touchend', function() {
                 this.style.transform = 'scale(1)';
-                this.style.transition = 'transform 0.3s ease';
             });
         });
         
@@ -419,79 +243,13 @@ function setupMobileOptimizations() {
     }
 }
 
-// Проверка и включение мобильного меню
-function checkAndEnableMobileMenu() {
-    const burgerBtn = document.querySelector('.burger-btn');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    
-    if (!burgerBtn) {
-        console.warn('⚠️ Burger button not found on mobile');
-        return;
-    }
-    
-    if (!mobileMenu) {
-        console.warn('⚠️ Mobile menu not found');
-        return;
-    }
-    
-    console.log('✅ Mobile menu elements found:', {
-        burgerBtn: burgerBtn,
-        mobileMenu: mobileMenu
-    });
-    
-    // Убедимся что меню правильно инициализировано
-    mobileMenu.style.display = 'flex';
-    mobileMenu.style.opacity = '0';
-    mobileMenu.style.visibility = 'hidden';
-    mobileMenu.style.transform = 'translateX(100%)';
-    
-    // Добавляем обработчик клика если его нет
-    if (!burgerBtn._portfolioMenuHandler) {
-        burgerBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            console.log('🍔 Portfolio page: Burger button clicked');
-            
-            const mobileMenu = document.querySelector('.mobile-menu');
-            if (!mobileMenu) return;
-            
-            const isOpen = mobileMenu.classList.contains('active');
-            console.log('📱 Mobile menu state:', isOpen ? 'OPEN' : 'CLOSED');
-            
-            if (isOpen) {
-                // Закрыть меню
-                this.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                this.setAttribute('aria-expanded', 'false');
-                this.setAttribute('aria-label', 'Открыть меню');
-                document.body.style.overflow = '';
-                document.documentElement.style.overflow = '';
-            } else {
-                // Открыть меню
-                this.classList.add('active');
-                mobileMenu.classList.add('active');
-                this.setAttribute('aria-expanded', 'true');
-                this.setAttribute('aria-label', 'Закрыть меню');
-                document.body.style.overflow = 'hidden';
-                document.documentElement.style.overflow = 'hidden';
-            }
-        });
-        
-        burgerBtn._portfolioMenuHandler = true;
-        console.log('✅ Added portfolio click handler to burger button');
-    }
-}
-
 // Resize handler
 let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
         console.log('🔄 Window resized, re-initializing portfolio...');
-        if (typeof initPortfolio === 'function') {
-            initPortfolio();
-        }
+        initPortfolio();
     }, 250);
 });
 
@@ -499,16 +257,20 @@ window.addEventListener('resize', () => {
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
-            if (typeof initPortfolio === 'function') initPortfolio();
+            initPortfolio();
+            // Вызываем фикс хедера с задержкой
+            setTimeout(fixPortfolioHeader, 1000);
         }, 500);
     });
 } else {
     setTimeout(() => {
-        if (typeof initPortfolio === 'function') initPortfolio();
+        initPortfolio();
+        // Вызываем фикс хедера с задержкой
+        setTimeout(fixPortfolioHeader, 1000);
     }, 500);
 }
 
 // Export functions
 window.initPortfolio = initPortfolio;
 
-console.log('✅ Portfolio script loaded successfully with mobile menu support');
+console.log('✅ Portfolio script loaded successfully');
