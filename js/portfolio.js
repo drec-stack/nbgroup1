@@ -1,3 +1,4 @@
+// portfolio.js - Full portfolio functionality with mobile menu support
 console.log('🎯 portfolio.js loaded - WITH FIXED HEADER CLICKABILITY');
 
 function initPortfolio() {
@@ -12,9 +13,6 @@ function initPortfolio() {
         }
     }
     
-    // КРИТИЧЕСКИЙ ФИКС: Восстановление кликабельности хедера
-    fixPortfolioHeader();
-    
     // Основная функциональность портфолио
     setupPortfolioFilter();
     setupProjectInteractions();
@@ -22,6 +20,11 @@ function initPortfolio() {
     setupScrollAnimations();
     setupHoverEffects();
     setupMobileOptimizations();
+    
+    // КРИТИЧЕСКИЙ ФИКС: Восстановление кликабельности хедера
+    setTimeout(() => {
+        fixPortfolioHeader();
+    }, 1000); // Даем время на загрузку компонентов
     
     console.log('✅ Portfolio page fully initialized');
 }
@@ -32,15 +35,23 @@ function fixPortfolioHeader() {
     
     const header = document.querySelector('.main-header');
     if (!header) {
-        console.warn('⚠️ Header not found for fixing');
+        console.warn('⚠️ Header not found, checking again in 500ms...');
         setTimeout(fixPortfolioHeader, 500);
         return;
     }
     
     // 1. Убираем все pointer-events блокировки
     header.style.pointerEvents = 'auto';
+    header.style.cursor = 'default';
     
     // 2. Гарантируем что все элементы внутри хедера кликабельны
+    const headerElements = header.querySelectorAll('*');
+    headerElements.forEach(el => {
+        el.style.pointerEvents = 'auto';
+        el.style.cursor = 'default';
+    });
+    
+    // 3. Особые стили для кликабельных элементов
     const clickableElements = header.querySelectorAll('a, button, .logo, .nav-link, .burger-btn, .lang-btn, .start-project-btn');
     clickableElements.forEach(el => {
         el.style.pointerEvents = 'auto';
@@ -49,32 +60,28 @@ function fixPortfolioHeader() {
         el.style.zIndex = '1001';
     });
     
-    // 3. Исправляем z-index иерархию
+    // 4. Фиксируем z-index иерархию
     header.style.zIndex = '1000';
     
-    // 4. Убираем класс который может добавляться дважды
-    if (document.body.classList.contains('portfolio-page')) {
-        // Класс уже есть в HTML, ничего не делаем
-    }
-    
-    // 5. Убираем возможные inline стили которые блокируют
-    header.style.opacity = '1';
-    header.style.visibility = 'visible';
-    header.style.display = 'flex';
+    // 5. Убираем возможные оверлеи
+    const overlays = document.querySelectorAll('.portfolio-hero::before, .portfolio-filter::before');
     
     // 6. Принудительно устанавливаем корректный фон
     header.style.background = 'rgba(10, 10, 20, 0.95)';
     header.style.backdropFilter = 'blur(30px) saturate(180%)';
     header.style.webkitBackdropFilter = 'blur(30px) saturate(180%)';
     
-    console.log('✅ Portfolio header fixed for clickability');
+    console.log('✅ Portfolio header fixed for clickability:', {
+        header: header,
+        clickableElements: clickableElements.length
+    });
     
     // 7. Проверяем через секунду еще раз
     setTimeout(() => {
         const computedStyle = getComputedStyle(header);
         if (computedStyle.pointerEvents === 'none') {
-            console.warn('⚠️ Header still has pointer-events: none, forcing fix...');
-            header.style.pointerEvents = 'auto';
+            console.warn('⚠️ Header still has pointer-events: none, applying emergency fix...');
+            header.style.pointerEvents = 'auto !important';
             header.style.cssText += 'pointer-events: auto !important;';
         }
     }, 1000);
