@@ -319,13 +319,14 @@
                 border-radius: 10px;
                 cursor: pointer;
                 padding: 0;
-                z-index: 10002;
+                z-index: 100000; /* УВЕЛИЧЕНО С 10002 */
                 transition: all 0.3s ease;
                 -webkit-tap-highlight-color: transparent;
                 min-width: 44px;
                 min-height: 44px;
                 touch-action: manipulation;
                 order: 2;
+                pointer-events: auto !important; /* ГАРАНТИРУЕМ кликабельность */
             }
             
             .burger-btn:hover {
@@ -361,6 +362,7 @@
             .burger-btn.active {
                 background: rgba(255, 255, 255, 0.2);
                 border-color: rgba(255, 255, 255, 0.4);
+                z-index: 99998; /* КОГДА МЕНЮ ОТКРЫТО - НИЖЕ МЕНЮ */
             }
             
             .burger-btn.active span:nth-child(1) {
@@ -580,12 +582,20 @@
                     // Закрыть меню
                     this.classList.remove('active');
                     mobileMenu.classList.remove('active');
+                    mobileMenu.style.pointerEvents = 'none';
+                    this.style.zIndex = '100000';
                     document.body.style.overflow = '';
+                    this.setAttribute('aria-expanded', 'false');
+                    this.setAttribute('aria-label', 'Открыть меню');
                 } else {
                     // Открыть меню
                     this.classList.add('active');
                     mobileMenu.classList.add('active');
+                    mobileMenu.style.pointerEvents = 'auto';
+                    this.style.zIndex = '99998'; // Ниже меню когда открыто
                     document.body.style.overflow = 'hidden';
+                    this.setAttribute('aria-expanded', 'true');
+                    this.setAttribute('aria-label', 'Закрыть меню');
                 }
                 
                 console.log('🍔 Burger clicked, menu is now:', isOpen ? 'closed' : 'open');
@@ -599,6 +609,8 @@
                         if (mobileMenu.classList.contains('active')) {
                             newBurgerBtn.classList.remove('active');
                             mobileMenu.classList.remove('active');
+                            mobileMenu.style.pointerEvents = 'none';
+                            newBurgerBtn.style.zIndex = '100000';
                             document.body.style.overflow = '';
                         }
                     }, 300);
@@ -612,6 +624,8 @@
                     !newBurgerBtn.contains(e.target)) {
                     newBurgerBtn.classList.remove('active');
                     mobileMenu.classList.remove('active');
+                    mobileMenu.style.pointerEvents = 'none';
+                    newBurgerBtn.style.zIndex = '100000';
                     document.body.style.overflow = '';
                 }
             });
@@ -621,6 +635,8 @@
                 if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
                     newBurgerBtn.classList.remove('active');
                     mobileMenu.classList.remove('active');
+                    mobileMenu.style.pointerEvents = 'none';
+                    newBurgerBtn.style.zIndex = '100000';
                     document.body.style.overflow = '';
                 }
             });
