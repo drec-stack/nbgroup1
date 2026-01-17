@@ -1,8 +1,11 @@
-// portfolio.js - Fixed and simplified version
-console.log('🎯 portfolio.js loaded - CLICKABLE FIX');
+// portfolio.js - Fully Fixed Version with Clickability Fixes
+console.log('🎯 portfolio.js loaded - CLICKABILITY FIXED');
 
 function initPortfolio() {
-    console.log('🎯 Initializing portfolio page...');
+    console.log('🎯 Initializing portfolio page with fixes...');
+    
+    // В первую очередь - фиксируем кликабельность
+    applyCriticalClickabilityFixes();
     
     // Основная функциональность портфолио
     setupPortfolioFilter();
@@ -15,6 +18,119 @@ function initPortfolio() {
     console.log('✅ Portfolio page fully initialized');
 }
 
+// КРИТИЧЕСКИЙ ФИКС ДЛЯ КЛИКАБЕЛЬНОСТИ
+function applyCriticalClickabilityFixes() {
+    console.log('🔧 Applying critical clickability fixes...');
+    
+    // 1. Убираем все возможные блокировки
+    const style = document.createElement('style');
+    style.id = 'clickability-critical-fix';
+    style.textContent = `
+        /* Важное: восстановление кликабельности */
+        body.portfolio-page {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Мобильное меню не блокирует клики когда закрыто */
+        .mobile-menu:not(.active) {
+            pointer-events: none !important;
+        }
+        
+        /* Мобильное меню блокирует контент когда открыто */
+        .mobile-menu.active {
+            pointer-events: auto !important;
+        }
+        
+        .mobile-menu.active ~ main,
+        .mobile-menu.active ~ * {
+            pointer-events: none !important;
+        }
+        
+        /* Бургер кнопка всегда кликабельна */
+        .burger-btn {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+            z-index: 10002 !important;
+        }
+        
+        /* Элементы мобильного меню всегда кликабельны */
+        .mobile-nav-link,
+        .mobile-lang-btn,
+        .mobile-header-btn {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+        }
+        
+        /* Элементы портфолио всегда кликабельны */
+        .portfolio-page .filter-btn,
+        .portfolio-page .project-link,
+        .portfolio-page .btn,
+        .portfolio-page a:not(.mobile-nav-link) {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+            position: relative;
+            z-index: 100 !important;
+        }
+        
+        /* Десктопная навигация скрыта на мобильных */
+        @media (max-width: 900px) {
+            .portfolio-page .main-nav {
+                display: none !important;
+            }
+        }
+        
+        /* Фикс для iOS */
+        @supports (-webkit-touch-callout: none) {
+            .portfolio-page * {
+                -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    `;
+    
+    // Удаляем старый стиль если есть
+    const oldStyle = document.getElementById('clickability-critical-fix');
+    if (oldStyle) oldStyle.remove();
+    
+    document.head.appendChild(style);
+    
+    // 2. Принудительно добавляем обработчики для бургер кнопки
+    const burgerBtn = document.querySelector('.burger-btn');
+    if (burgerBtn && !burgerBtn.hasAttribute('data-clickability-fixed')) {
+        burgerBtn.setAttribute('data-clickability-fixed', 'true');
+        
+        // Убедимся что кнопка видима и кликабельна
+        burgerBtn.style.cssText += `
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            cursor: pointer !important;
+            z-index: 10002 !important;
+        `;
+        
+        console.log('✅ Burger button clickability fixed');
+    }
+    
+    // 3. Восстанавливаем кликабельность всех элементов
+    setTimeout(() => {
+        const clickableElements = document.querySelectorAll(
+            'a, button, .btn, .filter-btn, .project-link, .lang-btn, .start-project-btn'
+        );
+        
+        clickableElements.forEach(el => {
+            if (el && !el.classList.contains('mobile-nav-link')) {
+                el.style.pointerEvents = 'auto';
+                el.style.cursor = 'pointer';
+            }
+        });
+        
+        console.log(`✅ ${clickableElements.length} elements clickability restored`);
+    }, 500);
+    
+    console.log('✅ Critical clickability fixes applied');
+}
+
 // Фиксация портфолио хедера (упрощенная версия)
 function fixPortfolioHeader() {
     console.log('🔧 Fixing portfolio header...');
@@ -22,13 +138,17 @@ function fixPortfolioHeader() {
     const header = document.querySelector('.main-header');
     if (!header) return;
     
-    // Простые исправления
-    header.style.cssText = 'pointer-events: auto; z-index: 1000; position: fixed;';
+    // Простые исправления для кликабельности
+    header.style.cssText = `
+        pointer-events: auto;
+        z-index: 1000;
+        position: fixed;
+    `;
     
-    // Гарантируем кликабельность элементов
+    // Гарантируем кликабельность элементов хедера
     const clickableElements = header.querySelectorAll('a, button, .logo, .nav-link, .burger-btn, .lang-btn, .start-project-btn');
     clickableElements.forEach(el => {
-        el.style.cssText = 'pointer-events: auto; cursor: pointer;';
+        el.style.cssText = 'pointer-events: auto; cursor: pointer; position: relative;';
     });
     
     console.log('✅ Portfolio header fixed');
@@ -43,6 +163,12 @@ function setupPortfolioFilter() {
     if (filterBtns.length === 0) return;
     
     console.log(`🎯 Setting up portfolio filter with ${filterBtns.length} buttons`);
+    
+    // Гарантируем кликабельность кнопок фильтра
+    filterBtns.forEach(btn => {
+        btn.style.pointerEvents = 'auto';
+        btn.style.cursor = 'pointer';
+    });
     
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -99,7 +225,11 @@ function setupProjectInteractions() {
     
     console.log(`🎴 Setting up interactions for ${projectCards.length} project cards`);
     
+    // Гарантируем кликабельность карточек проектов
     projectCards.forEach(card => {
+        card.style.pointerEvents = 'auto';
+        card.style.cursor = 'default';
+        
         // Enhanced hover effects for desktop
         if (!isMobile) {
             card.addEventListener('mouseenter', () => {
@@ -116,6 +246,9 @@ function setupProjectInteractions() {
         // Click handling for case study links
         const caseStudyLink = card.querySelector('.project-link');
         if (caseStudyLink) {
+            caseStudyLink.style.pointerEvents = 'auto';
+            caseStudyLink.style.cursor = 'pointer';
+            
             caseStudyLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 
@@ -240,6 +373,16 @@ function setupMobileOptimizations() {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.documentElement.classList.add('reduced-animations');
         }
+        
+        // Дополнительный фикс для мобильной навигации
+        setTimeout(() => {
+            const burgerBtn = document.querySelector('.burger-btn');
+            if (burgerBtn) {
+                burgerBtn.style.display = 'block';
+                burgerBtn.style.visibility = 'visible';
+                burgerBtn.style.opacity = '1';
+            }
+        }, 1000);
     }
 }
 
@@ -249,6 +392,7 @@ window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
         console.log('🔄 Window resized, re-initializing portfolio...');
+        applyCriticalClickabilityFixes();
         initPortfolio();
     }, 250);
 });
@@ -256,21 +400,36 @@ window.addEventListener('resize', () => {
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
+        console.log('📄 DOM Content Loaded, initializing portfolio...');
         setTimeout(() => {
             initPortfolio();
             // Вызываем фикс хедера с задержкой
             setTimeout(fixPortfolioHeader, 1000);
+            
+            // Дополнительная проверка через 3 секунды
+            setTimeout(applyCriticalClickabilityFixes, 3000);
         }, 500);
     });
 } else {
+    console.log('📄 DOM already ready, initializing portfolio...');
     setTimeout(() => {
         initPortfolio();
         // Вызываем фикс хедера с задержкой
         setTimeout(fixPortfolioHeader, 1000);
+        
+        // Дополнительная проверка через 3 секунды
+        setTimeout(applyCriticalClickabilityFixes, 3000);
     }, 500);
 }
 
 // Export functions
 window.initPortfolio = initPortfolio;
+window.applyCriticalClickabilityFixes = applyCriticalClickabilityFixes;
+
+// Глобальный обработчик для событий от компонентов
+window.addEventListener('componentsFullyLoaded', () => {
+    console.log('🎯 Components loaded, applying portfolio fixes...');
+    setTimeout(applyCriticalClickabilityFixes, 500);
+});
 
 console.log('✅ Portfolio script loaded successfully');
