@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded - FULLY FIXED MOBILE MENU VERSION');
+console.log('🚀 main.js loaded - FULLY FIXED MOBILE MENU VERSION - HEADER FIXED');
 
 class DaehaaApp {
     constructor() {
@@ -43,8 +43,8 @@ class DaehaaApp {
         this.setupLazyLoading();
         this.setupClickableElements();
         
-        // Настройка хедера
-        this.setupHeaderSupport();
+        // НАСТРОЙКА ХЕДЕРА - ИСПРАВЛЕНИЕ: Убрана функция setupHeaderSupport
+        // Хедер не будет меняться при скролле
         
         // Футер
         this.setupFooterSupport();
@@ -236,43 +236,8 @@ class DaehaaApp {
         }
     }
 
-    setupHeaderSupport() {
-        console.log('🔧 Setting up header support...');
-        
-        // Устанавливаем классы для body
-        if (this.isHomePage) {
-            document.body.classList.add('home-page');
-        } else {
-            document.body.classList.add('internal-page');
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            document.body.classList.add(`${currentPage.replace('.html', '')}-page`);
-        }
-        
-        // Простой скролл-эффект для хедера
-        const header = this.safeQuerySelector('.main-header');
-        if (header) {
-            const handleScroll = () => {
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-            };
-            
-            window.addEventListener('scroll', handleScroll, { passive: true });
-            handleScroll(); // начальное состояние
-        }
-        
-        // Инициализация навигации
-        this.setupCurrentPage();
-        
-        // Инициализация переключателя языка
-        this.setupLanguageSwitcherUI();
-        
-        // Настройка адаптивного переключателя языка
-        this.setupResponsiveLanguageSwitcher();
-    }
-
+    // ИСПРАВЛЕНИЕ: Убрана функция setupHeaderSupport, которая добавляла класс .scrolled
+    
     setupSmoothScroll() {
         this.safeQuerySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
