@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded - FULLY UPDATED');
+console.log('🚀 main.js loaded - FULLY UPDATED WITH BURGER MENU FIX');
 
 class DaehaaApp {
     constructor() {
@@ -374,7 +374,7 @@ class DaehaaApp {
     }
 }
 
-// ===== БУРГЕР МЕНЮ МЕНЕДЖЕР =====
+// ===== БУРГЕР МЕНЮ МЕНЕДЖЕР - ИСПРАВЛЕННЫЙ =====
 class BurgerMenuManager {
     constructor() {
         console.log('🍔 BurgerMenuManager created');
@@ -476,7 +476,10 @@ class BurgerMenuManager {
         this.mobileMenu.classList.add('active');
         this.burgerBtn.setAttribute('aria-expanded', 'true');
         this.burgerBtn.setAttribute('aria-label', 'Закрыть меню');
+        this.burgerBtn.style.zIndex = '99998'; // НИЖЕ МЕНЮ КОГДА ОНО ОТКРЫТО
+        this.mobileMenu.style.pointerEvents = 'auto';
         document.body.style.overflow = 'hidden';
+        document.body.classList.add('menu-open');
         document.documentElement.style.overflow = 'hidden';
     }
 
@@ -486,13 +489,18 @@ class BurgerMenuManager {
         this.mobileMenu.classList.remove('active');
         this.burgerBtn.setAttribute('aria-expanded', 'false');
         this.burgerBtn.setAttribute('aria-label', 'Открыть меню');
+        this.burgerBtn.style.zIndex = '100000'; // ВОЗВРАЩАЕМ ВЫСОКИЙ z-index
+        this.mobileMenu.style.pointerEvents = 'none';
         document.body.style.overflow = '';
+        document.body.classList.remove('menu-open');
         document.documentElement.style.overflow = '';
     }
 }
 
 // ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
 (function initializeApp() {
+    console.log('🚀 Starting app initialization...');
+    
     if (!window.DaehaaApp) {
         window.DaehaaApp = new DaehaaApp();
     }
@@ -502,6 +510,14 @@ class BurgerMenuManager {
     }
     
     console.log('🚀 All systems initialized');
+    
+    // Финальная гарантия инициализации бургер-меню
+    setTimeout(() => {
+        if (window.burgerMenuManager && !window.burgerMenuManager.isInitialized) {
+            console.log('🔄 Forcing burger menu initialization...');
+            window.burgerMenuManager.setupMenu();
+        }
+    }, 1000);
 })();
 
 // ===== ГЛОБАЛЬНЫЕ УТИЛИТЫ =====
@@ -551,6 +567,54 @@ window.toggleLanguage = function() {
         localStorage.setItem('preferredLang', newLang);
         window.updateLanguageSwitcher(newLang);
         location.reload();
+    }
+};
+
+// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ МОБИЛЬНОГО МЕНЮ =====
+window.openMobileMenu = function() {
+    if (window.burgerMenuManager) {
+        window.burgerMenuManager.openMenu();
+    } else {
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const burgerBtn = document.querySelector('.burger-btn');
+        if (mobileMenu && burgerBtn) {
+            burgerBtn.classList.add('active');
+            mobileMenu.classList.add('active');
+            mobileMenu.style.pointerEvents = 'auto';
+            burgerBtn.style.zIndex = '99998';
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('menu-open');
+        }
+    }
+};
+
+window.closeMobileMenu = function() {
+    if (window.burgerMenuManager) {
+        window.burgerMenuManager.closeMenu();
+    } else {
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const burgerBtn = document.querySelector('.burger-btn');
+        if (mobileMenu && burgerBtn) {
+            burgerBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileMenu.style.pointerEvents = 'none';
+            burgerBtn.style.zIndex = '100000';
+            document.body.style.overflow = '';
+            document.body.classList.remove('menu-open');
+        }
+    }
+};
+
+window.toggleMobileMenu = function() {
+    if (window.burgerMenuManager) {
+        window.burgerMenuManager.toggleMenu();
+    } else {
+        const mobileMenu = document.querySelector('.mobile-menu');
+        if (mobileMenu && mobileMenu.classList.contains('active')) {
+            window.closeMobileMenu();
+        } else {
+            window.openMobileMenu();
+        }
     }
 };
 
@@ -605,6 +669,25 @@ if (window.location.hostname === 'localhost' ||
         console.log('Burger btn:', document.querySelector('.burger-btn'));
         console.log('Mobile menu:', document.querySelector('.mobile-menu'));
     };
+    
+    window.debugZIndex = function() {
+        console.log('🔍 Debug z-index:');
+        const burgerBtn = document.querySelector('.burger-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const header = document.querySelector('.main-header');
+        
+        if (burgerBtn) {
+            console.log('Burger btn z-index:', window.getComputedStyle(burgerBtn).zIndex);
+            console.log('Burger btn actual z-index:', burgerBtn.style.zIndex);
+        }
+        if (mobileMenu) {
+            console.log('Mobile menu z-index:', window.getComputedStyle(mobileMenu).zIndex);
+            console.log('Mobile menu actual z-index:', mobileMenu.style.zIndex);
+        }
+        if (header) {
+            console.log('Header z-index:', window.getComputedStyle(header).zIndex);
+        }
+    };
 }
 
 // ===== ПОСЛЕДНИЙ ШАГ - ГАРАНТИРОВАННАЯ ИНИЦИАЛИЗАЦИЯ =====
@@ -622,4 +705,40 @@ window.addEventListener('load', function() {
     if (window.DaehaaApp) {
         window.DaehaaApp.setupCurrentPage();
     }
+    
+    // Добавляем класс для отладки
+    document.body.classList.add('page-loaded');
 });
+
+// ===== ОБРАБОТКА СОБЫТИЙ КОМПОНЕНТОВ =====
+window.addEventListener('componentsLoaded', function() {
+    console.log('🎉 Компоненты загружены, переинициализируем меню');
+    
+    setTimeout(() => {
+        if (window.burgerMenuManager) {
+            window.burgerMenuManager.setupMenu();
+        }
+        
+        if (window.DaehaaApp) {
+            window.DaehaaApp.setupCurrentPage();
+            window.DaehaaApp.setupLanguageSwitcherUI();
+        }
+    }, 300);
+});
+
+// Экспорт для глобального использования
+window.Daehaa = {
+    App: window.DaehaaApp,
+    BurgerMenu: window.burgerMenuManager,
+    utils: {
+        debounce: window.debounce,
+        throttle: window.throttle
+    },
+    functions: {
+        openMobileMenu: window.openMobileMenu,
+        closeMobileMenu: window.closeMobileMenu,
+        toggleMobileMenu: window.toggleMobileMenu,
+        getCurrentLanguage: window.getCurrentLanguage,
+        toggleLanguage: window.toggleLanguage
+    }
+};
