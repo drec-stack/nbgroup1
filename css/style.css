@@ -49,6 +49,12 @@ body {
     -moz-osx-font-smoothing: grayscale;
     padding-top: 80px;
     min-height: 100vh;
+    transition: padding-top 0.3s ease;
+}
+
+body.menu-open {
+    overflow: hidden !important;
+    height: 100vh !important;
 }
 
 .container {
@@ -217,6 +223,7 @@ body.brandbook-page .main-header.scrolled {
     padding: 8px 16px;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
 }
 
 .nav-link:hover,
@@ -467,6 +474,7 @@ body.brandbook-page .main-header.scrolled {
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
         padding: 12px 0 !important;
         margin: 0 !important;
+        z-index: 1000 !important;
     }
     
     /* scrolled состояние для мобильных */
@@ -520,6 +528,7 @@ body.brandbook-page .main-header.scrolled {
         min-width: 0;
         max-width: none;
         flex: 1;
+        z-index: 100001 !important; /* ВЫШЕ БУРГЕРА */
     }
     
     .logo-mark {
@@ -551,6 +560,7 @@ body.brandbook-page .main-header.scrolled {
         flex-shrink: 0;
         order: 3;
         margin-left: auto;
+        z-index: 100002 !important; /* ВЫШЕ ЛОГОТИПА */
     }
     
     /* ===== БУРГЕР КНОПКА ===== */
@@ -562,15 +572,16 @@ body.brandbook-page .main-header.scrolled {
         background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 10px;
-        cursor: pointer;
+        cursor: pointer !important;
         padding: 0;
-        z-index: 1002;
+        z-index: 100000 !important; /* ВЫСОКИЙ z-index */
         transition: var(--transition);
         -webkit-tap-highlight-color: transparent;
         min-width: 44px;
         min-height: 44px;
         touch-action: manipulation;
         order: 2;
+        pointer-events: auto !important; /* ГАРАНТИРУЕМ КЛИКАБЕЛЬНОСТЬ */
     }
     
     .burger-btn:hover {
@@ -606,6 +617,7 @@ body.brandbook-page .main-header.scrolled {
     .burger-btn.active {
         background: rgba(255, 255, 255, 0.2);
         border-color: rgba(255, 255, 255, 0.4);
+        z-index: 99998 !important; /* КОГДА МЕНЮ ОТКРЫТО - НИЖЕ МЕНЮ */
     }
     
     .burger-btn.active span:nth-child(1) {
@@ -629,6 +641,7 @@ body.brandbook-page .main-header.scrolled {
         height: 44px !important;
         padding: 4px !important;
         order: 1; /* Переключатель языка слева от бургера */
+        z-index: 100001 !important; /* ВЫШЕ БУРГЕРА */
     }
     
     .language-switcher.mobile-only-flags .lang-slider {
@@ -643,6 +656,7 @@ body.brandbook-page .main-header.scrolled {
         padding: 0 12px !important;
         gap: 0 !important;
         min-height: 36px;
+        cursor: pointer !important;
     }
     
     .language-switcher.mobile-only-flags .lang-flag {
@@ -818,6 +832,71 @@ body.brandbook-page .main-header.scrolled {
     }
 }
 
+/* ===== МОБИЛЬНОЕ МЕНЮ - ИСПРАВЛЕНИЯ ===== */
+#mobile-menu-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99990;
+    pointer-events: none;
+}
+
+.mobile-menu {
+    z-index: 99999 !important; /* САМОЕ ВЫСОКОЕ */
+    pointer-events: none !important;
+}
+
+.mobile-menu.active {
+    pointer-events: auto !important;
+    z-index: 99999 !important;
+}
+
+/* Гарантируем что элементы внутри меню кликабельны */
+.mobile-menu.active * {
+    pointer-events: auto !important;
+}
+
+/* Когда меню открыто - блокируем основной контент */
+body.menu-open main,
+body.menu-open .container:not(#mobile-menu-container),
+body.menu-open .hero,
+body.menu-open .section {
+    pointer-events: none !important;
+    user-select: none !important;
+}
+
+/* Гарантируем что бургер кнопка всегда кликабельна */
+.burger-btn,
+.burger-btn * {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* Улучшенные стили для элементов мобильного меню */
+.mobile-nav-link,
+.mobile-lang-btn,
+.mobile-header-btn {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+/* Анимация открытия/закрытия меню */
+.mobile-menu {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                pointer-events 0.4s step-end !important;
+}
+
+.mobile-menu.active {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                pointer-events 0.4s step-start !important;
+}
+
 /* ===== FOOTER ===== */
 .main-footer {
     background: rgba(0, 0, 0, 0.6);
@@ -906,6 +985,7 @@ body.brandbook-page .main-header.scrolled {
     border: 1px solid rgba(255, 255, 255, 0.2);
     font-size: 18px;
     backdrop-filter: blur(10px);
+    cursor: pointer;
 }
 
 .social-link:hover {
@@ -946,6 +1026,7 @@ body.brandbook-page .main-header.scrolled {
     display: block;
     border-radius: 5px;
     font-size: 14px;
+    cursor: pointer;
 }
 
 .footer-links a:hover {
@@ -990,6 +1071,7 @@ body.brandbook-page .main-header.scrolled {
     border: 1px solid rgba(255, 255, 255, 0.15);
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
+    cursor: pointer;
 }
 
 .messenger-contact:hover {
@@ -1031,6 +1113,7 @@ body.brandbook-page .main-header.scrolled {
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 14px;
+    cursor: pointer;
 }
 
 .footer-legal a:hover {
@@ -1106,6 +1189,7 @@ body.brandbook-page .main-header.scrolled {
     border-radius: 15px;
     padding: 2rem;
     transition: var(--transition);
+    cursor: pointer;
 }
 
 .card:hover {
@@ -1174,6 +1258,7 @@ body.brandbook-page .main-header.scrolled {
     color: white;
     font-size: 16px;
     transition: var(--transition);
+    cursor: text;
 }
 
 .form-control:focus {
@@ -1218,6 +1303,7 @@ a {
     color: var(--light-blue);
     text-decoration: none;
     transition: var(--transition);
+    cursor: pointer;
 }
 
 a:hover {
@@ -1351,6 +1437,7 @@ li {
     padding: 10px 0;
     position: relative;
     transition: var(--transition);
+    cursor: pointer;
 }
 
 .services-navigation .nav-item:hover,
@@ -1696,11 +1783,6 @@ body::before {
     min-height: 1px;
 }
 
-/* Гарантируем что мобильное меню будет поверх всего */
-.mobile-menu {
-    z-index: 9999 !important;
-}
-
 /* Фикс для кнопки бургера в процессе загрузки */
 .burger-btn.loading {
     opacity: 0.7;
@@ -1728,10 +1810,6 @@ body::before {
 @media (max-width: 900px) {
     .main-header .header-inner {
         min-height: 60px;
-    }
-    
-    .burger-btn {
-        position: relative !important;
     }
     
     /* Гарантируем что бургер кнопка видна */
@@ -1844,103 +1922,93 @@ body.portfolio-page {
     z-index: 1;
 }
 
-/* Фикс для z-index в мобильном меню */
-@media (max-width: 900px) {
-    .mobile-menu {
-        z-index: 9999 !important;
-    }
-    
-    .burger-btn {
-        z-index: 10000 !important;
-    }
-}
-
 /* Гарантируем загрузку всех компонентов */
 body::after {
     content: 'components-loaded';
     display: none;
 }
 
-/* ===== КРИТИЧЕСКИЕ ИСПРАВЛЕНИЯ ДЛЯ СТРАНИЦЫ ПОРТФОЛИО ===== */
+/* ===== КРИТИЧЕСКИЕ ИСПРАВЛЕНИЯ ДЛЯ МОБИЛЬНОГО МЕНЮ ===== */
 
-/* 1. Гарантируем что страница портфолио всегда кликабельна */
-body.portfolio-page {
+/* 1. Гарантируем что страница всегда кликабельна */
+body {
     position: relative;
     z-index: 1;
     overflow-x: hidden;
     pointer-events: auto !important;
 }
 
-/* 3. Когда меню открыто - контент под ним не кликабелен */
-body.portfolio-page .mobile-menu.active ~ main,
-body.portfolio-page .mobile-menu.active ~ #main-content,
-body.portfolio-page .mobile-menu.active ~ .container {
+/* 2. Когда меню открыто - контент под ним не кликабелен */
+body.menu-open main,
+body.menu-open .container:not(#mobile-menu-container),
+body.menu-open .hero,
+body.menu-open .section,
+body.menu-open .footer {
     pointer-events: none !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
-/* 4. Бургер кнопка всегда кликабельна на портфолио */
-body.portfolio-page .burger-btn {
+/* 3. Бургер кнопка всегда кликабельна */
+.burger-btn {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
     cursor: pointer !important;
-    z-index: 10002 !important;
+    z-index: 100000 !important;
 }
 
-/* 5. Элементы мобильного меню всегда кликабельны */
-body.portfolio-page .mobile-nav-link,
-body.portfolio-page .mobile-lang-btn,
-body.portfolio-page .mobile-header-btn {
+.burger-btn.active {
+    z-index: 99998 !important;
+}
+
+/* 4. Элементы мобильного меню всегда кликабельны */
+.mobile-nav-link,
+.mobile-lang-btn,
+.mobile-header-btn {
     pointer-events: auto !important;
     cursor: pointer !important;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* 6. Все элементы портфолио кликабельны */
-body.portfolio-page .filter-btn,
-body.portfolio-page .project-link,
-body.portfolio-page .btn,
-body.portfolio-page a:not(.mobile-nav-link) {
+/* 5. Все элементы страницы кликабельны */
+.filter-btn,
+.project-link,
+.btn,
+a:not(.mobile-nav-link) {
     pointer-events: auto !important;
     cursor: pointer !important;
     position: relative;
     z-index: 100 !important;
 }
 
-/* 7. Десктопная навигация скрыта на мобильных на портфолио */
+/* 6. Десктопная навигация скрыта на мобильных */
 @media (max-width: 900px) {
-    body.portfolio-page .main-nav {
+    .main-nav {
         display: none !important;
     }
     
     /* Гарантируем что мобильные элементы видны */
-    body.portfolio-page .header-right-mobile {
+    .header-right-mobile {
         display: flex !important;
         opacity: 1 !important;
         visibility: visible !important;
+        z-index: 100002 !important;
     }
     
-    body.portfolio-page .burger-btn {
+    .burger-btn {
         display: block !important;
         opacity: 1 !important;
         visibility: visible !important;
     }
-}
-
-/* 8. ПРАВИЛЬНЫЙ ПРОЗРАЧНЫЙ ХЕДЕР ДЛЯ ПОРТФОЛИО */
-/* Теперь хедер для портфолио такой же как для всех страниц */
-
-/* 9. Правильный отступ для контента на портфолио */
-body.portfolio-page {
-    padding-top: 80px !important;
-}
-
-@media (max-width: 900px) {
-    body.portfolio-page {
+    
+    /* Правильный отступ для контента на мобильных */
+    body {
         padding-top: 60px !important;
     }
     
-    body.portfolio-page .main-header {
+    body .main-header {
         top: 0 !important;
         left: 0 !important;
         transform: none !important;
@@ -1949,170 +2017,260 @@ body.portfolio-page {
     }
 }
 
-/* 10. Фикс для переключателя языка */
-body.portfolio-page .language-switcher {
+/* 7. Правильный отступ для контента */
+body {
+    padding-top: 80px !important;
+}
+
+@media (max-width: 900px) {
+    body {
+        padding-top: 60px !important;
+    }
+}
+
+/* 8. Фикс для переключателя языка */
+.language-switcher {
     pointer-events: auto !important;
 }
 
-body.portfolio-page .lang-btn {
+.lang-btn {
     cursor: pointer !important;
 }
 
-/* 11. Фикс для iOS Safari */
+/* 9. Фикс для iOS Safari */
 @supports (-webkit-touch-callout: none) {
-    body.portfolio-page .burger-btn:active {
+    .burger-btn:active {
         opacity: 0.7;
         background-color: rgba(255, 255, 255, 0.2) !important;
     }
     
-    body.portfolio-page .mobile-menu {
+    .mobile-menu {
         -webkit-overflow-scrolling: touch;
+    }
+    
+    .mobile-nav-link:active,
+    .mobile-lang-btn:active,
+    .mobile-header-btn:active {
+        background-color: rgba(255, 255, 255, 0.15) !important;
     }
 }
 
-/* 12. Убираем возможные перекрывающие псевдоэлементы */
-body.portfolio-page::before,
-body.portfolio-page::after,
-body.portfolio-page .portfolio-hero::before,
-body.portfolio-page .portfolio-filter::before {
+/* 10. Убираем возможные перекрывающие псевдоэлементы */
+body::before,
+body::after,
+.hero::before,
+.section::before {
     pointer-events: none !important;
     z-index: 1 !important;
 }
 
-/* 13. Финальное исправление - гарантируем работоспособность */
-@media (max-width: 900px) {
-    body.portfolio-page #mobile-menu-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        z-index: 9998;
-        pointer-events: none;
-    }
-    
-    body.portfolio-page #mobile-menu-container .mobile-menu {
-        pointer-events: none;
-    }
-    
-    body.portfolio-page #mobile-menu-container .mobile-menu.active {
-        pointer-events: auto;
-    }
-    
-    /* Гарантируем что бургер кнопка работает */
-    body.portfolio-page .burger-btn {
-        z-index: 10003 !important;
-    }
-}
-
-/* 14. ФИНАЛЬНЫЙ ФИКС - ВОССТАНОВЛЕНИЕ КЛИКАБЕЛЬНОСТИ */
+/* 11. ФИНАЛЬНЫЙ ФИКС - ВОССТАНОВЛЕНИЕ КЛИКАБЕЛЬНОСТИ */
 /* Принудительное восстановление pointer-events для всех элементов */
-body.portfolio-page * {
+body * {
     pointer-events: auto !important;
 }
 
 /* Исключение: мобильное меню когда не активно */
-body.portfolio-page .mobile-menu:not(.active) * {
+.mobile-menu:not(.active) * {
     pointer-events: none !important;
 }
 
 /* Исключение: когда меню активно - блокируем основной контент */
-body.portfolio-page .mobile-menu.active ~ main *,
-body.portfolio-page .mobile-menu.active ~ #main-content * {
+body.menu-open main *,
+body.menu-open .container:not(#mobile-menu-container) *,
+body.menu-open .hero *,
+body.menu-open .section * {
     pointer-events: none !important;
 }
 
 /* Бургер кнопка всегда должна быть кликабельной */
-body.portfolio-page .burger-btn,
-body.portfolio-page .burger-btn * {
+.burger-btn * {
     pointer-events: auto !important;
     cursor: pointer !important;
 }
 
-/* 15. Гарантируем правильное отображение для десктопа */
+/* 12. Гарантируем правильное отображение для десктопа */
 @media (min-width: 901px) {
-    body.portfolio-page .mobile-menu {
+    .mobile-menu {
         display: none !important;
     }
     
-    body.portfolio-page .main-nav {
+    .main-nav {
         display: flex !important;
     }
     
-    body.portfolio-page .header-right-mobile {
+    .header-right-mobile {
         display: none !important;
     }
 }
 
-/* 16. Для мобильных - скрываем десктопную навигацию */
+/* 13. Для мобильных - скрываем десктопную навигацию */
 @media (max-width: 900px) {
-    body.portfolio-page .main-nav,
-    body.portfolio-page .header-actions,
-    body.portfolio-page .header-right-desktop {
+    .main-nav,
+    .header-actions,
+    .header-right-desktop {
         display: none !important;
     }
     
-    body.portfolio-page .header-right-mobile {
+    .header-right-mobile {
         display: flex !important;
     }
 }
 
-/* 17. Финальное гарантийное исправление */
-body.portfolio-page .clickable-element {
+/* 14. Финальное гарантийное исправление */
+.clickable-element {
     cursor: pointer !important;
     pointer-events: auto !important;
     position: relative;
     z-index: 10 !important;
 }
 
-/* 18. Убираем все возможные перекрытия */
-body.portfolio-page .mobile-menu-overlay,
-body.portfolio-page .menu-overlay {
+/* 15. Убираем все возможные перекрытия */
+.mobile-menu-overlay,
+.menu-overlay {
     display: none !important;
 }
 
-/* 19. ФИКС: Убеждаемся что хедер портфолио выглядит как на других страницах */
-body.portfolio-page .main-header {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(30px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-}
-
-body.portfolio-page .main-header.scrolled {
-    background: rgba(255, 255, 255, 0.12) !important;
-    backdrop-filter: blur(35px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
-    box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-}
-
-/* На мобильных тоже прозрачный */
-@media (max-width: 900px) {
-    body.portfolio-page .main-header {
-        background: rgba(255, 255, 255, 0.08) !important;
-        backdrop-filter: blur(30px) !important;
-        -webkit-backdrop-filter: blur(30px) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    body.portfolio-page .main-header.scrolled {
-        background: rgba(255, 255, 255, 0.12) !important;
-        backdrop-filter: blur(35px) !important;
-        -webkit-backdrop-filter: blur(35px) !important;
-    }
-}
-
-/* 20. Улучшаем видимость элементов на прозрачном фоне */
-body.portfolio-page .nav-link,
-body.portfolio-page .language-switcher,
-body.portfolio-page .btn-primary,
-body.portfolio-page .logo-text,
-body.portfolio-page .logo-mark {
+/* 16. Улучшаем видимость элементов на прозрачном фоне */
+.nav-link,
+.language-switcher,
+.btn-primary,
+.logo-text,
+.logo-mark {
     opacity: 1 !important;
     visibility: visible !important;
 }
+
+/* 17. ИСПРАВЛЕНИЕ ДЛЯ ВСЕХ СТРАНИЦ - ПРОЗРАЧНЫЙ ХЕДЕР */
+/* Теперь хедер для всех страниц одинаковый */
+
+/* 18. ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+@media (max-width: 900px) and (hover: none) and (pointer: coarse) {
+    .burger-btn {
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+    
+    .mobile-nav-link,
+    .mobile-lang-btn,
+    .mobile-header-btn {
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+    
+    /* Улучшаем отзывчивость на касания */
+    .mobile-nav-link:active,
+    .mobile-lang-btn:active,
+    .mobile-header-btn:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+}
+
+/* 19. ФИКС ДЛЯ КОНТЕЙНЕРА МОБИЛЬНОГО МЕНЮ */
+#mobile-menu-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99990;
+    pointer-events: none;
+}
+
+#mobile-menu-container .mobile-menu {
+    pointer-events: none;
+}
+
+#mobile-menu-container .mobile-menu.active {
+    pointer-events: auto;
+}
+
+/* 20. ОКОНЧАТЕЛЬНЫЙ ФИКС - ОЧИСТКА СТИЛЕЙ */
+@media (max-width: 900px) {
+    /* Убираем все лишние стили которые могут мешать */
+    .main-header * {
+        box-sizing: border-box !important;
+    }
+    
+    .burger-btn {
+        all: unset;
+        display: block !important;
+        width: 44px;
+        height: 44px;
+        position: relative;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        cursor: pointer !important;
+        padding: 0;
+        z-index: 100000 !important;
+        transition: all 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
+        order: 2;
+        pointer-events: auto !important;
+    }
+    
+    .burger-btn span {
+        display: block;
+        position: absolute;
+        width: 20px;
+        height: 2px;
+        background: white;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .burger-btn span:nth-child(1) {
+        top: 15px;
+    }
+    
+    .burger-btn span:nth-child(2) {
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .burger-btn span:nth-child(3) {
+        bottom: 15px;
+    }
+    
+    .burger-btn.active {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+        z-index: 99998 !important;
+    }
+    
+    .burger-btn.active span:nth-child(1) {
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+    
+    .burger-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .burger-btn.active span:nth-child(3) {
+        bottom: 50%;
+        transform: translate(-50%, 50%) rotate(-45deg);
+    }
+}
+
+/* 21. ДЕБАГ СТИЛИ - ТОЛЬКО ДЛЯ РАЗРАБОТКИ */
+.debug-border {
+    border: 1px solid red !important;
+}
+
+.debug-zindex {
+    position: relative;
+    z-index: 999999 !important;
+    background: rgba(255, 0, 0, 0.1) !important;
+}
+
+/* 22. ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ - ПРОСТАЯ РАБОТА БУРГЕР-МЕНЮ */
+/* Все проблемы решены в предыдущих стилях */
