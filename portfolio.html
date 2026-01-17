@@ -17,134 +17,6 @@
     <script src="js/main.js" defer></script>
     <script src="js/animations.js" defer></script>
     <script src="js/portfolio.js" defer></script>
-    
-    <style>
-        /* КРИТИЧЕСКИЙ ФИКС ДЛЯ ХЕДЕРА НА ПОРТФОЛИО */
-        body.portfolio-page .main-header,
-        body.portfolio-page .main-header * {
-            pointer-events: auto !important;
-        }
-        
-        body.portfolio-page .main-header a,
-        body.portfolio-page .main-header button,
-        body.portfolio-page .main-header .logo,
-        body.portfolio-page .main-header .nav-link,
-        body.portfolio-page .main-header .burger-btn,
-        body.portfolio-page .main-header .lang-btn,
-        body.portfolio-page .main-header .start-project-btn {
-            cursor: pointer !important;
-            pointer-events: auto !important;
-        }
-        
-        /* Дополнительные стили для страницы портфолио */
-        .portfolio-page {
-            background: #0a0a0a;
-            color: white;
-            min-height: 100vh;
-        }
-        
-        .portfolio-hero {
-            padding: 120px 0 60px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .portfolio-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(0, 102, 255, 0.1) 0%, transparent 70%);
-            z-index: -1;
-        }
-        
-        .portfolio-hero-content {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .page-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeInUp 0.8s ease;
-        }
-        
-        .page-subtitle {
-            font-size: 1.3rem;
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            animation: fadeInUp 0.8s ease 0.2s both;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Стили для мобильного меню на странице портфолио */
-        .portfolio-page .mobile-menu {
-            background: rgba(10, 10, 20, 0.98) !important;
-        }
-        
-        .portfolio-page .burger-btn {
-            z-index: 1002;
-        }
-        
-        /* Фикс для хедера на странице портфолио */
-        .portfolio-page .main-header {
-            background: rgba(10, 10, 20, 0.95) !important;
-            pointer-events: auto !important;
-        }
-        
-        .portfolio-page .main-header.scrolled {
-            background: rgba(10, 10, 20, 0.98) !important;
-            pointer-events: auto !important;
-        }
-        
-        @media (max-width: 900px) {
-            .portfolio-hero {
-                padding: 100px 0 40px;
-            }
-            
-            .page-title {
-                font-size: 2.5rem;
-            }
-            
-            .page-subtitle {
-                font-size: 1.1rem;
-                padding: 0 20px;
-            }
-            
-            .portfolio-page {
-                padding-top: 60px !important;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .page-title {
-                font-size: 2rem;
-            }
-            
-            .page-subtitle {
-                font-size: 1rem;
-            }
-        }
-    </style>
 </head>
 <body class="portfolio-page">
     <!-- Header Container -->
@@ -524,65 +396,53 @@
     <div id="footer-container"></div>
 
     <script>
-        // КРИТИЧЕСКИЙ ФИКС ДЛЯ ХЕДЕРА НА ПОРТФОЛИО
+        // Экстренный фикс для восстановления кликабельности
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚨 EMERGENCY FIX: Initializing portfolio header fix...');
+            console.log('🔧 Emergency fix: Restoring clickability...');
             
-            // Функция для экстренного исправления хедера
-            function emergencyHeaderFix() {
-                const header = document.querySelector('.main-header');
-                if (!header) {
-                    console.log('⏳ Header not found yet, waiting...');
-                    setTimeout(emergencyHeaderFix, 500);
-                    return;
-                }
-                
-                console.log('🚨 EMERGENCY FIX: Found header, applying fixes...');
-                
-                // Принудительно убираем все блокировки
-                header.style.cssText += 'pointer-events: auto !important; cursor: default !important; z-index: 1000 !important;';
-                
-                // Исправляем все элементы внутри хедера
-                const allElements = header.querySelectorAll('*');
-                allElements.forEach(el => {
-                    el.style.pointerEvents = 'auto';
-                    el.style.cursor = 'default';
-                });
-                
-                // Особые стили для кликабельных элементов
-                const clickable = header.querySelectorAll('a, button, .logo, .nav-link, .burger-btn, .lang-btn, .start-project-btn');
-                clickable.forEach(el => {
-                    el.style.cssText += 'pointer-events: auto !important; cursor: pointer !important; position: relative !important; z-index: 1001 !important;';
+            // Ждем загрузки всех компонентов
+            setTimeout(function() {
+                // Убираем все pointer-events блокировки
+                const style = document.createElement('style');
+                style.textContent = `
+                    /* Экстренный фикс для кликабельности */
+                    .portfolio-page,
+                    .portfolio-page * {
+                        pointer-events: auto !important;
+                    }
                     
-                    // Добавляем диагностику кликов
-                    el.addEventListener('click', function(e) {
-                        console.log('✅ EMERGENCY FIX: Header element clicked!', this.tagName, this.className);
-                    });
-                });
+                    /* Восстанавливаем курсоры */
+                    .portfolio-page a,
+                    .portfolio-page button,
+                    .portfolio-page .btn,
+                    .portfolio-page .filter-btn,
+                    .portfolio-page .project-link,
+                    .portfolio-page .nav-link,
+                    .portfolio-page .burger-btn,
+                    .portfolio-page .lang-btn {
+                        cursor: pointer !important;
+                    }
+                    
+                    /* Фикс для z-index иерархии */
+                    .portfolio-page .main-header {
+                        z-index: 1000 !important;
+                    }
+                    
+                    .portfolio-page main {
+                        position: relative;
+                        z-index: 1;
+                    }
+                    
+                    /* Убираем возможные перекрывающие элементы */
+                    .portfolio-page .portfolio-hero::before,
+                    .portfolio-page .portfolio-filter::before {
+                        pointer-events: none !important;
+                    }
+                `;
+                document.head.appendChild(style);
                 
-                console.log('✅ EMERGENCY FIX: Header should be clickable now');
-            }
-            
-            // Запускаем немедленно
-            emergencyHeaderFix();
-            
-            // Повторяем через 1 секунду
-            setTimeout(emergencyHeaderFix, 1000);
-            
-            // Повторяем через 3 секунды
-            setTimeout(emergencyHeaderFix, 3000);
-            
-            // Слушаем событие загрузки компонентов
-            window.addEventListener('componentsFullyLoaded', function() {
-                console.log('🚨 EMERGENCY FIX: Components loaded, applying final fix...');
-                setTimeout(emergencyHeaderFix, 100);
-            });
-            
-            // Абсолютный фикс на всякий случай
-            window.addEventListener('load', function() {
-                console.log('🚨 ABSOLUTE FIX: Window loaded, final header fix...');
-                setTimeout(emergencyHeaderFix, 500);
-            });
+                console.log('✅ Emergency fix applied');
+            }, 1000);
         });
     </script>
 </body>
