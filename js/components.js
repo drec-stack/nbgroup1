@@ -1,4 +1,4 @@
-console.log('🔧 components.js loaded - COMPLETE FIXED VERSION');
+console.log('🔧 components.js loaded - FIXED MOBILE MENU VERSION');
 
 class ComponentLoader {
     constructor() {
@@ -10,8 +10,6 @@ class ComponentLoader {
         ];
         this.loadedComponents = 0;
         this.totalComponents = this.componentsToLoad.length;
-        this.retryCount = 0;
-        this.maxRetries = 3;
         
         console.log(`📊 Will load ${this.totalComponents} components`);
         
@@ -46,7 +44,7 @@ class ComponentLoader {
                 console.warn(`⚠️ Some components failed to load (${this.loadedComponents}/${this.totalComponents})`);
                 this.finalizeLoading();
             }
-        }, 8000);
+        }, 5000);
     }
 
     loadComponent(component) {
@@ -86,13 +84,10 @@ class ComponentLoader {
             .catch(error => {
                 console.error(`❌ Failed to load ${component.file}:`, error.message);
                 
-                // Показываем запасной контент для важных компонентов
+                // Показываем запасной контент
                 if (component.id === 'header-container') {
                     container.innerHTML = this.getFallbackHeader();
                     console.log('📱 Using fallback header');
-                } else if (component.id === 'footer-container') {
-                    container.innerHTML = this.getFallbackFooter();
-                    console.log('🦶 Using fallback footer');
                 }
                 
                 this.loadedComponents++;
@@ -136,9 +131,6 @@ class ComponentLoader {
         
         // Даем время скриптам выполниться
         setTimeout(() => {
-            // Настройка мобильного меню
-            this.setupMobileMenu();
-            
             // Отправляем событие о завершении загрузки компонентов
             const event = new CustomEvent('componentsFullyLoaded', {
                 detail: {
@@ -149,19 +141,16 @@ class ComponentLoader {
             });
             window.dispatchEvent(event);
             
-            // Запускаем дополнительную проверку мобильного меню
-            if (window.DaehaaApp && typeof window.DaehaaApp.checkAndFixMobileMenu === 'function') {
-                setTimeout(() => {
-                    window.DaehaaApp.checkAndFixMobileMenu();
-                }, 300);
-            }
-            
             console.log('✅ components.js полностью загружен и инициализирован');
+            
+            // Инициализируем мобильное меню сразу после загрузки
+            this.initializeMobileMenu();
         }, 500);
     }
 
-    setupMobileMenu() {
-        console.log('📱 Настройка мобильного меню после загрузки компонентов');
+    // ФИКС: ПРОСТАЯ ИНИЦИАЛИЗАЦИЯ МОБИЛЬНОГО МЕНЮ
+    initializeMobileMenu() {
+        console.log('📱 Инициализация мобильного меню...');
         
         const burgerBtn = document.querySelector('.burger-btn');
         const mobileMenu = document.querySelector('.mobile-menu');
@@ -178,64 +167,51 @@ class ComponentLoader {
         
         console.log('✅ Элементы мобильного меню найдены');
         
-        // Убедимся что меню правильно инициализировано
+        // Устанавливаем начальное состояние
         mobileMenu.style.display = 'flex';
         mobileMenu.style.opacity = '0';
         mobileMenu.style.visibility = 'hidden';
         mobileMenu.style.transform = 'translateX(100%)';
+        mobileMenu.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
         
-        // Если обработчик еще не установлен
-        if (!burgerBtn._componentHandler) {
-            burgerBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                console.log('🍔 Component handler: Burger clicked');
-                
-                const isOpen = mobileMenu.classList.contains('active');
-                
-                if (isOpen) {
-                    // Закрыть меню
-                    this.classList.remove('active');
-                    mobileMenu.classList.remove('active');
-                    this.setAttribute('aria-expanded', 'false');
-                    this.setAttribute('aria-label', 'Открыть меню');
-                    document.body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                } else {
-                    // Открыть меню
-                    this.classList.add('active');
-                    mobileMenu.classList.add('active');
-                    this.setAttribute('aria-expanded', 'true');
-                    this.setAttribute('aria-label', 'Закрыть меню');
-                    document.body.style.overflow = 'hidden';
-                    document.documentElement.style.overflow = 'hidden';
-                }
-            });
-            
-            burgerBtn._componentHandler = true;
-            console.log('✅ Компонентный обработчик добавлен');
+        // Удаляем старые обработчики и добавляем новый
+        const newBurgerBtn = burgerBtn.cloneNode(true);
+        if (burgerBtn.parentNode) {
+            burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
         }
         
-        // Добавляем закрытие при клике на ссылки в меню
-        const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
-        mobileLinks.forEach(link => {
-            if (!link._closeMenuHandler) {
-                link.addEventListener('click', () => {
-                    setTimeout(() => {
-                        if (burgerBtn && mobileMenu.classList.contains('active')) {
-                            burgerBtn.classList.remove('active');
-                            mobileMenu.classList.remove('active');
-                            burgerBtn.setAttribute('aria-expanded', 'false');
-                            burgerBtn.setAttribute('aria-label', 'Открыть меню');
-                            document.body.style.overflow = '';
-                            document.documentElement.style.overflow = '';
-                        }
-                    }, 300);
-                });
-                link._closeMenuHandler = true;
+        // ПРОСТОЙ И НАДЕЖНЫЙ ОБРАБОТЧИК
+        newBurgerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('🍔 Бургер нажат!');
+            
+            const menu = document.querySelector('.mobile-menu');
+            if (!menu) return;
+            
+            const isOpen = menu.classList.contains('active');
+            
+            if (isOpen) {
+                // Закрыть меню
+                this.classList.remove('active');
+                menu.classList.remove('active');
+                menu.style.transform = 'translateX(100%)';
+                menu.style.opacity = '0';
+                menu.style.visibility = 'hidden';
+                document.body.style.overflow = '';
+            } else {
+                // Открыть меню
+                this.classList.add('active');
+                menu.classList.add('active');
+                menu.style.transform = 'translateX(0)';
+                menu.style.opacity = '1';
+                menu.style.visibility = 'visible';
+                document.body.style.overflow = 'hidden';
             }
         });
+        
+        console.log('✅ Обработчик бургера добавлен');
     }
 
     getFallbackHeader() {
@@ -248,15 +224,6 @@ class ComponentLoader {
                             <span class="logo-text">NB Group</span>
                         </a>
                         <div class="header-right-mobile">
-                            <div class="language-switcher mobile-only-flags" data-current-lang="ru">
-                                <div class="lang-slider"></div>
-                                <button class="lang-btn" data-lang="ru">
-                                    <span class="lang-flag">🇷🇺</span>
-                                </button>
-                                <button class="lang-btn" data-lang="en">
-                                    <span class="lang-flag">🇬🇧</span>
-                                </button>
-                            </div>
                             <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
                                 <span></span>
                                 <span></span>
@@ -268,47 +235,12 @@ class ComponentLoader {
             </header>
         `;
     }
-
-    getFallbackFooter() {
-        return `
-            <footer class="main-footer">
-                <div class="container">
-                    <div class="footer-content">
-                        <div class="footer-section">
-                            <div class="footer-logo">
-                                <div class="logo-mark">NB</div>
-                                <div class="logo-text">NB Group</div>
-                            </div>
-                            <p class="footer-description">Промышленный дизайн и инжиниринг</p>
-                            <div class="social-links">
-                                <a href="#" class="social-link telegram" aria-label="Telegram">
-                                    <i class="fab fa-telegram"></i>
-                                </a>
-                                <a href="#" class="social-link whatsapp" aria-label="WhatsApp">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
-                                <a href="#" class="social-link instagram" aria-label="Instagram">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="footer-bottom">
-                        <div class="copyright">
-                            © 2024 NB Group. Все права защищены.
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        `;
-    }
 }
 
 // Инициализация загрузчика компонентов
 (function initComponentLoader() {
     console.log('🔧 Initializing Component Loader...');
     
-    // Ждем загрузки DOM
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             window.ComponentLoader = new ComponentLoader();
@@ -317,25 +249,5 @@ class ComponentLoader {
         window.ComponentLoader = new ComponentLoader();
     }
 })();
-
-// Глобальные утилиты для компонентов
-window.refreshComponents = function() {
-    console.log('🔄 Refreshing components...');
-    if (window.ComponentLoader) {
-        window.ComponentLoader.loadedComponents = 0;
-        window.ComponentLoader.loadComponents();
-    }
-};
-
-window.checkComponentsStatus = function() {
-    if (window.ComponentLoader) {
-        return {
-            loaded: window.ComponentLoader.loadedComponents,
-            total: window.ComponentLoader.totalComponents,
-            allLoaded: window.ComponentLoader.loadedComponents === window.ComponentLoader.totalComponents
-        };
-    }
-    return null;
-};
 
 console.log('✅ components.js загружен и готов');
