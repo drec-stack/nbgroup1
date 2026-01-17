@@ -1,4 +1,4 @@
-console.log('🔧 components.js loaded - FIXED MOBILE MENU VERSION');
+console.log('🔧 components.js loaded - SIMPLIFIED FIXED VERSION');
 
 class ComponentLoader {
     constructor() {
@@ -143,75 +143,83 @@ class ComponentLoader {
             
             console.log('✅ components.js полностью загружен и инициализирован');
             
-            // Инициализируем мобильное меню сразу после загрузки
-            this.initializeMobileMenu();
+            // Инициализируем мобильное меню (простая версия)
+            this.setupSimpleMobileMenu();
         }, 500);
     }
 
-    // ФИКС: ПРОСТАЯ ИНИЦИАЛИЗАЦИЯ МОБИЛЬНОГО МЕНЮ
-    initializeMobileMenu() {
-        console.log('📱 Инициализация мобильного меню...');
+    setupSimpleMobileMenu() {
+        console.log('📱 Setting up mobile menu...');
         
         const burgerBtn = document.querySelector('.burger-btn');
         const mobileMenu = document.querySelector('.mobile-menu');
         
-        if (!burgerBtn) {
-            console.warn('⚠️ Бургер-кнопка не найдена');
+        if (!burgerBtn || !mobileMenu) {
+            console.log('🖥️ Desktop mode or elements not found');
             return;
         }
         
-        if (!mobileMenu) {
-            console.warn('⚠️ Мобильное меню не найдено');
-            return;
-        }
+        console.log('✅ Mobile menu elements found');
         
-        console.log('✅ Элементы мобильного меню найдены');
-        
-        // Устанавливаем начальное состояние
+        // Убедимся что меню скрыто по умолчанию
         mobileMenu.style.display = 'flex';
-        mobileMenu.style.opacity = '0';
         mobileMenu.style.visibility = 'hidden';
+        mobileMenu.style.opacity = '0';
         mobileMenu.style.transform = 'translateX(100%)';
-        mobileMenu.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
         
-        // Удаляем старые обработчики и добавляем новый
+        // Удаляем старые обработчики (если есть)
         const newBurgerBtn = burgerBtn.cloneNode(true);
-        if (burgerBtn.parentNode) {
-            burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
-        }
+        burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
         
-        // ПРОСТОЙ И НАДЕЖНЫЙ ОБРАБОТЧИК
+        // Простой обработчик клика
         newBurgerBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             
-            console.log('🍔 Бургер нажат!');
+            console.log('🍔 Burger clicked');
             
-            const menu = document.querySelector('.mobile-menu');
-            if (!menu) return;
+            const mobileMenu = document.querySelector('.mobile-menu');
+            if (!mobileMenu) return;
             
-            const isOpen = menu.classList.contains('active');
+            const isOpen = mobileMenu.classList.contains('active');
             
             if (isOpen) {
                 // Закрыть меню
                 this.classList.remove('active');
-                menu.classList.remove('active');
-                menu.style.transform = 'translateX(100%)';
-                menu.style.opacity = '0';
-                menu.style.visibility = 'hidden';
+                mobileMenu.classList.remove('active');
+                mobileMenu.style.transform = 'translateX(100%)';
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.visibility = 'hidden';
                 document.body.style.overflow = '';
             } else {
                 // Открыть меню
                 this.classList.add('active');
-                menu.classList.add('active');
-                menu.style.transform = 'translateX(0)';
-                menu.style.opacity = '1';
-                menu.style.visibility = 'visible';
+                mobileMenu.classList.add('active');
+                mobileMenu.style.transform = 'translateX(0)';
+                mobileMenu.style.opacity = '1';
+                mobileMenu.style.visibility = 'visible';
                 document.body.style.overflow = 'hidden';
             }
         });
         
-        console.log('✅ Обработчик бургера добавлен');
+        // Закрытие меню при клике на ссылки
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                setTimeout(() => {
+                    if (newBurgerBtn && mobileMenu.classList.contains('active')) {
+                        newBurgerBtn.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        mobileMenu.style.transform = 'translateX(100%)';
+                        mobileMenu.style.opacity = '0';
+                        mobileMenu.style.visibility = 'hidden';
+                        document.body.style.overflow = '';
+                    }
+                }, 100);
+            });
+        });
+        
+        console.log('✅ Mobile menu setup complete');
     }
 
     getFallbackHeader() {
