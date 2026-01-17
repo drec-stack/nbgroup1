@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded - FULL WORKING VERSION');
+console.log('🚀 main.js loaded - CENTRALIZED BURGER MENU CONTROL');
 
 // ===== ГЛОБАЛЬНЫЙ ОБЪЕКТ ПРИЛОЖЕНИЯ =====
 window.NBGroupApp = {
@@ -44,107 +44,197 @@ window.NBGroupApp = {
         }
     },
     
-    // ===== БУРГЕР МЕНЮ =====
+    // ===== БУРГЕР МЕНЮ - ЕДИНСТВЕННЫЙ ИСТОЧНИК УПРАВЛЕНИЯ =====
     setupBurgerMenu() {
-        console.log('🍔 Setting up burger menu...');
+        console.log('🍔 Setting up burger menu - SINGLE SOURCE OF TRUTH');
         
-        // Ждем загрузки компонентов
-        if (!document.querySelector('.burger-btn')) {
-            console.log('⚠️ Burger button not found yet, waiting for components...');
-            setTimeout(() => this.setupBurgerMenu(), 500);
-            return;
-        }
-        
-        const burgerBtn = document.querySelector('.burger-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        
-        if (!burgerBtn || !mobileMenu) {
-            console.error('❌ Burger menu elements not found');
-            return;
-        }
-        
-        console.log('✅ Burger menu elements found');
-        
-        // Обработчик клика на бургер
-        burgerBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.toggleMobileMenu();
-        });
-        
-        // Закрытие при клике на ссылки в меню
-        const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                setTimeout(() => {
-                    if (this.state.menuOpen) {
-                        this.closeMobileMenu();
-                    }
-                }, 300);
-            });
-        });
-        
-        // Закрытие при клике вне меню
-        document.addEventListener('click', (e) => {
-            if (this.state.menuOpen && 
-                !mobileMenu.contains(e.target) && 
-                !burgerBtn.contains(e.target)) {
-                this.closeMobileMenu();
+        // Основная функция настройки бургер-меню
+        const setupBurgerLogic = () => {
+            const burgerBtn = document.querySelector('.burger-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            if (!burgerBtn) {
+                console.warn('⚠️ Burger button not found in DOM');
+                
+                // Попробуем создать бургер-кнопку если её нет
+                setTimeout(() => this.createBurgerButtonIfMissing(), 100);
+                return;
             }
-        });
-        
-        // Закрытие по Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.state.menuOpen) {
-                this.closeMobileMenu();
+            
+            if (!mobileMenu) {
+                console.error('❌ Mobile menu not found in DOM');
+                return;
             }
-        });
-        
-        // Предотвращение скролла при открытом меню
-        mobileMenu.addEventListener('touchmove', (e) => {
-            if (this.state.menuOpen) {
+            
+            console.log('✅ Burger menu elements found');
+            
+            // Удаляем старые обработчики если есть
+            const newBurgerBtn = burgerBtn.cloneNode(true);
+            burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
+            
+            // ГАРАНТИРУЕМ начальное состояние - меню ЗАКРЫТО
+            this.closeMobileMenu();
+            
+            // Обработчик клика на бургер
+            newBurgerBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-            }
-        }, { passive: false });
+                e.stopPropagation();
+                this.toggleMobileMenu();
+            });
+            
+            // Закрытие при клике на ссылки в мобильном меню
+            const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    setTimeout(() => {
+                        this.closeMobileMenu();
+                    }, 300);
+                });
+            });
+            
+            // Закрытие при клике вне меню
+            document.addEventListener('click', (e) => {
+                if (this.state.menuOpen && 
+                    !mobileMenu.contains(e.target) && 
+                    !newBurgerBtn.contains(e.target)) {
+                    this.closeMobileMenu();
+                }
+            });
+            
+            // Закрытие по Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.state.menuOpen) {
+                    this.closeMobileMenu();
+                }
+            });
+            
+            // Предотвращение скролла при открытом меню
+            mobileMenu.addEventListener('touchmove', (e) => {
+                if (this.state.menuOpen) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            console.log('✅ Burger menu logic setup complete');
+        };
         
-        console.log('✅ Burger menu setup complete');
+        // Первый запуск
+        setupBurgerLogic();
+        
+        // Повторная попытка через 500мс
+        setTimeout(setupBurgerLogic, 500);
+        
+        // Повторная попытка после загрузки компонентов
+        window.addEventListener('componentsLoaded', () => {
+            console.log('🔄 Components loaded, re-setting up burger menu');
+            setTimeout(setupBurgerLogic, 300);
+        });
+        
+        // Финальная попытка через 2 секунды
+        setTimeout(setupBurgerLogic, 2000);
     },
     
+    // Создать бургер-кнопку если она отсутствует
+    createBurgerButtonIfMissing() {
+        const headerRightMobile = document.querySelector('.header-right-mobile');
+        if (!headerRightMobile) {
+            console.error('❌ .header-right-mobile not found');
+            return;
+        }
+        
+        // Проверяем, есть ли уже бургер-кнопка
+        if (document.querySelector('.burger-btn')) return;
+        
+        console.log('🛠️ Creating missing burger button...');
+        
+        const burgerBtn = document.createElement('button');
+        burgerBtn.className = 'burger-btn';
+        burgerBtn.id = 'burger-btn';
+        burgerBtn.setAttribute('aria-label', 'Открыть меню');
+        burgerBtn.setAttribute('aria-expanded', 'false');
+        burgerBtn.innerHTML = '<span></span><span></span><span></span>';
+        
+        // Вставляем в правильное место
+        const langSwitcher = headerRightMobile.querySelector('.language-switcher');
+        if (langSwitcher) {
+            langSwitcher.after(burgerBtn);
+        } else {
+            headerRightMobile.appendChild(burgerBtn);
+        }
+        
+        console.log('✅ Burger button created');
+        
+        // Перезапускаем настройку
+        setTimeout(() => this.setupBurgerMenu(), 100);
+    },
+    
+    // Переключение мобильного меню
     toggleMobileMenu() {
         const burgerBtn = document.querySelector('.burger-btn');
         const mobileMenu = document.querySelector('.mobile-menu');
         
+        if (!burgerBtn || !mobileMenu) {
+            console.error('❌ Cannot toggle menu: elements not found');
+            return;
+        }
+        
         if (this.state.menuOpen) {
-            // Закрыть меню
-            burgerBtn.classList.remove('active');
-            burgerBtn.setAttribute('aria-expanded', 'false');
-            burgerBtn.setAttribute('aria-label', 'Открыть меню');
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-            this.state.menuOpen = false;
-            console.log('➖ Mobile menu closed');
+            this.closeMobileMenu();
         } else {
-            // Открыть меню
-            burgerBtn.classList.add('active');
-            burgerBtn.setAttribute('aria-expanded', 'true');
-            burgerBtn.setAttribute('aria-label', 'Закрыть меню');
-            mobileMenu.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            this.state.menuOpen = true;
-            console.log('➕ Mobile menu opened');
+            this.openMobileMenu();
         }
     },
     
+    // Открыть мобильное меню
     openMobileMenu() {
-        if (!this.state.menuOpen) {
-            this.toggleMobileMenu();
+        const burgerBtn = document.querySelector('.burger-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (!burgerBtn || !mobileMenu) {
+            console.error('❌ Cannot open menu: elements not found');
+            return;
         }
+        
+        // Активируем меню
+        mobileMenu.classList.add('active');
+        mobileMenu.style.pointerEvents = 'auto';
+        
+        // Активируем бургер
+        burgerBtn.classList.add('active');
+        burgerBtn.setAttribute('aria-expanded', 'true');
+        burgerBtn.setAttribute('aria-label', 'Закрыть меню');
+        
+        // Блокируем скролл body
+        document.body.style.overflow = 'hidden';
+        
+        this.state.menuOpen = true;
+        console.log('➕ Mobile menu opened');
     },
     
+    // Закрыть мобильное меню
     closeMobileMenu() {
-        if (this.state.menuOpen) {
-            this.toggleMobileMenu();
+        const burgerBtn = document.querySelector('.burger-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (!burgerBtn || !mobileMenu) {
+            console.error('❌ Cannot close menu: elements not found');
+            return;
         }
+        
+        // Деактивируем меню
+        mobileMenu.classList.remove('active');
+        mobileMenu.style.pointerEvents = 'none';
+        
+        // Деактивируем бургер
+        burgerBtn.classList.remove('active');
+        burgerBtn.setAttribute('aria-expanded', 'false');
+        burgerBtn.setAttribute('aria-label', 'Открыть меню');
+        
+        // Разблокируем скролл body
+        document.body.style.overflow = '';
+        
+        this.state.menuOpen = false;
+        console.log('➖ Mobile menu closed');
     },
     
     // ===== ПЛАВНАЯ ПРОКРУТКА =====
@@ -173,9 +263,7 @@ window.NBGroupApp = {
                     history.pushState(null, null, targetId);
                     
                     // Закрываем мобильное меню если открыто
-                    if (window.NBGroupApp.state.menuOpen) {
-                        window.NBGroupApp.closeMobileMenu();
-                    }
+                    this.closeMobileMenu();
                 }
             });
         });
@@ -257,9 +345,7 @@ window.NBGroupApp = {
         }
         
         // Закрываем меню если открыто
-        if (this.state.menuOpen) {
-            this.closeMobileMenu();
-        }
+        this.closeMobileMenu();
     },
     
     // ===== ЭФФЕКТЫ ПРИ СКРОЛЛЕ =====
@@ -478,7 +564,14 @@ window.NBGroupApp = {
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
+                const wasMobile = this.state.isMobile;
                 this.state.isMobile = window.innerWidth <= 900;
+                
+                // Если переключились на мобильный вид и меню было открыто - закрываем
+                if (!wasMobile && this.state.isMobile && this.state.menuOpen) {
+                    this.closeMobileMenu();
+                }
+                
                 console.log(`🔄 Window resized: ${window.innerWidth}px (${this.state.isMobile ? 'mobile' : 'desktop'})`);
             }, 250);
         });
@@ -576,6 +669,17 @@ if (window.location.hostname.includes('localhost') ||
         console.log('Components loaded:', document.body.classList.contains('components-loaded'));
         console.log('Current page:', window.NBGroupApp?.state.currentPage);
         console.log('Language:', window.NBGroupApp?.state.language);
+        
+        // Проверяем стили
+        const menu = document.querySelector('.mobile-menu');
+        if (menu) {
+            console.log('Menu styles:', {
+                transform: getComputedStyle(menu).transform,
+                visibility: getComputedStyle(menu).visibility,
+                opacity: getComputedStyle(menu).opacity,
+                display: getComputedStyle(menu).display
+            });
+        }
     };
     
     window.testBurger = function() {
@@ -587,12 +691,49 @@ if (window.location.hostname.includes('localhost') ||
                 console.log('Menu is now:', window.NBGroupApp?.state.menuOpen ? 'OPEN' : 'CLOSED');
             }, 500);
         } else {
-            console.log('❌ Burger button not found');
+            console.log('❌ Burger button not found, creating one...');
+            window.NBGroupApp?.createBurgerButtonIfMissing();
         }
     };
     
     window.testNotification = function() {
         window.showNotification('Это тестовое уведомление!', 'success');
+    };
+    
+    window.forceOpenMenu = function() {
+        console.log('🔄 Forcing menu open...');
+        if (window.NBGroupApp) {
+            window.NBGroupApp.openMobileMenu();
+        } else {
+            const menu = document.querySelector('.mobile-menu');
+            const burgerBtn = document.querySelector('.burger-btn');
+            
+            if (menu && burgerBtn) {
+                menu.classList.add('active');
+                menu.style.pointerEvents = 'auto';
+                burgerBtn.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                console.log('✅ Menu forced open');
+            }
+        }
+    };
+    
+    window.forceCloseMenu = function() {
+        console.log('🔄 Forcing menu close...');
+        if (window.NBGroupApp) {
+            window.NBGroupApp.closeMobileMenu();
+        } else {
+            const menu = document.querySelector('.mobile-menu');
+            const burgerBtn = document.querySelector('.burger-btn');
+            
+            if (menu && burgerBtn) {
+                menu.classList.remove('active');
+                menu.style.pointerEvents = 'none';
+                burgerBtn.classList.remove('active');
+                document.body.style.overflow = '';
+                console.log('✅ Menu forced closed');
+            }
+        }
     };
 }
 
@@ -606,13 +747,21 @@ window.addEventListener('load', () => {
     // Финальная проверка бургер-меню
     setTimeout(() => {
         if (!document.querySelector('.burger-btn') && window.NBGroupApp) {
-            console.log('⚠️ Burger button still not found, retrying...');
-            window.NBGroupApp.setupBurgerMenu();
+            console.log('⚠️ Burger button still not found, creating one...');
+            window.NBGroupApp.createBurgerButtonIfMissing();
         }
     }, 2000);
+    
+    // Финальная гарантия что меню закрыто
+    setTimeout(() => {
+        if (window.NBGroupApp && window.NBGroupApp.state.menuOpen) {
+            console.log('⚠️ Menu was open on load, closing it...');
+            window.NBGroupApp.closeMobileMenu();
+        }
+    }, 100);
     
     // Отправляем аналитику
     console.log('📊 Page load complete at:', new Date().toLocaleTimeString());
 });
 
-console.log('✅ main.js loaded successfully');
+console.log('✅ main.js loaded successfully - Burger menu under centralized control');
