@@ -102,99 +102,139 @@ class ComponentLoader {
             });
             window.dispatchEvent(event);
             
-            this.setupMobileMenu();
+            console.log('✅ Все компоненты загружены');
         }, 500);
     }
+}
 
-    setupMobileMenu() {
-        const burgerBtn = document.querySelector('.burger-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
+// ===== УНИВЕРСАЛЬНЫЙ МЕНЕДЖЕР БУРГЕР-МЕНЮ (работает на всех страницах) =====
+class BurgerMenuManager {
+    constructor() {
+        this.burgerBtn = null;
+        this.mobileMenu = null;
+        this.isInitialized = false;
+        this.init();
+    }
+
+    init() {
+        console.log('🍔 Initializing Burger Menu Manager...');
         
-        if (!burgerBtn || !mobileMenu) {
+        // Ждем загрузки компонентов
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.setupMenu();
+            });
+        } else {
+            this.setupMenu();
+        }
+        
+        // Также ждем загрузки компонентов через events
+        window.addEventListener('componentsFullyLoaded', () => {
+            this.setupMenu();
+        });
+    }
+
+    setupMenu() {
+        // Если уже инициализирован, пропускаем
+        if (this.isInitialized) return;
+        
+        this.burgerBtn = document.querySelector('.burger-btn');
+        this.mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (!this.burgerBtn || !this.mobileMenu) {
+            console.log('🍔 Burger menu elements not found yet, waiting...');
+            setTimeout(() => this.setupMenu(), 500);
             return;
         }
         
-        // Убедимся что меню скрыто по умолчанию
-        mobileMenu.style.display = 'flex';
-        mobileMenu.style.visibility = 'hidden';
-        mobileMenu.style.opacity = '0';
-        mobileMenu.style.transform = 'translateX(100%)';
-        
-        // Удаляем старые обработчики (если есть)
-        const newBurgerBtn = burgerBtn.cloneNode(true);
-        burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
-        
-        // Обработчик клика на бургер
-        newBurgerBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const mobileMenu = document.querySelector('.mobile-menu');
-            if (!mobileMenu) return;
-            
-            const isOpen = mobileMenu.classList.contains('active');
-            
-            if (isOpen) {
-                // Закрыть меню
-                this.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                mobileMenu.style.transform = 'translateX(100%)';
-                mobileMenu.style.opacity = '0';
-                mobileMenu.style.visibility = 'hidden';
-                document.body.style.overflow = '';
-            } else {
-                // Открыть меню
-                this.classList.add('active');
-                mobileMenu.classList.add('active');
-                mobileMenu.style.transform = 'translateX(0)';
-                mobileMenu.style.opacity = '1';
-                mobileMenu.style.visibility = 'visible';
-                document.body.style.overflow = 'hidden';
-            }
+        console.log('✅ Burger menu elements found:', {
+            burgerBtn: this.burgerBtn,
+            mobileMenu: this.mobileMenu
         });
         
-        // Закрытие меню при клике на ссылки
+        this.setupEventListeners();
+        this.isInitialized = true;
+        console.log('✅ Burger Menu Manager initialized on page:', window.location.pathname);
+        
+        // Глобальная функция для тестирования
+        window.testBurgerMenu = () => this.toggleMenu();
+    }
+
+    setupEventListeners() {
+        // Удаляем старые обработчики
+        const newBurgerBtn = this.burgerBtn.cloneNode(true);
+        if (this.burgerBtn.parentNode) {
+            this.burgerBtn.parentNode.replaceChild(newBurgerBtn, this.burgerBtn);
+        }
+        this.burgerBtn = newBurgerBtn;
+        
+        // Основной обработчик клика
+        this.burgerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.toggleMenu();
+        });
+        
+        // Закрытие при клике на ссылки в меню
         const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 setTimeout(() => {
-                    if (newBurgerBtn && mobileMenu.classList.contains('active')) {
-                        newBurgerBtn.classList.remove('active');
-                        mobileMenu.classList.remove('active');
-                        mobileMenu.style.transform = 'translateX(100%)';
-                        mobileMenu.style.opacity = '0';
-                        mobileMenu.style.visibility = 'hidden';
-                        document.body.style.overflow = '';
+                    if (this.mobileMenu.classList.contains('active')) {
+                        this.closeMenu();
                     }
-                }, 100);
+                }, 300);
             });
         });
         
-        // Закрытие меню при клике вне его
+        // Закрытие при клике вне меню
         document.addEventListener('click', (e) => {
-            if (mobileMenu.classList.contains('active') && 
-                !mobileMenu.contains(e.target) && 
-                !newBurgerBtn.contains(e.target)) {
-                newBurgerBtn.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                mobileMenu.style.transform = 'translateX(100%)';
-                mobileMenu.style.opacity = '0';
-                mobileMenu.style.visibility = 'hidden';
-                document.body.style.overflow = '';
+            if (this.mobileMenu.classList.contains('active') && 
+                !this.mobileMenu.contains(e.target) && 
+                !this.burgerBtn.contains(e.target)) {
+                this.closeMenu();
             }
         });
         
-        // Закрытие меню по клавише Escape
+        // Закрытие по Escape
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-                newBurgerBtn.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                mobileMenu.style.transform = 'translateX(100%)';
-                mobileMenu.style.opacity = '0';
-                mobileMenu.style.visibility = 'hidden';
-                document.body.style.overflow = '';
+            if (e.key === 'Escape' && this.mobileMenu.classList.contains('active')) {
+                this.closeMenu();
             }
         });
+        
+        // Адаптация для сенсорных устройств
+        this.burgerBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+    }
+
+    toggleMenu() {
+        if (this.mobileMenu.classList.contains('active')) {
+            this.closeMenu();
+        } else {
+            this.openMenu();
+        }
+    }
+
+    openMenu() {
+        console.log('➕ Opening mobile menu');
+        this.burgerBtn.classList.add('active');
+        this.mobileMenu.classList.add('active');
+        this.burgerBtn.setAttribute('aria-expanded', 'true');
+        this.burgerBtn.setAttribute('aria-label', 'Закрыть меню');
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+    }
+
+    closeMenu() {
+        console.log('➖ Closing mobile menu');
+        this.burgerBtn.classList.remove('active');
+        this.mobileMenu.classList.remove('active');
+        this.burgerBtn.setAttribute('aria-expanded', 'false');
+        this.burgerBtn.setAttribute('aria-label', 'Открыть меню');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
     }
 }
 
@@ -203,8 +243,11 @@ class ComponentLoader {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             window.ComponentLoader = new ComponentLoader();
+            // Инициализируем универсальный менеджер бургер-меню
+            window.burgerMenuManager = new BurgerMenuManager();
         });
     } else {
         window.ComponentLoader = new ComponentLoader();
+        window.burgerMenuManager = new BurgerMenuManager();
     }
 })();
