@@ -216,12 +216,12 @@
         </div>
     </div>
 
-    <!-- ТОЛЬКО логика для переключателя языка в меню -->
+    <!-- СКРИПТ ТОЛЬКО ДЛЯ ЯЗЫКА -->
     <script>
     (function() {
         'use strict';
         
-        console.log('📱 Mobile Menu loaded - Language switcher only');
+        console.log('📱 Mobile Menu loaded - Language only');
         
         // Настраиваем переключатель языка в мобильном меню
         function setupMobileLanguageSwitcher() {
@@ -277,11 +277,16 @@
             });
         }
         
-        // Инициализация только переключателя языка
+        // Инициализация
+        function init() {
+            setupMobileLanguageSwitcher();
+            console.log('✅ Mobile menu language setup complete');
+        }
+        
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', setupMobileLanguageSwitcher);
+            document.addEventListener('DOMContentLoaded', init);
         } else {
-            setTimeout(setupMobileLanguageSwitcher, 100);
+            setTimeout(init, 100);
         }
         
     })();
