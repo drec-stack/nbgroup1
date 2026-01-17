@@ -27,22 +27,16 @@
             transition: all 0.3s ease;
         }
 
-        /* Эффект при скролле */
+        /* ИСПРАВЛЕНИЕ: Убрано изменение позиции и размера при скролле */
+        /* Хедер всегда остается в исходном положении */
         .main-header.scrolled {
-            background: rgba(10, 10, 20, 0.9);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(35px) saturate(200%);
             -webkit-backdrop-filter: blur(35px) saturate(200%);
             box-shadow: 
                 0 12px 40px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.12);
-            padding: 15px 0;
-            top: 0;
-            width: 100%;
-            max-width: 100%;
-            border-radius: 0;
-            transform: none;
-            left: 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            /* Убраны изменения позиции и размера */
         }
 
         /* Эффект при наведении */
@@ -292,6 +286,7 @@
 
         /* ===== МЕДИА ЗАПРОСЫ ===== */
         @media (max-width: 900px) {
+            /* ИСПРАВЛЕНИЕ: Для мобильных оставляем фиксированный хедер */
             .main-header {
                 position: fixed !important;
                 top: 0 !important;
@@ -312,9 +307,10 @@
                 margin: 0 !important;
             }
             
+            /* ИСПРАВЛЕНИЕ: Для мобильных тоже не меняем при скролле */
             .main-header.scrolled {
-                background: rgba(10, 10, 20, 0.98) !important;
-                padding: 8px 0 !important;
+                background: rgba(10, 10, 20, 0.95) !important;
+                /* Убрано padding: 8px 0 !important; */
             }
             
             /* Скрываем десктопные элементы */
@@ -725,7 +721,7 @@
             const header = document.getElementById('main-header');
             if (!header) return;
             
-            setupScrollAnimations(header);
+            // ИСПРАВЛЕНИЕ: Убрана функция setupScrollAnimations
             setupActiveNav();
             setupLanguageSwitcher();
             setupMobileMenu();
@@ -734,23 +730,7 @@
             console.log('✅ Прозрачный хедер инициализирован для всех страниц');
         }
         
-        function setupScrollAnimations(header) {
-            function updateHeaderState() {
-                const scrollY = window.scrollY || document.documentElement.scrollTop;
-                
-                if (scrollY > 20) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-                
-                // Обновляем активный пункт меню при скролле
-                updateActiveNavOnScroll();
-            }
-            
-            window.addEventListener('scroll', updateHeaderState, { passive: true });
-            updateHeaderState();
-        }
+        // ИСПРАВЛЕНИЕ: Удалена функция setupScrollAnimations
         
         function setupActiveNav() {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
