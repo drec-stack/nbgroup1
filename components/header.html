@@ -28,7 +28,6 @@
         }
 
         /* ИСПРАВЛЕНИЕ: Убрано изменение позиции и размера при скролле */
-        /* Хедер всегда остается в исходном положении */
         .main-header.scrolled {
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(35px) saturate(200%);
@@ -36,7 +35,6 @@
             box-shadow: 
                 0 12px 40px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            /* Убраны изменения позиции и размера */
         }
 
         /* Эффект при наведении */
@@ -286,7 +284,6 @@
 
         /* ===== МЕДИА ЗАПРОСЫ ===== */
         @media (max-width: 900px) {
-            /* ИСПРАВЛЕНИЕ: Для мобильных оставляем фиксированный хедер */
             .main-header {
                 position: fixed !important;
                 top: 0 !important;
@@ -307,10 +304,8 @@
                 margin: 0 !important;
             }
             
-            /* ИСПРАВЛЕНИЕ: Для мобильных тоже не меняем при скролле */
             .main-header.scrolled {
                 background: rgba(10, 10, 20, 0.95) !important;
-                /* Убрано padding: 8px 0 !important; */
             }
             
             /* Скрываем десктопные элементы */
@@ -321,7 +316,7 @@
                 display: none !important;
             }
             
-            /* ===== ИЗМЕНЕНИЕ: Мобильные элементы в новом порядке ===== */
+            /* ===== Мобильные элементы ===== */
             .header-right-mobile {
                 display: flex !important;
                 align-items: center;
@@ -331,7 +326,7 @@
                 margin-left: auto;
             }
             
-            /* БУРГЕР КНОПКА - ТЕПЕРЬ СПРАВА */
+            /* БУРГЕР КНОПКА */
             .burger-btn {
                 display: block !important;
                 width: 44px;
@@ -348,7 +343,7 @@
                 min-width: 44px;
                 min-height: 44px;
                 touch-action: manipulation;
-                order: 2; /* Бургер будет после переключателя языка */
+                order: 2;
             }
             
             .burger-btn:hover {
@@ -431,7 +426,7 @@
                 white-space: nowrap;
             }
             
-            /* Мобильный переключатель языка - ТЕПЕРЬ СЛЕВА ОТ БУРГЕРА */
+            /* Мобильный переключатель языка */
             .language-switcher.mobile-only-flags {
                 display: flex;
                 background: rgba(255, 255, 255, 0.1);
@@ -444,7 +439,7 @@
                 height: 44px;
                 overflow: hidden;
                 position: relative;
-                order: 1; /* Переключатель языка будет слева от бургера */
+                order: 1;
             }
             
             .language-switcher.mobile-only-flags .lang-slider {
@@ -657,14 +652,14 @@
                 </a>
                 
                 <!-- Десктопная навигация -->
-<nav class="main-nav" aria-label="Основная навигация">
-    <a href="index.html" class="nav-link">Главная</a>
-    <a href="services.html" class="nav-link">Услуги</a>
-    <a href="portfolio.html" class="nav-link">Портфолио</a>
-    <a href="about.html" class="nav-link">О нас</a>
-    <a href="brandbook.html" class="nav-link">Брендбуки</a>
-    <a href="contacts.html" class="nav-link">Контакты</a>
-</nav>
+                <nav class="main-nav" aria-label="Основная навигация">
+                    <a href="index.html" class="nav-link">Главная</a>
+                    <a href="services.html" class="nav-link">Услуги</a>
+                    <a href="portfolio.html" class="nav-link">Портфолио</a>
+                    <a href="about.html" class="nav-link">О нас</a>
+                    <a href="brandbook.html" class="nav-link">Брендбуки</a>
+                    <a href="contacts.html" class="nav-link">Контакты</a>
+                </nav>
                 
                 <!-- Десктопные действия -->
                 <div class="header-right-desktop">
@@ -687,9 +682,9 @@
                     </button>
                 </div>
                 
-                <!-- Мобильная версия (скрыта на десктопе) - ИЗМЕНЕННЫЙ ПОРЯДОК -->
+                <!-- Мобильная версия -->
                 <div class="header-right-mobile">
-                    <!-- Сначала переключатель языка -->
+                    <!-- Переключатель языка -->
                     <div class="language-switcher mobile-only-flags" data-current-lang="ru">
                         <div class="lang-slider"></div>
                         <button class="lang-btn" data-lang="ru">
@@ -702,7 +697,7 @@
                         </button>
                     </div>
                     
-                    <!-- Затем бургер кнопка (теперь справа) -->
+                    <!-- Бургер кнопка -->
                     <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
                         <span></span>
                         <span></span>
@@ -721,16 +716,13 @@
             const header = document.getElementById('main-header');
             if (!header) return;
             
-            // ИСПРАВЛЕНИЕ: Убрана функция setupScrollAnimations
             setupActiveNav();
             setupLanguageSwitcher();
             setupMobileMenu();
             setupStartProjectButton();
             
-            console.log('✅ Прозрачный хедер инициализирован для всех страниц');
+            console.log('✅ Хедер инициализирован');
         }
-        
-        // ИСПРАВЛЕНИЕ: Удалена функция setupScrollAnimations
         
         function setupActiveNav() {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -746,12 +738,6 @@
                     link.classList.add('active');
                 }
             });
-        }
-        
-        function updateActiveNavOnScroll() {
-            // Здесь можно добавить логику для обновления активного пункта меню при скролле
-            // на основе видимых секций на странице
-            // Например, для одностраничных навигаций
         }
         
         function setupLanguageSwitcher() {
@@ -806,26 +792,27 @@
             const burgerBtn = document.getElementById('burger-btn');
             
             if (!burgerBtn) {
-                console.log('🖥️ Desktop mode - no burger button needed');
+                console.log('🖥️ Десктопный режим - бургер не нужен');
                 return;
             }
             
-            console.log('✅ Burger button found, setting up mobile menu');
+            console.log('✅ Бургер кнопка найдена, настраиваем мобильное меню');
             
             // Добавляем обработчик клика на бургер
             burgerBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                const mobileMenu = document.getElementById('mobile-menu');
+                // ИСПРАВЛЕНИЕ: Правильный поиск мобильного меню
+                const mobileMenu = document.querySelector('.mobile-menu');
                 
                 if (!mobileMenu) {
-                    console.error('❌ Mobile menu element not found');
+                    console.error('❌ Мобильное меню не найдено');
                     return;
                 }
                 
                 const isOpen = mobileMenu.classList.contains('active');
-                console.log('🍔 Burger clicked, current state:', isOpen ? 'OPEN' : 'CLOSED');
+                console.log('🍔 Бургер нажат, текущее состояние:', isOpen ? 'ОТКРЫТО' : 'ЗАКРЫТО');
                 
                 if (isOpen) {
                     // Закрыть меню
@@ -848,7 +835,7 @@
             
             // Закрытие меню при клике на ссылки внутри меню
             document.addEventListener('click', function(e) {
-                const mobileMenu = document.getElementById('mobile-menu');
+                const mobileMenu = document.querySelector('.mobile-menu');
                 if (!mobileMenu || !burgerBtn) return;
                 
                 // Если клик на ссылку внутри мобильного меню
@@ -882,7 +869,7 @@
             
             // Закрытие по Escape
             document.addEventListener('keydown', function(e) {
-                const mobileMenu = document.getElementById('mobile-menu');
+                const mobileMenu = document.querySelector('.mobile-menu');
                 if (e.key === 'Escape' && mobileMenu && mobileMenu.classList.contains('active')) {
                     burgerBtn.classList.remove('active');
                     mobileMenu.classList.remove('active');
@@ -895,11 +882,11 @@
             
             // Проверяем наличие мобильного меню
             setTimeout(function() {
-                const mobileMenu = document.getElementById('mobile-menu');
+                const mobileMenu = document.querySelector('.mobile-menu');
                 if (!mobileMenu) {
-                    console.error('❌ Mobile menu not found in DOM');
+                    console.error('❌ Мобильное меню не найдено в DOM');
                 } else {
-                    console.log('✅ Mobile menu found:', mobileMenu);
+                    console.log('✅ Мобильное меню найдено:', mobileMenu);
                 }
             }, 500);
         }
@@ -908,32 +895,31 @@
             const startProjectBtn = document.getElementById('start-project-btn');
             
             if (!startProjectBtn) {
-                console.log('ℹ️ Start project button not found, may be mobile view');
+                console.log('ℹ️ Кнопка "Начать проект" не найдена');
                 return;
             }
             
             startProjectBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 
-                console.log('🚀 Start project button clicked');
+                console.log('🚀 Кнопка "Начать проект" нажата');
                 
                 // Перенаправляем на страницу контактов
                 window.location.href = 'contacts.html';
             });
         }
         
-        // Initialize
+        // Инициализация
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initHeader);
         } else {
             initHeader();
         }
         
-        // Экспортируем функции для использования в других скриптах
+        // Экспортируем функции
         window.headerUtils = {
             initHeader,
-            setupActiveNav,
-            updateActiveNavOnScroll
+            setupActiveNav
         };
         
     })();
