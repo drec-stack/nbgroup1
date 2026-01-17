@@ -791,12 +791,14 @@ body.portfolio-page .main-header {
     backdrop-filter: blur(30px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    pointer-events: auto !important;
 }
 
 body.portfolio-page .main-header.scrolled {
     background: rgba(10, 10, 20, 0.98) !important;
     backdrop-filter: blur(35px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+    pointer-events: auto !important;
 }
 
 /* 2. Мобильное меню для портфолио */
@@ -810,6 +812,7 @@ body.portfolio-page .burger-btn {
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
+    cursor: pointer !important;
 }
 
 /* 4. Обеспечиваем корректный отступ для контента */
@@ -822,6 +825,8 @@ body.portfolio-page .start-project-btn {
     display: inline-flex !important;
     visibility: visible !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
 }
 
 /* ===== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ===== */
@@ -847,6 +852,7 @@ body.portfolio-page .start-project-btn {
         transform: none !important;
         width: 100% !important;
         border-radius: 0 !important;
+        pointer-events: auto !important;
     }
     
     /* Десктопная навигация скрыта */
@@ -857,6 +863,7 @@ body.portfolio-page .start-project-btn {
     /* Мобильная навигация работает */
     body.portfolio-page .header-right-mobile {
         display: flex !important;
+        pointer-events: auto !important;
     }
     
     /* Hero Section Mobile */
@@ -1227,5 +1234,246 @@ body.portfolio-page .start-project-btn {
     .packaging1-image::before {
         color: #000;
         opacity: 0.1;
+    }
+}
+
+/* ===== КРИТИЧЕСКИЙ ФИКС ДЛЯ КЛИКАБЕЛЬНОСТИ ХЕДЕРА ===== */
+
+/* ГАРАНТИЯ ЧТО ХЕДЕР КЛИКАБЕЛЕН */
+body.portfolio-page .main-header,
+body.portfolio-page .main-header * {
+    pointer-events: auto !important;
+    cursor: default !important;
+}
+
+/* КЛИКАБЕЛЬНЫЕ ЭЛЕМЕНТЫ В ХЕДЕРЕ */
+body.portfolio-page .main-header a,
+body.portfolio-page .main-header button,
+body.portfolio-page .main-header .logo,
+body.portfolio-page .main-header .nav-link,
+body.portfolio-page .main-header .burger-btn,
+body.portfolio-page .main-header .lang-btn,
+body.portfolio-page .main-header .start-project-btn {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 1001 !important;
+}
+
+/* ВОССТАНАВЛИВАЕМ ПРАВИЛЬНОЕ ПОЗИЦИОНИРОВАНИЕ */
+body.portfolio-page .main-header {
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1000 !important;
+    pointer-events: auto !important;
+}
+
+/* УБИРАЕМ ВСЕ ПЕРЕКРЫВАЮЩИЕ ЭЛЕМЕНТЫ */
+body.portfolio-page .portfolio-hero::before,
+body.portfolio-page .portfolio-filter::before {
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
+
+/* ИСПРАВЛЯЕМ Z-INDEX ИЕРАРХИЮ */
+body.portfolio-page {
+    position: relative;
+    z-index: 1;
+}
+
+body.portfolio-page .main-header {
+    z-index: 1000 !important;
+}
+
+body.portfolio-page main {
+    position: relative;
+    z-index: 10;
+}
+
+/* ФИКС ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+@media (max-width: 900px) {
+    body.portfolio-page .main-header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+        z-index: 1000 !important;
+        pointer-events: auto !important;
+    }
+    
+    /* ГАРАНТИРУЕМ ЧТО БУРГЕР КНОПКА РАБОТАЕТ */
+    body.portfolio-page .burger-btn {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        z-index: 1002 !important;
+    }
+    
+    /* ДЕСКТОПНАЯ НАВИГАЦИЯ СКРЫТА */
+    body.portfolio-page .main-nav {
+        display: none !important;
+    }
+    
+    /* МОБИЛЬНАЯ НАВИГАЦИЯ РАБОТАЕТ */
+    body.portfolio-page .header-right-mobile {
+        display: flex !important;
+        pointer-events: auto !important;
+    }
+}
+
+/* ФИКС ДЛЯ СКРОЛЛА */
+body.portfolio-page .main-header.scrolled {
+    background: rgba(10, 10, 20, 0.98) !important;
+    backdrop-filter: blur(35px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+    pointer-events: auto !important;
+}
+
+/* ВОССТАНАВЛИВАЕМ СТИЛИ ДЛЯ АКТИВНЫХ ССЫЛОК */
+body.portfolio-page .nav-link.active {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+}
+
+/* УБИРАЕМ ВСЕ АНИМАЦИИ КОТОРЫЕ МОГУТ МЕШАТЬ */
+body.portfolio-page .main-header,
+body.portfolio-page .main-header * {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* ФИКС ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА */
+body.portfolio-page .language-switcher {
+    pointer-events: auto !important;
+}
+
+body.portfolio-page .lang-btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* ФИКС ДЛЯ КНОПКИ "НАЧАТЬ ПРОЕКТ" */
+body.portfolio-page .start-project-btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+}
+
+/* КРИТИЧЕСКИЙ ФИКС: УБИРАЕМ ВСЕ BLOCKING СТИЛИ */
+body.portfolio-page .main-header {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+}
+
+/* ФИКС ДЛЯ ТЕКСТА В ХЕДЕРЕ */
+body.portfolio-page .logo-text,
+body.portfolio-page .nav-link,
+body.portfolio-page .lang-text {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* ФИНАЛЬНЫЙ АБСОЛЮТНЫЙ ФИКС */
+body.portfolio-page .main-header {
+    /* Принудительно переопределяем все проблемные свойства */
+    all: unset;
+    /* Восстанавливаем необходимые стили из header.html */
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 20px 0 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    pointer-events: auto !important;
+    cursor: default !important;
+}
+
+/* Восстанавливаем внутреннюю структуру */
+body.portfolio-page .main-header .header-inner {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 0 30px !important;
+    pointer-events: auto !important;
+}
+
+/* Восстанавливаем логотип */
+body.portfolio-page .main-header .logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    text-decoration: none !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* Восстанавливаем навигацию */
+body.portfolio-page .main-header .main-nav {
+    display: flex !important;
+    gap: 15px !important;
+    margin: 0 30px !important;
+    pointer-events: auto !important;
+}
+
+/* Восстанавливаем кнопки */
+body.portfolio-page .main-header .nav-link,
+body.portfolio-page .main-header .lang-btn,
+body.portfolio-page .main-header .start-project-btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* МОБИЛЬНАЯ ВЕРСИЯ */
+@media (max-width: 900px) {
+    body.portfolio-page .main-header {
+        all: unset !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+        transform: none !important;
+        background: rgba(10, 10, 20, 0.95) !important;
+        backdrop-filter: blur(30px) !important;
+        -webkit-backdrop-filter: blur(30px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+        padding: 12px 0 !important;
+        z-index: 1000 !important;
+        display: flex !important;
+        pointer-events: auto !important;
+        cursor: default !important;
+    }
+    
+    body.portfolio-page .main-header .header-inner {
+        padding: 0 15px !important;
+    }
+}
+
+/* ФИКС ДЛЯ IOS SAFARI */
+@supports (-webkit-touch-callout: none) {
+    body.portfolio-page .main-header a,
+    body.portfolio-page .main-header button {
+        cursor: pointer !important;
     }
 }
