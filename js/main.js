@@ -1,41 +1,156 @@
-console.log('🚀 main.js loaded - FULLY UPDATED WITH BURGER MENU FIX');
+console.log('🚀 main.js loaded - FULL WORKING VERSION');
 
-class DaehaaApp {
-    constructor() {
-        this.isServicesPage = window.location.pathname.includes('services.html');
-        this.isAboutPage = window.location.pathname.includes('about.html');
-        this.isHomePage = !this.isServicesPage && !this.isAboutPage && 
-                          (window.location.pathname.endsWith('index.html') || 
-                           window.location.pathname === '/' || 
-                           window.location.pathname === '');
-        
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                this.init();
-            });
-        } else {
-            this.init();
-        }
-    }
-
+// ===== ГЛОБАЛЬНЫЙ ОБЪЕКТ ПРИЛОЖЕНИЯ =====
+window.NBGroupApp = {
+    // Состояние приложения
+    state: {
+        isMobile: window.innerWidth <= 900,
+        currentPage: '',
+        language: localStorage.getItem('preferredLang') || 'ru',
+        menuOpen: false,
+        scrollY: 0
+    },
+    
+    // Инициализация
     init() {
-        this.setupSmoothScroll();
-        this.setupCurrentPage();
-        this.setupLanguageSupport();
-        this.setupMobileOptimizations();
-        this.setupFormHandling();
-        this.setupLazyLoading();
-        this.setupClickableElements();
-        this.setupFooterSupport();
-        this.setupScrollProgress();
-        this.setupScrollHeader();
+        console.log('🎬 Initializing NB Group App...');
         
-        console.log('✅ DaehaaApp initialized');
-    }
-
+        this.detectCurrentPage();
+        this.setupBurgerMenu();
+        this.setupSmoothScroll();
+        this.setupActiveNav();
+        this.setupLanguageSwitcher();
+        this.setupScrollEffects();
+        this.setupForms();
+        this.setupLazyLoading();
+        this.setupGlobalEvents();
+        
+        console.log('✅ NB Group App initialized');
+        console.log('📱 Mobile:', this.state.isMobile);
+        console.log('📄 Page:', this.state.currentPage);
+        console.log('🌐 Language:', this.state.language);
+    },
+    
+    // Определение текущей страницы
+    detectCurrentPage() {
+        const path = window.location.pathname;
+        const page = path.split('/').pop() || 'index.html';
+        this.state.currentPage = page;
+        
+        // Добавляем класс для страницы
+        const pageClass = page.replace('.html', '') + '-page';
+        if (pageClass !== '-page') {
+            document.body.classList.add(pageClass);
+        }
+    },
+    
+    // ===== БУРГЕР МЕНЮ =====
+    setupBurgerMenu() {
+        console.log('🍔 Setting up burger menu...');
+        
+        // Ждем загрузки компонентов
+        if (!document.querySelector('.burger-btn')) {
+            console.log('⚠️ Burger button not found yet, waiting for components...');
+            setTimeout(() => this.setupBurgerMenu(), 500);
+            return;
+        }
+        
+        const burgerBtn = document.querySelector('.burger-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (!burgerBtn || !mobileMenu) {
+            console.error('❌ Burger menu elements not found');
+            return;
+        }
+        
+        console.log('✅ Burger menu elements found');
+        
+        // Обработчик клика на бургер
+        burgerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.toggleMobileMenu();
+        });
+        
+        // Закрытие при клике на ссылки в меню
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                setTimeout(() => {
+                    if (this.state.menuOpen) {
+                        this.closeMobileMenu();
+                    }
+                }, 300);
+            });
+        });
+        
+        // Закрытие при клике вне меню
+        document.addEventListener('click', (e) => {
+            if (this.state.menuOpen && 
+                !mobileMenu.contains(e.target) && 
+                !burgerBtn.contains(e.target)) {
+                this.closeMobileMenu();
+            }
+        });
+        
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.state.menuOpen) {
+                this.closeMobileMenu();
+            }
+        });
+        
+        // Предотвращение скролла при открытом меню
+        mobileMenu.addEventListener('touchmove', (e) => {
+            if (this.state.menuOpen) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        console.log('✅ Burger menu setup complete');
+    },
+    
+    toggleMobileMenu() {
+        const burgerBtn = document.querySelector('.burger-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (this.state.menuOpen) {
+            // Закрыть меню
+            burgerBtn.classList.remove('active');
+            burgerBtn.setAttribute('aria-expanded', 'false');
+            burgerBtn.setAttribute('aria-label', 'Открыть меню');
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            this.state.menuOpen = false;
+            console.log('➖ Mobile menu closed');
+        } else {
+            // Открыть меню
+            burgerBtn.classList.add('active');
+            burgerBtn.setAttribute('aria-expanded', 'true');
+            burgerBtn.setAttribute('aria-label', 'Закрыть меню');
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            this.state.menuOpen = true;
+            console.log('➕ Mobile menu opened');
+        }
+    },
+    
+    openMobileMenu() {
+        if (!this.state.menuOpen) {
+            this.toggleMobileMenu();
+        }
+    },
+    
+    closeMobileMenu() {
+        if (this.state.menuOpen) {
+            this.toggleMobileMenu();
+        }
+    },
+    
+    // ===== ПЛАВНАЯ ПРОКРУТКА =====
     setupSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
                 
                 if (href === '#') return;
@@ -56,45 +171,64 @@ class DaehaaApp {
                     });
 
                     history.pushState(null, null, targetId);
+                    
+                    // Закрываем мобильное меню если открыто
+                    if (window.NBGroupApp.state.menuOpen) {
+                        window.NBGroupApp.closeMobileMenu();
+                    }
                 }
             });
         });
-    }
-
-    setupCurrentPage() {
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    },
+    
+    // ===== АКТИВНАЯ НАВИГАЦИЯ =====
+    setupActiveNav() {
+        const currentPage = this.state.currentPage;
         const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
         
         navLinks.forEach(link => {
-            const linkHref = link.getAttribute('href');
-            if (linkHref === currentPage || (currentPage === '' && linkHref === 'index.html')) {
+            const href = link.getAttribute('href');
+            link.classList.remove('active');
+            
+            if (href === currentPage || 
+                (currentPage === '' && href === 'index.html') ||
+                (currentPage === '/' && href === 'index.html') ||
+                (currentPage === 'index.html' && href === 'index.html')) {
                 link.classList.add('active');
-            } else {
-                link.classList.remove('active');
             }
         });
-    }
-
-    setupLanguageSupport() {
-        window.addEventListener('languageChanged', (e) => {
-            this.setupCurrentPage();
-            this.updateLanguageSwitcherUI(e.detail.lang);
+        
+        console.log(`✅ Active nav setup for page: ${currentPage}`);
+    },
+    
+    // ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА =====
+    setupLanguageSwitcher() {
+        const langBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
+        
+        if (langBtns.length === 0) return;
+        
+        // Устанавливаем текущий язык
+        this.updateLanguageUI(this.state.language);
+        
+        // Обработчики для кнопок языка
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const lang = btn.getAttribute('data-lang');
+                if (lang === this.state.language) return;
+                
+                this.switchLanguage(lang);
+            });
         });
-
-        this.setupLanguageSwitcherUI();
-    }
-
-    setupLanguageSwitcherUI() {
-        const currentLang = localStorage.getItem('preferredLang') || 'ru';
-        this.updateLanguageSwitcherUI(currentLang);
-    }
-
-    updateLanguageSwitcherUI(lang) {
+    },
+    
+    updateLanguageUI(lang) {
         const langBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
         const switchers = document.querySelectorAll('.language-switcher, .mobile-language-switcher');
         
         langBtns.forEach(btn => {
-            if (!btn) return;
             btn.classList.remove('active');
             if (btn.getAttribute('data-lang') === lang) {
                 btn.classList.add('active');
@@ -102,139 +236,168 @@ class DaehaaApp {
         });
         
         switchers.forEach(switcher => {
-            if (!switcher) return;
             switcher.setAttribute('data-current-lang', lang);
+        });
+        
+        // Сохраняем в localStorage
+        localStorage.setItem('preferredLang', lang);
+        this.state.language = lang;
+        
+        console.log(`🌐 Language switched to: ${lang}`);
+    },
+    
+    switchLanguage(lang) {
+        // Если есть i18n система, используем ее
+        if (window.i18n && typeof window.i18n.switchLanguage === 'function') {
+            window.i18n.switchLanguage(lang);
+        } else {
+            this.updateLanguageUI(lang);
+            // Можно добавить перезагрузку страницы или AJAX загрузку контента
+            // location.reload();
+        }
+        
+        // Закрываем меню если открыто
+        if (this.state.menuOpen) {
+            this.closeMobileMenu();
+        }
+    },
+    
+    // ===== ЭФФЕКТЫ ПРИ СКРОЛЛЕ =====
+    setupScrollEffects() {
+        const header = document.querySelector('.main-header');
+        const scrollProgress = document.querySelector('.scroll-progress-bar');
+        
+        if (!header) return;
+        
+        window.addEventListener('scroll', () => {
+            this.state.scrollY = window.pageYOffset;
             
-            const slider = switcher.querySelector('.lang-slider, .mobile-lang-slider-menu');
-            if (slider) {
-                slider.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                slider.style.transform = lang === 'en' ? 'translateX(100%)' : 'translateX(0)';
+            // Эффект для хедера
+            if (this.state.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Прогресс скролла
+            if (scrollProgress) {
+                const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (this.state.scrollY / windowHeight) * 100;
+                scrollProgress.style.width = scrolled + '%';
             }
         });
-    }
-
-    setupMobileOptimizations() {
-        document.addEventListener('touchstart', function() {}, {passive: true});
+    },
+    
+    // ===== ФОРМЫ =====
+    setupForms() {
+        const forms = document.querySelectorAll('form[data-form]');
         
-        if ('connection' in navigator && navigator.connection.saveData === true) {
-            document.documentElement.classList.add('save-data');
-        }
-        
-        if ('connection' in navigator && navigator.connection.effectiveType.includes('2g')) {
-            document.documentElement.classList.add('slow-connection');
-        }
-    }
-
-    setupFormHandling() {
-        const forms = document.querySelectorAll('form');
         forms.forEach(form => {
-            if (form) this.setupForm(form.id);
-        });
-    }
-
-    setupForm(formId, successCallback) {
-        const form = document.getElementById(formId);
-        if (form) {
-            form.addEventListener('submit', async (e) => {
+            form.addEventListener('submit', (e) => {
                 e.preventDefault();
-                
-                if (!this.validateForm(form)) {
-                    return;
-                }
-                
-                const formData = new FormData(form);
-                const submitBtn = form.querySelector('button[type="submit"]');
-                const originalText = submitBtn ? submitBtn.innerHTML : '';
-                
-                if (submitBtn) {
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-                    submitBtn.disabled = true;
-                }
-                
-                try {
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    
-                    this.showNotification('Сообщение отправлено! Мы свяжемся с вами в ближайшее время.', 'success');
-                    
-                    form.reset();
-                    
-                    this.resetFormValidation(form);
-                    
-                    if (successCallback) successCallback();
-                    
-                } catch (error) {
-                    this.showNotification('Ошибка отправки. Пожалуйста, попробуйте еще раз.', 'error');
-                } finally {
-                    if (submitBtn) {
-                        submitBtn.innerHTML = originalText;
-                        submitBtn.disabled = false;
-                    }
-                }
+                this.handleFormSubmit(form);
             });
+            
+            // Валидация в реальном времени
+            const inputs = form.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('blur', () => {
+                    this.validateField(input);
+                });
+            });
+        });
+    },
+    
+    validateField(field) {
+        const value = field.value.trim();
+        const parent = field.closest('.form-group');
+        
+        if (!parent) return true;
+        
+        parent.classList.remove('error', 'success');
+        
+        if (field.hasAttribute('required') && !value) {
+            parent.classList.add('error');
+            return false;
         }
-    }
-
-    validateForm(form) {
+        
+        if (field.type === 'email' && value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                parent.classList.add('error');
+                return false;
+            }
+        }
+        
+        if (value) {
+            parent.classList.add('success');
+        }
+        
+        return true;
+    },
+    
+    async handleFormSubmit(form) {
+        const formData = new FormData(form);
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn ? submitBtn.innerHTML : '';
+        
+        // Валидация всех полей
         let isValid = true;
         const requiredFields = form.querySelectorAll('[required]');
-        
         requiredFields.forEach(field => {
             if (!this.validateField(field)) {
                 isValid = false;
             }
         });
         
-        return isValid;
-    }
-
-    validateField(field) {
-        const value = field.value.trim();
-        const formGroup = field.parentElement;
-        
-        if (formGroup) {
-            formGroup.classList.remove('valid', 'invalid');
-            
-            if (field.hasAttribute('required') && !value) {
-                formGroup.classList.add('invalid');
-                return false;
-            }
-            
-            if (field.type === 'email' && value) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (emailRegex.test(value)) {
-                    formGroup.classList.add('valid');
-                    return true;
-                } else {
-                    formGroup.classList.add('invalid');
-                    return false;
-                }
-            }
+        if (!isValid) {
+            this.showNotification('Пожалуйста, заполните все обязательные поля', 'error');
+            return;
         }
         
-        return true;
-    }
-
-    resetFormValidation(form) {
-        const formGroups = form.querySelectorAll('.form-group');
-        formGroups.forEach(group => {
-            group.classList.remove('valid', 'invalid', 'focused');
-        });
-    }
-
-    showNotification(message, type = 'info') {
-        const existingNotifications = document.querySelectorAll('.notification');
-        existingNotifications.forEach(notification => {
-            if (notification && notification.parentNode) {
-                notification.parentNode.removeChild(notification);
+        // Блокируем кнопку
+        if (submitBtn) {
+            submitBtn.innerHTML = '<span class="loading-spinner"></span> Отправка...';
+            submitBtn.disabled = true;
+        }
+        
+        try {
+            // Имитация отправки (замените на реальный запрос)
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            this.showNotification('Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.', 'success');
+            form.reset();
+            
+            // Сбрасываем валидацию
+            const formGroups = form.querySelectorAll('.form-group');
+            formGroups.forEach(group => {
+                group.classList.remove('error', 'success');
+            });
+            
+        } catch (error) {
+            this.showNotification('Ошибка отправки. Пожалуйста, попробуйте еще раз.', 'error');
+            console.error('Form submit error:', error);
+        } finally {
+            // Разблокируем кнопку
+            if (submitBtn) {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
-        });
-
+        }
+    },
+    
+    showNotification(message, type = 'info') {
+        // Удаляем старые уведомления
+        const oldNotifications = document.querySelectorAll('.app-notification');
+        oldNotifications.forEach(n => n.remove());
+        
+        // Создаем новое уведомление
         const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
+        notification.className = `app-notification notification-${type}`;
         notification.innerHTML = `
             <div class="notification-content">
                 <span>${message}</span>
-                <button class="notification-close" aria-label="Закрыть">&times;</button>
+                <button class="notification-close" aria-label="Закрыть">×</button>
             </div>
         `;
         
@@ -244,281 +407,98 @@ class DaehaaApp {
             right: 20px;
             background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
             color: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            padding: 16px 24px;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
             z-index: 10000;
             transform: translateX(400px);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             max-width: 400px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
         `;
         
         document.body.appendChild(notification);
         
-        setTimeout(() => {
+        // Анимация появления
+        requestAnimationFrame(() => {
             notification.style.transform = 'translateX(0)';
-        }, 100);
+        });
         
+        // Кнопка закрытия
         const closeBtn = notification.querySelector('.notification-close');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                notification.style.transform = 'translateX(400px)';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            });
-        }
+        closeBtn.addEventListener('click', () => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => notification.remove(), 400);
+        });
         
+        // Автоматическое закрытие
         setTimeout(() => {
             if (notification.parentNode) {
                 notification.style.transform = 'translateX(400px)';
                 setTimeout(() => {
                     if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
+                        notification.remove();
                     }
-                }, 300);
+                }, 400);
             }
         }, 5000);
-    }
-
+    },
+    
+    // ===== ЛЕНИВАЯ ЗАГРУЗКА =====
     setupLazyLoading() {
         if ('IntersectionObserver' in window) {
             const lazyImages = document.querySelectorAll('img[data-src]');
+            
             const imageObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
                         img.src = img.dataset.src;
-                        img.classList.remove('lazy');
+                        
+                        // Убираем атрибут после загрузки
+                        img.onload = () => {
+                            img.removeAttribute('data-src');
+                            img.classList.add('loaded');
+                        };
+                        
                         imageObserver.unobserve(img);
                     }
                 });
             });
-
+            
             lazyImages.forEach(img => imageObserver.observe(img));
         }
-    }
-
-    setupClickableElements() {
-        document.querySelectorAll('a:not(.btn)').forEach(link => {
-            if (link && !link.classList.contains('clickable-element')) {
-                link.classList.add('clickable-element');
-            }
+    },
+    
+    // ===== ГЛОБАЛЬНЫЕ СОБЫТИЯ =====
+    setupGlobalEvents() {
+        // Ресайз окна
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.state.isMobile = window.innerWidth <= 900;
+                console.log(`🔄 Window resized: ${window.innerWidth}px (${this.state.isMobile ? 'mobile' : 'desktop'})`);
+            }, 250);
         });
-    }
-
-    setupFooterSupport() {
-        if ('MutationObserver' in window) {
-            const footerObserver = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    mutation.addedNodes.forEach((node) => {
-                        if (node.nodeType === 1 && node.classList && node.classList.contains('main-footer')) {
-                            this.initializeFooter(node);
-                        }
-                    });
-                });
-            });
-
-            footerObserver.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        }
-    }
-
-    initializeFooter(footerElement) {
-        if (typeof window.initFooter === 'function') {
+        
+        // Событие загрузки компонентов
+        window.addEventListener('componentsLoaded', () => {
+            console.log('🔄 Re-initializing after components load');
             setTimeout(() => {
-                window.initFooter();
-            }, 100);
+                this.setupBurgerMenu();
+                this.setupActiveNav();
+                this.setupLanguageSwitcher();
+            }, 300);
+        });
+        
+        // Обработка касаний для мобильных
+        if ('ontouchstart' in window) {
+            document.addEventListener('touchstart', () => {}, { passive: true });
         }
     }
-
-    setupScrollProgress() {
-        const scrollProgress = document.querySelector('.scroll-progress-bar');
-        
-        if (!scrollProgress) return;
-        
-        window.addEventListener('scroll', () => {
-            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (window.scrollY / windowHeight) * 100;
-            scrollProgress.style.width = scrolled + '%';
-        });
-    }
-
-    setupScrollHeader() {
-        const header = document.querySelector('.main-header');
-        
-        if (!header) return;
-        
-        let lastScroll = 0;
-        
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll <= 0) {
-                header.classList.remove('scrolled');
-                return;
-            }
-            
-            if (currentScroll > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            lastScroll = currentScroll;
-        });
-    }
-}
-
-// ===== БУРГЕР МЕНЮ МЕНЕДЖЕР - ИСПРАВЛЕННЫЙ =====
-class BurgerMenuManager {
-    constructor() {
-        console.log('🍔 BurgerMenuManager created');
-        this.burgerBtn = null;
-        this.mobileMenu = null;
-        this.isInitialized = false;
-        this.init();
-    }
-
-    init() {
-        console.log('🍔 Initializing Burger Menu Manager...');
-        
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                this.setupMenu();
-            });
-        } else {
-            this.setupMenu();
-        }
-        
-        window.addEventListener('componentsFullyLoaded', () => {
-            this.setupMenu();
-        });
-    }
-
-    setupMenu() {
-        if (this.isInitialized) return;
-        
-        this.burgerBtn = document.querySelector('.burger-btn');
-        this.mobileMenu = document.querySelector('.mobile-menu');
-        
-        if (!this.burgerBtn || !this.mobileMenu) {
-            console.log('🍔 Burger menu elements not found, retrying...');
-            setTimeout(() => this.setupMenu(), 500);
-            return;
-        }
-        
-        console.log('✅ Burger menu elements found');
-        
-        this.setupEventListeners();
-        this.isInitialized = true;
-        console.log('✅ Burger Menu Manager initialized');
-    }
-
-    setupEventListeners() {
-        const newBurgerBtn = this.burgerBtn.cloneNode(true);
-        if (this.burgerBtn.parentNode) {
-            this.burgerBtn.parentNode.replaceChild(newBurgerBtn, this.burgerBtn);
-        }
-        this.burgerBtn = newBurgerBtn;
-        
-        this.burgerBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.toggleMenu();
-        });
-        
-        const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                setTimeout(() => {
-                    if (this.mobileMenu.classList.contains('active')) {
-                        this.closeMenu();
-                    }
-                }, 300);
-            });
-        });
-        
-        document.addEventListener('click', (e) => {
-            if (this.mobileMenu.classList.contains('active') && 
-                !this.mobileMenu.contains(e.target) && 
-                !this.burgerBtn.contains(e.target)) {
-                this.closeMenu();
-            }
-        });
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.mobileMenu.classList.contains('active')) {
-                this.closeMenu();
-            }
-        });
-        
-        this.burgerBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-        }, { passive: false });
-    }
-
-    toggleMenu() {
-        if (this.mobileMenu.classList.contains('active')) {
-            this.closeMenu();
-        } else {
-            this.openMenu();
-        }
-    }
-
-    openMenu() {
-        console.log('➕ Opening mobile menu');
-        this.burgerBtn.classList.add('active');
-        this.mobileMenu.classList.add('active');
-        this.burgerBtn.setAttribute('aria-expanded', 'true');
-        this.burgerBtn.setAttribute('aria-label', 'Закрыть меню');
-        this.burgerBtn.style.zIndex = '99998'; // НИЖЕ МЕНЮ КОГДА ОНО ОТКРЫТО
-        this.mobileMenu.style.pointerEvents = 'auto';
-        document.body.style.overflow = 'hidden';
-        document.body.classList.add('menu-open');
-        document.documentElement.style.overflow = 'hidden';
-    }
-
-    closeMenu() {
-        console.log('➖ Closing mobile menu');
-        this.burgerBtn.classList.remove('active');
-        this.mobileMenu.classList.remove('active');
-        this.burgerBtn.setAttribute('aria-expanded', 'false');
-        this.burgerBtn.setAttribute('aria-label', 'Открыть меню');
-        this.burgerBtn.style.zIndex = '100000'; // ВОЗВРАЩАЕМ ВЫСОКИЙ z-index
-        this.mobileMenu.style.pointerEvents = 'none';
-        document.body.style.overflow = '';
-        document.body.classList.remove('menu-open');
-        document.documentElement.style.overflow = '';
-    }
-}
-
-// ===== ГЛОБАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
-(function initializeApp() {
-    console.log('🚀 Starting app initialization...');
-    
-    if (!window.DaehaaApp) {
-        window.DaehaaApp = new DaehaaApp();
-    }
-    
-    if (!window.burgerMenuManager) {
-        window.burgerMenuManager = new BurgerMenuManager();
-    }
-    
-    console.log('🚀 All systems initialized');
-    
-    // Финальная гарантия инициализации бургер-меню
-    setTimeout(() => {
-        if (window.burgerMenuManager && !window.burgerMenuManager.isInitialized) {
-            console.log('🔄 Forcing burger menu initialization...');
-            window.burgerMenuManager.setupMenu();
-        }
-    }, 1000);
-})();
+};
 
 // ===== ГЛОБАЛЬНЫЕ УТИЛИТЫ =====
 window.debounce = function(func, wait) {
@@ -546,199 +526,93 @@ window.throttle = function(func, limit) {
     };
 };
 
-// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ЯЗЫКА =====
-window.updateLanguageSwitcher = function(lang) {
-    if (window.DaehaaApp) {
-        window.DaehaaApp.updateLanguageSwitcherUI(lang);
-    }
-};
+// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ =====
+window.openMobileMenu = () => window.NBGroupApp?.openMobileMenu();
+window.closeMobileMenu = () => window.NBGroupApp?.closeMobileMenu();
+window.toggleMobileMenu = () => window.NBGroupApp?.toggleMobileMenu();
+window.switchLanguage = (lang) => window.NBGroupApp?.switchLanguage(lang);
+window.showNotification = (msg, type) => window.NBGroupApp?.showNotification(msg, type);
 
-window.getCurrentLanguage = function() {
-    return localStorage.getItem('preferredLang') || 'ru';
-};
-
-window.toggleLanguage = function() {
-    const currentLang = localStorage.getItem('preferredLang') || 'ru';
-    const newLang = currentLang === 'ru' ? 'en' : 'ru';
+// ===== ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ =====
+(function initializeApp() {
+    console.log('🚀 Starting app initialization...');
     
-    if (window.i18n && window.i18n.switchLanguage) {
-        window.i18n.switchLanguage(newLang);
+    // Ждем загрузки DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('📄 DOM fully loaded');
+            setTimeout(() => {
+                window.NBGroupApp.init();
+            }, 100);
+        });
     } else {
-        localStorage.setItem('preferredLang', newLang);
-        window.updateLanguageSwitcher(newLang);
-        location.reload();
+        console.log('📄 DOM already loaded');
+        setTimeout(() => {
+            window.NBGroupApp.init();
+        }, 100);
     }
-};
-
-// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ МОБИЛЬНОГО МЕНЮ =====
-window.openMobileMenu = function() {
-    if (window.burgerMenuManager) {
-        window.burgerMenuManager.openMenu();
-    } else {
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const burgerBtn = document.querySelector('.burger-btn');
-        if (mobileMenu && burgerBtn) {
-            burgerBtn.classList.add('active');
-            mobileMenu.classList.add('active');
-            mobileMenu.style.pointerEvents = 'auto';
-            burgerBtn.style.zIndex = '99998';
-            document.body.style.overflow = 'hidden';
-            document.body.classList.add('menu-open');
+    
+    // Запуск после загрузки компонентов
+    window.initAfterComponents = function() {
+        console.log('🔄 Initializing after components load');
+        if (window.NBGroupApp && typeof window.NBGroupApp.init === 'function') {
+            window.NBGroupApp.init();
         }
-    }
-};
+    };
+})();
 
-window.closeMobileMenu = function() {
-    if (window.burgerMenuManager) {
-        window.burgerMenuManager.closeMenu();
-    } else {
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const burgerBtn = document.querySelector('.burger-btn');
-        if (mobileMenu && burgerBtn) {
-            burgerBtn.classList.remove('active');
-            mobileMenu.classList.remove('active');
-            mobileMenu.style.pointerEvents = 'none';
-            burgerBtn.style.zIndex = '100000';
-            document.body.style.overflow = '';
-            document.body.classList.remove('menu-open');
-        }
-    }
-};
-
-window.toggleMobileMenu = function() {
-    if (window.burgerMenuManager) {
-        window.burgerMenuManager.toggleMenu();
-    } else {
-        const mobileMenu = document.querySelector('.mobile-menu');
-        if (mobileMenu && mobileMenu.classList.contains('active')) {
-            window.closeMobileMenu();
-        } else {
-            window.openMobileMenu();
-        }
-    }
-};
-
-// ===== ГЛОБАЛЬНЫЕ ТЕСТОВЫЕ ФУНКЦИИ =====
-if (window.location.hostname === 'localhost' || 
-    window.location.hostname === '127.0.0.1' || 
+// ===== ТЕСТОВЫЕ ФУНКЦИИ ДЛЯ РАЗРАБОТКИ =====
+if (window.location.hostname.includes('localhost') || 
+    window.location.hostname.includes('127.0.0.1') || 
     window.location.hostname.includes('github.io')) {
     
-    window.testBurgerMenu = function() {
-        console.log('🔍 Тест бургер-меню:');
-        
+    window.debugApp = function() {
+        console.log('🔍 App Debug Info:');
+        console.log('------------------');
+        console.log('State:', window.NBGroupApp?.state);
+        console.log('Burger button:', document.querySelector('.burger-btn'));
+        console.log('Mobile menu:', document.querySelector('.mobile-menu'));
+        console.log('Menu open:', window.NBGroupApp?.state.menuOpen);
+        console.log('Components loaded:', document.body.classList.contains('components-loaded'));
+        console.log('Current page:', window.NBGroupApp?.state.currentPage);
+        console.log('Language:', window.NBGroupApp?.state.language);
+    };
+    
+    window.testBurger = function() {
+        console.log('🧪 Testing burger menu...');
         const burgerBtn = document.querySelector('.burger-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        
-        console.log('Бургер кнопка:', burgerBtn);
-        console.log('Мобильное меню:', mobileMenu);
-        
-        if (burgerBtn && mobileMenu) {
-            console.log('✅ Элементы найдены');
-            
-            const isOpen = mobileMenu.classList.contains('active');
-            console.log('Меню ' + (isOpen ? 'открыто' : 'закрыто'));
-            
-            if (window.burgerMenuManager) {
-                window.burgerMenuManager.toggleMenu();
-                console.log('✅ Использован BurgerMenuManager');
-            } else {
-                burgerBtn.click();
-            }
-            
+        if (burgerBtn) {
+            burgerBtn.click();
             setTimeout(() => {
-                const newState = mobileMenu.classList.contains('active');
-                console.log('После клика меню ' + (newState ? 'открыто' : 'закрыто'));
+                console.log('Menu is now:', window.NBGroupApp?.state.menuOpen ? 'OPEN' : 'CLOSED');
             }, 500);
         } else {
-            console.log('❌ Элементы не найдены');
-            
-            if (window.burgerMenuManager) {
-                console.log('Менеджер:', window.burgerMenuManager);
-                if (!window.burgerMenuManager.isInitialized) {
-                    window.burgerMenuManager.setupMenu();
-                }
-            }
+            console.log('❌ Burger button not found');
         }
     };
     
-    window.testHeader = function() {
-        console.log('🔍 Тест хедера:');
-        console.log('Header:', document.querySelector('.main-header'));
-        console.log('Logo:', document.querySelector('.logo'));
-        console.log('Nav links:', document.querySelectorAll('.nav-link').length);
-        console.log('Burger btn:', document.querySelector('.burger-btn'));
-        console.log('Mobile menu:', document.querySelector('.mobile-menu'));
-    };
-    
-    window.debugZIndex = function() {
-        console.log('🔍 Debug z-index:');
-        const burgerBtn = document.querySelector('.burger-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const header = document.querySelector('.main-header');
-        
-        if (burgerBtn) {
-            console.log('Burger btn z-index:', window.getComputedStyle(burgerBtn).zIndex);
-            console.log('Burger btn actual z-index:', burgerBtn.style.zIndex);
-        }
-        if (mobileMenu) {
-            console.log('Mobile menu z-index:', window.getComputedStyle(mobileMenu).zIndex);
-            console.log('Mobile menu actual z-index:', mobileMenu.style.zIndex);
-        }
-        if (header) {
-            console.log('Header z-index:', window.getComputedStyle(header).zIndex);
-        }
+    window.testNotification = function() {
+        window.showNotification('Это тестовое уведомление!', 'success');
     };
 }
 
-// ===== ПОСЛЕДНИЙ ШАГ - ГАРАНТИРОВАННАЯ ИНИЦИАЛИЗАЦИЯ =====
-window.addEventListener('load', function() {
-    console.log('🎯 Страница полностью загружена');
+// ===== ФИНАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
+window.addEventListener('load', () => {
+    console.log('🎯 Page fully loaded');
     
-    // Гарантируем инициализацию бургер-меню
-    if (window.burgerMenuManager && !window.burgerMenuManager.isInitialized) {
-        setTimeout(() => {
-            window.burgerMenuManager.setupMenu();
-        }, 1000);
-    }
-    
-    // Обновляем активные ссылки
-    if (window.DaehaaApp) {
-        window.DaehaaApp.setupCurrentPage();
-    }
-    
-    // Добавляем класс для отладки
+    // Добавляем класс загрузки
     document.body.classList.add('page-loaded');
-});
-
-// ===== ОБРАБОТКА СОБЫТИЙ КОМПОНЕНТОВ =====
-window.addEventListener('componentsLoaded', function() {
-    console.log('🎉 Компоненты загружены, переинициализируем меню');
     
+    // Финальная проверка бургер-меню
     setTimeout(() => {
-        if (window.burgerMenuManager) {
-            window.burgerMenuManager.setupMenu();
+        if (!document.querySelector('.burger-btn') && window.NBGroupApp) {
+            console.log('⚠️ Burger button still not found, retrying...');
+            window.NBGroupApp.setupBurgerMenu();
         }
-        
-        if (window.DaehaaApp) {
-            window.DaehaaApp.setupCurrentPage();
-            window.DaehaaApp.setupLanguageSwitcherUI();
-        }
-    }, 300);
+    }, 2000);
+    
+    // Отправляем аналитику
+    console.log('📊 Page load complete at:', new Date().toLocaleTimeString());
 });
 
-// Экспорт для глобального использования
-window.Daehaa = {
-    App: window.DaehaaApp,
-    BurgerMenu: window.burgerMenuManager,
-    utils: {
-        debounce: window.debounce,
-        throttle: window.throttle
-    },
-    functions: {
-        openMobileMenu: window.openMobileMenu,
-        closeMobileMenu: window.closeMobileMenu,
-        toggleMobileMenu: window.toggleMobileMenu,
-        getCurrentLanguage: window.getCurrentLanguage,
-        toggleLanguage: window.toggleLanguage
-    }
-};
+console.log('✅ main.js loaded successfully');
