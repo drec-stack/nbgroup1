@@ -1,9 +1,7 @@
-console.log('🚀 main.js loaded - SIMPLIFIED VERSION');
+console.log('🚀 main.js loaded');
 
 class DaehaaApp {
     constructor() {
-        console.log('🏗️ DaehaaApp constructor called');
-        
         this.isServicesPage = window.location.pathname.includes('services.html');
         this.isAboutPage = window.location.pathname.includes('about.html');
         this.isHomePage = !this.isServicesPage && !this.isAboutPage && 
@@ -11,25 +9,16 @@ class DaehaaApp {
                            window.location.pathname === '/' || 
                            window.location.pathname === '');
         
-        console.log(`📄 Page type: ${this.isServicesPage ? 'Services' : this.isAboutPage ? 'About' : this.isHomePage ? 'Home' : 'Other'}`);
-        
-        // Инициализируем после загрузки DOM
         if (document.readyState === 'loading') {
-            console.log('⏳ DOM loading, waiting...');
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('✅ DOM loaded, calling init()');
                 this.init();
             });
         } else {
-            console.log('✅ DOM already loaded, calling init()');
             this.init();
         }
     }
 
     init() {
-        console.log('🚀 Daehaa App initializing...');
-        
-        // Базовые функции
         this.setupSmoothScroll();
         this.setupCurrentPage();
         this.setupLanguageSupport();
@@ -37,34 +26,12 @@ class DaehaaApp {
         this.setupFormHandling();
         this.setupLazyLoading();
         this.setupClickableElements();
-        
-        // Футер
         this.setupFooterSupport();
-        
-        console.log('✅ Daehaa application initialized');
-    }
-
-    // Безопасные методы для работы с DOM
-    safeQuerySelector(selector) {
-        try {
-            return document.querySelector(selector);
-        } catch (error) {
-            console.warn(`⚠️ Invalid selector: ${selector}`, error);
-            return null;
-        }
-    }
-
-    safeQuerySelectorAll(selector) {
-        try {
-            return document.querySelectorAll(selector);
-        } catch (error) {
-            console.warn(`⚠️ Invalid selector: ${selector}`, error);
-            return [];
-        }
+        this.setupScrollProgress();
     }
 
     setupSmoothScroll() {
-        this.safeQuerySelectorAll('a[href^="#"]').forEach(anchor => {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
                 
@@ -93,7 +60,7 @@ class DaehaaApp {
 
     setupCurrentPage() {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const navLinks = this.safeQuerySelectorAll('.nav-link, .mobile-nav-link');
+        const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
         
         navLinks.forEach(link => {
             const linkHref = link.getAttribute('href');
@@ -107,7 +74,6 @@ class DaehaaApp {
 
     setupLanguageSupport() {
         window.addEventListener('languageChanged', (e) => {
-            console.log('Language changed to:', e.detail.lang);
             this.setupCurrentPage();
             this.updateLanguageSwitcherUI(e.detail.lang);
         });
@@ -121,8 +87,8 @@ class DaehaaApp {
     }
 
     updateLanguageSwitcherUI(lang) {
-        const langBtns = this.safeQuerySelectorAll('.lang-btn, .mobile-lang-btn');
-        const switchers = this.safeQuerySelectorAll('.language-switcher, .mobile-language-switcher');
+        const langBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
+        const switchers = document.querySelectorAll('.language-switcher, .mobile-language-switcher');
         
         langBtns.forEach(btn => {
             if (!btn) return;
@@ -136,7 +102,6 @@ class DaehaaApp {
             if (!switcher) return;
             switcher.setAttribute('data-current-lang', lang);
             
-            // Анимируем ползунок
             const slider = switcher.querySelector('.lang-slider, .mobile-lang-slider-menu');
             if (slider) {
                 slider.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
@@ -148,7 +113,6 @@ class DaehaaApp {
     setupMobileOptimizations() {
         document.addEventListener('touchstart', function() {}, {passive: true});
         
-        // Оптимизация для медленных соединений
         if ('connection' in navigator && navigator.connection.saveData === true) {
             document.documentElement.classList.add('save-data');
         }
@@ -159,7 +123,7 @@ class DaehaaApp {
     }
 
     setupFormHandling() {
-        const forms = this.safeQuerySelectorAll('form');
+        const forms = document.querySelectorAll('form');
         forms.forEach(form => {
             if (form) this.setupForm(form.id);
         });
@@ -255,7 +219,7 @@ class DaehaaApp {
     }
 
     showNotification(message, type = 'info') {
-        const existingNotifications = this.safeQuerySelectorAll('.notification');
+        const existingNotifications = document.querySelectorAll('.notification');
         existingNotifications.forEach(notification => {
             if (notification && notification.parentNode) {
                 notification.parentNode.removeChild(notification);
@@ -318,7 +282,7 @@ class DaehaaApp {
 
     setupLazyLoading() {
         if ('IntersectionObserver' in window) {
-            const lazyImages = this.safeQuerySelectorAll('img[data-src]');
+            const lazyImages = document.querySelectorAll('img[data-src]');
             const imageObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -335,7 +299,7 @@ class DaehaaApp {
     }
 
     setupClickableElements() {
-        this.safeQuerySelectorAll('a:not(.btn)').forEach(link => {
+        document.querySelectorAll('a:not(.btn)').forEach(link => {
             if (link && !link.classList.contains('clickable-element')) {
                 link.classList.add('clickable-element');
             }
@@ -343,8 +307,6 @@ class DaehaaApp {
     }
 
     setupFooterSupport() {
-        console.log('🦶 Setting up footer support...');
-        
         if ('MutationObserver' in window) {
             const footerObserver = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
@@ -370,15 +332,24 @@ class DaehaaApp {
             }, 100);
         }
     }
+
+    setupScrollProgress() {
+        const scrollProgress = document.querySelector('.scroll-progress-bar');
+        
+        if (!scrollProgress) return;
+        
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            scrollProgress.style.width = scrolled + '%';
+        });
+    }
 }
 
 // Инициализация приложения
 (function initializeApp() {
-    console.log('🔄 Initializing app...');
-    
     if (!window.DaehaaApp) {
         window.DaehaaApp = new DaehaaApp();
-        console.log('✅ DaehaaApp initialized');
     }
 })();
 
@@ -426,11 +397,37 @@ window.toggleLanguage = function() {
     if (window.i18n && window.i18n.switchLanguage) {
         window.i18n.switchLanguage(newLang);
     } else {
-        // Fallback if i18n is not available
         localStorage.setItem('preferredLang', newLang);
         window.updateLanguageSwitcher(newLang);
         location.reload();
     }
 };
 
-console.log('✅ main.js loaded - ready!');
+// Функция для тестирования мобильного меню (только для разработки)
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    window.testMobileMenu = function() {
+        const burgerBtn = document.querySelector('.burger-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        console.log('🔍 Тест мобильного меню:');
+        console.log('Бургер кнопка:', burgerBtn);
+        console.log('Мобильное меню:', mobileMenu);
+        
+        if (burgerBtn && mobileMenu) {
+            console.log('✅ Элементы найдены');
+            
+            const isOpen = mobileMenu.classList.contains('active');
+            console.log('Меню ' + (isOpen ? 'открыто' : 'закрыто'));
+            
+            // Имитация клика
+            burgerBtn.click();
+            
+            setTimeout(() => {
+                const newState = mobileMenu.classList.contains('active');
+                console.log('После клика меню ' + (newState ? 'открыто' : 'закрыто'));
+            }, 500);
+        } else {
+            console.log('❌ Элементы не найдены');
+        }
+    };
+}
