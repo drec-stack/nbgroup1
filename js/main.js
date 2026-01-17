@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded - CENTRALIZED BURGER MENU CONTROL');
+console.log('🚀 main.js loaded - SIMPLIFIED WORKING VERSION');
 
 // ===== ГЛОБАЛЬНЫЙ ОБЪЕКТ ПРИЛОЖЕНИЯ =====
 window.NBGroupApp = {
@@ -7,8 +7,7 @@ window.NBGroupApp = {
         isMobile: window.innerWidth <= 900,
         currentPage: '',
         language: localStorage.getItem('preferredLang') || 'ru',
-        menuOpen: false,
-        scrollY: 0
+        menuOpen: false
     },
     
     // Инициализация
@@ -16,7 +15,7 @@ window.NBGroupApp = {
         console.log('🎬 Initializing NB Group App...');
         
         this.detectCurrentPage();
-        this.setupBurgerMenu();
+        this.setupBurgerMenu(); // ТОЛЬКО ОДИН ИСТОЧНИК УПРАВЛЕНИЯ
         this.setupSmoothScroll();
         this.setupActiveNav();
         this.setupLanguageSwitcher();
@@ -26,9 +25,6 @@ window.NBGroupApp = {
         this.setupGlobalEvents();
         
         console.log('✅ NB Group App initialized');
-        console.log('📱 Mobile:', this.state.isMobile);
-        console.log('📄 Page:', this.state.currentPage);
-        console.log('🌐 Language:', this.state.language);
     },
     
     // Определение текущей страницы
@@ -37,204 +33,91 @@ window.NBGroupApp = {
         const page = path.split('/').pop() || 'index.html';
         this.state.currentPage = page;
         
-        // Добавляем класс для страницы
         const pageClass = page.replace('.html', '') + '-page';
         if (pageClass !== '-page') {
             document.body.classList.add(pageClass);
         }
     },
     
-    // ===== БУРГЕР МЕНЮ - ЕДИНСТВЕННЫЙ ИСТОЧНИК УПРАВЛЕНИЯ =====
+    // ===== БУРГЕР МЕНЮ - ПРОСТОЙ И РАБОЧИЙ =====
     setupBurgerMenu() {
-        console.log('🍔 Setting up burger menu - SINGLE SOURCE OF TRUTH');
+        console.log('🍔 Setting up SIMPLE burger menu...');
         
-        // Основная функция настройки бургер-меню
-        const setupBurgerLogic = () => {
+        // Функция настройки
+        const setup = () => {
             const burgerBtn = document.querySelector('.burger-btn');
             const mobileMenu = document.querySelector('.mobile-menu');
             
-            if (!burgerBtn) {
-                console.warn('⚠️ Burger button not found in DOM');
-                
-                // Попробуем создать бургер-кнопку если её нет
-                setTimeout(() => this.createBurgerButtonIfMissing(), 100);
-                return;
-            }
-            
-            if (!mobileMenu) {
-                console.error('❌ Mobile menu not found in DOM');
+            if (!burgerBtn || !mobileMenu) {
+                console.log('⚠️ Elements not found, retrying...');
+                setTimeout(setup, 500);
                 return;
             }
             
             console.log('✅ Burger menu elements found');
             
-            // Удаляем старые обработчики если есть
+            // Удаляем старые обработчики
             const newBurgerBtn = burgerBtn.cloneNode(true);
             burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
             
-            // ГАРАНТИРУЕМ начальное состояние - меню ЗАКРЫТО
-            this.closeMobileMenu();
+            // Гарантируем начальное состояние
+            mobileMenu.classList.remove('active');
+            newBurgerBtn.classList.remove('active');
+            newBurgerBtn.setAttribute('aria-expanded', 'false');
             
-            // Обработчик клика на бургер
+            // Простой обработчик клика
             newBurgerBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                this.toggleMobileMenu();
+                
+                const isOpen = mobileMenu.classList.contains('active');
+                
+                if (isOpen) {
+                    // Закрыть меню
+                    mobileMenu.classList.remove('active');
+                    newBurgerBtn.classList.remove('active');
+                    newBurgerBtn.setAttribute('aria-expanded', 'false');
+                    newBurgerBtn.setAttribute('aria-label', 'Открыть меню');
+                    document.body.style.overflow = '';
+                    this.state.menuOpen = false;
+                    console.log('➖ Menu closed');
+                } else {
+                    // Открыть меню
+                    mobileMenu.classList.add('active');
+                    newBurgerBtn.classList.add('active');
+                    newBurgerBtn.setAttribute('aria-expanded', 'true');
+                    newBurgerBtn.setAttribute('aria-label', 'Закрыть меню');
+                    document.body.style.overflow = 'hidden';
+                    this.state.menuOpen = true;
+                    console.log('➕ Menu opened');
+                }
             });
             
-            // Закрытие при клике на ссылки в мобильном меню
-            const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link, .mobile-lang-btn, .mobile-header-btn');
+            // Закрытие при клике на ссылки
+            const mobileLinks = mobileMenu.querySelectorAll('a, button');
             mobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
                     setTimeout(() => {
-                        this.closeMobileMenu();
+                        mobileMenu.classList.remove('active');
+                        newBurgerBtn.classList.remove('active');
+                        newBurgerBtn.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                        this.state.menuOpen = false;
                     }, 300);
                 });
             });
             
-            // Закрытие при клике вне меню
-            document.addEventListener('click', (e) => {
-                if (this.state.menuOpen && 
-                    !mobileMenu.contains(e.target) && 
-                    !newBurgerBtn.contains(e.target)) {
-                    this.closeMobileMenu();
-                }
-            });
-            
-            // Закрытие по Escape
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && this.state.menuOpen) {
-                    this.closeMobileMenu();
-                }
-            });
-            
-            // Предотвращение скролла при открытом меню
-            mobileMenu.addEventListener('touchmove', (e) => {
-                if (this.state.menuOpen) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
-            
-            console.log('✅ Burger menu logic setup complete');
+            console.log('✅ Burger menu setup complete');
         };
         
         // Первый запуск
-        setupBurgerLogic();
+        setup();
         
-        // Повторная попытка через 500мс
-        setTimeout(setupBurgerLogic, 500);
-        
-        // Повторная попытка после загрузки компонентов
+        // Запуск после загрузки компонентов
         window.addEventListener('componentsLoaded', () => {
-            console.log('🔄 Components loaded, re-setting up burger menu');
-            setTimeout(setupBurgerLogic, 300);
+            console.log('🔄 Re-setting up burger menu after components');
+            setTimeout(setup, 300);
         });
-        
-        // Финальная попытка через 2 секунды
-        setTimeout(setupBurgerLogic, 2000);
-    },
-    
-    // Создать бургер-кнопку если она отсутствует
-    createBurgerButtonIfMissing() {
-        const headerRightMobile = document.querySelector('.header-right-mobile');
-        if (!headerRightMobile) {
-            console.error('❌ .header-right-mobile not found');
-            return;
-        }
-        
-        // Проверяем, есть ли уже бургер-кнопка
-        if (document.querySelector('.burger-btn')) return;
-        
-        console.log('🛠️ Creating missing burger button...');
-        
-        const burgerBtn = document.createElement('button');
-        burgerBtn.className = 'burger-btn';
-        burgerBtn.id = 'burger-btn';
-        burgerBtn.setAttribute('aria-label', 'Открыть меню');
-        burgerBtn.setAttribute('aria-expanded', 'false');
-        burgerBtn.innerHTML = '<span></span><span></span><span></span>';
-        
-        // Вставляем в правильное место
-        const langSwitcher = headerRightMobile.querySelector('.language-switcher');
-        if (langSwitcher) {
-            langSwitcher.after(burgerBtn);
-        } else {
-            headerRightMobile.appendChild(burgerBtn);
-        }
-        
-        console.log('✅ Burger button created');
-        
-        // Перезапускаем настройку
-        setTimeout(() => this.setupBurgerMenu(), 100);
-    },
-    
-    // Переключение мобильного меню
-    toggleMobileMenu() {
-        const burgerBtn = document.querySelector('.burger-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        
-        if (!burgerBtn || !mobileMenu) {
-            console.error('❌ Cannot toggle menu: elements not found');
-            return;
-        }
-        
-        if (this.state.menuOpen) {
-            this.closeMobileMenu();
-        } else {
-            this.openMobileMenu();
-        }
-    },
-    
-    // Открыть мобильное меню
-    openMobileMenu() {
-        const burgerBtn = document.querySelector('.burger-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        
-        if (!burgerBtn || !mobileMenu) {
-            console.error('❌ Cannot open menu: elements not found');
-            return;
-        }
-        
-        // Активируем меню
-        mobileMenu.classList.add('active');
-        mobileMenu.style.pointerEvents = 'auto';
-        
-        // Активируем бургер
-        burgerBtn.classList.add('active');
-        burgerBtn.setAttribute('aria-expanded', 'true');
-        burgerBtn.setAttribute('aria-label', 'Закрыть меню');
-        
-        // Блокируем скролл body
-        document.body.style.overflow = 'hidden';
-        
-        this.state.menuOpen = true;
-        console.log('➕ Mobile menu opened');
-    },
-    
-    // Закрыть мобильное меню
-    closeMobileMenu() {
-        const burgerBtn = document.querySelector('.burger-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        
-        if (!burgerBtn || !mobileMenu) {
-            console.error('❌ Cannot close menu: elements not found');
-            return;
-        }
-        
-        // Деактивируем меню
-        mobileMenu.classList.remove('active');
-        mobileMenu.style.pointerEvents = 'none';
-        
-        // Деактивируем бургер
-        burgerBtn.classList.remove('active');
-        burgerBtn.setAttribute('aria-expanded', 'false');
-        burgerBtn.setAttribute('aria-label', 'Открыть меню');
-        
-        // Разблокируем скролл body
-        document.body.style.overflow = '';
-        
-        this.state.menuOpen = false;
-        console.log('➖ Mobile menu closed');
     },
     
     // ===== ПЛАВНАЯ ПРОКРУТКА =====
@@ -242,11 +125,9 @@ window.NBGroupApp = {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
-                
                 if (href === '#') return;
                 
                 e.preventDefault();
-                
                 const targetId = href.startsWith('#') ? href : '#' + href.split('#')[1];
                 const targetElement = document.querySelector(targetId);
                 
@@ -261,9 +142,6 @@ window.NBGroupApp = {
                     });
 
                     history.pushState(null, null, targetId);
-                    
-                    // Закрываем мобильное меню если открыто
-                    this.closeMobileMenu();
                 }
             });
         });
@@ -280,13 +158,10 @@ window.NBGroupApp = {
             
             if (href === currentPage || 
                 (currentPage === '' && href === 'index.html') ||
-                (currentPage === '/' && href === 'index.html') ||
-                (currentPage === 'index.html' && href === 'index.html')) {
+                (currentPage === '/' && href === 'index.html')) {
                 link.classList.add('active');
             }
         });
-        
-        console.log(`✅ Active nav setup for page: ${currentPage}`);
     },
     
     // ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА =====
@@ -296,7 +171,8 @@ window.NBGroupApp = {
         if (langBtns.length === 0) return;
         
         // Устанавливаем текущий язык
-        this.updateLanguageUI(this.state.language);
+        const currentLang = localStorage.getItem('preferredLang') || 'ru';
+        this.updateLanguageUI(currentLang);
         
         // Обработчики для кнопок языка
         langBtns.forEach(btn => {
@@ -327,25 +203,16 @@ window.NBGroupApp = {
             switcher.setAttribute('data-current-lang', lang);
         });
         
-        // Сохраняем в localStorage
         localStorage.setItem('preferredLang', lang);
         this.state.language = lang;
-        
-        console.log(`🌐 Language switched to: ${lang}`);
     },
     
     switchLanguage(lang) {
-        // Если есть i18n система, используем ее
         if (window.i18n && typeof window.i18n.switchLanguage === 'function') {
             window.i18n.switchLanguage(lang);
         } else {
             this.updateLanguageUI(lang);
-            // Можно добавить перезагрузку страницы или AJAX загрузку контента
-            // location.reload();
         }
-        
-        // Закрываем меню если открыто
-        this.closeMobileMenu();
     },
     
     // ===== ЭФФЕКТЫ ПРИ СКРОЛЛЕ =====
@@ -356,19 +223,17 @@ window.NBGroupApp = {
         if (!header) return;
         
         window.addEventListener('scroll', () => {
-            this.state.scrollY = window.pageYOffset;
+            const scrollY = window.pageYOffset;
             
-            // Эффект для хедера
-            if (this.state.scrollY > 100) {
+            if (scrollY > 100) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
             
-            // Прогресс скролла
             if (scrollProgress) {
                 const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolled = (this.state.scrollY / windowHeight) * 100;
+                const scrolled = (scrollY / windowHeight) * 100;
                 scrollProgress.style.width = scrolled + '%';
             }
         });
@@ -383,88 +248,25 @@ window.NBGroupApp = {
                 e.preventDefault();
                 this.handleFormSubmit(form);
             });
-            
-            // Валидация в реальном времени
-            const inputs = form.querySelectorAll('input, textarea, select');
-            inputs.forEach(input => {
-                input.addEventListener('blur', () => {
-                    this.validateField(input);
-                });
-            });
         });
-    },
-    
-    validateField(field) {
-        const value = field.value.trim();
-        const parent = field.closest('.form-group');
-        
-        if (!parent) return true;
-        
-        parent.classList.remove('error', 'success');
-        
-        if (field.hasAttribute('required') && !value) {
-            parent.classList.add('error');
-            return false;
-        }
-        
-        if (field.type === 'email' && value) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(value)) {
-                parent.classList.add('error');
-                return false;
-            }
-        }
-        
-        if (value) {
-            parent.classList.add('success');
-        }
-        
-        return true;
     },
     
     async handleFormSubmit(form) {
-        const formData = new FormData(form);
         const submitBtn = form.querySelector('button[type="submit"]');
         const originalText = submitBtn ? submitBtn.innerHTML : '';
         
-        // Валидация всех полей
-        let isValid = true;
-        const requiredFields = form.querySelectorAll('[required]');
-        requiredFields.forEach(field => {
-            if (!this.validateField(field)) {
-                isValid = false;
-            }
-        });
-        
-        if (!isValid) {
-            this.showNotification('Пожалуйста, заполните все обязательные поля', 'error');
-            return;
-        }
-        
-        // Блокируем кнопку
         if (submitBtn) {
-            submitBtn.innerHTML = '<span class="loading-spinner"></span> Отправка...';
+            submitBtn.innerHTML = 'Отправка...';
             submitBtn.disabled = true;
         }
         
         try {
-            // Имитация отправки (замените на реальный запрос)
             await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            this.showNotification('Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.', 'success');
+            this.showNotification('Сообщение отправлено!', 'success');
             form.reset();
-            
-            // Сбрасываем валидацию
-            const formGroups = form.querySelectorAll('.form-group');
-            formGroups.forEach(group => {
-                group.classList.remove('error', 'success');
-            });
-            
         } catch (error) {
-            this.showNotification('Ошибка отправки. Пожалуйста, попробуйте еще раз.', 'error');
-            console.error('Form submit error:', error);
+            this.showNotification('Ошибка отправки', 'error');
         } finally {
-            // Разблокируем кнопку
             if (submitBtn) {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
@@ -473,17 +275,13 @@ window.NBGroupApp = {
     },
     
     showNotification(message, type = 'info') {
-        // Удаляем старые уведомления
-        const oldNotifications = document.querySelectorAll('.app-notification');
-        oldNotifications.forEach(n => n.remove());
+        console.log(`📢 ${type}: ${message}`);
         
-        // Создаем новое уведомление
         const notification = document.createElement('div');
         notification.className = `app-notification notification-${type}`;
         notification.innerHTML = `
             <div class="notification-content">
                 <span>${message}</span>
-                <button class="notification-close" aria-label="Закрыть">×</button>
             </div>
         `;
         
@@ -491,63 +289,28 @@ window.NBGroupApp = {
             position: fixed;
             top: 100px;
             right: 20px;
-            background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+            background: ${type === 'success' ? '#4CAF50' : '#f44336'};
             color: white;
             padding: 16px 24px;
             border-radius: 10px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
             z-index: 10000;
-            transform: translateX(400px);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            max-width: 400px;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
         `;
         
         document.body.appendChild(notification);
         
-        // Анимация появления
-        requestAnimationFrame(() => {
-            notification.style.transform = 'translateX(0)';
-        });
-        
-        // Кнопка закрытия
-        const closeBtn = notification.querySelector('.notification-close');
-        closeBtn.addEventListener('click', () => {
-            notification.style.transform = 'translateX(400px)';
-            setTimeout(() => notification.remove(), 400);
-        });
-        
-        // Автоматическое закрытие
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.style.transform = 'translateX(400px)';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                }, 400);
-            }
-        }, 5000);
+        setTimeout(() => notification.remove(), 3000);
     },
     
     // ===== ЛЕНИВАЯ ЗАГРУЗКА =====
     setupLazyLoading() {
         if ('IntersectionObserver' in window) {
             const lazyImages = document.querySelectorAll('img[data-src]');
-            
             const imageObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
                         img.src = img.dataset.src;
-                        
-                        // Убираем атрибут после загрузки
-                        img.onload = () => {
-                            img.removeAttribute('data-src');
-                            img.classList.add('loaded');
-                        };
-                        
+                        img.removeAttribute('data-src');
                         imageObserver.unobserve(img);
                     }
                 });
@@ -559,180 +322,61 @@ window.NBGroupApp = {
     
     // ===== ГЛОБАЛЬНЫЕ СОБЫТИЯ =====
     setupGlobalEvents() {
-        // Ресайз окна
-        let resizeTimeout;
         window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                const wasMobile = this.state.isMobile;
-                this.state.isMobile = window.innerWidth <= 900;
-                
-                // Если переключились на мобильный вид и меню было открыто - закрываем
-                if (!wasMobile && this.state.isMobile && this.state.menuOpen) {
-                    this.closeMobileMenu();
-                }
-                
-                console.log(`🔄 Window resized: ${window.innerWidth}px (${this.state.isMobile ? 'mobile' : 'desktop'})`);
-            }, 250);
+            this.state.isMobile = window.innerWidth <= 900;
         });
         
-        // Событие загрузки компонентов
         window.addEventListener('componentsLoaded', () => {
-            console.log('🔄 Re-initializing after components load');
             setTimeout(() => {
                 this.setupBurgerMenu();
                 this.setupActiveNav();
                 this.setupLanguageSwitcher();
             }, 300);
         });
-        
-        // Обработка касаний для мобильных
-        if ('ontouchstart' in window) {
-            document.addEventListener('touchstart', () => {}, { passive: true });
-        }
     }
-};
-
-// ===== ГЛОБАЛЬНЫЕ УТИЛИТЫ =====
-window.debounce = function(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-};
-
-window.throttle = function(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    };
 };
 
 // ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ =====
-window.openMobileMenu = () => window.NBGroupApp?.openMobileMenu();
-window.closeMobileMenu = () => window.NBGroupApp?.closeMobileMenu();
-window.toggleMobileMenu = () => window.NBGroupApp?.toggleMobileMenu();
-window.switchLanguage = (lang) => window.NBGroupApp?.switchLanguage(lang);
-window.showNotification = (msg, type) => window.NBGroupApp?.showNotification(msg, type);
+window.openMobileMenu = () => {
+    const menu = document.querySelector('.mobile-menu');
+    const burger = document.querySelector('.burger-btn');
+    if (menu && burger) {
+        menu.classList.add('active');
+        burger.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+};
 
-// ===== ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ =====
+window.closeMobileMenu = () => {
+    const menu = document.querySelector('.mobile-menu');
+    const burger = document.querySelector('.burger-btn');
+    if (menu && burger) {
+        menu.classList.remove('active');
+        burger.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+};
+
+// ===== ИНИЦИАЛИЗАЦИЯ =====
 (function initializeApp() {
     console.log('🚀 Starting app initialization...');
     
-    // Ждем загрузки DOM
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('📄 DOM fully loaded');
-            setTimeout(() => {
-                window.NBGroupApp.init();
-            }, 100);
+            setTimeout(() => window.NBGroupApp.init(), 100);
         });
     } else {
-        console.log('📄 DOM already loaded');
-        setTimeout(() => {
-            window.NBGroupApp.init();
-        }, 100);
+        setTimeout(() => window.NBGroupApp.init(), 100);
     }
-    
-    // Запуск после загрузки компонентов
-    window.initAfterComponents = function() {
-        console.log('🔄 Initializing after components load');
-        if (window.NBGroupApp && typeof window.NBGroupApp.init === 'function') {
-            window.NBGroupApp.init();
-        }
-    };
 })();
 
-// ===== ТЕСТОВЫЕ ФУНКЦИИ ДЛЯ РАЗРАБОТКИ =====
-if (window.location.hostname.includes('localhost') || 
-    window.location.hostname.includes('127.0.0.1') || 
-    window.location.hostname.includes('github.io')) {
-    
-    window.debugApp = function() {
-        console.log('🔍 App Debug Info:');
-        console.log('------------------');
-        console.log('State:', window.NBGroupApp?.state);
-        console.log('Burger button:', document.querySelector('.burger-btn'));
-        console.log('Mobile menu:', document.querySelector('.mobile-menu'));
-        console.log('Menu open:', window.NBGroupApp?.state.menuOpen);
-        console.log('Components loaded:', document.body.classList.contains('components-loaded'));
-        console.log('Current page:', window.NBGroupApp?.state.currentPage);
-        console.log('Language:', window.NBGroupApp?.state.language);
-        
-        // Проверяем стили
-        const menu = document.querySelector('.mobile-menu');
-        if (menu) {
-            console.log('Menu styles:', {
-                transform: getComputedStyle(menu).transform,
-                visibility: getComputedStyle(menu).visibility,
-                opacity: getComputedStyle(menu).opacity,
-                display: getComputedStyle(menu).display
-            });
-        }
-    };
-    
+// ===== ТЕСТОВЫЕ ФУНКЦИИ =====
+if (window.location.hostname.includes('github.io')) {
     window.testBurger = function() {
         console.log('🧪 Testing burger menu...');
         const burgerBtn = document.querySelector('.burger-btn');
         if (burgerBtn) {
             burgerBtn.click();
-            setTimeout(() => {
-                console.log('Menu is now:', window.NBGroupApp?.state.menuOpen ? 'OPEN' : 'CLOSED');
-            }, 500);
-        } else {
-            console.log('❌ Burger button not found, creating one...');
-            window.NBGroupApp?.createBurgerButtonIfMissing();
-        }
-    };
-    
-    window.testNotification = function() {
-        window.showNotification('Это тестовое уведомление!', 'success');
-    };
-    
-    window.forceOpenMenu = function() {
-        console.log('🔄 Forcing menu open...');
-        if (window.NBGroupApp) {
-            window.NBGroupApp.openMobileMenu();
-        } else {
-            const menu = document.querySelector('.mobile-menu');
-            const burgerBtn = document.querySelector('.burger-btn');
-            
-            if (menu && burgerBtn) {
-                menu.classList.add('active');
-                menu.style.pointerEvents = 'auto';
-                burgerBtn.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                console.log('✅ Menu forced open');
-            }
-        }
-    };
-    
-    window.forceCloseMenu = function() {
-        console.log('🔄 Forcing menu close...');
-        if (window.NBGroupApp) {
-            window.NBGroupApp.closeMobileMenu();
-        } else {
-            const menu = document.querySelector('.mobile-menu');
-            const burgerBtn = document.querySelector('.burger-btn');
-            
-            if (menu && burgerBtn) {
-                menu.classList.remove('active');
-                menu.style.pointerEvents = 'none';
-                burgerBtn.classList.remove('active');
-                document.body.style.overflow = '';
-                console.log('✅ Menu forced closed');
-            }
         }
     };
 }
@@ -740,28 +384,7 @@ if (window.location.hostname.includes('localhost') ||
 // ===== ФИНАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
 window.addEventListener('load', () => {
     console.log('🎯 Page fully loaded');
-    
-    // Добавляем класс загрузки
     document.body.classList.add('page-loaded');
-    
-    // Финальная проверка бургер-меню
-    setTimeout(() => {
-        if (!document.querySelector('.burger-btn') && window.NBGroupApp) {
-            console.log('⚠️ Burger button still not found, creating one...');
-            window.NBGroupApp.createBurgerButtonIfMissing();
-        }
-    }, 2000);
-    
-    // Финальная гарантия что меню закрыто
-    setTimeout(() => {
-        if (window.NBGroupApp && window.NBGroupApp.state.menuOpen) {
-            console.log('⚠️ Menu was open on load, closing it...');
-            window.NBGroupApp.closeMobileMenu();
-        }
-    }, 100);
-    
-    // Отправляем аналитику
-    console.log('📊 Page load complete at:', new Date().toLocaleTimeString());
 });
 
-console.log('✅ main.js loaded successfully - Burger menu under centralized control');
+console.log('✅ main.js loaded successfully');
