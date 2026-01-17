@@ -58,7 +58,7 @@ body {
     width: 100%;
 }
 
-/* ===== HEADER - ОСНОВНЫЕ СТИЛИ ===== */
+/* ===== HEADER - ОСНОВНЫЕ СТИЛИ (ДЛЯ ВСЕХ СТРАНИЦ) ===== */
 .main-header {
     position: fixed;
     top: 20px;
@@ -107,6 +107,28 @@ body.brandbook-page .main-header {
     left: 50%;
     transform: translateX(-50%);
     margin: 0 auto;
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+/* scrolled состояние для всех страниц */
+body.home-page .main-header.scrolled,
+body.services-page .main-header.scrolled,
+body.contacts-page .main-header.scrolled,
+body.about-page .main-header.scrolled,
+body.portfolio-page .main-header.scrolled,
+body.brandbook-page .main-header.scrolled {
+    background: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(35px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
 }
 
 /* Внутренний контейнер хедера */
@@ -435,10 +457,10 @@ body.brandbook-page .main-header {
         max-width: 100% !important;
         border-radius: 0 !important;
         transform: none !important;
-        background: rgba(10, 10, 20, 0.95) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
         backdrop-filter: blur(30px) !important;
         -webkit-backdrop-filter: blur(30px) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
         border-top: none !important;
         border-left: none !important;
         border-right: none !important;
@@ -447,13 +469,14 @@ body.brandbook-page .main-header {
         margin: 0 !important;
     }
     
-    /* ИСПРАВЛЕНИЕ: Для мобильных тоже не меняем при скролле */
+    /* scrolled состояние для мобильных */
     .main-header.scrolled {
-        background: rgba(10, 10, 20, 0.95) !important;
-        /* Убрано padding: 8px 0 !important; */
+        background: rgba(255, 255, 255, 0.12) !important;
+        backdrop-filter: blur(35px) !important;
+        -webkit-backdrop-filter: blur(35px) !important;
     }
     
-    /* Очищаем все возможные влияния */
+    /* Для всех страниц на мобильных */
     body.home-page .main-header,
     body.services-page .main-header,
     body.contacts-page .main-header,
@@ -463,6 +486,23 @@ body.brandbook-page .main-header {
         left: 0 !important;
         transform: none !important;
         margin: 0 !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(30px) !important;
+        -webkit-backdrop-filter: blur(30px) !important;
+        border-radius: 0 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    /* scrolled состояние для всех страниц на мобильных */
+    body.home-page .main-header.scrolled,
+    body.services-page .main-header.scrolled,
+    body.contacts-page .main-header.scrolled,
+    body.about-page .main-header.scrolled,
+    body.portfolio-page .main-header.scrolled,
+    body.brandbook-page .main-header.scrolled {
+        background: rgba(255, 255, 255, 0.12) !important;
+        backdrop-filter: blur(35px) !important;
+        -webkit-backdrop-filter: blur(35px) !important;
     }
     
     /* Внутренний контейнер хедера для мобильных */
@@ -1974,13 +2014,7 @@ body.portfolio-page {
 }
 
 /* ===== ИСПРАВЛЕНИЯ ДЛЯ СТРАНИЦЫ ПОРТФОЛИО ===== */
-.portfolio-page .main-header {
-    background: rgba(10, 10, 20, 0.95) !important;
-}
-
-.portfolio-page .main-header.scrolled {
-    background: rgba(10, 10, 20, 0.98) !important;
-}
+/* Убраны темные стили для хедера на портфолио */
 
 /* Фикс для контейнеров компонентов */
 #header-container:empty,
@@ -2147,19 +2181,8 @@ body.portfolio-page a:not(.mobile-nav-link) {
     }
 }
 
-/* 8. Фикс для хедера на портфолио */
-body.portfolio-page .main-header {
-    background: rgba(10, 10, 20, 0.95) !important;
-    backdrop-filter: blur(30px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-    z-index: 1000 !important;
-}
-
-body.portfolio-page .main-header.scrolled {
-    background: rgba(10, 10, 20, 0.98) !important;
-    backdrop-filter: blur(35px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
-}
+/* 8. ПРАВИЛЬНЫЙ ПРОЗРАЧНЫЙ ХЕДЕР ДЛЯ ПОРТФОЛИО */
+/* Теперь хедер для портфолио такой же как для всех страниц */
 
 /* 9. Правильный отступ для контента на портфолио */
 body.portfolio-page {
@@ -2300,4 +2323,50 @@ body.portfolio-page .clickable-element {
 body.portfolio-page .mobile-menu-overlay,
 body.portfolio-page .menu-overlay {
     display: none !important;
+}
+
+/* 19. ФИКС: Убеждаемся что хедер портфолио выглядит как на других страницах */
+body.portfolio-page .main-header {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+body.portfolio-page .main-header.scrolled {
+    background: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(35px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+/* На мобильных тоже прозрачный */
+@media (max-width: 900px) {
+    body.portfolio-page .main-header {
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(30px) !important;
+        -webkit-backdrop-filter: blur(30px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    body.portfolio-page .main-header.scrolled {
+        background: rgba(255, 255, 255, 0.12) !important;
+        backdrop-filter: blur(35px) !important;
+        -webkit-backdrop-filter: blur(35px) !important;
+    }
+}
+
+/* 20. Улучшаем видимость элементов на прозрачном фоне */
+body.portfolio-page .nav-link,
+body.portfolio-page .language-switcher,
+body.portfolio-page .btn-primary,
+body.portfolio-page .logo-text,
+body.portfolio-page .logo-mark {
+    opacity: 1 !important;
+    visibility: visible !important;
 }
