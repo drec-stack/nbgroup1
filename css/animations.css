@@ -1017,122 +1017,6 @@
     }
 }
 
-/* ===== FIX FOR LANGUAGE SWITCHER ON ALL PAGES ===== */
-/* КРИТИЧНЫЙ ФИКС: УБИРАЕМ ПРОЗРАЧНОСТЬ ТЕКСТА ПРИ ПЕРЕКЛЮЧЕНИИ ЯЗЫКА ДЛЯ ВСЕХ СТРАНИЦ */
-.home-page [data-i18n],
-.about-page [data-i18n],
-.services-page [data-i18n],
-.portfolio-page [data-i18n],
-.brandbook-page [data-i18n],
-.contacts-page [data-i18n] {
-    opacity: 1 !important;
-    transition: none !important;
-}
-
-.home-page.language-changing [data-i18n],
-.home-page.language-changed [data-i18n],
-.about-page.language-changing [data-i18n],
-.about-page.language-changed [data-i18n],
-.services-page.language-changing [data-i18n],
-.services-page.language-changed [data-i18n],
-.portfolio-page.language-changing [data-i18n],
-.portfolio-page.language-changed [data-i18n],
-.brandbook-page.language-changing [data-i18n],
-.brandbook-page.language-changed [data-i18n],
-.contacts-page.language-changing [data-i18n],
-.contacts-page.language-changed [data-i18n] {
-    opacity: 1 !important;
-    transition: none !important;
-    animation: none !important;
-}
-
-/* ОБЩИЙ ФИКС ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА НА ВСЕХ СТРАНИЦАХ */
-.lang-text {
-    display: inline-block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-/* Гарантируем отображение текста переключателя языка на всех страницах */
-.internal-page .lang-text,
-.about-page .lang-text,
-.services-page .lang-text,
-.portfolio-page .lang-text,
-.brandbook-page .lang-text,
-.contacts-page .lang-text {
-    display: inline-block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    font-weight: 700;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.85);
-}
-
-.internal-page .lang-btn.active .lang-text,
-.about-page .lang-btn.active .lang-text,
-.services-page .lang-btn.active .lang-text,
-.portfolio-page .lang-btn.active .lang-text,
-.brandbook-page .lang-btn.active .lang-text,
-.contacts-page .lang-btn.active .lang-text {
-    color: white;
-}
-
-/* Переопределяем любые анимации для переключателя языка на всех страницах */
-.internal-page [data-i18n],
-.internal-page .lang-btn,
-.internal-page .lang-text,
-.internal-page .lang-flag,
-.about-page [data-i18n],
-.about-page .lang-btn,
-.about-page .lang-text,
-.about-page .lang-flag,
-.services-page [data-i18n],
-.services-page .lang-btn,
-.services-page .lang-text,
-.services-page .lang-flag,
-.portfolio-page [data-i18n],
-.portfolio-page .lang-btn,
-.portfolio-page .lang-text,
-.portfolio-page .lang-flag,
-.brandbook-page [data-i18n],
-.brandbook-page .lang-btn,
-.brandbook-page .lang-text,
-.brandbook-page .lang-flag,
-.contacts-page [data-i18n],
-.contacts-page .lang-btn,
-.contacts-page .lang-text,
-.contacts-page .lang-flag {
-    opacity: 1 !important;
-    animation: none !important;
-    transition: none !important;
-    visibility: visible !important;
-}
-
-/* ФИКС ДЛЯ МОБИЛЬНЫХ ВЕРСИЙ ПЕРЕКЛЮЧАТЕЛЯ */
-@media (max-width: 768px) {
-    .language-switcher.mobile-only-flags .lang-text {
-        display: none !important;
-    }
-    
-    .internal-page .language-switcher.mobile-only-flags .lang-text,
-    .about-page .language-switcher.mobile-only-flags .lang-text,
-    .services-page .language-switcher.mobile-only-flags .lang-text,
-    .portfolio-page .language-switcher.mobile-only-flags .lang-text,
-    .brandbook-page .language-switcher.mobile-only-flags .lang-text,
-    .contacts-page .language-switcher.mobile-only-flags .lang-text {
-        display: none !important;
-    }
-}
-
-/* Убираем возможные переопределения из других стилей */
-.lang-text {
-    text-shadow: none !important;
-    background: none !important;
-    -webkit-text-fill-color: unset !important;
-    -webkit-background-clip: unset !important;
-    background-clip: unset !important;
-}
-
 /* ===== FINAL ANIMATION STATES ===== */
 .animated-element.visible,
 .fade-in-down.animated,
@@ -1721,10 +1605,6 @@
     
     /* Отключаем некоторые анимации для производительности */
     .bg-layer {
-        animation: none !important;
-    }
-    
-    .parallax-container {
         animation: none !important;
     }
 }
