@@ -19,6 +19,23 @@
     <script src="js/portfolio.js" defer></script>
     
     <style>
+        /* КРИТИЧЕСКИЙ ФИКС ДЛЯ ХЕДЕРА НА ПОРТФОЛИО */
+        body.portfolio-page .main-header,
+        body.portfolio-page .main-header * {
+            pointer-events: auto !important;
+        }
+        
+        body.portfolio-page .main-header a,
+        body.portfolio-page .main-header button,
+        body.portfolio-page .main-header .logo,
+        body.portfolio-page .main-header .nav-link,
+        body.portfolio-page .main-header .burger-btn,
+        body.portfolio-page .main-header .lang-btn,
+        body.portfolio-page .main-header .start-project-btn {
+            cursor: pointer !important;
+            pointer-events: auto !important;
+        }
+        
         /* Дополнительные стили для страницы портфолио */
         .portfolio-page {
             background: #0a0a0a;
@@ -91,10 +108,12 @@
         /* Фикс для хедера на странице портфолио */
         .portfolio-page .main-header {
             background: rgba(10, 10, 20, 0.95) !important;
+            pointer-events: auto !important;
         }
         
         .portfolio-page .main-header.scrolled {
             background: rgba(10, 10, 20, 0.98) !important;
+            pointer-events: auto !important;
         }
         
         @media (max-width: 900px) {
@@ -505,121 +524,65 @@
     <div id="footer-container"></div>
 
     <script>
-        // Инициализация страницы портфолио
+        // КРИТИЧЕСКИЙ ФИКС ДЛЯ ХЕДЕРА НА ПОРТФОЛИО
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 Страница портфолио загружена');
+            console.log('🚨 EMERGENCY FIX: Initializing portfolio header fix...');
             
-            // Функция для инициализации фильтрации
-            function setupPortfolioFilter() {
-                const filterBtns = document.querySelectorAll('.filter-btn');
-                const portfolioItems = document.querySelectorAll('.portfolio-item');
-                
-                if (!filterBtns.length) {
-                    console.warn('⚠️ Кнопки фильтра не найдены');
+            // Функция для экстренного исправления хедера
+            function emergencyHeaderFix() {
+                const header = document.querySelector('.main-header');
+                if (!header) {
+                    console.log('⏳ Header not found yet, waiting...');
+                    setTimeout(emergencyHeaderFix, 500);
                     return;
                 }
                 
-                if (!portfolioItems.length) {
-                    console.warn('⚠️ Элементы портфолио не найдены');
-                    return;
-                }
+                console.log('🚨 EMERGENCY FIX: Found header, applying fixes...');
                 
-                console.log(`🎯 Настроен фильтр портфолио: ${filterBtns.length} кнопок, ${portfolioItems.length} элементов`);
+                // Принудительно убираем все блокировки
+                header.style.cssText += 'pointer-events: auto !important; cursor: default !important; z-index: 1000 !important;';
                 
-                filterBtns.forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        // Обновляем активную кнопку
-                        filterBtns.forEach(b => b.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        const filter = this.getAttribute('data-filter');
-                        console.log(`🎯 Применен фильтр: ${filter}`);
-                        
-                        // Показываем/скрываем элементы
-                        portfolioItems.forEach(item => {
-                            if (filter === 'all' || item.getAttribute('data-category') === filter) {
-                                item.style.display = 'block';
-                                setTimeout(() => {
-                                    item.style.opacity = '1';
-                                    item.style.transform = 'translateY(0)';
-                                }, 10);
-                            } else {
-                                item.style.opacity = '0';
-                                item.style.transform = 'translateY(20px)';
-                                setTimeout(() => {
-                                    item.style.display = 'none';
-                                }, 300);
-                            }
-                        });
+                // Исправляем все элементы внутри хедера
+                const allElements = header.querySelectorAll('*');
+                allElements.forEach(el => {
+                    el.style.pointerEvents = 'auto';
+                    el.style.cursor = 'default';
+                });
+                
+                // Особые стили для кликабельных элементов
+                const clickable = header.querySelectorAll('a, button, .logo, .nav-link, .burger-btn, .lang-btn, .start-project-btn');
+                clickable.forEach(el => {
+                    el.style.cssText += 'pointer-events: auto !important; cursor: pointer !important; position: relative !important; z-index: 1001 !important;';
+                    
+                    // Добавляем диагностику кликов
+                    el.addEventListener('click', function(e) {
+                        console.log('✅ EMERGENCY FIX: Header element clicked!', this.tagName, this.className);
                     });
                 });
-            }
-            
-            // Функция для проверки загрузки компонентов
-            function checkComponentsAndInit() {
-                // Проверяем наличие компонентов
-                const header = document.querySelector('.main-header');
-                const burgerBtn = document.querySelector('.burger-btn');
                 
-                console.log('🔍 Проверка компонентов:');
-                console.log('- Header:', header ? '✅ Найден' : '❌ Не найден');
-                console.log('- Burger button:', burgerBtn ? '✅ Найден' : '❌ Не найден');
-                
-                // Если компоненты загружены, инициализируем фильтр
-                if (header) {
-                    setupPortfolioFilter();
-                    
-                    // Обновляем переводы если они есть
-                    setTimeout(() => {
-                        if (window.i18n && window.i18n.refresh) {
-                            window.i18n.refresh();
-                        }
-                    }, 500);
-                    
-                    console.log('✅ Портфолио инициализировано');
-                } else {
-                    // Если компоненты еще не загружены, ждем
-                    console.log('⏳ Компоненты еще не загружены, жду...');
-                    setTimeout(checkComponentsAndInit, 500);
-                }
+                console.log('✅ EMERGENCY FIX: Header should be clickable now');
             }
             
-            // Запускаем проверку через 1 секунду
-            setTimeout(checkComponentsAndInit, 1000);
+            // Запускаем немедленно
+            emergencyHeaderFix();
             
-            // Альтернативная инициализация через 5 секунд (на всякий случай)
-            setTimeout(() => {
-                if (!document.querySelector('.main-header')) {
-                    console.warn('⚠️ Компоненты не загрузились, инициализирую напрямую');
-                    setupPortfolioFilter();
-                }
-            }, 5000);
-        });
-        
-        // Слушаем события загрузки компонентов
-        window.addEventListener('componentsFullyLoaded', function() {
-            console.log('🎯 Компоненты загружены, обновляю портфолио...');
+            // Повторяем через 1 секунду
+            setTimeout(emergencyHeaderFix, 1000);
             
-            // Обновляем фильтрацию
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const activeBtn = document.querySelector('.filter-btn.active');
-            if (activeBtn) {
-                setTimeout(() => {
-                    activeBtn.click();
-                }, 100);
-            }
-        });
-        
-        // Слушаем изменение языка
-        window.addEventListener('languageChanged', function() {
-            console.log('🌍 Язык изменен, обновляю портфолио...');
-            // Обновляем активный фильтр
-            const activeBtn = document.querySelector('.filter-btn.active');
-            if (activeBtn) {
-                setTimeout(() => {
-                    activeBtn.click();
-                }, 100);
-            }
+            // Повторяем через 3 секунды
+            setTimeout(emergencyHeaderFix, 3000);
+            
+            // Слушаем событие загрузки компонентов
+            window.addEventListener('componentsFullyLoaded', function() {
+                console.log('🚨 EMERGENCY FIX: Components loaded, applying final fix...');
+                setTimeout(emergencyHeaderFix, 100);
+            });
+            
+            // Абсолютный фикс на всякий случай
+            window.addEventListener('load', function() {
+                console.log('🚨 ABSOLUTE FIX: Window loaded, final header fix...');
+                setTimeout(emergencyHeaderFix, 500);
+            });
         });
     </script>
 </body>
