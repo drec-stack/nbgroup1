@@ -22,7 +22,7 @@
             transform: translateX(100%);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 80px 20px 40px;
             overflow-y: auto;
         }
@@ -314,7 +314,7 @@
         'use strict';
         
         function initMobileMenu() {
-            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
             
             if (!mobileMenu) {
                 console.error('❌ Mobile menu not found');
@@ -331,9 +331,6 @@
             
             // Настраиваем активные ссылки
             setupActiveNav();
-            
-            // Настраиваем переключатель языка
-            setupLanguageSwitcher();
             
             console.log('✅ Mobile menu initialized');
         }
@@ -354,109 +351,9 @@
             });
         }
         
-        function setupLanguageSwitcher() {
-            const langBtns = document.querySelectorAll('.mobile-lang-btn');
-            
-            if (!langBtns.length) return;
-            
-            const currentLang = localStorage.getItem('preferredLang') || 'ru';
-            updateLanguageState(currentLang);
-            
-            function updateLanguageState(lang) {
-                const switchers = document.querySelectorAll('.mobile-language-switcher');
-                
-                langBtns.forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.getAttribute('data-lang') === lang) {
-                        btn.classList.add('active');
-                    }
-                });
-                
-                switchers.forEach(switcher => {
-                    switcher.setAttribute('data-current-lang', lang);
-                });
-                
-                localStorage.setItem('preferredLang', lang);
-                
-                // Update i18n if available
-                if (window.i18n && window.i18n.smoothSwitchLanguage) {
-                    window.i18n.smoothSwitchLanguage(lang);
-                }
-                
-                window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
-            }
-            
-            langBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const lang = btn.getAttribute('data-lang');
-                    
-                    if (btn.classList.contains('active')) {
-                        return;
-                    }
-                    
-                    updateLanguageState(lang);
-                });
-            });
-        }
-        
-        // Глобальные функции для управления меню
-        window.mobileMenuController = {
-            open: function() {
-                const mobileMenu = document.querySelector('.mobile-menu');
-                const burgerBtn = document.querySelector('#burger-btn');
-                
-                if (mobileMenu) {
-                    mobileMenu.classList.add('active');
-                    if (burgerBtn) {
-                        burgerBtn.classList.add('active');
-                        burgerBtn.setAttribute('aria-expanded', 'true');
-                        burgerBtn.setAttribute('aria-label', 'Закрыть меню');
-                    }
-                    document.body.style.overflow = 'hidden';
-                    document.documentElement.style.overflow = 'hidden';
-                }
-            },
-            
-            close: function() {
-                const mobileMenu = document.querySelector('.mobile-menu');
-                const burgerBtn = document.querySelector('#burger-btn');
-                
-                if (mobileMenu) {
-                    mobileMenu.classList.remove('active');
-                    if (burgerBtn) {
-                        burgerBtn.classList.remove('active');
-                        burgerBtn.setAttribute('aria-expanded', 'false');
-                        burgerBtn.setAttribute('aria-label', 'Открыть меню');
-                    }
-                    document.body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
-            },
-            
-            toggle: function() {
-                const mobileMenu = document.querySelector('.mobile-menu');
-                if (mobileMenu) {
-                    if (mobileMenu.classList.contains('active')) {
-                        this.close();
-                    } else {
-                        this.open();
-                    }
-                }
-            },
-            
-            isOpen: function() {
-                const mobileMenu = document.querySelector('.mobile-menu');
-                return mobileMenu ? mobileMenu.classList.contains('active') : false;
-            }
-        };
-        
-        // Initialize when DOM is ready
+        // Инициализация
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(initMobileMenu, 100);
-            });
+            document.addEventListener('DOMContentLoaded', initMobileMenu);
         } else {
             setTimeout(initMobileMenu, 100);
         }
