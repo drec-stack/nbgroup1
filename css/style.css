@@ -103,8 +103,7 @@ body.home-page .main-header,
 body.services-page .main-header,
 body.contacts-page .main-header,
 body.about-page .main-header,
-body.portfolio-page .main-header,
-body.brandbook-page .main-header {
+body.portfolio-page .main-header {
     left: 50%;
     transform: translateX(-50%);
     margin: 0 auto;
@@ -122,8 +121,7 @@ body.home-page .main-header.scrolled,
 body.services-page .main-header.scrolled,
 body.contacts-page .main-header.scrolled,
 body.about-page .main-header.scrolled,
-body.portfolio-page .main-header.scrolled,
-body.brandbook-page .main-header.scrolled {
+body.portfolio-page .main-header.scrolled {
     background: rgba(255, 255, 255, 0.12) !important;
     backdrop-filter: blur(35px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
@@ -480,8 +478,7 @@ body.brandbook-page .main-header.scrolled {
     body.services-page .main-header,
     body.contacts-page .main-header,
     body.about-page .main-header,
-    body.portfolio-page .main-header,
-    body.brandbook-page .main-header {
+    body.portfolio-page .main-header {
         left: 0 !important;
         transform: none !important;
         margin: 0 !important;
@@ -497,8 +494,7 @@ body.brandbook-page .main-header.scrolled {
     body.services-page .main-header.scrolled,
     body.contacts-page .main-header.scrolled,
     body.about-page .main-header.scrolled,
-    body.portfolio-page .main-header.scrolled,
-    body.brandbook-page .main-header.scrolled {
+    body.portfolio-page .main-header.scrolled {
         background: rgba(10, 10, 20, 0.95) !important;
         backdrop-filter: blur(30px) !important;
         -webkit-backdrop-filter: blur(30px) !important;
@@ -1418,19 +1414,6 @@ li {
 
 .portfolio-grid-section {
     padding: 80px 0;
-}
-
-/* Brandbook page */
-.brandbook-hero {
-    padding: 160px 0 80px;
-}
-
-.brandbook-intro {
-    padding: 120px 0;
-}
-
-.brandbook-cases {
-    padding: 120px 0;
 }
 
 /* ===== ФИКС ДЛЯ ПАРАЛЛАКС-ПРОБЛЕМЫ ===== */
