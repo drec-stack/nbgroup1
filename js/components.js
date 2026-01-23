@@ -235,7 +235,6 @@ class ComponentLoader {
         const aboutPath = this.basePath ? this.basePath + 'about.html' : 'about.html';
         const servicesPath = this.basePath ? this.basePath + 'services.html' : 'services.html';
         const portfolioPath = this.basePath ? this.basePath + 'portfolio.html' : 'portfolio.html';
-        const brandbookPath = this.basePath ? this.basePath + 'brandbook.html' : 'brandbook.html';
         const contactsPath = this.basePath ? this.basePath + 'contacts.html' : 'contacts.html';
         
         switch(component.id) {
@@ -277,7 +276,6 @@ class ComponentLoader {
                             <a href="${aboutPath}" class="mobile-nav-link">О нас</a>
                             <a href="${servicesPath}" class="mobile-nav-link">Услуги</a>
                             <a href="${portfolioPath}" class="mobile-nav-link">Портфолио</a>
-                            <a href="${brandbookPath}" class="mobile-nav-link">Брендбук</a>
                             <a href="${contactsPath}" class="mobile-nav-link">Контакты</a>
                         </nav>
                     </div>
