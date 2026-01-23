@@ -5,7 +5,6 @@
     "portfolio": "Portfolio",
     "about": "About",
     "contact": "Contact",
-    "brandbook": "Brandbook",
     "startProject": "Start Project",
     "brand": "NB Group"
   },
@@ -301,7 +300,6 @@
       "engineering": "Engineering",
       "production": "Production",
       "brand": "Brand",
-      "brandbook": "Brandbook",
       "strategy": "Strategy",
       "marketing": "Marketing"
     },
@@ -415,28 +413,6 @@
         "fullCoverage": "Full Brand Coverage"
       }
     },
-    "brandbook": {
-      "title": "Brandbook Development",
-      "description": "Complete brand guideline systems that ensure consistent brand representation across all platforms and touchpoints with detailed usage rules.",
-      "features": {
-        "brandGuidelines": {
-          "title": "Brand Guidelines",
-          "description": "Comprehensive usage rules and specifications"
-        },
-        "visualStandards": {
-          "title": "Visual Standards",
-          "description": "Logo usage, color systems, and typography"
-        },
-        "applicationExamples": {
-          "title": "Application Examples",
-          "description": "Real-world usage across various media"
-        }
-      },
-      "stats": {
-        "brandbooks": "Brandbooks",
-        "consistency": "Consistency"
-      }
-    },
     "marketing": {
       "title": "Marketing & Promotion",
       "description": "Digital strategies and product promotion to ensure market success and customer engagement.",
@@ -479,100 +455,6 @@
       "title": "Start Your Project",
       "description": "Ready to bring your product idea to life? Let's discuss your project requirements.",
       "button": "Get a Quote"
-    }
-  },
-  "brandbook": {
-    "title": "Brandbook Development | NBGROUP.TECH",
-    "subtitle": "Comprehensive brand identity systems creating memorable and consistent experiences across all touchpoints.",
-    "intro": {
-      "title": "Brandbook is the foundation of a brand",
-      "description": "A brandbook is not just a set of rules, but the foundation on which the entire company image rests. I approach its creation as carefully as I do any product: I study the character of the brand, its audience, its purpose. On the foundation of these meanings, I form a system - from color and font to the logic of presenting materials.",
-      "description1": "We develop brandbooks for companies of any scale. Want a streamlined visual system with thoughtful elements? We'll make sure it becomes your strong tool, not a beautiful folder 'for show'.",
-      "description2": "We create each brandbook individually, taking into account the specifics of the business, target audience and market."
-    },
-    "process": {
-      "title": "Our Brandbook Creation Process",
-      "subtitle": "Structured approach to brand identity development",
-      "research": {
-        "title": "Brand Research",
-        "description": "Market analysis and audience understanding"
-      },
-      "strategy": {
-        "title": "Brand Strategy",
-        "description": "Positioning and messaging"
-      },
-      "identity": {
-        "title": "Visual Identity",
-        "description": "Logo, colors, typography development"
-      },
-      "guidelines": {
-        "title": "Guidelines",
-        "description": "Comprehensive usage documentation"
-      }
-    },
-    "cases": {
-      "title": "Brandbook Cases",
-      "subtitle": "Our latest brand identity projects",
-      "viewCases": "View Cases"
-    },
-    "benefits": {
-      "title": "Why Invest in a Brandbook?",
-      "subtitle": "Key benefits of comprehensive brand guidelines",
-      "consistency": {
-        "title": "Brand Consistency",
-        "description": "Maintaining consistent visual identity across all platforms"
-      },
-      "efficiency": {
-        "title": "Team Efficiency",
-        "description": "Clear guidelines speed up design and decision-making processes"
-      },
-      "recognition": {
-        "title": "Brand Recognition",
-        "description": "Strong visual identity increases memorability and loyalty"
-      },
-      "scalability": {
-        "title": "Easy Scalability",
-        "description": "Simplifies brand expansion to new markets and product lines"
-      }
-    },
-    "cta": {
-      "title": "Develop Your Brand Identity",
-      "description": "Ready to create a powerful brand system that stands out? Let's discuss your brand vision.",
-      "button": "Start Brand Project"
-    },
-    "stats": {
-      "projects": "Projects",
-      "satisfaction": "Satisfied clients",
-      "support": "Support"
-    },
-    "filters": {
-      "all": "All",
-      "web": "Web Design",
-      "mobile": "Mobile Apps",
-      "corporate": "Corporate"
-    },
-    "categories": {
-      "web": "Web Applications",
-      "mobile": "Mobile Applications"
-    },
-    "elements": {
-      "colors": "Colors",
-      "typography": "Typography"
-    },
-    "case1": {
-      "title": "Case 1: EdTech Web Platform",
-      "description": "Brandbook development for an educational platform with focus on friendly and modern design.",
-      "typography": "Montserrat, Open Sans"
-    },
-    "case2": {
-      "title": "Case 2: FinTech Mobile App",
-      "description": "Identity creation for a financial app with emphasis on security and reliability.",
-      "typography": "Inter, Roboto"
-    },
-    "case3": {
-      "title": "Case 3: Corporate Portal",
-      "description": "Brandbook development for a large corporation with international presence.",
-      "typography": "Helvetica Neue, Arial"
     }
   },
   "portfolio": {
@@ -681,11 +563,6 @@
         "title": "Production",
         "description": "Our own production base is a key advantage of the studio.",
         "materials": "We work with metal, plastic, composites and other industrial materials."
-      },
-      "brandbook": {
-        "title": "Brandbook",
-        "description": "We develop brand systems for companies that need to look cohesive and competitive internationally.",
-        "details": "NB GROUP TECH brandbook enhances the product and forms a unified visual language of the company."
       },
       "identity": {
         "title": "Identity Development",
