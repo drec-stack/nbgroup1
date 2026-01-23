@@ -35,7 +35,10 @@ window.NBGroupApp = {
         
         const pageClass = page.replace('.html', '') + '-page';
         if (pageClass !== '-page') {
-            document.body.classList.add(pageClass);
+            // Убираем brandbook-page если он есть
+            if (pageClass !== 'brandbook-page') {
+                document.body.classList.add(pageClass);
+            }
         }
     },
     
