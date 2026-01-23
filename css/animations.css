@@ -1598,7 +1598,7 @@
         animation-duration: 3s;
     }
     
-    /* Уменьшаем сложные анимации на мобильных */
+    /* Уменьшаем сложные анимации для мобильных */
     .gradient-animated {
         animation: gradientShift 20s ease infinite;
     }
