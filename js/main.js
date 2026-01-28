@@ -7,7 +7,8 @@ window.NBGroupApp = {
         isMobile: window.innerWidth <= 900,
         currentPage: '',
         language: localStorage.getItem('preferredLang') || 'ru',
-        menuOpen: false
+        menuOpen: false,
+        headerHidden: false
     },
     
     // Инициализация
@@ -23,6 +24,7 @@ window.NBGroupApp = {
         this.setupForms();
         this.setupLazyLoading();
         this.setupGlobalEvents();
+        this.setupHeaderScrollIntegration();
         
         console.log('✅ NB Group Tech App initialized');
     },
@@ -35,10 +37,41 @@ window.NBGroupApp = {
         
         const pageClass = page.replace('.html', '') + '-page';
         if (pageClass !== '-page') {
-            // Убираем brandbook-page если он есть
             if (pageClass !== 'brandbook-page') {
                 document.body.classList.add(pageClass);
             }
+        }
+    },
+    
+    // ===== ИНТЕГРАЦИЯ С ХЕДЕРОМ =====
+    setupHeaderScrollIntegration() {
+        console.log('🎯 Setting up header scroll integration...');
+        
+        // Проверяем наличие функций из header.html
+        if (typeof window.showHeader === 'function' && 
+            typeof window.hideHeader === 'function') {
+            console.log('✅ Header scroll functions found');
+            
+            // Синхронизируем состояние
+            this.state.headerHidden = document.querySelector('.main-header')?.classList.contains('hidden') || false;
+            
+            // Добавляем глобальные функции для совместимости
+            window.NBGroupApp.showHeader = window.showHeader;
+            window.NBGroupApp.hideHeader = window.hideHeader;
+            window.NBGroupApp.toggleHeader = window.toggleHeader;
+            
+            // Показываем хедер при клике на бургер-меню
+            const burgerBtn = document.querySelector('.burger-btn');
+            if (burgerBtn) {
+                burgerBtn.addEventListener('click', () => {
+                    if (this.state.headerHidden && window.showHeader) {
+                        window.showHeader();
+                        this.state.headerHidden = false;
+                    }
+                });
+            }
+        } else {
+            console.warn('⚠️ Header scroll functions not found');
         }
     },
     
@@ -75,23 +108,9 @@ window.NBGroupApp = {
                 const isOpen = mobileMenu.classList.contains('active');
                 
                 if (isOpen) {
-                    // Закрыть меню
-                    mobileMenu.classList.remove('active');
-                    newBurgerBtn.classList.remove('active');
-                    newBurgerBtn.setAttribute('aria-expanded', 'false');
-                    newBurgerBtn.setAttribute('aria-label', 'Открыть меню');
-                    document.body.style.overflow = '';
-                    this.state.menuOpen = false;
-                    console.log('➖ Menu closed');
+                    this.closeMobileMenu();
                 } else {
-                    // Открыть меню
-                    mobileMenu.classList.add('active');
-                    newBurgerBtn.classList.add('active');
-                    newBurgerBtn.setAttribute('aria-expanded', 'true');
-                    newBurgerBtn.setAttribute('aria-label', 'Закрыть меню');
-                    document.body.style.overflow = 'hidden';
-                    this.state.menuOpen = true;
-                    console.log('➕ Menu opened');
+                    this.openMobileMenu();
                 }
             });
             
@@ -100,11 +119,7 @@ window.NBGroupApp = {
             mobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
                     setTimeout(() => {
-                        mobileMenu.classList.remove('active');
-                        newBurgerBtn.classList.remove('active');
-                        newBurgerBtn.setAttribute('aria-expanded', 'false');
-                        document.body.style.overflow = '';
-                        this.state.menuOpen = false;
+                        this.closeMobileMenu();
                     }, 300);
                 });
             });
@@ -114,33 +129,26 @@ window.NBGroupApp = {
                 if (this.state.menuOpen && 
                     !mobileMenu.contains(e.target) && 
                     !newBurgerBtn.contains(e.target)) {
-                    mobileMenu.classList.remove('active');
-                    newBurgerBtn.classList.remove('active');
-                    newBurgerBtn.setAttribute('aria-expanded', 'false');
-                    document.body.style.overflow = '';
-                    this.state.menuOpen = false;
+                    this.closeMobileMenu();
                 }
             });
             
             console.log('✅ Burger menu setup complete');
         };
         
-        // Первый запуск
         setup();
         
-        // Запуск после загрузки компонентов
         window.addEventListener('componentsLoaded', () => {
             console.log('🔄 Re-setting up burger menu after components');
             setTimeout(setup, 300);
         });
     },
     
-    // ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА - ОБНОВЛЕННЫЙ =====
+    // ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА =====
     setupLanguageSwitcher() {
         console.log('🌍 Setting up language switcher...');
         
         const setup = () => {
-            // Выбираем ВСЕ кнопки языка на странице
             const langBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
             
             if (langBtns.length === 0) {
@@ -151,17 +159,13 @@ window.NBGroupApp = {
             
             console.log(`✅ Found ${langBtns.length} language buttons`);
             
-            // Устанавливаем текущий язык
             const currentLang = localStorage.getItem('preferredLang') || 'ru';
             this.updateAllLanguageSwitchers(currentLang);
             
-            // Обработчики для кнопок языка
             langBtns.forEach(btn => {
-                // Удаляем старые обработчики
                 const newBtn = btn.cloneNode(true);
                 btn.parentNode.replaceChild(newBtn, btn);
                 
-                // Добавляем новый обработчик
                 newBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -179,33 +183,27 @@ window.NBGroupApp = {
         
         setup();
         
-        // Переустановка после загрузки компонентов
         window.addEventListener('componentsLoaded', () => {
             setTimeout(setup, 300);
         });
     },
     
-    // Обновляет ВСЕ переключатели языка на странице
     updateAllLanguageSwitchers(lang) {
-        // Обновляем десктопные переключатели
         const desktopSwitchers = document.querySelectorAll('.language-switcher');
         desktopSwitchers.forEach(switcher => {
             switcher.setAttribute('data-current-lang', lang);
         });
         
-        // Обновляем мобильные переключатели в хедере
         const mobileHeaderSwitchers = document.querySelectorAll('.mobile-only-flags');
         mobileHeaderSwitchers.forEach(switcher => {
             switcher.setAttribute('data-current-lang', lang);
         });
         
-        // Обновляем переключатели в мобильном меню
         const mobileMenuSwitchers = document.querySelectorAll('.mobile-language-switcher');
         mobileMenuSwitchers.forEach(switcher => {
             switcher.setAttribute('data-current-lang', lang);
         });
         
-        // Обновляем активные кнопки
         const allLangBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
         allLangBtns.forEach(btn => {
             btn.classList.remove('active');
@@ -214,7 +212,6 @@ window.NBGroupApp = {
             }
         });
         
-        // Обновляем состояние
         this.state.language = lang;
         localStorage.setItem('preferredLang', lang);
     },
@@ -222,7 +219,6 @@ window.NBGroupApp = {
     switchLanguage(lang) {
         this.updateAllLanguageSwitchers(lang);
         
-        // Если есть i18n система, используем ее
         if (window.i18n) {
             if (typeof window.i18n.smoothSwitchLanguage === 'function') {
                 window.i18n.smoothSwitchLanguage(lang);
@@ -231,7 +227,6 @@ window.NBGroupApp = {
             }
         }
         
-        // Закрываем мобильное меню после смены языка
         if (this.state.menuOpen) {
             setTimeout(() => {
                 this.closeMobileMenu();
@@ -262,7 +257,6 @@ window.NBGroupApp = {
 
                     history.pushState(null, null, targetId);
                     
-                    // Закрываем мобильное меню если открыто
                     if (this.state && this.state.menuOpen) {
                         setTimeout(() => {
                             this.closeMobileMenu();
@@ -315,7 +309,7 @@ window.NBGroupApp = {
         };
         
         window.addEventListener('scroll', updateScroll);
-        updateScroll(); // Инициализация
+        updateScroll();
     },
     
     // ===== ФОРМЫ =====
@@ -356,7 +350,6 @@ window.NBGroupApp = {
     showNotification(message, type = 'info') {
         console.log(`📢 ${type}: ${message}`);
         
-        // Удаляем старые уведомления
         document.querySelectorAll('.app-notification').forEach(n => n.remove());
         
         const notification = document.createElement('div');
@@ -419,7 +412,6 @@ window.NBGroupApp = {
         window.addEventListener('resize', () => {
             this.state.isMobile = window.innerWidth <= 900;
             
-            // Закрываем мобильное меню при переходе на десктоп
             if (!this.state.isMobile && this.state.menuOpen) {
                 this.closeMobileMenu();
             }
@@ -432,10 +424,10 @@ window.NBGroupApp = {
                 this.setupLanguageSwitcher();
                 this.setupSmoothScroll();
                 this.setupScrollEffects();
+                this.setupHeaderScrollIntegration();
             }, 300);
         });
         
-        // Клавиша ESC для закрытия меню
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.state.menuOpen) {
                 this.closeMobileMenu();
@@ -485,7 +477,6 @@ window.closeMobileMenu = () => {
     console.log('🚀 Starting app initialization...');
     
     function initApp() {
-        // Ждем загрузки компонентов если они используются
         if (document.querySelector('#header-container') && 
             document.querySelector('#header-container').innerHTML === '') {
             console.log('⏳ Waiting for components to load...');
@@ -500,7 +491,6 @@ window.closeMobileMenu = () => {
                         setTimeout(() => window.NBGroupApp.init(), 100);
                     }, { once: true });
                     
-                    // Фолбэк на случай если событие не пришло
                     setTimeout(() => {
                         if (!document.body || !document.body.classList.contains('components-loaded')) {
                             console.log('⚠️ Components timeout, initializing anyway');
@@ -523,31 +513,6 @@ window.closeMobileMenu = () => {
         initApp();
     }
 })();
-
-// ===== ТЕСТОВЫЕ И ОТЛАДОЧНЫЕ ФУНКЦИИ =====
-if (window.location.hostname.includes('github.io')) {
-    window.testBurger = function() {
-        console.log('🧪 Testing burger menu...');
-        const burgerBtn = document.querySelector('.burger-btn');
-        if (burgerBtn) {
-            burgerBtn.click();
-        }
-    };
-    
-    window.testLanguage = function(lang = 'en') {
-        console.log(`🧪 Testing language switch to ${lang}...`);
-        window.NBGroupApp.switchLanguage(lang);
-    };
-    
-    window.showComponentsStatus = function() {
-        console.log('🔍 Components Status:');
-        console.log('- Header container:', document.querySelector('#header-container') ? 'Found' : 'Not found');
-        console.log('- Mobile menu container:', document.querySelector('#mobile-menu-container') ? 'Found' : 'Not found');
-        console.log('- Footer container:', document.querySelector('#footer-container') ? 'Found' : 'Not found');
-        console.log('- Body class:', document.body.className);
-        console.log('- Current language:', localStorage.getItem('preferredLang') || 'ru');
-    };
-}
 
 // ===== CSS ДЛЯ АНИМАЦИЙ УВЕДОМЛЕНИЙ =====
 (function addNotificationStyles() {
@@ -586,16 +551,12 @@ window.addEventListener('load', () => {
     console.log('🎯 Page fully loaded');
     document.body.classList.add('page-loaded');
     
-    // Финальная проверка и настройка
     setTimeout(() => {
-        // Убеждаемся что активная навигация установлена
         window.NBGroupApp.setupActiveNav();
         
-        // Убеждаемся что переключатели языка правильно отображаются
         const currentLang = localStorage.getItem('preferredLang') || 'ru';
         window.NBGroupApp.updateAllLanguageSwitchers(currentLang);
         
-        // Добавляем CSS для активных состояний если нужно
         if (!document.querySelector('#active-states-css')) {
             const style = document.createElement('style');
             style.id = 'active-states-css';
