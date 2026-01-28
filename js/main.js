@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded - SIMPLIFIED WORKING VERSION');
+console.log('🚀 main.js loaded - FULLY INTEGRATED WITH HEADER SCROLL');
 
 // ===== ГЛОБАЛЬНЫЙ ОБЪЕКТ ПРИЛОЖЕНИЯ =====
 window.NBGroupApp = {
@@ -8,7 +8,9 @@ window.NBGroupApp = {
         currentPage: '',
         language: localStorage.getItem('preferredLang') || 'ru',
         menuOpen: false,
-        headerHidden: false
+        headerHidden: false,
+        lastScrollTop: 0,
+        scrollDirection: 'none'
     },
     
     // Инициализация
@@ -24,7 +26,7 @@ window.NBGroupApp = {
         this.setupForms();
         this.setupLazyLoading();
         this.setupGlobalEvents();
-        this.setupHeaderScrollIntegration();
+        this.setupHeaderScroll();
         
         console.log('✅ NB Group Tech App initialized');
     },
@@ -43,36 +45,117 @@ window.NBGroupApp = {
         }
     },
     
-    // ===== ИНТЕГРАЦИЯ С ХЕДЕРОМ =====
-    setupHeaderScrollIntegration() {
-        console.log('🎯 Setting up header scroll integration...');
+    // ===== СКРЫТИЕ ХЕДЕРА ПРИ СКРОЛЛЕ =====
+    setupHeaderScroll() {
+        console.log('🎯 Setting up header scroll behavior...');
         
-        // Проверяем наличие функций из header.html
-        if (typeof window.showHeader === 'function' && 
-            typeof window.hideHeader === 'function') {
-            console.log('✅ Header scroll functions found');
-            
-            // Синхронизируем состояние
-            this.state.headerHidden = document.querySelector('.main-header')?.classList.contains('hidden') || false;
-            
-            // Добавляем глобальные функции для совместимости
-            window.NBGroupApp.showHeader = window.showHeader;
-            window.NBGroupApp.hideHeader = window.hideHeader;
-            window.NBGroupApp.toggleHeader = window.toggleHeader;
-            
-            // Показываем хедер при клике на бургер-меню
-            const burgerBtn = document.querySelector('.burger-btn');
-            if (burgerBtn) {
-                burgerBtn.addEventListener('click', () => {
-                    if (this.state.headerHidden && window.showHeader) {
-                        window.showHeader();
-                        this.state.headerHidden = false;
-                    }
-                });
-            }
-        } else {
-            console.warn('⚠️ Header scroll functions not found');
+        const header = document.querySelector('.main-header');
+        if (!header) {
+            console.warn('❌ Header not found for scroll behavior');
+            return;
         }
+        
+        const headerHeight = header.offsetHeight;
+        const scrollThreshold = 50;
+        let ticking = false;
+        
+        // Функция обновления состояния хедера
+        const updateHeaderState = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollingDown = scrollTop > this.state.lastScrollTop;
+            
+            // Обновляем направление скролла
+            this.state.scrollDirection = scrollingDown ? 'down' : 'up';
+            
+            // Показываем хедер если прокрутили до верха
+            if (scrollTop <= headerHeight) {
+                if (this.state.headerHidden) {
+                    this.showHeader();
+                }
+            }
+            // Прячем при скролле вниз
+            else if (scrollingDown && scrollTop > headerHeight + scrollThreshold) {
+                if (!this.state.headerHidden) {
+                    this.hideHeader();
+                }
+            }
+            // Показываем при скролле вверх
+            else if (!scrollingDown && scrollTop > headerHeight) {
+                if (this.state.headerHidden) {
+                    this.showHeader();
+                }
+            }
+            
+            this.state.lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            ticking = false;
+        };
+        
+        // Оптимизированный обработчик скролла
+        const onScroll = () => {
+            if (!ticking) {
+                ticking = true;
+                requestAnimationFrame(updateHeaderState);
+            }
+        };
+        
+        // Функции управления хедером
+        this.showHeader = () => {
+            header.classList.remove('hidden');
+            header.classList.add('visible');
+            this.state.headerHidden = false;
+            console.log('⬆️ Header shown');
+        };
+        
+        this.hideHeader = () => {
+            header.classList.add('hidden');
+            header.classList.remove('visible');
+            this.state.headerHidden = true;
+            console.log('⬇️ Header hidden');
+        };
+        
+        this.toggleHeader = () => {
+            if (this.state.headerHidden) {
+                this.showHeader();
+            } else {
+                this.hideHeader();
+            }
+        };
+        
+        // Экспортируем функции глобально
+        window.showHeader = this.showHeader;
+        window.hideHeader = this.hideHeader;
+        window.toggleHeader = this.toggleHeader;
+        
+        // Показываем хедер при клике
+        header.addEventListener('click', (e) => {
+            if (this.state.headerHidden && e.target.closest('.main-header')) {
+                this.showHeader();
+            }
+        });
+        
+        // Показываем хедер при клике на элементы навигации
+        header.querySelectorAll('a, button, .nav-link, .lang-btn, .logo').forEach(el => {
+            el.addEventListener('click', () => {
+                if (this.state.headerHidden) {
+                    this.showHeader();
+                }
+            });
+            
+            el.addEventListener('focus', () => {
+                if (this.state.headerHidden) {
+                    this.showHeader();
+                }
+            });
+        });
+        
+        // Настраиваем обработчик скролла
+        window.addEventListener('scroll', onScroll, { passive: true });
+        
+        // Инициализация начального состояния
+        this.state.lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        updateHeaderState();
+        
+        console.log('✅ Header scroll behavior initialized');
     },
     
     // ===== БУРГЕР МЕНЮ =====
@@ -133,6 +216,13 @@ window.NBGroupApp = {
                 }
             });
             
+            // Закрытие при нажатии ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.state.menuOpen) {
+                    this.closeMobileMenu();
+                }
+            });
+            
             console.log('✅ Burger menu setup complete');
         };
         
@@ -175,6 +265,11 @@ window.NBGroupApp = {
                     
                     console.log(`🌍 Switching language to: ${lang}`);
                     this.switchLanguage(lang);
+                    
+                    // Показываем хедер при смене языка
+                    if (this.state.headerHidden) {
+                        this.showHeader();
+                    }
                 });
             });
             
@@ -246,24 +341,33 @@ window.NBGroupApp = {
                 const targetElement = document.querySelector(targetId);
                 
                 if (targetElement) {
-                    const header = document.querySelector('.main-header');
-                    const headerHeight = header ? header.offsetHeight : 0;
-                    const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-
-                    history.pushState(null, null, targetId);
-                    
-                    if (this.state && this.state.menuOpen) {
-                        setTimeout(() => {
-                            this.closeMobileMenu();
-                        }, 300);
+                    // Показываем хедер если он скрыт
+                    if (this.state.headerHidden) {
+                        this.showHeader();
                     }
+                    
+                    // Ждем пока хедер появится
+                    setTimeout(() => {
+                        const header = document.querySelector('.main-header');
+                        const headerHeight = header ? header.offsetHeight : 0;
+                        const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        history.pushState(null, null, targetId);
+                        
+                        // Закрываем мобильное меню если открыто
+                        if (this.state.menuOpen) {
+                            setTimeout(() => {
+                                this.closeMobileMenu();
+                            }, 300);
+                        }
+                    }, 100);
                 }
-            });
+            }.bind(this));
         });
     },
     
@@ -415,6 +519,12 @@ window.NBGroupApp = {
             if (!this.state.isMobile && this.state.menuOpen) {
                 this.closeMobileMenu();
             }
+            
+            // Обновляем высоту хедера при ресайзе
+            const header = document.querySelector('.main-header');
+            if (header && this.state.headerHidden && window.pageYOffset <= header.offsetHeight) {
+                this.showHeader();
+            }
         });
         
         window.addEventListener('componentsLoaded', () => {
@@ -424,14 +534,13 @@ window.NBGroupApp = {
                 this.setupLanguageSwitcher();
                 this.setupSmoothScroll();
                 this.setupScrollEffects();
-                this.setupHeaderScrollIntegration();
+                this.setupHeaderScroll();
             }, 300);
         });
         
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.state.menuOpen) {
-                this.closeMobileMenu();
-            }
+        // Обработка ошибок
+        window.addEventListener('error', (e) => {
+            console.error('❌ Global error:', e.error);
         });
     },
     
@@ -453,6 +562,11 @@ window.NBGroupApp = {
         const menu = document.querySelector('.mobile-menu');
         const burger = document.querySelector('.burger-btn');
         if (menu && burger) {
+            // Показываем хедер если он скрыт
+            if (this.state.headerHidden) {
+                this.showHeader();
+            }
+            
             menu.classList.add('active');
             burger.classList.add('active');
             burger.setAttribute('aria-expanded', 'true');
@@ -557,6 +671,7 @@ window.addEventListener('load', () => {
         const currentLang = localStorage.getItem('preferredLang') || 'ru';
         window.NBGroupApp.updateAllLanguageSwitchers(currentLang);
         
+        // Добавляем CSS для активных состояний
         if (!document.querySelector('#active-states-css')) {
             const style = document.createElement('style');
             style.id = 'active-states-css';
@@ -570,15 +685,47 @@ window.addEventListener('load', () => {
                 .mobile-lang-btn.active {
                     position: relative;
                 }
+                
+                /* Оптимизация для touch устройств */
+                @media (hover: none) and (pointer: coarse) {
+                    .main-header {
+                        transition: transform 0.3s ease !important;
+                    }
+                    
+                    .nav-link:hover,
+                    .lang-btn:hover {
+                        transform: none !important;
+                    }
+                }
             `;
             document.head.appendChild(style);
         }
     }, 500);
 });
 
-// ===== ОБРАБОТКА ОШИБОК =====
-window.addEventListener('error', (e) => {
-    console.error('❌ Global error:', e.error);
-});
+// ===== ТЕСТОВЫЕ ФУНКЦИИ =====
+if (window.location.hostname.includes('github.io') || window.location.hostname.includes('localhost')) {
+    window.testHeaderScroll = function() {
+        console.log('🧪 Testing header scroll...');
+        console.log('- Header hidden:', window.NBGroupApp.state.headerHidden);
+        console.log('- Scroll direction:', window.NBGroupApp.state.scrollDirection);
+        console.log('- Last scroll position:', window.NBGroupApp.state.lastScrollTop);
+        
+        const header = document.querySelector('.main-header');
+        if (header) {
+            console.log('- Header classes:', header.className);
+        }
+    };
+    
+    window.forceShowHeader = function() {
+        console.log('🔼 Forcing header show');
+        window.NBGroupApp.showHeader();
+    };
+    
+    window.forceHideHeader = function() {
+        console.log('🔽 Forcing header hide');
+        window.NBGroupApp.hideHeader();
+    };
+}
 
-console.log('✅ main.js loaded successfully');
+console.log('✅ main.js loaded successfully - HEADER SCROLL INTEGRATION ACTIVE');
