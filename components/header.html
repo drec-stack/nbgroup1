@@ -24,9 +24,26 @@
                 0 8px 32px rgba(0, 0, 0, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                       transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                       opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            will-change: transform, opacity;
+            pointer-events: auto !important;
         }
 
+        /* Состояние когда хедер скрыт */
+        .main-header.header-hidden {
+            transform: translateX(-50%) translateY(-100%) !important;
+            opacity: 0 !important;
+        }
+
+        /* Состояние когда хедер виден */
+        .main-header.header-visible {
+            transform: translateX(-50%) translateY(0) !important;
+            opacity: 1 !important;
+        }
+
+        /* scrolled класс для изменения стилей при прокрутке */
         .main-header.scrolled {
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(35px) saturate(200%);
@@ -36,12 +53,29 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        .main-header.hidden {
-            transform: translateX(-50%) translateY(-100%) !important;
+        /* ОБЯЗАТЕЛЬНО: Всегда делаем хедер кликабельным! */
+        .main-header,
+        .main-header * {
+            pointer-events: auto !important;
         }
 
-        .main-header.visible {
-            transform: translateX(-50%) translateY(0) !important;
+        /* Только когда хедер скрыт, делаем внутренние элементы неактивными */
+        .main-header.header-hidden .header-inner * {
+            pointer-events: none !important;
+        }
+
+        /* Но псевдоэлемент для клика остается активным */
+        .main-header.header-hidden::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: transparent;
+            cursor: pointer;
+            pointer-events: auto !important;
+            z-index: 1001;
         }
 
         .main-header:hover {
@@ -72,7 +106,7 @@
             gap: 12px;
             flex: 1;
             min-width: 0;
-            z-index: 1001;
+            z-index: 1002;
         }
 
         .logo-mark {
@@ -90,6 +124,7 @@
             box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
             flex-shrink: 0;
             transition: all 0.3s ease;
+            pointer-events: auto !important;
         }
 
         .logo-mark:hover {
@@ -106,6 +141,7 @@
             text-overflow: ellipsis;
             max-width: 160px;
             transition: all 0.3s ease;
+            pointer-events: auto !important;
         }
 
         /* ===== ДЕСКТОПНАЯ НАВИГАЦИЯ ===== */
@@ -113,6 +149,7 @@
             display: flex;
             gap: 15px;
             margin: 0 30px;
+            pointer-events: auto !important;
         }
 
         .nav-link {
@@ -125,6 +162,8 @@
             padding: 8px 16px;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.03);
+            pointer-events: auto !important;
+            cursor: pointer !important;
         }
 
         .nav-link:hover {
@@ -145,6 +184,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            pointer-events: auto !important;
         }
 
         .start-project-btn {
@@ -158,7 +198,7 @@
             text-decoration: none;
             border: none;
             border-radius: 10px;
-            cursor: pointer;
+            cursor: pointer !important;
             transition: all 0.3s ease;
             gap: 8px;
             backdrop-filter: blur(20px);
@@ -167,6 +207,7 @@
             box-shadow: 
                 0 4px 15px rgba(255, 255, 255, 0.1),
                 0 0 0 1px rgba(255, 255, 255, 0.05);
+            pointer-events: auto !important;
         }
 
         .start-project-btn:hover {
@@ -194,6 +235,7 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.05),
                 0 2px 10px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
+            pointer-events: auto !important;
         }
 
         .language-switcher.desktop-only:hover {
@@ -211,7 +253,7 @@
             color: rgba(255, 255, 255, 0.85);
             font-size: 13px;
             font-weight: 500;
-            cursor: pointer;
+            cursor: pointer !important;
             border-radius: 15px;
             transition: all 0.3s ease;
             position: relative;
@@ -219,6 +261,7 @@
             min-width: 25px;
             height: 28px;
             flex: 1;
+            pointer-events: auto !important;
         }
 
         .language-switcher.desktop-only .lang-btn.active {
@@ -292,18 +335,27 @@
                 padding: 12px 0 !important;
                 margin: 0 !important;
                 transition: all 0.3s ease !important;
+                pointer-events: auto !important;
             }
             
-            .main-header.hidden {
+            .main-header.header-hidden {
                 transform: translateY(-100%) !important;
+                opacity: 0 !important;
             }
             
-            .main-header.visible {
+            .main-header.header-visible {
                 transform: translateY(0) !important;
+                opacity: 1 !important;
             }
             
             .main-header.scrolled {
                 background: rgba(10, 10, 20, 0.95) !important;
+            }
+            
+            /* Псевдоэлемент для клика на мобильных */
+            .main-header.header-hidden::after {
+                top: -10px;
+                height: 30px;
             }
             
             /* Скрываем десктопные элементы */
@@ -322,6 +374,7 @@
                 flex-shrink: 0;
                 order: 3;
                 margin-left: auto;
+                pointer-events: auto !important;
             }
             
             /* БУРГЕР КНОПКА */
@@ -333,7 +386,7 @@
                 background: rgba(255, 255, 255, 0.1);
                 border: 1px solid rgba(255, 255, 255, 0.2);
                 border-radius: 10px;
-                cursor: pointer;
+                cursor: pointer !important;
                 padding: 0;
                 z-index: 100000;
                 transition: all 0.3s ease;
@@ -438,6 +491,7 @@
                 overflow: hidden;
                 position: relative;
                 order: 1;
+                pointer-events: auto !important;
             }
             
             .language-switcher.mobile-only-flags .lang-slider {
@@ -466,7 +520,7 @@
                 color: rgba(255, 255, 255, 0.85);
                 font-size: 16px;
                 font-weight: 600;
-                cursor: pointer;
+                cursor: pointer !important;
                 border-radius: 18px;
                 transition: all 0.2s ease;
                 flex: 1;
@@ -474,6 +528,7 @@
                 z-index: 2;
                 height: 36px;
                 -webkit-tap-highlight-color: transparent;
+                pointer-events: auto !important;
             }
             
             .language-switcher.mobile-only-flags .lang-btn.active {
@@ -494,7 +549,7 @@
     </style>
 </head>
 <body>
-    <header class="main-header" id="main-header">
+    <header class="main-header header-visible" id="main-header">
         <div class="header-container">
             <div class="header-inner">
                 <!-- Логотип -->
@@ -555,7 +610,7 @@
         </div>
     </header>
 
-    <!-- СКРИПТ ТОЛЬКО ДЛЯ ЯЗЫКА, КНОПКИ И СКРОЛЛА -->
+    <!-- СКРИПТ ДЛЯ ЯЗЫКА, КНОПКИ И СКРОЛЛА -->
     <script>
     (function() {
         'use strict';
@@ -617,105 +672,145 @@
             });
         }
         
-        // ===== СКРЫТИЕ ХЕДЕРА ПРИ СКРОЛЛЕ =====
+        // ===== СКРЫТИЕ ХЕДЕРА ПРИ СКРОЛЛЕ (КОРРЕКТНАЯ РЕАЛИЗАЦИЯ) =====
         function setupHeaderScroll() {
             console.log('🎯 Setting up header scroll behavior...');
             
-            const header = document.querySelector('.main-header');
+            const header = document.getElementById('main-header');
             if (!header) {
                 console.warn('❌ Header not found for scroll behavior');
                 return;
             }
             
             let lastScrollTop = 0;
-            const scrollThreshold = 50;
-            const headerHeight = header.offsetHeight;
+            const scrollThreshold = 100;
             let isHidden = false;
             let ticking = false;
-            let isTouchDevice = 'ontouchstart' in window;
+            let hideTimeout = null;
+            let showTimeout = null;
             
-            // Добавляем CSS стили для анимации
-            function addScrollStyles() {
-                const styleId = 'header-scroll-styles';
-                if (document.getElementById(styleId)) return;
+            // Важно: добавляем глобальный CSS для кликабельности
+            const style = document.createElement('style');
+            style.textContent = `
+                /* ВАЖНО: Хедер всегда должен быть кликабельным */
+                .main-header,
+                .main-header * {
+                    pointer-events: auto !important;
+                    cursor: pointer !important;
+                }
                 
-                const style = document.createElement('style');
-                style.id = styleId;
-                style.textContent = `
-                    /* Для плавной прокрутки к якорям */
-                    html {
-                        scroll-behavior: smooth;
-                        scroll-padding-top: ${headerHeight + 20}px;
+                /* Когда хедер скрыт, делаем его прозрачным, но кликабельным */
+                .main-header.header-hidden {
+                    transform: translateY(-100%) !important;
+                    opacity: 0 !important;
+                }
+                
+                .main-header.header-hidden::before {
+                    content: '';
+                    position: absolute;
+                    top: -20px;
+                    left: 0;
+                    width: 100%;
+                    height: 40px;
+                    background: transparent;
+                    z-index: 1001;
+                }
+                
+                .main-header.header-visible {
+                    transform: translateY(0) !important;
+                    opacity: 1 !important;
+                }
+                
+                /* Корректировка body padding */
+                body.has-hidden-header {
+                    padding-top: 0 !important;
+                }
+                
+                /* Для десктопа */
+                @media (min-width: 901px) {
+                    .main-header.header-hidden {
+                        transform: translateX(-50%) translateY(-100%) !important;
                     }
-                    
-                    /* Улучшенная анимация для хедера */
-                    .main-header {
-                        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                                   transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                        will-change: transform;
-                    }
-                    
-                    /* Для мобильных - своя анимация */
-                    @media (max-width: 900px) {
-                        html {
-                            scroll-padding-top: ${headerHeight + 10}px;
-                        }
-                        
-                        .main-header {
-                            transition: all 0.3s ease !important;
-                        }
-                    }
-                `;
-                document.head.appendChild(style);
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Скрыть хедер
+            function hideHeader() {
+                if (hideTimeout) {
+                    clearTimeout(hideTimeout);
+                    hideTimeout = null;
+                }
+                
+                header.classList.remove('header-visible');
+                header.classList.add('header-hidden');
+                isHidden = true;
+                document.body.classList.add('has-hidden-header');
+                
+                console.log('⬇️ Header hidden (but clickable!)');
             }
             
-            // Обновляет состояние хедера
-            function updateHeaderState() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const scrollingDown = scrollTop > lastScrollTop;
+            // Показать хедер
+            function showHeader() {
+                if (showTimeout) {
+                    clearTimeout(showTimeout);
+                    showTimeout = null;
+                }
                 
-                // Показываем хедер если прокрутили до верха
-                if (scrollTop <= headerHeight) {
-                    if (isHidden) {
-                        showHeader();
-                    }
+                if (hideTimeout) {
+                    clearTimeout(hideTimeout);
+                    hideTimeout = null;
                 }
-                // Прячем при скролле вниз
-                else if (scrollingDown && scrollTop > headerHeight + scrollThreshold) {
-                    if (!isHidden) {
-                        hideHeader();
-                    }
-                }
-                // Показываем при скролле вверх
-                else if (!scrollingDown && scrollTop > headerHeight) {
-                    if (isHidden) {
-                        showHeader();
-                    }
-                }
+                
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+                isHidden = false;
+                document.body.classList.remove('has-hidden-header');
                 
                 // Обновляем scrolled класс
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 if (scrollTop > 100) {
                     header.classList.add('scrolled');
                 } else {
                     header.classList.remove('scrolled');
                 }
                 
+                console.log('⬆️ Header shown and fully clickable');
+            }
+            
+            // Обновляет состояние хедера
+            function updateHeaderState() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollingDown = scrollTop > lastScrollTop;
+                const isAtTop = scrollTop <= 50;
+                
+                // Всегда показываем хедер в самом верху страницы
+                if (isAtTop) {
+                    if (isHidden) {
+                        showHeader();
+                    }
+                    return;
+                }
+                
+                // Прячем при скролле вниз
+                if (scrollingDown && scrollTop > scrollThreshold) {
+                    if (!isHidden && !hideTimeout) {
+                        hideTimeout = setTimeout(() => {
+                            hideHeader();
+                        }, 150); // Задержка для лучшего UX
+                    }
+                }
+                // Показываем при скролле вверх
+                else if (!scrollingDown && scrollTop > scrollThreshold) {
+                    if (isHidden && !showTimeout) {
+                        showTimeout = setTimeout(() => {
+                            showHeader();
+                        }, 50);
+                    }
+                }
+                
                 lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
                 ticking = false;
-            }
-            
-            // Скрыть хедер
-            function hideHeader() {
-                header.classList.add('hidden');
-                header.classList.remove('visible');
-                isHidden = true;
-            }
-            
-            // Показать хедер
-            function showHeader() {
-                header.classList.remove('hidden');
-                header.classList.add('visible');
-                isHidden = false;
             }
             
             // Оптимизированный обработчик скролла
@@ -726,110 +821,102 @@
                 }
             }
             
-            // Показываем хедер при клике (тапе)
-            function setupClickBehavior() {
-                // Показываем при клике на хедер
-                header.addEventListener('click', (e) => {
-                    if (isHidden && e.target.closest('.main-header')) {
+            // Показываем хедер при клике на него (ОСНОВНОЙ ФИКС)
+            function setupHeaderClickHandler() {
+                // Добавляем обработчик клика на весь хедер
+                header.addEventListener('click', function(e) {
+                    console.log('🎯 Header clicked, showing it...');
+                    
+                    if (isHidden) {
                         showHeader();
+                        
+                        // Проверяем, не кликнули ли мы на ссылку
+                        const link = e.target.closest('a');
+                        if (link && link.href) {
+                            e.preventDefault();
+                            setTimeout(() => {
+                                if (!link.href.includes('javascript:')) {
+                                    window.location.href = link.href;
+                                }
+                            }, 100);
+                        }
+                        
+                        // Проверяем, не кликнули ли мы на кнопку
+                        const button = e.target.closest('button');
+                        if (button) {
+                            e.preventDefault();
+                            setTimeout(() => {
+                                button.click();
+                            }, 100);
+                        }
                     }
                 });
                 
-                // Показываем при клике на любую ссылку в хедере
-                header.querySelectorAll('a, button, .nav-link, .lang-btn, .logo').forEach(el => {
-                    el.addEventListener('click', () => {
+                // Также обрабатываем клики на отдельные элементы
+                const clickableElements = header.querySelectorAll('a, button, .logo, .nav-link, .lang-btn');
+                clickableElements.forEach(el => {
+                    el.addEventListener('click', function(e) {
                         if (isHidden) {
+                            e.preventDefault();
+                            e.stopPropagation();
                             showHeader();
-                        }
-                    });
-                    
-                    // Показываем при фокусе (для доступности)
-                    el.addEventListener('focus', () => {
-                        if (isHidden) {
-                            showHeader();
-                        }
-                    });
-                });
-                
-                // Показываем при клике на якорные ссылки
-                document.querySelectorAll('a[href^="#"]').forEach(link => {
-                    link.addEventListener('click', () => {
-                        if (isHidden) {
-                            showHeader();
+                            
+                            // Для ссылок - выполняем переход после показа
+                            if (this.tagName === 'A' && this.href) {
+                                setTimeout(() => {
+                                    if (!this.href.includes('javascript:')) {
+                                        window.location.href = this.href;
+                                    }
+                                }, 150);
+                            }
+                            
+                            // Для кнопок - запускаем их действие
+                            if (this.tagName === 'BUTTON') {
+                                setTimeout(() => {
+                                    this.click();
+                                }, 150);
+                            }
                         }
                     });
                 });
             }
             
             // Инициализация
-            function initScrollBehavior() {
-                addScrollStyles();
-                
-                // Добавляем начальные классы
-                header.classList.add('visible');
-                
+            function initHeaderScroll() {
                 // Настраиваем обработчик скролла
                 window.addEventListener('scroll', onScroll, { passive: true });
                 
-                // Настраиваем поведение при клике
-                setupClickBehavior();
+                // Настраиваем клик по хедеру
+                setupHeaderClickHandler();
                 
-                // Обработка ресайза окна
-                let resizeTimeout;
+                // Обработка ресайза
                 window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => {
-                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                        if (scrollTop <= headerHeight && isHidden) {
-                            showHeader();
-                        }
-                    }, 250);
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    if (scrollTop <= 50 && isHidden) {
+                        showHeader();
+                    }
                 });
                 
-                // Настройка для сенсорных устройств
-                if (isTouchDevice) {
-                    let touchStartY = 0;
-                    let touchEndY = 0;
-                    
-                    document.addEventListener('touchstart', (e) => {
-                        touchStartY = e.changedTouches[0].screenY;
-                    }, { passive: true });
-                    
-                    document.addEventListener('touchend', (e) => {
-                        touchEndY = e.changedTouches[0].screenY;
-                        
-                        // Определяем направление свайпа
-                        const swipeDistance = touchStartY - touchEndY;
-                        const minSwipeDistance = 50;
-                        
-                        if (Math.abs(swipeDistance) > minSwipeDistance) {
-                            if (swipeDistance > 0 && !isHidden) {
-                                // Свайп вверх - скрыть
-                                hideHeader();
-                            } else if (swipeDistance < 0 && isHidden) {
-                                // Свайп вниз - показать
-                                showHeader();
-                            }
-                        }
-                    }, { passive: true });
-                }
+                // Инициализируем состояние
+                updateHeaderState();
                 
                 console.log('✅ Header scroll behavior initialized');
                 
-                // Глобальные функции для управления
+                // Экспортируем функции глобально
                 window.showHeader = showHeader;
                 window.hideHeader = hideHeader;
                 window.toggleHeader = () => {
                     if (isHidden) showHeader();
                     else hideHeader();
                 };
+                window.getHeaderState = () => ({ isHidden });
             }
             
             // Запускаем
-            setTimeout(initScrollBehavior, 100);
+            setTimeout(initHeaderScroll, 100);
         }
         
-        // ===== ИНИЦИАЛИЗАЦИЯ ВСЕХ ФУНКЦИЙ =====
+        // ===== ИНИЦИАЛИЗАЦИЯ ВСЕГО =====
         function init() {
             setupLanguageSwitcher();
             setupStartProjectButton();
