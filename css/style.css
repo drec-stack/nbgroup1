@@ -19,6 +19,9 @@
     --blue-light-bg: rgba(0, 102, 255, 0.1);
     --blue-border: rgba(0, 102, 255, 0.3);
     --white-transparent: rgba(255, 255, 255, 0.1);
+    
+    /* ДЛЯ ХЕДЕРА */
+    --header-height: 80px;
 }
 
 /* ===== ГЛОБАЛЬНЫЙ СБРОС И БАЗОВЫЕ СТИЛИ ===== */
@@ -38,6 +41,7 @@ html, body {
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: var(--header-height, 80px);
 }
 
 body {
@@ -47,7 +51,7 @@ body {
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    padding-top: 80px;
+    padding-top: var(--header-height, 80px);
     min-height: 100vh;
     transition: padding-top 0.3s ease;
 }
@@ -78,7 +82,20 @@ body {
         0 8px 32px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    transition: var(--transition);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: transform;
+}
+
+/* Классы для скрытия/показа хедера */
+.main-header.hidden {
+    transform: translateX(-50%) translateY(-100%) !important;
+    pointer-events: none;
+}
+
+.main-header.visible {
+    transform: translateX(-50%) translateY(0) !important;
+    pointer-events: auto;
 }
 
 /* ИСПРАВЛЕНИЕ: Убрано изменение позиции при скролле */
@@ -444,8 +461,13 @@ body.portfolio-page .main-header.scrolled {
 
 /* ===== МОБИЛЬНАЯ ВЕРСИЯ ХЕДЕРА ===== */
 @media (max-width: 900px) {
+    :root {
+        --header-height: 70px;
+    }
+    
     body {
         padding-top: 70px !important;
+        scroll-padding-top: 70px;
     }
     
     .main-header {
@@ -466,6 +488,17 @@ body.portfolio-page .main-header.scrolled {
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
         padding: 12px 0 !important;
         margin: 0 !important;
+        transition: all 0.3s ease !important;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    
+    .main-header.hidden {
+        transform: translateY(-100%) !important;
+    }
+    
+    .main-header.visible {
+        transform: translateY(0) !important;
     }
     
     /* scrolled состояние для мобильных */
@@ -651,8 +684,13 @@ body.portfolio-page .main-header.scrolled {
 
 /* Адаптивные стили для разных размеров мобильных */
 @media (max-width: 768px) {
+    :root {
+        --header-height: 66px;
+    }
+    
     body {
         padding-top: 66px !important;
+        scroll-padding-top: 66px;
     }
     
     .main-header {
@@ -712,8 +750,13 @@ body.portfolio-page .main-header.scrolled {
 }
 
 @media (max-width: 480px) {
+    :root {
+        --header-height: 62px;
+    }
+    
     body {
         padding-top: 62px !important;
+        scroll-padding-top: 62px;
     }
     
     .main-header {
@@ -778,8 +821,13 @@ body.portfolio-page .main-header.scrolled {
 
 /* Для очень маленьких экранов */
 @media (max-width: 360px) {
+    :root {
+        --header-height: 58px;
+    }
+    
     body {
         padding-top: 58px !important;
+        scroll-padding-top: 58px;
     }
     
     .logo-text {
@@ -1617,6 +1665,19 @@ body::before {
     .social-link:hover {
         transform: none !important;
     }
+    
+    /* Отключаем анимацию хедера */
+    .main-header {
+        transition: none !important;
+    }
+    
+    .main-header.hidden {
+        transform: translateX(-50%) translateY(-100%) !important;
+    }
+    
+    .main-header.visible {
+        transform: translateX(-50%) translateY(0) !important;
+    }
 }
 
 /* ===== ПРИНТ СТИЛИ ===== */
@@ -1664,5 +1725,25 @@ body::before {
     
     .card {
         background: rgba(255, 255, 255, 0.12);
+    }
+}
+
+/* ===== КОРРЕКЦИИ ДЛЯ СКРОЛЛА ХЕДЕРА ===== */
+body:has(.main-header.hidden) {
+    padding-top: 0 !important;
+}
+
+/* Улучшаем анимацию для якорных ссылок */
+@media (prefers-reduced-motion: no-preference) {
+    .main-header {
+        transition-behavior: allow-discrete;
+    }
+}
+
+/* Оптимизация для iOS */
+@supports (-webkit-touch-callout: none) {
+    .main-header {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
     }
 }
