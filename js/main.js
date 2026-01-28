@@ -12,7 +12,7 @@ window.NBGroupApp = {
     
     // Инициализация
     init() {
-        console.log('🎬 Initializing NB Group App...');
+        console.log('🎬 Initializing NB Group Tech App...');
         
         this.detectCurrentPage();
         this.setupBurgerMenu();
@@ -24,7 +24,7 @@ window.NBGroupApp = {
         this.setupLazyLoading();
         this.setupGlobalEvents();
         
-        console.log('✅ NB Group App initialized');
+        console.log('✅ NB Group Tech App initialized');
     },
     
     // Определение текущей страницы
