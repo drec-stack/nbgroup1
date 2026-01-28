@@ -180,7 +180,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            min-width: 70px;
+            min-width: 60px;
             height: 34px;
             box-shadow: 
                 inset 0 1px 0 rgba(255, 255, 255, 0.05),
@@ -196,7 +196,7 @@
         .language-switcher.desktop-only .lang-btn {
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
             padding: 6px 8px;
             background: none;
             border: none;
@@ -208,10 +208,9 @@
             transition: all 0.3s ease;
             position: relative;
             z-index: 2;
-            min-width: 32px;
-            justify-content: center;
-            flex: 1;
+            min-width: 25px;
             height: 28px;
+            flex: 1;
         }
 
         .language-switcher.desktop-only .lang-btn.active {
@@ -242,7 +241,7 @@
         }
 
         .language-switcher.desktop-only .lang-flag {
-            font-size: 14px;
+            font-size: 16px;
             transition: transform 0.2s ease;
         }
 
@@ -408,6 +407,7 @@
                 white-space: nowrap;
             }
             
+            /* МОБИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ В ХЕДЕРЕ */
             .language-switcher.mobile-only-flags {
                 display: flex;
                 background: rgba(255, 255, 255, 0.1);
@@ -416,7 +416,7 @@
                 border: 1px solid rgba(255, 255, 255, 0.15);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
-                min-width: 90px;
+                min-width: 70px;
                 height: 44px;
                 overflow: hidden;
                 position: relative;
@@ -470,12 +470,8 @@
             }
             
             .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 20px;
+                font-size: 22px;
                 display: block;
-            }
-            
-            .language-switcher.mobile-only-flags .lang-text {
-                display: none !important;
             }
         }
     </style>
@@ -506,11 +502,9 @@
                         <div class="lang-slider"></div>
                         <button class="lang-btn" data-lang="ru">
                             <span class="lang-flag">🇷🇺</span>
-                            <span class="lang-text">RU</span>
                         </button>
                         <button class="lang-btn" data-lang="en">
                             <span class="lang-flag">🇬🇧</span>
-                            <span class="lang-text">EN</span>
                         </button>
                     </div>
                     
@@ -527,11 +521,9 @@
                         <div class="lang-slider"></div>
                         <button class="lang-btn" data-lang="ru">
                             <span class="lang-flag">🇷🇺</span>
-                            <span class="lang-text">RU</span>
                         </button>
                         <button class="lang-btn" data-lang="en">
                             <span class="lang-flag">🇬🇧</span>
-                            <span class="lang-text">EN</span>
                         </button>
                     </div>
                     
