@@ -34,7 +34,7 @@ html {
     z-index: 100;
 }
 
-/* ===== ФОНОВЫЕ СЛОИ ДЛЯ СМЕНЫ ПРИ СКРОЛЛЕ - ИСПРАВЛЕННЫЕ ===== */
+/* ===== ФОНОВЫЕ СЛОИ - ИСПРАВЛЕННЫЕ (НЕ ПРИБЛИЖЕНЫ) ===== */
 .parallax-bg-container {
     position: fixed !important;
     top: 0 !important;
@@ -44,6 +44,7 @@ html {
     z-index: -1000 !important;
     overflow: hidden !important;
     pointer-events: none !important;
+    background: #0a0a0a !important; /* Черный фон под изображениями */
 }
 
 .parallax-bg-layer {
@@ -52,7 +53,7 @@ html {
     left: 0 !important;
     width: 100% !important;
     height: 100vh !important;
-    background-size: cover !important;
+    background-size: contain !important; /* ← ИЗМЕНЕНО: cover → contain */
     background-position: center center !important;
     background-repeat: no-repeat !important;
     background-attachment: scroll !important;
@@ -91,10 +92,36 @@ html {
     height: 100%;
     background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.2),
-        rgba(0, 0, 0, 0.15)
+        rgba(0, 0, 0, 0.3),
+        rgba(0, 0, 0, 0.2)
     ) !important;
     z-index: 1;
+}
+
+/* Дополнительный черный фон для предотвращения белых полос */
+.parallax-bg-layer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a !important;
+    z-index: -1;
+}
+
+/* Для широких экранов - используем cover чтобы не было черных полос по бокам */
+@media (min-width: 1200px) {
+    .parallax-bg-layer {
+        background-size: cover !important;
+    }
+}
+
+/* Для очень широких экранов */
+@media (min-width: 2000px) {
+    .parallax-bg-layer {
+        background-size: 100% auto !important;
+    }
 }
 
 /* Фикс для iOS Safari */
@@ -1226,6 +1253,7 @@ body.home-page::before {
         transform: none !important;
         height: 100vh !important;
         position: fixed !important;
+        background-size: cover !important; /* На мобильных оставляем cover */
     }
     
     /* ХЕДЕР НА МОБИЛЬНЫХ */
@@ -2040,5 +2068,18 @@ body.home-page::before {
     
     .language-switcher-mobile .lang-btn {
         font-size: 9px !important;
+    }
+}
+
+/* ===== ФИКС ДЛЯ ВЫСОКИХ ИЗОБРАЖЕНИЙ ===== */
+@media (min-aspect-ratio: 16/9) {
+    .parallax-bg-layer {
+        background-size: 100% auto !important;
+    }
+}
+
+@media (max-aspect-ratio: 4/3) {
+    .parallax-bg-layer {
+        background-size: auto 100% !important;
     }
 }
