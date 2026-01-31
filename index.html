@@ -52,6 +52,7 @@
             z-index: -1000 !important;
             overflow: hidden !important;
             pointer-events: none !important;
+            background: #0a0a0a !important; /* Черный фон */
         }
         
         .parallax-bg-layer {
@@ -60,10 +61,10 @@
             left: 0 !important;
             width: 100% !important;
             height: 100% !important;
-            background-size: cover !important;
+            background-size: contain !important; /* ИЗМЕНЕНО: cover → contain */
             background-position: center !important;
             background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
+            background-attachment: scroll !important;
             opacity: 0 !important;
             transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
             will-change: transform, opacity;
@@ -92,6 +93,20 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.15) !important;
             z-index: 1;
+        }
+        
+        /* Для широких экранов - используем cover чтобы не было черных полос по бокам */
+        @media (min-width: 1200px) {
+            .parallax-bg-layer {
+                background-size: cover !important;
+            }
+        }
+        
+        /* Для очень широких экранов */
+        @media (min-width: 2000px) {
+            .parallax-bg-layer {
+                background-size: 100% auto !important;
+            }
         }
         
         /* Убедимся, что все контентные блоки выше фона */
@@ -239,8 +254,9 @@
                 flex-shrink: 0 !important;
             }
             
-            /* Отключаем fixed background на мобильных */
+            /* На мобильных используем cover для лучшего заполнения */
             .parallax-bg-layer {
+                background-size: cover !important;
                 background-attachment: scroll !important;
                 transform: none !important;
                 transition: opacity 1.2s ease !important;
@@ -263,6 +279,36 @@
             .hero {
                 min-height: -webkit-fill-available;
                 min-height: 100dvh;
+            }
+            
+            .parallax-bg-layer {
+                background-attachment: scroll !important;
+                height: -webkit-fill-available !important;
+            }
+            
+            .parallax-bg-container {
+                height: -webkit-fill-available !important;
+            }
+            
+            .btn {
+                cursor: pointer !important;
+            }
+            
+            .cta-actions .btn {
+                -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1) !important;
+            }
+        }
+        
+        /* Для вертикальных изображений */
+        @media (min-aspect-ratio: 16/9) {
+            .parallax-bg-layer {
+                background-size: 100% auto !important;
+            }
+        }
+        
+        @media (max-aspect-ratio: 4/3) {
+            .parallax-bg-layer {
+                background-size: auto 100% !important;
             }
         }
     </style>
