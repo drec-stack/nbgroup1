@@ -1,4 +1,4 @@
-console.log('🏠 home.js loaded - NORMAL BACKGROUNDS - NO ZOOM');
+console.log('🏠 home.js loaded - NORMAL BACKGROUNDS - NO ZOOM - CONTAIN MODE');
 
 // ===== СИСТЕМА СМЕНЫ ФОНОВЫХ ИЗОБРАЖЕНИЙ БЕЗ ПРИБЛИЖЕНИЯ =====
 class BackgroundSwitcher {
@@ -20,7 +20,7 @@ class BackgroundSwitcher {
             return;
         }
         
-        // Гарантируем правильный масштаб с самого начала
+        // Гарантируем правильный масштаб с самого начала - CONTAIN вместо COVER
         this.fixAllBackgroundScale();
         
         // Preload всех изображений
@@ -42,9 +42,9 @@ class BackgroundSwitcher {
                 layer.style.zIndex = '-1001';
             }
             
-            // ГАРАНТИРУЕМ НОРМАЛЬНЫЙ МАСШТАБ - НИКАКИХ ПРИБЛИЖЕНИЙ!
+            // ГАРАНТИРУЕМ НОРМАЛЬНЫЙ МАСШТАБ - CONTAIN вместо COVER
             layer.style.transform = 'translate3d(0, 0, 0) scale(1) !important';
-            layer.style.backgroundSize = 'cover !important';
+            layer.style.backgroundSize = 'contain !important';
         });
         
         // Фикс для мобильных устройств
@@ -52,30 +52,31 @@ class BackgroundSwitcher {
             this.optimizeForMobile();
         }
         
-        console.log('✅ BackgroundSwitcher initialized with NORMAL scale');
+        console.log('✅ BackgroundSwitcher initialized with CONTAIN scale (normal size)');
     }
     
     fixAllBackgroundScale() {
-        // КРИТИЧНО: Убираем все трансформации которые могли приближать фон
+        // КРИТИЧНО: Устанавливаем CONTAIN для нормального размера без обрезки
         this.bgLayers.forEach(layer => {
+            // Убираем все трансформации
             layer.style.transform = 'translate3d(0, 0, 0) scale(1) !important';
-            layer.style.backgroundSize = 'cover !important';
+            
+            // ИСПРАВЛЕНО: CONTAIN вместо COVER для нормального размера
+            layer.style.backgroundSize = 'contain !important';
             layer.style.backgroundPosition = 'center center !important';
+            layer.style.backgroundRepeat = 'no-repeat !important';
             
-            // Убираем все приближения и устанавливаем COVER для полного заполнения
-            layer.style.backgroundSize = 'cover';
-            
-            // Для всех экранов используем cover
+            // Для всех экранов используем contain
             if (window.innerWidth > 1400) {
-                layer.style.backgroundSize = 'cover !important';
+                layer.style.backgroundSize = 'contain !important';
             }
             
             if (window.innerHeight < 800) {
-                layer.style.backgroundSize = 'cover !important';
+                layer.style.backgroundSize = 'contain !important';
             }
         });
         
-        console.log('✅ Fixed background scale for all layers (COVER mode only)');
+        console.log('✅ Fixed background scale for all layers (CONTAIN mode for normal size)');
     }
     
     preloadImages() {
@@ -93,7 +94,7 @@ class BackgroundSwitcher {
                     if (index === this.currentBgIndex) {
                         layer.style.opacity = '1';
                         layer.style.transform = 'scale(1) !important';
-                        layer.style.backgroundSize = 'cover !important';
+                        layer.style.backgroundSize = 'contain !important';
                     }
                 };
                 img.onerror = () => {
@@ -124,7 +125,7 @@ class BackgroundSwitcher {
         // Обработчик ресайза
         window.addEventListener('resize', () => {
             this.fixAllBackgroundScale();
-            console.log('🔄 Resize handled - backgrounds scale fixed (COVER)');
+            console.log('🔄 Resize handled - backgrounds scale fixed (CONTAIN)');
         }, { passive: true });
         
         // Обработчик для touch устройств
@@ -214,11 +215,11 @@ class BackgroundSwitcher {
             return;
         }
         
-        // ГАРАНТИРУЕМ НОРМАЛЬНЫЙ МАСШТАБ
+        // ГАРАНТИРУЕМ НОРМАЛЬНЫЙ МАСШТАБ - CONTAIN
         currentLayer.style.transform = 'scale(1) !important';
-        currentLayer.style.backgroundSize = 'cover !important';
+        currentLayer.style.backgroundSize = 'contain !important';
         nextLayer.style.transform = 'scale(1) !important';
-        nextLayer.style.backgroundSize = 'cover !important';
+        nextLayer.style.backgroundSize = 'contain !important';
         
         // Плавное переключение
         currentLayer.style.opacity = '0';
@@ -235,7 +236,7 @@ class BackgroundSwitcher {
             
             this.currentBgIndex = index;
             
-            console.log(`✅ Switched to background ${index + 1} with normal scale`);
+            console.log(`✅ Switched to background ${index + 1} with CONTAIN scale`);
         }, 300);
     }
     
@@ -246,7 +247,7 @@ class BackgroundSwitcher {
             currentLayer.style.opacity = '1';
             currentLayer.style.zIndex = '-1000';
             currentLayer.style.transform = 'scale(1) !important';
-            currentLayer.style.backgroundSize = 'cover !important';
+            currentLayer.style.backgroundSize = 'contain !important';
             currentLayer.style.display = 'block';
             currentLayer.style.visibility = 'visible';
         }
@@ -257,11 +258,11 @@ class BackgroundSwitcher {
                 layer.style.opacity = '0';
                 layer.style.zIndex = '-1001';
                 layer.style.transform = 'scale(1) !important';
-                layer.style.backgroundSize = 'cover !important';
+                layer.style.backgroundSize = 'contain !important';
             }
         });
         
-        console.log('✅ Ensured background visibility with NORMAL scale (COVER)');
+        console.log('✅ Ensured background visibility with NORMAL scale (CONTAIN)');
     }
     
     optimizeForMobile() {
@@ -271,7 +272,7 @@ class BackgroundSwitcher {
             layer.style.transition = 'opacity 0.5s ease';
             layer.style.backgroundAttachment = 'scroll';
             layer.style.transform = 'scale(1) !important';
-            layer.style.backgroundSize = 'cover !important';
+            layer.style.backgroundSize = 'contain !important';
         });
     }
     
@@ -295,12 +296,12 @@ class BackgroundSwitcher {
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ =====
 function initializeHomePage() {
-    console.log('📄 INITIALIZING HOME PAGE WITH NORMAL BACKGROUNDS - NO ZOOM');
+    console.log('📄 INITIALIZING HOME PAGE WITH NORMAL BACKGROUNDS - CONTAIN MODE');
     
     // 1. Инициализация системы смены фона
     try {
         window.backgroundSwitcher = new BackgroundSwitcher();
-        console.log('✅ Background switcher initialized with NO ZOOM');
+        console.log('✅ Background switcher initialized with CONTAIN (normal photos)');
     } catch (error) {
         console.error('❌ Failed to initialize background switcher:', error);
         // Аварийное восстановление
@@ -309,12 +310,12 @@ function initializeHomePage() {
             bgLayers[0].style.opacity = '1';
             bgLayers[0].style.zIndex = '-1000';
             bgLayers[0].style.transform = 'scale(1) !important';
-            bgLayers[0].style.backgroundSize = 'cover !important';
+            bgLayers[0].style.backgroundSize = 'contain !important';
             
             for (let i = 1; i < bgLayers.length; i++) {
                 bgLayers[i].style.opacity = '0';
                 bgLayers[i].style.zIndex = '-1001';
-                bgLayers[i].style.backgroundSize = 'cover !important';
+                bgLayers[i].style.backgroundSize = 'contain !important';
             }
         }
     }
@@ -333,7 +334,9 @@ function initializeHomePage() {
         initializeServicesInteraction();
         
         console.log('✅ Home page fully initialized');
-        console.log('🎯 Normal background switching (NO ZOOM):');
+        console.log('🎯 Normal background switching (CONTAIN mode):');
+        console.log('   • Photos will show at NORMAL size, not zoomed');
+        console.log('   • No cropping or excessive zoom');
         console.log('   • Hero & Expertise → BG1');
         console.log('   • Projects & Stats → BG2');
         console.log('   • Services → BG3');
@@ -362,23 +365,23 @@ function ensureAllContentVisible() {
         section.style.visibility = 'visible';
     });
     
-    // Фоновые слои - ГАРАНТИРУЕМ НОРМАЛЬНЫЙ МАСШТАБ
+    // Фоновые слои - ГАРАНТИРУЕМ НОРМАЛЬНЫЙ МАСШТАБ (CONTAIN)
     const bgLayers = document.querySelectorAll('.parallax-bg-layer');
     const activeBg = window.backgroundSwitcher?.getCurrentBackground() || 0;
     bgLayers.forEach((layer, index) => {
         if (index === activeBg) {
             layer.style.opacity = '1';
             layer.style.zIndex = '-1000';
-            layer.style.backgroundSize = 'cover !important';
+            layer.style.backgroundSize = 'contain !important';
         } else {
             layer.style.opacity = '0';
             layer.style.zIndex = '-1001';
-            layer.style.backgroundSize = 'cover !important';
+            layer.style.backgroundSize = 'contain !important';
         }
         layer.style.transform = 'scale(1) !important';
     });
     
-    console.log(`✅ Made ${animatedElements.length + sections.length + bgLayers.length} elements visible with NO ZOOM`);
+    console.log(`✅ Made ${animatedElements.length + sections.length + bgLayers.length} elements visible with CONTAIN scale`);
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ EXPERTISE БЛОКОВ =====
@@ -603,18 +606,19 @@ window.getCurrentBackground = function() {
 
 // Функция для принудительного исправления масштаба фона
 window.fixBackgroundScale = function() {
-    console.log('🔧 Manually fixing background scale to COVER...');
+    console.log('🔧 Manually fixing background scale to CONTAIN (normal size)...');
     
     const bgLayers = document.querySelectorAll('.parallax-bg-layer');
     if (bgLayers.length === 0) return false;
     
     bgLayers.forEach(layer => {
         layer.style.transform = 'scale(1) !important';
-        layer.style.backgroundSize = 'cover !important';
+        layer.style.backgroundSize = 'contain !important';
         layer.style.backgroundPosition = 'center center !important';
+        layer.style.backgroundRepeat = 'no-repeat !important';
     });
     
-    console.log(`✅ Fixed scale for ${bgLayers.length} background layers (COVER ONLY)`);
+    console.log(`✅ Fixed scale for ${bgLayers.length} background layers (CONTAIN - normal size)`);
     return true;
 };
 
@@ -637,4 +641,4 @@ window.addEventListener('load', () => {
     }, 2000);
 });
 
-console.log('✅ home.js fully loaded - NORMAL BACKGROUND SCALE ENABLED (COVER ONLY)');
+console.log('✅ home.js fully loaded - CONTAIN BACKGROUND SCALE ENABLED (NORMAL PHOTOS)');
