@@ -1,9 +1,9 @@
-/* home-background.css - ПРОСТОЙ ЧЕРНЫЙ ФОН */
+/* home-background.css - ПРОЗРАЧНЫЙ ФОН С ГРАДИЕНТОМ */
 
-/* ЧЕРНЫЙ ФОН ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
+/* ПРОЗРАЧНЫЙ ФОН С ГРАДИЕНТОМ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
 body.home-page {
-    background: #0a0a0a !important;
-    background-color: #0a0a0a !important;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    background-color: transparent !important;
     background-image: none !important;
 }
 
@@ -15,13 +15,13 @@ body.home-page {
     opacity: 0 !important;
 }
 
-/* ЧЕРНЫЙ ФОН ДЛЯ ВСЕХ СТРАНИЦ */
+/* ПРОЗРАЧНЫЙ ФОН С ГРАДИЕНТОМ ДЛЯ ВСЕХ СТРАНИЦ */
 body {
-    background: #0a0a0a !important;
-    background-color: #0a0a0a !important;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    background-color: transparent !important;
 }
 
-/* ЧЕРНЫЙ ФОН ДЛЯ ВСЕХ СЕКЦИЙ */
+/* ПРОЗРАЧНЫЙ ФОН ДЛЯ ВСЕХ СЕКЦИЙ */
 .hero,
 .content-section,
 .section,
@@ -34,5 +34,5 @@ body {
 .portfolio-hero,
 .brandbook-hero,
 .contact-hero {
-    background: #0a0a0a !important;
+    background: transparent !important;
 }
