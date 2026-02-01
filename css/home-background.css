@@ -1,38 +1,93 @@
-/* home-background.css - ПРОЗРАЧНЫЙ ФОН С ГРАДИЕНТОМ */
+/* home-background.css - ЛЕГКАЯ ВУАЛЬ ДЛЯ ЧИТАЕМОСТИ НА ФОТО */
 
-/* ПРОЗРАЧНЫЙ ФОН С ГРАДИЕНТОМ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
-body.home-page {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
-    background-color: transparent !important;
-    background-image: none !important;
+/* Легкое затемнение фона для лучшей читаемости текста поверх фото */
+.parallax-bg-layer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.25),
+        rgba(30, 41, 59, 0.15)
+    ) !important;
+    z-index: 1;
+    pointer-events: none;
 }
 
-/* УБИРАЕМ ВСЕ ФОНОВЫЕ СЛОИ */
-.bg-layers-container,
-.bg-layer {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
+/* Усиленные тени текста для контраста на фото */
+h1, h2, h3, h4, h5, h6, 
+.hero h1, .hero-subtitle, .hero-description p,
+.expertise-main-title, .expertise-title,
+.expertise-description, .expertise-features li,
+.project-title, .project-description,
+.service-title, .service-content, .service-content p,
+.journal-title, .faq-question, .faq-answer p, 
+.cta-title, .cta-subtitle, .stat-number, .stat-label, 
+.section-title, .section-subtitle, .speck-section-title,
+.speck-services-intro, .speck-services-intro p {
+    text-shadow: 
+        0 4px 40px rgba(0, 0, 0, 0.8),
+        0 3px 35px rgba(0, 0, 0, 0.7),
+        0 2px 30px rgba(0, 0, 0, 0.6) !important;
+    position: relative;
+    z-index: 10;
 }
 
-/* ПРОЗРАЧНЫЙ ФОН С ГРАДИЕНТОМ ДЛЯ ВСЕХ СТРАНИЦ */
-body {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
-    background-color: transparent !important;
+/* Гарантируем что контейнеры поверх фона */
+.container, 
+section, 
+.hero, 
+.expertise-section,
+.projects-section,
+.speck-services-section,
+.journals-section,
+.faq-section,
+.cta-section,
+.stats-section,
+#header-container,
+#footer-container {
+    position: relative;
+    z-index: 20 !important;
 }
 
-/* ПРОЗРАЧНЫЙ ФОН ДЛЯ ВСЕХ СЕКЦИЙ */
-.hero,
-.content-section,
-.section,
-.speck-vertical-section,
-.speck-marquee-section,
-.stats-improved,
-.cta-improved,
-.services-hero,
-.about-hero,
-.portfolio-hero,
-.brandbook-hero,
-.contact-hero {
-    background: transparent !important;
+/* Улучшенная видимость кнопок на фото */
+.btn, .btn-primary, .btn-secondary {
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(20px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.4),
+        0 5px 20px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+.btn:hover, .btn-primary:hover, .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.22) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* Адаптивная вуаль для мобильных */
+@media (max-width: 768px) {
+    .parallax-bg-layer::after {
+        background: linear-gradient(
+            to bottom,
+            rgba(15, 23, 42, 0.35),
+            rgba(30, 41, 59, 0.2)
+        ) !important;
+    }
+}
+
+/* Для темных фото - усиленная вуаль */
+@media (prefers-color-scheme: dark) {
+    .parallax-bg-layer::after {
+        background: linear-gradient(
+            to bottom,
+            rgba(15, 23, 42, 0.4),
+            rgba(30, 41, 59, 0.25)
+        ) !important;
+    }
 }
