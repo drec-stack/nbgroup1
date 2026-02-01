@@ -1,31 +1,27 @@
-console.log('🏠 home.js loaded - BACKGROUND SWITCHING SYSTEM FIXED - FINAL VERSION');
+console.log('🏠 home.js loaded - NORMAL BACKGROUNDS - NO ZOOM');
 
-// ===== СИСТЕМА СМЕНЫ ФОНОВЫХ ИЗОБРАЖЕНИЙ ПРИ СКРОЛЛЕ - ИСПРАВЛЕННАЯ =====
+// ===== СИСТЕМА СМЕНЫ ФОНОВЫХ ИЗОБРАЖЕНИЙ БЕЗ ПРИБЛИЖЕНИЯ =====
 class BackgroundSwitcher {
     constructor() {
         this.bgLayers = document.querySelectorAll('.parallax-bg-layer');
         this.sections = document.querySelectorAll('section[data-bg-section]');
         this.currentBgIndex = 0;
         this.lastScrollY = window.scrollY;
-        this.isScrollingDown = true;
-        this.scrollTimeout = null;
-        this.sectionMap = new Map();
-        this.currentSectionIndex = 0;
         this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
         this.init();
     }
     
     init() {
-        console.log(`🎨 BackgroundSwitcher: Found ${this.bgLayers.length} layers, ${this.sections.length} sections`);
+        console.log(`🎨 BackgroundSwitcher: Found ${this.bgLayers.length} layers`);
         
         if (this.bgLayers.length === 0) {
             console.error('❌ No background layers found');
             return;
         }
         
-        // Создаем карту соответствия секций и фонов
-        this.createSectionMap();
+        // Гарантируем правильный масштаб с самого начала
+        this.fixAllBackgroundScale();
         
         // Preload всех изображений
         this.preloadImages();
@@ -33,7 +29,7 @@ class BackgroundSwitcher {
         // Настройка обработчиков событий
         this.setupEventListeners();
         
-        // Инициализация начального состояния - ТОЛЬКО ПЕРВЫЙ ФОН АКТИВЕН
+        // Инициализация начального состояния
         this.bgLayers.forEach((layer, index) => {
             if (index === 0) {
                 layer.classList.add('active');
@@ -46,8 +42,8 @@ class BackgroundSwitcher {
                 layer.style.zIndex = '-1001';
             }
             
-            // Убираем трансформацию для предотвращения уезжания фона
-            layer.style.transform = 'translate3d(0, 0, 0)';
+            // УБИРАЕМ ВСЕ ТРАНСФОРМАЦИИ КОТОРЫЕ ПРИБЛИЖАЮТ ФОН
+            layer.style.transform = 'translate3d(0, 0, 0) scale(1) !important';
         });
         
         // Фикс для мобильных устройств
@@ -56,62 +52,27 @@ class BackgroundSwitcher {
         }
         
         console.log('✅ BackgroundSwitcher initialized');
-        console.log('📊 Section-BG Mapping:', Array.from(this.sectionMap.entries()));
-        console.log('📱 Device:', this.isMobile ? 'Mobile' : 'Desktop');
     }
     
-    createSectionMap() {
-        console.log('🔍 Creating section map...');
-        
-        // Жестко задаем соответствие секций фонам
-        const sectionTypes = [
-            'hero',      // BG1 (0)
-            'expertise', // BG1 (0)
-            'projects',  // BG2 (1)
-            'stats',     // BG2 (1)
-            'services',  // BG3 (2)
-            'journals',  // BG4 (3)
-            'faq',       // BG4 (3)
-            'cta'        // BG4 (3)
-        ];
-        
-        this.sections.forEach((section, index) => {
-            const sectionType = section.getAttribute('data-bg-section');
-            let bgIndex = 0; // По умолчанию
+    fixAllBackgroundScale() {
+        // КРИТИЧНО: Убираем все трансформации которые могли приближать фон
+        this.bgLayers.forEach(layer => {
+            layer.style.transform = 'translate3d(0, 0, 0) scale(1) !important';
+            layer.style.backgroundSize = 'cover !important';
+            layer.style.backgroundPosition = 'center center !important';
             
-            if (sectionType) {
-                // Определяем индекс фона на основе типа секции
-                switch(sectionType) {
-                    case 'hero':
-                    case 'expertise':
-                        bgIndex = 0; // BG1
-                        break;
-                    case 'projects':
-                    case 'stats':
-                        bgIndex = 1; // BG2
-                        break;
-                    case 'services':
-                        bgIndex = 2; // BG3
-                        break;
-                    case 'journals':
-                    case 'faq':
-                    case 'cta':
-                        bgIndex = 3; // BG4
-                        break;
-                    default:
-                        bgIndex = 0; // По умолчанию BG1
-                }
-            } else {
-                // Если атрибут отсутствует, используем порядковый номер
-                if (index <= 1) bgIndex = 0;      // Первые 2 секции → BG1
-                else if (index <= 3) bgIndex = 1; // Следующие 2 секции → BG2
-                else if (index === 4) bgIndex = 2; // Services → BG3
-                else bgIndex = 3;                 // Остальные → BG4
+            // Для широких экранов - оптимизация
+            if (window.innerWidth > 1400) {
+                layer.style.backgroundSize = '100% auto !important';
             }
             
-            this.sectionMap.set(index, bgIndex);
-            console.log(`  Section ${index + 1} (${sectionType || 'no type'}) → BG${bgIndex + 1}`);
+            // Для вертикальных экранов
+            if (window.innerHeight < 800) {
+                layer.style.backgroundSize = 'auto 100% !important';
+            }
         });
+        
+        console.log('✅ Fixed background scale for all layers');
     }
     
     preloadImages() {
@@ -125,14 +86,14 @@ class BackgroundSwitcher {
                     console.log(`✅ Preloaded background image ${index + 1}`);
                     layer.classList.add('loaded');
                     
-                    // После загрузки убедимся что opacity правильная
+                    // После загрузки гарантируем правильный масштаб
                     if (index === this.currentBgIndex) {
                         layer.style.opacity = '1';
+                        layer.style.transform = 'scale(1) !important';
                     }
                 };
                 img.onerror = () => {
                     console.warn(`⚠️ Failed to preload background image ${index + 1}`);
-                    // Все равно показываем элемент
                     layer.style.opacity = '1';
                 };
                 img.src = urlMatch[1];
@@ -158,12 +119,15 @@ class BackgroundSwitcher {
         
         // Обработчик ресайза
         window.addEventListener('resize', () => {
-            this.handleResize();
+            this.fixAllBackgroundScale();
+            console.log('🔄 Resize handled - backgrounds scale fixed');
         }, { passive: true });
         
         // Обработчик для touch устройств
         if ('ontouchstart' in window) {
-            document.addEventListener('touchmove', () => this.handleScroll(), { passive: true });
+            document.addEventListener('touchmove', () => {
+                this.handleScroll();
+            }, { passive: true });
         }
         
         // Обработчик для загрузки
@@ -176,28 +140,15 @@ class BackgroundSwitcher {
     
     handleScroll() {
         const currentScrollY = window.scrollY;
-        this.isScrollingDown = currentScrollY > this.lastScrollY;
         this.lastScrollY = currentScrollY;
         
         this.updateBackgroundOnScroll();
-        
-        // НЕ используем параллакс-эффект - он вызывает проблемы с фоном
-        // this.updateParallaxEffect();
-    }
-    
-    handleResize() {
-        // Убираем любые трансформации при ресайзе
-        this.bgLayers.forEach(layer => {
-            layer.style.transform = 'translate3d(0, 0, 0)';
-        });
-        
-        console.log('🔄 Resize handled - backgrounds reset');
     }
     
     updateBackgroundOnScroll() {
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
-        const triggerPoint = scrollY + (windowHeight * 0.4); // 40% от верха окна
+        const triggerPoint = scrollY + (windowHeight * 0.4);
         
         // Находим текущую активную секцию
         let activeSectionIndex = -1;
@@ -209,7 +160,6 @@ class BackgroundSwitcher {
             const sectionBottom = sectionTop + section.offsetHeight;
             const sectionCenter = sectionTop + (section.offsetHeight / 2);
             
-            // Рассчитываем расстояние от центра экрана до центра секции
             const distance = Math.abs(triggerPoint - sectionCenter);
             
             if (distance < minDistance && triggerPoint >= sectionTop - 100 && triggerPoint <= sectionBottom + 100) {
@@ -220,24 +170,27 @@ class BackgroundSwitcher {
         
         // Если не нашли точное соответствие, берем секцию по скроллу
         if (activeSectionIndex === -1) {
-            // Простое определение по скроллу (резервный метод)
             const scrollPercent = scrollY / (document.documentElement.scrollHeight - windowHeight);
             
-            if (scrollPercent < 0.25) activeSectionIndex = 0;      // Первые 25% скролла
-            else if (scrollPercent < 0.5) activeSectionIndex = 2;   // 25-50% скролла
-            else if (scrollPercent < 0.75) activeSectionIndex = 4;  // 50-75% скролла
-            else activeSectionIndex = 5;                           // Последние 25% скролла
+            if (scrollPercent < 0.25) activeSectionIndex = 0;
+            else if (scrollPercent < 0.5) activeSectionIndex = 2;
+            else if (scrollPercent < 0.75) activeSectionIndex = 4;
+            else activeSectionIndex = 5;
         }
         
         // Ограничиваем индекс секции
         activeSectionIndex = Math.max(0, Math.min(activeSectionIndex, this.sections.length - 1));
         
         // Получаем соответствующий фон
-        const targetBgIndex = this.sectionMap.get(activeSectionIndex) || 0;
+        let targetBgIndex = 0;
+        if (activeSectionIndex <= 1) targetBgIndex = 0;
+        else if (activeSectionIndex <= 3) targetBgIndex = 1;
+        else if (activeSectionIndex === 4) targetBgIndex = 2;
+        else targetBgIndex = 3;
         
         // Переключаем фон если индекс изменился
         if (targetBgIndex !== this.currentBgIndex) {
-            console.log(`🔄 Scroll: ${Math.round(scrollY)}px, Section: ${activeSectionIndex + 1}, Switching: BG${this.currentBgIndex + 1} → BG${targetBgIndex + 1}`);
+            console.log(`🔄 Scroll: ${Math.round(scrollY)}px, Switching: BG${this.currentBgIndex + 1} → BG${targetBgIndex + 1}`);
             this.switchToBackground(targetBgIndex);
         }
     }
@@ -249,7 +202,6 @@ class BackgroundSwitcher {
         
         console.log(`🖼️ Switching background: ${this.currentBgIndex + 1} → ${index + 1}`);
         
-        // Получаем слои
         const currentLayer = this.bgLayers[this.currentBgIndex];
         const nextLayer = this.bgLayers[index];
         
@@ -258,9 +210,9 @@ class BackgroundSwitcher {
             return;
         }
         
-        // Убираем параллакс эффект - ВОТ ЭТО ГЛАВНОЕ ИСПРАВЛЕНИЕ
-        currentLayer.style.transform = 'translate3d(0, 0, 0)';
-        nextLayer.style.transform = 'translate3d(0, 0, 0)';
+        // ГАРАНТИРУЕМ НОРМАЛЬНЫЙ МАСШТАБ
+        currentLayer.style.transform = 'scale(1) !important';
+        nextLayer.style.transform = 'scale(1) !important';
         
         // Плавное переключение
         currentLayer.style.opacity = '0';
@@ -272,7 +224,6 @@ class BackgroundSwitcher {
             nextLayer.classList.add('active');
             nextLayer.style.zIndex = '-1000';
             
-            // Убедимся что слой виден
             nextLayer.style.display = 'block';
             nextLayer.style.visibility = 'visible';
             
@@ -283,12 +234,12 @@ class BackgroundSwitcher {
     }
     
     ensureBackgroundVisible() {
-        // Убедимся что текущий фон виден
+        // Убедимся что текущий фон виден с правильным масштабом
         const currentLayer = this.bgLayers[this.currentBgIndex];
         if (currentLayer) {
             currentLayer.style.opacity = '1';
             currentLayer.style.zIndex = '-1000';
-            currentLayer.style.transform = 'translate3d(0, 0, 0)';
+            currentLayer.style.transform = 'scale(1) !important';
             currentLayer.style.display = 'block';
             currentLayer.style.visibility = 'visible';
         }
@@ -298,25 +249,25 @@ class BackgroundSwitcher {
             if (index !== this.currentBgIndex) {
                 layer.style.opacity = '0';
                 layer.style.zIndex = '-1001';
-                layer.style.transform = 'translate3d(0, 0, 0)';
+                layer.style.transform = 'scale(1) !important';
             }
         });
         
-        console.log('✅ Ensured background visibility');
+        console.log('✅ Ensured background visibility with normal scale');
     }
     
     optimizeForMobile() {
         console.log('📱 Optimizing background switcher for mobile');
         
-        // Для мобильных упрощаем переключение
         this.bgLayers.forEach(layer => {
             layer.style.transition = 'opacity 0.5s ease';
             layer.style.backgroundAttachment = 'scroll';
-            layer.style.transform = 'none';
+            layer.style.transform = 'scale(1) !important';
+            layer.style.backgroundSize = 'cover !important';
         });
     }
     
-    // Публичные методы для ручного управления (если нужно)
+    // Публичные методы
     nextBackground() {
         const nextIndex = (this.currentBgIndex + 1) % this.bgLayers.length;
         this.switchToBackground(nextIndex);
@@ -332,15 +283,11 @@ class BackgroundSwitcher {
     getCurrentBackground() {
         return this.currentBgIndex;
     }
-    
-    getCurrentSection() {
-        return this.currentSectionIndex;
-    }
 }
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ =====
 function initializeHomePage() {
-    console.log('📄 INITIALIZING HOME PAGE WITH FIXED BACKGROUND SWITCHING - FINAL');
+    console.log('📄 INITIALIZING HOME PAGE WITH NORMAL BACKGROUNDS');
     
     // 1. Инициализация системы смены фона
     try {
@@ -353,7 +300,7 @@ function initializeHomePage() {
         if (bgLayers.length > 0) {
             bgLayers[0].style.opacity = '1';
             bgLayers[0].style.zIndex = '-1000';
-            bgLayers[0].style.transform = 'translate3d(0, 0, 0)';
+            bgLayers[0].style.transform = 'scale(1) !important';
             
             for (let i = 1; i < bgLayers.length; i++) {
                 bgLayers[i].style.opacity = '0';
@@ -376,7 +323,7 @@ function initializeHomePage() {
         initializeServicesInteraction();
         
         console.log('✅ Home page fully initialized');
-        console.log('🎯 Fixed background switching logic:');
+        console.log('🎯 Normal background switching:');
         console.log('   • Hero & Expertise → BG1');
         console.log('   • Projects & Stats → BG2');
         console.log('   • Services → BG3');
@@ -416,7 +363,7 @@ function ensureAllContentVisible() {
             layer.style.opacity = '0';
             layer.style.zIndex = '-1001';
         }
-        layer.style.transform = 'translate3d(0, 0, 0)';
+        layer.style.transform = 'scale(1) !important';
     });
     
     console.log(`✅ Made ${animatedElements.length + sections.length + bgLayers.length} elements visible`);
@@ -435,92 +382,15 @@ function initializeVerticalExpertiseBlocks() {
     
     expertiseBlocks.forEach((block, index) => {
         if (block && block.style) {
-            // Немедленно показываем блок
             block.style.opacity = '1';
             block.style.transform = 'translateX(0)';
             block.style.visibility = 'visible';
             
-            // Добавляем класс visible для анимаций
             block.classList.add('visible');
-            
-            // Анимация внутренних элементов
-            setTimeout(() => {
-                const number = block.querySelector('.expertise-number');
-                const title = block.querySelector('.expertise-title');
-                const description = block.querySelector('.expertise-description');
-                const features = block.querySelectorAll('.expertise-features li');
-                
-                if (number && number.style) {
-                    number.style.transform = 'scale(1)';
-                    number.style.opacity = '1';
-                }
-                
-                if (title && title.style) {
-                    title.style.opacity = '1';
-                    title.style.transform = 'translateX(0)';
-                }
-                
-                if (description && description.style) {
-                    description.style.opacity = '1';
-                    description.style.transform = 'translateX(0)';
-                }
-                
-                features.forEach((feature, featIndex) => {
-                    setTimeout(() => {
-                        if (feature && feature.style) {
-                            feature.style.opacity = '1';
-                            feature.style.transform = 'translateX(0)';
-                        }
-                    }, featIndex * 50);
-                });
-            }, index * 100);
         }
     });
     
     console.log('✅ Vertical expertise blocks initialized');
-}
-
-// ===== ИНИЦИАЛИЗАЦИЯ ВЗАИМОДЕЙСТВИЯ С УСЛУГАМИ =====
-function initializeServicesInteraction() {
-    const serviceItems = document.querySelectorAll('.speck-service-item');
-    
-    if (serviceItems.length === 0) {
-        console.log('⚠️ No service items found');
-        return;
-    }
-    
-    console.log(`🎯 Initializing ${serviceItems.length} service items`);
-    
-    serviceItems.forEach((item, index) => {
-        if (item && item.style) {
-            // Немедленно показываем элемент
-            item.style.opacity = '1';
-            item.style.transform = 'translateY(0)';
-            
-            // Эффект при наведении
-            item.addEventListener('mouseenter', function() {
-                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    const arrow = this.querySelector('.service-arrow');
-                    if (arrow) {
-                        arrow.style.opacity = '1';
-                        arrow.style.transform = 'translateX(5px)';
-                    }
-                }
-            });
-            
-            item.addEventListener('mouseleave', function() {
-                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    const arrow = this.querySelector('.service-arrow');
-                    if (arrow) {
-                        arrow.style.opacity = '0.7';
-                        arrow.style.transform = 'translateX(0)';
-                    }
-                }
-            });
-        }
-    });
-    
-    console.log('✅ Service interactions initialized');
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ СТАТИСТИКИ =====
@@ -537,7 +407,6 @@ function initializeStatsCounter() {
     counters.forEach(counter => {
         const target = parseInt(counter.getAttribute('data-count')) || 0;
         if (target > 0) {
-            // Немедленно показываем финальное значение
             counter.textContent = target;
             counter.classList.add('counter-animate');
         }
@@ -552,7 +421,6 @@ function initializeScrollAnimations() {
     
     console.log(`🎯 Found ${animatedElements.length} animated elements`);
     
-    // Показываем все анимированные элементы
     animatedElements.forEach(el => {
         if (el && el.style) {
             el.style.opacity = '1';
@@ -599,7 +467,6 @@ function initializeScrollProgress() {
     
     window.addEventListener('scroll', updateProgress, { passive: true });
     
-    // Инициализация
     updateProgress();
     progressBar.style.transition = 'width 0.3s ease';
     
@@ -627,11 +494,51 @@ function initializeCardHoverEffects() {
             }
         });
         
-        // Добавляем transition для плавности
         card.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease';
     });
     
     console.log(`✅ Card hover effects initialized for ${projectCards.length} cards`);
+}
+
+// ===== ИНИЦИАЛИЗАЦИЯ ВЗАИМОДЕЙСТВИЯ С УСЛУГАМИ =====
+function initializeServicesInteraction() {
+    const serviceItems = document.querySelectorAll('.speck-service-item');
+    
+    if (serviceItems.length === 0) {
+        console.log('⚠️ No service items found');
+        return;
+    }
+    
+    console.log(`🎯 Initializing ${serviceItems.length} service items`);
+    
+    serviceItems.forEach((item, index) => {
+        if (item && item.style) {
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
+            
+            item.addEventListener('mouseenter', function() {
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    const arrow = this.querySelector('.service-arrow');
+                    if (arrow) {
+                        arrow.style.opacity = '1';
+                        arrow.style.transform = 'translateX(5px)';
+                    }
+                }
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    const arrow = this.querySelector('.service-arrow');
+                    if (arrow) {
+                        arrow.style.opacity = '0.7';
+                        arrow.style.transform = 'translateX(0)';
+                    }
+                }
+            });
+        }
+    });
+    
+    console.log('✅ Service interactions initialized');
 }
 
 // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
@@ -682,69 +589,40 @@ window.getCurrentBackground = function() {
     return 0;
 };
 
-window.reinitializeBackground = function() {
-    console.log('🔄 Reinitializing background switching...');
-    if (window.backgroundSwitcher) {
-        window.backgroundSwitcher = new BackgroundSwitcher();
-    }
-    return true;
-};
-
-// Функция для принудительного исправления фона
-window.fixBackground = function() {
-    console.log('🔧 Manually fixing background...');
+// Функция для принудительного исправления масштаба фона
+window.fixBackgroundScale = function() {
+    console.log('🔧 Manually fixing background scale...');
     
     const bgLayers = document.querySelectorAll('.parallax-bg-layer');
     if (bgLayers.length === 0) return false;
     
-    // Найти активный слой
-    let activeIndex = 0;
-    bgLayers.forEach((layer, index) => {
-        if (layer.classList.contains('active')) {
-            activeIndex = index;
-        }
+    bgLayers.forEach(layer => {
+        layer.style.transform = 'scale(1) !important';
+        layer.style.backgroundSize = 'cover !important';
+        layer.style.backgroundPosition = 'center center !important';
     });
     
-    // Исправить все слои
-    bgLayers.forEach((layer, index) => {
-        layer.style.transform = 'translate3d(0, 0, 0)';
-        layer.style.backgroundAttachment = 'scroll';
-        
-        if (index === activeIndex) {
-            layer.style.opacity = '1';
-            layer.style.zIndex = '-1000';
-            layer.style.display = 'block';
-            layer.style.visibility = 'visible';
-        } else {
-            layer.style.opacity = '0';
-            layer.style.zIndex = '-1001';
-        }
-    });
-    
-    console.log(`✅ Fixed background layer ${activeIndex + 1}`);
+    console.log(`✅ Fixed scale for ${bgLayers.length} background layers`);
     return true;
 };
 
 // Экспорт функций
 window.homePage = {
     initialize: initializeHomePage,
-    reinitialize: () => {
-        initializeHomePage();
-    },
     switchBackground,
     nextBackground,
     prevBackground,
     getCurrentBackground,
-    fixBackground
+    fixBackgroundScale
 };
 
-// Автоматическое исправление через 2 секунды после загрузки
+// Автоматическое исправление масштаба через 2 секунды после загрузки
 window.addEventListener('load', () => {
     setTimeout(() => {
-        if (window.fixBackground) {
-            window.fixBackground();
+        if (window.fixBackgroundScale) {
+            window.fixBackgroundScale();
         }
     }, 2000);
 });
 
-console.log('✅ home.js fully loaded - BACKGROUND SWITCHING FIXED AND READY');
+console.log('✅ home.js fully loaded - NORMAL BACKGROUND SCALE ENABLED');
