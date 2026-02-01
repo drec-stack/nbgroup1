@@ -76,7 +76,7 @@ html {
     z-index: -1000 !important;
 }
 
-/* Затемнение фона для лучшей читаемости текста */
+/* ОЧЕНЬ СЛАБОЕ затемнение фона для лучшей читаемости текста */
 .parallax-bg-layer::after {
     content: '';
     position: absolute;
@@ -86,10 +86,11 @@ html {
     height: 100%;
     background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.2),
-        rgba(0, 0, 0, 0.15)
+        rgba(0, 0, 0, 0.05),
+        rgba(0, 0, 0, 0.02)
     ) !important;
     z-index: 1;
+    pointer-events: none;
 }
 
 /* Фикс для iOS Safari */
@@ -105,10 +106,10 @@ html {
     }
 }
 
-/* Для широких экранов - оптимизация масштаба */
+/* Для широких экранов - используем cover чтобы заполнить экран */
 @media (min-width: 1400px) {
     .parallax-bg-layer {
-        background-size: 100% auto !important;
+        background-size: cover !important;
         background-position: center top !important;
     }
 }
@@ -116,7 +117,7 @@ html {
 /* Для вертикальных экранов */
 @media (max-height: 800px) {
     .parallax-bg-layer {
-        background-size: auto 100% !important;
+        background-size: cover !important;
     }
 }
 
