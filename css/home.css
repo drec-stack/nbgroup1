@@ -34,7 +34,7 @@ html {
     z-index: 100;
 }
 
-/* ===== ФОНОВЫЕ СЛОИ - ИСПРАВЛЕННЫЙ МАСШТАБ ===== */
+/* ===== ФОНОВЫЕ СЛОИ - НОРМАЛЬНЫЙ МАСШТАБ БЕЗ ПРИБЛИЖЕНИЯ ===== */
 .parallax-bg-container {
     position: fixed !important;
     top: 0 !important;
@@ -52,7 +52,7 @@ html {
     left: 0 !important;
     width: 100% !important;
     height: 100vh !important;
-    background-size: cover !important;
+    background-size: contain !important; /* ИЗМЕНЕНО: cover → contain */
     background-position: center center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
@@ -106,18 +106,26 @@ html {
     }
 }
 
-/* Для широких экранов - используем cover чтобы заполнить экран */
-@media (min-width: 1400px) {
+/* Для очень широких экранов - сохраняем пропорции */
+@media (min-width: 2000px) {
     .parallax-bg-layer {
-        background-size: cover !important;
-        background-position: center top !important;
+        background-size: contain !important;
+        background-position: center center !important;
     }
 }
 
-/* Для вертикальных экранов */
-@media (max-height: 800px) {
+/* Для мобильных - можно использовать cover чтобы избежать слишком мелких фото */
+@media (max-width: 768px) {
     .parallax-bg-layer {
         background-size: cover !important;
+        background-attachment: scroll !important;
+    }
+}
+
+/* Для вертикальных экранов с очень высоким разрешением */
+@media (min-height: 1200px) and (max-width: 768px) {
+    .parallax-bg-layer {
+        background-size: contain !important;
     }
 }
 
@@ -1224,6 +1232,7 @@ h1, h2, h3, h4, h5, h6, p,
         transform: none !important;
         height: 100vh !important;
         position: fixed !important;
+        background-size: contain !important; /* На мобильных тоже contain */
     }
     
     /* HERO СЕКЦИЯ */
