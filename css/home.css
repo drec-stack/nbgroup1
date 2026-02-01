@@ -34,7 +34,7 @@ html {
     z-index: 100;
 }
 
-/* ===== ФОНОВЫЕ СЛОИ - ИСПРАВЛЕННЫЕ (НЕ ПРИБЛИЖЕНЫ) ===== */
+/* ===== ФОНОВЫЕ СЛОИ - ИСПРАВЛЕННЫЙ МАСШТАБ ===== */
 .parallax-bg-container {
     position: fixed !important;
     top: 0 !important;
@@ -44,7 +44,6 @@ html {
     z-index: -1000 !important;
     overflow: hidden !important;
     pointer-events: none !important;
-    background: #0a0a0a !important; /* Черный фон под изображениями */
 }
 
 .parallax-bg-layer {
@@ -53,14 +52,14 @@ html {
     left: 0 !important;
     width: 100% !important;
     height: 100vh !important;
-    background-size: contain !important; /* ← ИЗМЕНЕНО: cover → contain */
+    background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
-    background-attachment: scroll !important;
+    background-attachment: fixed !important;
     opacity: 0 !important;
     transition: opacity 1.2s ease-in-out !important;
     will-change: opacity;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1) !important;
     z-index: -1001 !important;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -77,11 +76,6 @@ html {
     z-index: -1000 !important;
 }
 
-/* Параллакс-эффект */
-.parallax-bg-layer.scroll-parallax {
-    transition: transform 0.1s linear, opacity 1.2s ease-in-out !important;
-}
-
 /* Затемнение фона для лучшей читаемости текста */
 .parallax-bg-layer::after {
     content: '';
@@ -92,36 +86,10 @@ html {
     height: 100%;
     background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.3),
-        rgba(0, 0, 0, 0.2)
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.15)
     ) !important;
     z-index: 1;
-}
-
-/* Дополнительный черный фон для предотвращения белых полос */
-.parallax-bg-layer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0a0a0a !important;
-    z-index: -1;
-}
-
-/* Для широких экранов - используем cover чтобы не было черных полос по бокам */
-@media (min-width: 1200px) {
-    .parallax-bg-layer {
-        background-size: cover !important;
-    }
-}
-
-/* Для очень широких экранов */
-@media (min-width: 2000px) {
-    .parallax-bg-layer {
-        background-size: 100% auto !important;
-    }
 }
 
 /* Фикс для iOS Safari */
@@ -134,6 +102,21 @@ html {
     
     .parallax-bg-container {
         height: -webkit-fill-available !important;
+    }
+}
+
+/* Для широких экранов - оптимизация масштаба */
+@media (min-width: 1400px) {
+    .parallax-bg-layer {
+        background-size: 100% auto !important;
+        background-position: center top !important;
+    }
+}
+
+/* Для вертикальных экранов */
+@media (max-height: 800px) {
+    .parallax-bg-layer {
+        background-size: auto 100% !important;
     }
 }
 
@@ -1178,19 +1161,6 @@ h1, h2, h3, h4, h5, h6, p,
     box-shadow: none !important;
 }
 
-/* ===== ОСНОВНОЙ ФОН ДЛЯ ВСЕЙ СТРАНИЦЫ ===== */
-body.home-page::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0a0a0a !important;
-    z-index: -2000 !important;
-    pointer-events: none;
-}
-
 /* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 1200px) {
     .hero h1 {
@@ -1234,7 +1204,7 @@ body.home-page::before {
     }
 }
 
-/* ===== МОБИЛЬНАЯ АДАПТАЦИЯ - ИСПРАВЛЕННЫЕ СТИЛИ ХЕДЕРА ===== */
+/* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
 @media (max-width: 768px) {
     /* ОСНОВНЫЕ НАСТРОЙКИ */
     body.home-page {
@@ -1253,66 +1223,6 @@ body.home-page::before {
         transform: none !important;
         height: 100vh !important;
         position: fixed !important;
-        background-size: cover !important; /* На мобильных оставляем cover */
-    }
-    
-    /* ХЕДЕР НА МОБИЛЬНЫХ */
-    .home-page .main-header {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        transform: none !important;
-        border-radius: 0 !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 10px 0 !important;
-        background: rgba(10, 10, 20, 0.95) !important;
-    }
-    
-    .main-header.scrolled {
-        padding: 8px 0 !important;
-    }
-    
-    /* ЛОГОТИП НА МОБИЛЬНЫХ */
-    .logo {
-        flex: 1;
-        min-width: 0;
-        max-width: 60%;
-    }
-    
-    .logo-text {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        font-size: 16px !important;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 120px;
-    }
-    
-    /* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА НА МОБИЛЬНЫХ */
-    .language-switcher-mobile {
-        min-width: 75px !important;
-        max-width: 75px !important;
-        height: 30px !important;
-        margin-right: 10px;
-    }
-    
-    .language-switcher-mobile .lang-btn {
-        font-size: 11px !important;
-        padding: 4px 6px !important;
-    }
-    
-    .language-switcher-mobile .lang-flag {
-        font-size: 11px !important;
-    }
-    
-    /* БУРГЕР МЕНЮ */
-    .burger-btn {
-        min-width: 32px;
-        min-height: 32px;
-        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
     }
     
     /* HERO СЕКЦИЯ */
@@ -1389,25 +1299,8 @@ body.home-page::before {
         padding-bottom: 40px !important;
     }
     
-    .expertise-vertical-content:not(:last-child)::after {
-        left: 25px !important;
-        height: 40px !important;
-    }
-    
-    .expertise-number-block {
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 15px !important;
-    }
-    
     .expertise-number {
         font-size: 2.2rem !important;
-    }
-    
-    .expertise-number-line {
-        width: 30px !important;
-        height: 3px !important;
-        margin-top: 0 !important;
     }
     
     .expertise-title {
@@ -1418,12 +1311,6 @@ body.home-page::before {
     .expertise-description {
         font-size: 1rem !important;
         margin-bottom: 15px !important;
-    }
-    
-    .expertise-features li {
-        font-size: 0.9rem !important;
-        padding-left: 25px !important;
-        margin-bottom: 8px !important;
     }
     
     /* PROJECTS СЕКЦИЯ */
@@ -1448,32 +1335,6 @@ body.home-page::before {
         font-size: 1rem !important;
     }
     
-    .project-card:hover {
-        transform: translateY(-5px) !important;
-    }
-    
-    /* STATS СЕКЦИЯ */
-    .stats-section {
-        padding: 80px 0 !important;
-    }
-    
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 20px !important;
-    }
-    
-    .stat-card {
-        padding: 25px 15px !important;
-    }
-    
-    .stat-number {
-        font-size: 2.5rem !important;
-    }
-    
-    .stat-label {
-        font-size: 1rem !important;
-    }
-    
     /* SERVICES СЕКЦИЯ */
     .speck-services-section {
         padding: 80px 0 !important;
@@ -1481,10 +1342,6 @@ body.home-page::before {
     
     .speck-services-grid {
         grid-template-columns: 1fr !important;
-        gap: 40px !important;
-    }
-    
-    .speck-services-column {
         gap: 40px !important;
     }
     
@@ -1500,18 +1357,9 @@ body.home-page::before {
         text-align: left !important;
     }
     
-    .speck-service-item {
-        margin-bottom: 20px !important;
-    }
-    
     .service-title {
         font-size: 1.3rem !important;
         margin-bottom: 15px !important;
-        padding-bottom: 10px !important;
-    }
-    
-    .service-title::after {
-        width: 40px !important;
     }
     
     .service-content {
@@ -1519,179 +1367,43 @@ body.home-page::before {
         line-height: 1.6 !important;
     }
     
-    .service-content p {
-        margin-bottom: 1rem !important;
-    }
-    
-    .research-list li {
-        font-size: 0.95rem !important;
-        margin-bottom: 0.6rem !important;
-    }
-    
-    .service-arrow {
-        position: relative !important;
-        display: inline-block !important;
-        margin-top: 15px !important;
-        font-size: 1.5rem !important;
-    }
-    
-    /* JOURNALS СЕКЦИЯ */
-    .journals-section {
-        padding: 80px 0 !important;
-    }
-    
-    .journal-item {
-        grid-template-columns: 1fr !important;
-        gap: 10px !important;
-        padding: 20px 0 !important;
-    }
-    
-    .journal-date {
-        order: 1 !important;
-        font-size: 0.9rem !important;
-    }
-    
-    .journal-title {
-        order: 2 !important;
-        font-size: 1.2rem !important;
-        line-height: 1.4 !important;
-    }
-    
-    .journal-link {
-        order: 3 !important;
-        text-align: left !important;
-        font-size: 0.95rem !important;
-        margin-top: 10px !important;
-    }
-    
-    .journals-actions .btn {
-        width: 100% !important;
-        max-width: 300px !important;
-    }
-    
     /* FAQ СЕКЦИЯ */
     .faq-section {
         padding: 80px 0 !important;
     }
     
-    .faq-grid {
-        margin: 40px auto 0 !important;
-    }
-    
-    .faq-item {
-        margin-bottom: 10px !important;
-        border-radius: 8px !important;
-    }
-    
     .faq-question {
         padding: 18px 20px !important;
         font-size: 1.1rem !important;
-        gap: 15px !important;
-        line-height: 1.4 !important;
-    }
-    
-    .faq-question span {
-        font-size: 1rem !important;
-        text-align: left !important;
-    }
-    
-    .faq-question i {
-        width: 24px !important;
-        height: 24px !important;
-        font-size: 0.9rem !important;
-        flex-shrink: 0 !important;
-    }
-    
-    .faq-answer {
-        padding: 0 20px !important;
-    }
-    
-    .faq-item.active .faq-answer {
-        padding: 0 20px 20px 20px !important;
-    }
-    
-    .faq-answer p {
-        font-size: 0.95rem !important;
-        line-height: 1.5 !important;
-        padding-top: 15px !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
     
     /* CTA СЕКЦИЯ */
     .cta-section {
         padding: 80px 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
-        width: 100% !important;
-    }
-    
-    .cta-content {
-        width: 100% !important;
-        max-width: 100% !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
-        padding: 0 !important;
     }
     
     .cta-title {
         font-size: 2rem !important;
         margin-bottom: 15px !important;
-        text-align: center !important;
-        width: 100% !important;
     }
     
     .cta-subtitle {
         font-size: 1.1rem !important;
         margin-bottom: 30px !important;
-        text-align: center !important;
-        width: 100% !important;
-        max-width: 90% !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        line-height: 1.5 !important;
     }
     
     .cta-actions {
-        display: flex !important;
         flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
         gap: 15px !important;
-        width: 100% !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-    }
-    
-    .cta-actions .btn {
-        width: 100% !important;
-        max-width: 280px !important;
-        min-width: auto !important;
-        padding: 14px 24px !important;
-        font-size: 1rem !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        margin: 0 !important;
     }
     
     /* ОБЩИЕ ИСПРАВЛЕНИЯ */
     .section-title {
         font-size: 2rem !important;
-        margin-bottom: 15px !important;
-        text-align: center !important;
-        width: 100% !important;
     }
     
     .section-subtitle {
         font-size: 1.1rem !important;
-        margin-bottom: 40px !important;
-        text-align: center !important;
-        width: 100% !important;
     }
     
     .btn {
@@ -1699,387 +1411,5 @@ body.home-page::before {
         padding: 14px 28px !important;
         font-size: 1rem !important;
         touch-action: manipulation !important;
-    }
-    
-    section {
-        padding: 60px 0 !important;
-    }
-    
-    .project-card:hover,
-    .service-item:hover,
-    .expertise-vertical-block:hover,
-    .faq-item:hover {
-        transform: none !important;
-    }
-    
-    .btn:hover {
-        transform: translateY(-1px) !important;
-    }
-    
-    .faq-item.active .faq-answer {
-        transition: max-height 0.3s ease !important;
-    }
-    
-    .container {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-}
-
-/* ===== АДАПТАЦИЯ ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНОВ ===== */
-@media (max-width: 480px) {
-    body.home-page {
-        padding-top: 56px !important;
-    }
-    
-    .hero h1 {
-        font-size: 2rem !important;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 2.4rem !important;
-    }
-    
-    .hero h1 span:nth-child(2) {
-        font-size: 1.6rem !important;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.1rem !important;
-    }
-    
-    .expertise-main-title {
-        font-size: 1.8rem !important;
-    }
-    
-    .expertise-number {
-        font-size: 1.8rem !important;
-    }
-    
-    .expertise-title {
-        font-size: 1.3rem !important;
-    }
-    
-    .stats-grid {
-        grid-template-columns: 1fr !important;
-        gap: 15px !important;
-    }
-    
-    .stat-number {
-        font-size: 2rem !important;
-    }
-    
-    .faq-question {
-        padding: 16px 18px !important;
-        font-size: 1rem !important;
-    }
-    
-    .faq-question span {
-        font-size: 0.95rem !important;
-    }
-    
-    .faq-answer p {
-        font-size: 0.9rem !important;
-    }
-    
-    .btn {
-        padding: 12px 20px !important;
-        font-size: 0.95rem !important;
-        min-height: 44px !important;
-    }
-    
-    p, li, span, .description {
-        font-size: 0.9rem !important;
-        line-height: 1.5 !important;
-    }
-    
-    .faq-question,
-    .journal-link,
-    .btn,
-    .project-card,
-    .speck-service-item {
-        min-height: 44px !important;
-    }
-    
-    /* ЛОГОТИП ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ */
-    .logo-text {
-        font-size: 15px !important;
-        max-width: 100px !important;
-    }
-    
-    .language-switcher-mobile {
-        min-width: 70px !important;
-        max-width: 70px !important;
-    }
-    
-    .language-switcher-mobile .lang-btn {
-        font-size: 10px !important;
-        padding: 3px 5px !important;
-    }
-    
-    /* CTA ДОПОЛНИТЕЛЬНЫЕ ИСПРАВЛЕНИЯ */
-    .cta-title {
-        font-size: 1.8rem !important;
-        margin-bottom: 12px !important;
-    }
-    
-    .cta-subtitle {
-        font-size: 1rem !important;
-        margin-bottom: 25px !important;
-        max-width: 95% !important;
-    }
-    
-    .cta-actions .btn {
-        max-width: 100% !important;
-        padding: 12px 20px !important;
-    }
-}
-
-/* ===== ТАБЛЕТКИ (768px - 992px) ===== */
-@media (min-width: 769px) and (max-width: 992px) {
-    .hero h1 {
-        font-size: 3.5rem !important;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 4rem !important;
-    }
-    
-    .hero h1 span:nth-child(2) {
-        font-size: 2.5rem !important;
-    }
-    
-    .expertise-vertical-content {
-        gap: 30px !important;
-    }
-    
-    .expertise-number {
-        font-size: 2.8rem !important;
-    }
-    
-    .speck-services-grid {
-        gap: 40px !important;
-    }
-    
-    .service-title {
-        font-size: 1.5rem !important;
-    }
-    
-    .faq-question {
-        padding: 22px 25px !important;
-        font-size: 1.2rem !important;
-    }
-    
-    .cta-content {
-        max-width: 90% !important;
-    }
-    
-    .cta-actions {
-        gap: 15px !important;
-    }
-    
-    .cta-actions .btn {
-        min-width: 180px !important;
-        padding: 15px 28px !important;
-    }
-}
-
-/* ===== ГОРИЗОНТАЛЬНАЯ ОРИЕНТАЦИЯ ===== */
-@media (max-height: 600px) and (orientation: landscape) {
-    .hero {
-        min-height: 100vh !important;
-        padding: 100px 0 60px !important;
-    }
-    
-    .hero h1 {
-        font-size: 2.5rem !important;
-    }
-    
-    .hero h1 span:first-child {
-        font-size: 3rem !important;
-    }
-    
-    .hero-description {
-        max-height: 100px !important;
-        overflow: hidden !important;
-        margin-bottom: 20px !important;
-    }
-    
-    .hero-actions {
-        margin-top: 20px !important;
-    }
-    
-    .cta-section {
-        padding: 60px 0 !important;
-    }
-    
-    .cta-actions {
-        flex-direction: row !important;
-        gap: 10px !important;
-    }
-    
-    .cta-actions .btn {
-        padding: 12px 20px !important;
-        font-size: 0.9rem !important;
-    }
-}
-
-/* ===== ВЫСОКИЕ ЭКРАНЫ ===== */
-@media (min-width: 768px) and (min-height: 1000px) {
-    .hero {
-        min-height: 90vh !important;
-        padding: 200px 0 100px !important;
-    }
-    
-    .hero h1 {
-        font-size: 3.5rem !important;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.8rem !important;
-    }
-    
-    .cta-section {
-        padding: 200px 0 !important;
-    }
-    
-    .cta-title {
-        font-size: 3.5rem !important;
-        margin-bottom: 30px !important;
-    }
-    
-    .cta-subtitle {
-        font-size: 1.8rem !important;
-        margin-bottom: 50px !important;
-    }
-}
-
-/* ===== СПЕЦИАЛЬНЫЕ ПРАВИЛА ДЛЯ IOS SAFARI ===== */
-@supports (-webkit-touch-callout: none) {
-    .home-page .main-header {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-    }
-    
-    .hero {
-        min-height: -webkit-fill-available !important;
-        min-height: 100dvh !important;
-    }
-    
-    body {
-        -webkit-overflow-scrolling: touch !important;
-    }
-    
-    .parallax-bg-layer {
-        background-attachment: scroll !important;
-        height: -webkit-fill-available !important;
-    }
-    
-    .btn {
-        cursor: pointer !important;
-    }
-    
-    .cta-actions .btn {
-        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1) !important;
-    }
-}
-
-/* ===== СВЕТЛАЯ ТЕМА ===== */
-@media (prefers-color-scheme: light) {
-    .home-page {
-        color: #333 !important;
-    }
-    
-    .faq-item {
-        border-color: rgba(0, 0, 0, 0.1) !important;
-    }
-    
-    .faq-question {
-        color: #333 !important;
-    }
-    
-    .faq-answer p {
-        color: #666 !important;
-    }
-}
-
-/* ===== HEADER FIX FOR HOME PAGE ===== */
-.home-page .main-header {
-    position: fixed !important;
-    top: 20px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: calc(100% - 40px) !important;
-    max-width: 1400px !important;
-    margin: 0 auto !important;
-    z-index: 1000 !important;
-}
-
-.home-page .container {
-    max-width: 1400px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-}
-
-@media (max-width: 768px) {
-    .home-page .main-header {
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        top: 0 !important;
-    }
-    
-    .home-page .container {
-        padding: 0 20px !important;
-    }
-}
-
-/* ===== ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ ДЛЯ ЦЕНТРИРОВАНИЯ ===== */
-.cta-section .container {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    flex-direction: column !important;
-}
-
-@media (max-width: 768px) {
-    .cta-section .container {
-        padding: 0 20px !important;
-    }
-}
-
-/* ===== ДОПОЛНИТЕЛЬНЫЕ МОБИЛЬНЫЕ ФИКСЫ ===== */
-@media (max-width: 360px) {
-    .logo-text {
-        font-size: 14px !important;
-        max-width: 90px !important;
-    }
-    
-    .language-switcher-mobile {
-        min-width: 65px !important;
-        max-width: 65px !important;
-    }
-    
-    .language-switcher-mobile .lang-btn {
-        font-size: 9px !important;
-    }
-}
-
-/* ===== ФИКС ДЛЯ ВЫСОКИХ ИЗОБРАЖЕНИЙ ===== */
-@media (min-aspect-ratio: 16/9) {
-    .parallax-bg-layer {
-        background-size: 100% auto !important;
-    }
-}
-
-@media (max-aspect-ratio: 4/3) {
-    .parallax-bg-layer {
-        background-size: auto 100% !important;
     }
 }
