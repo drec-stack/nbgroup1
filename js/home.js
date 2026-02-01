@@ -42,8 +42,9 @@ class BackgroundSwitcher {
                 layer.style.zIndex = '-1001';
             }
             
-            // УБИРАЕМ ВСЕ ТРАНСФОРМАЦИИ КОТОРЫЕ ПРИБЛИЖАЮТ ФОН
+            // ГАРАНТИРУЕМ НОРМАЛЬНЫЙ МАСШТАБ - НИКАКИХ ПРИБЛИЖЕНИЙ!
             layer.style.transform = 'translate3d(0, 0, 0) scale(1) !important';
+            layer.style.backgroundSize = 'cover !important';
         });
         
         // Фикс для мобильных устройств
@@ -51,7 +52,7 @@ class BackgroundSwitcher {
             this.optimizeForMobile();
         }
         
-        console.log('✅ BackgroundSwitcher initialized');
+        console.log('✅ BackgroundSwitcher initialized with NORMAL scale');
     }
     
     fixAllBackgroundScale() {
@@ -61,18 +62,20 @@ class BackgroundSwitcher {
             layer.style.backgroundSize = 'cover !important';
             layer.style.backgroundPosition = 'center center !important';
             
-            // Для широких экранов - оптимизация
+            // Убираем все приближения и устанавливаем COVER для полного заполнения
+            layer.style.backgroundSize = 'cover';
+            
+            // Для всех экранов используем cover
             if (window.innerWidth > 1400) {
-                layer.style.backgroundSize = '100% auto !important';
+                layer.style.backgroundSize = 'cover !important';
             }
             
-            // Для вертикальных экранов
             if (window.innerHeight < 800) {
-                layer.style.backgroundSize = 'auto 100% !important';
+                layer.style.backgroundSize = 'cover !important';
             }
         });
         
-        console.log('✅ Fixed background scale for all layers');
+        console.log('✅ Fixed background scale for all layers (COVER mode only)');
     }
     
     preloadImages() {
@@ -90,6 +93,7 @@ class BackgroundSwitcher {
                     if (index === this.currentBgIndex) {
                         layer.style.opacity = '1';
                         layer.style.transform = 'scale(1) !important';
+                        layer.style.backgroundSize = 'cover !important';
                     }
                 };
                 img.onerror = () => {
@@ -120,7 +124,7 @@ class BackgroundSwitcher {
         // Обработчик ресайза
         window.addEventListener('resize', () => {
             this.fixAllBackgroundScale();
-            console.log('🔄 Resize handled - backgrounds scale fixed');
+            console.log('🔄 Resize handled - backgrounds scale fixed (COVER)');
         }, { passive: true });
         
         // Обработчик для touch устройств
@@ -212,7 +216,9 @@ class BackgroundSwitcher {
         
         // ГАРАНТИРУЕМ НОРМАЛЬНЫЙ МАСШТАБ
         currentLayer.style.transform = 'scale(1) !important';
+        currentLayer.style.backgroundSize = 'cover !important';
         nextLayer.style.transform = 'scale(1) !important';
+        nextLayer.style.backgroundSize = 'cover !important';
         
         // Плавное переключение
         currentLayer.style.opacity = '0';
@@ -229,7 +235,7 @@ class BackgroundSwitcher {
             
             this.currentBgIndex = index;
             
-            console.log(`✅ Switched to background ${index + 1}`);
+            console.log(`✅ Switched to background ${index + 1} with normal scale`);
         }, 300);
     }
     
@@ -240,6 +246,7 @@ class BackgroundSwitcher {
             currentLayer.style.opacity = '1';
             currentLayer.style.zIndex = '-1000';
             currentLayer.style.transform = 'scale(1) !important';
+            currentLayer.style.backgroundSize = 'cover !important';
             currentLayer.style.display = 'block';
             currentLayer.style.visibility = 'visible';
         }
@@ -250,10 +257,11 @@ class BackgroundSwitcher {
                 layer.style.opacity = '0';
                 layer.style.zIndex = '-1001';
                 layer.style.transform = 'scale(1) !important';
+                layer.style.backgroundSize = 'cover !important';
             }
         });
         
-        console.log('✅ Ensured background visibility with normal scale');
+        console.log('✅ Ensured background visibility with NORMAL scale (COVER)');
     }
     
     optimizeForMobile() {
@@ -287,12 +295,12 @@ class BackgroundSwitcher {
 
 // ===== ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ =====
 function initializeHomePage() {
-    console.log('📄 INITIALIZING HOME PAGE WITH NORMAL BACKGROUNDS');
+    console.log('📄 INITIALIZING HOME PAGE WITH NORMAL BACKGROUNDS - NO ZOOM');
     
     // 1. Инициализация системы смены фона
     try {
         window.backgroundSwitcher = new BackgroundSwitcher();
-        console.log('✅ Background switcher initialized');
+        console.log('✅ Background switcher initialized with NO ZOOM');
     } catch (error) {
         console.error('❌ Failed to initialize background switcher:', error);
         // Аварийное восстановление
@@ -301,10 +309,12 @@ function initializeHomePage() {
             bgLayers[0].style.opacity = '1';
             bgLayers[0].style.zIndex = '-1000';
             bgLayers[0].style.transform = 'scale(1) !important';
+            bgLayers[0].style.backgroundSize = 'cover !important';
             
             for (let i = 1; i < bgLayers.length; i++) {
                 bgLayers[i].style.opacity = '0';
                 bgLayers[i].style.zIndex = '-1001';
+                bgLayers[i].style.backgroundSize = 'cover !important';
             }
         }
     }
@@ -323,7 +333,7 @@ function initializeHomePage() {
         initializeServicesInteraction();
         
         console.log('✅ Home page fully initialized');
-        console.log('🎯 Normal background switching:');
+        console.log('🎯 Normal background switching (NO ZOOM):');
         console.log('   • Hero & Expertise → BG1');
         console.log('   • Projects & Stats → BG2');
         console.log('   • Services → BG3');
@@ -352,21 +362,23 @@ function ensureAllContentVisible() {
         section.style.visibility = 'visible';
     });
     
-    // Фоновые слои
+    // Фоновые слои - ГАРАНТИРУЕМ НОРМАЛЬНЫЙ МАСШТАБ
     const bgLayers = document.querySelectorAll('.parallax-bg-layer');
     const activeBg = window.backgroundSwitcher?.getCurrentBackground() || 0;
     bgLayers.forEach((layer, index) => {
         if (index === activeBg) {
             layer.style.opacity = '1';
             layer.style.zIndex = '-1000';
+            layer.style.backgroundSize = 'cover !important';
         } else {
             layer.style.opacity = '0';
             layer.style.zIndex = '-1001';
+            layer.style.backgroundSize = 'cover !important';
         }
         layer.style.transform = 'scale(1) !important';
     });
     
-    console.log(`✅ Made ${animatedElements.length + sections.length + bgLayers.length} elements visible`);
+    console.log(`✅ Made ${animatedElements.length + sections.length + bgLayers.length} elements visible with NO ZOOM`);
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ EXPERTISE БЛОКОВ =====
@@ -591,7 +603,7 @@ window.getCurrentBackground = function() {
 
 // Функция для принудительного исправления масштаба фона
 window.fixBackgroundScale = function() {
-    console.log('🔧 Manually fixing background scale...');
+    console.log('🔧 Manually fixing background scale to COVER...');
     
     const bgLayers = document.querySelectorAll('.parallax-bg-layer');
     if (bgLayers.length === 0) return false;
@@ -602,7 +614,7 @@ window.fixBackgroundScale = function() {
         layer.style.backgroundPosition = 'center center !important';
     });
     
-    console.log(`✅ Fixed scale for ${bgLayers.length} background layers`);
+    console.log(`✅ Fixed scale for ${bgLayers.length} background layers (COVER ONLY)`);
     return true;
 };
 
@@ -625,4 +637,4 @@ window.addEventListener('load', () => {
     }, 2000);
 });
 
-console.log('✅ home.js fully loaded - NORMAL BACKGROUND SCALE ENABLED');
+console.log('✅ home.js fully loaded - NORMAL BACKGROUND SCALE ENABLED (COVER ONLY)');
