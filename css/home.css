@@ -13,7 +13,9 @@ body.home-page {
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
     -webkit-overflow-scrolling: touch;
     overflow-scrolling: touch;
     padding-top: 80px !important;
@@ -32,7 +34,7 @@ html {
     z-index: 100;
 }
 
-/* ===== ФОНОВЫЕ СЛОИ - ПАРАЛЛАКС С ПРИБЛИЖЕНИЕМ ===== */
+/* ===== ФОНОВЫЕ СЛОИ - НОРМАЛЬНЫЙ МАСШТАБ БЕЗ ПРИБЛИЖЕНИЯ ===== */
 .parallax-bg-container {
     position: fixed !important;
     top: 0 !important;
@@ -50,14 +52,14 @@ html {
     left: 0 !important;
     width: 100% !important;
     height: 100vh !important;
-    background-size: cover !important; /* COVER - будет приближать и обрезать */
+    background-size: contain !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     opacity: 0 !important;
     transition: opacity 1.2s ease-in-out !important;
-    will-change: opacity, transform;
-    transform: translate3d(0, 0, 0) scale(1.1) !important; /* ПРИБЛИЖЕНИЕ */
+    will-change: opacity;
+    transform: translate3d(0, 0, 0) scale(1) !important;
     z-index: -1001 !important;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -66,17 +68,15 @@ html {
 /* КРИТИЧНО: Первый слой должен быть виден при загрузке */
 .parallax-bg-layer:first-child {
     opacity: 1 !important;
-    transform: scale(1.1) !important; /* ПРИБЛИЖЕНИЕ */
 }
 
 /* АКТИВНЫЙ СЛОЙ */
 .parallax-bg-layer.active {
     opacity: 1 !important;
     z-index: -1000 !important;
-    transform: scale(1.1) !important; /* ПРИБЛИЖЕНИЕ */
 }
 
-/* Среднее затемнение фона для лучшей читаемости текста */
+/* ОЧЕНЬ СЛАБОЕ затемнение фона для лучшей читаемости текста */
 .parallax-bg-layer::after {
     content: '';
     position: absolute;
@@ -86,8 +86,8 @@ html {
     height: 100%;
     background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.3),
-        rgba(0, 0, 0, 0.15)
+        rgba(0, 0, 0, 0.05),
+        rgba(0, 0, 0, 0.02)
     ) !important;
     z-index: 1;
     pointer-events: none;
@@ -106,20 +106,26 @@ html {
     }
 }
 
-/* Для очень широких экранов */
+/* Для очень широких экранов - сохраняем пропорции */
 @media (min-width: 2000px) {
     .parallax-bg-layer {
-        background-size: cover !important;
+        background-size: contain !important;
         background-position: center center !important;
     }
 }
 
-/* Для мобильных */
+/* Для мобильных - можно использовать cover чтобы избежать слишком мелких фото */
 @media (max-width: 768px) {
     .parallax-bg-layer {
         background-size: cover !important;
         background-attachment: scroll !important;
-        transform: scale(1.05) !important; /* Меньшее приближение на мобильных */
+    }
+}
+
+/* Для вертикальных экранов с очень высоким разрешением */
+@media (min-height: 1200px) and (max-width: 768px) {
+    .parallax-bg-layer {
+        background-size: contain !important;
     }
 }
 
@@ -1217,6 +1223,16 @@ h1, h2, h3, h4, h5, h6, p,
     .container {
         padding: 0 20px !important;
         overflow-x: hidden !important;
+    }
+    
+    /* ФОНЫ ДЛЯ МОБИЛЬНЫХ */
+    .parallax-bg-layer {
+        background-attachment: scroll !important;
+        background-position: center center !important;
+        transform: none !important;
+        height: 100vh !important;
+        position: fixed !important;
+        background-size: contain !important;
     }
     
     /* HERO СЕКЦИЯ */
