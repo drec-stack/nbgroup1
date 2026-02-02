@@ -1,7 +1,24 @@
-/* home-background.css - ЛЕГКАЯ ВУАЛЬ ДЛЯ ЧИТАЕМОСТИ НА ФОТО */
+/* home-background.css - ПОДДЕРЖКА ФОНОВЫХ ФОТО */
 
-/* Легкое затемнение фона для лучшей читаемости текста поверх фото */
-.parallax-bg-layer::after {
+/* УБИРАЕМ ГРАДИЕНТ, ЧТОБЫ БЫЛИ ВИДНЫ ФОТО */
+body.home-page {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+/* ДЕЛАЕМ ФОНОВЫЕ СЛОИ ВИДИМЫМИ */
+.bg-layers-container,
+.bg-layer,
+.parallax-bg-container,
+.parallax-bg-layer {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* УСИЛЕННОЕ ЗАТЕМНЕНИЕ ДЛЯ ЛУЧШЕЙ ЧИТАЕМОСТИ */
+.parallax-bg-layer::before {
     content: '';
     position: absolute;
     top: 0;
@@ -10,84 +27,63 @@
     height: 100%;
     background: linear-gradient(
         to bottom,
-        rgba(15, 23, 42, 0.25),
-        rgba(30, 41, 59, 0.15)
+        rgba(15, 23, 42, 0.4),
+        rgba(30, 41, 59, 0.25)
     ) !important;
     z-index: 1;
     pointer-events: none;
 }
 
-/* Усиленные тени текста для контраста на фото */
-h1, h2, h3, h4, h5, h6, 
-.hero h1, .hero-subtitle, .hero-description p,
-.expertise-main-title, .expertise-title,
-.expertise-description, .expertise-features li,
-.project-title, .project-description,
-.service-title, .service-content, .service-content p,
-.journal-title, .faq-question, .faq-answer p, 
-.cta-title, .cta-subtitle, .stat-number, .stat-label, 
-.section-title, .section-subtitle, .speck-section-title,
-.speck-services-intro, .speck-services-intro p {
+/* ДОПОЛНИТЕЛЬНАЯ ТЕНЬ ДЛЯ ТЕКСТА */
+.hero h1,
+.hero h1 span,
+.hero-subtitle,
+.hero-description p {
     text-shadow: 
-        0 4px 40px rgba(0, 0, 0, 0.8),
-        0 3px 35px rgba(0, 0, 0, 0.7),
-        0 2px 30px rgba(0, 0, 0, 0.6) !important;
-    position: relative;
-    z-index: 10;
+        0 5px 50px rgba(0, 0, 0, 0.95),
+        0 4px 45px rgba(0, 0, 0, 0.9),
+        0 3px 40px rgba(0, 0, 0, 0.85) !important;
 }
 
-/* Гарантируем что контейнеры поверх фона */
-.container, 
-section, 
-.hero, 
-.expertise-section,
-.projects-section,
-.speck-services-section,
-.journals-section,
-.faq-section,
-.cta-section,
-.stats-section,
-#header-container,
-#footer-container {
-    position: relative;
-    z-index: 20 !important;
-}
-
-/* Улучшенная видимость кнопок на фото */
-.btn, .btn-primary, .btn-secondary {
-    background: rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(20px) saturate(1.3) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(1.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+/* УЛУЧШЕННАЯ ВИДИМОСТЬ КНОПОК НА ФОТО */
+.hero-actions .btn {
+    background: rgba(255, 255, 255, 0.18) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(30px) !important;
+    -webkit-backdrop-filter: blur(30px) !important;
     box-shadow: 
-        0 15px 35px rgba(0, 0, 0, 0.4),
-        0 5px 20px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+        0 20px 50px rgba(0, 0, 0, 0.5),
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
-.btn:hover, .btn-primary:hover, .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.22) !important;
-    border-color: rgba(255, 255, 255, 0.35) !important;
+.hero-actions .btn:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
 }
 
-/* Адаптивная вуаль для мобильных */
-@media (max-width: 768px) {
-    .parallax-bg-layer::after {
+/* Для темных фото */
+@media (prefers-contrast: high) {
+    .parallax-bg-layer::before {
         background: linear-gradient(
             to bottom,
-            rgba(15, 23, 42, 0.35),
-            rgba(30, 41, 59, 0.2)
+            rgba(15, 23, 42, 0.5),
+            rgba(30, 41, 59, 0.35)
         ) !important;
     }
 }
 
-/* Для темных фото - усиленная вуаль */
-@media (prefers-color-scheme: dark) {
-    .parallax-bg-layer::after {
+/* Для мобильных - сильнее затемнение */
+@media (max-width: 768px) {
+    .parallax-bg-layer::before {
         background: linear-gradient(
             to bottom,
-            rgba(15, 23, 42, 0.4),
-            rgba(30, 41, 59, 0.25)
+            rgba(15, 23, 42, 0.5),
+            rgba(30, 41, 59, 0.35)
         ) !important;
+    }
+    
+    .hero-actions .btn {
+        background: rgba(255, 255, 255, 0.22) !important;
     }
 }
