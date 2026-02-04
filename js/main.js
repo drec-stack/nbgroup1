@@ -1,140 +1,160 @@
-console.log('🚀 main.js loaded - CENTRALIZED MANAGEMENT SYSTEM');
+console.log('🚀 main.js loaded - WITH FIX FOR OTHER PAGES');
 
-// ===== ГЛОБАЛЬНЫЙ ОБЪЕКТ ПРИЛОЖЕНИЯ =====
 window.NBGroupApp = {
-    // Состояние приложения
     state: {
         isMobile: window.innerWidth <= 900,
         currentPage: '',
         language: localStorage.getItem('preferredLang') || 'ru',
         menuOpen: false,
         headerHidden: false,
-        lastScrollTop: 0,
-        scrollDirection: 'none',
-        headerDisabledOnCurrentPage: false
+        lastScrollTop: 0
     },
     
-    // Инициализация
     init() {
-        console.log('🎬 Initializing NB Group Tech App...');
+        console.log('🎬 Initializing app...');
         
-        this.detectCurrentPage();
-        this.setupPageSpecificSettings();
+        this.detectPage();
+        this.setupHeaderBehavior();
         this.setupBurgerMenu();
-        this.setupSmoothScroll();
+        this.setupLanguage();
+        this.setupScroll();
         this.setupActiveNav();
-        this.setupLanguageSwitcher();
-        this.setupScrollEffects();
-        this.setupHeaderScroll();
-        this.setupForms();
-        this.setupLazyLoading();
-        this.setupButtonStyles();
-        this.setupGlobalEvents();
         
-        console.log('✅ NB Group Tech App initialized');
+        console.log('✅ App initialized');
     },
     
-    // Определение текущей страницы
-    detectCurrentPage() {
+    detectPage() {
         const path = window.location.pathname;
         const page = path.split('/').pop() || 'index.html';
         this.state.currentPage = page;
         
         const pageClass = page.replace('.html', '') + '-page';
-        if (pageClass !== '-page') {
-            if (pageClass !== 'brandbook-page') {
-                document.body.classList.add(pageClass);
-            }
+        if (pageClass !== '-page' && pageClass !== 'brandbook-page') {
+            document.body.classList.add(pageClass);
         }
     },
     
-    // Настройки для конкретных страниц
-    setupPageSpecificSettings() {
-        const page = this.state.currentPage.replace('.html', '');
-        
-        // На странице "О нас" отключаем скрытие хедера
-        if (page === 'about' || page === 'services' || page === 'portfolio' || page === 'contacts') {
-            this.state.headerDisabledOnCurrentPage = true;
-            console.log(`📄 ${page.toUpperCase()} page detected - disabling header hide on scroll`);
-        }
-    },
-    
-    // ===== СКРЫТИЕ ХЕДЕРА ПРИ СКРОЛЛЕ (УЛУЧШЕННАЯ ВЕРСИЯ) =====
-    setupHeaderScroll() {
-        console.log('🎯 Setting up unified header scroll behavior...');
+    // КРИТИЧЕСКИЙ ФИКС: Настройка поведения хедера для всех страниц
+    setupHeaderBehavior() {
+        console.log('🎯 Setting up header behavior...');
         
         const header = document.getElementById('main-header');
         if (!header) {
-            console.warn('❌ Header not found for scroll behavior');
+            console.warn('❌ Header not found');
             return;
         }
         
-        // На некоторых страницах отключаем скрытие хедера
-        if (this.state.headerDisabledOnCurrentPage) {
-            console.log('📄 Header hide disabled for this page');
+        // На страницах кроме главной отключаем скрытие хедера
+        const isIndexPage = document.body.classList.contains('index-page') || 
+                           document.body.classList.contains('home-page') ||
+                           this.state.currentPage === 'index.html' ||
+                           this.state.currentPage === '' ||
+                           this.state.currentPage === '/';
+        
+        console.log('📄 Is index page?', isIndexPage);
+        
+        // ФИКС: Для всех страниц кроме главной применяем стили как на главной
+        if (!isIndexPage) {
+            console.log('🎨 Applying index-like styles to header');
             
-            // Убедимся что хедер всегда виден
+            // Добавляем CSS для страниц кроме главной
+            const styleId = 'non-index-header-fix';
+            if (!document.getElementById(styleId)) {
+                const style = document.createElement('style');
+                style.id = styleId;
+                style.textContent = `
+                    /* ПРОЗРАЧНЫЙ ХЕДЕР ДЛЯ ВСЕХ СТРАНИЦ КРОМЕ ГЛАВНОЙ */
+                    body:not(.home-page):not(.index-page) .main-header {
+                        background: rgba(255, 255, 255, 0.08) !important;
+                        backdrop-filter: blur(30px) saturate(180%) !important;
+                        -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+                        box-shadow: 
+                            0 8px 32px rgba(0, 0, 0, 0.3),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+                        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+                        position: fixed !important;
+                        top: 20px !important;
+                        left: 50% !important;
+                        transform: translateX(-50%) !important;
+                        width: calc(100% - 40px) !important;
+                        max-width: 1400px !important;
+                        padding: 15px 0 !important;
+                        border-radius: 20px !important;
+                        z-index: 1000 !important;
+                    }
+                    
+                    body:not(.home-page):not(.index-page) .main-header.scrolled {
+                        background: rgba(255, 255, 255, 0.12) !important;
+                        backdrop-filter: blur(35px) saturate(200%) !important;
+                        -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+                        box-shadow: 
+                            0 12px 40px rgba(0, 0, 0, 0.4),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+                    }
+                    
+                    /* Для мобильных */
+                    @media (max-width: 900px) {
+                        body:not(.home-page):not(.index-page) .main-header {
+                            background: rgba(255, 255, 255, 0.08) !important;
+                            backdrop-filter: blur(30px) !important;
+                            -webkit-backdrop-filter: blur(30px) !important;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                            transform: none !important;
+                            width: 100% !important;
+                            border-radius: 0 !important;
+                            padding: 12px 0 !important;
+                        }
+                        
+                        body:not(.home-page):not(.index-page) .main-header.scrolled {
+                            background: rgba(255, 255, 255, 0.12) !important;
+                            backdrop-filter: blur(35px) !important;
+                            -webkit-backdrop-filter: blur(35px) !important;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                console.log('✅ Applied header fix for non-index pages');
+            }
+            
+            // Отключаем скрытие хдера на этих страницах
             header.classList.remove('header-hidden');
             header.classList.add('header-visible');
-            header.classList.remove('scrolled');
             
-            // Добавляем CSS для фиксированного отображения
-            const style = document.createElement('style');
-            style.textContent = `
-                .main-header {
-                    background: rgba(255, 255, 255, 0.1) !important;
-                    backdrop-filter: blur(40px) saturate(200%) !important;
-                    -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
-                    box-shadow: 
-                        0 15px 50px rgba(0, 0, 0, 0.35),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                    transform: translateX(-50%) translateY(0) scale(1.02) !important;
+            // Удаляем обработчик скрытия хедера
+            const scrollHandler = () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
                 }
-                
-                @media (max-width: 900px) {
-                    .main-header {
-                        background: rgba(10, 10, 20, 0.98) !important;
-                        backdrop-filter: blur(35px) !important;
-                        -webkit-backdrop-filter: blur(35px) !important;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-            return;
+            };
+            
+            window.addEventListener('scroll', scrollHandler);
+            scrollHandler(); // Инициализация
+            
+            console.log('📄 Header hide disabled for non-index pages');
+            return; // Прекращаем дальнейшую настройку скрытия
         }
         
-        const headerHeight = header.offsetHeight;
+        // На главной странице оставляем скрытие хедера при скролле
         const scrollThreshold = 50;
         let ticking = false;
         
-        // Функция обновления состояния хедера
-        const updateHeaderState = () => {
+        const updateHeader = () => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const scrollingDown = scrollTop > this.state.lastScrollTop;
             
-            // Обновляем направление скролла
-            this.state.scrollDirection = scrollingDown ? 'down' : 'up';
-            
-            // Показываем хедер если прокрутили до верха
-            if (scrollTop <= headerHeight) {
-                if (this.state.headerHidden) {
-                    this.showHeader();
-                }
-            }
-            // Прячем при скролле вниз
-            else if (scrollingDown && scrollTop > headerHeight + scrollThreshold) {
-                if (!this.state.headerHidden) {
-                    this.hideHeader();
-                }
-            }
-            // Показываем при скролле вверх
-            else if (!scrollingDown && scrollTop > headerHeight) {
-                if (this.state.headerHidden) {
-                    this.showHeader();
-                }
+            if (scrollTop <= header.offsetHeight) {
+                this.showHeader();
+            } else if (scrollingDown && scrollTop > header.offsetHeight + scrollThreshold) {
+                this.hideHeader();
+            } else if (!scrollingDown && scrollTop > header.offsetHeight) {
+                this.showHeader();
             }
             
-            // Обновляем scrolled класс для стилей
             if (scrollTop > 100) {
                 header.classList.add('scrolled');
             } else {
@@ -145,279 +165,109 @@ window.NBGroupApp = {
             ticking = false;
         };
         
-        // Оптимизированный обработчик скролла
         const onScroll = () => {
             if (!ticking) {
                 ticking = true;
-                requestAnimationFrame(updateHeaderState);
+                requestAnimationFrame(updateHeader);
             }
         };
         
-        // Функции управления хедером
         this.showHeader = () => {
-            header.classList.remove('header-hidden');
-            header.classList.add('header-visible');
-            this.state.headerHidden = false;
-            console.log('⬆️ Header shown');
+            if (this.state.headerHidden) {
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+                this.state.headerHidden = false;
+            }
         };
         
         this.hideHeader = () => {
-            header.classList.add('header-hidden');
-            header.classList.remove('header-visible');
-            this.state.headerHidden = true;
-            console.log('⬇️ Header hidden');
-        };
-        
-        this.toggleHeader = () => {
-            if (this.state.headerHidden) {
-                this.showHeader();
-            } else {
-                this.hideHeader();
+            if (!this.state.headerHidden) {
+                header.classList.add('header-hidden');
+                header.classList.remove('header-visible');
+                this.state.headerHidden = true;
             }
         };
         
-        // Экспортируем функции глобально
-        window.showHeader = this.showHeader;
-        window.hideHeader = this.hideHeader;
-        window.toggleHeader = this.toggleHeader;
-        
-        // Показываем хедер при клике на элементы
-        const headerElements = header.querySelectorAll('a, button, .nav-link, .lang-btn, .logo');
-        headerElements.forEach(el => {
-            el.addEventListener('click', () => {
-                if (this.state.headerHidden) {
-                    this.showHeader();
-                }
-            });
-            
-            el.addEventListener('focus', () => {
-                if (this.state.headerHidden) {
-                    this.showHeader();
-                }
-            });
-        });
-        
-        // Показываем хедер при наведении в верхнюю часть экрана (только для десктопа)
-        if (!this.state.isMobile && !this.state.headerDisabledOnCurrentPage) {
-            this.setupHeaderHoverZone();
-        }
-        
-        // Настраиваем обработчик скролла
         window.addEventListener('scroll', onScroll, { passive: true });
-        
-        // Обработка ресайза
-        window.addEventListener('resize', () => {
-            this.state.isMobile = window.innerWidth <= 900;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            if (scrollTop <= headerHeight && this.state.headerHidden) {
-                this.showHeader();
-            }
-            
-            // Обновляем hover zone
-            const hoverZone = document.getElementById('header-hover-zone');
-            if (hoverZone) {
-                hoverZone.remove();
-            }
-            
-            if (!this.state.isMobile && !this.state.headerDisabledOnCurrentPage) {
-                this.setupHeaderHoverZone();
-            }
-        });
-        
-        // Инициализация начального состояния
         this.state.lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        updateHeaderState();
-        
-        console.log('✅ Header scroll behavior initialized');
+        updateHeader();
     },
     
-    setupHeaderHoverZone() {
-        const hoverZone = document.createElement('div');
-        hoverZone.id = 'header-hover-zone';
-        hoverZone.style.position = 'fixed';
-        hoverZone.style.top = '0';
-        hoverZone.style.left = '0';
-        hoverZone.style.width = '100%';
-        hoverZone.style.height = '50px';
-        hoverZone.style.zIndex = '999';
-        hoverZone.style.pointerEvents = 'none';
-        hoverZone.style.opacity = '0';
-        hoverZone.style.transition = 'opacity 0.3s ease';
-        hoverZone.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.1), transparent)';
-        
-        document.body.appendChild(hoverZone);
-        
-        // Показываем хедер при наведении в зону
-        document.addEventListener('mousemove', (e) => {
-            if (this.state.headerHidden && e.clientY < 50) {
-                hoverZone.style.pointerEvents = 'auto';
-                hoverZone.style.opacity = '0.5';
-                this.showHeader();
-            } else {
-                hoverZone.style.opacity = '0';
-                setTimeout(() => {
-                    hoverZone.style.pointerEvents = 'none';
-                }, 300);
-            }
-        });
-    },
-    
-    // ===== БУРГЕР МЕНЮ =====
     setupBurgerMenu() {
-        console.log('🍔 Setting up burger menu...');
-        
         const setup = () => {
-            const burgerBtn = document.querySelector('.burger-btn');
-            const mobileMenu = document.querySelector('.mobile-menu');
+            const burger = document.querySelector('.burger-btn');
+            const menu = document.querySelector('.mobile-menu');
             
-            if (!burgerBtn || !mobileMenu) {
-                console.log('⚠️ Elements not found, retrying...');
+            if (!burger || !menu) {
                 setTimeout(setup, 500);
                 return;
             }
             
-            console.log('✅ Burger menu elements found');
-            
-            // Удаляем старые обработчики
-            const newBurgerBtn = burgerBtn.cloneNode(true);
-            burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
-            
-            // Гарантируем начальное состояние
-            mobileMenu.classList.remove('active');
-            newBurgerBtn.classList.remove('active');
-            newBurgerBtn.setAttribute('aria-expanded', 'false');
-            
-            // Обработчик клика
-            newBurgerBtn.addEventListener('click', (e) => {
+            burger.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                const isOpen = mobileMenu.classList.contains('active');
-                
-                if (isOpen) {
-                    this.closeMobileMenu();
+                if (menu.classList.contains('active')) {
+                    this.closeMenu();
                 } else {
-                    this.openMobileMenu();
+                    this.openMenu();
                 }
             });
             
             // Закрытие при клике на ссылки
-            const mobileLinks = mobileMenu.querySelectorAll('a, button');
-            mobileLinks.forEach(link => {
+            menu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
-                    setTimeout(() => {
-                        this.closeMobileMenu();
-                    }, 300);
+                    this.closeMenu();
                 });
             });
-            
-            // Закрытие при клике вне меню
-            document.addEventListener('click', (e) => {
-                if (this.state.menuOpen && 
-                    !mobileMenu.contains(e.target) && 
-                    !newBurgerBtn.contains(e.target)) {
-                    this.closeMobileMenu();
-                }
-            });
-            
-            // Закрытие при нажатии ESC
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && this.state.menuOpen) {
-                    this.closeMobileMenu();
-                }
-            });
-            
-            console.log('✅ Burger menu setup complete');
         };
         
         setup();
-        
-        window.addEventListener('componentsLoaded', () => {
-            console.log('🔄 Re-setting up burger menu after components');
-            setTimeout(setup, 300);
-        });
     },
     
-    // ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА =====
-    setupLanguageSwitcher() {
-        console.log('🌍 Setting up language switcher...');
-        
+    setupLanguage() {
         const setup = () => {
-            const langBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
-            
-            if (langBtns.length === 0) {
-                console.log('⚠️ Language buttons not found, retrying...');
+            const langBtns = document.querySelectorAll('.lang-btn');
+            if (!langBtns.length) {
                 setTimeout(setup, 500);
                 return;
             }
             
-            console.log(`✅ Found ${langBtns.length} language buttons`);
-            
             const currentLang = localStorage.getItem('preferredLang') || 'ru';
-            this.updateAllLanguageSwitchers(currentLang);
+            this.updateLanguage(currentLang);
             
             langBtns.forEach(btn => {
-                const newBtn = btn.cloneNode(true);
-                btn.parentNode.replaceChild(newBtn, btn);
-                
-                newBtn.addEventListener('click', (e) => {
+                btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const lang = newBtn.getAttribute('data-lang');
-                    if (lang === this.state.language) return;
-                    
-                    console.log(`🌍 Switching language to: ${lang}`);
-                    this.switchLanguage(lang);
-                    
-                    // Показываем хедер при смене языка
-                    if (this.state.headerHidden) {
-                        this.showHeader();
+                    const lang = btn.getAttribute('data-lang');
+                    if (lang !== this.state.language) {
+                        this.switchLanguage(lang);
                     }
                 });
             });
-            
-            console.log('✅ Language switcher setup complete');
         };
         
         setup();
-        
-        window.addEventListener('componentsLoaded', () => {
-            setTimeout(setup, 300);
-        });
     },
     
-    updateAllLanguageSwitchers(lang) {
-        const desktopSwitchers = document.querySelectorAll('.language-switcher');
-        desktopSwitchers.forEach(switcher => {
-            switcher.setAttribute('data-current-lang', lang);
-        });
+    updateLanguage(lang) {
+        this.state.language = lang;
+        localStorage.setItem('preferredLang', lang);
         
-        const mobileHeaderSwitchers = document.querySelectorAll('.mobile-only-flags');
-        mobileHeaderSwitchers.forEach(switcher => {
-            switcher.setAttribute('data-current-lang', lang);
-        });
+        const switchers = document.querySelectorAll('.language-switcher');
+        switchers.forEach(el => el.setAttribute('data-current-lang', lang));
         
-        const mobileMenuSwitchers = document.querySelectorAll('.mobile-language-switcher');
-        mobileMenuSwitchers.forEach(switcher => {
-            switcher.setAttribute('data-current-lang', lang);
-        });
-        
-        const allLangBtns = document.querySelectorAll('.lang-btn, .mobile-lang-btn');
-        allLangBtns.forEach(btn => {
+        const allBtns = document.querySelectorAll('.lang-btn');
+        allBtns.forEach(btn => {
             btn.classList.remove('active');
             if (btn.getAttribute('data-lang') === lang) {
                 btn.classList.add('active');
             }
         });
-        
-        this.state.language = lang;
-        localStorage.setItem('preferredLang', lang);
     },
     
     switchLanguage(lang) {
-        this.updateAllLanguageSwitchers(lang);
+        this.updateLanguage(lang);
         
         if (window.i18n) {
             if (typeof window.i18n.smoothSwitchLanguage === 'function') {
@@ -427,15 +277,11 @@ window.NBGroupApp = {
             }
         }
         
-        if (this.state.menuOpen) {
-            setTimeout(() => {
-                this.closeMobileMenu();
-            }, 300);
-        }
+        this.closeMenu();
     },
     
-    // ===== ПЛАВНАЯ ПРОКРУТКА =====
-    setupSmoothScroll() {
+    setupScroll() {
+        // Плавная прокрутка
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
@@ -443,40 +289,29 @@ window.NBGroupApp = {
                 
                 e.preventDefault();
                 const targetId = href.startsWith('#') ? href : '#' + href.split('#')[1];
-                const targetElement = document.querySelector(targetId);
+                const target = document.querySelector(targetId);
                 
-                if (targetElement) {
-                    // Показываем хедер если он скрыт
-                    if (this.state.headerHidden) {
-                        this.showHeader();
-                    }
-                    
-                    // Ждем пока хедер появится
-                    setTimeout(() => {
-                        const header = document.querySelector('.main-header');
-                        const headerHeight = header ? header.offsetHeight : 0;
-                        const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                        
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
-
-                        history.pushState(null, null, targetId);
-                        
-                        // Закрываем мобильное меню если открыто
-                        if (this.state.menuOpen) {
-                            setTimeout(() => {
-                                this.closeMobileMenu();
-                            }, 300);
-                        }
-                    }, 100);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
                 }
-            }.bind(this));
+            });
         });
+        
+        // Прогресс скролла
+        const progressBar = document.querySelector('.scroll-progress-bar');
+        if (progressBar) {
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                progressBar.style.width = scrolled + '%';
+            });
+        }
     },
     
-    // ===== АКТИВНАЯ НАВИГАЦИЯ =====
     setupActiveNav() {
         const currentPage = this.state.currentPage;
         const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
@@ -494,511 +329,63 @@ window.NBGroupApp = {
         });
     },
     
-    // ===== ЭФФЕКТЫ ПРИ СКРОЛЛЕ =====
-    setupScrollEffects() {
-        const header = document.querySelector('.main-header');
-        const scrollProgress = document.querySelector('.scroll-progress-bar');
-        
-        if (!header) return;
-        
-        const updateScroll = () => {
-            const scrollY = window.pageYOffset;
-            
-            if (scrollProgress) {
-                const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolled = (scrollY / windowHeight) * 100;
-                scrollProgress.style.width = scrolled + '%';
-            }
-        };
-        
-        window.addEventListener('scroll', updateScroll);
-        updateScroll();
-    },
-    
-    // ===== УНИФИЦИРОВАННЫЕ СТИЛИ КНОПОК =====
-    setupButtonStyles() {
-        console.log('🎨 Setting up unified button styles...');
-        
-        // Добавляем CSS для кнопок на всех страницах
-        const style = document.createElement('style');
-        style.id = 'unified-button-styles';
-        style.textContent = `
-            /* ===== УНИФИЦИРОВАННЫЕ КНОПКИ ДЛЯ ВСЕХ СТРАНИЦ ===== */
-            .btn, 
-            .start-project-btn,
-            .button,
-            .contact-btn,
-            .submit-btn {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                padding: 12px 28px;
-                background: linear-gradient(135deg, 
-                    rgba(255, 255, 255, 0.15), 
-                    rgba(255, 255, 255, 0.08));
-                color: white;
-                font-weight: 700;
-                font-size: 14px;
-                text-decoration: none;
-                border: none;
-                border-radius: 12px;
-                cursor: pointer;
-                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-                gap: 10px;
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                box-shadow: 
-                    0 6px 25px rgba(0, 0, 0, 0.2),
-                    0 0 0 1px rgba(255, 255, 255, 0.05),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-                position: relative;
-                overflow: hidden;
-                isolation: isolate;
-                will-change: transform, background, box-shadow;
-                min-height: 48px;
-                text-align: center;
-                white-space: nowrap;
-            }
-            
-            .btn:hover,
-            .start-project-btn:hover,
-            .button:hover,
-            .contact-btn:hover,
-            .submit-btn:hover {
-                background: linear-gradient(135deg, 
-                    rgba(255, 255, 255, 0.2), 
-                    rgba(255, 255, 255, 0.12));
-                color: white;
-                transform: translateY(-3px) scale(1.05);
-                box-shadow: 
-                    0 12px 35px rgba(0, 0, 0, 0.3),
-                    0 0 0 1px rgba(255, 255, 255, 0.1),
-                    0 0 30px rgba(0, 102, 255, 0.2),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-                border-color: rgba(255, 255, 255, 0.25);
-            }
-            
-            /* Для страниц кроме главной */
-            .about-page .btn,
-            .about-page .start-project-btn,
-            .about-page .button,
-            .about-page .contact-btn,
-            .about-page .submit-btn,
-            .services-page .btn,
-            .services-page .start-project-btn,
-            .services-page .button,
-            .services-page .contact-btn,
-            .services-page .submit-btn,
-            .portfolio-page .btn,
-            .portfolio-page .start-project-btn,
-            .portfolio-page .button,
-            .portfolio-page .contact-btn,
-            .portfolio-page .submit-btn,
-            .contacts-page .btn,
-            .contacts-page .start-project-btn,
-            .contacts-page .button,
-            .contacts-page .contact-btn,
-            .contacts-page .submit-btn {
-                background: linear-gradient(135deg, 
-                    rgba(0, 102, 255, 0.15), 
-                    rgba(102, 181, 255, 0.08)) !important;
-                border: 1px solid rgba(0, 102, 255, 0.3) !important;
-                box-shadow: 
-                    0 6px 25px rgba(0, 102, 255, 0.2),
-                    0 0 0 1px rgba(0, 102, 255, 0.05),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-            }
-            
-            .about-page .btn:hover,
-            .about-page .start-project-btn:hover,
-            .about-page .button:hover,
-            .about-page .contact-btn:hover,
-            .about-page .submit-btn:hover,
-            .services-page .btn:hover,
-            .services-page .start-project-btn:hover,
-            .services-page .button:hover,
-            .services-page .contact-btn:hover,
-            .services-page .submit-btn:hover,
-            .portfolio-page .btn:hover,
-            .portfolio-page .start-project-btn:hover,
-            .portfolio-page .button:hover,
-            .portfolio-page .contact-btn:hover,
-            .portfolio-page .submit-btn:hover,
-            .contacts-page .btn:hover,
-            .contacts-page .start-project-btn:hover,
-            .contacts-page .button:hover,
-            .contacts-page .contact-btn:hover,
-            .contacts-page .submit-btn:hover {
-                background: linear-gradient(135deg, 
-                    rgba(0, 102, 255, 0.25), 
-                    rgba(102, 181, 255, 0.15)) !important;
-                border-color: rgba(0, 102, 255, 0.5) !important;
-                box-shadow: 
-                    0 12px 35px rgba(0, 102, 255, 0.3),
-                    0 0 0 1px rgba(0, 102, 255, 0.1),
-                    0 0 40px rgba(0, 102, 255, 0.25),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-            }
-            
-            /* Мобильные стили */
-            @media (max-width: 900px) {
-                .btn, 
-                .start-project-btn,
-                .button,
-                .contact-btn,
-                .submit-btn {
-                    padding: 14px 30px;
-                    font-size: 16px;
-                    min-height: 52px;
-                }
-            }
-            
-            /* Эффект ripple для всех кнопок */
-            .btn::after,
-            .start-project-btn::after,
-            .button::after,
-            .contact-btn::after,
-            .submit-btn::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 0;
-                height: 0;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.2);
-                transform: translate(-50%, -50%);
-                transition: width 0.6s ease, height 0.6s ease;
-                z-index: -1;
-            }
-            
-            .btn:hover::after,
-            .start-project-btn:hover::after,
-            .button:hover::after,
-            .contact-btn:hover::after,
-            .submit-btn:hover::after {
-                width: 300px;
-                height: 300px;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        console.log('✅ Unified button styles applied');
-    },
-    
-    // ===== ФОРМЫ =====
-    setupForms() {
-        const forms = document.querySelectorAll('form[data-form]');
-        
-        forms.forEach(form => {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.handleFormSubmit(form);
-            });
-        });
-    },
-    
-    async handleFormSubmit(form) {
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn ? submitBtn.innerHTML : '';
-        
-        if (submitBtn) {
-            submitBtn.innerHTML = 'Отправка...';
-            submitBtn.disabled = true;
-        }
-        
-        try {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            this.showNotification('Сообщение отправлено!', 'success');
-            form.reset();
-        } catch (error) {
-            this.showNotification('Ошибка отправки', 'error');
-        } finally {
-            if (submitBtn) {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
+    openMenu() {
+        const menu = document.querySelector('.mobile-menu');
+        const burger = document.querySelector('.burger-btn');
+        if (menu && burger) {
+            menu.classList.add('active');
+            burger.classList.add('active');
+            burger.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+            this.state.menuOpen = true;
         }
     },
     
-    showNotification(message, type = 'info') {
-        console.log(`📢 ${type}: ${message}`);
-        
-        document.querySelectorAll('.app-notification').forEach(n => n.remove());
-        
-        const notification = document.createElement('div');
-        notification.className = `app-notification notification-${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <span>${message}</span>
-            </div>
-        `;
-        
-        notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: ${type === 'success' ? '#4CAF50' : '#f44336'};
-            color: white;
-            padding: 16px 24px;
-            border-radius: 10px;
-            z-index: 10000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            animation: slideIn 0.3s ease;
-        `;
-        
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.style.animation = 'slideOut 0.3s ease';
-            setTimeout(() => notification.remove(), 300);
-        }, 3000);
-    },
-    
-    // ===== ЛЕНИВАЯ ЗАГРУЗКА =====
-    setupLazyLoading() {
-        if ('IntersectionObserver' in window) {
-            const lazyImages = document.querySelectorAll('img[data-src]');
-            
-            if (lazyImages.length === 0) return;
-            
-            const imageObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-                        if (img.dataset.srcset) {
-                            img.srcset = img.dataset.srcset;
-                        }
-                        img.removeAttribute('data-src');
-                        img.removeAttribute('data-srcset');
-                        imageObserver.unobserve(img);
-                    }
-                });
-            });
-            
-            lazyImages.forEach(img => imageObserver.observe(img));
-        }
-    },
-    
-    // ===== ГЛОБАЛЬНЫЕ СОБЫТИЯ =====
-    setupGlobalEvents() {
-        window.addEventListener('resize', () => {
-            this.state.isMobile = window.innerWidth <= 900;
-            
-            if (!this.state.isMobile && this.state.menuOpen) {
-                this.closeMobileMenu();
-            }
-            
-            // Обновляем высоту хедера при ресайзе
-            const header = document.querySelector('.main-header');
-            if (header && this.state.headerHidden && window.pageYOffset <= header.offsetHeight) {
-                this.showHeader();
-            }
-        });
-        
-        window.addEventListener('componentsLoaded', () => {
-            setTimeout(() => {
-                this.setupBurgerMenu();
-                this.setupActiveNav();
-                this.setupLanguageSwitcher();
-                this.setupSmoothScroll();
-                this.setupScrollEffects();
-                this.setupHeaderScroll();
-                this.setupButtonStyles();
-            }, 300);
-        });
-        
-        // Обработка ошибок
-        window.addEventListener('error', (e) => {
-            console.error('❌ Global error:', e.error);
-        });
-    },
-    
-    // ===== УТИЛИТЫ =====
-    closeMobileMenu() {
+    closeMenu() {
         const menu = document.querySelector('.mobile-menu');
         const burger = document.querySelector('.burger-btn');
         if (menu && burger) {
             menu.classList.remove('active');
             burger.classList.remove('active');
             burger.setAttribute('aria-expanded', 'false');
-            burger.setAttribute('aria-label', 'Открыть меню');
             document.body.style.overflow = '';
             this.state.menuOpen = false;
-        }
-    },
-    
-    openMobileMenu() {
-        const menu = document.querySelector('.mobile-menu');
-        const burger = document.querySelector('.burger-btn');
-        if (menu && burger) {
-            // Показываем хедер если он скрыт
-            if (this.state.headerHidden) {
-                this.showHeader();
-            }
-            
-            menu.classList.add('active');
-            burger.classList.add('active');
-            burger.setAttribute('aria-expanded', 'true');
-            burger.setAttribute('aria-label', 'Закрыть меню');
-            document.body.style.overflow = 'hidden';
-            this.state.menuOpen = true;
         }
     }
 };
 
-// ===== ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ СОВМЕСТИМОСТИ =====
-window.openMobileMenu = () => {
-    window.NBGroupApp.openMobileMenu();
-};
-
-window.closeMobileMenu = () => {
-    window.NBGroupApp.closeMobileMenu();
-};
-
-// ===== ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ =====
-(function initializeApp() {
-    console.log('🚀 Starting app initialization...');
+// Инициализация приложения
+(function() {
+    console.log('🚀 Starting app...');
     
-    function initApp() {
-        if (document.querySelector('#header-container') && 
-            document.querySelector('#header-container').innerHTML === '') {
-            console.log('⏳ Waiting for components to load...');
-            
-            const waitForComponents = () => {
-                if (document.body && document.body.classList.contains('components-loaded')) {
-                    console.log('✅ Components loaded, initializing app');
-                    setTimeout(() => window.NBGroupApp.init(), 100);
-                } else {
-                    window.addEventListener('componentsLoaded', () => {
-                        console.log('✅ Components loaded, initializing app');
-                        setTimeout(() => window.NBGroupApp.init(), 100);
-                    }, { once: true });
-                    
-                    setTimeout(() => {
-                        if (!document.body || !document.body.classList.contains('components-loaded')) {
-                            console.log('⚠️ Components timeout, initializing anyway');
-                            window.NBGroupApp.init();
-                        }
-                    }, 3000);
-                }
-            };
-            
-            waitForComponents();
+    function init() {
+        // Ждем загрузки компонентов
+        if (document.body.classList.contains('components-loaded')) {
+            window.NBGroupApp.init();
         } else {
-            console.log('✅ Components already loaded or not used, initializing app');
-            setTimeout(() => window.NBGroupApp.init(), 100);
+            window.addEventListener('componentsLoaded', () => {
+                setTimeout(() => window.NBGroupApp.init(), 100);
+            });
+            
+            setTimeout(() => {
+                if (!document.body.classList.contains('components-loaded')) {
+                    window.NBGroupApp.init();
+                }
+            }, 3000);
         }
     }
     
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initApp);
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        initApp();
+        init();
     }
 })();
 
-// ===== CSS ДЛЯ АНИМАЦИЙ УВЕДОМЛЕНИЙ =====
-(function addNotificationStyles() {
-    if (!document.querySelector('#notification-styles')) {
-        const style = document.createElement('style');
-        style.id = 'notification-styles';
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            
-            @keyframes slideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-})();
+// Глобальные функции для удобства
+window.showHeader = () => window.NBGroupApp.showHeader?.();
+window.hideHeader = () => window.NBGroupApp.hideHeader?.();
+window.openMenu = () => window.NBGroupApp.openMenu?.();
+window.closeMenu = () => window.NBGroupApp.closeMenu?.();
 
-// ===== ФИНАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ =====
-window.addEventListener('load', () => {
-    console.log('🎯 Page fully loaded');
-    document.body.classList.add('page-loaded');
-    
-    setTimeout(() => {
-        window.NBGroupApp.setupActiveNav();
-        
-        const currentLang = localStorage.getItem('preferredLang') || 'ru';
-        window.NBGroupApp.updateAllLanguageSwitchers(currentLang);
-        
-        // Добавляем CSS для активных состояний
-        if (!document.querySelector('#active-states-css')) {
-            const style = document.createElement('style');
-            style.id = 'active-states-css';
-            style.textContent = `
-                .nav-link.active,
-                .mobile-nav-link.active {
-                    position: relative;
-                }
-                
-                .lang-btn.active,
-                .mobile-lang-btn.active {
-                    position: relative;
-                }
-                
-                /* Оптимизация для touch устройств */
-                @media (hover: none) and (pointer: coarse) {
-                    .main-header {
-                        transition: transform 0.3s ease !important;
-                    }
-                    
-                    .nav-link:hover,
-                    .lang-btn:hover {
-                        transform: none !important;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }, 500);
-});
-
-// ===== ТЕСТОВЫЕ ФУНКЦИИ =====
-if (window.location.hostname.includes('github.io') || window.location.hostname.includes('localhost')) {
-    window.testHeaderScroll = function() {
-        console.log('🧪 Testing header scroll...');
-        console.log('- Header hidden:', window.NBGroupApp.state.headerHidden);
-        console.log('- Scroll direction:', window.NBGroupApp.state.scrollDirection);
-        console.log('- Last scroll position:', window.NBGroupApp.state.lastScrollTop);
-        console.log('- Header disabled on page:', window.NBGroupApp.state.headerDisabledOnCurrentPage);
-        
-        const header = document.querySelector('.main-header');
-        if (header) {
-            console.log('- Header classes:', header.className);
-        }
-    };
-    
-    window.forceShowHeader = function() {
-        console.log('🔼 Forcing header show');
-        window.NBGroupApp.showHeader();
-    };
-    
-    window.forceHideHeader = function() {
-        console.log('🔽 Forcing header hide');
-        window.NBGroupApp.hideHeader();
-    };
-}
-
-console.log('✅ main.js loaded successfully - CENTRALIZED MANAGEMENT ACTIVE');
+console.log('✅ main.js loaded successfully');
