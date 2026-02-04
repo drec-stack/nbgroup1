@@ -1,933 +1,110 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NB Group Tech - Промышленный дизайн</title>
-    <style>
-        /* ===== HEADER STYLES ===== */
-        .main-header {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px 0;
-            background: rgba(255, 255, 255, 0.05);
-            z-index: 1000;
-            border-radius: 20px;
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: transform, opacity, backdrop-filter, background-color;
-            pointer-events: auto !important;
-        }
-
-        /* Состояние когда хедер скрыт */
-        .main-header.header-hidden {
-            transform: translateX(-50%) translateY(-100%) !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-
-        /* Состояние когда хедер виден */
-        .main-header.header-visible {
-            transform: translateX(-50%) translateY(0) !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-        }
-
-        /* scrolled класс для изменения стилей при прокрутке */
-        .main-header.scrolled {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
-            box-shadow: 
-                0 15px 50px rgba(0, 0, 0, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateX(-50%) translateY(0) scale(1.02) !important;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .main-header:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateX(-50%) translateY(0) scale(1.02);
-            box-shadow: 
-                0 15px 45px rgba(0, 0, 0, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-
-        .header-container {
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 0 15px;
-            width: 100%;
-        }
-
-        .header-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            gap: 20px;
-        }
-
-        /* ===== ЛОГОТИП ===== */
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            gap: 12px;
-            flex: 1;
-            min-width: 0;
-            z-index: 1002;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform, opacity;
-        }
-
-        .logo:hover {
-            transform: translateY(-1px);
-        }
-
-        .logo-mark {
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 16px;
-            color: #000000;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
-            flex-shrink: 0;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            pointer-events: auto !important;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .logo-mark::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-                        height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .logo:hover .logo-mark::after {
-            width: 100px;
-            height: 100px;
-        }
-
-        .logo-mark:hover {
-            transform: scale(1.05) rotate(5deg);
-            box-shadow: 
-                0 10px 40px rgba(255, 255, 255, 0.2),
-                0 0 30px rgba(255, 255, 255, 0.1);
-        }
-
-        .logo-text {
-            color: white;
-            font-weight: 700;
-            font-size: 20px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 160px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: auto !important;
-            position: relative;
-            padding: 4px 0;
-        }
-
-        .logo-text::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #0066ff, #66b5ff);
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 1px;
-        }
-
-        .logo:hover .logo-text::after {
-            width: 100%;
-        }
-
-        /* ===== ДЕСКТОПНАЯ НАВИГАЦИЯ ===== */
-        .main-nav {
-            display: flex;
-            gap: 8px;
-            margin: 0 30px;
-            pointer-events: auto !important;
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.9);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            position: relative;
-            padding: 10px 18px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            pointer-events: auto !important;
-            cursor: pointer !important;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform, background-color, color, box-shadow;
-            overflow: hidden;
-            isolation: isolate;
-            border: 1px solid transparent;
-        }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-                        height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: -1;
-            opacity: 0;
-        }
-
-        .nav-link:hover::before {
-            width: 200%;
-            height: 200%;
-            opacity: 1;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #0066ff, transparent);
-            transform: translateX(-50%);
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 1px;
-        }
-
-        .nav-link:hover::after {
-            width: 80%;
-        }
-
-        .nav-link:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 
-                0 8px 25px rgba(0, 0, 0, 0.2),
-                0 4px 15px rgba(0, 102, 255, 0.1);
-        }
-
-        .nav-link.active {
-            color: white;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            font-weight: 600;
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                0 4px 20px rgba(0, 102, 255, 0.15);
-        }
-
-        .nav-link.active::after {
-            width: 80%;
-            background: linear-gradient(90deg, transparent, #ffffff, transparent);
-        }
-
-        /* ===== ДЕСКТОПНЫЕ ДЕЙСТВИЯ ===== */
-        .header-right-desktop {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            pointer-events: auto !important;
-        }
-
-        .start-project-btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 12px 28px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
-            color: white;
-            font-weight: 700;
-            font-size: 14px;
-            text-decoration: none;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer !important;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            gap: 10px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 
-                0 6px 25px rgba(0, 0, 0, 0.2),
-                0 0 0 1px rgba(255, 255, 255, 0.05),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            pointer-events: auto !important;
-            position: relative;
-            overflow: hidden;
-            isolation: isolate;
-            will-change: transform, background, box-shadow;
-        }
-
-        .start-project-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.2), 
-                transparent);
-            transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1;
-        }
-
-        .start-project-btn:hover::before {
-            left: 100%;
-        }
-
-        .start-project-btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, 
-                rgba(0, 102, 255, 0.2), 
-                rgba(102, 181, 255, 0.1));
-            border-radius: inherit;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .start-project-btn:hover::after {
-            opacity: 1;
-        }
-
-        .start-project-btn:hover {
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.2), 
-                rgba(255, 255, 255, 0.12));
-            color: white;
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 
-                0 12px 35px rgba(0, 0, 0, 0.3),
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                0 0 30px rgba(0, 102, 255, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.25);
-        }
-
-        .start-project-btn:active {
-            transform: translateY(-1px) scale(1.02);
-            transition: transform 0.1s ease;
-        }
-
-        .start-project-btn i {
-            font-size: 14px;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .start-project-btn:hover i {
-            transform: translateX(4px) rotate(5deg);
-        }
-
-        /* ===== ДЕСКТОПНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
-        .language-switcher.desktop-only {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            min-width: 70px;
-            height: 38px;
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.08),
-                0 4px 20px rgba(0, 0, 0, 0.25);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: auto !important;
-            position: relative;
-            overflow: hidden;
-            will-change: transform, background, box-shadow;
-        }
-
-        .language-switcher.desktop-only:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                0 6px 25px rgba(0, 0, 0, 0.3),
-                0 0 20px rgba(0, 102, 255, 0.1);
-        }
-
-        .language-switcher.desktop-only::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, 
-                rgba(0, 102, 255, 0.1), 
-                transparent 30%,
-                rgba(102, 181, 255, 0.05));
-            border-radius: inherit;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .language-switcher.desktop-only:hover::before {
-            opacity: 1;
-        }
-
-        .language-switcher.desktop-only .lang-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px 12px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer !important;
-            border-radius: 16px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 2;
-            min-width: 28px;
-            height: 30px;
-            flex: 1;
-            pointer-events: auto !important;
-            will-change: transform, color;
-        }
-
-        .language-switcher.desktop-only .lang-btn.active {
-            color: white;
-            font-weight: 600;
-        }
-
-        .language-switcher.desktop-only .lang-slider {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            width: calc(50% - 4px);
-            height: calc(100% - 8px);
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.25), 
-                rgba(255, 255, 255, 0.15));
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 16px;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 1;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 
-                0 3px 12px rgba(255, 255, 255, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            will-change: transform, background;
-        }
-
-        .language-switcher.desktop-only[data-current-lang="en"] .lang-slider {
-            transform: translateX(100%);
-        }
-
-        .language-switcher.desktop-only .lang-flag {
-            font-size: 18px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: inline-block;
-            will-change: transform;
-        }
-
-        .language-switcher.desktop-only .lang-btn:hover .lang-flag {
-            transform: scale(1.2) rotate(5deg);
-        }
-
-        .language-switcher.desktop-only .lang-btn:hover:not(.active) {
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
-        .header-right-mobile {
-            display: none;
-        }
-
-        .burger-btn {
-            display: none;
-        }
-
-        /* ===== МЕДИА ЗАПРОСЫ ===== */
-        @media (max-width: 900px) {
-            .main-header {
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                border-radius: 0 !important;
-                transform: none !important;
-                background: rgba(10, 10, 20, 0.98) !important;
-                backdrop-filter: blur(35px) !important;
-                -webkit-backdrop-filter: blur(35px) !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-                border-top: none !important;
-                border-left: none !important;
-                border-right: none !important;
-                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4) !important;
-                padding: 15px 0 !important;
-                margin: 0 !important;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                pointer-events: auto !important;
-            }
+<header class="main-header header-visible" id="main-header">
+    <div class="header-container">
+        <div class="header-inner">
+            <!-- Логотип -->
+            <a href="index.html" class="logo" aria-label="На главную">
+                <div class="logo-mark" aria-hidden="true">NB</div>
+                <span class="logo-text">NB Group Tech</span>
+            </a>
             
-            .main-header.header-hidden {
-                transform: translateY(-100%) !important;
-                opacity: 0 !important;
-            }
-            
-            .main-header.header-visible {
-                transform: translateY(0) !important;
-                opacity: 1 !important;
-            }
-            
-            .main-header.scrolled {
-                background: rgba(10, 10, 20, 0.98) !important;
-                padding: 12px 0 !important;
-            }
-            
-            /* Скрываем десктопные элементы */
-            .main-nav,
-            .header-right-desktop,
-            .start-project-btn,
-            .language-switcher.desktop-only {
-                display: none !important;
-            }
-            
-            /* ===== Мобильные элементы ===== */
-            .header-right-mobile {
-                display: flex !important;
-                align-items: center;
-                gap: 12px;
-                flex-shrink: 0;
-                order: 3;
-                margin-left: auto;
-                pointer-events: auto !important;
-            }
-            
-            /* БУРГЕР КНОПКА */
-            .burger-btn {
-                display: block !important;
-                width: 48px;
-                height: 48px;
-                position: relative;
-                background: rgba(255, 255, 255, 0.12);
-                border: 1px solid rgba(255, 255, 255, 0.25);
-                border-radius: 12px;
-                cursor: pointer !important;
-                padding: 0;
-                z-index: 100000;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                -webkit-tap-highlight-color: transparent;
-                min-width: 48px;
-                min-height: 48px;
-                touch-action: manipulation;
-                order: 2;
-                pointer-events: auto !important;
-                will-change: transform, background;
-                overflow: hidden;
-            }
-            
-            .burger-btn::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: linear-gradient(135deg, 
-                    rgba(0, 102, 255, 0.2), 
-                    rgba(102, 181, 255, 0.1));
-                border-radius: inherit;
-                opacity: 0;
-                transition: opacity 0.4s ease;
-            }
-            
-            .burger-btn:hover::before {
-                opacity: 1;
-            }
-            
-            .burger-btn:hover {
-                background: rgba(255, 255, 255, 0.18);
-                border-color: rgba(255, 255, 255, 0.35);
-                transform: scale(1.05);
-                box-shadow: 
-                    0 8px 25px rgba(0, 0, 0, 0.3),
-                    0 0 20px rgba(0, 102, 255, 0.15);
-            }
-            
-            .burger-btn span {
-                display: block;
-                position: absolute;
-                width: 22px;
-                height: 2px;
-                background: white;
-                border-radius: 2px;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                left: 50%;
-                transform: translateX(-50%);
-                transform-origin: center;
-                will-change: transform, opacity, top, bottom;
-            }
-            
-            .burger-btn span:nth-child(1) {
-                top: 16px;
-            }
-            
-            .burger-btn span:nth-child(2) {
-                top: 50%;
-                transform: translate(-50%, -50%);
-                opacity: 1;
-            }
-            
-            .burger-btn span:nth-child(3) {
-                bottom: 16px;
-            }
-            
-            .burger-btn.active {
-                background: rgba(255, 255, 255, 0.25);
-                border-color: rgba(255, 255, 255, 0.45);
-                z-index: 99998;
-            }
-            
-            .burger-btn.active span:nth-child(1) {
-                top: 50%;
-                transform: translate(-50%, -50%) rotate(45deg);
-            }
-            
-            .burger-btn.active span:nth-child(2) {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0);
-            }
-            
-            .burger-btn.active span:nth-child(3) {
-                bottom: 50%;
-                transform: translate(-50%, 50%) rotate(-45deg);
-            }
-            
-            .main-header .header-inner {
-                padding: 0 15px;
-            }
-            
-            .header-inner {
-                gap: 10px;
-            }
-            
-            .logo {
-                gap: 10px;
-                min-width: 0;
-                max-width: none;
-                flex: 1;
-            }
-            
-            .logo-mark {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-            
-            .logo-text {
-                font-size: 18px;
-                max-width: 160px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            
-            /* МОБИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ В ХЕДЕРЕ */
-            .language-switcher.mobile-only-flags {
-                display: flex;
-                background: rgba(255, 255, 255, 0.12);
-                border-radius: 24px;
-                padding: 5px;
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                backdrop-filter: blur(25px);
-                -webkit-backdrop-filter: blur(25px);
-                min-width: 80px;
-                height: 48px;
-                overflow: hidden;
-                position: relative;
-                order: 1;
-                pointer-events: auto !important;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                will-change: transform, background;
-            }
-            
-            .language-switcher.mobile-only-flags:hover {
-                background: rgba(255, 255, 255, 0.15);
-                border-color: rgba(255, 255, 255, 0.25);
-                transform: scale(1.05);
-            }
-            
-            .language-switcher.mobile-only-flags .lang-slider {
-                position: absolute;
-                top: 5px;
-                left: 5px;
-                width: calc(50% - 5px);
-                height: calc(100% - 10px);
-                background: linear-gradient(135deg, 
-                    rgba(255, 255, 255, 0.3), 
-                    rgba(255, 255, 255, 0.2));
-                border-radius: 19px;
-                transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-                z-index: 1;
-                border: 1px solid rgba(255, 255, 255, 0.35);
-                box-shadow: 
-                    0 4px 15px rgba(255, 255, 255, 0.2),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
-            }
-            
-            .language-switcher.mobile-only-flags[data-current-lang="en"] .lang-slider {
-                transform: translateX(100%);
-            }
-            
-            .language-switcher.mobile-only-flags .lang-btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: none;
-                border: none;
-                color: rgba(255, 255, 255, 0.9);
-                font-size: 20px;
-                font-weight: 600;
-                cursor: pointer !important;
-                border-radius: 19px;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                flex: 1;
-                position: relative;
-                z-index: 2;
-                height: 38px;
-                -webkit-tap-highlight-color: transparent;
-                pointer-events: auto !important;
-                will-change: transform, color;
-            }
-            
-            .language-switcher.mobile-only-flags .lang-btn.active {
-                color: white;
-                font-weight: 700;
-            }
-            
-            .language-switcher.mobile-only-flags .lang-btn:hover {
-                color: white;
-                transform: scale(1.1);
-            }
-            
-            .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 24px;
-                display: block;
-                transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            }
-            
-            .language-switcher.mobile-only-flags .lang-btn:hover .lang-flag {
-                transform: scale(1.2) rotate(5deg);
-            }
-        }
-    </style>
-</head>
-<body>
-    <header class="main-header header-visible" id="main-header">
-        <div class="header-container">
-            <div class="header-inner">
-                <!-- Логотип -->
-                <a href="index.html" class="logo" aria-label="На главную">
-                    <div class="logo-mark" aria-hidden="true">NB</div>
-                    <span class="logo-text">NB Group Tech</span>
+            <!-- Десктопная навигация -->
+            <nav class="main-nav" aria-label="Основная навигация">
+                <a href="index.html" class="nav-link">
+                    <span data-i18n="nav.home">Главная</span>
                 </a>
-                
-                <!-- Десктопная навигация -->
-                <nav class="main-nav" aria-label="Основная навигация">
-                    <a href="index.html" class="nav-link">
-                        <span data-i18n="nav.home">Главная</span>
-                    </a>
-                    <a href="services.html" class="nav-link">
-                        <span data-i18n="nav.services">Услуги</span>
-                    </a>
-                    <a href="portfolio.html" class="nav-link">
-                        <span data-i18n="nav.portfolio">Портфолио</span>
-                    </a>
-                    <a href="about.html" class="nav-link">
-                        <span data-i18n="nav.about">О нас</span>
-                    </a>
-                    <a href="contacts.html" class="nav-link">
-                        <span data-i18n="nav.contacts">Контакты</span>
-                    </a>
-                </nav>
-                
-                <!-- Десктопные действия -->
-                <div class="header-right-desktop">
-                    <!-- Десктопный переключатель языка -->
-                    <div class="language-switcher desktop-only" data-current-lang="ru">
-                        <div class="lang-slider"></div>
-                        <button class="lang-btn" data-lang="ru">
-                            <span class="lang-flag">🇷🇺</span>
-                        </button>
-                        <button class="lang-btn" data-lang="en">
-                            <span class="lang-flag">🇬🇧</span>
-                        </button>
-                    </div>
-                    
-                    <!-- Кнопка "Начать проект" -->
-                    <button class="start-project-btn" id="start-project-btn">
-                        <span data-i18n="nav.startProject">Начать проект</span>
-                        <i class="fas fa-arrow-right"></i>
+                <a href="services.html" class="nav-link">
+                    <span data-i18n="nav.services">Услуги</span>
+                </a>
+                <a href="portfolio.html" class="nav-link">
+                    <span data-i18n="nav.portfolio">Портфолио</span>
+                </a>
+                <a href="about.html" class="nav-link">
+                    <span data-i18n="nav.about">О нас</span>
+                </a>
+                <a href="contacts.html" class="nav-link">
+                    <span data-i18n="nav.contacts">Контакты</span>
+                </a>
+            </nav>
+            
+            <!-- Десктопные действия -->
+            <div class="header-right-desktop">
+                <!-- Десктопный переключатель языка -->
+                <div class="language-switcher desktop-only" data-current-lang="ru">
+                    <div class="lang-slider"></div>
+                    <button class="lang-btn" data-lang="ru">
+                        <span class="lang-flag">🇷🇺</span>
+                        <span class="lang-text">RU</span>
+                    </button>
+                    <button class="lang-btn" data-lang="en">
+                        <span class="lang-flag">🇬🇧</span>
+                        <span class="lang-text">GB</span>
                     </button>
                 </div>
                 
-                <!-- Мобильная версия -->
-                <div class="header-right-mobile">
-                    <!-- Переключатель языка -->
-                    <div class="language-switcher mobile-only-flags" data-current-lang="ru">
-                        <div class="lang-slider"></div>
-                        <button class="lang-btn" data-lang="ru">
-                            <span class="lang-flag">🇷🇺</span>
-                        </button>
-                        <button class="lang-btn" data-lang="en">
-                            <span class="lang-flag">🇬🇧</span>
-                        </button>
-                    </div>
-                    
-                    <!-- Бургер кнопка -->
-                    <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                <!-- Кнопка "Начать проект" -->
+                <button class="start-project-btn" id="start-project-btn">
+                    <span data-i18n="nav.startProject">Начать проект</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            
+            <!-- Мобильная версия -->
+            <div class="header-right-mobile">
+                <!-- Переключатель языка -->
+                <div class="language-switcher mobile-only-flags" data-current-lang="ru">
+                    <div class="lang-slider"></div>
+                    <button class="lang-btn" data-lang="ru">
+                        <span class="lang-flag">🇷🇺</span>
+                    </button>
+                    <button class="lang-btn" data-lang="en">
+                        <span class="lang-flag">🇬🇧</span>
                     </button>
                 </div>
+                
+                <!-- Бургер кнопка -->
+                <button class="burger-btn" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- УПРОЩЕННЫЙ СКРИПТ (без управления скроллом) -->
-    <script>
+<script>
+    // Базовые скрипты для хедера
     (function() {
         'use strict';
         
-        console.log('🚀 Header loaded - Basic functionality only');
+        console.log('🚀 Header component loaded');
         
-        // ===== НАСТРОЙКА ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА =====
-        function setupLanguageSwitcher() {
-            const langBtns = document.querySelectorAll('.lang-btn');
-            
-            if (!langBtns.length) return;
-            
-            const currentLang = localStorage.getItem('preferredLang') || 'ru';
-            
-            function updateLanguageState(lang) {
-                langBtns.forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.getAttribute('data-lang') === lang) {
-                        btn.classList.add('active');
-                    }
-                });
-                
-                const switchers = document.querySelectorAll('.language-switcher');
-                switchers.forEach(switcher => {
-                    switcher.setAttribute('data-current-lang', lang);
-                });
-                
-                localStorage.setItem('preferredLang', lang);
-                
-                if (window.i18n && window.i18n.smoothSwitchLanguage) {
-                    window.i18n.smoothSwitchLanguage(lang);
-                }
-            }
-            
-            updateLanguageState(currentLang);
-            
-            langBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const lang = this.getAttribute('data-lang');
-                    
-                    if (this.classList.contains('active')) return;
-                    
-                    // Анимация клика
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
-                    
-                    updateLanguageState(lang);
-                });
-            });
-        }
-        
-        // ===== НАСТРОЙКА КНОПКИ "НАЧАТЬ ПРОЕКТ" =====
-        function setupStartProjectButton() {
-            const startProjectBtn = document.getElementById('start-project-btn');
-            
-            if (!startProjectBtn) return;
-            
-            startProjectBtn.addEventListener('click', function(e) {
+        // Обработчик кнопки "Начать проект"
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#start-project-btn')) {
                 e.preventDefault();
-                
-                // Анимация клика
-                this.style.transform = 'translateY(-1px) scale(1.02)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                    window.location.href = 'contacts.html';
-                }, 300);
-            });
-        }
+                e.stopPropagation();
+                window.location.href = 'contacts.html';
+            }
+        });
         
-        // ===== БАЗОВАЯ ИНИЦИАЛИЗАЦИЯ =====
-        function init() {
-            setupLanguageSwitcher();
-            setupStartProjectButton();
+        // Инициализация активных ссылок
+        setTimeout(function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
             
-            console.log('✅ Header basic functionality loaded (scroll management handled by main.js)');
-        }
-        
-        // Запуск инициализации
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(init, 200);
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                link.classList.remove('active');
+                
+                if (href === currentPage || 
+                    (currentPage === '' && href === 'index.html') ||
+                    (currentPage === '/' && href === 'index.html') ||
+                    (currentPage.includes('index') && href === 'index.html')) {
+                    link.classList.add('active');
+                }
             });
-        } else {
-            setTimeout(init, 200);
-        }
+        }, 100);
         
     })();
-    </script>
-</body>
-</html>
+</script>
