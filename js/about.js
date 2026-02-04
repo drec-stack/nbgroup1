@@ -1,4 +1,4 @@
-console.log('🚀 about.js loaded - UPDATED VERSION with NO DARK OVERLAYS and FIXED BLOCKS');
+console.log('🚀 about.js loaded - UPDATED VERSION with LANGUAGE SWITCHER FIX');
 
 // Переопределение анимаций для гарантии видимости блоков
 (function fixSpeckDesignBlocks() {
@@ -144,6 +144,9 @@ class AboutPage {
             
             // Гарантируем видимость блоков "Что мы делаем"
             this.guaranteeSpeckDesignVisibility();
+            
+            // ФИКС: Гарантируем правильную работу переключателя языка
+            this.fixLanguageSwitcher();
             
             // Настройка функционала страницы
             this.setupPageFunctionalities();
@@ -296,6 +299,75 @@ class AboutPage {
         setTimeout(checkAndFix, 2000);
     }
 
+    // ФИКС ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА
+    fixLanguageSwitcher() {
+        console.log('🔧 Fixing language switcher for about page...');
+        
+        const fix = () => {
+            const langSwitchers = document.querySelectorAll('.language-switcher');
+            const langTexts = document.querySelectorAll('.lang-text');
+            const langFlags = document.querySelectorAll('.lang-flag');
+            const langBtns = document.querySelectorAll('.lang-btn');
+            
+            langSwitchers.forEach(switcher => {
+                switcher.style.display = 'flex';
+                switcher.style.visibility = 'visible';
+                switcher.style.opacity = '1';
+                switcher.style.position = 'relative';
+                switcher.style.zIndex = '100';
+                switcher.style.pointerEvents = 'auto';
+            });
+            
+            langTexts.forEach(text => {
+                text.style.display = 'inline-block';
+                text.style.visibility = 'visible';
+                text.style.opacity = '1';
+                text.style.color = 'rgba(255, 255, 255, 0.85)';
+                text.style.fontWeight = '700';
+                text.style.fontSize = '14px';
+            });
+            
+            langFlags.forEach(flag => {
+                flag.style.display = 'inline-block';
+                flag.style.visibility = 'visible';
+                flag.style.opacity = '1';
+                flag.style.fontSize = '18px';
+            });
+            
+            langBtns.forEach(btn => {
+                btn.style.display = 'flex';
+                btn.style.visibility = 'visible';
+                btn.style.opacity = '1';
+                btn.style.alignItems = 'center';
+                btn.style.justifyContent = 'center';
+                btn.style.gap = '8px';
+                btn.style.cursor = 'pointer';
+                btn.style.pointerEvents = 'auto';
+                btn.style.position = 'relative';
+                btn.style.zIndex = '2';
+            });
+            
+            // Гарантируем что переключатель языка виден и работает
+            const desktopSwitcher = document.querySelector('.language-switcher.desktop-only');
+            if (desktopSwitcher) {
+                desktopSwitcher.style.minWidth = '120px';
+                desktopSwitcher.style.background = 'rgba(255, 255, 255, 0.08)';
+                desktopSwitcher.style.border = '1px solid rgba(255, 255, 255, 0.15)';
+                desktopSwitcher.style.borderRadius = '20px';
+                desktopSwitcher.style.padding = '4px';
+                desktopSwitcher.style.backdropFilter = 'blur(25px)';
+                desktopSwitcher.style.webkitBackdropFilter = 'blur(25px)';
+            }
+            
+            console.log('✅ Language switcher fixed');
+        };
+        
+        // Применяем фикс несколько раз
+        setTimeout(fix, 100);
+        setTimeout(fix, 500);
+        setTimeout(fix, 1000);
+    }
+
     setupPageFunctionalities() {
         console.log('⚙️ Setting up page functionalities...');
         
@@ -328,7 +400,9 @@ class AboutPage {
         const checks = [
             { selector: '.speck-design-section', name: 'Speck Design section' },
             { selector: '.speck-service-card', name: 'Speck Design cards' },
-            { selector: '.team-member', name: 'Team members' }
+            { selector: '.team-member', name: 'Team members' },
+            { selector: '.language-switcher.desktop-only', name: 'Language switcher' },
+            { selector: '.lang-text', name: 'Language text' }
         ];
         
         let allGood = true;
@@ -379,6 +453,36 @@ class AboutPage {
                 z-index: 1000 !important;
             }
             
+            /* ЭКСТРЕННЫЙ ФИКС ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА */
+            .language-switcher,
+            .lang-btn,
+            .lang-text,
+            .lang-flag {
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: flex !important;
+                position: relative !important;
+                z-index: 1000 !important;
+                pointer-events: auto !important;
+            }
+            
+            .language-switcher.desktop-only {
+                min-width: 120px !important;
+                background: rgba(255, 255, 255, 0.08) !important;
+                border: 1px solid rgba(255, 255, 255, 0.15) !important;
+                backdrop-filter: blur(25px) !important;
+                -webkit-backdrop-filter: blur(25px) !important;
+                border-radius: 20px !important;
+                padding: 4px !important;
+            }
+            
+            .lang-text {
+                display: inline-block !important;
+                color: rgba(255, 255, 255, 0.85) !important;
+                font-weight: 700 !important;
+                font-size: 14px !important;
+            }
+            
             /* Убрать любые скрывающие эффекты */
             [style*="opacity: 0"],
             [style*="visibility: hidden"],
@@ -386,12 +490,6 @@ class AboutPage {
                 opacity: 1 !important;
                 visibility: visible !important;
                 display: block !important;
-            }
-            
-            /* Принудительно показать все элементы */
-            body * {
-                opacity: 1 !important;
-                visibility: visible !important;
             }
         `;
         document.head.appendChild(style);
@@ -415,4 +513,4 @@ window.initAbout = function() {
     }
 };
 
-console.log('✅ about.js fully loaded with FIXES for dark overlays and missing blocks');
+console.log('✅ about.js fully loaded with FIXES for language switcher and dark overlays');
