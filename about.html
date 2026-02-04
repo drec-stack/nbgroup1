@@ -472,7 +472,7 @@
 
         window.handleTeamPhotoError = handleTeamPhotoError;
 
-        // Инициализация страницы с фиксом для блоков "Что мы делаем"
+        // ФИКС ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА НА СТРАНИЦЕ ABOUT
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 Страница "О нас" загружена');
             
@@ -496,27 +496,91 @@
                 }
             }, 300);
             
-            // Инициализация переводов
-            setTimeout(() => {
-                if (window.i18n && window.i18n.refresh) {
-                    window.i18n.refresh();
-                }
-            }, 500);
-            
-            // Инициализация анимаций
-            setTimeout(() => {
-                if (typeof window.initAbout === 'function') {
-                    window.initAbout();
-                }
-            }, 1000);
-            
-            // Дополнительный фикс для гарантии видимости
+            // ФИКС: Гарантируем правильную работу переключателя языка
             setTimeout(function() {
-                document.querySelectorAll('.reveal-left, .reveal-right').forEach(function(el) {
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateX(0)';
-                });
-            }, 1500);
+                const fixLanguageSwitcher = function() {
+                    const langSwitchers = document.querySelectorAll('.language-switcher');
+                    const langTexts = document.querySelectorAll('.lang-text');
+                    const langFlags = document.querySelectorAll('.lang-flag');
+                    const langBtns = document.querySelectorAll('.lang-btn');
+                    
+                    langSwitchers.forEach(function(switcher) {
+                        switcher.style.display = 'flex';
+                        switcher.style.visibility = 'visible';
+                        switcher.style.opacity = '1';
+                        switcher.style.position = 'relative';
+                        switcher.style.zIndex = '100';
+                        switcher.style.pointerEvents = 'auto';
+                    });
+                    
+                    langTexts.forEach(function(text) {
+                        text.style.display = 'inline-block';
+                        text.style.visibility = 'visible';
+                        text.style.opacity = '1';
+                        text.style.color = 'rgba(255, 255, 255, 0.85)';
+                        text.style.fontWeight = '700';
+                        text.style.fontSize = '14px';
+                    });
+                    
+                    langFlags.forEach(function(flag) {
+                        flag.style.display = 'inline-block';
+                        flag.style.visibility = 'visible';
+                        flag.style.opacity = '1';
+                        flag.style.fontSize = '18px';
+                    });
+                    
+                    langBtns.forEach(function(btn) {
+                        btn.style.display = 'flex';
+                        btn.style.visibility = 'visible';
+                        btn.style.opacity = '1';
+                        btn.style.alignItems = 'center';
+                        btn.style.justifyContent = 'center';
+                        btn.style.gap = '8px';
+                        btn.style.cursor = 'pointer';
+                        btn.style.pointerEvents = 'auto';
+                        btn.style.position = 'relative';
+                        btn.style.zIndex = '2';
+                    });
+                    
+                    // Убедимся, что переключатель языка виден
+                    const desktopSwitcher = document.querySelector('.language-switcher.desktop-only');
+                    if (desktopSwitcher) {
+                        desktopSwitcher.style.minWidth = '120px';
+                        desktopSwitcher.style.background = 'rgba(255, 255, 255, 0.08)';
+                        desktopSwitcher.style.border = '1px solid rgba(255, 255, 255, 0.15)';
+                        desktopSwitcher.style.borderRadius = '20px';
+                        desktopSwitcher.style.padding = '4px';
+                        desktopSwitcher.style.backdropFilter = 'blur(25px)';
+                        desktopSwitcher.style.webkitBackdropFilter = 'blur(25px)';
+                    }
+                    
+                    console.log('✅ Переключатель языка исправлен');
+                };
+                
+                fixLanguageSwitcher();
+                
+                // Инициализация переводов
+                setTimeout(() => {
+                    if (window.i18n && window.i18n.refresh) {
+                        window.i18n.refresh();
+                    }
+                }, 500);
+                
+                // Инициализация анимаций
+                setTimeout(() => {
+                    if (typeof window.initAbout === 'function') {
+                        window.initAbout();
+                    }
+                }, 1000);
+                
+                // Дополнительный фикс для гарантии видимости
+                setTimeout(function() {
+                    document.querySelectorAll('.reveal-left, .reveal-right').forEach(function(el) {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateX(0)';
+                    });
+                }, 1500);
+            }, 100);
         });
         
         // Экстренный фикс на случай если блоки все еще не видны
