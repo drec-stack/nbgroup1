@@ -132,19 +132,13 @@ body.about-page .main-nav {
 /* ===== ABOUT HERO SECTION ===== */
 .about-hero {
     padding: 160px 0 80px;
-    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: transparent !important;
     position: relative;
     overflow: hidden;
     text-align: center;
     min-height: 60vh;
     display: flex;
     align-items: center;
-}
-
-/* УБРАНО: темный оверлей */
-.about-hero::before {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
 }
 
 .about-hero-content {
@@ -180,16 +174,10 @@ body.about-page .main-nav {
 /* ===== ABOUT MISSION SECTION ===== */
 .about-mission {
     padding: 120px 0;
-    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: transparent !important;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     position: relative;
     overflow: hidden;
-}
-
-/* УБРАНО: темный оверлей */
-.about-mission::before {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
 }
 
 .mission-grid {
@@ -203,9 +191,9 @@ body.about-page .main-nav {
 
 .mission-text {
     padding: 50px;
-    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: светлый фон */
+    background: rgba(255, 255, 255, 0.08) !important;
     border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлая граница */
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     backdrop-filter: blur(15px) saturate(180%);
     -webkit-backdrop-filter: blur(15px) saturate(180%);
     position: relative;
@@ -213,12 +201,6 @@ body.about-page .main-nav {
     box-shadow: 
         0 20px 60px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* УБРАНО: темный оверлей */
-.mission-text::before {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
 }
 
 .mission-text h2 {
@@ -266,33 +248,21 @@ body.about-page .main-nav {
 .mission-feature {
     text-align: center;
     padding: 25px 20px;
-    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: светлый фон */
+    background: rgba(255, 255, 255, 0.08) !important;
     border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлая граница */
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
 }
 
-/* УБРАНО: темный оверлей */
-.mission-feature::before {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
 .mission-feature:hover {
     transform: translateY(-8px) scale(1.03);
-    background: rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлый фон при наведении */
+    background: rgba(255, 255, 255, 0.12) !important;
     border-color: rgba(0, 102, 255, 0.25);
     box-shadow: 
         0 15px 35px rgba(0, 102, 255, 0.15),
         0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.mission-feature:hover::before {
-    opacity: 1;
 }
 
 .mission-icon {
@@ -349,15 +319,6 @@ body.about-page .main-nav {
         0 20px 50px rgba(0, 102, 255, 0.2);
 }
 
-/* УБРАНО: темные оверлеи */
-.mission-visual::before,
-.mission-visual::after {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
-    opacity: 0;
-    animation: none !important;
-}
-
 .mission-visual i {
     font-size: 8rem;
     color: var(--accent);
@@ -406,7 +367,7 @@ body.about-page .main-nav {
 /* ===== OUR STORY SECTION ===== */
 .our-story {
     padding: 140px 0;
-    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: transparent !important;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -491,46 +452,22 @@ body.about-page .main-nav {
 .story-stat {
     text-align: center;
     padding: 35px 25px;
-    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: светлый фон */
+    background: rgba(255, 255, 255, 0.08) !important;
     border-radius: 22px;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлая граница */
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(10px);
 }
 
-/* УБРАНО: темный оверлей */
-.story-stat::before {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
 .story-stat:hover {
     transform: translateY(-12px) scale(1.05);
-    background: rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлый фон при наведении */
+    background: rgba(255, 255, 255, 0.12) !important;
     border-color: rgba(0, 102, 255, 0.25);
     box-shadow: 
         0 25px 50px rgba(0, 102, 255, 0.2),
         0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.story-stat:hover::before {
-    opacity: 1;
-}
-
-/* УБРАНО: темный оверлей */
-.story-stat::after {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.story-stat:hover::after {
-    opacity: 1;
 }
 
 .stat-number {
@@ -596,16 +533,10 @@ body.about-page .main-nav {
 /* ===== SPECK DESIGN SECTION ===== */
 .speck-design-section {
     padding: 160px 0;
-    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: transparent !important;
     position: relative;
-    opacity: 1 !important; /* ФИКС: гарантированная видимость */
-    visibility: visible !important; /* ФИКС: гарантированная видимость */
-}
-
-/* УБРАНО: темный оверлей */
-.speck-design-section::before {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .speck-title {
@@ -616,7 +547,7 @@ body.about-page .main-nav {
     color: var(--white);
     letter-spacing: -1px;
     line-height: 1.1;
-    opacity: 1 !important; /* ФИКС: гарантированная видимость */
+    opacity: 1 !important;
 }
 
 .speck-subtitle {
@@ -630,7 +561,7 @@ body.about-page .main-nav {
     margin-right: auto;
     line-height: 1.7;
     opacity: 0.9;
-    opacity: 1 !important; /* ФИКС: гарантированная видимость */
+    opacity: 1 !important;
 }
 
 .speck-services-grid {
@@ -639,15 +570,15 @@ body.about-page .main-nav {
     gap: 90px;
     max-width: 1400px;
     margin: 0 auto;
-    opacity: 1 !important; /* ФИКС: гарантированная видимость */
-    visibility: visible !important; /* ФИКС: гарантированная видимость */
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .speck-service-card {
-    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: светлый фон */
+    background: rgba(255, 255, 255, 0.08) !important;
     border-radius: 30px;
     padding: 70px 60px;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлая граница */
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
@@ -657,18 +588,9 @@ body.about-page .main-nav {
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    opacity: 1 !important; /* ФИКС: гарантированная видимость */
-    visibility: visible !important; /* ФИКС: гарантированная видимость */
-    transform: none !important; /* ФИКС: убраны анимации скрытия */
-}
-
-/* УБРАНО: темные оверлеи */
-.speck-service-card::before,
-.speck-service-card::after {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
 }
 
 .speck-service-card:hover {
@@ -677,22 +599,6 @@ body.about-page .main-nav {
     box-shadow: 
         0 40px 80px -30px rgba(0, 102, 255, 0.4),
         0 30px 60px -40px rgba(0, 0, 0, 0.6);
-}
-
-.speck-service-card:hover::before {
-    opacity: 1;
-}
-
-/* УБРАНО: темный оверлей */
-.speck-service-card::after {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.speck-service-card:hover::after {
-    opacity: 1;
 }
 
 .speck-card-icon {
@@ -846,7 +752,7 @@ body.about-page .main-nav {
 /* ===== СЕКЦИЯ КОМАНДЫ С РЕАЛЬНЫМИ ФОТОГРАФИЯМИ ===== */
 .our-team {
     padding: 160px 0;
-    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: transparent !important;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -886,10 +792,10 @@ body.about-page .main-nav {
 }
 
 .team-member {
-    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: светлый фон */
+    background: rgba(255, 255, 255, 0.08) !important;
     padding: 60px 45px;
     border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлая граница */
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     text-align: center;
     position: relative;
@@ -901,38 +807,13 @@ body.about-page .main-nav {
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* УБРАНО: темные оверлеи */
-.team-member::before,
-.team-member::after {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
 .team-member:hover {
     transform: translateY(-15px) scale(1.03);
     border-color: rgba(0, 102, 255, 0.3);
-    background: rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлый фон при наведении */
+    background: rgba(255, 255, 255, 0.12) !important;
     box-shadow: 
         0 35px 70px rgba(0, 102, 255, 0.25),
         0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-.team-member:hover::before {
-    opacity: 1;
-}
-
-/* УБРАНО: темный оверлей */
-.team-member::after {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.team-member:hover::after {
-    opacity: 1;
 }
 
 /* СТИЛИ ДЛЯ РЕАЛЬНЫХ ФОТОГРАФИЙ */
@@ -1085,16 +966,10 @@ body.about-page .main-nav {
 /* ===== ABOUT CTA SECTION ===== */
 .about-cta {
     padding: 160px 0;
-    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: transparent !important;
     text-align: center;
     position: relative;
     overflow: hidden;
-}
-
-/* УБРАНО: темный оверлей */
-.about-cta::before {
-    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
-    background: none !important;
 }
 
 .about-cta .cta-content h2 {
@@ -1173,16 +1048,9 @@ body.about-page .main-nav {
 /* ===== АНИМАЦИИ ПОЯВЛЕНИЯ - ИСПРАВЛЕННЫЕ ===== */
 .reveal-left,
 .reveal-right {
-    opacity: 1 !important; /* ФИКС: всегда видимы */
-    transform: translateX(0) !important; /* ФИКС: нет смещения */
-    transition: none !important; /* ФИКС: убраны переходы */
-}
-
-/* Убираем класс revealed так как он больше не нужен */
-.reveal-left.revealed,
-.reveal-right.revealed {
     opacity: 1 !important;
     transform: translateX(0) !important;
+    transition: none !important;
 }
 
 /* КРИТИЧЕСКИЙ ФИКС ДЛЯ БЛОКОВ "ЧТО МЫ ДЕЛАЕМ" */
@@ -1204,6 +1072,165 @@ body.about-page .main-nav {
     visibility: visible !important;
     display: block !important;
     transform: translateY(0) !important;
+}
+
+/* ===== ФИКС ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА ДЛЯ ABOUT PAGE ===== */
+body.about-page .language-switcher.desktop-only {
+    min-width: 120px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    border-radius: 20px !important;
+    padding: 4px !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+body.about-page .language-switcher.desktop-only .lang-btn {
+    padding: 6px 12px !important;
+    gap: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 1 !important;
+    border-radius: 16px !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 2 !important;
+    background: none !important;
+    border: none !important;
+    pointer-events: auto !important;
+}
+
+body.about-page .language-switcher.desktop-only .lang-btn.active {
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+body.about-page .language-switcher.desktop-only .lang-slider {
+    position: absolute !important;
+    top: 4px !important;
+    left: 4px !important;
+    width: calc(50% - 4px) !important;
+    height: calc(100% - 8px) !important;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.25), 
+        rgba(255, 255, 255, 0.15)) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border-radius: 16px !important;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    z-index: 1 !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 
+        0 3px 12px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+body.about-page .language-switcher.desktop-only[data-current-lang="en"] .lang-slider {
+    transform: translateX(100%) !important;
+}
+
+body.about-page .language-switcher.desktop-only .lang-flag {
+    font-size: 18px !important;
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+body.about-page .language-switcher.desktop-only .lang-text {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+body.about-page .language-switcher.desktop-only .lang-btn.active .lang-text {
+    color: white !important;
+}
+
+/* Для мобильного переключателя в хедере */
+body.about-page .language-switcher.mobile-only-flags {
+    min-width: 80px !important;
+    height: 48px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border-radius: 24px !important;
+    padding: 5px !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+body.about-page .language-switcher.mobile-only-flags .lang-btn {
+    flex: 1 !important;
+    height: 38px !important;
+    border-radius: 19px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: none !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 2 !important;
+    pointer-events: auto !important;
+}
+
+body.about-page .language-switcher.mobile-only-flags .lang-btn.active {
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+body.about-page .language-switcher.mobile-only-flags .lang-slider {
+    position: absolute !important;
+    top: 5px !important;
+    left: 5px !important;
+    width: calc(50% - 5px) !important;
+    height: calc(100% - 10px) !important;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.3), 
+        rgba(255, 255, 255, 0.2)) !important;
+    border-radius: 19px !important;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    z-index: 1 !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 
+        0 4px 15px rgba(255, 255, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+body.about-page .language-switcher.mobile-only-flags[data-current-lang="en"] .lang-slider {
+    transform: translateX(100%) !important;
+}
+
+body.about-page .language-switcher.mobile-only-flags .lang-flag {
+    font-size: 24px !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Для мобильного меню */
+@media (max-width: 768px) {
+    body.about-page .language-switcher.mobile-only-flags .lang-text {
+        display: none !important;
+    }
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
@@ -1296,7 +1323,7 @@ body.about-page .main-nav {
 }
 
 @media (max-width: 768px) {
-    /* ADJUST HERO PADDING FOR HEADER (header styles are in header.html) */
+    /* ADJUST HERO PADDING FOR HEADER */
     .about-hero {
         padding: 120px 0 60px;
         min-height: 50vh;
@@ -1717,91 +1744,6 @@ html {
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--accent) var(--primary);
-}
-
-/* ===== КРИТИЧЕСКИЙ ФИКС ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА НА СТРАНИЦЕ ABOUT ===== */
-body.about-page .lang-text {
-    display: inline-block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    font-weight: 700;
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.85);
-}
-
-body.about-page .lang-btn.active .lang-text {
-    color: white;
-}
-
-body.about-page .language-switcher.mobile-only-flags .lang-text {
-    display: inline-block !important;
-}
-
-/* Мобильные стили */
-@media (max-width: 768px) {
-    body.about-page .language-switcher.mobile-only-flags .lang-text {
-        display: none !important;
-    }
-    
-    body.about-page .language-switcher.mobile-only-flags .lang-btn {
-        padding: 0 15px;
-        gap: 0;
-    }
-    
-    body.about-page .language-switcher.mobile-only-flags .lang-flag {
-        font-size: 22px;
-    }
-}
-
-/* Переопределяем любые анимации для переключателя языка */
-body.about-page [data-i18n],
-body.about-page .lang-btn,
-body.about-page .lang-text,
-body.about-page .lang-flag {
-    opacity: 1 !important;
-    animation: none !important;
-    transition: none !important;
-    visibility: visible !important;
-}
-
-/* Гарантируем отображение текста переключателя */
-body.about-page .language-switcher {
-    min-width: 120px;
-}
-
-body.about-page .language-switcher .lang-btn {
-    padding: 0 20px;
-    gap: 8px;
-}
-
-/* Фикс для мобильного меню */
-body.about-page .mobile-language-switcher .lang-text {
-    display: inline-block !important;
-    opacity: 1 !important;
-}
-
-/* Убираем возможные переопределения из animations.css */
-body.about-page .lang-text {
-    text-shadow: none !important;
-    background: none !important;
-    -webkit-text-fill-color: unset !important;
-    -webkit-background-clip: unset !important;
-    background-clip: unset !important;
-}
-
-/* Дополнительный фикс для мобильного переключателя */
-@media (max-width: 768px) {
-    body.about-page .header-right-mobile .language-switcher {
-        min-width: 90px;
-    }
-    
-    body.about-page .header-right-mobile .language-switcher.mobile-only-flags .lang-text {
-        display: none !important;
-    }
-    
-    body.about-page .header-right-mobile .language-switcher .lang-flag {
-        font-size: 20px;
-    }
 }
 
 /* ===== КРИТИЧЕСКИЕ ФИКСЫ ДЛЯ ВИДИМОСТИ БЛОКОВ ===== */
