@@ -29,22 +29,6 @@
             pointer-events: auto !important;
         }
 
-        /* Стили для хедера на всех страницах кроме главной */
-        body:not(.index-page) .main-header,
-        body.about-page .main-header,
-        body.services-page .main-header,
-        body.portfolio-page .main-header,
-        body.contacts-page .main-header,
-        body.brandbook-page .main-header {
-            background: rgba(10, 10, 20, 0.95) !important;
-            backdrop-filter: blur(40px) saturate(200%) !important;
-            -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-        }
-
         /* Состояние когда хедер скрыт */
         .main-header.header-hidden {
             transform: translateX(-50%) translateY(-100%) !important;
@@ -72,22 +56,6 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
-        /* scrolled класс для внутренних страниц */
-        body:not(.index-page) .main-header.scrolled,
-        body.about-page .main-header.scrolled,
-        body.services-page .main-header.scrolled,
-        body.portfolio-page .main-header.scrolled,
-        body.contacts-page .main-header.scrolled,
-        body.brandbook-page .main-header.scrolled {
-            background: rgba(15, 15, 25, 0.98) !important;
-            backdrop-filter: blur(45px) saturate(200%) !important;
-            -webkit-backdrop-filter: blur(45px) saturate(200%) !important;
-            box-shadow: 
-                0 15px 50px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-            border-color: rgba(255, 255, 255, 0.2) !important;
-        }
-
         .main-header:hover {
             background: rgba(255, 255, 255, 0.08);
             border-color: rgba(255, 255, 255, 0.15);
@@ -95,17 +63,6 @@
             box-shadow: 
                 0 15px 45px rgba(0, 0, 0, 0.25),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-
-        /* hover для внутренних страниц */
-        body:not(.index-page) .main-header:hover,
-        body.about-page .main-header:hover,
-        body.services-page .main-header:hover,
-        body.portfolio-page .main-header:hover,
-        body.contacts-page .main-header:hover,
-        body.brandbook-page .main-header:hover {
-            background: rgba(20, 20, 30, 0.98) !important;
-            border-color: rgba(255, 255, 255, 0.2) !important;
         }
 
         .header-container {
@@ -556,18 +513,6 @@
                 pointer-events: auto !important;
             }
             
-            /* Для внутренних страниц на мобильных */
-            body:not(.index-page) .main-header,
-            body.about-page .main-header,
-            body.services-page .main-header,
-            body.portfolio-page .main-header,
-            body.contacts-page .main-header,
-            body.brandbook-page .main-header {
-                background: rgba(10, 10, 20, 0.98) !important;
-                backdrop-filter: blur(35px) !important;
-                -webkit-backdrop-filter: blur(35px) !important;
-            }
-            
             .main-header.header-hidden {
                 transform: translateY(-100%) !important;
                 opacity: 0 !important;
@@ -891,12 +836,12 @@
         </div>
     </header>
 
-    <!-- СКРИПТ ДЛЯ ЯЗЫКА, КНОПКИ И СКРОЛЛА -->
+    <!-- УПРОЩЕННЫЙ СКРИПТ (без управления скроллом) -->
     <script>
     (function() {
         'use strict';
         
-        console.log('🚀 Header loaded - Enhanced animations for all pages');
+        console.log('🚀 Header loaded - Basic functionality only');
         
         // ===== НАСТРОЙКА ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА =====
         function setupLanguageSwitcher() {
@@ -965,123 +910,12 @@
             });
         }
         
-        // ===== БАЗОВЫЙ СКРИПТ ДЛЯ СКРЫТИЯ ХЕДЕРА (для всех страниц) =====
-        function setupBasicHeaderScroll() {
-            const header = document.getElementById('main-header');
-            if (!header) return;
-            
-            let lastScrollTop = 0;
-            let isHeaderHidden = false;
-            
-            // Определяем, главная ли это страница
-            const isHomePage = window.location.pathname.includes('index.html') || 
-                              window.location.pathname === '/' ||
-                              window.location.pathname.endsWith('nbgroup1/') ||
-                              window.location.pathname.endsWith('nbgroup1');
-            
-            // Для всех страниц кроме главной устанавливаем темный фон сразу
-            if (!isHomePage) {
-                header.style.background = 'rgba(10, 10, 20, 0.95)';
-                header.style.backdropFilter = 'blur(40px) saturate(200%)';
-                header.classList.add('scrolled');
-            }
-            
-            function handleScroll() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                // Всегда показываем хедер вверху страницы
-                if (scrollTop <= 50) {
-                    if (isHeaderHidden) {
-                        header.classList.remove('header-hidden');
-                        header.classList.add('header-visible');
-                        isHeaderHidden = false;
-                    }
-                    return;
-                }
-                
-                const scrollingDown = scrollTop > lastScrollTop;
-                
-                // Прячем при скролле вниз
-                if (scrollingDown && scrollTop > 100) {
-                    if (!isHeaderHidden) {
-                        header.classList.remove('header-visible');
-                        header.classList.add('header-hidden');
-                        isHeaderHidden = true;
-                    }
-                }
-                // Показываем при скролле вверх
-                else if (!scrollingDown && scrollTop > 100) {
-                    if (isHeaderHidden) {
-                        header.classList.remove('header-hidden');
-                        header.classList.add('header-visible');
-                        isHeaderHidden = false;
-                    }
-                }
-                
-                // Добавляем scrolled класс для изменения стилей
-                if (scrollTop > 100) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-                
-                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-            }
-            
-            window.addEventListener('scroll', handleScroll, { passive: true });
-            
-            // Показываем хедер при наведении (только для десктопа)
-            if (window.innerWidth > 900) {
-                const hoverZone = document.createElement('div');
-                hoverZone.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 80px;
-                    z-index: 998;
-                    pointer-events: ${isHeaderHidden ? 'auto' : 'none'};
-                    background: transparent;
-                    transition: pointer-events 0.3s ease;
-                `;
-                hoverZone.id = 'header-hover-zone';
-                
-                hoverZone.addEventListener('mouseenter', () => {
-                    if (isHeaderHidden) {
-                        header.classList.remove('header-hidden');
-                        header.classList.add('header-visible');
-                        isHeaderHidden = false;
-                        hoverZone.style.pointerEvents = 'none';
-                    }
-                });
-                
-                document.body.appendChild(hoverZone);
-            }
-            
-            // Инициализация
-            handleScroll();
-            
-            // Экспортируем функции
-            window.showHeaderBasic = function() {
-                header.classList.remove('header-hidden');
-                header.classList.add('header-visible');
-                isHeaderHidden = false;
-            };
-            
-            window.hideHeaderBasic = function() {
-                header.classList.remove('header-visible');
-                header.classList.add('header-hidden');
-                isHeaderHidden = true;
-            };
-        }
-        
-        // ===== ИНИЦИАЛИЗАЦИЯ ВСЕГО =====
+        // ===== БАЗОВАЯ ИНИЦИАЛИЗАЦИЯ =====
         function init() {
             setupLanguageSwitcher();
             setupStartProjectButton();
-            setupBasicHeaderScroll();
             
-            console.log('✅ Header initialization complete for all pages');
+            console.log('✅ Header basic functionality loaded (scroll management handled by main.js)');
         }
         
         // Запуск инициализации
