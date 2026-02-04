@@ -1,4 +1,4 @@
-console.log('🔧 components.js loaded - UNIVERSAL FIXED VERSION');
+console.log('🔧 components.js loaded - UNIVERSAL FIXED VERSION FOR GITHUB PAGES');
 
 class ComponentLoader {
     constructor() {
@@ -11,7 +11,7 @@ class ComponentLoader {
             return;
         }
         
-        // Определяем базовый путь в зависимости от текущей страницы
+        // Определяем базовый путь ВСЕГДА как текущая директория
         this.basePath = this.determineBasePath();
         
         // Компоненты для загрузки с правильными путями
@@ -26,26 +26,30 @@ class ComponentLoader {
         this.maxRetries = 3;
         this.retryCount = 0;
         
-        console.log(`📦 Will load ${this.totalComponents} components from base path: ${this.basePath}`);
+        console.log(`📦 Will load ${this.totalComponents} components from base path: "${this.basePath}"`);
+        console.log(`📦 First component path: ${this.componentsToLoad[0].file}`);
         
         this.init();
     }
     
     determineBasePath() {
         const currentPath = window.location.pathname;
+        console.log('📍 Current path:', currentPath);
+        
+        // Для GitHub Pages с папкой nbgroup1
+        if (currentPath.includes('/nbgroup1/')) {
+            // Всегда используем относительный путь от текущей директории
+            // В папке /nbgroup1/ все файлы находятся на одном уровне
+            return './';
+        }
+        
+        // Для локальной разработки
         const isRoot = currentPath === '/' || 
                        currentPath.includes('index.html') || 
-                       currentPath.endsWith('nbgroup1/') ||
-                       currentPath.endsWith('nbgroup1');
+                       currentPath.endsWith('/');
         
-        console.log('📍 Current path:', currentPath);
         console.log('📍 Is root page?', isRoot);
-        
-        if (isRoot) {
-            return ''; // На главной - прямые пути
-        } else {
-            return '../'; // На внутренних страницах - поднимаемся на уровень выше
-        }
+        return isRoot ? '' : './';
     }
     
     init() {
@@ -91,10 +95,19 @@ class ComponentLoader {
                 container.id = containerId;
                 
                 // Определяем где разместить контейнер
-                if (containerId === 'header-container' || containerId === 'mobile-menu-container') {
-                    // Вставляем после открывающего тега body
+                if (containerId === 'header-container') {
+                    // Вставляем в самое начало body
                     document.body.insertBefore(container, document.body.firstChild);
+                } else if (containerId === 'mobile-menu-container') {
+                    // Вставляем после header-container
+                    const headerContainer = document.getElementById('header-container');
+                    if (headerContainer && headerContainer.nextSibling) {
+                        document.body.insertBefore(container, headerContainer.nextSibling);
+                    } else {
+                        document.body.appendChild(container);
+                    }
                 } else if (containerId === 'footer-container') {
+                    // Вставляем в конец body
                     document.body.appendChild(container);
                 }
                 
@@ -112,6 +125,7 @@ class ComponentLoader {
         
         // Если контейнер уже имеет содержимое
         if (headerContainer.innerHTML && headerContainer.innerHTML.trim() !== '') {
+            console.log('📦 Header container already has content:', headerContainer.innerHTML.length, 'chars');
             return true;
         }
         
@@ -168,12 +182,12 @@ class ComponentLoader {
         // Пробуем разные пути если основной не сработает
         const pathsToTry = [
             component.file,
-            component.file.replace('../', ''),
-            component.file.replace('../components/', 'components/'),
-            '/' + component.file.replace('../', ''),
+            component.file.replace('./', ''),
+            component.file.replace('./components/', 'components/'),
             window.location.hostname.includes('github.io') ? 
-                '/nbgroup1/' + component.file.replace('../', '') : 
-                component.file
+                '/nbgroup1/components/' + component.file.split('/').pop() : 
+                component.file,
+            'components/' + component.file.split('/').pop()  // Последняя попытка
         ];
         
         this.tryPaths(pathsToTry, 0, component, container);
@@ -230,12 +244,13 @@ class ComponentLoader {
     createFallbackContent(component, container) {
         console.log(`🛠️ Creating fallback content for ${component.id}`);
         
-        // Получаем правильные пути для ссылок
-        const indexPath = this.basePath ? this.basePath + 'index.html' : 'index.html';
-        const aboutPath = this.basePath ? this.basePath + 'about.html' : 'about.html';
-        const servicesPath = this.basePath ? this.basePath + 'services.html' : 'services.html';
-        const portfolioPath = this.basePath ? this.basePath + 'portfolio.html' : 'portfolio.html';
-        const contactsPath = this.basePath ? this.basePath + 'contacts.html' : 'contacts.html';
+        // Используем абсолютные пути для GitHub Pages
+        const getFullPath = (page) => {
+            if (window.location.hostname.includes('github.io')) {
+                return `/nbgroup1/${page}`;
+            }
+            return `./${page}`;
+        };
         
         switch(component.id) {
             case 'header-container':
@@ -243,7 +258,7 @@ class ComponentLoader {
                     <header class="main-header" id="main-header">
                         <div class="header-container">
                             <div class="header-inner">
-                                <a href="${indexPath}" class="logo">
+                                <a href="${getFullPath('index.html')}" class="logo">
                                     <div class="logo-mark">NB</div>
                                     <span class="logo-text">NB Group</span>
                                 </a>
@@ -272,11 +287,11 @@ class ComponentLoader {
                 container.innerHTML = `
                     <div class="mobile-menu" id="mobile-menu">
                         <nav class="mobile-nav">
-                            <a href="${indexPath}" class="mobile-nav-link">Главная</a>
-                            <a href="${aboutPath}" class="mobile-nav-link">О нас</a>
-                            <a href="${servicesPath}" class="mobile-nav-link">Услуги</a>
-                            <a href="${portfolioPath}" class="mobile-nav-link">Портфолио</a>
-                            <a href="${contactsPath}" class="mobile-nav-link">Контакты</a>
+                            <a href="${getFullPath('index.html')}" class="mobile-nav-link">Главная</a>
+                            <a href="${getFullPath('about.html')}" class="mobile-nav-link">О нас</a>
+                            <a href="${getFullPath('services.html')}" class="mobile-nav-link">Услуги</a>
+                            <a href="${getFullPath('portfolio.html')}" class="mobile-nav-link">Портфолио</a>
+                            <a href="${getFullPath('contacts.html')}" class="mobile-nav-link">Контакты</a>
                         </nav>
                     </div>
                 `;
@@ -513,11 +528,25 @@ class ComponentLoader {
                     if (container && (!container.innerHTML || container.innerHTML.trim() === '')) {
                         console.log(`🛠️ Creating emergency content for ${id}`);
                         
-                        // Простые заглушки
+                        // Простые заглушки с правильными путями
+                        const getPath = (page) => window.location.hostname.includes('github.io') 
+                            ? `/nbgroup1/${page}` 
+                            : `./${page}`;
+                            
                         if (id === 'header-container') {
-                            container.innerHTML = `<div style="padding: 20px; background: #0a0a0a; color: white; text-align: center;">NB Group</div>`;
+                            container.innerHTML = `
+                                <header style="padding: 20px; background: #0a0a0a; color: white;">
+                                    <a href="${getPath('index.html')}" style="color: white; text-decoration: none; font-weight: bold;">
+                                        NB Group
+                                    </a>
+                                </header>
+                            `;
                         } else if (id === 'footer-container') {
-                            container.innerHTML = `<div style="padding: 20px; background: #0a0a0a; color: white; text-align: center;">&copy; ${new Date().getFullYear()} NB Group</div>`;
+                            container.innerHTML = `
+                                <footer style="padding: 20px; background: #0a0a0a; color: white; text-align: center;">
+                                    &copy; ${new Date().getFullYear()} NB Group
+                                </footer>
+                            `;
                         }
                     }
                 });
@@ -574,7 +603,15 @@ window.addEventListener('load', () => {
         missingContainers.forEach(id => {
             const container = document.createElement('div');
             container.id = id;
-            document.body.appendChild(container);
+            
+            if (id === 'header-container') {
+                document.body.insertBefore(container, document.body.firstChild);
+            } else if (id === 'footer-container') {
+                document.body.appendChild(container);
+            } else {
+                document.body.appendChild(container);
+            }
+            
             console.log(`✅ Created missing container: #${id}`);
         });
         
@@ -582,6 +619,8 @@ window.addEventListener('load', () => {
         setTimeout(() => {
             if (window.ComponentLoaderInstance) {
                 window.ComponentLoaderInstance.retryFailedComponents();
+            } else {
+                window.ComponentLoaderInstance = new ComponentLoader();
             }
         }, 1000);
     }
