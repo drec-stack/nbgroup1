@@ -94,6 +94,49 @@
             z-index: 1;
         }
         
+        /* ФИКС ДЛЯ ИЗОБРАЖЕНИЙ ПРОЕКТОВ */
+        .project-image {
+            background: rgba(255, 255, 255, 0.05) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        
+        .project-image img {
+            width: auto !important;
+            max-width: 90% !important;
+            height: auto !important;
+            max-height: 90% !important;
+            object-fit: contain !important;
+            transition: transform 0.8s ease !important;
+            background: transparent !important;
+            border-radius: 8px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .project-image {
+                height: 250px !important;
+                padding: 15px !important;
+            }
+            
+            .project-image img {
+                max-width: 95% !important;
+                max-height: 95% !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .project-image {
+                height: 200px !important;
+                padding: 10px !important;
+            }
+            
+            .project-image img {
+                max-width: 90% !important;
+                max-height: 90% !important;
+            }
+        }
+        
         /* Убедимся, что все контентные блоки выше фона */
         .container, section, .hero, .content-section, 
         #header-container, #footer-container,
@@ -236,7 +279,6 @@
                 display: flex !important;
                 align-items: center !important;
                 gap: 15px !important;
-                flex-shrink: 0 !important;
             }
             
             /* Отключаем fixed background на мобильных */
@@ -423,7 +465,7 @@
             <div class="projects-grid">
                 <div class="project-card fade-in-up delay-300">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Google Schaft Robot" loading="lazy" width="400" height="300">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Google Schaft Robot" loading="lazy" width="600" height="400">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title" data-i18n="home.projects.items.googleRobot.title">Google Schaft Robot</h3>
@@ -433,7 +475,7 @@
                 
                 <div class="project-card fade-in-up delay-400">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Monolith - Motion Medical" loading="lazy" width="400" height="300">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Monolith - Motion Medical" loading="lazy" width="600" height="400">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title" data-i18n="home.projects.items.monolith.title">Monolith - Motion Medical</h3>
@@ -443,7 +485,7 @@
                 
                 <div class="project-card fade-in-up delay-500">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Helic Hair Labs" loading="lazy" width="400" height="300">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Helic Hair Labs" loading="lazy" width="600" height="400">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title" data-i18n="home.projects.items.helicHair.title">Helic Hair Labs</h3>
@@ -453,7 +495,7 @@
                 
                 <div class="project-card fade-in-up delay-600">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Omron Robotics" loading="lazy" width="400" height="300">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Omron Robotics" loading="lazy" width="600" height="400">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title" data-i18n="home.projects.items.omron.title">Omron Robotics</h3>
