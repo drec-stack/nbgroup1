@@ -3,6 +3,7 @@
     --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
     --ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
     
     --animation-duration-fast: 0.3s;
     --animation-duration-normal: 0.6s;
@@ -11,12 +12,472 @@
     --speck-blue: #0066ff;
     --speck-blue-light: #66b5ff;
     --speck-blue-dark: #0052cc;
+    
+    --header-height: 80px;
 }
 
 /* ===== БАЗОВЫЕ АНИМАЦИОННЫЕ СТИЛИ ===== */
 * {
     animation-duration: var(--animation-duration-normal);
     animation-fill-mode: both;
+}
+
+/* ===== ENHANCED HEADER ANIMATIONS ===== */
+/* Плавное появление хедера */
+@keyframes headerSlideDown {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    50% {
+        opacity: 0.5;
+        backdrop-filter: blur(15px);
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+        backdrop-filter: blur(30px) saturate(180%);
+    }
+}
+
+.main-header.header-visible {
+    animation: headerSlideDown 0.8s var(--ease-elastic) forwards;
+    animation-play-state: running;
+}
+
+/* Плавное исчезновение хедера */
+@keyframes headerSlideUp {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+        backdrop-filter: blur(30px) saturate(180%);
+    }
+    50% {
+        opacity: 0.5;
+        backdrop-filter: blur(15px);
+    }
+    100% {
+        transform: translateY(-100%);
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+}
+
+.main-header.header-hidden {
+    animation: headerSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-play-state: running;
+}
+
+/* Анимация для десктопной версии */
+@media (min-width: 901px) {
+    @keyframes headerSlideDownDesktop {
+        0% {
+            transform: translateX(-50%) translateY(-100%);
+            opacity: 0;
+            backdrop-filter: blur(0px);
+        }
+        60% {
+            opacity: 0.8;
+            transform: translateX(-50%) translateY(10px);
+            backdrop-filter: blur(20px);
+        }
+        100% {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            backdrop-filter: blur(30px) saturate(180%);
+        }
+    }
+    
+    .main-header.header-visible {
+        animation: headerSlideDownDesktop 0.7s var(--ease-elastic) forwards;
+    }
+    
+    @keyframes headerSlideUpDesktop {
+        0% {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            backdrop-filter: blur(30px) saturate(180%);
+        }
+        100% {
+            transform: translateX(-50%) translateY(-100%);
+            opacity: 0;
+            backdrop-filter: blur(0px);
+        }
+    }
+    
+    .main-header.header-hidden {
+        animation: headerSlideUpDesktop 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+}
+
+/* Анимация при скролле */
+@keyframes headerElevate {
+    0% {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(30px) saturate(180%);
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        transform: translateY(0);
+    }
+    100% {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(40px) saturate(200%);
+        box-shadow: 
+            0 15px 50px rgba(0, 0, 0, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        transform: translateY(-2px);
+    }
+}
+
+.main-header.scrolled {
+    animation: headerElevate 0.4s var(--ease-out-back) forwards;
+}
+
+/* Анимация логотипа */
+@keyframes logoMarkHover {
+    0% {
+        transform: scale(1) rotate(0deg);
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        transform: scale(1.05) rotate(3deg);
+        box-shadow: 
+            0 8px 30px rgba(255, 255, 255, 0.2),
+            0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    100% {
+        transform: scale(1.05) rotate(5deg);
+        box-shadow: 
+            0 10px 40px rgba(255, 255, 255, 0.2),
+            0 0 30px rgba(255, 255, 255, 0.1);
+    }
+}
+
+.logo:hover .logo-mark {
+    animation: logoMarkHover 0.4s var(--ease-elastic) forwards;
+}
+
+@keyframes logoUnderline {
+    0% {
+        width: 0;
+        opacity: 0;
+        transform: scaleX(0.3);
+    }
+    100% {
+        width: 100%;
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}
+
+.logo:hover .logo-text::after {
+    animation: logoUnderline 0.4s var(--ease-out-expo) forwards;
+}
+
+/* Анимация навигационных ссылок */
+@keyframes navLinkRipple {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        width: 200%;
+        height: 200%;
+        opacity: 0;
+    }
+}
+
+.nav-link::before {
+    animation: navLinkRipple 0.6s var(--ease-out-quad) forwards;
+    animation-play-state: paused;
+}
+
+.nav-link:hover::before {
+    animation-play-state: running;
+}
+
+@keyframes navLinkUnderline {
+    0% {
+        width: 0;
+        transform: translateX(-50%) scaleX(0.3);
+    }
+    100% {
+        width: 80%;
+        transform: translateX(-50%) scaleX(1);
+    }
+}
+
+.nav-link:hover::after {
+    animation: navLinkUnderline 0.4s var(--ease-out-expo) forwards;
+}
+
+@keyframes navLinkHoverLift {
+    0% {
+        transform: translateY(0);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    100% {
+        transform: translateY(-3px);
+        box-shadow: 
+            0 8px 25px rgba(0, 0, 0, 0.2),
+            0 4px 15px rgba(0, 102, 255, 0.1);
+    }
+}
+
+.nav-link:hover {
+    animation: navLinkHoverLift 0.3s var(--ease-out-back) forwards;
+}
+
+/* Анимация активной навигационной ссылки */
+@keyframes navLinkActivePulse {
+    0%, 100% {
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 4px 20px rgba(0, 102, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+    50% {
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 4px 25px rgba(0, 102, 255, 0.25),
+            0 0 15px rgba(0, 102, 255, 0.1);
+        border-color: rgba(102, 181, 255, 0.3);
+    }
+}
+
+.nav-link.active {
+    animation: navLinkActivePulse 3s ease-in-out infinite;
+}
+
+/* Анимация кнопки "Начать проект" */
+@keyframes startProjectBtnShimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.start-project-btn::before {
+    animation: startProjectBtnShimmer 0.7s var(--ease-out-expo);
+    animation-play-state: paused;
+}
+
+.start-project-btn:hover::before {
+    animation-play-state: running;
+}
+
+@keyframes startProjectBtnHover {
+    0% {
+        transform: translateY(0) scale(1);
+        box-shadow: 
+            0 6px 25px rgba(0, 0, 0, 0.2),
+            0 0 0 1px rgba(255, 255, 255, 0.05),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        transform: translateY(-2px) scale(1.03);
+    }
+    100% {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 
+            0 12px 35px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            0 0 30px rgba(0, 102, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+}
+
+.start-project-btn:hover {
+    animation: startProjectBtnHover 0.4s var(--ease-elastic) forwards;
+}
+
+@keyframes startProjectBtnIcon {
+    0% {
+        transform: translateX(0) rotate(0deg);
+    }
+    50% {
+        transform: translateX(2px) rotate(2.5deg);
+    }
+    100% {
+        transform: translateX(4px) rotate(5deg);
+    }
+}
+
+.start-project-btn:hover i {
+    animation: startProjectBtnIcon 0.4s var(--ease-elastic) forwards;
+}
+
+/* Анимация переключателя языка */
+@keyframes langSliderMove {
+    0% {
+        transform: translateX(0);
+    }
+    60% {
+        transform: translateX(110%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.language-switcher.desktop-only[data-current-lang="en"] .lang-slider {
+    animation: langSliderMove 0.5s var(--ease-elastic) forwards;
+}
+
+.language-switcher.desktop-only[data-current-lang="ru"] .lang-slider {
+    animation: langSliderMove 0.5s var(--ease-elastic) reverse forwards;
+}
+
+/* Анимация флагов */
+@keyframes langFlagHover {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    100% {
+        transform: scale(1.2) rotate(5deg);
+    }
+}
+
+.language-switcher .lang-btn:hover .lang-flag {
+    animation: langFlagHover 0.3s var(--ease-elastic) forwards;
+}
+
+/* Анимация бургер-кнопки */
+@keyframes burgerBtnHover {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        transform: scale(1.05);
+        box-shadow: 
+            0 8px 25px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(0, 102, 255, 0.15);
+    }
+}
+
+.burger-btn:hover {
+    animation: burgerBtnHover 0.3s var(--ease-out-back) forwards;
+}
+
+/* Анимация линий бургер-кнопки */
+@keyframes burgerLine1Active {
+    0% {
+        top: 16px;
+        transform: translateX(-50%) rotate(0deg);
+    }
+    50% {
+        top: 24px;
+        transform: translateX(-50%) rotate(22.5deg);
+    }
+    100% {
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+}
+
+@keyframes burgerLine2Active {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+    }
+}
+
+@keyframes burgerLine3Active {
+    0% {
+        bottom: 16px;
+        transform: translateX(-50%) rotate(0deg);
+    }
+    50% {
+        bottom: 24px;
+        transform: translateX(-50%) rotate(-22.5deg);
+    }
+    100% {
+        bottom: 50%;
+        transform: translate(-50%, 50%) rotate(-45deg);
+    }
+}
+
+.burger-btn.active span:nth-child(1) {
+    animation: burgerLine1Active 0.4s var(--ease-out-back) forwards;
+}
+
+.burger-btn.active span:nth-child(2) {
+    animation: burgerLine2Active 0.4s var(--ease-out-expo) forwards;
+}
+
+.burger-btn.active span:nth-child(3) {
+    animation: burgerLine3Active 0.4s var(--ease-out-back) forwards;
+}
+
+/* Обратные анимации для закрытия */
+@keyframes burgerLine1Inactive {
+    0% {
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+    50% {
+        top: 24px;
+        transform: translateX(-50%) rotate(22.5deg);
+    }
+    100% {
+        top: 16px;
+        transform: translateX(-50%) rotate(0deg);
+    }
+}
+
+@keyframes burgerLine2Inactive {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+    }
+    50% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes burgerLine3Inactive {
+    0% {
+        bottom: 50%;
+        transform: translate(-50%, 50%) rotate(-45deg);
+    }
+    50% {
+        bottom: 24px;
+        transform: translateX(-50%) rotate(-22.5deg);
+    }
+    100% {
+        bottom: 16px;
+        transform: translateX(-50%) rotate(0deg);
+    }
+}
+
+.burger-btn:not(.active) span:nth-child(1) {
+    animation: burgerLine1Inactive 0.4s var(--ease-out-back) forwards;
+}
+
+.burger-btn:not(.active) span:nth-child(2) {
+    animation: burgerLine2Inactive 0.4s var(--ease-out-expo) forwards;
+}
+
+.burger-btn:not(.active) span:nth-child(3) {
+    animation: burgerLine3Inactive 0.4s var(--ease-out-back) forwards;
 }
 
 /* ===== VERTICAL EXPERTISE BLOCK ANIMATIONS ===== */
@@ -910,14 +1371,42 @@
     animation: textShadowPulse 3s ease-in-out infinite;
 }
 
-/* ===== ACCESSIBILITY & PERFORMANCE ===== */
+/* ===== REDUCED MOTION SUPPORT ===== */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+    .main-header,
+    .main-header *,
+    .logo-mark,
+    .nav-link,
+    .start-project-btn,
+    .language-switcher,
+    .burger-btn,
+    .burger-btn span {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .main-header.header-hidden {
+        transform: translateY(-100%) !important;
+        opacity: 0 !important;
+    }
+    
+    .main-header.header-visible {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+    }
+    
+    .burger-btn.active span:nth-child(1) {
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(45deg) !important;
+    }
+    
+    .burger-btn.active span:nth-child(2) {
+        opacity: 0 !important;
+    }
+    
+    .burger-btn.active span:nth-child(3) {
+        bottom: 50%;
+        transform: translate(-50%, 50%) rotate(-45deg) !important;
     }
     
     /* Отключаем все анимации */
@@ -1026,13 +1515,14 @@
     animation-play-state: running !important;
 }
 
-/* SPECK ANIMATIONS READY STATE */
-.speck-animations-ready .speck-vertical-block,
-.speck-animations-ready .expertise-vertical-block,
-.speck-animations-ready .project-card,
-.speck-animations-ready .service-item,
-.speck-animations-ready .journal-item,
-.speck-animations-ready .faq-item {
+/* ANIMATIONS READY STATE */
+.animations-ready .speck-vertical-block,
+.animations-ready .expertise-vertical-block,
+.animations-ready .project-card,
+.animations-ready .service-item,
+.animations-ready .journal-item,
+.animations-ready .faq-item,
+.animations-ready .main-header {
     will-change: transform, opacity;
 }
 
@@ -1577,13 +2067,9 @@
     animation: gradientShift 15s ease infinite;
 }
 
-/* ===== FINAL ANIMATION STATES ===== */
-.animated {
-    animation-play-state: running !important;
-}
-
-.paused {
-    animation-play-state: paused !important;
+/* ===== HEADER HOVER ZONE ===== */
+.header-hover-zone {
+    animation: fadeIn 0.3s ease forwards;
 }
 
 /* ===== RESPONSIVE ANIMATION ADJUSTMENTS ===== */
@@ -1606,6 +2092,15 @@
     /* Отключаем некоторые анимации для производительности */
     .bg-layer {
         animation: none !important;
+    }
+    
+    /* Упрощенные анимации для хедера на мобильных */
+    .main-header.header-hidden {
+        animation: headerSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    .main-header.header-visible {
+        animation: headerSlideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 }
 
@@ -1713,7 +2208,7 @@ body.all-content-loaded .bg-layer {
     animation-play-state: running !important;
 }
 
-/* Анимация для плавного появления (необязательно) */
+/* Анимация для плавного появления */
 @keyframes immediateAppear {
     0% {
         opacity: 0;
@@ -1741,4 +2236,10 @@ body.all-content-loaded .bg-layer {
         opacity: 1 !important;
         transform: none !important;
     }
+}
+
+/* ===== HEADER ANIMATIONS READY STATE ===== */
+body.header-animations-ready .main-header,
+body.header-animations-ready .main-header * {
+    will-change: transform, opacity, background-color, box-shadow, backdrop-filter;
 }
