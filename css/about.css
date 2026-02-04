@@ -132,7 +132,7 @@ body.about-page .main-nav {
 /* ===== ABOUT HERO SECTION ===== */
 .about-hero {
     padding: 160px 0 80px;
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
     position: relative;
     overflow: hidden;
     text-align: center;
@@ -141,14 +141,10 @@ body.about-page .main-nav {
     align-items: center;
 }
 
+/* УБРАНО: темный оверлей */
 .about-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 50%;
-    height: 100%;
-    background: radial-gradient(circle at 70% 30%, rgba(0, 102, 255, 0.1) 0%, transparent 70%);
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
 }
 
 .about-hero-content {
@@ -184,21 +180,16 @@ body.about-page .main-nav {
 /* ===== ABOUT MISSION SECTION ===== */
 .about-mission {
     padding: 120px 0;
-    background: var(--primary);
+    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     position: relative;
     overflow: hidden;
 }
 
+/* УБРАНО: темный оверлей */
 .about-mission::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.3;
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
 }
 
 .mission-grid {
@@ -212,9 +203,9 @@ body.about-page .main-nav {
 
 .mission-text {
     padding: 50px;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: светлый фон */
     border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлая граница */
     backdrop-filter: blur(15px) saturate(180%);
     -webkit-backdrop-filter: blur(15px) saturate(180%);
     position: relative;
@@ -224,15 +215,10 @@ body.about-page .main-nav {
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+/* УБРАНО: темный оверлей */
 .mission-text::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--accent-gradient);
-    border-radius: 4px 4px 0 0;
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
 }
 
 .mission-text h2 {
@@ -280,26 +266,25 @@ body.about-page .main-nav {
 .mission-feature {
     text-align: center;
     padding: 25px 20px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: светлый фон */
     border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлая граница */
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
 }
 
+/* УБРАНО: темный оверлей */
 .mission-feature::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0, 102, 255, 0.05), rgba(0, 200, 255, 0.05));
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
     opacity: 0;
     transition: opacity 0.4s ease;
 }
 
 .mission-feature:hover {
     transform: translateY(-8px) scale(1.03);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлый фон при наведении */
     border-color: rgba(0, 102, 255, 0.25);
     box-shadow: 
         0 15px 35px rgba(0, 102, 255, 0.15),
@@ -364,49 +349,13 @@ body.about-page .main-nav {
         0 20px 50px rgba(0, 102, 255, 0.2);
 }
 
-.mission-visual::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.25) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(0, 200, 255, 0.25) 0%, transparent 50%);
-    animation: gradientShift 12s ease-in-out infinite alternate;
-    z-index: 1;
-}
-
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 0%;
-        opacity: 0.7;
-    }
-    50% {
-        opacity: 0.4;
-    }
-    100% {
-        background-position: 100% 100%;
-        opacity: 0.7;
-    }
-}
-
+/* УБРАНО: темные оверлеи */
+.mission-visual::before,
 .mission-visual::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, 
-        transparent 0%,
-        rgba(255, 255, 255, 0.03) 50%,
-        transparent 100%);
-    animation: shine 8s ease-in-out infinite;
-}
-
-@keyframes shine {
-    0%, 100% {
-        transform: translateX(-100%) translateY(-100%) rotate(45deg);
-    }
-    50% {
-        transform: translateX(100%) translateY(100%) rotate(45deg);
-    }
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
+    opacity: 0;
+    animation: none !important;
 }
 
 .mission-visual i {
@@ -457,7 +406,7 @@ body.about-page .main-nav {
 /* ===== OUR STORY SECTION ===== */
 .our-story {
     padding: 140px 0;
-    background: var(--primary);
+    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -542,27 +491,26 @@ body.about-page .main-nav {
 .story-stat {
     text-align: center;
     padding: 35px 25px;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: светлый фон */
     border-radius: 22px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлая граница */
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(10px);
 }
 
+/* УБРАНО: темный оверлей */
 .story-stat::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0, 102, 255, 0.05), transparent);
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
     opacity: 0;
     transition: opacity 0.4s ease;
 }
 
 .story-stat:hover {
     transform: translateY(-12px) scale(1.05);
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлый фон при наведении */
     border-color: rgba(0, 102, 255, 0.25);
     box-shadow: 
         0 25px 50px rgba(0, 102, 255, 0.2),
@@ -573,14 +521,10 @@ body.about-page .main-nav {
     opacity: 1;
 }
 
+/* УБРАНО: темный оверлей */
 .story-stat::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--accent-gradient);
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
     opacity: 0;
     transition: opacity 0.4s ease;
 }
@@ -652,18 +596,16 @@ body.about-page .main-nav {
 /* ===== SPECK DESIGN SECTION ===== */
 .speck-design-section {
     padding: 160px 0;
-    background: linear-gradient(180deg, var(--primary) 0%, rgba(10, 12, 18, 0.98) 100%);
+    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
     position: relative;
+    opacity: 1 !important; /* ФИКС: гарантированная видимость */
+    visibility: visible !important; /* ФИКС: гарантированная видимость */
 }
 
+/* УБРАНО: темный оверлей */
 .speck-design-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.4), transparent);
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
 }
 
 .speck-title {
@@ -674,6 +616,7 @@ body.about-page .main-nav {
     color: var(--white);
     letter-spacing: -1px;
     line-height: 1.1;
+    opacity: 1 !important; /* ФИКС: гарантированная видимость */
 }
 
 .speck-subtitle {
@@ -687,6 +630,7 @@ body.about-page .main-nav {
     margin-right: auto;
     line-height: 1.7;
     opacity: 0.9;
+    opacity: 1 !important; /* ФИКС: гарантированная видимость */
 }
 
 .speck-services-grid {
@@ -695,13 +639,15 @@ body.about-page .main-nav {
     gap: 90px;
     max-width: 1400px;
     margin: 0 auto;
+    opacity: 1 !important; /* ФИКС: гарантированная видимость */
+    visibility: visible !important; /* ФИКС: гарантированная видимость */
 }
 
 .speck-service-card {
-    background: rgba(15, 17, 23, 0.85);
+    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: светлый фон */
     border-radius: 30px;
     padding: 70px 60px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлая граница */
     transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
@@ -711,13 +657,16 @@ body.about-page .main-nav {
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    opacity: 1 !important; /* ФИКС: гарантированная видимость */
+    visibility: visible !important; /* ФИКС: гарантированная видимость */
+    transform: none !important; /* ФИКС: убраны анимации скрытия */
 }
 
-.speck-service-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0, 102, 255, 0.08), rgba(0, 200, 255, 0.08));
+/* УБРАНО: темные оверлеи */
+.speck-service-card::before,
+.speck-service-card::after {
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
     opacity: 0;
     transition: opacity 0.5s ease;
 }
@@ -734,14 +683,10 @@ body.about-page .main-nav {
     opacity: 1;
 }
 
+/* УБРАНО: темный оверлей */
 .speck-service-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: var(--accent-gradient);
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
     opacity: 0;
     transition: opacity 0.5s ease;
 }
@@ -901,7 +846,7 @@ body.about-page .main-nav {
 /* ===== СЕКЦИЯ КОМАНДЫ С РЕАЛЬНЫМИ ФОТОГРАФИЯМИ ===== */
 .our-team {
     padding: 160px 0;
-    background: var(--primary);
+    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -941,10 +886,10 @@ body.about-page .main-nav {
 }
 
 .team-member {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.08) !important; /* ИЗМЕНЕНО: светлый фон */
     padding: 60px 45px;
     border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлая граница */
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     text-align: center;
     position: relative;
@@ -956,11 +901,11 @@ body.about-page .main-nav {
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.team-member::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0, 102, 255, 0.08), transparent);
+/* УБРАНО: темные оверлеи */
+.team-member::before,
+.team-member::after {
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
     opacity: 0;
     transition: opacity 0.5s ease;
 }
@@ -968,7 +913,7 @@ body.about-page .main-nav {
 .team-member:hover {
     transform: translateY(-15px) scale(1.03);
     border-color: rgba(0, 102, 255, 0.3);
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.12) !important; /* ИЗМЕНЕНО: светлый фон при наведении */
     box-shadow: 
         0 35px 70px rgba(0, 102, 255, 0.25),
         0 20px 40px rgba(0, 0, 0, 0.4);
@@ -978,14 +923,10 @@ body.about-page .main-nav {
     opacity: 1;
 }
 
+/* УБРАНО: темный оверлей */
 .team-member::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: var(--accent-gradient);
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
     opacity: 0;
     transition: opacity 0.5s ease;
 }
@@ -1144,20 +1085,16 @@ body.about-page .main-nav {
 /* ===== ABOUT CTA SECTION ===== */
 .about-cta {
     padding: 160px 0;
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    background: transparent !important; /* ИЗМЕНЕНО: убрано темное наложение */
     text-align: center;
     position: relative;
     overflow: hidden;
 }
 
+/* УБРАНО: темный оверлей */
 .about-cta::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.6), transparent);
+    display: none !important; /* ИЗМЕНЕНО: убрано темное наложение */
+    background: none !important;
 }
 
 .about-cta .cta-content h2 {
@@ -1233,23 +1170,40 @@ body.about-page .main-nav {
     transform: translateX(10px);
 }
 
-/* ===== АНИМАЦИИ ПОЯВЛЕНИЯ ===== */
-.reveal-left {
-    opacity: 0;
-    transform: translateX(-80px);
-    transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
+/* ===== АНИМАЦИИ ПОЯВЛЕНИЯ - ИСПРАВЛЕННЫЕ ===== */
+.reveal-left,
 .reveal-right {
-    opacity: 0;
-    transform: translateX(80px);
-    transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity: 1 !important; /* ФИКС: всегда видимы */
+    transform: translateX(0) !important; /* ФИКС: нет смещения */
+    transition: none !important; /* ФИКС: убраны переходы */
 }
 
+/* Убираем класс revealed так как он больше не нужен */
 .reveal-left.revealed,
 .reveal-right.revealed {
-    opacity: 1;
-    transform: translateX(0);
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+}
+
+/* КРИТИЧЕСКИЙ ФИКС ДЛЯ БЛОКОВ "ЧТО МЫ ДЕЛАЕМ" */
+.speck-design-section .container > *,
+.speck-services-grid > *,
+.speck-service-card {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Гарантия что карточки видны при любых условиях */
+.speck-service-card[style*="opacity: 0"],
+.speck-service-card[style*="visibility: hidden"],
+.speck-service-card[style*="display: none"] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    transform: translateY(0) !important;
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
@@ -1471,14 +1425,10 @@ body.about-page .main-nav {
         font-size: 1.2rem;
     }
     
+    /* Мобильные анимации - убраны для гарантии видимости */
     .reveal-left,
     .reveal-right {
-        transform: translateY(50px);
-    }
-    
-    .reveal-left.revealed,
-    .reveal-right.revealed {
-        transform: translateY(0);
+        transform: translateY(0) !important;
     }
 }
 
@@ -1715,19 +1665,19 @@ body.about-page .main-nav {
 /* Улучшенная поддержка темной темы */
 @media (prefers-color-scheme: dark) {
     .speck-service-card {
-        background: rgba(20, 22, 28, 0.9);
+        background: rgba(255, 255, 255, 0.08) !important;
     }
     
     .team-member {
-        background: rgba(20, 22, 28, 0.9);
+        background: rgba(255, 255, 255, 0.08) !important;
     }
     
     .mission-text {
-        background: rgba(20, 22, 28, 0.9);
+        background: rgba(255, 255, 255, 0.08) !important;
     }
     
     .story-stat {
-        background: rgba(20, 22, 28, 0.9);
+        background: rgba(255, 255, 255, 0.08) !important;
     }
 }
 
@@ -1852,4 +1802,110 @@ body.about-page .lang-text {
     body.about-page .header-right-mobile .language-switcher .lang-flag {
         font-size: 20px;
     }
+}
+
+/* ===== КРИТИЧЕСКИЕ ФИКСЫ ДЛЯ ВИДИМОСТИ БЛОКОВ ===== */
+
+/* Гарантируем что все секции видны */
+body.about-page section {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* ФИКС для всех карточек Speck Design */
+body.about-page .speck-service-card,
+body.about-page .mission-text,
+body.about-page .mission-feature,
+body.about-page .team-member,
+body.about-page .story-stat {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    animation: none !important;
+}
+
+/* Отключить все анимации, которые могут скрывать элементы */
+body.about-page .reveal-left,
+body.about-page .reveal-right,
+body.about-page .fade-in,
+body.about-page .slide-up,
+body.about-page .animate-on-scroll {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Принудительная видимость на случай проблем с загрузкой */
+body.about-page .speck-design-section * {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Аварийный фикс: убрать все возможные скрывающие стили */
+body.about-page [style*="opacity: 0"],
+body.about-page [style*="visibility: hidden"],
+body.about-page [style*="display: none"] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* Гарантия что все карточки отображаются */
+body.about-page .speck-services-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
+@media (max-width: 992px) {
+    body.about-page .speck-services-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Убрать все темные градиенты и наложения */
+body.about-page .about-hero::before,
+body.about-page .about-mission::before,
+body.about-page .about-cta::before,
+body.about-page .mission-visual::before,
+body.about-page .mission-visual::after,
+body.about-page .speck-design-section::before,
+body.about-page .mission-text::before,
+body.about-page .speck-service-card::before,
+body.about-page .speck-service-card::after,
+body.about-page .team-member::before,
+body.about-page .team-member::after,
+body.about-page .story-stat::before,
+body.about-page .story-stat::after,
+body.about-page .mission-feature::before {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Светлый фон для всех элементов */
+body.about-page .mission-text,
+body.about-page .mission-feature,
+body.about-page .speck-service-card,
+body.about-page .team-member,
+body.about-page .story-stat {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Прозрачный фон для секций */
+body.about-page .about-hero,
+body.about-page .about-mission,
+body.about-page .our-story,
+body.about-page .speck-design-section,
+body.about-page .our-team,
+body.about-page .about-cta {
+    background: transparent !important;
+    background-image: none !important;
 }
