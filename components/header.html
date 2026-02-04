@@ -24,10 +24,8 @@
                 0 8px 32px rgba(0, 0, 0, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                       transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                       opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            will-change: transform, opacity;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity, backdrop-filter, background-color;
             pointer-events: auto !important;
         }
 
@@ -35,52 +33,36 @@
         .main-header.header-hidden {
             transform: translateX(-50%) translateY(-100%) !important;
             opacity: 0 !important;
+            pointer-events: none !important;
         }
 
         /* Состояние когда хедер виден */
         .main-header.header-visible {
             transform: translateX(-50%) translateY(0) !important;
             opacity: 1 !important;
+            pointer-events: auto !important;
         }
 
         /* scrolled класс для изменения стилей при прокрутке */
         .main-header.scrolled {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(35px) saturate(200%);
-            -webkit-backdrop-filter: blur(35px) saturate(200%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
             box-shadow: 
-                0 12px 40px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-
-        /* ОБЯЗАТЕЛЬНО: Всегда делаем хедер кликабельным! */
-        .main-header,
-        .main-header * {
-            pointer-events: auto !important;
-        }
-
-        /* Только когда хедер скрыт, делаем внутренние элементы неактивными */
-        .main-header.header-hidden .header-inner * {
-            pointer-events: none !important;
-        }
-
-        /* Но псевдоэлемент для клика остается активным */
-        .main-header.header-hidden::after {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: 0;
-            width: 100%;
-            height: 40px;
-            background: transparent;
-            cursor: pointer;
-            pointer-events: auto !important;
-            z-index: 1001;
+                0 15px 50px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(-50%) translateY(0) scale(1.02) !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
         .main-header:hover {
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.08);
             border-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(-50%) translateY(0) scale(1.02);
+            box-shadow: 
+                0 15px 45px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .header-container {
@@ -107,6 +89,12 @@
             flex: 1;
             min-width: 0;
             z-index: 1002;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, opacity;
+        }
+
+        .logo:hover {
+            transform: translateY(-1px);
         }
 
         .logo-mark {
@@ -123,13 +111,36 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
             flex-shrink: 0;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             pointer-events: auto !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-mark::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                        height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo:hover .logo-mark::after {
+            width: 100px;
+            height: 100px;
         }
 
         .logo-mark:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 
+                0 10px 40px rgba(255, 255, 255, 0.2),
+                0 0 30px rgba(255, 255, 255, 0.1);
         }
 
         .logo-text {
@@ -140,14 +151,32 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 160px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: auto !important;
+            position: relative;
+            padding: 4px 0;
+        }
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #0066ff, #66b5ff);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 1px;
+        }
+
+        .logo:hover .logo-text::after {
+            width: 100%;
         }
 
         /* ===== ДЕСКТОПНАЯ НАВИГАЦИЯ ===== */
         .main-nav {
             display: flex;
-            gap: 15px;
+            gap: 8px;
             margin: 0 30px;
             pointer-events: auto !important;
         }
@@ -157,19 +186,66 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 15px;
-            transition: all 0.3s ease;
             position: relative;
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 10px 18px;
+            border-radius: 10px;
             background: rgba(255, 255, 255, 0.03);
             pointer-events: auto !important;
             cursor: pointer !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, background-color, color, box-shadow;
+            overflow: hidden;
+            isolation: isolate;
+            border: 1px solid transparent;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                        height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+            opacity: 0;
+        }
+
+        .nav-link:hover::before {
+            width: 200%;
+            height: 200%;
+            opacity: 1;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0066ff, transparent);
+            transform: translateX(-50%);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 1px;
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
         }
 
         .nav-link:hover {
             color: white;
             background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                0 4px 15px rgba(0, 102, 255, 0.1);
         }
 
         .nav-link.active {
@@ -177,6 +253,14 @@
             background: rgba(255, 255, 255, 0.12);
             border: 1px solid rgba(255, 255, 255, 0.2);
             font-weight: 600;
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 4px 20px rgba(0, 102, 255, 0.15);
+        }
+
+        .nav-link.active::after {
+            width: 80%;
+            background: linear-gradient(90deg, transparent, #ffffff, transparent);
         }
 
         /* ===== ДЕСКТОПНЫЕ ДЕЙСТВИЯ ===== */
@@ -190,33 +274,93 @@
         .start-project-btn {
             display: inline-flex;
             align-items: center;
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 28px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
             color: white;
             font-weight: 700;
             font-size: 14px;
             text-decoration: none;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer !important;
-            transition: all 0.3s ease;
-            gap: 8px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 10px;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 
-                0 4px 15px rgba(255, 255, 255, 0.1),
-                0 0 0 1px rgba(255, 255, 255, 0.05);
+                0 6px 25px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
             pointer-events: auto !important;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            will-change: transform, background, box-shadow;
+        }
+
+        .start-project-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        .start-project-btn:hover::before {
+            left: 100%;
+        }
+
+        .start-project-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, 
+                rgba(0, 102, 255, 0.2), 
+                rgba(102, 181, 255, 0.1));
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .start-project-btn:hover::after {
+            opacity: 1;
         }
 
         .start-project-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.2), 
+                rgba(255, 255, 255, 0.12));
             color: white;
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.05);
             box-shadow: 
-                0 8px 25px rgba(255, 255, 255, 0.15),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
+                0 12px 35px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 30px rgba(0, 102, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .start-project-btn:active {
+            transform: translateY(-1px) scale(1.02);
+            transition: transform 0.1s ease;
+        }
+
+        .start-project-btn i {
+            font-size: 14px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .start-project-btn:hover i {
+            transform: translateX(4px) rotate(5deg);
         }
 
         /* ===== ДЕСКТОПНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
@@ -224,44 +368,70 @@
             display: flex;
             align-items: center;
             background: rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            min-width: 60px;
-            height: 34px;
+            border-radius: 20px;
+            padding: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            min-width: 70px;
+            height: 38px;
             box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 4px 20px rgba(0, 0, 0, 0.25);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: auto !important;
+            position: relative;
+            overflow: hidden;
+            will-change: transform, background, box-shadow;
         }
 
         .language-switcher.desktop-only:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 6px 25px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(0, 102, 255, 0.1);
+        }
+
+        .language-switcher.desktop-only::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, 
+                rgba(0, 102, 255, 0.1), 
+                transparent 30%,
+                rgba(102, 181, 255, 0.05));
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .language-switcher.desktop-only:hover::before {
+            opacity: 1;
         }
 
         .language-switcher.desktop-only .lang-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 6px 8px;
+            padding: 6px 12px;
             background: none;
             border: none;
             color: rgba(255, 255, 255, 0.85);
             font-size: 13px;
             font-weight: 500;
             cursor: pointer !important;
-            border-radius: 15px;
-            transition: all 0.3s ease;
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             z-index: 2;
-            min-width: 25px;
-            height: 28px;
+            min-width: 28px;
+            height: 30px;
             flex: 1;
             pointer-events: auto !important;
+            will-change: transform, color;
         }
 
         .language-switcher.desktop-only .lang-btn.active {
@@ -271,20 +441,23 @@
 
         .language-switcher.desktop-only .lang-slider {
             position: absolute;
-            top: 3px;
-            left: 3px;
-            width: calc(50% - 3px);
-            height: calc(100% - 6px);
-            background: rgba(255, 255, 255, 0.2);
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.25), 
+                rgba(255, 255, 255, 0.15));
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            border-radius: 15px;
-            transition: all 0.3s ease;
+            border-radius: 16px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 1;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             box-shadow: 
-                0 2px 8px rgba(255, 255, 255, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+                0 3px 12px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            will-change: transform, background;
         }
 
         .language-switcher.desktop-only[data-current-lang="en"] .lang-slider {
@@ -292,17 +465,19 @@
         }
 
         .language-switcher.desktop-only .lang-flag {
-            font-size: 16px;
-            transition: transform 0.2s ease;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-block;
+            will-change: transform;
         }
 
         .language-switcher.desktop-only .lang-btn:hover .lang-flag {
-            transform: scale(1.1);
+            transform: scale(1.2) rotate(5deg);
         }
 
         .language-switcher.desktop-only .lang-btn:hover:not(.active) {
             color: white;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
@@ -324,17 +499,17 @@
                 max-width: 100% !important;
                 border-radius: 0 !important;
                 transform: none !important;
-                background: rgba(10, 10, 20, 0.95) !important;
-                backdrop-filter: blur(30px) !important;
-                -webkit-backdrop-filter: blur(30px) !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+                background: rgba(10, 10, 20, 0.98) !important;
+                backdrop-filter: blur(35px) !important;
+                -webkit-backdrop-filter: blur(35px) !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
                 border-top: none !important;
                 border-left: none !important;
                 border-right: none !important;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-                padding: 12px 0 !important;
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4) !important;
+                padding: 15px 0 !important;
                 margin: 0 !important;
-                transition: all 0.3s ease !important;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 pointer-events: auto !important;
             }
             
@@ -349,13 +524,8 @@
             }
             
             .main-header.scrolled {
-                background: rgba(10, 10, 20, 0.95) !important;
-            }
-            
-            /* Псевдоэлемент для клика на мобильных */
-            .main-header.header-hidden::after {
-                top: -10px;
-                height: 30px;
+                background: rgba(10, 10, 20, 0.98) !important;
+                padding: 12px 0 !important;
             }
             
             /* Скрываем десктопные элементы */
@@ -370,7 +540,7 @@
             .header-right-mobile {
                 display: flex !important;
                 align-items: center;
-                gap: 15px;
+                gap: 12px;
                 flex-shrink: 0;
                 order: 3;
                 margin-left: auto;
@@ -380,57 +550,82 @@
             /* БУРГЕР КНОПКА */
             .burger-btn {
                 display: block !important;
-                width: 44px;
-                height: 44px;
+                width: 48px;
+                height: 48px;
                 position: relative;
-                background: rgba(255, 255, 255, 0.1);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.12);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                border-radius: 12px;
                 cursor: pointer !important;
                 padding: 0;
                 z-index: 100000;
-                transition: all 0.3s ease;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 -webkit-tap-highlight-color: transparent;
-                min-width: 44px;
-                min-height: 44px;
+                min-width: 48px;
+                min-height: 48px;
                 touch-action: manipulation;
                 order: 2;
                 pointer-events: auto !important;
+                will-change: transform, background;
+                overflow: hidden;
+            }
+            
+            .burger-btn::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, 
+                    rgba(0, 102, 255, 0.2), 
+                    rgba(102, 181, 255, 0.1));
+                border-radius: inherit;
+                opacity: 0;
+                transition: opacity 0.4s ease;
+            }
+            
+            .burger-btn:hover::before {
+                opacity: 1;
             }
             
             .burger-btn:hover {
-                background: rgba(255, 255, 255, 0.15);
-                border-color: rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.18);
+                border-color: rgba(255, 255, 255, 0.35);
+                transform: scale(1.05);
+                box-shadow: 
+                    0 8px 25px rgba(0, 0, 0, 0.3),
+                    0 0 20px rgba(0, 102, 255, 0.15);
             }
             
             .burger-btn span {
                 display: block;
                 position: absolute;
-                width: 20px;
+                width: 22px;
                 height: 2px;
                 background: white;
                 border-radius: 2px;
-                transition: all 0.3s ease;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 left: 50%;
                 transform: translateX(-50%);
+                transform-origin: center;
+                will-change: transform, opacity, top, bottom;
             }
             
             .burger-btn span:nth-child(1) {
-                top: 15px;
+                top: 16px;
             }
             
             .burger-btn span:nth-child(2) {
                 top: 50%;
                 transform: translate(-50%, -50%);
+                opacity: 1;
             }
             
             .burger-btn span:nth-child(3) {
-                bottom: 15px;
+                bottom: 16px;
             }
             
             .burger-btn.active {
-                background: rgba(255, 255, 255, 0.2);
-                border-color: rgba(255, 255, 255, 0.4);
+                background: rgba(255, 255, 255, 0.25);
+                border-color: rgba(255, 255, 255, 0.45);
                 z-index: 99998;
             }
             
@@ -441,6 +636,7 @@
             
             .burger-btn.active span:nth-child(2) {
                 opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
             }
             
             .burger-btn.active span:nth-child(3) {
@@ -457,16 +653,16 @@
             }
             
             .logo {
-                gap: 8px;
+                gap: 10px;
                 min-width: 0;
                 max-width: none;
                 flex: 1;
             }
             
             .logo-mark {
-                width: 36px;
-                height: 36px;
-                font-size: 16px;
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
             }
             
             .logo-text {
@@ -480,31 +676,44 @@
             /* МОБИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ В ХЕДЕРЕ */
             .language-switcher.mobile-only-flags {
                 display: flex;
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 22px;
-                padding: 4px;
-                border: 1px solid rgba(255, 255, 255, 0.15);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                min-width: 70px;
-                height: 44px;
+                background: rgba(255, 255, 255, 0.12);
+                border-radius: 24px;
+                padding: 5px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(25px);
+                -webkit-backdrop-filter: blur(25px);
+                min-width: 80px;
+                height: 48px;
                 overflow: hidden;
                 position: relative;
                 order: 1;
                 pointer-events: auto !important;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                will-change: transform, background;
+            }
+            
+            .language-switcher.mobile-only-flags:hover {
+                background: rgba(255, 255, 255, 0.15);
+                border-color: rgba(255, 255, 255, 0.25);
+                transform: scale(1.05);
             }
             
             .language-switcher.mobile-only-flags .lang-slider {
                 position: absolute;
-                top: 4px;
-                left: 4px;
-                width: calc(50% - 4px);
-                height: calc(100% - 8px);
-                background: rgba(255, 255, 255, 0.25);
-                border-radius: 18px;
-                transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                top: 5px;
+                left: 5px;
+                width: calc(50% - 5px);
+                height: calc(100% - 10px);
+                background: linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.3), 
+                    rgba(255, 255, 255, 0.2));
+                border-radius: 19px;
+                transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
                 z-index: 1;
-                border: 1px solid rgba(255, 255, 255, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.35);
+                box-shadow: 
+                    0 4px 15px rgba(255, 255, 255, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
             }
             
             .language-switcher.mobile-only-flags[data-current-lang="en"] .lang-slider {
@@ -517,18 +726,19 @@
                 justify-content: center;
                 background: none;
                 border: none;
-                color: rgba(255, 255, 255, 0.85);
-                font-size: 16px;
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 20px;
                 font-weight: 600;
                 cursor: pointer !important;
-                border-radius: 18px;
-                transition: all 0.2s ease;
+                border-radius: 19px;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 flex: 1;
                 position: relative;
                 z-index: 2;
-                height: 36px;
+                height: 38px;
                 -webkit-tap-highlight-color: transparent;
                 pointer-events: auto !important;
+                will-change: transform, color;
             }
             
             .language-switcher.mobile-only-flags .lang-btn.active {
@@ -538,12 +748,17 @@
             
             .language-switcher.mobile-only-flags .lang-btn:hover {
                 color: white;
-                background: rgba(255, 255, 255, 0.08);
+                transform: scale(1.1);
             }
             
             .language-switcher.mobile-only-flags .lang-flag {
-                font-size: 22px;
+                font-size: 24px;
                 display: block;
+                transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+            
+            .language-switcher.mobile-only-flags .lang-btn:hover .lang-flag {
+                transform: scale(1.2) rotate(5deg);
             }
         }
     </style>
@@ -560,11 +775,21 @@
                 
                 <!-- Десктопная навигация -->
                 <nav class="main-nav" aria-label="Основная навигация">
-                    <a href="index.html" class="nav-link">Главная</a>
-                    <a href="services.html" class="nav-link">Услуги</a>
-                    <a href="portfolio.html" class="nav-link">Портфолио</a>
-                    <a href="about.html" class="nav-link">О нас</a>
-                    <a href="contacts.html" class="nav-link">Контакты</a>
+                    <a href="index.html" class="nav-link">
+                        <span data-i18n="nav.home">Главная</span>
+                    </a>
+                    <a href="services.html" class="nav-link">
+                        <span data-i18n="nav.services">Услуги</span>
+                    </a>
+                    <a href="portfolio.html" class="nav-link">
+                        <span data-i18n="nav.portfolio">Портфолио</span>
+                    </a>
+                    <a href="about.html" class="nav-link">
+                        <span data-i18n="nav.about">О нас</span>
+                    </a>
+                    <a href="contacts.html" class="nav-link">
+                        <span data-i18n="nav.contacts">Контакты</span>
+                    </a>
                 </nav>
                 
                 <!-- Десктопные действия -->
@@ -582,7 +807,8 @@
                     
                     <!-- Кнопка "Начать проект" -->
                     <button class="start-project-btn" id="start-project-btn">
-                        Начать проект
+                        <span data-i18n="nav.startProject">Начать проект</span>
+                        <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
                 
@@ -615,7 +841,7 @@
     (function() {
         'use strict';
         
-        console.log('🚀 Header loaded - Language, project button and scroll behavior');
+        console.log('🚀 Header loaded - Enhanced animations');
         
         // ===== НАСТРОЙКА ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА =====
         function setupLanguageSwitcher() {
@@ -655,6 +881,12 @@
                     
                     if (this.classList.contains('active')) return;
                     
+                    // Анимация клика
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                    
                     updateLanguageState(lang);
                 });
             });
@@ -668,13 +900,19 @@
             
             startProjectBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                window.location.href = 'contacts.html';
+                
+                // Анимация клика
+                this.style.transform = 'translateY(-1px) scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                    window.location.href = 'contacts.html';
+                }, 300);
             });
         }
         
-        // ===== СКРЫТИЕ ХЕДЕРА ПРИ СКРОЛЛЕ (КОРРЕКТНАЯ РЕАЛИЗАЦИЯ) =====
+        // ===== СКРЫТИЕ ХЕДЕРА ПРИ СКРОЛЛЕ (УЛУЧШЕННАЯ ВЕРСИЯ) =====
         function setupHeaderScroll() {
-            console.log('🎯 Setting up header scroll behavior...');
+            console.log('🎯 Setting up enhanced header scroll behavior...');
             
             const header = document.getElementById('main-header');
             if (!header) {
@@ -688,48 +926,82 @@
             let ticking = false;
             let hideTimeout = null;
             let showTimeout = null;
+            let isScrolling = false;
+            let scrollEndTimeout = null;
             
-            // Важно: добавляем глобальный CSS для кликабельности
+            // CSS для плавных анимаций
             const style = document.createElement('style');
             style.textContent = `
-                /* ВАЖНО: Хедер всегда должен быть кликабельным */
+                /* Глобальные transition для плавности */
                 .main-header,
                 .main-header * {
-                    pointer-events: auto !important;
-                    cursor: pointer !important;
+                    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
                 }
                 
-                /* Когда хедер скрыт, делаем его прозрачным, но кликабельным */
+                /* Анимация появления/исчезновения */
+                .main-header {
+                    transition: 
+                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        backdrop-filter 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                }
+                
                 .main-header.header-hidden {
                     transform: translateY(-100%) !important;
                     opacity: 0 !important;
-                }
-                
-                .main-header.header-hidden::before {
-                    content: '';
-                    position: absolute;
-                    top: -20px;
-                    left: 0;
-                    width: 100%;
-                    height: 40px;
-                    background: transparent;
-                    z-index: 1001;
+                    pointer-events: none !important;
                 }
                 
                 .main-header.header-visible {
                     transform: translateY(0) !important;
                     opacity: 1 !important;
+                    pointer-events: auto !important;
                 }
                 
-                /* Корректировка body padding */
-                body.has-hidden-header {
-                    padding-top: 0 !important;
+                /* Плавный scrolled эффект */
+                .main-header.scrolled {
+                    transform: translateY(0) scale(1.02) !important;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 }
                 
                 /* Для десктопа */
                 @media (min-width: 901px) {
                     .main-header.header-hidden {
                         transform: translateX(-50%) translateY(-100%) !important;
+                    }
+                    .main-header.header-visible {
+                        transform: translateX(-50%) translateY(0) !important;
+                    }
+                    .main-header.scrolled {
+                        transform: translateX(-50%) translateY(0) scale(1.02) !important;
+                    }
+                }
+                
+                /* Улучшенные hover эффекты */
+                .nav-link:hover,
+                .start-project-btn:hover,
+                .language-switcher:hover {
+                    transform: translateY(-2px) !important;
+                }
+                
+                /* Анимация активной ссылки */
+                .nav-link.active {
+                    animation: navLinkPulse 3s ease-in-out infinite;
+                }
+                
+                @keyframes navLinkPulse {
+                    0%, 100% {
+                        box-shadow: 
+                            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                            0 4px 20px rgba(0, 102, 255, 0.15);
+                    }
+                    50% {
+                        box-shadow: 
+                            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                            0 4px 25px rgba(0, 102, 255, 0.25),
+                            0 0 15px rgba(0, 102, 255, 0.1);
                     }
                 }
             `;
@@ -742,12 +1014,13 @@
                     hideTimeout = null;
                 }
                 
+                if (isHidden) return;
+                
                 header.classList.remove('header-visible');
                 header.classList.add('header-hidden');
                 isHidden = true;
-                document.body.classList.add('has-hidden-header');
                 
-                console.log('⬇️ Header hidden (but clickable!)');
+                console.log('⬇️ Header hidden smoothly');
             }
             
             // Показать хедер
@@ -762,10 +1035,11 @@
                     hideTimeout = null;
                 }
                 
+                if (!isHidden) return;
+                
                 header.classList.remove('header-hidden');
                 header.classList.add('header-visible');
                 isHidden = false;
-                document.body.classList.remove('has-hidden-header');
                 
                 // Обновляем scrolled класс
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -775,7 +1049,7 @@
                     header.classList.remove('scrolled');
                 }
                 
-                console.log('⬆️ Header shown and fully clickable');
+                console.log('⬆️ Header shown smoothly');
             }
             
             // Обновляет состояние хедера
@@ -783,29 +1057,43 @@
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 const scrollingDown = scrollTop > lastScrollTop;
                 const isAtTop = scrollTop <= 50;
+                const scrollDelta = Math.abs(scrollTop - lastScrollTop);
                 
                 // Всегда показываем хедер в самом верху страницы
                 if (isAtTop) {
                     if (isHidden) {
                         showHeader();
                     }
+                    header.classList.remove('scrolled');
+                    lastScrollTop = scrollTop;
+                    ticking = false;
                     return;
                 }
                 
-                // Прячем при скролле вниз
-                if (scrollingDown && scrollTop > scrollThreshold) {
-                    if (!isHidden && !hideTimeout) {
-                        hideTimeout = setTimeout(() => {
-                            hideHeader();
-                        }, 150); // Задержка для лучшего UX
-                    }
+                // Обновляем scrolled класс
+                if (scrollTop > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
                 }
-                // Показываем при скролле вверх
-                else if (!scrollingDown && scrollTop > scrollThreshold) {
-                    if (isHidden && !showTimeout) {
-                        showTimeout = setTimeout(() => {
-                            showHeader();
-                        }, 50);
+                
+                // Только если пользователь активно скроллит
+                if (scrollDelta > 5) {
+                    // Прячем при быстром скролле вниз
+                    if (scrollingDown && scrollTop > scrollThreshold) {
+                        if (!isHidden && !hideTimeout) {
+                            hideTimeout = setTimeout(() => {
+                                hideHeader();
+                            }, 200); // Увеличиваем задержку для лучшего UX
+                        }
+                    }
+                    // Показываем при скролле вверх
+                    else if (!scrollingDown && scrollTop > scrollThreshold) {
+                        if (isHidden && !showTimeout) {
+                            showTimeout = setTimeout(() => {
+                                showHeader();
+                            }, 100);
+                        }
                     }
                 }
                 
@@ -813,7 +1101,7 @@
                 ticking = false;
             }
             
-            // Оптимизированный обработчик скролла
+            // Оптимизированный обработчик скролла с throttling
             function onScroll() {
                 if (!ticking) {
                     ticking = true;
@@ -821,64 +1109,37 @@
                 }
             }
             
-            // Показываем хедер при клике на него (ОСНОВНОЙ ФИКС)
-            function setupHeaderClickHandler() {
-                // Добавляем обработчик клика на весь хедер
-                header.addEventListener('click', function(e) {
-                    console.log('🎯 Header clicked, showing it...');
-                    
+            // Показываем хедер при наведении курсора в верхнюю часть экрана
+            function setupHoverToShow() {
+                const hoverZone = document.createElement('div');
+                hoverZone.style.position = 'fixed';
+                hoverZone.style.top = '0';
+                hoverZone.style.left = '0';
+                hoverZone.style.width = '100%';
+                hoverZone.style.height = '80px';
+                hoverZone.style.zIndex = '999';
+                hoverZone.style.pointerEvents = isHidden ? 'auto' : 'none';
+                hoverZone.style.opacity = '0';
+                hoverZone.style.transition = 'pointer-events 0.3s ease';
+                hoverZone.id = 'header-hover-zone';
+                
+                hoverZone.addEventListener('mouseenter', () => {
                     if (isHidden) {
                         showHeader();
-                        
-                        // Проверяем, не кликнули ли мы на ссылку
-                        const link = e.target.closest('a');
-                        if (link && link.href) {
-                            e.preventDefault();
-                            setTimeout(() => {
-                                if (!link.href.includes('javascript:')) {
-                                    window.location.href = link.href;
-                                }
-                            }, 100);
-                        }
-                        
-                        // Проверяем, не кликнули ли мы на кнопку
-                        const button = e.target.closest('button');
-                        if (button) {
-                            e.preventDefault();
-                            setTimeout(() => {
-                                button.click();
-                            }, 100);
-                        }
+                        hoverZone.style.pointerEvents = 'none';
                     }
                 });
                 
-                // Также обрабатываем клики на отдельные элементы
-                const clickableElements = header.querySelectorAll('a, button, .logo, .nav-link, .lang-btn');
-                clickableElements.forEach(el => {
-                    el.addEventListener('click', function(e) {
-                        if (isHidden) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            showHeader();
-                            
-                            // Для ссылок - выполняем переход после показа
-                            if (this.tagName === 'A' && this.href) {
-                                setTimeout(() => {
-                                    if (!this.href.includes('javascript:')) {
-                                        window.location.href = this.href;
-                                    }
-                                }, 150);
-                            }
-                            
-                            // Для кнопок - запускаем их действие
-                            if (this.tagName === 'BUTTON') {
-                                setTimeout(() => {
-                                    this.click();
-                                }, 150);
-                            }
-                        }
-                    });
-                });
+                document.body.appendChild(hoverZone);
+                
+                // Обновляем состояние hover zone
+                const updateHoverZone = () => {
+                    hoverZone.style.pointerEvents = isHidden ? 'auto' : 'none';
+                };
+                
+                // Обновляем при изменении состояния хедера
+                const observer = new MutationObserver(updateHoverZone);
+                observer.observe(header, { attributes: true, attributeFilter: ['class'] });
             }
             
             // Инициализация
@@ -886,8 +1147,10 @@
                 // Настраиваем обработчик скролла
                 window.addEventListener('scroll', onScroll, { passive: true });
                 
-                // Настраиваем клик по хедеру
-                setupHeaderClickHandler();
+                // Настраиваем hover для показа
+                if (window.innerWidth > 900) {
+                    setupHoverToShow();
+                }
                 
                 // Обработка ресайза
                 window.addEventListener('resize', () => {
@@ -895,12 +1158,20 @@
                     if (scrollTop <= 50 && isHidden) {
                         showHeader();
                     }
+                    
+                    // Удаляем hover zone на мобильных
+                    const hoverZone = document.getElementById('header-hover-zone');
+                    if (hoverZone && window.innerWidth <= 900) {
+                        hoverZone.remove();
+                    } else if (!hoverZone && window.innerWidth > 900 && isHidden) {
+                        setupHoverToShow();
+                    }
                 });
                 
                 // Инициализируем состояние
                 updateHeaderState();
                 
-                console.log('✅ Header scroll behavior initialized');
+                console.log('✅ Enhanced header scroll behavior initialized');
                 
                 // Экспортируем функции глобально
                 window.showHeader = showHeader;
@@ -916,12 +1187,98 @@
             setTimeout(initHeaderScroll, 100);
         }
         
+        // ===== УЛУЧШЕННЫЕ АНИМАЦИИ ДЛЯ КНОПОК =====
+        function setupEnhancedButtonAnimations() {
+            // Все кнопки и ссылки в хедере
+            const interactiveElements = document.querySelectorAll(
+                '.main-header .nav-link, .main-header .start-project-btn, .main-header .lang-btn, .main-header .logo'
+            );
+            
+            interactiveElements.forEach(el => {
+                if (!el) return;
+                
+                // Добавляем плавную анимацию при наведении
+                el.addEventListener('mouseenter', (e) => {
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                    
+                    // Минимальная анимация для мобильных
+                    if (window.innerWidth <= 900) return;
+                    
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Создаем эффект волны
+                    const ripple = document.createElement('div');
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.background = 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)';
+                    ripple.style.transform = `translate(-50%, -50%) scale(0)`;
+                    ripple.style.width = '100px';
+                    ripple.style.height = '100px';
+                    ripple.style.top = `${y}px`;
+                    ripple.style.left = `${x}px`;
+                    ripple.style.pointerEvents = 'none';
+                    ripple.style.zIndex = '0';
+                    ripple.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease';
+                    
+                    el.style.position = 'relative';
+                    el.style.overflow = 'hidden';
+                    el.appendChild(ripple);
+                    
+                    // Запускаем анимацию
+                    requestAnimationFrame(() => {
+                        ripple.style.transform = `translate(-50%, -50%) scale(1)`;
+                        ripple.style.opacity = '0.8';
+                    });
+                    
+                    // Удаляем через время
+                    setTimeout(() => {
+                        ripple.style.opacity = '0';
+                        setTimeout(() => {
+                            if (ripple.parentNode === el) {
+                                el.removeChild(ripple);
+                            }
+                        }, 600);
+                    }, 300);
+                });
+                
+                // Анимация клика
+                el.addEventListener('mousedown', () => {
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                    
+                    el.style.transform = 'translateY(1px) scale(0.98)';
+                });
+                
+                el.addEventListener('mouseup', () => {
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                    
+                    el.style.transform = '';
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                    
+                    el.style.transform = '';
+                });
+            });
+            
+            console.log('✅ Enhanced button animations setup');
+        }
+        
         // ===== ИНИЦИАЛИЗАЦИЯ ВСЕГО =====
         function init() {
             setupLanguageSwitcher();
             setupStartProjectButton();
             setupHeaderScroll();
-            console.log('✅ Header initialization complete');
+            setupEnhancedButtonAnimations();
+            
+            // Добавляем класс для плавных переходов после загрузки
+            setTimeout(() => {
+                document.body.classList.add('header-animations-ready');
+            }, 500);
+            
+            console.log('✅ Header initialization complete with enhanced animations');
         }
         
         // Запуск инициализации
