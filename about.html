@@ -12,6 +12,107 @@
     
     <!-- ТОЛЬКО i18n.js может загружаться в head -->
     <script src="js/i18n.js"></script>
+    
+    <!-- Стили для удаления темных пленок -->
+    <style>
+        /* Убрать все темные фоны и оверлеи на странице О нас */
+        body.about-page {
+            background: 
+                linear-gradient(145deg, 
+                    #0a1630 0%, 
+                    #1a2c5a 25%, 
+                    #1c3b6a 50%, 
+                    #0f1b3d 75%, 
+                    #0a0e23 100%
+                ) !important;
+            background-attachment: fixed !important;
+        }
+        
+        /* Убрать темные пленки со всех секций */
+        .about-hero,
+        .about-mission,
+        .our-story,
+        .speck-design-section,
+        .our-team,
+        .about-cta {
+            background: transparent !important;
+            background-image: none !important;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Убрать затемняющие псевдоэлементы */
+        .about-hero::before,
+        .about-mission::before,
+        .about-cta::before,
+        .mission-visual::before,
+        .mission-visual::after,
+        .speck-design-section::before,
+        .mission-text::before,
+        .speck-service-card::before,
+        .speck-service-card::after,
+        .team-member::before,
+        .team-member::after {
+            display: none !important;
+            background: none !important;
+            opacity: 0 !important;
+        }
+        
+        /* Осветлить карточки */
+        .mission-text,
+        .mission-feature,
+        .speck-service-card,
+        .team-member {
+            background: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(15px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
+        
+        /* Сделать видимыми все блоки "Что мы делаем" */
+        .speck-design-section {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        .speck-services-grid {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+        
+        .speck-service-card {
+            opacity: 1 !important;
+            transform: none !important;
+            animation: none !important;
+        }
+        
+        /* ФИКС ДЛЯ БЛОКОВ "ЧТО МЫ ДЕЛАЕМ" */
+        .speck-design-section .container {
+            opacity: 1 !important;
+        }
+        
+        .speck-title,
+        .speck-subtitle,
+        .speck-service-card {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            transition: none !important;
+        }
+        
+        /* Отключить анимации, которые скрывают блоки */
+        .reveal-left,
+        .reveal-right {
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+            transition: none !important;
+        }
+        
+        /* Гарантированная видимость контента */
+        .speck-design-section .container > * {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+    </style>
 </head>
 <body class="about-page">
     <!-- Header Container -->
@@ -116,7 +217,7 @@
             
             <div class="speck-services-grid">
                 <!-- Card 1: System Approach -->
-                <div class="speck-service-card reveal-left">
+                <div class="speck-service-card">
                     <div class="speck-card-icon">
                         <i class="fas fa-sitemap"></i>
                     </div>
@@ -131,7 +232,7 @@
                 </div>
                 
                 <!-- Card 2: Industrial Design -->
-                <div class="speck-service-card reveal-right">
+                <div class="speck-service-card">
                     <div class="speck-card-icon">
                         <i class="fas fa-pencil-ruler"></i>
                     </div>
@@ -146,7 +247,7 @@
                 </div>
                 
                 <!-- Card 3: Engineering -->
-                <div class="speck-service-card reveal-left">
+                <div class="speck-service-card">
                     <div class="speck-card-icon">
                         <i class="fas fa-cogs"></i>
                     </div>
@@ -166,7 +267,7 @@
                 </div>
                 
                 <!-- Card 4: Production -->
-                <div class="speck-service-card reveal-right">
+                <div class="speck-service-card">
                     <div class="speck-card-icon">
                         <i class="fas fa-industry"></i>
                     </div>
@@ -186,7 +287,7 @@
                 </div>
                 
                 <!-- Card 5: Brandbook -->
-                <div class="speck-service-card reveal-left">
+                <div class="speck-service-card">
                     <div class="speck-card-icon">
                         <i class="fas fa-book-open"></i>
                     </div>
@@ -206,7 +307,7 @@
                 </div>
                 
                 <!-- Card 6: Identity Development -->
-                <div class="speck-service-card reveal-right">
+                <div class="speck-service-card">
                     <div class="speck-card-icon">
                         <i class="fas fa-palette"></i>
                     </div>
@@ -371,9 +472,29 @@
 
         window.handleTeamPhotoError = handleTeamPhotoError;
 
-        // Инициализация страницы
+        // Инициализация страницы с фиксом для блоков "Что мы делаем"
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 Страница "О нас" загружена');
+            
+            // ФИКС: Гарантированно показываем блоки "Что мы делаем"
+            setTimeout(function() {
+                const speckSection = document.querySelector('.speck-design-section');
+                const speckCards = document.querySelectorAll('.speck-service-card');
+                
+                if (speckSection) {
+                    speckSection.style.opacity = '1';
+                    speckSection.style.visibility = 'visible';
+                    
+                    // Принудительно показываем все карточки
+                    speckCards.forEach(function(card) {
+                        card.style.opacity = '1';
+                        card.style.visibility = 'visible';
+                        card.style.transform = 'translateY(0)';
+                    });
+                    
+                    console.log('✅ Блоки "Что мы делаем" принудительно показаны');
+                }
+            }, 300);
             
             // Инициализация переводов
             setTimeout(() => {
@@ -388,6 +509,39 @@
                     window.initAbout();
                 }
             }, 1000);
+            
+            // Дополнительный фикс для гарантии видимости
+            setTimeout(function() {
+                document.querySelectorAll('.reveal-left, .reveal-right').forEach(function(el) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateX(0)';
+                });
+            }, 1500);
+        });
+        
+        // Экстренный фикс на случай если блоки все еще не видны
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const speckCards = document.querySelectorAll('.speck-service-card');
+                if (speckCards.length > 0) {
+                    let hiddenCards = 0;
+                    speckCards.forEach(function(card) {
+                        const rect = card.getBoundingClientRect();
+                        if (rect.width === 0 || rect.height === 0 || card.offsetParent === null) {
+                            hiddenCards++;
+                            // Принудительно показываем
+                            card.style.display = 'block';
+                            card.style.opacity = '1';
+                            card.style.visibility = 'visible';
+                            card.style.position = 'relative';
+                            card.style.zIndex = '10';
+                        }
+                    });
+                    if (hiddenCards > 0) {
+                        console.log(`🔧 Принудительно показано ${hiddenCards} скрытых карточек`);
+                    }
+                }
+            }, 2000);
         });
     </script>
 </body>
