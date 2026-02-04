@@ -12,6 +12,81 @@
     
     <!-- ТОЛЬКО i18n.js может загружаться в head -->
     <script src="js/i18n.js"></script>
+    
+    <!-- Стили для удаления темных пленок -->
+    <style>
+        /* Убрать все темные фоны и оверлеи на странице Контакты */
+        body.contact-page {
+            background: 
+                linear-gradient(145deg, 
+                    #0a1630 0%, 
+                    #1a2c5a 25%, 
+                    #1c3b6a 50%, 
+                    #0f1b3d 75%, 
+                    #0a0e23 100%
+                ) !important;
+            background-attachment: fixed !important;
+        }
+        
+        /* Убрать темные пленки со всех секций */
+        .contact-hero,
+        .contact-cards,
+        .contact-main,
+        .map-section {
+            background: transparent !important;
+            background-image: none !important;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Убрать затемняющие псевдоэлементы */
+        .contact-hero::before,
+        .map-visual::before {
+            display: none !important;
+            background: none !important;
+            opacity: 0 !important;
+        }
+        
+        /* Осветлить карточки и формы */
+        .contact-card,
+        .contact-form-column,
+        .info-section,
+        .map-placeholder,
+        .map-overlay {
+            background: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(15px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
+        
+        /* Убрать темные фоны у карточек контактов */
+        .contact-card::before {
+            display: none !important;
+        }
+        
+        /* Убрать градиенты в карточках */
+        .contact-card {
+            background: rgba(255, 255, 255, 0.08) !important;
+        }
+        
+        /* Гарантировать видимость всех элементов */
+        .contact-hero-content,
+        .cards-grid,
+        .contact-layout,
+        .map-container {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        /* ФИКС: Убрать анимации, которые могут скрывать элементы */
+        .fade-in,
+        .slide-up {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            animation: none !important;
+            transition: none !important;
+        }
+    </style>
 </head>
 <body class="contact-page">
     <!-- Header Container -->
@@ -325,7 +400,17 @@
             });
             
             // Устанавливаем правильный фон
-            document.body.style.background = '#ffffff';
+            document.body.style.background = 'transparent';
+            
+            // ФИКС: Гарантированно показываем все элементы
+            setTimeout(function() {
+                const fadeElements = document.querySelectorAll('.fade-in, .slide-up');
+                fadeElements.forEach(function(el) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                    el.style.visibility = 'visible';
+                });
+            }, 300);
             
             // Инициализируем контактную страницу
             if (typeof initContact === 'function') {
