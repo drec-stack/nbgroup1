@@ -20,15 +20,56 @@
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/animations.css">
     
-    <!-- Критичные стили для фона -->
+    <!-- Критичные стили для фона и ФИКС ИЗОБРАЖЕНИЙ -->
     <style>
-        /* КРИТИЧНЫЕ СТИЛИ ДЛЯ ФОНА */
+        /* ГЛОБАЛЬНЫЙ ФИКС ДЛЯ ИЗОБРАЖЕНИЙ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
+        /* ВСЕ ИЗОБРАЖЕНИЯ САЙТА */
+        img {
+            max-width: 100% !important;
+            height: auto !important;
+            display: block !important;
+        }
+        
+        /* ФИКС ТОЛЬКО ДЛЯ ИЗОБРАЖЕНИЙ ПРОЕКТОВ */
+        .project-image {
+            width: 100% !important;
+            height: 280px !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-radius: 16px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 25px !important;
+            margin-bottom: 25px !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            overflow: visible !important;
+        }
+        
+        .project-image img {
+            width: auto !important;
+            height: auto !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            object-fit: contain !important;
+            object-position: center !important;
+            background: transparent !important;
+            border-radius: 12px !important;
+        }
+        
+        /* УБИРАЕМ СТАРЫЕ СТИЛИ КОТОРЫЕ ПРИБЛИЖАЮТ */
+        .project-image img[src*="yandex"] {
+            object-fit: contain !important;
+            width: auto !important;
+            height: auto !important;
+        }
+        
+        /* ОСНОВНЫЕ СТИЛИ САЙТА */
         body.home-page {
             background: transparent !important;
             color: white;
@@ -69,7 +110,6 @@
             will-change: transform, opacity;
         }
         
-        /* КРИТИЧНО: Первый слой должен быть виден при загрузке */
         .parallax-bg-layer:first-child {
             opacity: 1 !important;
         }
@@ -94,50 +134,29 @@
             z-index: 1;
         }
         
-        /* ФИКС ДЛЯ ИЗОБРАЖЕНИЙ ПРОЕКТОВ */
-        .project-image {
-            background: rgba(255, 255, 255, 0.05) !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
-        
-        .project-image img {
-            width: auto !important;
-            max-width: 90% !important;
-            height: auto !important;
-            max-height: 90% !important;
-            object-fit: contain !important;
-            transition: transform 0.8s ease !important;
-            background: transparent !important;
-            border-radius: 8px !important;
+        /* АДАПТИВНОСТЬ ДЛЯ ИЗОБРАЖЕНИЙ */
+        @media (max-width: 1200px) {
+            .project-image {
+                height: 250px !important;
+                padding: 20px !important;
+            }
         }
         
         @media (max-width: 768px) {
             .project-image {
-                height: 250px !important;
+                height: 220px !important;
                 padding: 15px !important;
-            }
-            
-            .project-image img {
-                max-width: 95% !important;
-                max-height: 95% !important;
             }
         }
         
         @media (max-width: 480px) {
             .project-image {
                 height: 200px !important;
-                padding: 10px !important;
-            }
-            
-            .project-image img {
-                max-width: 90% !important;
-                max-height: 90% !important;
+                padding: 12px !important;
             }
         }
         
-        /* Убедимся, что все контентные блоки выше фона */
+        /* ОСТАЛЬНЫЕ СТИЛИ */
         .container, section, .hero, .content-section, 
         #header-container, #footer-container,
         .scroll-progress {
@@ -145,157 +164,16 @@
             z-index: 100 !important;
         }
         
-        /* КНОПКИ */
-        .btn, .btn-primary, .btn-secondary {
-            background: rgba(255, 255, 255, 0.12) !important;
-            backdrop-filter: blur(15px) saturate(1.2) !important;
-            -webkit-backdrop-filter: blur(15px) saturate(1.2) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            box-shadow: 
-                0 10px 30px rgba(0, 0, 0, 0.3),
-                0 4px 15px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-            min-height: 44px;
-            -webkit-appearance: none;
-        }
-        
-        .btn:hover, .btn-primary:hover, .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.18) !important;
-            border-color: rgba(255, 255, 255, 0.3) !important;
-            box-shadow: 
-                0 15px 40px rgba(0, 0, 0, 0.4),
-                0 6px 20px rgba(0, 0, 0, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-        }
-        
-        /* ПРЕДЗАГРУЗКА ИЗОБРАЖЕНИЙ */
-        .bg-preloader {
-            position: fixed;
-            width: 0;
-            height: 0;
-            overflow: hidden;
-            z-index: -9999;
-        }
-        
-        /* Гарантия прозрачности для всех контейнеров */
-        section, .hero, .content-section, 
-        .speck-vertical-block, .project-card, .service-item,
-        .journal-item, .faq-item, .stat-card, .cta-content {
-            background: transparent !important;
-            backdrop-filter: none !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-        
-        /* Улучшенные тени текста */
-        h1, h2, h3, h4, p, .hero-subtitle, .speck-block-title,
-        .speck-block-subtitle, .project-title, .project-description,
-        .service-title, .service-description, .journal-title,
-        .faq-question, .faq-answer p, .cta-title, .cta-subtitle,
-        .stat-number, .stat-label, .section-title, .section-subtitle {
-            text-shadow: 
-                0 4px 40px rgba(0, 0, 0, 0.95),
-                0 3px 35px rgba(0, 0, 0, 0.9),
-                0 2px 30px rgba(0, 0, 0, 0.85) !important;
-        }
-        
-        /* Отступ для хедера */
         body {
             padding-top: 80px;
         }
         
-        /* КРИТИЧНЫЙ ФИКС ДЛЯ БУРГЕР-КНОПКИ */
         @media (max-width: 900px) {
             body {
                 padding-top: 60px;
             }
-            
-            /* Делаем бургер кнопку всегда видимой и кликабельной */
-            .burger-btn {
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                pointer-events: auto !important;
-                cursor: pointer !important;
-                z-index: 10003 !important;
-                position: relative !important;
-                background: rgba(255, 255, 255, 0.1) !important;
-                border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                border-radius: 10px !important;
-                width: 44px !important;
-                height: 44px !important;
-            }
-            
-            .burger-btn:active {
-                transform: scale(0.95) !important;
-                background: rgba(255, 255, 255, 0.15) !important;
-            }
-            
-            .burger-btn span {
-                display: block !important;
-                position: absolute !important;
-                width: 20px !important;
-                height: 2px !important;
-                background: white !important;
-                border-radius: 2px !important;
-                transition: all 0.3s ease !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-            }
-            
-            .burger-btn span:nth-child(1) {
-                top: 15px !important;
-            }
-            
-            .burger-btn span:nth-child(2) {
-                top: 50% !important;
-                transform: translate(-50%, -50%) !important;
-            }
-            
-            .burger-btn span:nth-child(3) {
-                bottom: 15px !important;
-            }
-            
-            .burger-btn.active {
-                background: rgba(255, 255, 255, 0.2) !important;
-            }
-            
-            .burger-btn.active span:nth-child(1) {
-                top: 50% !important;
-                transform: translate(-50%, -50%) rotate(45deg) !important;
-            }
-            
-            .burger-btn.active span:nth-child(2) {
-                opacity: 0 !important;
-            }
-            
-            .burger-btn.active span:nth-child(3) {
-                bottom: 50% !important;
-                transform: translate(-50%, 50%) rotate(-45deg) !important;
-            }
-            
-            /* Гарантируем что мобильные элементы видны */
-            .header-right-mobile {
-                display: flex !important;
-                align-items: center !important;
-                gap: 15px !important;
-            }
-            
-            /* Отключаем fixed background на мобильных */
-            .parallax-bg-layer {
-                background-attachment: scroll !important;
-                transform: none !important;
-                transition: opacity 1.2s ease !important;
-            }
-            
-            /* Улучшаем области касания */
-            .btn, .faq-question, .journal-link {
-                min-height: 44px;
-                min-width: 44px;
-            }
         }
         
-        /* Фикс для 100vh в iOS */
         @supports (-webkit-touch-callout: none) {
             body {
                 min-height: -webkit-fill-available;
@@ -456,7 +334,7 @@
         </div>
     </section>
 
-    <!-- Projects Section (фон 2) -->
+    <!-- Projects Section (фон 2) - ИСПРАВЛЕННЫЕ ИЗОБРАЖЕНИЯ -->
     <section class="projects-section content-section" data-bg-section="projects">
         <div class="container">
             <h2 class="section-title fade-in-down" data-i18n="home.projects.title">Projects</h2>
@@ -465,7 +343,11 @@
             <div class="projects-grid">
                 <div class="project-card fade-in-up delay-300">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Google Schaft Robot" loading="lazy" width="600" height="400">
+                        <!-- ФИКС: inline стили для 100% гарантии -->
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" 
+                             alt="Google Schaft Robot" 
+                             loading="lazy"
+                             style="width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain !important;">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title" data-i18n="home.projects.items.googleRobot.title">Google Schaft Robot</h3>
@@ -475,7 +357,10 @@
                 
                 <div class="project-card fade-in-up delay-400">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Monolith - Motion Medical" loading="lazy" width="600" height="400">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" 
+                             alt="Monolith - Motion Medical" 
+                             loading="lazy"
+                             style="width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain !important;">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title" data-i18n="home.projects.items.monolith.title">Monolith - Motion Medical</h3>
@@ -485,7 +370,10 @@
                 
                 <div class="project-card fade-in-up delay-500">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Helic Hair Labs" loading="lazy" width="600" height="400">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" 
+                             alt="Helic Hair Labs" 
+                             loading="lazy"
+                             style="width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain !important;">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title" data-i18n="home.projects.items.helicHair.title">Helic Hair Labs</h3>
@@ -495,7 +383,10 @@
                 
                 <div class="project-card fade-in-up delay-600">
                     <div class="project-image">
-                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" alt="Omron Robotics" loading="lazy" width="600" height="400">
+                        <img src="https://disk.yandex.ru/i/cxgzZ7mZdA-5gw" 
+                             alt="Omron Robotics" 
+                             loading="lazy"
+                             style="width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain !important;">
                     </div>
                     <div class="project-content">
                         <h3 class="project-title" data-i18n="home.projects.items.omron.title">Omron Robotics</h3>
@@ -813,94 +704,19 @@
     <script src="js/home.js"></script>
     <script src="js/animations.js"></script>
     
-    <!-- ФИКС ДЛЯ ПЕРЕВОДОВ -->
+    <!-- ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ ИЗОБРАЖЕНИЙ -->
     <script>
+        // Принудительный фикс изображений после загрузки
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔄 Запуск автоматического фикса переводов...');
-            
-            // Ждем полной загрузки всех компонентов
             setTimeout(function() {
-                if (window.i18n && window.i18n.isInitialized) {
-                    console.log('✅ i18n инициализирован, проверяем переводы...');
-                    
-                    const criticalKeys = [
-                        'home.journals.title',
-                        'home.journals.subtitle',
-                        'home.journals.articles.0.title',
-                        'home.journals.articles.1.title',
-                        'home.journals.articles.2.title',
-                        'home.journals.articles.3.title',
-                        'home.journals.viewAll',
-                        
-                        'home.faq.title',
-                        'home.faq.subtitle',
-                        'home.faq.questions.0.question',
-                        'home.faq.questions.0.answer',
-                        'home.faq.questions.1.question',
-                        'home.faq.questions.1.answer',
-                        'home.faq.questions.2.question',
-                        'home.faq.questions.2.answer',
-                        'home.faq.questions.3.question',
-                        'home.faq.questions.3.answer',
-                        'home.faq.questions.4.question',
-                        'home.faq.questions.4.answer'
-                    ];
-                    
-                    let missingKeys = [];
-                    criticalKeys.forEach(key => {
-                        const translation = window.i18n.getTranslation(key);
-                        if (!translation && translation !== '') {
-                            missingKeys.push(key);
-                        }
-                    });
-                    
-                    if (missingKeys.length > 0) {
-                        console.warn(`⚠️ Обнаружены отсутствующие переводы: ${missingKeys.length} ключей`);
-                        
-                        try {
-                            localStorage.removeItem('translations_ru');
-                            localStorage.removeItem('translations_ru_time');
-                            localStorage.removeItem('translations_en');
-                            localStorage.removeItem('translations_en_time');
-                            console.log('✅ Кэш очищен');
-                        } catch (e) {
-                            console.warn('⚠️ Не удалось очистить кэш:', e.message);
-                        }
-                        
-                        setTimeout(function() {
-                            window.i18n.loadTranslations(window.i18n.getCurrentLang())
-                                .then(function() {
-                                    window.i18n.refresh();
-                                    console.log('✅ Переводы перезагружены автоматически');
-                                })
-                                .catch(function(err) {
-                                    console.error('❌ Ошибка перезагрузки переводов:', err);
-                                });
-                        }, 300);
-                    } else {
-                        console.log('✅ Все критические переводы присутствуют');
-                    }
-                }
-            }, 1500);
-            
-            window.addEventListener('componentsLoaded', function() {
-                console.log('🔄 Компоненты загружены, обновляем переводы...');
-                setTimeout(function() {
-                    if (window.i18n) {
-                        window.i18n.refresh();
-                        console.log('✅ Переводы обновлены после загрузки компонентов');
-                    }
-                }, 200);
-            });
-        });
-        
-        // Фикс для старых браузеров
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                if (window.i18n && window.i18n.refresh) {
-                    window.i18n.refresh();
-                    console.log('🔄 Переводы обновлены при полной загрузке страницы');
-                }
+                var projectImages = document.querySelectorAll('.project-image img');
+                projectImages.forEach(function(img) {
+                    img.style.objectFit = 'contain';
+                    img.style.width = 'auto';
+                    img.style.height = 'auto';
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '100%';
+                });
             }, 1000);
         });
     </script>
