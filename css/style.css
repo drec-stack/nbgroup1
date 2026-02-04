@@ -1747,3 +1747,184 @@ body:has(.main-header.hidden) {
         transform: translate3d(0, 0, 0);
     }
 }
+
+/* ===== ИСПРАВЛЕНИЯ ДЛЯ ИЗОБРАЖЕНИЙ ===== */
+
+/* Глобальные настройки для всех изображений */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+/* Изображения на странице "О нас" (команда) */
+.team-member img,
+.team-photo,
+.about-team-image {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    margin: 0 auto 20px;
+    display: block;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.team-member img:hover {
+    transform: scale(1.05);
+    border-color: var(--primary-blue);
+    box-shadow: 0 15px 40px rgba(0, 102, 204, 0.3);
+}
+
+/* Изображения на странице "Портфолио" */
+.portfolio-item img,
+.portfolio-image,
+.gallery-image {
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portfolio-item img:hover {
+    transform: translateY(-10px);
+    border-color: rgba(0, 102, 204, 0.5);
+    box-shadow: 0 20px 50px rgba(0, 102, 204, 0.2);
+}
+
+/* Большие изображения */
+.full-width-image,
+.banner-image {
+    width: 100%;
+    max-height: 600px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 20px;
+    margin: 30px 0;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Миниатюры */
+.thumbnail,
+.preview-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.thumbnail:hover {
+    border-color: var(--primary-blue);
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 102, 204, 0.3);
+}
+
+/* Адаптивность для изображений */
+@media (max-width: 768px) {
+    .team-member img {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .portfolio-item img {
+        max-height: 350px;
+        padding: 10px;
+    }
+    
+    .full-width-image {
+        max-height: 400px;
+        border-radius: 15px;
+    }
+    
+    .thumbnail {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-member img {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .portfolio-item img {
+        max-height: 300px;
+        padding: 8px;
+    }
+    
+    .full-width-image {
+        max-height: 300px;
+        border-radius: 12px;
+    }
+    
+    .thumbnail {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* Фиксы для старых браузеров */
+@supports not (object-fit: contain) {
+    .project-image img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 90%;
+        max-height: 90%;
+    }
+    
+    .portfolio-item img {
+        position: relative;
+        width: auto;
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ ДЛЯ ИЗОБРАЖЕНИЙ ===== */
+.project-image img,
+.portfolio-item img,
+.team-member img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Убираем растягивание на всех изображениях */
+img:not([src*=".svg"]) {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Гарантируем, что изображения не выходят за пределы контейнера */
+.container img,
+section img,
+.card img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Ленивая загрузка изображений */
+img.lazy {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+img.loaded {
+    opacity: 1;
+}
