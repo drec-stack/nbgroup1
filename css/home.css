@@ -484,7 +484,7 @@ html {
     transform: translateX(5px);
 }
 
-/* ===== PROJECTS SECTION ===== */
+/* ===== PROJECTS SECTION - ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ ИЗОБРАЖЕНИЙ ===== */
 .projects-section {
     padding: 150px 0;
     background: transparent !important;
@@ -528,18 +528,25 @@ html {
     margin-bottom: 25px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: transparent !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 .project-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: auto;
+    max-width: 90%;
+    height: auto;
+    max-height: 90%;
+    object-fit: contain;
     transition: transform 0.8s ease;
+    background: transparent;
 }
 
 .project-card:hover .project-image img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .project-content {
@@ -1398,7 +1405,7 @@ body.home-page::before {
         margin-bottom: 8px !important;
     }
     
-    /* PROJECTS СЕКЦИЯ */
+    /* PROJECTS СЕКЦИЯ - ИСПРАВЛЕННЫЙ БЛОК ДЛЯ МОБИЛЬНЫХ */
     .projects-section {
         padding: 80px 0 !important;
     }
@@ -1409,7 +1416,14 @@ body.home-page::before {
     }
     
     .project-image {
-        height: 220px !important;
+        height: 250px !important;
+        padding: 15px !important;
+    }
+    
+    .project-image img {
+        max-width: 95% !important;
+        max-height: 95% !important;
+        object-fit: contain !important;
     }
     
     .project-title {
@@ -1734,6 +1748,17 @@ body.home-page::before {
         font-size: 1.3rem !important;
     }
     
+    /* ИСПРАВЛЕНИЕ ДЛЯ ПРОЕКТОВ НА МАЛЕНЬКИХ ЭКРАНАХ */
+    .project-image {
+        height: 200px !important;
+        padding: 10px !important;
+    }
+    
+    .project-image img {
+        max-width: 90% !important;
+        max-height: 90% !important;
+    }
+    
     .stats-grid {
         grid-template-columns: 1fr !important;
         gap: 15px !important;
@@ -1953,6 +1978,12 @@ body.home-page::before {
         cursor: pointer !important;
     }
     
+    /* ФИКС ДЛЯ ИЗОБРАЖЕНИЙ В IOS */
+    .project-image img {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+    
     .cta-actions .btn {
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1) !important;
     }
@@ -2041,4 +2072,33 @@ body.home-page::before {
     .language-switcher-mobile .lang-btn {
         font-size: 9px !important;
     }
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ ИСПРАВЛЕНИЯ ДЛЯ ИЗОБРАЖЕНИЙ ===== */
+.project-image img {
+    width: auto;
+    max-width: 90%;
+    height: auto;
+    max-height: 90%;
+    object-fit: contain;
+    transition: transform 0.8s ease;
+    background: transparent;
+}
+
+.project-image {
+    background: rgba(255, 255, 255, 0.05) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Гарантируем что все изображения в проектах нормальные */
+.project-card .project-image,
+.project-card img {
+    overflow: visible !important;
+}
+
+/* Отключаем слишком агрессивное масштабирование */
+.project-card:hover .project-image img {
+    transform: scale(1.05) !important;
 }
