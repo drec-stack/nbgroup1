@@ -1,4 +1,4 @@
-console.log('🚀 Animations.js loaded - FULLY FIXED VERSION - UPDATED');
+console.log('🚀 Animations.js loaded - ENHANCED WITH HEADER ANIMATIONS');
 
 // Безопасные методы для работы с DOM
 class SafeDOM {
@@ -30,6 +30,398 @@ class SafeDOM {
         if (element && element.classList) {
             element.classList.remove(className);
         }
+    }
+    
+    static toggleClass(element, className) {
+        if (element && element.classList) {
+            element.classList.toggle(className);
+        }
+    }
+}
+
+// ===== HEADER ANIMATIONS MANAGER =====
+class HeaderAnimationsManager {
+    constructor() {
+        this.header = document.getElementById('main-header');
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        this.init();
+    }
+    
+    init() {
+        console.log('🎨 Initializing Header Animations Manager...');
+        
+        if (!this.header) {
+            console.warn('❌ Header not found for animations');
+            return;
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => this.initializeHeaderAnimations(), 100);
+            });
+        } else {
+            setTimeout(() => this.initializeHeaderAnimations(), 100);
+        }
+    }
+    
+    initializeHeaderAnimations() {
+        this.setupHeaderState();
+        this.setupHoverAnimations();
+        this.setupActiveLinkAnimations();
+        this.setupButtonAnimations();
+        this.setupScrollAnimations();
+        this.setupMobileAnimations();
+        
+        // Добавляем глобальный класс для готовности анимаций
+        SafeDOM.addClass(document.body, 'header-animations-ready');
+        
+        console.log('✅ Header Animations Manager initialized');
+    }
+    
+    setupHeaderState() {
+        // Инициализируем начальное состояние хедера
+        SafeDOM.addClass(this.header, 'header-visible');
+        
+        // Добавляем обработчик для показа хедера при наведении в верхнюю часть
+        if (!this.isMobile && window.innerWidth > 900) {
+            this.setupHeaderHoverZone();
+        }
+        
+        console.log('✅ Header state initialized');
+    }
+    
+    setupHeaderHoverZone() {
+        const hoverZone = document.createElement('div');
+        hoverZone.className = 'header-hover-zone';
+        hoverZone.style.position = 'fixed';
+        hoverZone.style.top = '0';
+        hoverZone.style.left = '0';
+        hoverZone.style.width = '100%';
+        hoverZone.style.height = '50px';
+        hoverZone.style.zIndex = '999';
+        hoverZone.style.pointerEvents = 'none';
+        hoverZone.style.opacity = '0';
+        hoverZone.style.transition = 'opacity 0.3s ease';
+        hoverZone.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.1), transparent)';
+        
+        document.body.appendChild(hoverZone);
+        
+        // Показываем хедер при наведении в зону
+        document.addEventListener('mousemove', (e) => {
+            if (this.header.classList.contains('header-hidden') && e.clientY < 50) {
+                hoverZone.style.pointerEvents = 'auto';
+                hoverZone.style.opacity = '0.5';
+                
+                // Показываем хедер
+                this.showHeader();
+            } else {
+                hoverZone.style.opacity = '0';
+                setTimeout(() => {
+                    hoverZone.style.pointerEvents = 'none';
+                }, 300);
+            }
+        });
+        
+        // Клик по зоне тоже показывает хедер
+        hoverZone.addEventListener('click', () => {
+            this.showHeader();
+        });
+        
+        console.log('✅ Header hover zone setup');
+    }
+    
+    setupHoverAnimations() {
+        const interactiveElements = this.header.querySelectorAll(
+            '.logo, .nav-link, .start-project-btn, .lang-btn, .burger-btn'
+        );
+        
+        interactiveElements.forEach(el => {
+            if (!el) return;
+            
+            // Добавляем плавные transition
+            el.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            el.style.willChange = 'transform, opacity, background-color';
+            
+            // Эффект нажатия
+            el.addEventListener('mousedown', () => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                el.style.transform = 'translateY(1px) scale(0.98)';
+            });
+            
+            el.addEventListener('mouseup', () => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                el.style.transform = '';
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                el.style.transform = '';
+            });
+            
+            // Эффект ripple для десктопа
+            if (!this.isMobile) {
+                el.addEventListener('mouseenter', (e) => {
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                    
+                    // Создаем эффект волны только для кнопок
+                    if (el.classList.contains('nav-link') || el.classList.contains('start-project-btn')) {
+                        this.createRippleEffect(el, e);
+                    }
+                });
+            }
+        });
+        
+        console.log(`✅ Hover animations setup for ${interactiveElements.length} elements`);
+    }
+    
+    createRippleEffect(element, event) {
+        const ripple = document.createElement('div');
+        const rect = element.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        ripple.style.position = 'absolute';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)';
+        ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+        ripple.style.width = '100px';
+        ripple.style.height = '100px';
+        ripple.style.top = `${y}px`;
+        ripple.style.left = `${x}px`;
+        ripple.style.pointerEvents = 'none';
+        ripple.style.zIndex = '1';
+        ripple.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease';
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        // Запускаем анимацию
+        requestAnimationFrame(() => {
+            ripple.style.transform = 'translate(-50%, -50%) scale(1)';
+            ripple.style.opacity = '0.8';
+        });
+        
+        // Удаляем через время
+        setTimeout(() => {
+            ripple.style.opacity = '0';
+            setTimeout(() => {
+                if (ripple.parentNode === element) {
+                    element.removeChild(ripple);
+                }
+            }, 600);
+        }, 300);
+    }
+    
+    setupActiveLinkAnimations() {
+        // Определяем активную страницу
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = this.header.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            if (!link) return;
+            
+            const href = link.getAttribute('href');
+            if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+                SafeDOM.addClass(link, 'active');
+                
+                // Добавляем пульсацию для активной ссылки
+                setInterval(() => {
+                    SafeDOM.toggleClass(link, 'pulse-soft');
+                }, 3000);
+            }
+        });
+        
+        console.log(`✅ Active link animations setup for ${navLinks.length} links`);
+    }
+    
+    setupButtonAnimations() {
+        const startProjectBtn = this.header.querySelector('.start-project-btn');
+        const langBtns = this.header.querySelectorAll('.lang-btn');
+        const burgerBtn = this.header.querySelector('.burger-btn');
+        
+        // Анимация для кнопки "Начать проект"
+        if (startProjectBtn) {
+            startProjectBtn.addEventListener('click', () => {
+                // Эффект клика
+                startProjectBtn.style.transform = 'translateY(1px) scale(0.95)';
+                setTimeout(() => {
+                    startProjectBtn.style.transform = '';
+                }, 150);
+            });
+        }
+        
+        // Анимация для переключателя языка
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Эффект клика
+                btn.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 150);
+            });
+        });
+        
+        // Анимация для бургер-кнопки
+        if (burgerBtn) {
+            burgerBtn.addEventListener('click', () => {
+                SafeDOM.toggleClass(burgerBtn, 'active');
+                
+                // Эффект клика
+                burgerBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    burgerBtn.style.transform = '';
+                }, 150);
+            });
+        }
+        
+        console.log('✅ Button animations setup');
+    }
+    
+    setupScrollAnimations() {
+        let lastScroll = 0;
+        let ticking = false;
+        let isHeaderHidden = false;
+        let hideTimeout = null;
+        let showTimeout = null;
+        
+        const updateHeaderOnScroll = () => {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollingDown = currentScroll > lastScroll;
+            const scrolled = currentScroll > 100;
+            const atTop = currentScroll <= 50;
+            
+            // Обновляем scrolled класс
+            if (scrolled && !this.header.classList.contains('scrolled')) {
+                SafeDOM.addClass(this.header, 'scrolled');
+            } else if (!scrolled && this.header.classList.contains('scrolled')) {
+                SafeDOM.removeClass(this.header, 'scrolled');
+            }
+            
+            // Всегда показываем хедер вверху
+            if (atTop) {
+                if (isHeaderHidden) {
+                    this.showHeader();
+                    isHeaderHidden = false;
+                }
+                lastScroll = currentScroll;
+                ticking = false;
+                return;
+            }
+            
+            // Интеллектуальное скрытие/показ
+            if (scrollingDown && scrolled && !isHeaderHidden) {
+                if (hideTimeout) clearTimeout(hideTimeout);
+                hideTimeout = setTimeout(() => {
+                    this.hideHeader();
+                    isHeaderHidden = true;
+                }, 200);
+            } else if (!scrollingDown && scrolled && isHeaderHidden) {
+                if (showTimeout) clearTimeout(showTimeout);
+                showTimeout = setTimeout(() => {
+                    this.showHeader();
+                    isHeaderHidden = false;
+                }, 100);
+            }
+            
+            lastScroll = currentScroll <= 0 ? 0 : currentScroll;
+            ticking = false;
+        };
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                ticking = true;
+                requestAnimationFrame(updateHeaderOnScroll);
+            }
+        }, { passive: true });
+        
+        // Обработка ресайза
+        window.addEventListener('resize', () => {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            if (currentScroll <= 50 && isHeaderHidden) {
+                this.showHeader();
+                isHeaderHidden = false;
+            }
+        });
+        
+        console.log('✅ Scroll animations setup');
+    }
+    
+    setupMobileAnimations() {
+        if (!this.isMobile && window.innerWidth > 900) return;
+        
+        // Упрощенные анимации для мобильных
+        const style = document.createElement('style');
+        style.textContent = `
+            @media (max-width: 900px) {
+                .main-header {
+                    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                               opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                }
+                
+                .main-header * {
+                    transition-duration: 0.2s !important;
+                }
+                
+                .nav-link:hover,
+                .start-project-btn:hover,
+                .language-switcher:hover {
+                    transform: translateY(-1px) !important;
+                }
+                
+                /* Улучшенная обработка касаний */
+                .burger-btn,
+                .lang-btn,
+                .nav-link {
+                    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+                    touch-action: manipulation;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        console.log('✅ Mobile animations optimized');
+    }
+    
+    showHeader() {
+        SafeDOM.removeClass(this.header, 'header-hidden');
+        SafeDOM.addClass(this.header, 'header-visible');
+        
+        // Обновляем scrolled класс
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if (currentScroll > 100) {
+            SafeDOM.addClass(this.header, 'scrolled');
+        }
+        
+        console.log('⬆️ Header shown');
+    }
+    
+    hideHeader() {
+        SafeDOM.removeClass(this.header, 'header-visible');
+        SafeDOM.addClass(this.header, 'header-hidden');
+        SafeDOM.removeClass(this.header, 'scrolled');
+        
+        console.log('⬇️ Header hidden');
+    }
+    
+    toggleHeader() {
+        if (this.header.classList.contains('header-hidden')) {
+            this.showHeader();
+        } else {
+            this.hideHeader();
+        }
+    }
+    
+    // Глобальные функции для управления хедером
+    setupGlobalFunctions() {
+        window.showHeader = () => this.showHeader();
+        window.hideHeader = () => this.hideHeader();
+        window.toggleHeader = () => this.toggleHeader();
+        window.getHeaderState = () => ({
+            isHidden: this.header.classList.contains('header-hidden'),
+            isVisible: this.header.classList.contains('header-visible'),
+            isScrolled: this.header.classList.contains('scrolled')
+        });
     }
 }
 
@@ -315,7 +707,7 @@ class FAQManager {
     }
 }
 
-// ===== МЕНЕДЖЕР АНИМАЦИЙ =====
+// ===== МЕНЕДЖЕР ОСНОВНЫХ АНИМАЦИЙ =====
 class AnimationsManager {
     constructor() {
         this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -639,21 +1031,30 @@ function initializeAll() {
     console.log('🚀 Starting full initialization...');
     
     try {
-        // Инициализируем менеджер анимаций
-        window.animationsManager = new AnimationsManager();
+        // Инициализируем менеджер анимаций хедера
+        window.headerAnimationsManager = new HeaderAnimationsManager();
         
         // Инициализируем FAQ менеджер
         window.faqManager = new FAQManager();
+        
+        // Инициализируем основной менеджер анимаций
+        window.animationsManager = new AnimationsManager();
         
         // Добавляем глобальный класс
         SafeDOM.addClass(document.body, 'animations-loaded');
         SafeDOM.addClass(document.body, 'all-content-loaded');
         
+        // Настраиваем глобальные функции для хедера
+        if (window.headerAnimationsManager) {
+            window.headerAnimationsManager.setupGlobalFunctions();
+        }
+        
         // Финальная проверка
         setTimeout(() => {
             console.log('✅ All systems initialized successfully');
+            console.log('🎯 Header Animations System: READY');
             console.log('🎯 FAQ System: READY');
-            console.log('🎯 Animations System: READY');
+            console.log('🎯 Main Animations System: READY');
             console.log('🎯 Page State: LOADED');
         }, 500);
         
@@ -710,6 +1111,37 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         .reduced-motion .faq-item.active .faq-question i {
             transform: rotate(45deg) !important;
         }
+        
+        /* Упрощенные анимации хедера */
+        .reduced-motion .main-header,
+        .reduced-motion .main-header * {
+            animation: none !important;
+            transition: none !important;
+        }
+        
+        .reduced-motion .main-header.header-hidden {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
+        }
+        
+        .reduced-motion .main-header.header-visible {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+        }
+        
+        .reduced-motion .burger-btn.active span:nth-child(1) {
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg) !important;
+        }
+        
+        .reduced-motion .burger-btn.active span:nth-child(2) {
+            opacity: 0 !important;
+        }
+        
+        .reduced-motion .burger-btn.active span:nth-child(3) {
+            bottom: 50%;
+            transform: translate(-50%, 50%) rotate(-45deg) !important;
+        }
     `;
     document.head.appendChild(style);
 }
@@ -731,12 +1163,23 @@ if (document.readyState === 'loading') {
 window.debugAnimations = function() {
     console.log('🔍 Debug Information:');
     console.log('-------------------');
+    console.log('Header Animations Manager:', window.headerAnimationsManager ? '✅ Loaded' : '❌ Not loaded');
     console.log('FAQ Items:', SafeDOM.querySelectorAll('.faq-item').length);
     console.log('Active FAQ Items:', SafeDOM.querySelectorAll('.faq-item.active').length);
     console.log('Animations Manager:', window.animationsManager ? '✅ Loaded' : '❌ Not loaded');
     console.log('FAQ Manager:', window.faqManager ? '✅ Loaded' : '❌ Not loaded');
     console.log('Body Classes:', document.body.className);
     console.log('Reduced Motion:', window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    
+    // Информация о хедере
+    const header = document.getElementById('main-header');
+    if (header) {
+        console.log('Header State:', {
+            isHidden: header.classList.contains('header-hidden'),
+            isVisible: header.classList.contains('header-visible'),
+            isScrolled: header.classList.contains('scrolled')
+        });
+    }
 };
 
 window.resetAnimations = function() {
@@ -763,10 +1206,22 @@ window.resetAnimations = function() {
         }
     });
     
+    // Сбрасываем хедер
+    const header = document.getElementById('main-header');
+    if (header) {
+        SafeDOM.removeClass(header, 'header-hidden');
+        SafeDOM.removeClass(header, 'scrolled');
+        SafeDOM.addClass(header, 'header-visible');
+    }
+    
     // Переинициализируем
     if (window.faqManager) {
         window.faqManager.initializeFAQState();
         window.faqManager.setupEventListeners();
+    }
+    
+    if (window.headerAnimationsManager) {
+        window.headerAnimationsManager.setupHeaderState();
     }
     
     console.log('✅ Animations reset complete');
@@ -779,7 +1234,11 @@ window.Animations = {
     reset: window.resetAnimations,
     openAllFAQ: () => window.openAllFAQ?.(),
     closeAllFAQ: () => window.closeAllFAQ?.(),
-    testFAQ: () => window.testFAQ?.()
+    testFAQ: () => window.testFAQ?.(),
+    showHeader: () => window.showHeader?.(),
+    hideHeader: () => window.hideHeader?.(),
+    toggleHeader: () => window.toggleHeader?.(),
+    getHeaderState: () => window.getHeaderState?.()
 };
 
-console.log('✅ animations.js loaded - COMPLETE SYSTEM READY');
+console.log('✅ animations.js loaded - COMPLETE SYSTEM READY WITH HEADER ANIMATIONS');
