@@ -1,4 +1,4 @@
-console.log('🚀 main.js loaded - FULLY INTEGRATED WITH HEADER SCROLL FOR ALL PAGES');
+console.log('🚀 main.js loaded - FULLY INTEGRATED WITH HEADER SCROLL');
 
 // ===== ГЛОБАЛЬНЫЙ ОБЪЕКТ ПРИЛОЖЕНИЯ =====
 window.NBGroupApp = {
@@ -26,8 +26,8 @@ window.NBGroupApp = {
         this.setupForms();
         this.setupLazyLoading();
         this.setupGlobalEvents();
-        this.setupHeaderScroll();
-        this.fixButtonsOnAllPages(); // Добавляем исправление кнопок
+        this.setupHeaderScrollForAllPages(); // ИЗМЕНЕНО: новая функция для всех страниц
+        this.fixButtonsOnAllPages(); // ИЗМЕНЕНО: исправляем кнопки на всех страницах
         
         console.log('✅ NB Group Tech App initialized');
     },
@@ -46,390 +46,350 @@ window.NBGroupApp = {
         }
     },
     
-    // ===== СКРЫТИЕ ХЕДЕРА ПРИ СКРОЛЛЕ ДЛЯ ВСЕХ СТРАНИЦ =====
-    setupHeaderScroll() {
-        console.log('🎯 Setting up header scroll behavior for all pages...');
+    // ===== УЛУЧШЕННОЕ СКРЫТИЕ ХЕДЕРА ДЛЯ ВСЕХ СТРАНИЦ =====
+    setupHeaderScrollForAllPages() {
+        console.log('🎯 Setting up enhanced header scroll behavior for ALL pages...');
         
-        const header = document.querySelector('.main-header');
+        const header = document.getElementById('main-header');
         if (!header) {
             console.warn('❌ Header not found for scroll behavior');
             return;
         }
         
-        const headerHeight = header.offsetHeight;
-        const scrollThreshold = 50;
-        let ticking = false;
-        
-        // Определяем, главная ли это страница
-        const isHomePage = this.state.currentPage.includes('index') || 
+        // Определяем главная ли это страница
+        const isHomePage = this.state.currentPage === 'index.html' || 
                           this.state.currentPage === '' ||
-                          this.state.currentPage === '/';
+                          window.location.pathname.includes('index');
         
-        // Для всех страниц кроме главной устанавливаем темный фон
+        console.log(`📄 Current page: ${this.state.currentPage}, Is home page: ${isHomePage}`);
+        
+        // Для ВСЕХ страниц кроме главной - устанавливаем темный фон
         if (!isHomePage) {
             console.log('🌙 Setting dark header for non-home page');
             header.style.background = 'rgba(10, 10, 20, 0.98)';
             header.style.backdropFilter = 'blur(35px)';
+            header.style.border = '1px solid rgba(255, 255, 255, 0.15)';
             header.classList.add('scrolled');
+            
+            // Также добавляем класс для CSS
+            header.classList.add('non-home-header');
         }
         
-        // Функция обновления состояния хедера
-        const updateHeaderState = () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const scrollingDown = scrollTop > this.state.lastScrollTop;
-            
-            // Обновляем направление скролла
-            this.state.scrollDirection = scrollingDown ? 'down' : 'up';
-            
-            // Показываем хедер если прокрутили до верха
-            if (scrollTop <= headerHeight) {
-                if (this.state.headerHidden) {
-                    this.showHeader();
-                }
-            }
-            // Прячем при скролле вниз
-            else if (scrollingDown && scrollTop > headerHeight + scrollThreshold) {
-                if (!this.state.headerHidden) {
-                    this.hideHeader();
-                }
-            }
-            // Показываем при скролле вверх
-            else if (!scrollingDown && scrollTop > headerHeight) {
-                if (this.state.headerHidden) {
-                    this.showHeader();
-                }
-            }
-            
-            this.state.lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-            ticking = false;
-        };
+        // Настройка скрытия/показа хедера для ВСЕХ страниц
+        let lastScrollTop = 0;
+        let isHidden = false;
+        let hideTimeout = null;
+        let showTimeout = null;
+        const scrollThreshold = 100;
         
-        // Оптимизированный обработчик скролла
-        const onScroll = () => {
-            if (!ticking) {
-                ticking = true;
-                requestAnimationFrame(updateHeaderState);
+        // Показываем хедер
+        const showHeader = () => {
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                hideTimeout = null;
             }
-        };
-        
-        // Функции управления хедером
-        this.showHeader = () => {
+            
+            if (!isHidden) return;
+            
             header.classList.remove('header-hidden');
             header.classList.add('header-visible');
-            this.state.headerHidden = false;
-            console.log('⬆️ Header shown');
-        };
-        
-        this.hideHeader = () => {
-            header.classList.add('header-hidden');
-            header.classList.remove('header-visible');
-            this.state.headerHidden = true;
-            console.log('⬇️ Header hidden');
-        };
-        
-        this.toggleHeader = () => {
-            if (this.state.headerHidden) {
-                this.showHeader();
-            } else {
-                this.hideHeader();
-            }
-        };
-        
-        // Экспортируем функции глобально
-        window.showHeader = this.showHeader;
-        window.hideHeader = this.hideHeader;
-        window.toggleHeader = this.toggleHeader;
-        
-        // Показываем хедер при клике
-        header.addEventListener('click', (e) => {
-            if (this.state.headerHidden && e.target.closest('.main-header')) {
-                this.showHeader();
-            }
-        });
-        
-        // Показываем хедер при клике на элементы навигации
-        const headerElements = header.querySelectorAll('a, button, .nav-link, .lang-btn, .logo, .start-project-btn');
-        headerElements.forEach(el => {
-            el.addEventListener('click', () => {
-                if (this.state.headerHidden) {
-                    this.showHeader();
-                }
-            });
+            header.style.pointerEvents = 'auto';
+            isHidden = false;
             
-            el.addEventListener('focus', () => {
-                if (this.state.headerHidden) {
-                    this.showHeader();
-                }
-            });
-        });
+            console.log('⬆️ Header shown (all pages)');
+        };
         
-        // Показываем хедер при наведении на верхнюю часть экрана (только для десктопа)
-        if (!this.state.isMobile) {
+        // Скрываем хедер
+        const hideHeader = () => {
+            if (showTimeout) {
+                clearTimeout(showTimeout);
+                showTimeout = null;
+            }
+            
+            if (isHidden) return;
+            
+            header.classList.remove('header-visible');
+            header.classList.add('header-hidden');
+            header.style.pointerEvents = 'none';
+            isHidden = true;
+            
+            console.log('⬇️ Header hidden (all pages)');
+        };
+        
+        // Обработчик скролла
+        const handleScroll = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollingDown = scrollTop > lastScrollTop;
+            const atTop = scrollTop <= 50;
+            
+            // Всегда показываем хедер вверху страницы
+            if (atTop) {
+                if (isHidden) {
+                    showHeader();
+                }
+                lastScrollTop = scrollTop;
+                return;
+            }
+            
+            // Обновляем scrolled класс
+            if (scrollTop > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Интеллектуальное скрытие/показ
+            if (scrollingDown && scrollTop > scrollThreshold) {
+                if (!isHidden && !hideTimeout) {
+                    hideTimeout = setTimeout(() => {
+                        hideHeader();
+                    }, 200);
+                }
+            } else if (!scrollingDown && scrollTop > scrollThreshold) {
+                if (isHidden && !showTimeout) {
+                    showTimeout = setTimeout(() => {
+                        showHeader();
+                    }, 100);
+                }
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        };
+        
+        // Показываем хедер при наведении в верхнюю часть
+        const setupHoverZone = () => {
             const hoverZone = document.createElement('div');
+            hoverZone.id = 'header-hover-zone-all-pages';
             hoverZone.style.cssText = `
                 position: fixed;
                 top: 0;
                 left: 0;
                 width: 100%;
-                height: 80px;
+                height: 50px;
                 z-index: 998;
-                pointer-events: ${this.state.headerHidden ? 'auto' : 'none'};
-                background: transparent;
+                pointer-events: ${isHidden ? 'auto' : 'none'};
+                opacity: 0;
                 transition: pointer-events 0.3s ease;
+                background: transparent;
             `;
-            hoverZone.id = 'header-hover-zone';
             
             hoverZone.addEventListener('mouseenter', () => {
-                if (this.state.headerHidden) {
-                    this.showHeader();
+                if (isHidden) {
+                    showHeader();
                     hoverZone.style.pointerEvents = 'none';
                 }
             });
             
             document.body.appendChild(hoverZone);
             
-            // Обновляем hover zone при изменении состояния хедера
-            const observer = new MutationObserver(() => {
-                hoverZone.style.pointerEvents = this.state.headerHidden ? 'auto' : 'none';
-            });
+            // Обновляем hover zone при изменении состояния
+            const updateHoverZone = () => {
+                hoverZone.style.pointerEvents = isHidden ? 'auto' : 'none';
+            };
+            
+            const observer = new MutationObserver(updateHoverZone);
             observer.observe(header, { attributes: true, attributeFilter: ['class'] });
-        }
+        };
         
-        // Настраиваем обработчик скролла
-        window.addEventListener('scroll', onScroll, { passive: true });
+        // Инициализация
+        const initHeaderScroll = () => {
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // Настраиваем hover для показа (только на десктопе)
+            if (window.innerWidth > 900) {
+                setupHoverZone();
+            }
+            
+            // Обработка ресайза
+            window.addEventListener('resize', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop <= 50 && isHidden) {
+                    showHeader();
+                }
+                
+                // Обновляем hover zone
+                const hoverZone = document.getElementById('header-hover-zone-all-pages');
+                if (hoverZone) {
+                    if (window.innerWidth <= 900) {
+                        hoverZone.remove();
+                    } else if (isHidden) {
+                        hoverZone.style.pointerEvents = 'auto';
+                    }
+                }
+            });
+            
+            // Устанавливаем начальное состояние
+            handleScroll();
+            
+            // Экспортируем функции глобально
+            window.showHeaderAllPages = showHeader;
+            window.hideHeaderAllPages = hideHeader;
+            window.toggleHeaderAllPages = () => {
+                if (isHidden) showHeader();
+                else hideHeader();
+            };
+            
+            this.state.headerHidden = isHidden;
+            
+            console.log('✅ Enhanced header scroll initialized for ALL pages');
+        };
         
-        // Инициализация начального состояния
-        this.state.lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        updateHeaderState();
-        
-        console.log('✅ Header scroll behavior initialized for all pages');
+        // Запускаем
+        setTimeout(initHeaderScroll, 100);
     },
     
     // ===== ИСПРАВЛЕНИЕ КНОПОК НА ВСЕХ СТРАНИЦАХ =====
     fixButtonsOnAllPages() {
         console.log('🔧 Fixing buttons on all pages...');
         
-        // Определяем, главная ли это страница
-        const isHomePage = this.state.currentPage.includes('index') || 
-                          this.state.currentPage === '' ||
-                          this.state.currentPage === '/';
-        
-        // Если не главная страница, исправляем фон хедера
-        if (!isHomePage) {
-            const header = document.querySelector('.main-header');
-            if (header) {
-                header.style.background = 'rgba(10, 10, 20, 0.98)';
-                header.style.backdropFilter = 'blur(35px)';
-                header.classList.add('scrolled');
-            }
-        }
-        
-        // Исправляем все основные кнопки на странице
+        // Ждем полной загрузки страницы
         setTimeout(() => {
-            // Находим все кнопки кроме тех, что уже стилизованы
-            const buttonsToFix = document.querySelectorAll(`
-                button:not(.burger-btn):not(.lang-btn):not(.nav-link):not(.start-project-btn),
-                a[class*="btn"]:not(.nav-link):not(.start-project-btn),
+            // Находим все кнопки которые выглядят неправильно
+            const allButtons = document.querySelectorAll(`
+                button:not(.burger-btn):not(.lang-btn):not(.start-project-btn):not(.nav-link),
+                a.btn:not(.nav-link):not(.start-project-btn),
                 .btn:not(.nav-link):not(.start-project-btn),
-                .cta-btn, .hero-btn, .contact-btn, .submit-btn
+                input[type="submit"],
+                input[type="button"]
             `);
             
-            console.log(`🎯 Found ${buttonsToFix.length} buttons to fix`);
+            console.log(`🔍 Found ${allButtons.length} buttons to fix`);
             
-            buttonsToFix.forEach((btn, index) => {
-                if (btn.closest('.main-header') || btn.closest('.mobile-menu')) {
-                    return; // Пропускаем кнопки в хедере и мобильном меню
-                }
+            allButtons.forEach((btn, index) => {
+                if (!btn || btn.classList.contains('btn-fixed')) return;
                 
-                // Добавляем класс для стилизации
-                btn.classList.add('fixed-btn-primary');
+                // Добавляем класс для отслеживания
+                btn.classList.add('btn-fixed');
                 
-                // Устанавливаем базовые стили
-                this.applyButtonStyles(btn);
+                // Применяем стили как у кнопки "Начать проект"
+                this.applyProjectButtonStyles(btn);
                 
-                // Добавляем hover эффекты
-                btn.addEventListener('mouseenter', this.handleButtonHover);
-                btn.addEventListener('mouseleave', this.handleButtonLeave);
-                btn.addEventListener('mousedown', this.handleButtonPress);
-                btn.addEventListener('mouseup', this.handleButtonRelease);
-                
-                // Добавляем эффект свечения
-                this.addButtonGlow(btn);
+                // Добавляем анимации
+                this.addButtonAnimations(btn);
             });
             
-            // Исправляем ссылки в виде кнопок
-            const linkButtons = document.querySelectorAll('a[href*=".html"]:not(.nav-link):not(.logo)');
-            linkButtons.forEach(link => {
-                if (link.textContent.includes('Начать') || 
-                    link.textContent.includes('Связаться') ||
-                    link.textContent.includes('Заказать') ||
-                    link.textContent.includes('Подробнее')) {
-                    
-                    link.classList.add('fixed-btn-primary');
-                    this.applyButtonStyles(link);
-                    
-                    link.addEventListener('mouseenter', this.handleButtonHover);
-                    link.addEventListener('mouseleave', this.handleButtonLeave);
-                    this.addButtonGlow(link);
+            // Также исправляем кнопки в хедере если они есть
+            const headerButtons = document.querySelectorAll('.main-header button:not(.burger-btn):not(.lang-btn)');
+            headerButtons.forEach(btn => {
+                if (!btn.classList.contains('btn-fixed')) {
+                    btn.classList.add('btn-fixed');
+                    this.applyProjectButtonStyles(btn);
                 }
             });
             
-            console.log(`✅ Fixed ${buttonsToFix.length} buttons on page`);
+            console.log('✅ All buttons fixed with project button styles');
         }, 500);
     },
     
-    // Применяем стили к кнопке
-    applyButtonStyles(btn) {
-        const existingStyles = window.getComputedStyle(btn);
+    applyProjectButtonStyles(button) {
+        // Сохраняем оригинальные стили если нужно
+        const originalClasses = button.className;
         
-        // Только если у кнопки нет нормальных стилей
-        if (existingStyles.backgroundColor === 'rgba(0, 0, 0, 0)' || 
-            existingStyles.backgroundColor === 'transparent') {
+        // Добавляем базовые классы
+        button.classList.add('btn-primary', 'project-button-style');
+        
+        // Применяем CSS свойства как у кнопки "Начать проект"
+        const styles = {
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '12px 28px',
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08))',
+            color: 'white',
+            fontWeight: '700',
+            fontSize: '14px',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '12px',
+            cursor: 'pointer',
+            transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+            gap: '10px',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            boxShadow: '0 6px 25px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+            position: 'relative',
+            overflow: 'hidden',
+            isolation: 'isolate',
+            willChange: 'transform, background, box-shadow',
+            textDecoration: 'none',
+            minHeight: '44px'
+        };
+        
+        // Применяем стили
+        Object.assign(button.style, styles);
+        
+        // Создаем элемент для эффекта сияния
+        const shimmer = document.createElement('span');
+        shimmer.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+            pointer-events: none;
+        `;
+        
+        button.appendChild(shimmer);
+        
+        // Добавляем обработчики для эффекта сияния
+        button.addEventListener('mouseenter', () => {
+            shimmer.style.left = '100%';
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            shimmer.style.left = '-100%';
+        });
+        
+        // Сохраняем ссылку на shimmer для cleanup
+        button._shimmerElement = shimmer;
+    },
+    
+    addButtonAnimations(button) {
+        // Hover эффект
+        button.addEventListener('mouseenter', () => {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
             
-            btn.style.cssText += `
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                padding: 14px 32px;
-                background: linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(102, 181, 255, 0.1));
-                color: white;
-                font-weight: 600;
-                font-size: 16px;
-                text-decoration: none;
-                border: 1px solid rgba(255, 255, 255, 0.25);
-                border-radius: 12px;
-                cursor: pointer;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                gap: 12px;
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
-                position: relative;
-                overflow: hidden;
-                isolation: isolate;
-                text-align: center;
-                min-width: 160px;
-                min-height: 52px;
-            `;
+            button.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.12))';
+            button.style.transform = 'translateY(-3px) scale(1.05)';
+            button.style.boxShadow = '0 12px 35px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 30px rgba(0, 102, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15)';
+            button.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
             
-            // Добавляем эффект свечения
-            const glow = document.createElement('div');
-            glow.className = 'btn-glow';
-            glow.style.cssText = `
-                position: absolute;
-                top: -10px;
-                left: -10px;
-                right: -10px;
-                bottom: -10px;
-                background: radial-gradient(circle at center, rgba(0, 102, 255, 0.3) 0%, transparent 70%);
-                filter: blur(15px);
-                opacity: 0;
-                transition: opacity 0.4s ease;
-                pointer-events: none;
-                z-index: -1;
-                border-radius: inherit;
-            `;
-            btn.appendChild(glow);
-        }
-    },
-    
-    // Обработчики hover эффектов
-    handleButtonHover(e) {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            button.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08))';
+            button.style.transform = '';
+            button.style.boxShadow = '0 6px 25px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
+            button.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        });
         
-        const btn = e.target;
-        const glow = btn.querySelector('.btn-glow');
+        // Клик эффект
+        button.addEventListener('mousedown', () => {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            
+            button.style.transform = 'translateY(-1px) scale(1.02)';
+        });
         
-        btn.style.transform = 'translateY(-3px) scale(1.05)';
-        btn.style.boxShadow = '0 12px 35px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 30px rgba(0, 102, 255, 0.2)';
-        btn.style.background = 'linear-gradient(135deg, rgba(0, 102, 255, 0.3), rgba(102, 181, 255, 0.2))';
-        btn.style.borderColor = 'rgba(255, 255, 255, 0.35)';
+        button.addEventListener('mouseup', () => {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            
+            button.style.transform = 'translateY(-3px) scale(1.05)';
+        });
         
-        if (glow) {
-            glow.style.opacity = '0.6';
-        }
-        
-        // Анимация иконки если есть
-        const icon = btn.querySelector('i');
+        // Анимация для иконок внутри кнопки
+        const icon = button.querySelector('i');
         if (icon) {
-            icon.style.transform = 'translateX(4px)';
+            button.addEventListener('mouseenter', () => {
+                icon.style.transform = 'translateX(4px) rotate(5deg)';
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                icon.style.transform = '';
+            });
         }
-    },
-    
-    handleButtonLeave(e) {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        
-        const btn = e.target;
-        const glow = btn.querySelector('.btn-glow');
-        
-        btn.style.transform = '';
-        btn.style.boxShadow = '0 6px 25px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05)';
-        btn.style.background = 'linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(102, 181, 255, 0.1))';
-        btn.style.borderColor = 'rgba(255, 255, 255, 0.25)';
-        
-        if (glow) {
-            glow.style.opacity = '0';
-        }
-        
-        // Возвращаем иконку
-        const icon = btn.querySelector('i');
-        if (icon) {
-            icon.style.transform = '';
-        }
-    },
-    
-    handleButtonPress(e) {
-        const btn = e.target;
-        btn.style.transform = 'translateY(-1px) scale(0.98)';
-        btn.style.transition = 'transform 0.1s ease';
-    },
-    
-    handleButtonRelease(e) {
-        const btn = e.target;
-        btn.style.transform = 'translateY(-3px) scale(1.05)';
-        btn.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-    },
-    
-    addButtonGlow(btn) {
-        // Добавляем анимацию свечения
-        setInterval(() => {
-            if (btn.matches(':hover') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                const pulse = document.createElement('div');
-                pulse.style.cssText = `
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    width: 0;
-                    height: 0;
-                    background: radial-gradient(circle, rgba(0, 102, 255, 0.4) 0%, transparent 70%);
-                    border-radius: 50%;
-                    transform: translate(-50%, -50%);
-                    animation: btnPulse 1s ease-out;
-                    pointer-events: none;
-                    z-index: -1;
-                `;
-                
-                // Добавляем CSS для анимации если еще нет
-                if (!document.querySelector('#btn-pulse-animation')) {
-                    const style = document.createElement('style');
-                    style.id = 'btn-pulse-animation';
-                    style.textContent = `
-                        @keyframes btnPulse {
-                            0% { width: 0; height: 0; opacity: 1; }
-                            100% { width: 200px; height: 200px; opacity: 0; }
-                        }
-                    `;
-                    document.head.appendChild(style);
-                }
-                
-                btn.appendChild(pulse);
-                setTimeout(() => {
-                    if (pulse.parentNode === btn) {
-                        btn.removeChild(pulse);
-                    }
-                }, 1000);
-            }
-        }, 3000);
     },
     
     // ===== БУРГЕР МЕНЮ =====
@@ -542,7 +502,7 @@ window.NBGroupApp = {
                     
                     // Показываем хедер при смене языка
                     if (this.state.headerHidden) {
-                        this.showHeader();
+                        window.showHeaderAllPages?.();
                     }
                 });
             });
@@ -617,7 +577,7 @@ window.NBGroupApp = {
                 if (targetElement) {
                     // Показываем хедер если он скрыт
                     if (this.state.headerHidden) {
-                        this.showHeader();
+                        window.showHeaderAllPages?.();
                     }
                     
                     // Ждем пока хедер появится
@@ -673,14 +633,9 @@ window.NBGroupApp = {
         const updateScroll = () => {
             const scrollY = window.pageYOffset;
             
-            // Не изменяем scrolled класс на главной странице - он уже управляется через CSS
-            const isHomePage = this.state.currentPage.includes('index') || 
-                              this.state.currentPage === '' ||
-                              this.state.currentPage === '/';
-            
-            if (!isHomePage && scrollY > 100) {
+            if (scrollY > 100) {
                 header.classList.add('scrolled');
-            } else if (!isHomePage && scrollY <= 100) {
+            } else {
                 header.classList.remove('scrolled');
             }
             
@@ -795,12 +750,6 @@ window.NBGroupApp = {
         window.addEventListener('resize', () => {
             this.state.isMobile = window.innerWidth <= 900;
             
-            // Удаляем hover zone на мобильных
-            const hoverZone = document.getElementById('header-hover-zone');
-            if (hoverZone && this.state.isMobile) {
-                hoverZone.remove();
-            }
-            
             if (!this.state.isMobile && this.state.menuOpen) {
                 this.closeMobileMenu();
             }
@@ -808,7 +757,7 @@ window.NBGroupApp = {
             // Обновляем высоту хедера при ресайзе
             const header = document.querySelector('.main-header');
             if (header && this.state.headerHidden && window.pageYOffset <= header.offsetHeight) {
-                this.showHeader();
+                window.showHeaderAllPages?.();
             }
         });
         
@@ -819,7 +768,7 @@ window.NBGroupApp = {
                 this.setupLanguageSwitcher();
                 this.setupSmoothScroll();
                 this.setupScrollEffects();
-                this.setupHeaderScroll();
+                this.setupHeaderScrollForAllPages();
                 this.fixButtonsOnAllPages();
             }, 300);
         });
@@ -850,7 +799,7 @@ window.NBGroupApp = {
         if (menu && burger) {
             // Показываем хедер если он скрыт
             if (this.state.headerHidden) {
-                this.showHeader();
+                window.showHeaderAllPages?.();
             }
             
             menu.classList.add('active');
@@ -946,99 +895,119 @@ window.closeMobileMenu = () => {
     }
 })();
 
-// ===== CSS ДЛЯ ИСПРАВЛЕННЫХ КНОПОК =====
-(function addFixedButtonsStyles() {
-    if (!document.querySelector('#fixed-buttons-styles')) {
+// ===== CSS ДЛЯ КНОПОК НА ВСЕХ СТРАНИЦАХ =====
+(function addButtonStyles() {
+    if (!document.querySelector('#all-pages-button-styles')) {
         const style = document.createElement('style');
-        style.id = 'fixed-buttons-styles';
+        style.id = 'all-pages-button-styles';
         style.textContent = `
-            /* Стили для исправленных кнопок на всех страницах */
-            .fixed-btn-primary {
+            /* ===== ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ СТРАНИЦ ===== */
+            
+            /* Темный фон для хедера на всех страницах кроме главной */
+            body:not(.index-page) .main-header {
+                background: rgba(10, 10, 20, 0.98) !important;
+                backdrop-filter: blur(35px) !important;
+                border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+            
+            /* Кнопки на всех страницах */
+            .btn-primary,
+            .project-button-style {
                 display: inline-flex !important;
                 align-items: center !important;
                 justify-content: center !important;
-                padding: 14px 32px !important;
-                background: linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(102, 181, 255, 0.1)) !important;
+                padding: 12px 28px !important;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)) !important;
                 color: white !important;
-                font-weight: 600 !important;
-                font-size: 16px !important;
-                text-decoration: none !important;
-                border: 1px solid rgba(255, 255, 255, 0.25) !important;
+                font-weight: 700 !important;
+                font-size: 14px !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
                 border-radius: 12px !important;
                 cursor: pointer !important;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                gap: 12px !important;
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                gap: 10px !important;
                 backdrop-filter: blur(20px) !important;
                 -webkit-backdrop-filter: blur(20px) !important;
-                box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+                box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
                 position: relative !important;
                 overflow: hidden !important;
                 isolation: isolate !important;
-                text-align: center !important;
-                min-width: 160px !important;
-                min-height: 52px !important;
+                will-change: transform, background, box-shadow !important;
+                text-decoration: none !important;
+                min-height: 44px !important;
             }
             
-            /* Hover эффекты для исправленных кнопок */
-            .fixed-btn-primary:hover {
-                background: linear-gradient(135deg, rgba(0, 102, 255, 0.3), rgba(102, 181, 255, 0.2)) !important;
+            .btn-primary:hover,
+            .project-button-style:hover {
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.12)) !important;
+                color: white !important;
                 transform: translateY(-3px) scale(1.05) !important;
-                box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 30px rgba(0, 102, 255, 0.2) !important;
-                border-color: rgba(255, 255, 255, 0.35) !important;
+                box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 30px rgba(0, 102, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+                border-color: rgba(255, 255, 255, 0.25) !important;
             }
             
-            /* Анимация иконки в кнопке */
-            .fixed-btn-primary i {
+            /* Эффект сияния */
+            .btn-primary::before,
+            .project-button-style::before {
+                content: '' !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: -100% !important;
+                width: 100% !important;
+                height: 100% !important;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+                transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                z-index: 1 !important;
+                pointer-events: none !important;
+            }
+            
+            .btn-primary:hover::before,
+            .project-button-style:hover::before {
+                left: 100% !important;
+            }
+            
+            /* Иконки в кнопках */
+            .btn-primary i,
+            .project-button-style i {
                 transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
             }
             
-            .fixed-btn-primary:hover i {
-                transform: translateX(4px) !important;
+            .btn-primary:hover i,
+            .project-button-style:hover i {
+                transform: translateX(4px) rotate(5deg) !important;
             }
             
-            /* Эффект свечения для кнопок */
-            .btn-glow {
-                position: absolute;
-                top: -10px;
-                left: -10px;
-                right: -10px;
-                bottom: -10px;
-                background: radial-gradient(circle at center, rgba(0, 102, 255, 0.3) 0%, transparent 70%);
-                filter: blur(15px);
-                opacity: 0;
-                transition: opacity 0.4s ease;
-                pointer-events: none;
-                z-index: -1;
-                border-radius: inherit;
+            /* Мобильная адаптация */
+            @media (max-width: 768px) {
+                .btn-primary,
+                .project-button-style {
+                    padding: 14px 24px !important;
+                    min-height: 48px !important;
+                }
             }
             
-            .fixed-btn-primary:hover .btn-glow {
-                opacity: 0.6;
+            /* Для страниц кроме главной */
+            .about-page .btn-primary,
+            .services-page .btn-primary,
+            .portfolio-page .btn-primary,
+            .contacts-page .btn-primary,
+            .brandbook-page .btn-primary {
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)) !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
             }
             
-            /* Стиль для хедера на всех страницах кроме главной */
-            body:not(.index-page) .main-header,
-            .about-page .main-header,
-            .services-page .main-header,
-            .portfolio-page .main-header,
-            .contacts-page .main-header,
-            .brandbook-page .main-header {
-                background: rgba(10, 10, 20, 0.98) !important;
-                backdrop-filter: blur(35px) !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-            }
-            
-            /* Для главной страницы оставляем оригинальный стиль */
-            .index-page .main-header {
-                background: rgba(255, 255, 255, 0.05) !important;
-                backdrop-filter: blur(30px) saturate(180%) !important;
-                border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            }
-            
-            /* Анимация пульсации для кнопок */
-            @keyframes btnPulse {
-                0% { width: 0; height: 0; opacity: 1; }
-                100% { width: 200px; height: 200px; opacity: 0; }
+            /* Специальные стили для формы на странице контактов */
+            .contacts-page input[type="submit"],
+            .contacts-page button[type="submit"] {
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)) !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+                color: white !important;
+                font-weight: 700 !important;
+                padding: 14px 32px !important;
+                border-radius: 12px !important;
+                backdrop-filter: blur(20px) !important;
             }
         `;
         document.head.appendChild(style);
@@ -1056,9 +1025,11 @@ window.addEventListener('load', () => {
         const currentLang = localStorage.getItem('preferredLang') || 'ru';
         window.NBGroupApp.updateAllLanguageSwitchers(currentLang);
         
-        // Применяем исправления кнопок после полной загрузки
+        // Принудительно применяем стили кнопок если скрипт не успел
         setTimeout(() => {
-            window.NBGroupApp.fixButtonsOnAllPages();
+            if (window.NBGroupApp && window.NBGroupApp.fixButtonsOnAllPages) {
+                window.NBGroupApp.fixButtonsOnAllPages();
+            }
         }, 1000);
         
     }, 500);
@@ -1071,39 +1042,32 @@ if (window.location.hostname.includes('github.io') || window.location.hostname.i
         console.log('- Header hidden:', window.NBGroupApp.state.headerHidden);
         console.log('- Scroll direction:', window.NBGroupApp.state.scrollDirection);
         console.log('- Last scroll position:', window.NBGroupApp.state.lastScrollTop);
-        console.log('- Current page:', window.NBGroupApp.state.currentPage);
         
         const header = document.querySelector('.main-header');
         if (header) {
             console.log('- Header classes:', header.className);
-            console.log('- Header background:', window.getComputedStyle(header).background);
+            console.log('- Is non-home page header:', header.classList.contains('non-home-header'));
         }
-    };
-    
-    window.testButtons = function() {
-        console.log('🔍 Testing buttons...');
-        const fixedButtons = document.querySelectorAll('.fixed-btn-primary');
-        console.log(`- Found ${fixedButtons.length} fixed buttons`);
-        
-        fixedButtons.forEach((btn, i) => {
-            console.log(`  ${i + 1}. "${btn.textContent.trim()}" - classes: ${btn.className}`);
-        });
     };
     
     window.forceShowHeader = function() {
         console.log('🔼 Forcing header show');
-        window.NBGroupApp.showHeader();
+        window.showHeaderAllPages?.();
     };
     
     window.forceHideHeader = function() {
         console.log('🔽 Forcing header hide');
-        window.NBGroupApp.hideHeader();
+        window.hideHeaderAllPages?.();
     };
     
-    window.fixAllButtonsNow = function() {
-        console.log('🔧 Manually fixing all buttons');
-        window.NBGroupApp.fixButtonsOnAllPages();
+    window.testButtons = function() {
+        console.log('🧪 Testing buttons...');
+        const buttons = document.querySelectorAll('.btn-primary, .project-button-style, button:not(.burger-btn):not(.lang-btn)');
+        console.log(`Found ${buttons.length} buttons:`);
+        buttons.forEach((btn, i) => {
+            console.log(`  ${i + 1}. ${btn.textContent.trim()} - Classes: ${btn.className}`);
+        });
     };
 }
 
-console.log('✅ main.js loaded successfully - HEADER AND BUTTONS FIXES APPLIED');
+console.log('✅ main.js loaded successfully - ENHANCED FOR ALL PAGES');
