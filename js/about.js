@@ -1,449 +1,418 @@
-console.log('🚀 about.js loaded - REAL TEAM PHOTOS VERSION - FINAL FIX');
+console.log('🚀 about.js loaded - UPDATED VERSION with NO DARK OVERLAYS and FIXED BLOCKS');
 
-// Создаем локальную переменную SafeDOM, но не объявляем как класс
-// Используем глобальный SafeDOM если он существует
-const AboutSafeDOM = (function() {
-    // Если глобальный SafeDOM существует, используем его
-    if (window.SafeDOM && typeof window.SafeDOM === 'object') {
-        console.log('✅ Using global SafeDOM');
-        return window.SafeDOM;
-    }
+// Переопределение анимаций для гарантии видимости блоков
+(function fixSpeckDesignBlocks() {
+    console.log('🔧 Applying emergency fix for Speck Design blocks');
     
-    // Иначе создаем свою версию
-    console.log('⚠️ Global SafeDOM not found, creating local version');
-    return {
-        querySelector(selector) {
-            try {
-                return document.querySelector(selector);
-            } catch (error) {
-                console.warn(`⚠️ Invalid selector: ${selector}`, error);
-                return null;
-            }
-        },
+    const forceShowBlocks = function() {
+        const speckSection = document.querySelector('.speck-design-section');
+        const speckCards = document.querySelectorAll('.speck-service-card');
+        const speckGrid = document.querySelector('.speck-services-grid');
         
-        querySelectorAll(selector) {
-            try {
-                return document.querySelectorAll(selector);
-            } catch (error) {
-                console.warn(`⚠️ Invalid selector: ${selector}`, error);
-                return [];
+        if (speckSection) {
+            // Принудительно показываем секцию
+            speckSection.style.cssText = `
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: block !important;
+                position: relative !important;
+                z-index: 100 !important;
+            `;
+            
+            // Принудительно показываем контейнер
+            const container = speckSection.querySelector('.container');
+            if (container) {
+                container.style.cssText = `
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    display: block !important;
+                `;
             }
-        },
+            
+            // Принудительно показываем заголовки
+            const title = speckSection.querySelector('.speck-title');
+            const subtitle = speckSection.querySelector('.speck-subtitle');
+            if (title) title.style.opacity = '1';
+            if (subtitle) subtitle.style.opacity = '1';
+            
+            console.log('✅ Speck Design section forced visible');
+        }
         
-        addClass(element, className) {
-            if (element && element.classList) {
-                element.classList.add(className);
+        if (speckCards.length > 0) {
+            let fixedCards = 0;
+            speckCards.forEach(function(card, index) {
+                // Проверяем видимость карточки
+                const rect = card.getBoundingClientRect();
+                const isVisible = rect.width > 0 && rect.height > 0 && 
+                                 getComputedStyle(card).display !== 'none' &&
+                                 getComputedStyle(card).visibility !== 'hidden' &&
+                                 getComputedStyle(card).opacity !== '0';
+                
+                if (!isVisible) {
+                    // Принудительно показываем скрытую карточку
+                    card.style.cssText = `
+                        opacity: 1 !important;
+                        visibility: visible !important;
+                        display: block !important;
+                        transform: translateY(0) !important;
+                        position: relative !important;
+                        z-index: ${10 + index} !important;
+                        animation: none !important;
+                    `;
+                    fixedCards++;
+                    console.log(`✅ Card ${index + 1} forced visible`);
+                }
+            });
+            
+            if (fixedCards > 0) {
+                console.log(`✅ ${fixedCards} hidden cards fixed`);
             }
-        },
+        }
         
-        removeClass(element, className) {
-            if (element && element.classList) {
-                element.classList.remove(className);
-            }
-        },
-        
-        hasClass(element, className) {
-            return element && element.classList && element.classList.contains(className);
+        if (speckGrid) {
+            speckGrid.style.cssText = `
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: grid !important;
+            `;
         }
     };
+    
+    // Применяем фикс несколько раз для надежности
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('📄 DOM loaded, applying block fixes...');
+        
+        // Первый фикс
+        setTimeout(forceShowBlocks, 300);
+        
+        // Второй фикс после полной загрузки
+        setTimeout(forceShowBlocks, 1000);
+        
+        // Третий фикс для гарантии
+        setTimeout(forceShowBlocks, 2000);
+    });
+    
+    // Фикс при полной загрузке страницы
+    window.addEventListener('load', function() {
+        console.log('🔄 Page fully loaded, final block fix...');
+        setTimeout(forceShowBlocks, 500);
+    });
+    
+    // Фикс при изменении размера окна
+    window.addEventListener('resize', function() {
+        setTimeout(forceShowBlocks, 200);
+    });
 })();
 
 class AboutPage {
     constructor() {
         this.isInitialized = false;
-        this.initializationAttempts = 0;
-        this.maxAttempts = 5;
-        this.checkInterval = null;
+        console.log('🎯 About page initializing (clean version)');
         this.init();
     }
 
     init() {
-        console.log('🎯 About page script initializing...');
-        
         // Ждем загрузки DOM
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('📄 About page DOM loaded');
-                this.waitForComponentsAndInit();
+                this.initializeAboutPage();
             });
         } else {
             console.log('📄 DOM already loaded, starting about page...');
-            this.waitForComponentsAndInit();
+            this.initializeAboutPage();
         }
     }
 
-    waitForComponentsAndInit() {
-        console.log('⏳ About page waiting for components...');
+    initializeAboutPage() {
+        if (this.isInitialized) {
+            console.log('⚠️ About page already initialized');
+            return;
+        }
         
-        // Проверяем, загружены ли компоненты
-        const checkComponents = () => {
-            const headerContainer = document.getElementById('header-container');
-            const footerContainer = document.getElementById('footer-container');
+        try {
+            console.log('🎯 Initializing clean about page...');
             
-            const isHeaderLoaded = headerContainer && 
-                                  headerContainer.children.length > 0 && 
-                                  (headerContainer.classList.contains('component-loaded') ||
-                                   headerContainer.querySelector('.main-header'));
+            // Удаляем все темные оверлеи из DOM
+            this.removeDarkOverlays();
             
-            const isFooterLoaded = footerContainer && 
-                                  footerContainer.children.length > 0 && 
-                                  (footerContainer.classList.contains('component-loaded') ||
-                                   footerContainer.querySelector('footer'));
+            // Настройка хедера
+            this.setupHeaderForAboutPage();
             
-            if (isHeaderLoaded && isFooterLoaded) {
-                console.log('✅ Components loaded, initializing about page...');
-                clearInterval(this.checkInterval);
-                this.initializeWithDelay();
+            // Инициализация фото команды
+            this.initializeTeamPhotos();
+            
+            // Гарантируем видимость блоков "Что мы делаем"
+            this.guaranteeSpeckDesignVisibility();
+            
+            // Настройка функционала страницы
+            this.setupPageFunctionalities();
+            
+            // Настройка анимаций
+            this.setupContentAnimations();
+            
+            this.isInitialized = true;
+            console.log('✅ About page initialized successfully (clean version)');
+            
+            // Финалная проверка
+            setTimeout(() => {
+                this.finalCheck();
+            }, 1500);
+            
+        } catch (error) {
+            console.error('❌ About page initialization failed:', error);
+        }
+    }
+
+    removeDarkOverlays() {
+        console.log('🗑️ Removing dark overlays...');
+        
+        // Удаляем все темные псевдоэлементы через стили
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Убрать все темные фоны и оверлеи */
+            .about-hero::before,
+            .about-mission::before,
+            .about-cta::before,
+            .mission-visual::before,
+            .mission-visual::after,
+            .speck-design-section::before,
+            .mission-text::before,
+            .speck-service-card::before,
+            .speck-service-card::after,
+            .team-member::before,
+            .team-member::after {
+                display: none !important;
+                background: none !important;
+                opacity: 0 !important;
+            }
+            
+            /* Прозрачные фоны для секций */
+            .about-hero,
+            .about-mission,
+            .our-story,
+            .speck-design-section,
+            .our-team,
+            .about-cta {
+                background: transparent !important;
+                background-image: none !important;
+            }
+            
+            /* Светлые карточки */
+            .mission-text,
+            .mission-feature,
+            .speck-service-card,
+            .team-member {
+                background: rgba(255, 255, 255, 0.08) !important;
+                backdrop-filter: blur(15px) saturate(180%) !important;
+                -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+                border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            }
+            
+            /* Гарантия видимости блоков */
+            .speck-design-section {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            
+            .speck-service-card {
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+            }
+            
+            .reveal-left,
+            .reveal-right {
+                opacity: 1 !important;
+                transform: translateX(0) !important;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        console.log('✅ Dark overlays removed');
+    }
+
+    setupHeaderForAboutPage() {
+        const header = document.querySelector('.main-header');
+        if (header) {
+            console.log('✅ Header configured for about page');
+        }
+    }
+
+    initializeTeamPhotos() {
+        const teamPhotos = document.querySelectorAll('.team-member img');
+        console.log(`📸 Found ${teamPhotos.length} team photos`);
+        
+        teamPhotos.forEach((photo, index) => {
+            if (!photo.complete) {
+                photo.addEventListener('load', () => {
+                    console.log(`✅ Photo ${index + 1} loaded`);
+                });
+                
+                photo.addEventListener('error', () => {
+                    console.warn(`⚠️ Photo ${index + 1} failed to load`);
+                });
+            }
+        });
+    }
+
+    guaranteeSpeckDesignVisibility() {
+        console.log('🔍 Ensuring Speck Design blocks are visible...');
+        
+        const checkAndFix = () => {
+            const speckSection = document.querySelector('.speck-design-section');
+            const speckCards = document.querySelectorAll('.speck-service-card');
+            
+            if (speckSection) {
+                // Гарантируем видимость секции
+                speckSection.style.opacity = '1';
+                speckSection.style.visibility = 'visible';
+                
+                // Гарантируем видимость всех карточек
+                speckCards.forEach((card, index) => {
+                    card.style.opacity = '1';
+                    card.style.visibility = 'visible';
+                    card.style.transform = 'translateY(0)';
+                    card.style.display = 'block';
+                    
+                    // Убираем любые анимации, которые могут скрывать
+                    card.style.animation = 'none';
+                    
+                    // Гарантируем z-index
+                    card.style.zIndex = '10';
+                    card.style.position = 'relative';
+                });
+                
+                console.log(`✅ ${speckCards.length} Speck Design cards guaranteed visible`);
                 return true;
             }
             return false;
         };
         
-        // Проверяем сразу
-        if (checkComponents()) {
-            return;
-        }
-        
-        // Слушаем событие загрузки компонентов
-        const handleComponentsLoaded = () => {
-            console.log('✅ componentsFullyLoaded event received');
-            clearInterval(this.checkInterval);
-            this.initializeWithDelay();
-        };
-        
-        window.addEventListener('componentsFullyLoaded', handleComponentsLoaded, { once: true });
-        
-        // Также проверяем периодически
-        this.checkInterval = setInterval(() => {
-            if (checkComponents()) {
-                window.removeEventListener('componentsFullyLoaded', handleComponentsLoaded);
-            }
-        }, 500);
-        
-        // Таймаут на случай если ничего не загрузится
-        setTimeout(() => {
-            if (!this.isInitialized) {
-                console.warn('⚠️ Components not loaded after timeout, attempting anyway...');
-                clearInterval(this.checkInterval);
-                window.removeEventListener('componentsFullyLoaded', handleComponentsLoaded);
-                this.initializeWithDelay();
-            }
-        }, 8000);
-    }
-
-    initializeWithDelay() {
-        setTimeout(() => {
-            this.tryInitialize();
-        }, 200);
-    }
-
-    tryInitialize() {
-        if (this.isInitialized) {
-            console.log('⚠️ About page already initialized');
-            return;
-        }
-
-        if (this.initializationAttempts >= this.maxAttempts) {
-            console.error('❌ Max initialization attempts reached');
-            return;
-        }
-
-        this.initializationAttempts++;
-        console.log(`🔄 Initialization attempt ${this.initializationAttempts}/${this.maxAttempts}`);
-
-        try {
-            this.initializeAboutPage();
-            this.isInitialized = true;
-            console.log('✅ About page initialized successfully');
-        } catch (error) {
-            console.error('❌ About page initialization failed:', error);
-            
-            if (this.initializationAttempts < this.maxAttempts) {
-                console.log(`🔄 Retrying in 1 second...`);
-                setTimeout(() => {
-                    this.tryInitialize();
-                }, 1000);
-            }
-        }
-    }
-
-    initializeAboutPage() {
-        console.log('🎯 Initializing about page with real photos...');
-        
-        // Настройка хедера для страницы "О нас"
-        this.setupHeaderForAboutPage();
-        
-        // Инициализация фото команды
-        this.initializeTeamPhotos();
-        
-        // Настройка функционала страницы
-        this.setupPageFunctionalities();
-        
-        // Настройка анимаций контента
-        this.setupContentAnimations();
-        
-        // Настройка навигации
-        this.setupPageNavigation();
-        
-        // Финальная проверка
-        this.finalizeInitialization();
-        
-        console.log('✅ About page fully initialized with real photos');
-    }
-
-    setupHeaderForAboutPage() {
-        console.log('🔧 Setting up header for about page...');
-        
-        const header = AboutSafeDOM.querySelector('.main-header');
-        const headerContainer = document.getElementById('header-container');
-        
-        if (header) {
-            AboutSafeDOM.addClass(header, 'about-page-header');
-            console.log('✅ Header found and configured for about page');
-            
-            // Убеждаемся что хедер видим
-            header.style.opacity = '1';
-            header.style.visibility = 'visible';
-        } else if (headerContainer && headerContainer.children.length > 0) {
-            // Ищем хедер внутри контейнера
-            const headerInContainer = headerContainer.querySelector('header, .main-header, nav');
-            if (headerInContainer) {
-                AboutSafeDOM.addClass(headerInContainer, 'about-page-header');
-                console.log('✅ Header found in container and configured');
-            } else {
-                console.warn('⚠️ Header not found in container');
-            }
-        } else {
-            console.warn('⚠️ Header not found - will retry later');
-            this.scheduleRetry('setupHeaderForAboutPage', this.setupHeaderForAboutPage.bind(this));
-        }
-    }
-
-    initializeTeamPhotos() {
-        console.log('🖼️ Initializing team photos...');
-        
-        const teamMembers = AboutSafeDOM.querySelectorAll('.team-member, .team-card, [data-team-member]');
-        const teamPhotos = AboutSafeDOM.querySelectorAll('.team-photo, .member-photo, .team-img');
-        
-        console.log(`👥 Found ${teamMembers.length} team members`);
-        console.log(`📸 Found ${teamPhotos.length} team photos`);
-        
-        // Обработка фото команды
-        teamPhotos.forEach((photo, index) => {
-            if (!photo) return;
-            
-            // Убедимся что фото загружено
-            if (!photo.complete) {
-                photo.addEventListener('load', () => {
-                    console.log(`✅ Photo ${index + 1} loaded successfully`);
-                    AboutSafeDOM.addClass(photo, 'loaded');
-                });
-                
-                photo.addEventListener('error', () => {
-                    console.warn(`⚠️ Photo ${index + 1} failed to load`);
-                    // Устанавливаем fallback изображение
-                    if (photo.dataset.fallback) {
-                        photo.src = photo.dataset.fallback;
-                    }
-                });
-            } else {
-                AboutSafeDOM.addClass(photo, 'loaded');
-                console.log(`✅ Photo ${index + 1} already loaded`);
-            }
-        });
-        
-        // Настройка карточек команды
-        teamMembers.forEach((member, index) => {
-            if (!member) return;
-            
-            // Добавляем анимацию при наведении
-            member.addEventListener('mouseenter', () => {
-                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                member.style.transform = 'translateY(-5px)';
-            });
-            
-            member.addEventListener('mouseleave', () => {
-                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                member.style.transform = 'translateY(0)';
-            });
-        });
+        // Проверяем несколько раз
+        setTimeout(checkAndFix, 100);
+        setTimeout(checkAndFix, 500);
+        setTimeout(checkAndFix, 1000);
+        setTimeout(checkAndFix, 2000);
     }
 
     setupPageFunctionalities() {
         console.log('⚙️ Setting up page functionalities...');
         
-        // Статистика истории
-        const storyStats = AboutSafeDOM.querySelectorAll('.stat-card, .story-stat, [data-stat]');
-        console.log(`📊 Found ${storyStats.length} story stats`);
-        
+        // Статистика
+        const storyStats = document.querySelectorAll('.story-stat');
         storyStats.forEach((stat, index) => {
-            if (!stat) return;
-            
-            // Анимация появления
             setTimeout(() => {
                 stat.style.opacity = '1';
-                stat.style.transform = 'translateY(0)';
             }, index * 100);
         });
         
-        // Карточки услуг
-        const serviceCards = AboutSafeDOM.querySelectorAll('.service-card, .service-item, [data-service]');
-        console.log(`💎 Found ${serviceCards.length} service cards`);
-        
-        serviceCards.forEach((card, index) => {
-            if (!card) return;
-            
-            // Анимация появления
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, index * 150);
-        });
-        
-        console.log('✅ All page functionalities initialized');
+        // Карточки услуг уже гарантированно видны
+        const serviceCards = document.querySelectorAll('.speck-service-card');
+        console.log(`💎 ${serviceCards.length} service cards ready`);
     }
 
     setupContentAnimations() {
-        console.log('🎭 Starting content animations...');
-        
-        // Все секции
-        const sections = AboutSafeDOM.querySelectorAll('section, .content-section');
-        
+        const sections = document.querySelectorAll('section');
         sections.forEach((section, index) => {
-            if (!section) return;
-            
-            // Добавляем анимацию появления
             setTimeout(() => {
                 section.style.opacity = '1';
                 section.style.transform = 'translateY(0)';
-                AboutSafeDOM.addClass(section, 'animated-in');
             }, index * 200);
         });
-        
-        console.log('✅ Content animations started');
     }
 
-    setupPageNavigation() {
-        console.log('📍 Setting up page navigation...');
+    finalCheck() {
+        console.log('🔍 Final check...');
         
-        // Внутренние ссылки для плавного скролла
-        const internalLinks = AboutSafeDOM.querySelectorAll('a[href^="#"]');
-        
-        internalLinks.forEach(link => {
-            if (!link) return;
-            
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
-                if (href.startsWith('#')) {
-                    e.preventDefault();
-                    
-                    const targetId = href.substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    
-                    if (targetElement) {
-                        const header = AboutSafeDOM.querySelector('.main-header');
-                        const headerHeight = header ? header.offsetHeight : 0;
-                        
-                        window.scrollTo({
-                            top: targetElement.offsetTop - headerHeight - 20,
-                            behavior: 'smooth'
-                        });
-                    }
-                }
-            });
-        });
-    }
-
-    setupScrollAnimations() {
-        console.log('📜 Setting up scroll animations...');
-        
-        const animatedSections = AboutSafeDOM.querySelectorAll('.animate-on-scroll, [data-animate]');
-        console.log(`🎬 Setting up scroll animations for ${animatedSections.length} sections`);
-        
-        if (!('IntersectionObserver' in window)) {
-            // Fallback для старых браузеров
-            animatedSections.forEach(section => {
-                if (section) {
-                    setTimeout(() => {
-                        section.style.opacity = '1';
-                        section.style.transform = 'translateY(0)';
-                    }, 300);
-                }
-            });
-            return;
-        }
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    AboutSafeDOM.addClass(entry.target, 'in-view');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        animatedSections.forEach(section => {
-            if (section) observer.observe(section);
-        });
-    }
-
-    finalizeInitialization() {
-        console.log('🎯 Finalizing about page initialization...');
-        
-        // Добавляем класс к body
-        AboutSafeDOM.addClass(document.body, 'about-page-initialized');
-        
-        // Проверяем все ли элементы загружены
-        setTimeout(() => {
-            this.checkAllElementsLoaded();
-        }, 1000);
-    }
-
-    checkAllElementsLoaded() {
-        const checkElements = [
-            { selector: '.main-header', name: 'Header' },
-            { selector: '.team-member, .team-card', name: 'Team members' },
-            { selector: '.service-card, .service-item', name: 'Service cards' },
-            { selector: '.stat-card, .story-stat', name: 'Stats' }
+        const checks = [
+            { selector: '.speck-design-section', name: 'Speck Design section' },
+            { selector: '.speck-service-card', name: 'Speck Design cards' },
+            { selector: '.team-member', name: 'Team members' }
         ];
         
-        let allLoaded = true;
-        checkElements.forEach(item => {
-            const elements = AboutSafeDOM.querySelectorAll(item.selector);
+        let allGood = true;
+        checks.forEach(check => {
+            const elements = document.querySelectorAll(check.selector);
             if (elements.length > 0) {
-                console.log(`✅ ${item.name}: ${elements.length} found`);
+                // Проверяем видимость первого элемента
+                const firstEl = elements[0];
+                const rect = firstEl.getBoundingClientRect();
+                const isVisible = rect.width > 0 && rect.height > 0;
+                
+                if (isVisible) {
+                    console.log(`✅ ${check.name}: ${elements.length} visible`);
+                } else {
+                    console.warn(`⚠️ ${check.name}: found but not visible`);
+                    allGood = false;
+                }
             } else {
-                console.warn(`⚠️ ${item.name}: none found`);
-                allLoaded = false;
+                console.warn(`⚠️ ${check.name}: none found`);
+                allGood = false;
             }
         });
         
-        if (allLoaded) {
-            console.log('✅ All about page elements loaded successfully');
+        if (allGood) {
+            console.log('✅ All checks passed! About page is fully functional');
+        } else {
+            console.warn('⚠️ Some checks failed, attempting emergency fixes...');
+            this.emergencyFix();
         }
     }
 
-    scheduleRetry(taskName, taskFunction) {
-        if (this.initializationAttempts < this.maxAttempts) {
-            console.log(`🔄 Scheduling retry for ${taskName} in 500ms...`);
-            setTimeout(() => {
-                if (!this.isInitialized) {
-                    taskFunction();
-                }
-            }, 500);
-        }
+    emergencyFix() {
+        console.log('🚨 Applying emergency fixes...');
+        
+        // Экстренный фикс для Speck Design
+        const style = document.createElement('style');
+        style.textContent = `
+            /* ЭКСТРЕННЫЙ ФИКС: Гарантировать видимость всего */
+            .speck-design-section,
+            .speck-services-grid,
+            .speck-service-card {
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: block !important;
+                transform: none !important;
+                animation: none !important;
+                position: relative !important;
+                z-index: 1000 !important;
+            }
+            
+            /* Убрать любые скрывающие эффекты */
+            [style*="opacity: 0"],
+            [style*="visibility: hidden"],
+            [style*="display: none"] {
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: block !important;
+            }
+            
+            /* Принудительно показать все элементы */
+            body * {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        console.log('✅ Emergency fixes applied');
     }
 }
 
 // Инициализация
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('📄 About page DOM loaded');
-        window.aboutPageInstance = new AboutPage();
-    });
-} else {
-    console.log('📄 DOM already loaded, starting about page...');
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('📄 About page DOM loaded, starting initialization...');
     window.aboutPageInstance = new AboutPage();
-}
+});
 
-console.log('✅ about.js fully loaded - READY');
+// Экспорт для глобального использования
+window.initAbout = function() {
+    if (window.aboutPageInstance) {
+        window.aboutPageInstance.initializeAboutPage();
+    } else {
+        window.aboutPageInstance = new AboutPage();
+    }
+};
+
+console.log('✅ about.js fully loaded with FIXES for dark overlays and missing blocks');
