@@ -29,6 +29,22 @@
             pointer-events: auto !important;
         }
 
+        /* Стили для хедера на всех страницах кроме главной */
+        body:not(.index-page) .main-header,
+        body.about-page .main-header,
+        body.services-page .main-header,
+        body.portfolio-page .main-header,
+        body.contacts-page .main-header,
+        body.brandbook-page .main-header {
+            background: rgba(10, 10, 20, 0.95) !important;
+            backdrop-filter: blur(40px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        }
+
         /* Состояние когда хедер скрыт */
         .main-header.header-hidden {
             transform: translateX(-50%) translateY(-100%) !important;
@@ -56,6 +72,22 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
+        /* scrolled класс для внутренних страниц */
+        body:not(.index-page) .main-header.scrolled,
+        body.about-page .main-header.scrolled,
+        body.services-page .main-header.scrolled,
+        body.portfolio-page .main-header.scrolled,
+        body.contacts-page .main-header.scrolled,
+        body.brandbook-page .main-header.scrolled {
+            background: rgba(15, 15, 25, 0.98) !important;
+            backdrop-filter: blur(45px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(45px) saturate(200%) !important;
+            box-shadow: 
+                0 15px 50px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
         .main-header:hover {
             background: rgba(255, 255, 255, 0.08);
             border-color: rgba(255, 255, 255, 0.15);
@@ -63,6 +95,17 @@
             box-shadow: 
                 0 15px 45px rgba(0, 0, 0, 0.25),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* hover для внутренних страниц */
+        body:not(.index-page) .main-header:hover,
+        body.about-page .main-header:hover,
+        body.services-page .main-header:hover,
+        body.portfolio-page .main-header:hover,
+        body.contacts-page .main-header:hover,
+        body.brandbook-page .main-header:hover {
+            background: rgba(20, 20, 30, 0.98) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
         }
 
         .header-container {
@@ -513,6 +556,18 @@
                 pointer-events: auto !important;
             }
             
+            /* Для внутренних страниц на мобильных */
+            body:not(.index-page) .main-header,
+            body.about-page .main-header,
+            body.services-page .main-header,
+            body.portfolio-page .main-header,
+            body.contacts-page .main-header,
+            body.brandbook-page .main-header {
+                background: rgba(10, 10, 20, 0.98) !important;
+                backdrop-filter: blur(35px) !important;
+                -webkit-backdrop-filter: blur(35px) !important;
+            }
+            
             .main-header.header-hidden {
                 transform: translateY(-100%) !important;
                 opacity: 0 !important;
@@ -841,7 +896,7 @@
     (function() {
         'use strict';
         
-        console.log('🚀 Header loaded - Enhanced animations');
+        console.log('🚀 Header loaded - Enhanced animations for all pages');
         
         // ===== НАСТРОЙКА ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА =====
         function setupLanguageSwitcher() {
@@ -910,375 +965,123 @@
             });
         }
         
-        // ===== СКРЫТИЕ ХЕДЕРА ПРИ СКРОЛЛЕ (УЛУЧШЕННАЯ ВЕРСИЯ) =====
-        function setupHeaderScroll() {
-            console.log('🎯 Setting up enhanced header scroll behavior...');
-            
+        // ===== БАЗОВЫЙ СКРИПТ ДЛЯ СКРЫТИЯ ХЕДЕРА (для всех страниц) =====
+        function setupBasicHeaderScroll() {
             const header = document.getElementById('main-header');
-            if (!header) {
-                console.warn('❌ Header not found for scroll behavior');
-                return;
-            }
+            if (!header) return;
             
             let lastScrollTop = 0;
-            const scrollThreshold = 100;
-            let isHidden = false;
-            let ticking = false;
-            let hideTimeout = null;
-            let showTimeout = null;
-            let isScrolling = false;
-            let scrollEndTimeout = null;
+            let isHeaderHidden = false;
             
-            // CSS для плавных анимаций
-            const style = document.createElement('style');
-            style.textContent = `
-                /* Глобальные transition для плавности */
-                .main-header,
-                .main-header * {
-                    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-                }
-                
-                /* Анимация появления/исчезновения */
-                .main-header {
-                    transition: 
-                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                        background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                        box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                        backdrop-filter 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                }
-                
-                .main-header.header-hidden {
-                    transform: translateY(-100%) !important;
-                    opacity: 0 !important;
-                    pointer-events: none !important;
-                }
-                
-                .main-header.header-visible {
-                    transform: translateY(0) !important;
-                    opacity: 1 !important;
-                    pointer-events: auto !important;
-                }
-                
-                /* Плавный scrolled эффект */
-                .main-header.scrolled {
-                    transform: translateY(0) scale(1.02) !important;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                }
-                
-                /* Для десктопа */
-                @media (min-width: 901px) {
-                    .main-header.header-hidden {
-                        transform: translateX(-50%) translateY(-100%) !important;
-                    }
-                    .main-header.header-visible {
-                        transform: translateX(-50%) translateY(0) !important;
-                    }
-                    .main-header.scrolled {
-                        transform: translateX(-50%) translateY(0) scale(1.02) !important;
-                    }
-                }
-                
-                /* Улучшенные hover эффекты */
-                .nav-link:hover,
-                .start-project-btn:hover,
-                .language-switcher:hover {
-                    transform: translateY(-2px) !important;
-                }
-                
-                /* Анимация активной ссылки */
-                .nav-link.active {
-                    animation: navLinkPulse 3s ease-in-out infinite;
-                }
-                
-                @keyframes navLinkPulse {
-                    0%, 100% {
-                        box-shadow: 
-                            inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                            0 4px 20px rgba(0, 102, 255, 0.15);
-                    }
-                    50% {
-                        box-shadow: 
-                            inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                            0 4px 25px rgba(0, 102, 255, 0.25),
-                            0 0 15px rgba(0, 102, 255, 0.1);
-                    }
-                }
-            `;
-            document.head.appendChild(style);
+            // Определяем, главная ли это страница
+            const isHomePage = window.location.pathname.includes('index.html') || 
+                              window.location.pathname === '/' ||
+                              window.location.pathname.endsWith('nbgroup1/') ||
+                              window.location.pathname.endsWith('nbgroup1');
             
-            // Скрыть хедер
-            function hideHeader() {
-                if (hideTimeout) {
-                    clearTimeout(hideTimeout);
-                    hideTimeout = null;
-                }
-                
-                if (isHidden) return;
-                
-                header.classList.remove('header-visible');
-                header.classList.add('header-hidden');
-                isHidden = true;
-                
-                console.log('⬇️ Header hidden smoothly');
+            // Для всех страниц кроме главной устанавливаем темный фон сразу
+            if (!isHomePage) {
+                header.style.background = 'rgba(10, 10, 20, 0.95)';
+                header.style.backdropFilter = 'blur(40px) saturate(200%)';
+                header.classList.add('scrolled');
             }
             
-            // Показать хедер
-            function showHeader() {
-                if (showTimeout) {
-                    clearTimeout(showTimeout);
-                    showTimeout = null;
-                }
-                
-                if (hideTimeout) {
-                    clearTimeout(hideTimeout);
-                    hideTimeout = null;
-                }
-                
-                if (!isHidden) return;
-                
-                header.classList.remove('header-hidden');
-                header.classList.add('header-visible');
-                isHidden = false;
-                
-                // Обновляем scrolled класс
+            function handleScroll() {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                if (scrollTop > 100) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
                 
-                console.log('⬆️ Header shown smoothly');
-            }
-            
-            // Обновляет состояние хедера
-            function updateHeaderState() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const scrollingDown = scrollTop > lastScrollTop;
-                const isAtTop = scrollTop <= 50;
-                const scrollDelta = Math.abs(scrollTop - lastScrollTop);
-                
-                // Всегда показываем хедер в самом верху страницы
-                if (isAtTop) {
-                    if (isHidden) {
-                        showHeader();
+                // Всегда показываем хедер вверху страницы
+                if (scrollTop <= 50) {
+                    if (isHeaderHidden) {
+                        header.classList.remove('header-hidden');
+                        header.classList.add('header-visible');
+                        isHeaderHidden = false;
                     }
-                    header.classList.remove('scrolled');
-                    lastScrollTop = scrollTop;
-                    ticking = false;
                     return;
                 }
                 
-                // Обновляем scrolled класс
+                const scrollingDown = scrollTop > lastScrollTop;
+                
+                // Прячем при скролле вниз
+                if (scrollingDown && scrollTop > 100) {
+                    if (!isHeaderHidden) {
+                        header.classList.remove('header-visible');
+                        header.classList.add('header-hidden');
+                        isHeaderHidden = true;
+                    }
+                }
+                // Показываем при скролле вверх
+                else if (!scrollingDown && scrollTop > 100) {
+                    if (isHeaderHidden) {
+                        header.classList.remove('header-hidden');
+                        header.classList.add('header-visible');
+                        isHeaderHidden = false;
+                    }
+                }
+                
+                // Добавляем scrolled класс для изменения стилей
                 if (scrollTop > 100) {
                     header.classList.add('scrolled');
                 } else {
                     header.classList.remove('scrolled');
                 }
                 
-                // Только если пользователь активно скроллит
-                if (scrollDelta > 5) {
-                    // Прячем при быстром скролле вниз
-                    if (scrollingDown && scrollTop > scrollThreshold) {
-                        if (!isHidden && !hideTimeout) {
-                            hideTimeout = setTimeout(() => {
-                                hideHeader();
-                            }, 200); // Увеличиваем задержку для лучшего UX
-                        }
-                    }
-                    // Показываем при скролле вверх
-                    else if (!scrollingDown && scrollTop > scrollThreshold) {
-                        if (isHidden && !showTimeout) {
-                            showTimeout = setTimeout(() => {
-                                showHeader();
-                            }, 100);
-                        }
-                    }
-                }
-                
                 lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-                ticking = false;
             }
             
-            // Оптимизированный обработчик скролла с throttling
-            function onScroll() {
-                if (!ticking) {
-                    ticking = true;
-                    requestAnimationFrame(updateHeaderState);
-                }
-            }
+            window.addEventListener('scroll', handleScroll, { passive: true });
             
-            // Показываем хедер при наведении курсора в верхнюю часть экрана
-            function setupHoverToShow() {
+            // Показываем хедер при наведении (только для десктопа)
+            if (window.innerWidth > 900) {
                 const hoverZone = document.createElement('div');
-                hoverZone.style.position = 'fixed';
-                hoverZone.style.top = '0';
-                hoverZone.style.left = '0';
-                hoverZone.style.width = '100%';
-                hoverZone.style.height = '80px';
-                hoverZone.style.zIndex = '999';
-                hoverZone.style.pointerEvents = isHidden ? 'auto' : 'none';
-                hoverZone.style.opacity = '0';
-                hoverZone.style.transition = 'pointer-events 0.3s ease';
+                hoverZone.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 80px;
+                    z-index: 998;
+                    pointer-events: ${isHeaderHidden ? 'auto' : 'none'};
+                    background: transparent;
+                    transition: pointer-events 0.3s ease;
+                `;
                 hoverZone.id = 'header-hover-zone';
                 
                 hoverZone.addEventListener('mouseenter', () => {
-                    if (isHidden) {
-                        showHeader();
+                    if (isHeaderHidden) {
+                        header.classList.remove('header-hidden');
+                        header.classList.add('header-visible');
+                        isHeaderHidden = false;
                         hoverZone.style.pointerEvents = 'none';
                     }
                 });
                 
                 document.body.appendChild(hoverZone);
-                
-                // Обновляем состояние hover zone
-                const updateHoverZone = () => {
-                    hoverZone.style.pointerEvents = isHidden ? 'auto' : 'none';
-                };
-                
-                // Обновляем при изменении состояния хедера
-                const observer = new MutationObserver(updateHoverZone);
-                observer.observe(header, { attributes: true, attributeFilter: ['class'] });
             }
             
             // Инициализация
-            function initHeaderScroll() {
-                // Настраиваем обработчик скролла
-                window.addEventListener('scroll', onScroll, { passive: true });
-                
-                // Настраиваем hover для показа
-                if (window.innerWidth > 900) {
-                    setupHoverToShow();
-                }
-                
-                // Обработка ресайза
-                window.addEventListener('resize', () => {
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                    if (scrollTop <= 50 && isHidden) {
-                        showHeader();
-                    }
-                    
-                    // Удаляем hover zone на мобильных
-                    const hoverZone = document.getElementById('header-hover-zone');
-                    if (hoverZone && window.innerWidth <= 900) {
-                        hoverZone.remove();
-                    } else if (!hoverZone && window.innerWidth > 900 && isHidden) {
-                        setupHoverToShow();
-                    }
-                });
-                
-                // Инициализируем состояние
-                updateHeaderState();
-                
-                console.log('✅ Enhanced header scroll behavior initialized');
-                
-                // Экспортируем функции глобально
-                window.showHeader = showHeader;
-                window.hideHeader = hideHeader;
-                window.toggleHeader = () => {
-                    if (isHidden) showHeader();
-                    else hideHeader();
-                };
-                window.getHeaderState = () => ({ isHidden });
-            }
+            handleScroll();
             
-            // Запускаем
-            setTimeout(initHeaderScroll, 100);
-        }
-        
-        // ===== УЛУЧШЕННЫЕ АНИМАЦИИ ДЛЯ КНОПОК =====
-        function setupEnhancedButtonAnimations() {
-            // Все кнопки и ссылки в хедере
-            const interactiveElements = document.querySelectorAll(
-                '.main-header .nav-link, .main-header .start-project-btn, .main-header .lang-btn, .main-header .logo'
-            );
+            // Экспортируем функции
+            window.showHeaderBasic = function() {
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+                isHeaderHidden = false;
+            };
             
-            interactiveElements.forEach(el => {
-                if (!el) return;
-                
-                // Добавляем плавную анимацию при наведении
-                el.addEventListener('mouseenter', (e) => {
-                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                    
-                    // Минимальная анимация для мобильных
-                    if (window.innerWidth <= 900) return;
-                    
-                    const rect = el.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
-                    // Создаем эффект волны
-                    const ripple = document.createElement('div');
-                    ripple.style.position = 'absolute';
-                    ripple.style.borderRadius = '50%';
-                    ripple.style.background = 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)';
-                    ripple.style.transform = `translate(-50%, -50%) scale(0)`;
-                    ripple.style.width = '100px';
-                    ripple.style.height = '100px';
-                    ripple.style.top = `${y}px`;
-                    ripple.style.left = `${x}px`;
-                    ripple.style.pointerEvents = 'none';
-                    ripple.style.zIndex = '0';
-                    ripple.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease';
-                    
-                    el.style.position = 'relative';
-                    el.style.overflow = 'hidden';
-                    el.appendChild(ripple);
-                    
-                    // Запускаем анимацию
-                    requestAnimationFrame(() => {
-                        ripple.style.transform = `translate(-50%, -50%) scale(1)`;
-                        ripple.style.opacity = '0.8';
-                    });
-                    
-                    // Удаляем через время
-                    setTimeout(() => {
-                        ripple.style.opacity = '0';
-                        setTimeout(() => {
-                            if (ripple.parentNode === el) {
-                                el.removeChild(ripple);
-                            }
-                        }, 600);
-                    }, 300);
-                });
-                
-                // Анимация клика
-                el.addEventListener('mousedown', () => {
-                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                    
-                    el.style.transform = 'translateY(1px) scale(0.98)';
-                });
-                
-                el.addEventListener('mouseup', () => {
-                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                    
-                    el.style.transform = '';
-                });
-                
-                el.addEventListener('mouseleave', () => {
-                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                    
-                    el.style.transform = '';
-                });
-            });
-            
-            console.log('✅ Enhanced button animations setup');
+            window.hideHeaderBasic = function() {
+                header.classList.remove('header-visible');
+                header.classList.add('header-hidden');
+                isHeaderHidden = true;
+            };
         }
         
         // ===== ИНИЦИАЛИЗАЦИЯ ВСЕГО =====
         function init() {
             setupLanguageSwitcher();
             setupStartProjectButton();
-            setupHeaderScroll();
-            setupEnhancedButtonAnimations();
+            setupBasicHeaderScroll();
             
-            // Добавляем класс для плавных переходов после загрузки
-            setTimeout(() => {
-                document.body.classList.add('header-animations-ready');
-            }, 500);
-            
-            console.log('✅ Header initialization complete with enhanced animations');
+            console.log('✅ Header initialization complete for all pages');
         }
         
         // Запуск инициализации
