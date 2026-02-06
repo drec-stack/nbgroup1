@@ -18,7 +18,7 @@ body.home-page {
     background-image: none !important;
     -webkit-overflow-scrolling: touch;
     overflow-scrolling: touch;
-    padding-top: 80px !important;
+    padding-top: 100px !important; /* Отступ для фиксированного хедера */
 }
 
 html {
@@ -1214,11 +1214,11 @@ body.home-page::before {
     }
 }
 
-/* ===== МОБИЛЬНАЯ АДАПТАЦИЯ - ИСПРАВЛЕННЫЕ СТИЛИ ХЕДЕРА ===== */
+/* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
 @media (max-width: 768px) {
     /* ОСНОВНЫЕ НАСТРОЙКИ */
     body.home-page {
-        padding-top: 60px !important;
+        padding-top: 70px !important; /* Уменьшенный отступ для мобильных */
     }
     
     .container {
@@ -1233,65 +1233,6 @@ body.home-page::before {
         transform: none !important;
         height: 100vh !important;
         position: fixed !important;
-    }
-    
-    /* ХЕДЕР НА МОБИЛЬНЫХ */
-    .home-page .main-header {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        transform: none !important;
-        border-radius: 0 !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 10px 0 !important;
-        background: rgba(10, 10, 20, 0.95) !important;
-    }
-    
-    .main-header.scrolled {
-        padding: 8px 0 !important;
-    }
-    
-    /* ЛОГОТИП НА МОБИЛЬНЫХ */
-    .logo {
-        flex: 1;
-        min-width: 0;
-        max-width: 60%;
-    }
-    
-    .logo-text {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        font-size: 16px !important;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 120px;
-    }
-    
-    /* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА НА МОБИЛЬНЫХ */
-    .language-switcher-mobile {
-        min-width: 75px !important;
-        max-width: 75px !important;
-        height: 30px !important;
-        margin-right: 10px;
-    }
-    
-    .language-switcher-mobile .lang-btn {
-        font-size: 11px !important;
-        padding: 4px 6px !important;
-    }
-    
-    .language-switcher-mobile .lang-flag {
-        font-size: 11px !important;
-    }
-    
-    /* БУРГЕР МЕНЮ */
-    .burger-btn {
-        min-width: 32px;
-        min-height: 32px;
-        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
     }
     
     /* HERO СЕКЦИЯ */
@@ -1717,7 +1658,7 @@ body.home-page::before {
 /* ===== АДАПТАЦИЯ ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНОВ ===== */
 @media (max-width: 480px) {
     body.home-page {
-        padding-top: 56px !important;
+        padding-top: 65px !important;
     }
     
     .hero h1 {
@@ -1798,22 +1739,6 @@ body.home-page::before {
     .project-card,
     .speck-service-item {
         min-height: 44px !important;
-    }
-    
-    /* ЛОГОТИП ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ */
-    .logo-text {
-        font-size: 15px !important;
-        max-width: 100px !important;
-    }
-    
-    .language-switcher-mobile {
-        min-width: 70px !important;
-        max-width: 70px !important;
-    }
-    
-    .language-switcher-mobile .lang-btn {
-        font-size: 10px !important;
-        padding: 3px 5px !important;
     }
     
     /* CTA ДОПОЛНИТЕЛЬНЫЕ ИСПРАВЛЕНИЯ */
@@ -1955,11 +1880,6 @@ body.home-page::before {
 
 /* ===== СПЕЦИАЛЬНЫЕ ПРАВИЛА ДЛЯ IOS SAFARI ===== */
 @supports (-webkit-touch-callout: none) {
-    .home-page .main-header {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-    }
-    
     .hero {
         min-height: -webkit-fill-available !important;
         min-height: 100dvh !important;
@@ -2008,97 +1928,3 @@ body.home-page::before {
     }
 }
 
-/* ===== HEADER FIX FOR HOME PAGE ===== */
-.home-page .main-header {
-    position: fixed !important;
-    top: 20px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: calc(100% - 40px) !important;
-    max-width: 1400px !important;
-    margin: 0 auto !important;
-    z-index: 1000 !important;
-}
-
-.home-page .container {
-    max-width: 1400px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-}
-
-@media (max-width: 768px) {
-    .home-page .main-header {
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0 !important;
-        top: 0 !important;
-    }
-    
-    .home-page .container {
-        padding: 0 20px !important;
-    }
-}
-
-/* ===== ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ ДЛЯ ЦЕНТРИРОВАНИЯ ===== */
-.cta-section .container {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    flex-direction: column !important;
-}
-
-@media (max-width: 768px) {
-    .cta-section .container {
-        padding: 0 20px !important;
-    }
-}
-
-/* ===== ДОПОЛНИТЕЛЬНЫЕ МОБИЛЬНЫЕ ФИКСЫ ===== */
-@media (max-width: 360px) {
-    .logo-text {
-        font-size: 14px !important;
-        max-width: 90px !important;
-    }
-    
-    .language-switcher-mobile {
-        min-width: 65px !important;
-        max-width: 65px !important;
-    }
-    
-    .language-switcher-mobile .lang-btn {
-        font-size: 9px !important;
-    }
-}
-
-/* ===== ДОПОЛНИТЕЛЬНЫЕ ИСПРАВЛЕНИЯ ДЛЯ ИЗОБРАЖЕНИЙ ===== */
-.project-image img {
-    width: auto;
-    max-width: 90%;
-    height: auto;
-    max-height: 90%;
-    object-fit: contain;
-    transition: transform 0.8s ease;
-    background: transparent;
-}
-
-.project-image {
-    background: rgba(255, 255, 255, 0.05) !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Гарантируем что все изображения в проектах нормальные */
-.project-card .project-image,
-.project-card img {
-    overflow: visible !important;
-}
-
-/* Отключаем слишком агрессивное масштабирование */
-.project-card:hover .project-image img {
-    transform: scale(1.05) !important;
-}
