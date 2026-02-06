@@ -75,6 +75,7 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
+    padding-top: 100px; /* Отступ для фиксированного хедера */
 }
 
 body::before {
@@ -831,30 +832,25 @@ textarea.form-control {
     }
 }
 
-/* ===== СТИЛИ ХЕДЕРА (ПЕРЕНЕСЕНЫ ИЗ header.html) ===== */
-
-/* ===== HEADER STYLES ===== */
+/* ===== HEADER STYLES (УНИВЕРСАЛЬНЫЕ ДЛЯ ВСЕХ СТРАНИЦ) ===== */
 .main-header {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% - 40px);
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px 0;
-    background: rgba(255, 255, 255, 0.05);
-    z-index: 1000;
-    border-radius: 20px;
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform, opacity, backdrop-filter, background-color;
-    pointer-events: auto !important;
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 15px 0 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(40px) !important;
+    -webkit-backdrop-filter: blur(40px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 20px !important;
+    z-index: 1000 !important;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.35) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: transform, opacity, backdrop-filter;
 }
 
 /* Состояние когда хедер скрыт */
@@ -873,24 +869,21 @@ textarea.form-control {
 
 /* scrolled класс для изменения стилей при прокрутке */
 .main-header.scrolled {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    background: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(45px) !important;
+    -webkit-backdrop-filter: blur(45px) !important;
     box-shadow: 
-        0 15px 50px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.15);
+        0 20px 60px rgba(0, 0, 0, 0.45) !important;
     transform: translateX(-50%) translateY(0) scale(1.02) !important;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .main-header:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.15);
-    transform: translateX(-50%) translateY(0) scale(1.02);
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    transform: translateX(-50%) translateY(0) scale(1.02) !important;
     box-shadow: 
-        0 15px 45px rgba(0, 0, 0, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        0 0 30px rgba(0, 102, 255, 0.1) !important;
 }
 
 .header-container {
@@ -1303,14 +1296,8 @@ textarea.form-control {
         backdrop-filter: blur(35px) !important;
         -webkit-backdrop-filter: blur(35px) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-        border-top: none !important;
-        border-left: none !important;
-        border-right: none !important;
         box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4) !important;
         padding: 15px 0 !important;
-        margin: 0 !important;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        pointer-events: auto !important;
     }
     
     .main-header.header-hidden {
@@ -1562,57 +1549,6 @@ textarea.form-control {
     }
 }
 
-/* ===== СТИЛИ ДЛЯ ВСЕХ СТРАНИЦ КРОМЕ ГЛАВНОЙ (УНИФИЦИРОВАННЫЙ ХЕДЕР) ===== */
-body:not(.home-page):not(.index-page) .main-header {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(30px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    position: fixed !important;
-    top: 20px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: calc(100% - 40px) !important;
-    max-width: 1400px !important;
-    padding: 15px 0 !important;
-    border-radius: 20px !important;
-    z-index: 1000 !important;
-}
-
-body:not(.home-page):not(.index-page) .main-header.scrolled {
-    background: rgba(255, 255, 255, 0.12) !important;
-    backdrop-filter: blur(35px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
-    box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-}
-
-/* Для мобильных на страницах кроме главной */
-@media (max-width: 900px) {
-    body:not(.home-page):not(.index-page) .main-header {
-        background: rgba(255, 255, 255, 0.08) !important;
-        backdrop-filter: blur(30px) !important;
-        -webkit-backdrop-filter: blur(30px) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-        top: 0 !important;
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        border-radius: 0 !important;
-        padding: 12px 0 !important;
-    }
-    
-    body:not(.home-page):not(.index-page) .main-header.scrolled {
-        background: rgba(255, 255, 255, 0.12) !important;
-        backdrop-filter: blur(35px) !important;
-        -webkit-backdrop-filter: blur(35px) !important;
-    }
-}
-
 /* ===== МЕДИА ЗАПРОСЫ ОБЩИЕ ===== */
 @media (max-width: 1200px) {
     h1 {
@@ -1670,6 +1606,7 @@ body:not(.home-page):not(.index-page) .main-header.scrolled {
     
     body {
         font-size: 15px;
+        padding-top: 70px; /* Уменьшенный отступ для мобильных */
     }
     
     .section {
