@@ -2135,3 +2135,194 @@ textarea.form-control {
         box-shadow: none;
     }
 }
+
+/* ===== УНИВЕРСАЛЬНЫЙ ФИКС ДЛЯ ХЕДЕРА НА ВСЕХ СТРАНИЦАХ ===== */
+/* Добавлено для решения проблемы с "поплывшим" хедером на других страницах */
+
+/* Принудительно применяем одинаковые стили хедера для ВСЕХ страниц */
+.main-header {
+    /* Позиционирование */
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    
+    /* Внешний вид - ПРОЗРАЧНЫЙ КАК НА ГЛАВНОЙ */
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(40px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 20px !important;
+    box-shadow: 
+        0 15px 50px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+    
+    /* Размеры */
+    padding: 15px 0 !important;
+    
+    /* Слои */
+    z-index: 1000 !important;
+    
+    /* Состояние */
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    
+    /* Анимации */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: transform, backdrop-filter, background-color, box-shadow !important;
+}
+
+/* Гарантируем что хедер всегда видим на всех страницах */
+.main-header.header-hidden,
+.main-header.header-visible {
+    transform: translateX(-50%) translateY(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* Стиль при скролле (для всех страниц) */
+.main-header.scrolled {
+    background: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(45px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(45px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    padding: 12px 0 !important;
+}
+
+/* Эффект при наведении */
+.main-header:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    transform: translateX(-50%) translateY(0) scale(1.02) !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        0 0 30px rgba(0, 102, 255, 0.15) !important;
+}
+
+/* Мобильная версия для всех страниц */
+@media (max-width: 900px) {
+    .main-header {
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        background: rgba(10, 10, 20, 0.98) !important;
+        backdrop-filter: blur(35px) !important;
+        -webkit-backdrop-filter: blur(35px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+        padding: 12px 0 !important;
+    }
+    
+    .main-header.scrolled {
+        background: rgba(10, 10, 20, 0.98) !important;
+        backdrop-filter: blur(40px) !important;
+        -webkit-backdrop-filter: blur(40px) !important;
+        padding: 10px 0 !important;
+    }
+    
+    .main-header.header-hidden {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+    }
+    
+    .main-header.header-visible {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+    }
+}
+
+/* ФИКС: Убираем конфликтующие стили для других страниц */
+/* Это гарантирует что хедер выглядит одинаково на ВСЕХ страницах */
+body:not(.index-page) .main-header,
+body.about-page .main-header,
+body.services-page .main-header,
+body.portfolio-page .main-header,
+body.contacts-page .main-header,
+body.brandbook-page .main-header {
+    /* Сбрасываем все специфичные стили */
+    all: unset;
+    
+    /* Применяем универсальные стили */
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 40px) !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 15px 0 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(40px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 20px !important;
+    z-index: 1000 !important;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.35) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Мобильная версия для всех не-главных страниц */
+@media (max-width: 900px) {
+    body:not(.index-page) .main-header,
+    body.about-page .main-header,
+    body.services-page .main-header,
+    body.portfolio-page .main-header,
+    body.contacts-page .main-header,
+    body.brandbook-page .main-header {
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+        background: rgba(10, 10, 20, 0.98) !important;
+        backdrop-filter: blur(35px) !important;
+        -webkit-backdrop-filter: blur(35px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+        padding: 12px 0 !important;
+    }
+}
+
+/* ФИНАЛЬНЫЙ ФИКС: Отключаем анимации скрытия/показа для не-главных страниц */
+/* На других страницах хедер всегда виден */
+body:not(.index-page) .main-header.header-hidden,
+body:not(.index-page) .main-header.header-visible {
+    animation: none !important;
+    transform: translateX(-50%) translateY(0) !important;
+    opacity: 1 !important;
+}
+
+@media (max-width: 900px) {
+    body:not(.index-page) .main-header.header-hidden,
+    body:not(.index-page) .main-header.header-visible {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+    }
+}
+
+/* Дополнительный padding для body чтобы контент не перекрывался хедером */
+/* Это нужно для всех страниц */
+body {
+    padding-top: 100px !important;
+}
+
+@media (max-width: 900px) {
+    body {
+        padding-top: 70px !important;
+    }
+}
