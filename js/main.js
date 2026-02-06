@@ -137,7 +137,7 @@ window.NBGroupApp = {
         console.log('✅ Header management setup complete');
     },
     
-    // Применение универсальных стилей хедера
+    // Применение универсальных стилей хедера (ИСПРАВЛЕННАЯ ВЕРСИЯ)
     applyUniversalHeaderStyles() {
         const styleId = 'universal-header-fix';
         let existingStyle = document.getElementById(styleId);
@@ -151,6 +151,7 @@ window.NBGroupApp = {
         
         style.textContent = `
             /* ===== УНИВЕРСАЛЬНЫЙ ФИКС ДЛЯ ХЕДЕРА НА ВСЕХ СТРАНИЦАХ ===== */
+            /* Этот стиль гарантирует что хедер выглядит одинаково на ВСЕХ страницах */
             
             /* БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ СТРАНИЦ */
             .main-header {
@@ -167,10 +168,9 @@ window.NBGroupApp = {
                 transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 will-change: transform, opacity, backdrop-filter !important;
                 pointer-events: auto !important;
-                animation: none !important;
             }
             
-            /* ПРОЗРАЧНЫЙ СТИЛЬ КАК НА ГЛАВНОЙ */
+            /* ПРОЗРАЧНЫЙ СТИЛЬ КАК НА ГЛАВНОЙ - ДЛЯ ВСЕХ СТРАНИЦ */
             .main-header {
                 background: rgba(255, 255, 255, 0.08) !important;
                 backdrop-filter: blur(40px) saturate(200%) !important;
@@ -181,7 +181,7 @@ window.NBGroupApp = {
                     inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
             }
             
-            /* ЭФФЕКТ ПРИ СКРОЛЛЕ */
+            /* ЭФФЕКТ ПРИ СКРОЛЛЕ - ДЛЯ ВСЕХ СТРАНИЦ */
             .main-header.scrolled {
                 background: rgba(255, 255, 255, 0.12) !important;
                 backdrop-filter: blur(45px) saturate(200%) !important;
@@ -190,10 +190,10 @@ window.NBGroupApp = {
                     0 20px 60px rgba(0, 0, 0, 0.45),
                     inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
                 border: 1px solid rgba(255, 255, 255, 0.18) !important;
-                padding: 10px 0 !important;
+                padding: 12px 0 !important;
             }
             
-            /* ГАРАНТИРУЕМ ЧТО ХЕДЕР ВСЕГДА ВИДЕН */
+            /* ГАРАНТИРУЕМ ЧТО ХЕДЕР ВСЕГДА ВИДЕН - ДЛЯ ВСЕХ СТРАНИЦ */
             .main-header.header-visible {
                 transform: translateX(-50%) translateY(0) !important;
                 opacity: 1 !important;
@@ -201,12 +201,13 @@ window.NBGroupApp = {
             }
             
             .main-header.header-hidden {
+                /* На других страницах хедер никогда не скрывается */
                 transform: translateX(-50%) translateY(0) !important;
                 opacity: 1 !important;
                 pointer-events: auto !important;
             }
             
-            /* МОБИЛЬНАЯ ВЕРСИЯ */
+            /* МОБИЛЬНАЯ ВЕРСИЯ - ДЛЯ ВСЕХ СТРАНИЦ */
             @media (max-width: 900px) {
                 .main-header {
                     position: fixed !important;
@@ -243,7 +244,7 @@ window.NBGroupApp = {
                 }
             }
             
-            /* ФИКС ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА */
+            /* ФИКС ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКА - ДЛЯ ВСЕХ СТРАНИЦ */
             .language-switcher.desktop-only {
                 min-width: 120px !important;
             }
@@ -273,7 +274,7 @@ window.NBGroupApp = {
                 }
             }
             
-            /* ФИКС ДЛЯ ЛОГОТИПА */
+            /* ФИКС ДЛЯ ЛОГОТИПА - ДЛЯ ВСЕХ СТРАНИЦ */
             .logo {
                 pointer-events: auto !important;
                 cursor: pointer !important;
@@ -283,15 +284,66 @@ window.NBGroupApp = {
                 pointer-events: auto !important;
             }
             
-            /* ФИКС ДЛЯ КНОПКИ "НАЧАТЬ ПРОЕКТ" */
+            /* ФИКС ДЛЯ КНОПКИ "НАЧАТЬ ПРОЕКТ" - ДЛЯ ВСЕХ СТРАНИЦ */
             .start-project-btn {
                 pointer-events: auto !important;
                 cursor: pointer !important;
             }
+            
+            /* ФИНАЛЬНЫЙ ФИКС: УБИРАЕМ ВСЕ КОНФЛИКТУЮЩИЕ СТИЛИ ДЛЯ ДРУГИХ СТРАНИЦ */
+            body:not(.index-page) .main-header,
+            body.about-page .main-header,
+            body.services-page .main-header,
+            body.portfolio-page .main-header,
+            body.contacts-page .main-header,
+            body.brandbook-page .main-header {
+                all: unset !important;
+                
+                /* Применяем универсальные стили */
+                position: fixed !important;
+                top: 20px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                width: calc(100% - 40px) !important;
+                max-width: 1400px !important;
+                margin: 0 auto !important;
+                padding: 15px 0 !important;
+                background: rgba(255, 255, 255, 0.08) !important;
+                backdrop-filter: blur(40px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
+                border: 1px solid rgba(255, 255, 255, 0.15) !important;
+                border-radius: 20px !important;
+                z-index: 1000 !important;
+                box-shadow: 0 15px 50px rgba(0,0,0,0.35) !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            }
+            
+            @media (max-width: 900px) {
+                body:not(.index-page) .main-header,
+                body.about-page .main-header,
+                body.services-page .main-header,
+                body.portfolio-page .main-header,
+                body.contacts-page .main-header,
+                body.brandbook-page .main-header {
+                    top: 0 !important;
+                    left: 0 !important;
+                    transform: none !important;
+                    width: 100% !important;
+                    border-radius: 0 !important;
+                    background: rgba(10, 10, 20, 0.98) !important;
+                    backdrop-filter: blur(35px) !important;
+                    -webkit-backdrop-filter: blur(35px) !important;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+                    padding: 12px 0 !important;
+                }
+            }
         `;
         
         document.head.appendChild(style);
-        console.log('✅ Universal header styles applied');
+        console.log('✅ Universal header styles applied for ALL pages');
     },
     
     // Настройка скрытия хедера при скролле (только для главной)
