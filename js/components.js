@@ -352,14 +352,7 @@ class EnhancedComponentLoader {
         header.classList.remove('header-hidden');
         header.classList.add('header-visible');
         
-        // Определяем тип страницы
-        const isIndexPage = document.body.classList.contains('home-page') || 
-                           document.body.classList.contains('index-page') ||
-                           window.location.pathname.includes('index.html') ||
-                           window.location.pathname === '/' ||
-                           window.location.pathname.endsWith('/');
-        
-        // КРИТИЧЕСКИЙ ФИКС: Применяем универсальные стили для всех страниц
+        // Применяем универсальные стили для всех страниц
         this.applyUniversalHeaderStyles();
         
         // Добавляем обработчики для кнопки "Начать проект"
@@ -391,7 +384,7 @@ class EnhancedComponentLoader {
     
     // Применение универсальных стилей хедера
     applyUniversalHeaderStyles() {
-        const styleId = 'components-header-fix';
+        const styleId = 'components-header-universal-fix';
         let existingStyle = document.getElementById(styleId);
         
         if (existingStyle) {
@@ -404,7 +397,7 @@ class EnhancedComponentLoader {
         style.textContent = `
             /* ===== УНИВЕРСАЛЬНЫЙ ФИКС ДЛЯ ХЕДЕРА ОТ COMPONENTS.JS ===== */
             
-            /* ГАРАНТИРУЕМ ВИДИМОСТЬ И ПРАВИЛЬНОЕ ПОЛОЖЕНИЕ */
+            /* ГАРАНТИРУЕМ ВИДИМОСТЬ ДЛЯ ВСЕХ СТРАНИЦ */
             .main-header {
                 visibility: visible !important;
                 opacity: 1 !important;
@@ -416,23 +409,6 @@ class EnhancedComponentLoader {
             .main-header.header-hidden {
                 opacity: 1 !important;
                 visibility: visible !important;
-                transform: translateX(-50%) translateY(0) !important;
-            }
-            
-            /* МОБИЛЬНЫЙ ФИКС */
-            @media (max-width: 900px) {
-                .main-header {
-                    top: 0 !important;
-                    left: 0 !important;
-                    transform: none !important;
-                    width: 100% !important;
-                    border-radius: 0 !important;
-                    margin: 0 !important;
-                }
-                
-                .main-header.header-hidden {
-                    transform: translateY(0) !important;
-                }
             }
             
             /* ФИКС ДЛЯ КЛИКАБЕЛЬНОСТИ */
@@ -460,14 +436,57 @@ class EnhancedComponentLoader {
                 visibility: visible !important;
             }
             
+            /* УБЕРАЕМ ВСЕ СПЕЦИФИЧНЫЕ СТИЛИ ДЛЯ ДРУГИХ СТРАНИЦ */
+            body:not(.home-page):not(.index-page) .main-header,
+            body.services-page .main-header,
+            body.portfolio-page .main-header,
+            body.about-page .main-header,
+            body.contacts-page .main-header,
+            body.brandbook-page .main-header {
+                all: unset !important;
+            }
+            
+            /* ПРИМЕНЯЕМ ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ СТРАНИЦ */
+            .main-header {
+                position: fixed !important;
+                top: 20px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                width: calc(100% - 40px) !important;
+                max-width: 1400px !important;
+                padding: 15px 0 !important;
+                background: rgba(255, 255, 255, 0.08) !important;
+                backdrop-filter: blur(40px) !important;
+                -webkit-backdrop-filter: blur(40px) !important;
+                border: 1px solid rgba(255, 255, 255, 0.15) !important;
+                border-radius: 20px !important;
+                z-index: 1000 !important;
+                box-shadow: 0 15px 50px rgba(0,0,0,0.35) !important;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            }
+            
+            /* МОБИЛЬНЫЙ ФИКС */
+            @media (max-width: 900px) {
+                .main-header {
+                    top: 0 !important;
+                    left: 0 !important;
+                    transform: none !important;
+                    width: 100% !important;
+                    border-radius: 0 !important;
+                    padding: 12px 0 !important;
+                    background: rgba(10, 10, 20, 0.98) !important;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+                }
+            }
+            
             /* ПРЕВЕНТИВНЫЙ ФИКС ДЛЯ ВСЕХ СТРАНИЦ */
             body {
-                padding-top: 80px !important;
+                padding-top: 100px !important;
             }
             
             @media (max-width: 900px) {
                 body {
-                    padding-top: 60px !important;
+                    padding-top: 70px !important;
                 }
             }
         `;
