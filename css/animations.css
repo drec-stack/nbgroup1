@@ -1297,3 +1297,67 @@ body:not(.index-page) .main-header.header-visible {
     opacity: 1 !important;
     transform: translateY(0) !important;
 }
+
+/* ===== УНИВЕРСАЛЬНЫЙ ФИКС ДЛЯ АНИМАЦИЙ ХЕДЕРА НА ВСЕХ СТРАНИЦАХ ===== */
+/* Добавлено для решения проблемы с "поплывшим" хедером */
+
+/* Отключаем ненужные анимации для других страниц */
+body:not(.index-page) .main-header.header-hidden,
+body:not(.index-page) .main-header.header-visible {
+    animation: none !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* На других страницах хедер всегда виден */
+body:not(.index-page) .main-header {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0) !important;
+}
+
+@media (max-width: 900px) {
+    body:not(.index-page) .main-header {
+        transform: translateY(0) !important;
+    }
+}
+
+/* Состояние scrolled для всех страниц */
+body:not(.index-page) .main-header.scrolled {
+    animation: headerElevateUniversal 0.4s var(--ease-out-back) forwards;
+}
+
+/* Анимация при наведении для всех страниц */
+body:not(.index-page) .main-header:hover {
+    animation: headerElevateUniversal 0.3s var(--ease-out-back) forwards;
+}
+
+/* Гарантируем что кнопки на всех страницах имеют одинаковые анимации */
+body:not(.index-page) .start-project-btn:hover {
+    animation: universalBtnHover 0.4s var(--ease-elastic) forwards;
+}
+
+/* Переключатель языка на всех страницах */
+body:not(.index-page) .language-switcher.desktop-only:hover {
+    animation: none !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Навигационные ссылки на всех страницах */
+body:not(.index-page) .nav-link:hover {
+    animation: navLinkHoverLift 0.3s var(--ease-out-back) forwards;
+}
+
+/* Логотип на всех страницах */
+body:not(.index-page) .logo:hover .logo-mark {
+    animation: logoMarkHover 0.4s var(--ease-elastic) forwards;
+}
+
+/* ФИКС: Убираем все конфликтующие анимации для других страниц */
+body.about-page .main-header,
+body.services-page .main-header,
+body.portfolio-page .main-header,
+body.contacts-page .main-header,
+body.brandbook-page .main-header {
+    animation: headerSlideDownUniversal 0.8s var(--ease-elastic) forwards !important;
+    animation-play-state: running !important;
+}
