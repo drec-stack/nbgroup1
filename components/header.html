@@ -1,4 +1,4 @@
-<header class="main-header header-visible" id="main-header">
+<header class="main-header" id="main-header">
     <div class="header-container">
         <div class="header-inner">
             <!-- Логотип -->
@@ -37,15 +37,15 @@
                     </button>
                     <button class="lang-btn" data-lang="en">
                         <span class="lang-flag">🇬🇧</span>
-                        <span class="lang-text">GB</span>
+                        <span class="lang-text">EN</span>
                     </button>
                 </div>
                 
                 <!-- Кнопка "Начать проект" -->
-                <button class="start-project-btn" id="start-project-btn">
+                <a href="contacts.html" class="start-project-btn">
                     <span data-i18n="nav.startProject">Начать проект</span>
                     <i class="fas fa-arrow-right"></i>
-                </button>
+                </a>
             </div>
             
             <!-- Мобильная версия -->
@@ -72,39 +72,651 @@
     </div>
 </header>
 
+<style>
+    /* 
+    ===========================================
+    СТИЛИ ХЕДЕРА - АВТОНОМНЫЕ
+    Работают на всех страницах без зависимости
+    ===========================================
+    */
+    
+    /* ===== ОСНОВНЫЕ СТИЛИ ХЕДЕРА ===== */
+    .main-header {
+        /* Позиционирование */
+        position: fixed !important;
+        top: 20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 40px) !important;
+        max-width: 1400px !important;
+        margin: 0 auto !important;
+        
+        /* Внешний вид - универсальный для всех страниц */
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(40px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        border-radius: 20px !important;
+        box-shadow: 
+            0 15px 50px rgba(0, 0, 0, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+        
+        /* Размеры */
+        padding: 15px 0 !important;
+        
+        /* Слои */
+        z-index: 1000 !important;
+        
+        /* Состояние */
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        
+        /* Анимации */
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        will-change: transform, backdrop-filter !important;
+    }
+    
+    /* Гарантируем видимость на всех страницах */
+    .main-header.header-hidden,
+    .main-header.header-visible {
+        transform: translateX(-50%) translateY(0) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* Стиль при скролле */
+    .main-header.scrolled {
+        background: rgba(255, 255, 255, 0.12) !important;
+        backdrop-filter: blur(45px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(45px) saturate(200%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.45),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+        padding: 12px 0 !important;
+    }
+    
+    /* Эффект при наведении */
+    .main-header:hover {
+        background: rgba(255, 255, 255, 0.12) !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+        transform: translateX(-50%) translateY(0) scale(1.02) !important;
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.45),
+            0 0 30px rgba(0, 102, 255, 0.15) !important;
+    }
+    
+    /* ===== КОНТЕЙНЕР ХЕДЕРА ===== */
+    .header-container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 20px;
+        width: 100%;
+    }
+    
+    .header-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 20px;
+    }
+    
+    /* ===== ЛОГОТИП ===== */
+    .logo {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        gap: 12px;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .logo:hover {
+        transform: translateY(-1px);
+    }
+    
+    .logo-mark {
+        width: 40px;
+        height: 40px;
+        background: white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 16px;
+        color: #000000;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    .logo:hover .logo-mark {
+        transform: scale(1.05) rotate(5deg);
+        box-shadow: 
+            0 10px 40px rgba(255, 255, 255, 0.2),
+            0 0 30px rgba(255, 255, 255, 0.1);
+    }
+    
+    .logo-text {
+        color: white;
+        font-weight: 700;
+        font-size: 20px;
+        white-space: nowrap;
+    }
+    
+    /* ===== ДЕСКТОПНАЯ НАВИГАЦИЯ ===== */
+    .main-nav {
+        display: flex;
+        gap: 8px;
+        margin: 0 30px;
+    }
+    
+    .nav-link {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 15px;
+        padding: 10px 18px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.03);
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+    }
+    
+    .nav-link:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    .nav-link.active {
+        color: white;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+    }
+    
+    /* ===== ДЕСКТОПНЫЕ ДЕЙСТВИЯ ===== */
+    .header-right-desktop {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    /* ===== ДЕСКТОПНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА ===== */
+    .language-switcher.desktop-only {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        min-width: 120px;
+        height: 38px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .language-switcher.desktop-only .lang-slider {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: calc(50% - 4px);
+        height: calc(100% - 8px);
+        background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.25), 
+            rgba(255, 255, 255, 0.15));
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px;
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 1;
+    }
+    
+    .language-switcher.desktop-only[data-current-lang="en"] .lang-slider {
+        transform: translateX(100%);
+    }
+    
+    .language-switcher.desktop-only .lang-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 12px;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        gap: 8px;
+    }
+    
+    .language-switcher.desktop-only .lang-btn.active {
+        color: white;
+        font-weight: 600;
+    }
+    
+    /* ===== КНОПКА "НАЧАТЬ ПРОЕКТ" ===== */
+    .start-project-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 28px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+        color: white;
+        font-weight: 700;
+        font-size: 14px;
+        text-decoration: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        gap: 10px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .start-project-btn:hover {
+        background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.2), 
+            rgba(255, 255, 255, 0.12));
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.25);
+    }
+    
+    /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+    @media (max-width: 900px) {
+        .main-header {
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            border-radius: 0 !important;
+            transform: none !important;
+            background: rgba(10, 10, 20, 0.98) !important;
+            backdrop-filter: blur(35px) !important;
+            -webkit-backdrop-filter: blur(35px) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+            padding: 12px 0 !important;
+        }
+        
+        /* Скрываем десктопные элементы */
+        .main-nav,
+        .header-right-desktop {
+            display: none !important;
+        }
+        
+        /* Показываем мобильные элементы */
+        .header-right-mobile {
+            display: flex !important;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* БУРГЕР КНОПКА */
+        .burger-btn {
+            display: block !important;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .burger-btn span {
+            display: block;
+            position: absolute;
+            width: 22px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .burger-btn span:nth-child(1) {
+            top: 16px;
+        }
+        
+        .burger-btn span:nth-child(2) {
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .burger-btn span:nth-child(3) {
+            bottom: 16px;
+        }
+        
+        .burger-btn.active span:nth-child(1) {
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        
+        .burger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .burger-btn.active span:nth-child(3) {
+            bottom: 50%;
+            transform: translate(-50%, 50%) rotate(-45deg);
+        }
+        
+        /* Мобильный переключатель языка */
+        .language-switcher.mobile-only-flags {
+            display: flex;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            min-width: 80px;
+            height: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .language-switcher.mobile-only-flags .lang-slider {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(50% - 5px);
+            height: calc(100% - 10px);
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.3), 
+                rgba(255, 255, 255, 0.2));
+            border-radius: 19px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1;
+        }
+        
+        .language-switcher.mobile-only-flags[data-current-lang="en"] .lang-slider {
+            transform: translateX(100%);
+        }
+        
+        .language-switcher.mobile-only-flags .lang-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+    }
+</style>
+
 <script>
-    // Базовые скрипты для хедера
+    // ===========================================
+    // СКРИПТЫ ХЕДЕРА - АВТОНОМНЫЕ
+    // Работают на всех страницах
+    // ===========================================
+    
     (function() {
         'use strict';
         
-        console.log('🚀 Header component loaded');
+        console.log('🚀 Автономный хедер загружен');
         
-        // Обработчик кнопки "Начать проект"
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('#start-project-btn')) {
-                e.preventDefault();
-                e.stopPropagation();
-                window.location.href = 'contacts.html';
-            }
+        // Инициализация при загрузке DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            initHeader();
         });
         
+        // Если DOM уже загружен
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+            setTimeout(initHeader, 100);
+        }
+        
+        function initHeader() {
+            console.log('🔄 Инициализация автономного хедера...');
+            
+            const header = document.getElementById('main-header');
+            if (!header) {
+                console.error('❌ Хедер не найден');
+                return;
+            }
+            
+            // Гарантируем видимость
+            header.classList.remove('header-hidden');
+            header.classList.add('header-visible');
+            
+            // Инициализация активных ссылок
+            initActiveLinks();
+            
+            // Инициализация переключателя языка
+            initLanguageSwitcher();
+            
+            // Инициализация бургер-кнопки
+            initBurgerButton();
+            
+            // Инициализация скролла
+            initScrollBehavior();
+            
+            console.log('✅ Автономный хедер инициализирован');
+        }
+        
         // Инициализация активных ссылок
-        setTimeout(function() {
+        function initActiveLinks() {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
             const navLinks = document.querySelectorAll('.nav-link');
             
             navLinks.forEach(link => {
-                const href = link.getAttribute('href');
                 link.classList.remove('active');
                 
+                const href = link.getAttribute('href');
                 if (href === currentPage || 
                     (currentPage === '' && href === 'index.html') ||
-                    (currentPage === '/' && href === 'index.html') ||
-                    (currentPage.includes('index') && href === 'index.html')) {
+                    (currentPage === '/' && href === 'index.html')) {
                     link.classList.add('active');
                 }
+                
+                // Обработчик клика
+                link.addEventListener('click', function(e) {
+                    // Показываем хедер если он скрыт
+                    const header = document.getElementById('main-header');
+                    if (header && header.classList.contains('header-hidden')) {
+                        header.classList.remove('header-hidden');
+                        header.classList.add('header-visible');
+                    }
+                    
+                    // Закрываем мобильное меню если открыто
+                    const mobileMenu = document.querySelector('.mobile-menu');
+                    const burgerBtn = document.querySelector('.burger-btn');
+                    if (mobileMenu && mobileMenu.classList.contains('active')) {
+                        mobileMenu.classList.remove('active');
+                        if (burgerBtn) burgerBtn.classList.remove('active');
+                    }
+                });
             });
-        }, 100);
+        }
+        
+        // Инициализация переключателя языка
+        function initLanguageSwitcher() {
+            const langBtns = document.querySelectorAll('.lang-btn');
+            
+            // Устанавливаем текущий язык из localStorage
+            const currentLang = localStorage.getItem('preferredLang') || 'ru';
+            updateLanguageSwitchers(currentLang);
+            
+            langBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const lang = this.getAttribute('data-lang');
+                    if (lang === currentLang) return;
+                    
+                    console.log(`🌍 Смена языка на: ${lang}`);
+                    switchLanguage(lang);
+                });
+            });
+        }
+        
+        // Обновление всех переключателей языка
+        function updateLanguageSwitchers(lang) {
+            const switchers = document.querySelectorAll('.language-switcher');
+            switchers.forEach(switcher => {
+                switcher.setAttribute('data-current-lang', lang);
+            });
+            
+            const langBtns = document.querySelectorAll('.lang-btn');
+            langBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            localStorage.setItem('preferredLang', lang);
+        }
+        
+        // Смена языка
+        function switchLanguage(lang) {
+            updateLanguageSwitchers(lang);
+            
+            // Используем глобальную систему i18n если есть
+            if (window.i18n && typeof window.i18n.switchLanguage === 'function') {
+                window.i18n.switchLanguage(lang);
+            }
+            
+            // Закрываем мобильное меню
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const burgerBtn = document.querySelector('.burger-btn');
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+                if (burgerBtn) burgerBtn.classList.remove('active');
+            }
+        }
+        
+        // Инициализация бургер-кнопки
+        function initBurgerButton() {
+            const burgerBtn = document.querySelector('.burger-btn');
+            if (!burgerBtn) return;
+            
+            burgerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const mobileMenu = document.querySelector('.mobile-menu');
+                if (!mobileMenu) return;
+                
+                const isOpen = mobileMenu.classList.contains('active');
+                
+                if (isOpen) {
+                    // Закрыть меню
+                    mobileMenu.classList.remove('active');
+                    this.classList.remove('active');
+                    this.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                } else {
+                    // Открыть меню
+                    mobileMenu.classList.add('active');
+                    this.classList.add('active');
+                    this.setAttribute('aria-expanded', 'true');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        }
+        
+        // Инициализация скролла
+        function initScrollBehavior() {
+            const header = document.getElementById('main-header');
+            if (!header) return;
+            
+            let lastScrollTop = 0;
+            let ticking = false;
+            
+            const updateHeaderOnScroll = () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Добавляем класс scrolled при прокрутке
+                if (scrollTop > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                // Определяем главная ли это страница
+                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                const isIndexPage = currentPage === 'index.html' || 
+                                   currentPage === '' || 
+                                   currentPage === '/';
+                
+                // На главной странице включаем скрытие при скролле
+                if (isIndexPage) {
+                    const scrollingDown = scrollTop > lastScrollTop;
+                    
+                    if (scrollingDown && scrollTop > 100) {
+                        // Прячем при скролле вниз
+                        if (!header.classList.contains('header-hidden')) {
+                            header.classList.add('header-hidden');
+                            header.classList.remove('header-visible');
+                        }
+                    } else if (!scrollingDown || scrollTop <= 100) {
+                        // Показываем при скролле вверх или вверху страницы
+                        if (header.classList.contains('header-hidden')) {
+                            header.classList.remove('header-hidden');
+                            header.classList.add('header-visible');
+                        }
+                    }
+                }
+                
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                ticking = false;
+            };
+            
+            const onScroll = () => {
+                if (!ticking) {
+                    ticking = true;
+                    requestAnimationFrame(updateHeaderOnScroll);
+                }
+            };
+            
+            window.addEventListener('scroll', onScroll, { passive: true });
+            
+            // Показываем хедер при наведении (только для десктопа)
+            if (window.innerWidth > 900) {
+                header.addEventListener('mouseenter', () => {
+                    if (header.classList.contains('header-hidden')) {
+                        header.classList.remove('header-hidden');
+                        header.classList.add('header-visible');
+                    }
+                });
+            }
+            
+            // Инициализация начального состояния
+            updateHeaderOnScroll();
+        }
+        
+        // Показываем хедер при клике на элементы
+        document.addEventListener('click', function(e) {
+            const header = document.getElementById('main-header');
+            if (!header) return;
+            
+            // Показываем хедер при клике на любые элементы внутри него
+            if (e.target.closest('.main-header')) {
+                if (header.classList.contains('header-hidden')) {
+                    header.classList.remove('header-hidden');
+                    header.classList.add('header-visible');
+                }
+            }
+        });
         
     })();
 </script>
